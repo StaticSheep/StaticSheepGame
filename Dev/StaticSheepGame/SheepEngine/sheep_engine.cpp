@@ -2,6 +2,7 @@
 // Sorry for the terrible naming convention, I wanted to make it clear what each function represented
 
 #include "sheep_engine.h"
+#include "Object.h"
 
 // Include the exported header file from physics / graphics
 #include "physics\sheep_physics.h"
@@ -61,4 +62,33 @@ SHEEP_API int ExportedEnginePhysicsFunction(void)
 {
   // Call an exported function from the physics
   return ExportedPhysicsFunction();
+}
+
+
+// IGNORE THE STUFF BELOW THIS
+
+using namespace Framework;
+
+SHEEP_API void TestStuff(void)
+{
+  std::shared_ptr<GameObject> obj1(new GameObject(1));
+  obj1->self = obj1;
+
+  obj1->fastChildSearch = true;
+
+  std::shared_ptr<GameObject>* temp;
+  for (int i = 0; i < 100; ++i)
+  {
+    temp = new std::shared_ptr<GameObject>(new GameObject(i * i - 30 * i + 1000));
+    temp->get()->self = *temp;
+    obj1->AddChild(**temp);
+  }
+  
+
+  size_t tempID = 0;
+  ChildArray &children = obj1->GetChildren();
+  for(ChildArray::iterator it = children.begin(); it != children.end(); ++it)
+  {	
+    tempID = it->lock().get()->GetID();
+  }
 }

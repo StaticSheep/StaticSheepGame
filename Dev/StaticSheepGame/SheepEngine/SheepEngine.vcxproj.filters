@@ -10,6 +10,18 @@
     <ClInclude Include="..\includes\engine\sheep_engine.h">
       <Filter>Export\Demo</Filter>
     </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>Types\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="..\includes\Utilities.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentCreator.h">
+      <Filter>Types\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Object.h">
+      <Filter>Types\Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="precompiled.cpp">
@@ -17,6 +29,12 @@
     </ClCompile>
     <ClCompile Include="sheep_engine.cpp">
       <Filter>Export\Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utilities\Utilities.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Object.cpp">
+      <Filter>Types\Object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -28,6 +46,21 @@
     </Filter>
     <Filter Include="Export\Demo">
       <UniqueIdentifier>{9872c10b-433c-4f09-985e-2793e936f79a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Types">
+      <UniqueIdentifier>{3ead303b-c56a-4c18-90ea-2aa3fda07467}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Types\Component">
+      <UniqueIdentifier>{956f2b6a-be3b-4794-8f9e-0f041df9f022}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Types\Object">
+      <UniqueIdentifier>{bba741ba-df5e-4a9c-bfcf-35f303909e9e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Types\Space">
+      <UniqueIdentifier>{cddb3868-c1b4-4e01-bbd7-fd09ea475135}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility">
+      <UniqueIdentifier>{3a2ad31f-e44a-43b8-bc91-4755a031358c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -13,3 +13,5 @@ int InternalEngineFunction(void);
 SHEEP_API int ExportedEngineFunction(void);
 SHEEP_API int ExportedEnginePhysicsFunction(void);
 SHEEP_API int ExportedEngineGraphicsFunction(void);
+
+SHEEP_API void TestStuff(void);
