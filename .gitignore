@@ -19,3 +19,9 @@
 *.exe
 *.out
 *.app
+Dev/StaticSheepGame/Debug/
+Dev/StaticSheepGame/Game/Debug/
+Dev/StaticSheepGame/SheepEngine/Debug/
+Dev/StaticSheepGame/SheepGraphics/Debug/
+Dev/StaticSheepGame/SheepPhysics/Debug/
+Dev/StaticSheepGame/ipch/

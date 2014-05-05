@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="precompiled.h">
+      <Filter>Precompiled</Filter>
+    </ClInclude>
+    <ClInclude Include="..\includes\physics\api.h">
+      <Filter>Export</Filter>
+    </ClInclude>
+    <ClInclude Include="..\includes\physics\sheep_physics.h">
+      <Filter>Export\Demo</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="precompiled.cpp">
+      <Filter>Precompiled</Filter>
+    </ClCompile>
+    <ClCompile Include="sheep_physics.cpp">
+      <Filter>Export\Demo</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Precompiled">
+      <UniqueIdentifier>{4928e772-a02d-4a4f-9ce7-d06020cb174b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Export">
+      <UniqueIdentifier>{eeb182ad-6178-401a-be09-6f93d9d621f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Export\Demo">
+      <UniqueIdentifier>{67a1aa1b-de32-4d1d-a8ce-eb8e142f86c7}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

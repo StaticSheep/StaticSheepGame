@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="precompiled.h">
+      <Filter>Precompiled</Filter>
+    </ClInclude>
+    <ClInclude Include="..\includes\engine\api.h">
+      <Filter>Export</Filter>
+    </ClInclude>
+    <ClInclude Include="..\includes\engine\sheep_engine.h">
+      <Filter>Export\Demo</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="precompiled.cpp">
+      <Filter>Precompiled</Filter>
+    </ClCompile>
+    <ClCompile Include="sheep_engine.cpp">
+      <Filter>Export\Demo</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Precompiled">
+      <UniqueIdentifier>{b9696633-633c-4ba9-9e72-a1cd8225f536}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Export">
+      <UniqueIdentifier>{fdc839b3-f98b-4641-ae70-bdd1fc1a9d79}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Export\Demo">
+      <UniqueIdentifier>{9872c10b-433c-4f09-985e-2793e936f79a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

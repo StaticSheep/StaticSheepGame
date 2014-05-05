@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="precompiled.h">
+      <Filter>Precompiled</Filter>
+    </ClInclude>
+    <ClInclude Include="..\includes\graphics\api.h">
+      <Filter>Export</Filter>
+    </ClInclude>
+    <ClInclude Include="..\includes\graphics\sheep_graphics.h">
+      <Filter>Export\Demo</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="precompiled.cpp">
+      <Filter>Precompiled</Filter>
+    </ClCompile>
+    <ClCompile Include="sheep_graphics.cpp">
+      <Filter>Export\Demo</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Precompiled">
+      <UniqueIdentifier>{a5a560d4-872a-453a-97cc-59e7f8f44453}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Export">
+      <UniqueIdentifier>{04419d11-f29c-4779-aaf2-d0393ab8a53f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Export\Demo">
+      <UniqueIdentifier>{ffd8dbc0-5b20-4e20-b1b1-9efa8e28ff5a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
