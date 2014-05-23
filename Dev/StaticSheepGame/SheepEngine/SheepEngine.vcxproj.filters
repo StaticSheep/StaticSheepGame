@@ -43,6 +43,9 @@
     <ClInclude Include="PhysicsObject.h">
       <Filter>Systems\Physics</Filter>
     </ClInclude>
+    <ClInclude Include="SlotArray.h">
+      <Filter>Containers\SlotArray</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="precompiled.cpp">
@@ -67,6 +70,9 @@
       <Filter>Systems\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="SheepPhysics.cpp">
+      <Filter>Systems\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysicsObject.cpp">
       <Filter>Systems\Physics</Filter>
     </ClCompile>
   </ItemGroup>
@@ -121,6 +127,9 @@
     </Filter>
     <Filter Include="Systems\Audio">
       <UniqueIdentifier>{bc7e198a-5dab-4dd4-915f-67b9dee23935}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Containers\SlotArray">
+      <UniqueIdentifier>{1494b704-3b46-4519-822d-eff4e48c0fcb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

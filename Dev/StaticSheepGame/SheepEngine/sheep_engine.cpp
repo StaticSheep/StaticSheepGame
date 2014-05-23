@@ -7,6 +7,8 @@
 // Include the exported header file from physics / graphics
 #include "physics\sheep_physics.h"
 #include "graphics\sheep_graphics.h"
+#include "SheepPhysics.h"
+#include "PhysicsObject.h"
 
 // This is a way to force the project to include the libraries
 // without messing around with project settings
@@ -71,24 +73,17 @@ using namespace Framework;
 
 SHEEP_API void TestStuff(void)
 {
-  std::shared_ptr<GameObject> obj1(new GameObject(1, 2));
-  obj1->self = obj1;
+	int a, b, c, d;
+	a = 1;
+	b = 2;
+	c = 4;
+	d = 8;
 
-  obj1->fastChildSearch = true;
+	SheepPhysics PSys;
 
-  std::shared_ptr<GameObject>* temp;
-  for (int i = 0; i < 100; ++i)
-  {
-    temp = new std::shared_ptr<GameObject>(new GameObject(i * i - 30 * i + 1000));
-    temp->get()->self = *temp;
-    temp->get()->SetParent(*obj1.get());
-  }
-  
+	PSys.m_objectList.Allocate2(&a, &d);
+	PSys.m_objectList.Allocate2(&b, &c);
 
-  size_t tempID = 0;
-  ChildArray &children = obj1->GetChildren();
-  for(ChildArray::iterator it = children.begin(); it != children.end(); ++it)
-  {	
-    tempID = it->lock().get()->GetID();
-  }
+	*(PSys.m_objectList[0]->test1) = 10;
+	*(PSys.m_objectList[1]->test1) = 40;
 }

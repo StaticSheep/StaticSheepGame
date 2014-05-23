@@ -10,6 +10,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 #include "System.h"
 #include "PhysicsObject.h"
+#include "SlotArray.h"
 
 namespace Framework
 {
@@ -29,11 +30,12 @@ namespace Framework
 		// Update per frame
 		void Update(float dt);
 
+		PhysicsObject* RegisterObject(PhysicsObject& object);
+
+		SlotArray<PhysicsObject> m_objectList;
+
 	private:
 		void PhysicsStep(float dt);
-
-		void RegisterObject(PhysicsObject& object);
-
 
 	};
 

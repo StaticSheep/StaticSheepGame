@@ -15,10 +15,21 @@ namespace Framework
 	class PhysicsObject
 	{
 	public:
+		int* test1;
+		int* test2;
 		// Translation
 		// Rotation
 		// Scale
 		Handle m_handle;
+
+		PhysicsObject& operator=(PhysicsObject rhs);
+		PhysicsObject();
+		PhysicsObject(int* arg1, int* arg2);
+	private:
+		static int generic;
+
 		
 	};
+
+	
 }

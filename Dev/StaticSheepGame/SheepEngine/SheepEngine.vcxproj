@@ -101,10 +101,12 @@
     <ClInclude Include="Object.h" />
     <ClInclude Include="precompiled.h" />
     <ClInclude Include="SheepPhysics.h" />
+    <ClInclude Include="SlotArray.h" />
     <ClInclude Include="System.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Utilities\Utilities.cpp" />
+    <ClCompile Include="PhysicsObject.cpp" />
     <ClCompile Include="SheepGraphics.cpp" />
     <ClCompile Include="Handle.cpp" />
     <ClCompile Include="HandleManager.cpp" />

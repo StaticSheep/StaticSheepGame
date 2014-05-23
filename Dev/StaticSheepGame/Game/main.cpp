@@ -3,7 +3,6 @@
 #include <Windows.h>
 #include "engine\sheep_engine.h"
 
-
 // All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 #pragma comment (lib, "SheepEngine.lib")
@@ -19,7 +18,7 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_l
 
   // This will not compile since the function was not exported from the engine project
   //d = InternalEngineFunction();
-
+  
 
 
   TestStuff();
