@@ -40,11 +40,14 @@
     <ClInclude Include="SheepPhysics.h">
       <Filter>Systems\Physics</Filter>
     </ClInclude>
-    <ClInclude Include="PhysicsObject.h">
-      <Filter>Systems\Physics</Filter>
-    </ClInclude>
     <ClInclude Include="SlotArray.h">
       <Filter>Containers\SlotArray</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicsObject.h">
+      <Filter>Systems\Physics\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="SheepAudio.h">
+      <Filter>Systems\Audio</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -73,7 +76,10 @@
       <Filter>Systems\Physics</Filter>
     </ClCompile>
     <ClCompile Include="PhysicsObject.cpp">
-      <Filter>Systems\Physics</Filter>
+      <Filter>Systems\Physics\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="SheepAudio.cpp">
+      <Filter>Systems\Audio</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -130,6 +136,9 @@
     </Filter>
     <Filter Include="Containers\SlotArray">
       <UniqueIdentifier>{1494b704-3b46-4519-822d-eff4e48c0fcb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\Physics\Object">
+      <UniqueIdentifier>{fa43fa63-ae4a-429d-8981-dd9b59a0e321}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

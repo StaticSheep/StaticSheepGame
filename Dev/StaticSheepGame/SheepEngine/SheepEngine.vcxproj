@@ -94,6 +94,7 @@
     <ClInclude Include="Component.h" />
     <ClInclude Include="ComponentCreator.h" />
     <ClInclude Include="PhysicsObject.h" />
+    <ClInclude Include="SheepAudio.h" />
     <ClInclude Include="SheepGraphics.h" />
     <ClInclude Include="Handle.h" />
     <ClInclude Include="HandleManager.h" />
@@ -107,6 +108,7 @@
   <ItemGroup>
     <ClCompile Include="..\Utilities\Utilities.cpp" />
     <ClCompile Include="PhysicsObject.cpp" />
+    <ClCompile Include="SheepAudio.cpp" />
     <ClCompile Include="SheepGraphics.cpp" />
     <ClCompile Include="Handle.cpp" />
     <ClCompile Include="HandleManager.cpp" />

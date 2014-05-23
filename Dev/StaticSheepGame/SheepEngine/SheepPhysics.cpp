@@ -1,7 +1,7 @@
 /*****************************************************************
 Filename: SheepPhysics.cpp
 Project: 
-Author(s): Zachary Nawar (Primary)
+Author(s): Zachary Nawar
 
 All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 *****************************************************************/
