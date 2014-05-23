@@ -6,6 +6,9 @@ Author(s): Zachary Nawar (Primary)
 All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 *****************************************************************/
 
+#ifndef GCOMPONENT_H
+#define GCOMPONENT_H
+
 namespace Framework
 {
 
@@ -38,3 +41,5 @@ namespace Framework
   };
 
 };
+
+#endif

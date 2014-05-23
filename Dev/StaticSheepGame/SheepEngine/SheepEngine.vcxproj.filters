@@ -22,6 +22,27 @@
     <ClInclude Include="Object.h">
       <Filter>Types\Object</Filter>
     </ClInclude>
+    <ClInclude Include="Handle.h">
+      <Filter>Containers\Handle</Filter>
+    </ClInclude>
+    <ClInclude Include="HandleManager.h">
+      <Filter>Containers\HandleManager</Filter>
+    </ClInclude>
+    <ClInclude Include="System.h">
+      <Filter>Systems\Generic</Filter>
+    </ClInclude>
+    <ClInclude Include="Message.h">
+      <Filter>Types\Message</Filter>
+    </ClInclude>
+    <ClInclude Include="SheepGraphics.h">
+      <Filter>Systems\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="SheepPhysics.h">
+      <Filter>Systems\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicsObject.h">
+      <Filter>Systems\Physics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="precompiled.cpp">
@@ -35,6 +56,18 @@
     </ClCompile>
     <ClCompile Include="Object.cpp">
       <Filter>Types\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Handle.cpp">
+      <Filter>Containers\Handle</Filter>
+    </ClCompile>
+    <ClCompile Include="HandleManager.cpp">
+      <Filter>Containers\HandleManager</Filter>
+    </ClCompile>
+    <ClCompile Include="SheepGraphics.cpp">
+      <Filter>Systems\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="SheepPhysics.cpp">
+      <Filter>Systems\Physics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -61,6 +94,33 @@
     </Filter>
     <Filter Include="Utility">
       <UniqueIdentifier>{3a2ad31f-e44a-43b8-bc91-4755a031358c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Containers">
+      <UniqueIdentifier>{dcba7c53-4668-4b66-b9b3-3578ede8228c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Containers\Handle">
+      <UniqueIdentifier>{c5b897ea-5078-437c-a397-aa5f16e1221e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Containers\HandleManager">
+      <UniqueIdentifier>{168ec064-6417-4de3-9778-b305626174cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems">
+      <UniqueIdentifier>{b9706a46-da35-4d02-aad4-83b635b5fa8f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\Generic">
+      <UniqueIdentifier>{3a439a3c-d085-4fc6-bb59-a35f509a1c64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Types\Message">
+      <UniqueIdentifier>{b77983b0-ed27-43c9-8cba-725078ca6713}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\Graphics">
+      <UniqueIdentifier>{a968d908-06c5-4e5c-82f0-a974fd4acac9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\Physics">
+      <UniqueIdentifier>{769279fe-5748-46f1-9dd9-423d9ea3d18e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\Audio">
+      <UniqueIdentifier>{bc7e198a-5dab-4dd4-915f-67b9dee23935}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

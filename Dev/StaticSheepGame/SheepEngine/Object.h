@@ -6,6 +6,9 @@ Author(s): Zachary Nawar (Primary)
 All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 *****************************************************************/
 
+#ifndef GOBJECT_H
+#define GOBJECT_H
+
 #include "Component.h"
 #include <vector>
 #include <memory>
@@ -57,10 +60,12 @@ namespace Framework
       std::shared_ptr<GameObject> GetChild(size_t uid);
 
       // Adds a child onto the object
-      void AddChild(GameObject& obj);
+      void AddChild(GameObject &obj);
+      void AddChild(std::shared_ptr<GameObject> obj);
 
       // Parents the object to another
-      void SetParent(GameObject& obj);
+      void SetParent(GameObject &obj);
+      void SetParent(std::shared_ptr<GameObject> obj);
 
       // If true, GetChild is enabled and the children list will be sorted
       bool fastChildSearch;
@@ -69,6 +74,7 @@ namespace Framework
       //Decide
       GameObject();
       GameObject(size_t uid);
+      GameObject(size_t uid, size_t archetype);
       //Decide
       ~GameObject();
 
@@ -88,7 +94,7 @@ namespace Framework
       std::weak_ptr<GameObject> _parent;
 
       
-
+      uint64_t _uidTest;
       size_t _uid;
       size_t _archetype;
 
@@ -105,3 +111,5 @@ namespace Framework
 
 // This lets you do Object->Has(Trasform)
 #define Has(type) GetComponentType(CT_##type)
+
+#endif

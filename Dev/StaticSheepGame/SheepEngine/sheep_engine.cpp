@@ -71,7 +71,7 @@ using namespace Framework;
 
 SHEEP_API void TestStuff(void)
 {
-  std::shared_ptr<GameObject> obj1(new GameObject(1));
+  std::shared_ptr<GameObject> obj1(new GameObject(1, 2));
   obj1->self = obj1;
 
   obj1->fastChildSearch = true;
@@ -81,7 +81,7 @@ SHEEP_API void TestStuff(void)
   {
     temp = new std::shared_ptr<GameObject>(new GameObject(i * i - 30 * i + 1000));
     temp->get()->self = *temp;
-    obj1->AddChild(**temp);
+    temp->get()->SetParent(*obj1.get());
   }
   
 

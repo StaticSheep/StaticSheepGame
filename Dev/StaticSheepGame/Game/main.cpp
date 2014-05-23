@@ -20,5 +20,9 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_l
   // This will not compile since the function was not exported from the engine project
   //d = InternalEngineFunction();
 
+
+
+  TestStuff();
+
   return d;
 }

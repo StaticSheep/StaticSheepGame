@@ -6,6 +6,9 @@ Author(s): Zachary Nawar (Primary)
 All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 *****************************************************************/
 
+#ifndef COMPCREATOR
+#define COMPCREATOR
+
 #include "Utilities.h"
 
 namespace Framework
@@ -37,7 +40,7 @@ namespace Framework
     // Override the create function with the type we want to make
     virtual GameComponent* Create()
     {
-      return new type();
+      return new T();
     }
   };
 
@@ -45,3 +48,5 @@ namespace Framework
 };
 
 //#define RegisterComponent(type) Core->AddComponentCreator(Hash(#type), new ComponentCreatorType<type>(Hash(#type)))
+
+#endif

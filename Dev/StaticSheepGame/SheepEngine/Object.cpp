@@ -124,15 +124,53 @@ namespace Framework
     return BinaryChildSearch(_children, uid);
   }
 
+  /// <summary>
+  /// Adds a child onto the game object
+  /// </summary>
+  /// <param name="obj">The object.</param>
   void GameObject::AddChild(GameObject& obj)
   {
-    _children.push_back(std::weak_ptr<GameObject>(obj.self));
+    _children.push_back(obj.self);
     
     if (!fastChildSearch)
       return;
     // Sort the child array so binary search can be used to find children quickly
     std::sort(_children.begin(), _children.end(), ObjectSorter() );
   }
+
+  void GameObject::AddChild(std::shared_ptr<GameObject> obj)
+  {
+    _children.push_back(obj);
+
+    if (!fastChildSearch)
+      return;
+    // Sort the child array so binary search can be used to find children quickly
+    std::sort(_children.begin(), _children.end(), ObjectSorter() );
+  }
+
+  /// <summary>
+  /// Sets the parent.
+  /// </summary>
+  /// <param name="obj">The object to parent to</param>
+  void GameObject::SetParent(GameObject& obj)
+  {
+    // Set the parent
+    _parent = obj.self;
+
+    // Add the child onto the parent
+    obj.AddChild(*this);
+  }
+
+  void GameObject::SetParent(std::shared_ptr<GameObject> obj)
+  {
+    // Set the parent
+    _parent = obj;
+
+    // Add the child onto the parent
+    obj.get()->AddChild(*this);
+  }
+
+  
 
 
   /// <summary>
@@ -155,6 +193,24 @@ namespace Framework
   {
     fastChildSearch = false;
     _uid = uid;
+    // @TODO: Decide if archetype should be hashed string, integer, enum, or string
+    _archetype = 0;
+  }
+
+  GameObject::GameObject(size_t uid, size_t archetype)
+  {
+    size_t a, b;
+
+    fastChildSearch = false;
+    _uid = uid;
+    // Shift 32 bits to the left
+    _uidTest = archetype;
+    _uidTest <<= 32;
+    _uidTest += uid;
+
+    a = _uidTest >> 32;
+    b = _uidTest;
+
     // @TODO: Decide if archetype should be hashed string, integer, enum, or string
     _archetype = 0;
   }
