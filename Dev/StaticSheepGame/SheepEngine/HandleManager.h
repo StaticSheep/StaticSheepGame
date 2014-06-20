@@ -59,10 +59,10 @@ namespace Framework
 
 		if (entry->m_counter == handle.m_counter && entry->m_allocated == true)
 		{
-			return T*(entry->m_ptr);
+			return (T*)entry->m_ptr;
 		}
 
-		return NULL:
+		return nullptr;
 	}
 }
 

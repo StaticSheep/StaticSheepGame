@@ -49,6 +49,12 @@
     <ClInclude Include="SheepAudio.h">
       <Filter>Systems\Audio</Filter>
     </ClInclude>
+    <ClInclude Include="ObjectAllocator.h">
+      <Filter>Memory\ObjectAllocator</Filter>
+    </ClInclude>
+    <ClInclude Include="Space.h">
+      <Filter>Types\Space</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="precompiled.cpp">
@@ -80,6 +86,12 @@
     </ClCompile>
     <ClCompile Include="SheepAudio.cpp">
       <Filter>Systems\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectAllocator.cpp">
+      <Filter>Memory\ObjectAllocator</Filter>
+    </ClCompile>
+    <ClCompile Include="Space.cpp">
+      <Filter>Types\Space</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -139,6 +151,12 @@
     </Filter>
     <Filter Include="Systems\Physics\Object">
       <UniqueIdentifier>{fa43fa63-ae4a-429d-8981-dd9b59a0e321}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Memory">
+      <UniqueIdentifier>{e107b444-e116-4361-b7e9-62bd91809be1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Memory\ObjectAllocator">
+      <UniqueIdentifier>{4a245ebf-67a3-4cfd-8eae-e1b07fba5f99}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

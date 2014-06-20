@@ -21,7 +21,7 @@ namespace Framework
 
   // So life is easier
   typedef std::vector<GameComponent*> ComponentArray;
-  typedef std::vector<std::weak_ptr<GameObject>> ChildArray;
+  typedef std::vector<Handle> ChildArray;
 
   class GameObject
   {
@@ -54,18 +54,18 @@ namespace Framework
       ChildArray& GetChildren() { return _children; }
 
       // Get the parent of the object
-      std::shared_ptr<GameObject> GetParent() { return _parent.lock(); }
+      Handle GetParent() { return _parent; }
 
       // Gets a specific child object
-      std::shared_ptr<GameObject> GetChild(size_t uid);
+      Handle GetChild(size_t uid);
 
       // Adds a child onto the object
       void AddChild(GameObject &obj);
-      void AddChild(std::shared_ptr<GameObject> obj);
+      void AddChild(Handle obj);
 
       // Parents the object to another
       void SetParent(GameObject &obj);
-      void SetParent(std::shared_ptr<GameObject> obj);
+      void SetParent(Handle obj);
 
       // If true, GetChild is enabled and the children list will be sorted
       bool fastChildSearch;
@@ -78,7 +78,7 @@ namespace Framework
       //Decide
       ~GameObject();
 
-      std::weak_ptr<GameObject> self;
+      Handle self;
 
     private:
 
@@ -86,13 +86,14 @@ namespace Framework
       ComponentArray _components;
       typedef ComponentArray::iterator ComponentIt;
 
-      // Vector of the childen belonging to this object
+      // Vector of the children belonging to this object
       ChildArray _children;
       typedef ChildArray::iterator ChildrenIt;
 
       // The parent of the object;
-      std::weak_ptr<GameObject> _parent;
+      Handle _parent;
 
+      Space* space;
       
       uint64_t _uidTest;
       size_t _uid;

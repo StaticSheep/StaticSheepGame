@@ -93,6 +93,7 @@
     <ClInclude Include="..\includes\Utilities.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ComponentCreator.h" />
+    <ClInclude Include="ObjectAllocator.h" />
     <ClInclude Include="PhysicsObject.h" />
     <ClInclude Include="SheepAudio.h" />
     <ClInclude Include="SheepGraphics.h" />
@@ -103,10 +104,12 @@
     <ClInclude Include="precompiled.h" />
     <ClInclude Include="SheepPhysics.h" />
     <ClInclude Include="SlotArray.h" />
+    <ClInclude Include="Space.h" />
     <ClInclude Include="System.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Utilities\Utilities.cpp" />
+    <ClCompile Include="ObjectAllocator.cpp" />
     <ClCompile Include="PhysicsObject.cpp" />
     <ClCompile Include="SheepAudio.cpp" />
     <ClCompile Include="SheepGraphics.cpp" />
@@ -119,6 +122,7 @@
     </ClCompile>
     <ClCompile Include="SheepPhysics.cpp" />
     <ClCompile Include="sheep_engine.cpp" />
+    <ClCompile Include="Space.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

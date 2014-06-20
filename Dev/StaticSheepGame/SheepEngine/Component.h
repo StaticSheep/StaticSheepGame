@@ -9,6 +9,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #ifndef GCOMPONENT_H
 #define GCOMPONENT_H
 
+#include "Space.h"
+
 namespace Framework
 {
 
@@ -26,18 +28,22 @@ namespace Framework
 
       //virtual void Serialize(){};
 
-      // Link to the object which owns the component
-      GameObject* GetOwner() { return _owner; };
+	    // The handle to the owner of this component
+      Handle owner;
+
+	    // The handle to the component itself
+	    Handle self;
 
       // Each type of component has it's own unique ID
       size_t typeID;
 
+      // Pointer to the space which the component belongs to
+      Space* space;
+
     protected:
-      // Destructor, can be accesd from inherited classes
+      // Destructor, can be accessed from inherited classes
       ~GameComponent();
 
-    private:
-      GameObject* _owner;
   };
 
 };

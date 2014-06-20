@@ -23,9 +23,9 @@ namespace Framework
   // Used to sort objects by their UID
   struct ObjectSorter
   {
-    bool operator()(std::weak_ptr<GameObject> left, std::weak_ptr<GameObject> right) const
+    bool operator()(Handle left, Handle right) const
     {
-      return left.lock().get()->GetID() < right.lock().get()->GetID();
+      return true;
     }
   };
 
@@ -51,15 +51,16 @@ namespace Framework
   }
 
   //Binary search a sorted array of Objects
-  static std::shared_ptr<GameObject> BinaryChildSearch(ChildArray& children, size_t uid)
+  static Handle BinaryChildSearch(ChildArray& children, size_t uid)
   {
+    /*
     size_t begin = 0;
     size_t end = children.size();
 
     while(begin < end)
     {
       size_t mid = (begin + end) / 2;
-      if(children[mid].lock()->GetID() < uid)
+      if (true) //if(children[mid].lock()->GetID() < uid)
         begin = mid + 1;
       else
         end = mid;
@@ -68,7 +69,9 @@ namespace Framework
     if((begin < children.size()) && (children[begin].lock()->GetID() == uid))
       return children[begin].lock();
     else
-      return std::shared_ptr<GameObject>();
+      return Handle();
+      */
+    return Handle();
   }
 
   
@@ -80,7 +83,7 @@ namespace Framework
   {
     for(ComponentIt it = _components.begin(); it != _components.end(); ++it)
     {	
-      (*it)->_owner = this;
+      (*it)->owner = self;
       (*it)->Initialize();
     }
   }
@@ -116,10 +119,10 @@ namespace Framework
   /// </summary>
   /// <param name="uid">The uid.</param>
   /// <returns></returns>
-  std::shared_ptr<GameObject> GameObject::GetChild(size_t uid)
+  Handle GameObject::GetChild(size_t uid)
   {
     if (!fastChildSearch)
-      return std::shared_ptr<GameObject>();
+      return Handle();
 
     return BinaryChildSearch(_children, uid);
   }
@@ -138,7 +141,7 @@ namespace Framework
     std::sort(_children.begin(), _children.end(), ObjectSorter() );
   }
 
-  void GameObject::AddChild(std::shared_ptr<GameObject> obj)
+  void GameObject::AddChild(Handle obj)
   {
     _children.push_back(obj);
 
@@ -161,13 +164,13 @@ namespace Framework
     obj.AddChild(*this);
   }
 
-  void GameObject::SetParent(std::shared_ptr<GameObject> obj)
+  void GameObject::SetParent(Handle obj)
   {
     // Set the parent
     _parent = obj;
 
     // Add the child onto the parent
-    obj.get()->AddChild(*this);
+    space->m_handles.GetAs<GameObject>(obj)->AddChild(self);
   }
 
   
@@ -203,13 +206,13 @@ namespace Framework
 
     fastChildSearch = false;
     _uid = uid;
-    // Shift 32 bits to the left
-    _uidTest = archetype;
-    _uidTest <<= 32;
-    _uidTest += uid;
+    //// Shift 32 bits to the left
+    //_uidTest = archetype;
+    //_uidTest <<= 32;
+    //_uidTest += uid;
 
-    a = _uidTest >> 32;
-    b = _uidTest;
+    //a = _uidTest >> 32;
+    //b = _uidTest;
 
     // @TODO: Decide if archetype should be hashed string, integer, enum, or string
     _archetype = 0;

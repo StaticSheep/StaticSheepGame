@@ -13,8 +13,8 @@ namespace Framework
   const Handle Handle::null;
 
   Handle::Handle( )
-    : m_index( -1 )
-    , m_counter( -1 )
+    : m_index( static_cast<size_t>(-1) )
+    , m_counter( static_cast<size_t>(-1) )
   {
   }
 
