@@ -25,10 +25,17 @@ namespace Framework
     ObjectAllocator* GetComponents(size_t type);
     //GameComponent* GetComponent(size_t type, Handle owner);
 
-    // The handle manager for the space, I kind of just want this to be public
-    HandleManager m_handles;
+    HandleManager& GetHandles();
+    
   private:
+    // The collection of all game objects in this game space
+    ObjectAllocator m_objects;
 
+    // The collection of all components in this game space
+    ObjectAllocator m_components[ecountComponents];
+
+    // The handle manager for this game space
+    HandleManager m_handles;
 	};
 
 
@@ -39,6 +46,12 @@ namespace Framework
   {
     if (m_allocator.Grew() || force)
     {
+      // Keep in mind that allocators are essentially a giant vector of
+      // every single component of a certain type. In the case in which
+      // the allocator grows, the location of the data is now in a different
+      // area of RAM and therefore we must update the handle manager
+      // and tell it the new location of the components so the handles don't
+      // point into memory that we don't own!
       for (auto i = m_allocator.begin<T>(); i != m_allocator.end<T>(); ++i)
       {
         m_handles.Update(&(*i), i->self);

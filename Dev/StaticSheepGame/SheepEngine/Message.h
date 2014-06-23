@@ -19,6 +19,7 @@ namespace Framework
 		enum MessageType
 		{
 			None,
+      Pause,
 			Quit,
 		};
 	}

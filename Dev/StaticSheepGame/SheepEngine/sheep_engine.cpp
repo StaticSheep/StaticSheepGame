@@ -4,6 +4,8 @@
 #include "sheep_engine.h"
 #include "Object.h"
 
+#include "Enum.h"
+
 // Include the exported header file from physics / graphics
 #include "physics\sheep_physics.h"
 #include "graphics\sheep_graphics.h"
@@ -73,17 +75,9 @@ using namespace Framework;
 
 SHEEP_API void TestStuff(void)
 {
-	int a, b, c, d;
-	a = 1;
-	b = 2;
-	c = 4;
-	d = 8;
-
-	SheepPhysics PSys;
-
-	PSys.m_objectList.Allocate2(&a, &d);
-	PSys.m_objectList.Allocate2(&b, &c);
-
-	*(PSys.m_objectList[0]->test1) = 10;
-	*(PSys.m_objectList[1]->test1) = 40;
+  if (GET_ENUM(Component)->IsAnEntry("Sprite"))
+  {
+    int x = 10;
+    x = 10 + 30;
+  }
 }

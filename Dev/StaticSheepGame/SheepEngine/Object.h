@@ -20,7 +20,7 @@ namespace Framework
   class GameObject;
 
   // So life is easier
-  typedef std::vector<GameComponent*> ComponentArray;
+  typedef std::vector<Handle> ComponentArray;
   typedef std::vector<Handle> ChildArray;
 
   class GameObject
@@ -28,43 +28,80 @@ namespace Framework
     public:
       //friend Factorywhateverimcallingit
 
-      // Get a component based on the type
+      /// <summary>
+      /// Adds A new component to the GameObject
+      /// </summary>
+      /// <param name="typeId">The type identifier.</param>
+      /// <param name="component">The component.</param>
+      void AddComponent(size_t typeID, GameComponent* component);
+
+      /// <summary>
+      /// Gets the component.
+      /// </summary>
+      /// <param name="typeId">The type identifier.</param>
+      /// <returns></returns>
       GameComponent* GetComponent(size_t type);
 
-      // Get the component already typed
+      /// <summary>
+      /// Gets a component and returns it typed correctly
+      /// </summary>
+      /// <param name="typeId">The type identifier.</param>
+      /// <returns></returns>
       template<typename T>
       T* GetComponentType(size_t type);
 
-      // Initialization function of the Object
+      /// <summary>
+      /// Initializes each of the objects components separate from the
+      /// constructor initialization.
+      /// </summary>
       void Initialize();
 
-      // Marks the object to be deleted
+      /// <summary>
+      /// Marks the object for deletion
+      /// </summary>
       void Destroy();
 
-      // Adds a component onto an object from the serializer
-      void AddComponent(size_t typeID, GameComponent* component);
-
-      // Get the objects unique ID
+      /// <summary>
+      /// Gets the Unique ID;
+      /// </summary>
+      /// <returns></returns>
       size_t GetID() const {return _uid;}
 
-      // Get the objects archetype ID
+      /// <summary>
+      /// Gets the archetype.
+      /// </summary>
+      /// <returns></returns>
       size_t GetArchetype() const {return _archetype;}
 
-      // Get the vector of child objects
+      /// <summary>
+      /// Gets the array of children (Handles)
+      /// </summary>
+      /// <returns></returns>
       ChildArray& GetChildren() { return _children; }
 
-      // Get the parent of the object
-      Handle GetParent() { return _parent; }
+      /// <summary>
+      /// Gets the parent object
+      /// </summary>
+      /// <returns></returns>
+      GameObject* GetParent() { return space->GetHandles().GetAs<GameObject>(_parent); }
 
-      // Gets a specific child object
-      Handle GetChild(size_t uid);
+      /// <summary>
+      /// Gets a specific child object based on a UID
+      /// </summary>
+      /// <param name="uid">The uid.</param>
+      /// <returns></returns>
+      GameObject* GetChild(size_t uid);
 
-      // Adds a child onto the object
-      void AddChild(GameObject &obj);
+      /// <summary>
+      /// Adds the child.
+      /// </summary>
+      /// <param name="obj">The child handle</param>
       void AddChild(Handle obj);
 
-      // Parents the object to another
-      void SetParent(GameObject &obj);
+      /// <summary>
+      /// Sets the parent.
+      /// </summary>
+      /// <param name="obj">The parent handle.</param>
       void SetParent(Handle obj);
 
       // If true, GetChild is enabled and the children list will be sorted
@@ -73,14 +110,17 @@ namespace Framework
       // @TODO: Move into private and abstract out
       //Decide
       GameObject();
-      GameObject(size_t uid);
-      GameObject(size_t uid, size_t archetype);
+      // GameObject(size_t uid);
+      // GameObject(size_t uid, size_t archetype);
       //Decide
       ~GameObject();
 
       Handle self;
 
     private:
+
+      bool ObjectSorter(Handle left, Handle right);
+      bool ComponentSorter(Handle left, Handle right);
 
       // Vector of the components belonging to this object
       ComponentArray _components;
@@ -101,6 +141,7 @@ namespace Framework
 
   };
 
+  
   template<typename T>
   T* GameObject::GetComponentType(size_t typeId)
   {

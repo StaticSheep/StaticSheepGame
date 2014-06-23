@@ -17,6 +17,13 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 namespace Framework
 {
+  ObjectAllocator::ObjectAllocator()
+    : m_array(nullptr), m_objectSize(1), m_size(0),
+    m_capacity(0), m_grew(false)
+  {
+
+  }
+
 	ObjectAllocator::ObjectAllocator(unsigned int objectSize)
 		: m_array(nullptr), m_objectSize(objectSize), m_size(0),
 		m_capacity(0), m_grew(false)

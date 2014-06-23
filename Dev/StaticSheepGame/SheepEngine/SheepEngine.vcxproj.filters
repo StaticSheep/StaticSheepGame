@@ -11,28 +11,28 @@
       <Filter>Export\Demo</Filter>
     </ClInclude>
     <ClInclude Include="Component.h">
-      <Filter>Types\Component</Filter>
+      <Filter>BaseTypes\Component</Filter>
     </ClInclude>
     <ClInclude Include="..\includes\Utilities.h">
       <Filter>Utility</Filter>
     </ClInclude>
     <ClInclude Include="ComponentCreator.h">
-      <Filter>Types\Component</Filter>
+      <Filter>BaseTypes\Component</Filter>
     </ClInclude>
     <ClInclude Include="Object.h">
-      <Filter>Types\Object</Filter>
+      <Filter>BaseTypes\Object</Filter>
     </ClInclude>
     <ClInclude Include="Handle.h">
-      <Filter>Containers\Handle</Filter>
+      <Filter>BaseTypes\Handle</Filter>
     </ClInclude>
     <ClInclude Include="HandleManager.h">
-      <Filter>Containers\HandleManager</Filter>
+      <Filter>Engine\HandleManager</Filter>
     </ClInclude>
     <ClInclude Include="System.h">
       <Filter>Systems\Generic</Filter>
     </ClInclude>
     <ClInclude Include="Message.h">
-      <Filter>Types\Message</Filter>
+      <Filter>BaseTypes\Message</Filter>
     </ClInclude>
     <ClInclude Include="SheepGraphics.h">
       <Filter>Systems\Graphics</Filter>
@@ -41,7 +41,7 @@
       <Filter>Systems\Physics</Filter>
     </ClInclude>
     <ClInclude Include="SlotArray.h">
-      <Filter>Containers\SlotArray</Filter>
+      <Filter>Engine\Memory\SlotArray</Filter>
     </ClInclude>
     <ClInclude Include="PhysicsObject.h">
       <Filter>Systems\Physics\Object</Filter>
@@ -50,10 +50,22 @@
       <Filter>Systems\Audio</Filter>
     </ClInclude>
     <ClInclude Include="ObjectAllocator.h">
-      <Filter>Memory\ObjectAllocator</Filter>
+      <Filter>Engine\Memory\ObjectAllocator</Filter>
     </ClInclude>
     <ClInclude Include="Space.h">
-      <Filter>Types\Space</Filter>
+      <Filter>BaseTypes\Space</Filter>
+    </ClInclude>
+    <ClInclude Include="Core.h">
+      <Filter>Engine\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash.h">
+      <Filter>Engine\Hash</Filter>
+    </ClInclude>
+    <ClInclude Include="Enum.h">
+      <Filter>Engine\Enum</Filter>
+    </ClInclude>
+    <ClInclude Include="..\includes\EnumData.h">
+      <Filter>Engine\Enum</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -67,13 +79,13 @@
       <Filter>Utility</Filter>
     </ClCompile>
     <ClCompile Include="Object.cpp">
-      <Filter>Types\Object</Filter>
+      <Filter>BaseTypes\Object</Filter>
     </ClCompile>
     <ClCompile Include="Handle.cpp">
-      <Filter>Containers\Handle</Filter>
+      <Filter>BaseTypes\Handle</Filter>
     </ClCompile>
     <ClCompile Include="HandleManager.cpp">
-      <Filter>Containers\HandleManager</Filter>
+      <Filter>Engine\HandleManager</Filter>
     </ClCompile>
     <ClCompile Include="SheepGraphics.cpp">
       <Filter>Systems\Graphics</Filter>
@@ -88,10 +100,19 @@
       <Filter>Systems\Audio</Filter>
     </ClCompile>
     <ClCompile Include="ObjectAllocator.cpp">
-      <Filter>Memory\ObjectAllocator</Filter>
+      <Filter>Engine\Memory\ObjectAllocator</Filter>
     </ClCompile>
     <ClCompile Include="Space.cpp">
-      <Filter>Types\Space</Filter>
+      <Filter>BaseTypes\Space</Filter>
+    </ClCompile>
+    <ClCompile Include="Core.cpp">
+      <Filter>Engine\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Hash.cpp">
+      <Filter>Engine\Hash</Filter>
+    </ClCompile>
+    <ClCompile Include="Enum.cpp">
+      <Filter>Engine\Enum</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -104,38 +125,14 @@
     <Filter Include="Export\Demo">
       <UniqueIdentifier>{9872c10b-433c-4f09-985e-2793e936f79a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Types">
-      <UniqueIdentifier>{3ead303b-c56a-4c18-90ea-2aa3fda07467}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Types\Component">
-      <UniqueIdentifier>{956f2b6a-be3b-4794-8f9e-0f041df9f022}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Types\Object">
-      <UniqueIdentifier>{bba741ba-df5e-4a9c-bfcf-35f303909e9e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Types\Space">
-      <UniqueIdentifier>{cddb3868-c1b4-4e01-bbd7-fd09ea475135}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Utility">
       <UniqueIdentifier>{3a2ad31f-e44a-43b8-bc91-4755a031358c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Containers">
-      <UniqueIdentifier>{dcba7c53-4668-4b66-b9b3-3578ede8228c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Containers\Handle">
-      <UniqueIdentifier>{c5b897ea-5078-437c-a397-aa5f16e1221e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Containers\HandleManager">
-      <UniqueIdentifier>{168ec064-6417-4de3-9778-b305626174cc}</UniqueIdentifier>
     </Filter>
     <Filter Include="Systems">
       <UniqueIdentifier>{b9706a46-da35-4d02-aad4-83b635b5fa8f}</UniqueIdentifier>
     </Filter>
     <Filter Include="Systems\Generic">
       <UniqueIdentifier>{3a439a3c-d085-4fc6-bb59-a35f509a1c64}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Types\Message">
-      <UniqueIdentifier>{b77983b0-ed27-43c9-8cba-725078ca6713}</UniqueIdentifier>
     </Filter>
     <Filter Include="Systems\Graphics">
       <UniqueIdentifier>{a968d908-06c5-4e5c-82f0-a974fd4acac9}</UniqueIdentifier>
@@ -146,17 +143,50 @@
     <Filter Include="Systems\Audio">
       <UniqueIdentifier>{bc7e198a-5dab-4dd4-915f-67b9dee23935}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Containers\SlotArray">
-      <UniqueIdentifier>{1494b704-3b46-4519-822d-eff4e48c0fcb}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Systems\Physics\Object">
       <UniqueIdentifier>{fa43fa63-ae4a-429d-8981-dd9b59a0e321}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Memory">
+    <Filter Include="Engine">
+      <UniqueIdentifier>{f26780e7-b0b3-43e3-8254-3bbfaee7090d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Memory">
       <UniqueIdentifier>{e107b444-e116-4361-b7e9-62bd91809be1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Memory\ObjectAllocator">
+    <Filter Include="Engine\Memory\ObjectAllocator">
       <UniqueIdentifier>{4a245ebf-67a3-4cfd-8eae-e1b07fba5f99}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\HandleManager">
+      <UniqueIdentifier>{168ec064-6417-4de3-9778-b305626174cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Memory\SlotArray">
+      <UniqueIdentifier>{1494b704-3b46-4519-822d-eff4e48c0fcb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BaseTypes">
+      <UniqueIdentifier>{11c932dc-5544-4af3-96b2-c2adde119c85}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BaseTypes\Space">
+      <UniqueIdentifier>{cddb3868-c1b4-4e01-bbd7-fd09ea475135}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BaseTypes\Object">
+      <UniqueIdentifier>{bba741ba-df5e-4a9c-bfcf-35f303909e9e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BaseTypes\Message">
+      <UniqueIdentifier>{b77983b0-ed27-43c9-8cba-725078ca6713}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BaseTypes\Handle">
+      <UniqueIdentifier>{c5b897ea-5078-437c-a397-aa5f16e1221e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BaseTypes\Component">
+      <UniqueIdentifier>{956f2b6a-be3b-4794-8f9e-0f041df9f022}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Core">
+      <UniqueIdentifier>{2c4311cc-f995-4aac-9569-1d68c58df9db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Hash">
+      <UniqueIdentifier>{fee18b8a-780b-428e-82e3-880c8a61128d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Enum">
+      <UniqueIdentifier>{93c66b5a-12c5-4051-abc5-1e104d9eb8b5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

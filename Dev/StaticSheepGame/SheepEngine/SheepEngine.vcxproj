@@ -90,9 +90,13 @@
   <ItemGroup>
     <ClInclude Include="..\includes\engine\api.h" />
     <ClInclude Include="..\includes\engine\sheep_engine.h" />
+    <ClInclude Include="..\includes\EnumData.h" />
     <ClInclude Include="..\includes\Utilities.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ComponentCreator.h" />
+    <ClInclude Include="Core.h" />
+    <ClInclude Include="Enum.h" />
+    <ClInclude Include="Hash.h" />
     <ClInclude Include="ObjectAllocator.h" />
     <ClInclude Include="PhysicsObject.h" />
     <ClInclude Include="SheepAudio.h" />
@@ -109,6 +113,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Utilities\Utilities.cpp" />
+    <ClCompile Include="Core.cpp" />
+    <ClCompile Include="Enum.cpp" />
+    <ClCompile Include="Hash.cpp" />
     <ClCompile Include="ObjectAllocator.cpp" />
     <ClCompile Include="PhysicsObject.cpp" />
     <ClCompile Include="SheepAudio.cpp" />

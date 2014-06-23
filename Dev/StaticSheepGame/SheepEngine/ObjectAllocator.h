@@ -19,6 +19,7 @@ namespace Framework
 	class ObjectAllocator
 	{
 	public:
+    ObjectAllocator();
 
 		// Non-Default allocator
 		ObjectAllocator(unsigned int objectSize);

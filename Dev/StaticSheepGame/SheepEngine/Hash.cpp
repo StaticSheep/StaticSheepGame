@@ -1,29 +1,17 @@
 /*****************************************************************
-Filename: Space.cpp
+Filename: Hash.cpp
 Project: 
 Author(s): Zachary Nawar (Primary)
 
 All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 *****************************************************************/
 
-#include "Space.h"
-#include "Object.h"
-
-namespace Framework
+unsigned int generateHash(const char *string, size_t len)
 {
-
-  Space::Space()
-    : m_components({3,2}), 
-    m_objects(sizeof(GameObject))
+  unsigned int hash = 0;
+  for(size_t i = 0; i < len; ++i)
   {
-    
+    hash = 65599 * hash + string[i];
   }
-
-  HandleManager& Space::GetHandles()
-  {
-    return m_handles;
-  }
-
-
-
+  return hash ^ (hash >> 16);
 }
