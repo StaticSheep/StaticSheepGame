@@ -30,9 +30,12 @@ namespace Framework
     GameObject* LoadObjectFromArchetype(GameSpace* space, const char* name);
 
     void SaveSpaceToLevel(GameSpace* space, const char* name, std::vector<std::string>* objInstanceData = NULL, bool includeGeneric = false, bool allData = false);
+    void SaveSpaceToLevel(GameSpace* space, const char* name, bool standalone);
     void LoadLevelToSpace(GameSpace* space, const char* name);
 
-    
+    static const std::string FileExtension;
+    static const std::string ArchetypePrefix;
+    static const std::string LevelPrefix;
 
   protected:
     ComponentCreator* m_componentCreators[ecountComponents];

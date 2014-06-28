@@ -1,6 +1,7 @@
 GameObject
 {
-  name std::string "TestName"
+  name std::string "Old Object"
+  m_archetype std::string ""
   Transform
   {
     val1 int 13

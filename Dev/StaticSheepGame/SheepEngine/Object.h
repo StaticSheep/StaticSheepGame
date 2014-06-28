@@ -87,6 +87,9 @@ namespace Framework
       // The name of the object
       std::string name;
 
+      // Name of the archetype
+      std::string m_archetype;
+
     private:
 
       // Initializes the object, engine use only
@@ -107,9 +110,6 @@ namespace Framework
 
       // The parent of the object;
       Handle m_parent;
-
-      // Name of the owning archetype
-      std::string m_archetype;
 
       friend class Factory;
       friend class GameSpace;

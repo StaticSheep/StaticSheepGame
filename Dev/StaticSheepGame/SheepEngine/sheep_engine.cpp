@@ -113,6 +113,8 @@ SHEEP_API void TestStuff(void)
   // Save the object as an archetype named "test_type"
   FACTORY->SaveObjectToArchetype(obj, "test_type");
 
+  obj->name = "Old Object";
+
 
   // Create 3 more objects from the archetype "test_type"
   obj = FACTORY->LoadObjectFromArchetype(space, "test_type");
@@ -175,5 +177,6 @@ SHEEP_API void TestStuff(void)
 
   // Save the space as a level named "test_level"
   FACTORY->SaveSpaceToLevel(space, "test_level2", &dataList, true, false);
+  FACTORY->SaveSpaceToLevel(space, "test_level_standalone", true);
 
 }

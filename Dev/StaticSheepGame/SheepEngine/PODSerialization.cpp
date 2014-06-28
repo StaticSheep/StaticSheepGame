@@ -120,9 +120,17 @@ namespace Framework
 
   void DeserializeString(File& file, Variable var)
   {
-    char temp[256];
+    char temp[256] = {};
+
     file.Read("%*[^\"]\"");
     file.Read("%[^\"]\"", temp);
+
+    // Empty string catch
+    if (temp[0] == NULL)
+    {
+      // Move over one more character so we aren't at the \"
+      file.SeekByOffset(1);
+    }
     var.GetValue<std::string>() = temp;
   }
 }

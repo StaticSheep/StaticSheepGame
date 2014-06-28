@@ -60,9 +60,13 @@ namespace Framework
 
     TYPE_REGISTER( GameObject );
     TYPE_ADD_MEMBER( GameObject, name );
+    TYPE_ADD_MEMBER( GameObject, m_archetype );
     TYPE_SET_SERIALIZER( GameObject, GameObject::Serialize );
     TYPE_SET_DESERIALIZER( GameObject, GameObject::Deserialize );
 
+    TYPE_REGISTER( GameSpace );
+    TYPE_SET_SERIALIZER( GameSpace, GameSpace::Serialize );
+    TYPE_SET_DESERIALIZER( GameSpace, GameSpace::Deserialize );
 
     TYPE_REGISTER( Transform );
     TYPE_ADD_MEMBER(Transform, val1);

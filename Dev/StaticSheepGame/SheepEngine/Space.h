@@ -39,6 +39,12 @@ namespace Framework
 
     void Cleanup();
 
+    // Serialization routine
+    static void Serialize(File& file, Variable var);
+
+    // Deserialization routine, var must be an empty object
+    static void Deserialize(File& file, Variable var);
+
     // Gets the object allocator for a type of components
     ObjectAllocator* GetComponents(EComponent type);
 
@@ -62,6 +68,14 @@ namespace Framework
 
     // Global Unique ID counter
     unsigned int m_guid;
+
+    struct SerializerData
+    {
+      std::vector<std::string>* instanceData;
+      bool includeGeneric;
+      bool saveAllData;
+      bool standalone;
+    };
 
     friend class Engine;
     friend class Factory;

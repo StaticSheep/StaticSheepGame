@@ -10,10 +10,9 @@ namespace Framework
 {
   Factory *FACTORY = NULL;
 
-  const std::string FileExtension(".sheep");
-
-  const std::string ArchetypePrefix = "ach_";
-  const std::string LevelPrefix = "lvl_";
+  const std::string Factory::ArchetypePrefix = "ach_";
+  const std::string Factory::LevelPrefix = "lvl_";
+  const std::string Factory::FileExtension = ".sheep";
 
   Factory::Factory()
   {
@@ -208,109 +207,80 @@ namespace Framework
     return obj;
   }
 
-  // Transform:testvalue
+  /// <summary>
+  /// Saves the space to level file.
+  /// If you wish to save as a standalone level file, the third paramater should be a boolean marked as true.
+  /// </summary>
+  /// <param name="space">The space to save.</param>
+  /// <param name="name">The name of the level.</param>
+  /// <param name="objInstanceData">Game object instance data list. This is a vector of strings which contain instance parameters defined as such:
+  /// {COMPONENT}:{DATA} You can use additional :'s for structs.
+  /// Example: Transform:value1</param>
+  /// By default data which has been modified on an archetype is not saved. By adding instance data parameters to this you can tell the serialized
+  /// to save specific parameters of the object.
+  /// <param name="includeGeneric">If this is true, then objects which are not from an archetype will be serialized inside of the level file</param>
+  /// <param name="allData">If this is true, then every attribute of an archetype will be serialized, this isgnores the object instance data list</param>
   void Factory::SaveSpaceToLevel(GameSpace* space, const char* name, std::vector<std::string>* objInstanceData, bool includeGeneric, bool allData)
   {
     File file; // File to save the space to
     std::string filepath = LevelPrefix + name + FileExtension;
+    GameSpace::SerializerData extraData;
+
+    extraData.instanceData = objInstanceData;
+    extraData.includeGeneric = includeGeneric;
+    extraData.saveAllData = allData;
+    extraData.standalone = false;
 
     file.Open(filepath.c_str(), FileAccess::Write); // Open the file
 
-    for (auto it = space->m_objects.begin<GameObject>(); it != space->m_objects.end<GameObject>(); ++it)
-    {
+    Serializer::Get()->SetUserData(&extraData);
 
-      if (it->m_archetype.length() == 0 && includeGeneric)
-      {
-        // We couldn't find an archetype, so we are going to
-        // serialize the object into the level
+    Variable(*space).Serialize(file);
 
-        // Set the variable var to the game object pointer
-        Variable var = *it;
+    Serializer::Get()->SetUserData(NULL);
 
-        it->Serialize(file, var);
-        continue;
-      }
+    file.Close();
+  }
 
-      // Write the name of the archetype
-      file.Write("ach_%s\n", it->m_archetype.c_str());
+  /// <summary>
+  /// Saves the space to level file.
+  /// This version allows you to save the space as a stand alone level file.
+  /// Stand alone level files do not rely upon archetypes, instead it saves every single object
+  /// individually with all data intact. The actual archetype names are saved inside of the object
+  /// so in case you ever want to revert back to a non-standalone version, that is still possible.
+  /// WARNING: This can result in a very large file
+  /// </summary>
+  /// <param name="space">The space.</param>
+  /// <param name="name">The name.</param>
+  /// <param name="standalone">Stand alone mode?</param>
+  void Factory::SaveSpaceToLevel(GameSpace* space, const char* name, bool standalone)
+  {
+    File file; // File to save the space to
+    std::string filepath = LevelPrefix + name + FileExtension;
+    GameSpace::SerializerData extraData;
+    
+    extraData.instanceData = NULL;
+    extraData.includeGeneric = false;
+    extraData.saveAllData = false;
+    extraData.standalone = standalone;
 
-      // Get the name member of the object
-      const Member* nameMember = GET_TYPE(GameObject)->GetMember("name");
+    file.Open(filepath.c_str(), FileAccess::Write); // Open the file
 
-      // Pad and write the name of the member
-      file.Write("  %s ", nameMember->Name());
+    Serializer::Get()->SetUserData(&extraData);
 
-      // Create a variable and write to the file
-      Variable name(nameMember->Type(), (char*)it + nameMember->Offset());
-      name.GetTypeInfo()->Serialize(file, name);
+    Variable(*space).Serialize(file);
 
-      if (allData)
-      {
-        std::string instance;
-
-        for (unsigned int j = 0; j < ecountComponents; ++j)
-        {
-          if (it->HasComponent((EComponent)j))
-          {
-            const TypeInfo* CType = GET_STR_TYPE(GET_ENUM(Component)->m_literals[0].c_str());
-
-            instance = CType->Name();
-            instance += ":";
-
-            for (unsigned int m = 0; m < CType->m_members.size(); ++m)
-            {
-              const Member member = CType->m_members[m];
-              file.Write("  %s%s ", instance.c_str(), member.Name());
-              
-              Variable var(member.Type(), (char*)it->GetComponent(j) + member.Offset());
-              
-              var.Serialize(file);
-            }
-
-            // Move to the next component
-          }
-
-          // The object didn't have the component
-        }
-
-        // Since we just serialized all the data from the component, we can move on
-        // to the next object that needs to be serialized
-        continue;
-      }
-
-      // We are provided instance data to save
-      if (objInstanceData)
-      {
-        for (unsigned j = 0; j < objInstanceData->size(); ++j)
-        {
-          // Set the variable var to the game object pointer
-          Variable var = &(*it);
-
-          // Pull the instance from the vector
-          // We have to use the operator[] bit to avoid some un-necessary casting
-          const char *instance = objInstanceData->operator[](j).c_str();
-
-          // Now lets pull out the member
-          const Member *member = GetComponentMember(instance, var);
-          if (!member)
-            assert(false);
-
-          // Variable var now is the member variable we wanted
-          // Write the name of the variable
-          file.Write("  %s ", instance);
-          // Serialize the variable
-          var.Serialize(file);
-        }
-      }
-      
-      
-
-    } // end for
+    Serializer::Get()->SetUserData(NULL);
 
     file.Close();
   }
 
 
+  /// <summary>
+  /// Loads the level file to space.
+  /// </summary>
+  /// <param name="space">The space.</param>
+  /// <param name="name">The name.</param>
   void Factory::LoadLevelToSpace(GameSpace* space, const char* name)
   {
     File file; // File to save the space to
@@ -320,68 +290,8 @@ namespace Framework
 
     assert(file.Validate());
 
-    // Pointer to use
-    GameObject* obj = nullptr;
+    Variable(*space).Deserialize(file);
 
-    const TypeInfo* typeinfo;
-
-    for (;;)
-    {
-      // Read in a line
-      std::string line = file.GetLine(" \n:");
-
-      // Check to see if we read the entire file
-      if (!file.Validate())
-        break;
-
-      // Skip white spaces
-      if (line.empty())
-        continue;
-
-      typeinfo = GET_STR_TYPE(line.c_str());
-      if (typeinfo && typeinfo->m_name == "GameObject")
-      {
-        file.SeekByOffset(-int(line.length()) - 2);
-        // Create an empty object
-        obj = space->CreateEmptyObject();
-        Variable var = *obj; // Set the object as a variable
-
-        // Deserialize the file into the object
-        GET_TYPE(GameObject)->Deserialize(file, var);
-        continue;
-      }
-
-      // If we didn't hit a component, check to see if by chance we hit an archetype
-      if (!GET_ENUM(Component)->IsAnEntry(line.c_str()) && line.substr(0, ArchetypePrefix.length()) == ArchetypePrefix)
-      {
-        // Oh we did, goodie
-        obj = LoadObjectFromArchetype(space, line.c_str());
-        continue;
-      }
-
-      if (line == "name")
-      {
-        // Get the name member of the object
-        const Member* nameMember = GET_TYPE(GameObject)->GetMember("name");
-
-        // Create a variable and write to the variable
-        Variable name(nameMember->Type(), (char*)obj + nameMember->Offset());
-        name.GetTypeInfo()->Deserialize(file, name);
-        continue;
-      }
-
-      // Get the rest of the instance data from the archetype
-      line += ":" + file.GetLine(" ");
-
-      // Read the instance data in now
-      Variable var = obj;
-      
-      // Get the member
-      const Member* member = GetComponentMember(line.c_str(), var);
-
-      // Deserialize the member
-      member->Type()->Deserialize(file, var);
-    }
   }
 
 }
