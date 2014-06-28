@@ -45,6 +45,7 @@ namespace Framework
     void Serialize(File& file, Variable var) const;
     void Deserialize(File& file, Variable var) const;
 
+    const std::vector<Member>& GetMembers() const;
 
 
     unsigned Size( void ) const;

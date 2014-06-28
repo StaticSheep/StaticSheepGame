@@ -105,12 +105,15 @@ namespace Framework
       GameComponent* GetComponent(const char *type);
 
       static void Serialize(File& file, Variable var);
+      static void Deserialize(File& file, Variable var);
 
       template <typename T>
       T *GetComponent( EComponent type );
 
       GameSpace* space;
       size_t guid;
+
+      std::string name;
 
     private:
 
@@ -129,6 +132,7 @@ namespace Framework
       // The parent of the object;
       Handle m_parent;
 
+      // Name of the owning archetype
       std::string m_archetype;
 
       friend class GameSpace;

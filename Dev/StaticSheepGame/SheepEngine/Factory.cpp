@@ -192,25 +192,14 @@ namespace Framework
     if (!file.Validate())
       assert(false);
 
-    // We don't care about the first bits
-    file.Read( "%*[^{]{" );
-
+    // Create an empty object
     GameObject* obj = space->CreateEmptyObject();
+    Variable var = *obj; // Set the object as a variable
 
-    ++Serializer::Get()->GetPadLevel();
-
-    for(;;)
-    {
-      GameComponent* comp = DeserializeComponent(file, space);
-
-      if (!comp)
-        break; // No component found
-
-      obj->AddComponent(comp);
-    }
+    // Deserialize the file into the object
+    GET_TYPE(GameObject)->Deserialize(file, var);
 
     obj->m_archetype = archetype;
-    obj->Initialize();
 
     return obj;
   }
@@ -307,33 +296,6 @@ namespace Framework
     file.Close();
   }
 
-  void Factory::LoadGenericObject(GameSpace* space, File& file)
-  {
-    // We don't care about the first bits
-    file.Read( "%*[^{]{" );
-
-    GameObject* obj = space->CreateEmptyObject();
-
-    ++Serializer::Get()->GetPadLevel();
-
-    fpos_t lastcomp;
-    fgetpos(file.fp, &lastcomp);
-    for(;;)
-    {
-      GameComponent* comp = DeserializeComponent(file, space);
-
-      if (!comp)
-        break; // No component found
-
-      obj->AddComponent(comp);
-      fgetpos(file.fp, &lastcomp);
-    }
-
-    obj->Initialize();
-
-    fsetpos(file.fp, &lastcomp);
-    file.GetLine("}");
-  }
 
   void Factory::LoadLevelToSpace(GameSpace* space, const char* name)
   {
@@ -365,7 +327,13 @@ namespace Framework
       typeinfo = GET_STR_TYPE(line.c_str());
       if (typeinfo && typeinfo->m_name == "GameObject")
       {
-        LoadGenericObject(space, file);
+        file.SeekByOffset(-line.length() - 2);
+        // Create an empty object
+        obj = space->CreateEmptyObject();
+        Variable var = *obj; // Set the object as a variable
+
+        // Deserialize the file into the object
+        GET_TYPE(GameObject)->Deserialize(file, var);
         continue;
       }
 

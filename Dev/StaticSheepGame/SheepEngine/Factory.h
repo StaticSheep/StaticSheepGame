@@ -45,9 +45,9 @@ namespace Framework
     const Member *GetComponentMember(const char* instring, Variable& out);
     const Member *GetComponentMemberRecursive(const Member *member, Variable &val);
 
-    void LoadGenericObject(GameSpace* space, File& file);
+    //void LoadGenericObject(GameSpace* space, File& file);
 
-
+    friend class GameObject;
     friend class GameSpace;
   };
 }

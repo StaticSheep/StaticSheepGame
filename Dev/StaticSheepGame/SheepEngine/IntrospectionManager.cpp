@@ -60,7 +60,9 @@ namespace Framework
     TYPE_SET_DESERIALIZER( std::string, DeserializeString );
 
     TYPE_REGISTER( GameObject );
+    TYPE_ADD_MEMBER( GameObject, name );
     TYPE_SET_SERIALIZER( GameObject, GameObject::Serialize );
+    TYPE_SET_DESERIALIZER( GameObject, GameObject::Deserialize );
 
     TYPE_REGISTER( Transform );
     TYPE_ADD_MEMBER(Transform, val1);

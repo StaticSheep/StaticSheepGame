@@ -97,4 +97,10 @@ namespace Framework
   {
     return m_name.c_str();
   }
+
+
+  const std::vector<Member>& TypeInfo::GetMembers() const
+  {
+    return m_members;
+  }
 }

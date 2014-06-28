@@ -187,16 +187,41 @@ namespace Framework
     return NULL;
   }
 
-  void GameObject::Serialize( File& file, Variable var )
+  void GameObject::Serialize(File& file, Variable var)
   {
     GameObject *o = &var.GetValue<GameObject>( );
     Serializer *s = Serializer::Get( );
+    const TypeInfo* info = var.GetTypeInfo();
     int& pad = s->GetPadLevel( );
 
     s->Padding( file, pad );
     file.Write( "GameObject\n" );
     s->Padding( file, pad++ );
     file.Write( "{\n" );
+    //s->Padding( file, pad );
+
+    // Iterate through the members we need to serialize
+    for(unsigned i = 0; i < info->GetMembers().size(); ++i)
+    {
+      // Get a pointer to the member
+      const Member* member = &info->GetMembers().front() + i;
+      // Add some padding in
+      s->Padding( file, pad );
+
+      // Get a pointer to the member type
+      const TypeInfo* memberInfo = member->Type();
+      // Write the name of the member
+      file.Write("%s ", member->Name());
+
+      // Get a pointer to the location of the member inside the data
+      // struct/class/whatever itself
+      void* offsetData = PTR_ADD(o, member->Offset());
+
+      // Construct a new variable out of that, and then serialize that variable
+      // yay recursive
+      memberInfo->Serialize(file, Variable(memberInfo, offsetData));
+    }
+
     s->Padding( file, pad );
 
     for(unsigned i = 0; i < ecountComponents; ++i)
@@ -218,6 +243,63 @@ namespace Framework
 
     s->Padding( file, --pad );
     file.Write( "}\n" );
+  }
+
+  void GameObject::Deserialize(File& file, Variable var)
+  {
+    Serializer* s = Serializer::Get();
+    GameObject* obj = &var.GetValue<GameObject>();
+    fpos_t lastcomp;
+
+    // Peak into the file and see if we can recognize a data type
+    const TypeInfo* info = Serializer::Get()->PeekType(file);
+
+    // Make sure it is indeed an object
+    assert( var.GetTypeInfo( ) == info );
+
+    // Our peek function was nice enough to figure out the starting level for us
+    int startLevel = ++Serializer::Get()->GetPadLevel();
+
+    for (unsigned int i = 0; i < info->GetMembers().size(); ++i)
+    {
+      const Member* mem = s->PeekMember(file, info->GetMembers(), startLevel);
+
+      // If we found a member then we can turn it into a variable type and then
+      // deserialize that variable into to data we can use
+      if (mem)
+      {
+        // Create a Variable out of the member we found, we need to offest the
+        // start position of the variable by the start of our current variable
+        // by the offset from the member and the start of the current variable
+        Variable member( mem->Type(), PTR_ADD(var.GetData(), mem->Offset()) );
+
+        // Now that we have the Variable, lets deserialize it
+        member.Deserialize(file);
+      }
+    }
+    
+
+    fgetpos(file.fp, &lastcomp);
+    for(;;)
+    {
+      GameComponent* comp = FACTORY->DeserializeComponent(file, obj->space);
+
+      if (!comp)
+        break; // No component found
+
+      obj->AddComponent(comp);
+      fgetpos(file.fp, &lastcomp);
+    }
+
+    obj->Initialize();
+
+    if (file.Validate())
+    {
+      fsetpos(file.fp, &lastcomp);
+      file.GetLine("}");
+    }
+
+    
   }
 
 };

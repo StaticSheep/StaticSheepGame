@@ -1,5 +1,6 @@
 GameObject
 {
+  name std::string "TestName"
   Transform
   {
     val1 int 13

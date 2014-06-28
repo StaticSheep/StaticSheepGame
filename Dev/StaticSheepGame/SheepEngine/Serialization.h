@@ -26,6 +26,8 @@ namespace Framework
 
     const TypeInfo* PeekType(File& file, int stopLevel = 0);
 
+    const Member* PeekMember(File& file, const std::vector<Member>& vec, int startLevel);
+
     int& GetPadLevel(void);
     
     // We use these in case we feel like setting some special data
@@ -40,7 +42,7 @@ namespace Framework
     Serializer();
     ~Serializer();
 
-    const Member* PeekMember(File& file, const std::vector<Member>& vec, int startLevel);
+    
 
     friend class Factory;
   };

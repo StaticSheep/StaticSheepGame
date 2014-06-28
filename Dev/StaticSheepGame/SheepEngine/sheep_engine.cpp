@@ -100,6 +100,9 @@ SHEEP_API void TestStuff(void)
   // Add the component to the object
   obj->AddComponent(comp);
   
+  // Set a name
+  obj->name = "TestName";
+
   // Save the object as an archetype named "test_type"
   FACTORY->SaveObjectToArchetype(obj, "test_type");
 
