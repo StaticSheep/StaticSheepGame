@@ -34,9 +34,6 @@ namespace Framework
     template <typename T>
     const T& GetValue(void) const;
 
-    void PlacementNew(void);
-    void PlacementDelete(void);
-    void Delete(void);
     void Serialize(File& file) const;
     void Deserialize(File& file);
     Variable& operator=(const Variable& rhs);

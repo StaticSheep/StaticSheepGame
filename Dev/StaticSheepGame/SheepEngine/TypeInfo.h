@@ -51,13 +51,13 @@ namespace Framework
     const char *Name( void ) const;
     inline bool IsPOD( void ) const { return m_isPOD; };
 
-    void *(*New)( void );
+   /* void *(*New)( void );
     void (*Copy)( void *data, const void *src );
     void (*Delete)( void *data );
     void (*NewCopy)( void **dest, const void *src );
     void (*PlacementNew)( void *data );
     void (*PlacementDelete)( void *data );
-    void (*PlacementCopy)( void *data, const void *src );
+    void (*PlacementCopy)( void *data, const void *src );*/
 
   private:
     unsigned m_size;

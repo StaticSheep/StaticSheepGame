@@ -41,22 +41,6 @@ namespace Framework
     return m_typeInfo != NULL && m_data != NULL;
   }
 
-  void Variable::PlacementNew( void )
-  {
-    m_typeInfo->PlacementNew( m_data );
-  }
-
-  void Variable::PlacementDelete( void )
-  {
-    m_typeInfo->PlacementDelete( m_data );
-  }
-
-  void Variable::Delete( void )
-  {
-    m_typeInfo->PlacementDelete( m_data );
-    m_typeInfo->Delete( m_data );
-  }
-
   void Variable::Serialize( File& file ) const
   {
     m_typeInfo->Serialize( file, *this );
