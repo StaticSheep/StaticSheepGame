@@ -24,6 +24,8 @@ namespace Framework
 
 		virtual std::string GetName() {return "SheepPhysics";};
 
+    void RegisterComponents();
+
 		// Initialization call
 		void Initialize(void);
 

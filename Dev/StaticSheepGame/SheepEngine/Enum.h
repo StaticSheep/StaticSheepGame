@@ -17,8 +17,6 @@ namespace std
 }          
 /** END FIX **/
 
-#define STRINGIZE( _ ) #_
-
 namespace Framework
 {
 
@@ -45,7 +43,7 @@ namespace Framework
 
     std::string m_name;
     std::vector<std::string> m_literals;
-    std::hash_map<std::string, unsigned> m_literalMap;
+    std::hash_map<std::string, unsigned int> m_literalMap;
 
     bool IsAnEntry( const char *entryName );
     unsigned GetIndexFromString( const char *entryName );
@@ -65,9 +63,5 @@ namespace Framework
   #define E_END( NAME )
 
   #include "EnumData.h"
-
-
-#define GET_ENUM( NAME ) \
-  (&Framework::Enum##NAME)
 
 }

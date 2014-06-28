@@ -6,8 +6,7 @@ Author(s): Zachary Nawar (Primary)
 All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 *****************************************************************/
 
-#ifndef GOBJECT_H
-#define GOBJECT_H
+#pragma once
 
 #include "Component.h"
 #include <vector>
@@ -20,20 +19,20 @@ namespace Framework
   class GameObject;
 
   // So life is easier
-  typedef std::vector<Handle> ComponentArray;
+  typedef Handle* ComponentArray;
   typedef std::vector<Handle> ChildArray;
 
   class GameObject
   {
     public:
-      //friend Factorywhateverimcallingit
+      friend class Factory;
 
       /// <summary>
       /// Adds A new component to the GameObject
       /// </summary>
       /// <param name="typeId">The type identifier.</param>
       /// <param name="component">The component.</param>
-      void AddComponent(size_t typeID, GameComponent* component);
+      void AddComponent(GameComponent* component);
 
       /// <summary>
       /// Gets the component.
@@ -41,14 +40,6 @@ namespace Framework
       /// <param name="typeId">The type identifier.</param>
       /// <returns></returns>
       GameComponent* GetComponent(size_t type);
-
-      /// <summary>
-      /// Gets a component and returns it typed correctly
-      /// </summary>
-      /// <param name="typeId">The type identifier.</param>
-      /// <returns></returns>
-      template<typename T>
-      T* GetComponentType(size_t type);
 
       /// <summary>
       /// Initializes each of the objects components separate from the
@@ -62,28 +53,22 @@ namespace Framework
       void Destroy();
 
       /// <summary>
-      /// Gets the Unique ID;
-      /// </summary>
-      /// <returns></returns>
-      size_t GetID() const {return _uid;}
-
-      /// <summary>
       /// Gets the archetype.
       /// </summary>
       /// <returns></returns>
-      size_t GetArchetype() const {return _archetype;}
+      const std::string& GetArchetype() const {return m_archetype;}
 
       /// <summary>
       /// Gets the array of children (Handles)
       /// </summary>
       /// <returns></returns>
-      ChildArray& GetChildren() { return _children; }
+      ChildArray& GetChildren() { return m_children; }
 
       /// <summary>
       /// Gets the parent object
       /// </summary>
       /// <returns></returns>
-      GameObject* GetParent() { return space->GetHandles().GetAs<GameObject>(_parent); }
+      GameObject* GetParent() { return space->GetHandles().GetAs<GameObject>(m_parent); }
 
       /// <summary>
       /// Gets a specific child object based on a UID
@@ -107,51 +92,57 @@ namespace Framework
       // If true, GetChild is enabled and the children list will be sorted
       bool fastChildSearch;
 
-      // @TODO: Move into private and abstract out
-      //Decide
       GameObject();
-      // GameObject(size_t uid);
-      // GameObject(size_t uid, size_t archetype);
-      //Decide
+
       ~GameObject();
 
+      // Self handle
       Handle self;
 
+      bool HasComponent(EComponent type);
+
+      GameComponent* GetComponent(EComponent type);
+      GameComponent* GetComponent(const char *type);
+
+      static void Serialize(File& file, Variable var);
+
+      template <typename T>
+      T *GetComponent( EComponent type );
+
+      GameSpace* space;
+      size_t guid;
+
     private:
+
+      bool m_active;
 
       bool ObjectSorter(Handle left, Handle right);
       bool ComponentSorter(Handle left, Handle right);
 
       // Vector of the components belonging to this object
-      ComponentArray _components;
-      typedef ComponentArray::iterator ComponentIt;
+      Handle m_components[ecountComponents];
 
       // Vector of the children belonging to this object
-      ChildArray _children;
+      ChildArray m_children;
       typedef ChildArray::iterator ChildrenIt;
 
       // The parent of the object;
-      Handle _parent;
+      Handle m_parent;
 
-      Space* space;
-      
-      uint64_t _uidTest;
-      size_t _uid;
-      size_t _archetype;
+      std::string m_archetype;
 
+      friend class GameSpace;
   };
 
   
   template<typename T>
-  T* GameObject::GetComponentType(size_t typeId)
+  T* GameObject::GetComponent(EComponent type)
   {
-    return static_cast<T*>( GetComponent(typeId) );
+    return static_cast<T*>( GetComponent(type) );
   }
 
 
 };
 
 // This lets you do Object->Has(Trasform)
-#define Has(type) GetComponentType(CT_##type)
-
-#endif
+#define Has(type) GetComponent(e##type)

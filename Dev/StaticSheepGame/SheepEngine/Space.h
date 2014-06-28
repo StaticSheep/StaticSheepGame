@@ -9,21 +9,41 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #pragma once
 #include "ObjectAllocator.h"
 #include "HandleManager.h"
+#include "Component.h"
 
 namespace Framework
 {
-	class Space
+  class GameComponent;
+  class GameObject;
+
+	class GameSpace
 	{
   public:
-    Space();
+    GameSpace();
+    ~GameSpace();
 
     template <typename T>
     void SyncHandles(ObjectAllocator& m_allocator, bool force = false);
 
+    // Creates a component of a specific type
+    GameComponent* CreateComponent(EComponent type);
 
+    // Creates an empty object
+    GameObject* CreateEmptyObject();
 
-    ObjectAllocator* GetComponents(size_t type);
-    //GameComponent* GetComponent(size_t type, Handle owner);
+    void RemoveGameObject(GameObject* object);
+    //void RemoveGameObject(Handle handle);
+
+    void RemoveComponent(GameComponent* comp);
+    void RemoveComponent(Handle handle);
+
+    void Cleanup();
+
+    // Gets the object allocator for a type of components
+    ObjectAllocator* GetComponents(EComponent type);
+
+    // Gets a specific component from an object
+    GameComponent* GetComponent(EComponent type, Handle owner);
 
     HandleManager& GetHandles();
     
@@ -36,13 +56,21 @@ namespace Framework
 
     // The handle manager for this game space
     HandleManager m_handles;
-	};
 
+    // Name of the space
+    std::string m_name;
+
+    // Global Unique ID counter
+    unsigned int m_guid;
+
+    friend class Engine;
+    friend class Factory;
+	};
 
   // Updates all handles to ensure that the HandleManager has accurate
   // pointers to the data which the handle needs to point at
   template <typename T>
-  void Space::SyncHandles(ObjectAllocator& m_allocator, bool force)
+  void GameSpace::SyncHandles(ObjectAllocator& m_allocator, bool force)
   {
     if (m_allocator.Grew() || force)
     {

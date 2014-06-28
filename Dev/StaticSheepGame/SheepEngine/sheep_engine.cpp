@@ -11,6 +11,8 @@
 #include "graphics\sheep_graphics.h"
 #include "SheepPhysics.h"
 #include "PhysicsObject.h"
+#include "GameLogic.h"
+#include "Factory.h"
 
 // This is a way to force the project to include the libraries
 // without messing around with project settings
@@ -75,9 +77,86 @@ using namespace Framework;
 
 SHEEP_API void TestStuff(void)
 {
-  if (GET_ENUM(Component)->IsAnEntry("Sprite"))
+  // Create the engine
+  Engine* SheepEngine = new Engine();
+  // Add the GameLogic system which really doesn't do anything right now :v
+  SheepEngine->AddSystem(new GameLogic());
+  // Add the Physics engine which will register the transform component for us
+  SheepEngine->AddSystem(new SheepPhysics());
+  // Initialize the engine and the systems
+  SheepEngine->Initialize();
+
+  // Create a space named "TestSpace"
+  GameSpace* space = SheepEngine->CreateSpace("TestSpace");
+
+  // Create an empty object inside "TestSpace"
+  GameObject* obj = space->CreateEmptyObject();
+
+  // Create a Transform component in the space
+  Transform* comp = (Transform*)space->CreateComponent(eTransform);
+  comp->val1 = 13; // Set some values
+  comp->val2 = 42;
+  comp->val3 = 128;
+  // Add the component to the object
+  obj->AddComponent(comp);
+  
+  // Save the object as an archetype named "test_type"
+  FACTORY->SaveObjectToArchetype(obj, "test_type");
+
+
+  // Create 3 more objects from the archetype "test_type"
+  obj = FACTORY->LoadObjectFromArchetype(space, "test_type");
+  obj = FACTORY->LoadObjectFromArchetype(space, "test_type");
+  obj = FACTORY->LoadObjectFromArchetype(space, "test_type");
+
+  // Get the Transform component from one of those objects
+  comp = obj->GetComponent<Transform>(eTransform);
+  comp->val2 = 300; // sparta
+
+  // If we want to save instanced object data we need to create
+  // a list of variables we wish to save
+  // I may eventually add archetype caching and only save objects
+  // whose values are different from their archetypes
+  // Also i plan on adding non-archetype object saving support
+  std::vector<std::string> dataList;
+
+  // Lets save val2 from inside of transform
+  dataList.push_back("Transform:val2");
+
+  // Save the space as a level named "test_level"
+  FACTORY->SaveSpaceToLevel(space, "test_level", &dataList);
+
+  // Remove "TestSpace", except i don't even know if this works right
+  SheepEngine->RemoveSpace(space);
+
+  // Create a new space called "CoolSpace"
+  space = SheepEngine->CreateSpace("CoolSpace");
+
+  // Load the level into the space
+  FACTORY->LoadLevelToSpace(space, "test_level");
+
+  // Handle manager looks like this right now
+  // Handle 0: Object
+  // Handle 1: Transform Component
+  // Handle 2: Object
+  // Handle 3: Transform Component
+  // Handle 4: Object
+  // Handle 5: Transform Component
+
+  // Lets grab the 3rd object, in reality this would never work
+  // But I can create a fake handle since this is such a controlled test
+  obj = space->GetHandles().GetAs<GameObject>(Handle(4, 0));
+
+  // And lets get the transform variable
+  comp = obj->GetComponent<Transform>(eTransform);
+
+  int a = comp->val2;
+
+  if (a == 300)
   {
-    int x = 10;
-    x = 10 + 30;
+    float f = 10.0f;
+    f = f * a;
+    // Yay it worked
   }
+
 }

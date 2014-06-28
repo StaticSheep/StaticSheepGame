@@ -20,6 +20,8 @@ namespace Framework
 	class ISystem
 	{
 	public:
+    // Register any system components with this function
+    virtual void RegisterComponents() {};
 
 		// Initialization call for the system
 		virtual void Initialize() {};

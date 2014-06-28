@@ -27,16 +27,20 @@ namespace Framework
 		// Pre-allocates space
 		ObjectAllocator(unsigned int objectSize, unsigned int numElements);
 
+    ~ObjectAllocator();
+
 		// Allocate a single object, returns a pointer to the object, does not call new
 		void* Allocate();
 
 		template <typename T>
-		inline typename std::iterator<std::random_access_iterator_tag, T> begin( void) { return std::iterator<std::random_access_iterator_tag, T>( (T*)m_array ); }
+		inline T* begin(void) { return (T*)m_array; }
 		template <typename T>
-		inline typename std::iterator<std::random_access_iterator_tag, T> end(void) { return std::iterator<std::random_access_iterator_tag, T>( (T*)m_array + m_size ); }
+		inline T* end(void) { return (T*)m_array + m_size; }
 
 		// Move rightmost element into deleted slot, does not placement delete
 		void* Free(void* memory); // Returns pointer to the moved element (was rightmost element before free)
+
+    void Clear();
 
 		// Shrink internal array to exactly number of elements
 		void Shrink(void);
@@ -48,6 +52,8 @@ namespace Framework
 		unsigned GetIndex(void* data) const;
 		bool Grew(void) const;
 		void ClearGrewFlag(void);
+
+    void Initialize(unsigned int objectSize, unsigned int numElements);
 
 	private:
 		void* m_array; // Pointer to the array

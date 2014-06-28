@@ -94,11 +94,20 @@
     <ClInclude Include="..\includes\Utilities.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ComponentCreator.h" />
-    <ClInclude Include="Core.h" />
+    <ClInclude Include="Engine.h" />
+    <ClInclude Include="CTransform.h" />
     <ClInclude Include="Enum.h" />
+    <ClInclude Include="Factory.h" />
+    <ClInclude Include="File.h" />
+    <ClInclude Include="GameLogic.h" />
     <ClInclude Include="Hash.h" />
+    <ClInclude Include="IntrospectionManager.h" />
+    <ClInclude Include="Macros.h" />
     <ClInclude Include="ObjectAllocator.h" />
     <ClInclude Include="PhysicsObject.h" />
+    <ClInclude Include="PODSerialization.h" />
+    <ClInclude Include="Qualifiers.h" />
+    <ClInclude Include="Serialization.h" />
     <ClInclude Include="SheepAudio.h" />
     <ClInclude Include="SheepGraphics.h" />
     <ClInclude Include="Handle.h" />
@@ -110,14 +119,23 @@
     <ClInclude Include="SlotArray.h" />
     <ClInclude Include="Space.h" />
     <ClInclude Include="System.h" />
+    <ClInclude Include="TypeInfo.h" />
+    <ClInclude Include="Variable.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Utilities\Utilities.cpp" />
-    <ClCompile Include="Core.cpp" />
+    <ClCompile Include="Engine.cpp" />
+    <ClCompile Include="CTransform.cpp" />
     <ClCompile Include="Enum.cpp" />
+    <ClCompile Include="Factory.cpp" />
+    <ClCompile Include="File.cpp" />
+    <ClCompile Include="GameLogic.cpp" />
     <ClCompile Include="Hash.cpp" />
+    <ClCompile Include="IntrospectionManager.cpp" />
     <ClCompile Include="ObjectAllocator.cpp" />
     <ClCompile Include="PhysicsObject.cpp" />
+    <ClCompile Include="PODSerialization.cpp" />
+    <ClCompile Include="Serialization.cpp" />
     <ClCompile Include="SheepAudio.cpp" />
     <ClCompile Include="SheepGraphics.cpp" />
     <ClCompile Include="Handle.cpp" />
@@ -130,6 +148,8 @@
     <ClCompile Include="SheepPhysics.cpp" />
     <ClCompile Include="sheep_engine.cpp" />
     <ClCompile Include="Space.cpp" />
+    <ClCompile Include="TypeInfo.cpp" />
+    <ClCompile Include="Variable.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

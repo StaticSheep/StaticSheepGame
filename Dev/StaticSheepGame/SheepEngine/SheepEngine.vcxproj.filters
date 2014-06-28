@@ -55,17 +55,50 @@
     <ClInclude Include="Space.h">
       <Filter>BaseTypes\Space</Filter>
     </ClInclude>
-    <ClInclude Include="Core.h">
-      <Filter>Engine\Core</Filter>
-    </ClInclude>
     <ClInclude Include="Hash.h">
       <Filter>Engine\Hash</Filter>
     </ClInclude>
     <ClInclude Include="Enum.h">
-      <Filter>Engine\Enum</Filter>
+      <Filter>Engine\Introspection\Enum</Filter>
     </ClInclude>
     <ClInclude Include="..\includes\EnumData.h">
-      <Filter>Engine\Enum</Filter>
+      <Filter>Engine\Introspection\Enum</Filter>
+    </ClInclude>
+    <ClInclude Include="CTransform.h">
+      <Filter>Components\Transform</Filter>
+    </ClInclude>
+    <ClInclude Include="Factory.h">
+      <Filter>Engine\Factory</Filter>
+    </ClInclude>
+    <ClInclude Include="Variable.h">
+      <Filter>Engine\Introspection\Variable</Filter>
+    </ClInclude>
+    <ClInclude Include="TypeInfo.h">
+      <Filter>Engine\Introspection\TypeInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="IntrospectionManager.h">
+      <Filter>Engine\Introspection\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Qualifiers.h">
+      <Filter>Engine\Introspection\TypeInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="Macros.h">
+      <Filter>Engine\EngineCore</Filter>
+    </ClInclude>
+    <ClInclude Include="Serialization.h">
+      <Filter>Engine\Serialization\Text</Filter>
+    </ClInclude>
+    <ClInclude Include="PODSerialization.h">
+      <Filter>Engine\Serialization\POD</Filter>
+    </ClInclude>
+    <ClInclude Include="File.h">
+      <Filter>Engine\Serialization\File</Filter>
+    </ClInclude>
+    <ClInclude Include="GameLogic.h">
+      <Filter>Systems\GameLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine.h">
+      <Filter>Engine\EngineCore</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -105,14 +138,41 @@
     <ClCompile Include="Space.cpp">
       <Filter>BaseTypes\Space</Filter>
     </ClCompile>
-    <ClCompile Include="Core.cpp">
-      <Filter>Engine\Core</Filter>
-    </ClCompile>
     <ClCompile Include="Hash.cpp">
       <Filter>Engine\Hash</Filter>
     </ClCompile>
     <ClCompile Include="Enum.cpp">
-      <Filter>Engine\Enum</Filter>
+      <Filter>Engine\Introspection\Enum</Filter>
+    </ClCompile>
+    <ClCompile Include="CTransform.cpp">
+      <Filter>Components\Transform</Filter>
+    </ClCompile>
+    <ClCompile Include="Factory.cpp">
+      <Filter>Engine\Factory</Filter>
+    </ClCompile>
+    <ClCompile Include="Variable.cpp">
+      <Filter>Engine\Introspection\Variable</Filter>
+    </ClCompile>
+    <ClCompile Include="TypeInfo.cpp">
+      <Filter>Engine\Introspection\TypeInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="IntrospectionManager.cpp">
+      <Filter>Engine\Introspection\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Serialization.cpp">
+      <Filter>Engine\Serialization\Text</Filter>
+    </ClCompile>
+    <ClCompile Include="PODSerialization.cpp">
+      <Filter>Engine\Serialization\POD</Filter>
+    </ClCompile>
+    <ClCompile Include="File.cpp">
+      <Filter>Engine\Serialization\File</Filter>
+    </ClCompile>
+    <ClCompile Include="GameLogic.cpp">
+      <Filter>Systems\GameLogic</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine.cpp">
+      <Filter>Engine\EngineCore</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -152,14 +212,8 @@
     <Filter Include="Engine\Memory">
       <UniqueIdentifier>{e107b444-e116-4361-b7e9-62bd91809be1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\Memory\ObjectAllocator">
-      <UniqueIdentifier>{4a245ebf-67a3-4cfd-8eae-e1b07fba5f99}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\HandleManager">
       <UniqueIdentifier>{168ec064-6417-4de3-9778-b305626174cc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Memory\SlotArray">
-      <UniqueIdentifier>{1494b704-3b46-4519-822d-eff4e48c0fcb}</UniqueIdentifier>
     </Filter>
     <Filter Include="BaseTypes">
       <UniqueIdentifier>{11c932dc-5544-4af3-96b2-c2adde119c85}</UniqueIdentifier>
@@ -179,14 +233,56 @@
     <Filter Include="BaseTypes\Component">
       <UniqueIdentifier>{956f2b6a-be3b-4794-8f9e-0f041df9f022}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\Core">
-      <UniqueIdentifier>{2c4311cc-f995-4aac-9569-1d68c58df9db}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\Hash">
       <UniqueIdentifier>{fee18b8a-780b-428e-82e3-880c8a61128d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\Enum">
+    <Filter Include="Engine\Memory\ObjectAllocator">
+      <UniqueIdentifier>{4a245ebf-67a3-4cfd-8eae-e1b07fba5f99}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Memory\SlotArray">
+      <UniqueIdentifier>{1494b704-3b46-4519-822d-eff4e48c0fcb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components">
+      <UniqueIdentifier>{37310b94-d023-480d-bd68-c198b1b406de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\Transform">
+      <UniqueIdentifier>{a4ee157e-1aec-4912-b6d7-e6816e5c4774}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Factory">
+      <UniqueIdentifier>{6d82067a-4966-4e5d-8505-baa99bc4f11c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Introspection">
+      <UniqueIdentifier>{34445c16-e5e9-4d5d-b793-f7414434e994}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Introspection\Enum">
       <UniqueIdentifier>{93c66b5a-12c5-4051-abc5-1e104d9eb8b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Introspection\Variable">
+      <UniqueIdentifier>{2bc8e499-edbc-490e-a525-6e141a276e80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Introspection\TypeInfo">
+      <UniqueIdentifier>{37cf3321-d074-4c10-96d9-d7e42bf8b8b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Introspection\Manager">
+      <UniqueIdentifier>{32ae1665-6cf9-473d-9440-fcc8a3de7f12}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Serialization">
+      <UniqueIdentifier>{cf46e200-238a-41e9-a8a0-25e43f1b766f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Serialization\Text">
+      <UniqueIdentifier>{1f0aad25-4170-4ad9-bbfc-48f7cd3f39ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Serialization\POD">
+      <UniqueIdentifier>{b26e85ff-e95a-4836-9294-6bdaf59a2ea1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Serialization\File">
+      <UniqueIdentifier>{a2aed95a-f84e-4159-a8fb-38be17821369}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\GameLogic">
+      <UniqueIdentifier>{615ab531-0daf-488e-85c7-47865bdc2814}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\EngineCore">
+      <UniqueIdentifier>{2c4311cc-f995-4aac-9569-1d68c58df9db}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

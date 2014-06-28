@@ -1,0 +1,9 @@
+GameObject
+{
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+}

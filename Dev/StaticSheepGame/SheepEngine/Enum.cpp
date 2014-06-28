@@ -63,7 +63,7 @@ namespace Framework
   /// </summary>
   /// <param name="entryNameStr">The entry name string.</param>
   /// <returns></returns>
-  unsigned Enum::GetIndexFromString( const char *entryNameStr )
+  unsigned int Enum::GetIndexFromString( const char *entryNameStr )
   {
     std::string entryName = entryNameStr;
 

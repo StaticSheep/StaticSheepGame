@@ -36,7 +36,18 @@ namespace Framework
 		m_capacity(numElements), m_grew(false)
 	{
 
-	}
+  }
+
+  void ObjectAllocator::Initialize(unsigned int objectSize, unsigned int numElements)
+  {
+    m_capacity = numElements;
+    m_objectSize = objectSize;
+    m_size = 0;
+
+    free(m_array);
+
+    m_array = malloc(objectSize * numElements);
+  }
 
 	void* ObjectAllocator::Allocate()
 	{
@@ -134,4 +145,21 @@ namespace Framework
 	{
 		m_grew = false;
 	}
+
+  void ObjectAllocator::Clear()
+  {
+    m_capacity = 0;
+    m_size = 0;
+    m_objectSize = 0;
+
+    if (m_array)
+      free(m_array);
+    
+    m_array = nullptr;
+  }
+
+  ObjectAllocator::~ObjectAllocator()
+  {
+    Clear();
+  }
 }

@@ -6,17 +6,12 @@ Author(s): Zachary Nawar (Primary)
 All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 *****************************************************************/
 
-#ifndef GCOMPONENT_H
-#define GCOMPONENT_H
+#pragma once
 
 #include "Space.h"
 
 namespace Framework
 {
-
-  // Forward Declaration, got this idea from Chris Peters
-  class GameObject;
-
   class GameComponent {
     public:
       // Game Objects have full access to the component
@@ -25,6 +20,11 @@ namespace Framework
       // Initialized upon Object creation
       // After all components are constructed
       virtual void Initialize(){};
+
+      virtual void Remove() {};
+
+      // Destructor, can be accessed from inherited classes
+      ~GameComponent() {};
 
       //virtual void Serialize(){};
 
@@ -38,14 +38,8 @@ namespace Framework
       size_t typeID;
 
       // Pointer to the space which the component belongs to
-      Space* space;
-
-    protected:
-      // Destructor, can be accessed from inherited classes
-      ~GameComponent();
+      GameSpace* space;
 
   };
 
 };
-
-#endif
