@@ -145,10 +145,12 @@ SHEEP_API void TestStuff(void)
   // Handle 3: Transform Component
   // Handle 4: Object
   // Handle 5: Transform Component
+  // Handle 6: Object
+  // Handle 7: Transform Component
 
   // Lets grab the 3rd object, in reality this would never work
   // But I can create a fake handle since this is such a controlled test
-  obj = space->GetHandles().GetAs<GameObject>(Handle(4, 0));
+  obj = space->GetHandles().GetAs<GameObject>(Handle(6, 0));
 
   // And lets get the transform variable
   comp = obj->GetComponent<Transform>(eTransform);
