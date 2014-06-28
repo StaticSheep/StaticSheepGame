@@ -22,7 +22,7 @@ namespace Framework
     };
   };
 
-  class File
+  struct File
   {
   public:
     File();
@@ -44,8 +44,8 @@ namespace Framework
 
     bool Validate(void) const;
 
-  protected:
     FILE* fp; // C file pointer
+    char buffer[1024 * 32];
   };
 
 

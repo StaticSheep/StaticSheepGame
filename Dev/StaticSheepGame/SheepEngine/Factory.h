@@ -29,8 +29,10 @@ namespace Framework
     void SaveObjectToArchetype(GameObject* obj, const char* name);
     GameObject* LoadObjectFromArchetype(GameSpace* space, const char* name);
 
-    void SaveSpaceToLevel(GameSpace* space, const char* name, std::vector<std::string>* objInstanceData = NULL);
+    void SaveSpaceToLevel(GameSpace* space, const char* name, std::vector<std::string>* objInstanceData = NULL, bool includeGeneric = false, bool allData = false);
     void LoadLevelToSpace(GameSpace* space, const char* name);
+
+    
 
   protected:
     ComponentCreator* m_componentCreators[ecountComponents];
@@ -42,6 +44,8 @@ namespace Framework
 
     const Member *GetComponentMember(const char* instring, Variable& out);
     const Member *GetComponentMemberRecursive(const Member *member, Variable &val);
+
+    void LoadGenericObject(GameSpace* space, File& file);
 
 
     friend class GameSpace;

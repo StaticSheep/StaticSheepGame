@@ -124,7 +124,7 @@ SHEEP_API void TestStuff(void)
   dataList.push_back("Transform:val2");
 
   // Save the space as a level named "test_level"
-  FACTORY->SaveSpaceToLevel(space, "test_level", &dataList);
+  FACTORY->SaveSpaceToLevel(space, "test_level", &dataList, true, false);
 
   // Remove "TestSpace", except i don't even know if this works right
   SheepEngine->RemoveSpace(space);
@@ -154,9 +154,10 @@ SHEEP_API void TestStuff(void)
 
   if (a == 300)
   {
-    float f = 10.0f;
-    f = f * a;
-    // Yay it worked
+    comp->val2 = 1000;
   }
+
+  // Save the space as a level named "test_level"
+  FACTORY->SaveSpaceToLevel(space, "test_level2", &dataList, true, false);
 
 }

@@ -216,7 +216,7 @@ namespace Framework
   }
 
   // Transform:testvalue
-  void Factory::SaveSpaceToLevel(GameSpace* space, const char* name, std::vector<std::string>* objInstanceData)
+  void Factory::SaveSpaceToLevel(GameSpace* space, const char* name, std::vector<std::string>* objInstanceData, bool includeGeneric, bool allData)
   {
     File file; // File to save the space to
     std::string filepath = LevelPrefix + name + FileExtension;
@@ -225,12 +225,56 @@ namespace Framework
 
     for (auto it = space->m_objects.begin<GameObject>(); it != space->m_objects.end<GameObject>(); ++it)
     {
-      if (it->m_archetype.length() == 0)
+
+      if (it->m_archetype.length() == 0 && includeGeneric)
+      {
+        // We couldn't find an archetype, so we are going to
+        // serialize the object into the level
+
+        // Set the variable var to the game object pointer
+        Variable var = *it;
+
+        it->Serialize(file, var);
         continue;
+      }
 
       // Write the name of the archetype
       file.Write("ach_%s\n", it->m_archetype.c_str());
-      
+
+      if (allData)
+      {
+        std::string instance;
+
+        for (unsigned int j = 0; j < ecountComponents; ++j)
+        {
+          if (it->HasComponent((EComponent)j))
+          {
+            const TypeInfo* CType = GET_STR_TYPE(GET_ENUM(Component)->m_literals[0].c_str());
+
+            instance = CType->Name();
+            instance += ":";
+
+            for (unsigned int m = 0; m < CType->m_members.size(); ++m)
+            {
+              const Member member = CType->m_members[m];
+              file.Write("  %s%s ", instance.c_str(), member.Name());
+              
+              Variable var(member.Type(), (char*)it->GetComponent(j) + member.Offset());
+              
+              var.Serialize(file);
+            }
+
+            // Move to the next component
+          }
+
+          // The object didn't have the component
+        }
+
+        // Since we just serialized all the data from the component, we can move on
+        // to the next object that needs to be serialized
+        continue;
+      }
+
       // We are provided instance data to save
       if (objInstanceData)
       {
@@ -254,9 +298,41 @@ namespace Framework
           // Serialize the variable
           var.Serialize(file);
         }
-      }// end if instance data
+      }
+      
+      
+
     } // end for
 
+    file.Close();
+  }
+
+  void Factory::LoadGenericObject(GameSpace* space, File& file)
+  {
+    // We don't care about the first bits
+    file.Read( "%*[^{]{" );
+
+    GameObject* obj = space->CreateEmptyObject();
+
+    ++Serializer::Get()->GetPadLevel();
+
+    fpos_t lastcomp;
+    fgetpos(file.fp, &lastcomp);
+    for(;;)
+    {
+      GameComponent* comp = DeserializeComponent(file, space);
+
+      if (!comp)
+        break; // No component found
+
+      obj->AddComponent(comp);
+      fgetpos(file.fp, &lastcomp);
+    }
+
+    obj->Initialize();
+
+    fsetpos(file.fp, &lastcomp);
+    file.GetLine("}");
   }
 
   void Factory::LoadLevelToSpace(GameSpace* space, const char* name)
@@ -271,6 +347,8 @@ namespace Framework
     // Pointer to use
     GameObject* obj = nullptr;
 
+    const TypeInfo* typeinfo;
+
     for (;;)
     {
       // Read in a line
@@ -280,9 +358,16 @@ namespace Framework
       if (!file.Validate())
         break;
 
-      // SKip white spaces
+      // Skip white spaces
       if (line.empty())
         continue;
+
+      typeinfo = GET_STR_TYPE(line.c_str());
+      if (typeinfo && typeinfo->m_name == "GameObject")
+      {
+        LoadGenericObject(space, file);
+        continue;
+      }
 
       // If we didn't hit a component, check to see if by chance we hit an archetype
       if (!GET_ENUM(Component)->IsAnEntry(line.c_str()) && line.substr(0, ArchetypePrefix.length()) == ArchetypePrefix)

@@ -48,14 +48,14 @@ namespace Framework
   };
 
   template <typename T>
-  const TypeInfo *IntrospectionManager::GetType( void ) const
+  const TypeInfo* IntrospectionManager::GetType( void ) const
   {
     static TypeInfo instance;
     return &instance;
   }
 
   template <typename T>
-  const TypeInfo *IntrospectionManager::RegisterType( unsigned size, const char *name, bool isPOD )
+  const TypeInfo* IntrospectionManager::RegisterType( unsigned size, const char *name, bool isPOD )
   {
     TypeInfo *typeInfo = (TypeInfo *)GetType<T>( );
     typeInfo->Init( name, size );

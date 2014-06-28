@@ -192,11 +192,9 @@ namespace Framework
 
       if (feof( fp ))
         break;
-
       for (const char *temp_delim = delims; *temp_delim; ++temp_delim)
         if (c == *temp_delim)
           return std::move( temp );
-
       temp += c;
     }
 

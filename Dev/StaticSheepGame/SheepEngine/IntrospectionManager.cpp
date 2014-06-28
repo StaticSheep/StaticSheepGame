@@ -16,7 +16,12 @@ namespace Framework
   {
     std::string typeNameStr = typeName;
 
-    return m_typeMap.at(typeNameStr);
+    if (m_typeMap.find(typeNameStr) != m_typeMap.end())
+    {
+      return m_typeMap.at(typeNameStr);
+    }
+
+    return nullptr;
   }
 
   IntrospectionManager::IntrospectionManager( )
