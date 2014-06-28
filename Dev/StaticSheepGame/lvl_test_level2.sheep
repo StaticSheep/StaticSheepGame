@@ -7,10 +7,19 @@ GameObject
     val2 int 42
     val3 int 128
   }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
 }
 ach_test_type
+  name std::string "TestName"
   Transform:val2 int 42
 ach_test_type
+  name std::string "TestName"
   Transform:val2 int 42
 ach_test_type
-  Transform:val2 int 300
+  name std::string "TestName"
+  Transform:val2 int 1000

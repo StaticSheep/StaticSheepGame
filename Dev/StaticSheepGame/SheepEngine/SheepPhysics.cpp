@@ -26,6 +26,7 @@ namespace Framework
   void SheepPhysics::RegisterComponents()
   {
     REGISTER_COMPONENT(Transform);
+    REGISTER_COMPONENT(Tester);
   }
 
 	void SheepPhysics::Initialize()

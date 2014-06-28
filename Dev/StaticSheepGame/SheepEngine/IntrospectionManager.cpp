@@ -32,28 +32,27 @@ namespace Framework
   {
   }
 
+
+#define REGISTER_POD_FULL( TYPE ) \
+  TYPE_REGISTER_POD( TYPE ); \
+  TYPE_SET_SERIALIZER( TYPE, SerializePOD<TYPE> );\
+  TYPE_SET_DESERIALIZER( TYPE, DeserializePOD<TYPE> )
+
   void EngineTypeRegistration()
   {
-    TYPE_REGISTER_POD( int );
-    TYPE_SET_SERIALIZER( int, SerializePOD<int> );
-    TYPE_SET_DESERIALIZER( int, DeserializePOD<int> );
+    REGISTER_POD_FULL( int );
 
-    TYPE_REGISTER_POD( unsigned int );
+    REGISTER_POD_FULL( unsigned int );
 
-    TYPE_REGISTER_POD( int * );
-    TYPE_REGISTER_POD( const char * );
+    REGISTER_POD_FULL( bool );
 
-    TYPE_REGISTER_POD( float );
-    TYPE_SET_SERIALIZER( float, SerializePOD<float> );
-    TYPE_SET_DESERIALIZER( float, DeserializePOD<float> );
+    REGISTER_POD_FULL( float );
+
+    REGISTER_POD_FULL( double );
 
     TYPE_REGISTER( std::vector<int> );
     TYPE_SET_SERIALIZER( std::vector<int>, SerializeArray<int> );
     TYPE_SET_DESERIALIZER( std::vector<int>, DeserializeArray<int> );
-
-    TYPE_REGISTER_POD( bool );
-    TYPE_SET_SERIALIZER( bool, SerializePOD<bool> );
-    TYPE_SET_DESERIALIZER( bool, DeserializePOD<bool> );
 
     TYPE_REGISTER( std::string );
     TYPE_SET_SERIALIZER( std::string, SerializeString );
@@ -64,9 +63,14 @@ namespace Framework
     TYPE_SET_SERIALIZER( GameObject, GameObject::Serialize );
     TYPE_SET_DESERIALIZER( GameObject, GameObject::Deserialize );
 
+
     TYPE_REGISTER( Transform );
     TYPE_ADD_MEMBER(Transform, val1);
     TYPE_ADD_MEMBER(Transform, val2);
     TYPE_ADD_MEMBER(Transform, val3);
+
+    TYPE_REGISTER( Tester );
+    TYPE_ADD_MEMBER( Tester, testvalue1 );
+    TYPE_ADD_MEMBER( Tester, testvalue2 );
   }
 }

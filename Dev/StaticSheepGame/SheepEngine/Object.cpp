@@ -14,27 +14,6 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 namespace Framework
 {
 
-  //Binary search a sorted array of components. yo thanks chris peters
-  static GameComponent* BinaryComponentSearch(GameSpace* space, Handle* components, size_t name)
-  {
-    size_t begin = 0;
-    size_t end = ecountComponents;
-
-    while(begin < end)
-    {
-      size_t mid = (begin+end) / 2;
-      if(space->GetHandles().GetAs<GameComponent>(components[mid])->typeID < name)
-        begin = mid + 1;
-      else
-        end = mid;
-    }
-
-    if((begin < ecountComponents) && (space->GetHandles().GetAs<GameComponent>(components[begin])->typeID == name))
-      return space->GetHandles().GetAs<GameComponent>(components[begin]);
-    else
-      return NULL;
-  }
-
   //Binary search a sorted array of Objects
   static GameObject* BinaryChildSearch(GameSpace* space, ChildArray& children, size_t uid)
   {
@@ -68,6 +47,8 @@ namespace Framework
 
   GameObject::GameObject()
   {
+    for (unsigned int i = 0; i < ecountComponents; ++i)
+      m_components[i] = Handle::null;
     fastChildSearch = false;
   }
 
@@ -97,11 +78,6 @@ namespace Framework
     return space->GetHandles().GetAs<GameObject>(left)->guid > space->GetHandles().GetAs<GameObject>(right)->guid;
   }
 
-  bool GameObject::ComponentSorter(Handle left, Handle right)
-  {
-    return space->GetHandles().GetAs<GameComponent>(left)->typeID > space->GetHandles().GetAs<GameComponent>(right)->typeID;
-  }
-
   /// <summary>
   /// Adds the component.
   /// </summary>
@@ -111,19 +87,6 @@ namespace Framework
     // Set the component's owner to ourself
     component->owner = self;
     m_components[component->typeID] = component->self;
-
-    // Sort the component array so binary search can be used to find components quickly.
-    std::sort(&m_components[0], &m_components[ecountComponents], std::bind(&GameObject::ComponentSorter, this, std::placeholders::_1, std::placeholders::_2));
-  }
-
-  /// <summary>
-  /// Gets a component.
-  /// </summary>
-  /// <param name="typeId">The type identifier.</param>
-  /// <returns></returns>
-  GameComponent * GameObject::GetComponent(size_t typeId)
-  {
-    return BinaryComponentSearch(space, m_components, typeId);
   }
 
   /// <summary>
@@ -171,11 +134,6 @@ namespace Framework
     return m_components[type] != Handle::null;
   }
 
-  GameComponent* GameObject::GetComponent(EComponent type)
-  {
-    return space->GetHandles().GetAs<GameComponent>(m_components[type]);
-  }
-
   GameComponent* GameObject::GetComponent(const char *type)
   {
     if (GET_ENUM(Component)->IsAnEntry(type))
@@ -185,6 +143,11 @@ namespace Framework
     }
 
     return NULL;
+  }
+
+  GameComponent* GameObject::GetComponent(unsigned int type)
+  {
+    return space->GetHandles().GetAs<GameComponent>(m_components[type]);
   }
 
   void GameObject::Serialize(File& file, Variable var)
@@ -224,15 +187,22 @@ namespace Framework
 
     s->Padding( file, pad );
 
+    // Now we are going to iterate through every component and serialize them
     for(unsigned i = 0; i < ecountComponents; ++i)
     {
+      // Find the component type
       EComponent type = (EComponent)i;
       if (o->HasComponent( type ))
       {
+        // If the object has the specified component, then get the type info
         const TypeInfo *typeInfo = FACTORY->GetComponentType( type );
+        // Create a variable from the component
         Variable v( typeInfo, o->GetComponent( type ) );
+        // Serialize the component into the file
         v.Serialize( file );
 
+        // If we aren't quite yet at the end of all the components, make a new line
+        // And pad it for any future components
         if(i != ecountComponents - 1)
         {
           file.Write( "\n" );
@@ -240,7 +210,7 @@ namespace Framework
         }
       }
     }
-
+    // We are all done so close the bracket
     s->Padding( file, --pad );
     file.Write( "}\n" );
   }
@@ -268,7 +238,7 @@ namespace Framework
       // deserialize that variable into to data we can use
       if (mem)
       {
-        // Create a Variable out of the member we found, we need to offest the
+        // Create a Variable out of the member we found, we need to offset the
         // start position of the variable by the start of our current variable
         // by the offset from the member and the start of the current variable
         Variable member( mem->Type(), PTR_ADD(var.GetData(), mem->Offset()) );
@@ -278,7 +248,8 @@ namespace Framework
       }
     }
     
-
+    // Now that we have read in any additional members from the GameObject
+    // We can move onto reading in the components
     fgetpos(file.fp, &lastcomp);
     for(;;)
     {
@@ -291,15 +262,16 @@ namespace Framework
       fgetpos(file.fp, &lastcomp);
     }
 
+    // We read in all the components, initialize the object
     obj->Initialize();
 
+    // Sometimes we are reading an object in from the middle of a level file
+    // so we need to return the file pointer back to the last } we encountered
     if (file.Validate())
     {
       fsetpos(file.fp, &lastcomp);
       file.GetLine("}");
     }
-
-    
   }
 
 };

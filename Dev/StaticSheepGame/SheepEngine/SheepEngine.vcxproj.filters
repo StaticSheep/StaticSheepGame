@@ -100,6 +100,9 @@
     <ClInclude Include="Engine.h">
       <Filter>Engine\EngineCore</Filter>
     </ClInclude>
+    <ClInclude Include="CTester.h">
+      <Filter>Components\Tester</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="precompiled.cpp">
@@ -173,6 +176,9 @@
     </ClCompile>
     <ClCompile Include="Engine.cpp">
       <Filter>Engine\EngineCore</Filter>
+    </ClCompile>
+    <ClCompile Include="CTester.cpp">
+      <Filter>Components\Tester</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -283,6 +289,9 @@
     </Filter>
     <Filter Include="Engine\EngineCore">
       <UniqueIdentifier>{2c4311cc-f995-4aac-9569-1d68c58df9db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\Tester">
+      <UniqueIdentifier>{94e46304-9909-4046-8509-bdc52a8dce0a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

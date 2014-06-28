@@ -7,4 +7,10 @@ GameObject
     val2 int 42
     val3 int 128
   }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
 }

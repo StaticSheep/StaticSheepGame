@@ -99,6 +99,13 @@ SHEEP_API void TestStuff(void)
   comp->val3 = 128;
   // Add the component to the object
   obj->AddComponent(comp);
+
+  // Create a Tester component and set some stuff
+  Tester* comp2 = (Tester*)space->CreateComponent(eTester);
+  comp2->testvalue1 = 6;
+  comp2->testvalue2 = 505;
+
+  obj->AddComponent(comp2);
   
   // Set a name
   obj->name = "TestName";
@@ -141,16 +148,20 @@ SHEEP_API void TestStuff(void)
   // Handle manager looks like this right now
   // Handle 0: Object
   // Handle 1: Transform Component
-  // Handle 2: Object
-  // Handle 3: Transform Component
-  // Handle 4: Object
-  // Handle 5: Transform Component
+  // Handle 2: Tester Component
+  // Handle 3: Object
+  // Handle 4: Transform Component
+  // Handle 5: Tester Component
   // Handle 6: Object
   // Handle 7: Transform Component
+  // Handle 8: Tester Component
+  // Handle 9: Object
+  // Handle 10: Transform Component
+  // Handle 11: Tester Component
 
   // Lets grab the 3rd object, in reality this would never work
   // But I can create a fake handle since this is such a controlled test
-  obj = space->GetHandles().GetAs<GameObject>(Handle(6, 0));
+  obj = space->GetHandles().GetAs<GameObject>(Handle(9, 0));
 
   // And lets get the transform variable
   comp = obj->GetComponent<Transform>(eTransform);

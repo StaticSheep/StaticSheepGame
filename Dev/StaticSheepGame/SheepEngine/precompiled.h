@@ -28,7 +28,7 @@
 #include "Serialization.h"
 #include "PODSerialization.h"
 
-
+#include "CTester.h"
 #include "CTransform.h"
 
 

@@ -13,6 +13,7 @@ namespace Framework
   Engine::Engine()
     : m_running(true)
   {
+
     EngineTypeRegistration();
 
     ENGINE = this;
@@ -56,12 +57,22 @@ namespace Framework
     space->m_name = name;
 
     m_spaceMap[space->m_name] = space;
+    m_spaces.push_back(space);
+
     return space;
   }
 
   void Engine::RemoveSpace(GameSpace* space)
   {
     m_spaceMap.erase(space->m_name);
+    for (auto it = m_spaces.begin(); it != m_spaces.end(); ++it)
+    {
+      if (*it == space)
+      {
+        m_spaces.erase(it);
+        break;
+      }
+    }
     delete space;
   }
 }

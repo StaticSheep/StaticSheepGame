@@ -17,8 +17,12 @@ namespace Framework
 
   Factory::Factory()
   {
+    for (unsigned int i = 0; i < ecountComponents; ++i)
+    {
+      m_componentCreators[i] = nullptr;
+      m_componentTypes[i] = nullptr;
+    }
     FACTORY = this;
-
   }
 
   Factory::~Factory()
@@ -230,6 +234,16 @@ namespace Framework
       // Write the name of the archetype
       file.Write("ach_%s\n", it->m_archetype.c_str());
 
+      // Get the name member of the object
+      const Member* nameMember = GET_TYPE(GameObject)->GetMember("name");
+
+      // Pad and write the name of the member
+      file.Write("  %s ", nameMember->Name());
+
+      // Create a variable and write to the file
+      Variable name(nameMember->Type(), (char*)it + nameMember->Offset());
+      name.GetTypeInfo()->Serialize(file, name);
+
       if (allData)
       {
         std::string instance;
@@ -327,7 +341,7 @@ namespace Framework
       typeinfo = GET_STR_TYPE(line.c_str());
       if (typeinfo && typeinfo->m_name == "GameObject")
       {
-        file.SeekByOffset(-line.length() - 2);
+        file.SeekByOffset(-int(line.length()) - 2);
         // Create an empty object
         obj = space->CreateEmptyObject();
         Variable var = *obj; // Set the object as a variable
@@ -342,6 +356,17 @@ namespace Framework
       {
         // Oh we did, goodie
         obj = LoadObjectFromArchetype(space, line.c_str());
+        continue;
+      }
+
+      if (line == "name")
+      {
+        // Get the name member of the object
+        const Member* nameMember = GET_TYPE(GameObject)->GetMember("name");
+
+        // Create a variable and write to the variable
+        Variable name(nameMember->Type(), (char*)obj + nameMember->Offset());
+        name.GetTypeInfo()->Deserialize(file, name);
         continue;
       }
 

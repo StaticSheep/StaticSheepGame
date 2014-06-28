@@ -38,6 +38,7 @@ namespace Framework
     std::vector<ISystem*> m_systems;
 
     std::hash_map<std::string, GameSpace*> m_spaceMap;
+    std::vector<GameSpace*> m_spaces;
 
     friend class GameLogic;
   };

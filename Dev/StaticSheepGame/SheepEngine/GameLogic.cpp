@@ -30,15 +30,11 @@ namespace Framework
 
   void GameLogic::Update(float dt)
   {
-    for (auto it = ENGINE->m_spaceMap.begin(); it != ENGINE->m_spaceMap.end(); ++it)
-    {
-      GameSpace* space = ENGINE->m_spaceMap.at(it->first);
-      // Send update events for the space
-    }
+    GameSpace* space;
 
-    for (auto it = ENGINE->m_spaceMap.begin(); it != ENGINE->m_spaceMap.end(); ++it)
+    for (auto it = ENGINE->m_spaces.begin(); it != ENGINE->m_spaces.end(); ++it)
     {
-      GameSpace* space = ENGINE->m_spaceMap.at(it->first);
+      space = *it;
       space->Cleanup();
     }
   }

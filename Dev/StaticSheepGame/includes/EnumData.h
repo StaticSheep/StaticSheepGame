@@ -22,5 +22,6 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 E_NAME(Component)
   E_ENTRY(Transform)
+  E_ENTRY(Tester)
   E_ENTRY(countComponents)
 E_END(Component)
