@@ -20,6 +20,12 @@ namespace Framework
   {
   }
 
+  Variable::Variable( const TypeInfo* typeInfo, const void* data )
+    : m_data( const_cast<void*>(data) )
+    , m_typeInfo( typeInfo )
+  {
+  }
+
   Variable::Variable( const Variable& rhs )
   {
     m_data = rhs.m_data;

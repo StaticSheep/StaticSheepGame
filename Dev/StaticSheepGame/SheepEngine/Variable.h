@@ -16,7 +16,8 @@ namespace Framework
   {
   public:
     Variable();
-    Variable(const TypeInfo *typeInfo, void *data);
+    Variable(const TypeInfo* typeInfo, void* data);
+    Variable(const TypeInfo* typeInfo, const void* data);
     Variable(const Variable& rhs);
     template <typename T>
     Variable(const T& rhs);

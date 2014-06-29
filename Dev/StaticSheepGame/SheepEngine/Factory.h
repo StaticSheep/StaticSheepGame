@@ -28,6 +28,11 @@ namespace Framework
 
     void SaveObjectToArchetype(GameObject* obj, const char* name);
     GameObject* LoadObjectFromArchetype(GameSpace* space, const char* name);
+    GameObject* LoadObjectFromArchetype(GameSpace* space, const Archetype& archetype);
+
+    bool LoadArchetypeFromFile(const char* name);
+    void SaveArchetypeToFile(std::string);
+    void SaveArchetypeToFile(const Archetype& archetype);
 
     void SaveSpaceToLevel(GameSpace* space, const char* name, std::vector<std::string>* objInstanceData = NULL, bool includeGeneric = false, bool allData = false);
     void SaveSpaceToLevel(GameSpace* space, const char* name, bool standalone);

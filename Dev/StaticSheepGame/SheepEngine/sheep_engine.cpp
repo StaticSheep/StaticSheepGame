@@ -79,6 +79,7 @@ SHEEP_API void TestStuff(void)
 {
   //OpenConsole();
 
+  Serializer* s;
   // Create the engine
   Engine* SheepEngine = new Engine();
   // Add the GameLogic system which really doesn't do anything right now :v
@@ -90,6 +91,8 @@ SHEEP_API void TestStuff(void)
 
   // Create a space named "TestSpace"
   GameSpace* space = SheepEngine->CreateSpace("TestSpace");
+
+  FACTORY->LoadArchetypeFromFile("test_type2");
 
   // Create an empty object inside "TestSpace"
   GameObject* obj = space->CreateEmptyObject();
@@ -130,6 +133,16 @@ SHEEP_API void TestStuff(void)
   comp = obj->GetComponent<Transform>(eTransform);
   comp->val2 = 300; // sparta
 
+  obj = FACTORY->LoadObjectFromArchetype(space, "test_type");
+  obj->archetype = "test_type2";
+  obj->name = "This is wow";
+  FACTORY->SaveObjectToArchetype(obj, "test_type2");
+
+  // Get the Transform component from one of those objects
+  comp = obj->GetComponent<Transform>(eTransform);
+  comp->val2 = 1300;
+  
+
   // Save the space as a level named "test_level" with the following settings
   // ObjectInstanceDataList = NULL
   //    We are not providing a white list of object variables
@@ -149,9 +162,12 @@ SHEEP_API void TestStuff(void)
   // Create a new space called "CoolSpace"
   space = SheepEngine->CreateSpace("CoolSpace");
 
+  s = Serializer::Get();
+
   // Load the level into the space
   FACTORY->LoadLevelToSpace(space, "test_level");
 
+  s = Serializer::Get();
   // Handle manager looks like this right now
   // Handle 0: Object
   // Handle 1: Transform Component
@@ -190,15 +206,26 @@ SHEEP_API void TestStuff(void)
   // Lets save val2 from inside of transform
   dataList.push_back("Transform:val2");
 
-  // Save the space as a level named "test_level"
+  // Save the space as a level named "test_level2"
   FACTORY->SaveSpaceToLevel(space, "test_level2", &dataList, true, false);
 
+  // Make 100 more objects
+  for (unsigned int i = 0; i < 100; ++i)
+    FACTORY->LoadObjectFromArchetype(space, "test_type");
+
+  // Save the space as a standalone level (Does not rely on archetypes)
   FACTORY->SaveSpaceToLevel(space, "test_level_standalone", true);
+
+  // Save the space as a level named "test_level3" Notice the difference in file size
+  FACTORY->SaveSpaceToLevel(space, "test_level3", NULL, true, true);
 
   SheepEngine->RemoveSpace(space);
 
   space = SheepEngine->CreateSpace("Stand alone space");
 
   FACTORY->LoadLevelToSpace(space, "test_level_standalone");
+
+  FACTORY->SaveArchetypeToFile("test_type");
+  
 
 }

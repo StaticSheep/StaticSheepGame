@@ -228,7 +228,7 @@ namespace Framework
     ErrorIf(var.GetTypeInfo( ) != info, "GameObject deserialization", "Invalid type found");
 
     // Our peek function was nice enough to figure out the starting level for us
-    int startLevel = ++Serializer::Get()->GetPadLevel();
+    int startLevel = Serializer::Get()->GetPadLevel();
 
     for (unsigned int i = 0; i < info->GetMembers().size(); ++i)
     {

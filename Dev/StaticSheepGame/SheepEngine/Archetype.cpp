@@ -1,3 +1,4 @@
+#include "Macros.h"
 /*****************************************************************
 Filename: Archetype.cpp
 Project: 
@@ -73,6 +74,11 @@ namespace Framework
     return m_components[type];
   }
 
+  GameComponent* Archetype::GetComponent(unsigned int type)
+  {
+    return m_components[type];
+  }
+
   bool Archetype::HasComponent(EComponent type) const
   {
     return m_components[type] != nullptr;
@@ -122,6 +128,134 @@ namespace Framework
       }
 
     } // End component loop
+  }
+
+  GameObject* Archetype::CreateObject(GameSpace* space) const
+  {
+    GameObject* obj = space->CreateEmptyObject();
+
+    // Set the name and archetype
+    obj->name = name;
+    obj->archetype = archetype;
+
+    for (unsigned int i = 0; i < ecountComponents; ++i)
+    {
+      if (HasComponent(EComponent(i)))
+      {
+        // Create the component that is needed
+        GameComponent* comp = space->CreateComponent(EComponent(i));
+
+        // Add the component to the object
+        obj->AddComponent(comp);
+
+        // Get the type info relating to this component
+        const TypeInfo *typeInfo = FACTORY->GetComponentType( EComponent(i) );
+
+        // Iterate through all members in the component that are registered to be serialized
+        for (unsigned int m = 0; m < typeInfo->GetMembers().size(); ++m)
+        {
+          // Get the actual member
+          const Member member = typeInfo->GetMembers()[m];
+          // Copy over the member data from the archetype into the object
+          memcpy((char*)obj->GetComponent(i) + member.Offset(), (char*)m_components[i] + member.Offset(), member.Type()->Size());
+        }
+
+      }
+    } // End component iteration
+
+    // We added all components, now initialize the object
+    obj->Initialize();
+
+    return obj; // return the object
+  }
+
+  void Archetype::Serialize(File& file) const
+  {
+    Variable var;
+    const Archetype* o = this;
+
+    Serializer *s = Serializer::Get( );
+    const TypeInfo* info = GET_TYPE(GameObject);
+    int& pad = s->GetPadLevel( );
+
+    s->Padding( file, pad );
+    file.Write( "GameObject\n" );
+    s->Padding( file, pad++ );
+    file.Write( "{\n" );
+
+    s->Padding( file, pad );
+    file.Write("%s ", "name");
+    var = name;
+    GET_TYPE(std::string)->Serialize(file, var);
+
+    s->Padding( file, pad );
+    file.Write("%s ", "archetype");
+    var = archetype;
+    GET_TYPE(std::string)->Serialize(file, var);
+
+    s->Padding( file, pad );
+
+    // Now we are going to iterate through every component and serialize them
+    for(unsigned i = 0; i < ecountComponents; ++i)
+    {
+      // Find the component type
+      EComponent type = (EComponent)i;
+      if (o->HasComponent( type ))
+      {
+        // If the object has the specified component, then get the type info
+        const TypeInfo *typeInfo = FACTORY->GetComponentType( type );
+        // Create a variable from the component
+        const Variable v( typeInfo, o->GetComponent( type ) );
+        // Serialize the component into the file
+        v.Serialize( file );
+
+        // If we aren't quite yet at the end of all the components, make a new line
+        // And pad it for any future components
+        if(i != ecountComponents - 1)
+        {
+          file.Write( "\n" );
+          s->Padding( file, pad );
+        }
+      }
+    }
+    // We are all done so close the bracket
+    s->Padding( file, --pad );
+    file.Write( "}\n" );
+
+
+  }
+
+  void Archetype::Deserialize(File& file, Archetype& arch)
+  {
+   
+    // Create a virtual game space
+    GameSpace* space = new GameSpace();
+    // Create an empty object in the virtual game space
+    GameObject* obj = space->CreateEmptyObject();
+    Variable var = *obj; // Set the object as a variable
+
+    // Deserialize the file into the object
+    GET_TYPE(GameObject)->Deserialize(file, var);
+
+    // Copy the object we read
+    arch.CopyObject(obj);
+
+    delete space;
+  }
+
+  Archetype& Archetype::operator=(const Archetype& rhs)
+  {
+    name = rhs.name;
+    archetype = rhs.archetype;
+
+    for (unsigned int i = 0; i < ecountComponents; ++i)
+      if (rhs.HasComponent(EComponent(i)))
+      {
+        m_components[i] = FACTORY->m_componentCreators[i]->Allocate();
+        *(m_components[i]) = *(rhs.m_components[i]);
+      }
+
+     return *this;
   }
 
 

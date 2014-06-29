@@ -27,3 +27,5 @@ ach_Nottheoldone
 ach_test_type
 ach_test_type
   Transform:val2 int 300
+ach_test_type2
+  Transform:val2 int 1300

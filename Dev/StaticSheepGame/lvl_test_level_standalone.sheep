@@ -66,3 +66,1720 @@ GameObject
     testvalue2 int 505
   }
 }
+GameObject
+{
+  name std::string "This is wow"
+  archetype std::string "test_type2"
+  Transform
+  {
+    val1 int 13
+    val2 int 1300
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "TestName"
+  archetype std::string "test_type"
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}

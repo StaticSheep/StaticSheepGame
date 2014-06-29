@@ -232,8 +232,8 @@ namespace Framework
 
           // Now lets pull out the member
           const Member *member = FACTORY->GetComponentMember(instance, var);
-          if (!member)
-            assert(false);
+
+          ErrorIf(!member, "Space serialization", "Member is invalid!");
 
           // Variable var now is the member variable we wanted
           // Write the name of the variable

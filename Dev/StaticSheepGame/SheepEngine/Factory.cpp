@@ -182,6 +182,7 @@ namespace Framework
     std::string filepath = name;
     std::string archetype = name;
 
+    //Check if we need to do any trimming
     if (filepath.substr(0, ArchetypePrefix.length()) != ArchetypePrefix)
     {
       // Add the prefix on if it's not there
@@ -191,6 +192,16 @@ namespace Framework
     {
       // Remove the prefix if it is there from the actual archetype name
       archetype = archetype.substr(ArchetypePrefix.length(), archetype.length() - ArchetypePrefix.length());
+    }
+
+    // Quickly grab the archetype from our map if it exists
+    const Archetype& aType = GetArchetype(archetype);
+
+    // Check to see if the archetype is valid
+    if (&aType != &Archetype::null)
+    {
+      // Make the object!
+      return aType.CreateObject(space);
     }
 
     filepath += FileExtension;
@@ -218,6 +229,12 @@ namespace Framework
       ArchetypeMap[archetype].CopyObject(obj);
 
     return obj;
+  }
+
+
+  GameObject* Factory::LoadObjectFromArchetype(GameSpace* space, const Archetype& archetype)
+  {
+    return archetype.CreateObject(space);
   }
 
   /// <summary>
@@ -313,6 +330,85 @@ namespace Framework
       return ArchetypeMap[name];
 
     return Archetype::null;
+  }
+
+  void Factory::SaveArchetypeToFile(const Archetype& archetype)
+  {
+    File file; // File to load from
+    std::string filepath = archetype.archetype;
+
+    //Check if we need to do any trimming
+    if (filepath.substr(0, ArchetypePrefix.length()) != ArchetypePrefix)
+    {
+      // Add the prefix on if it's not there
+      filepath = ArchetypePrefix + archetype.archetype;
+    }
+
+    filepath += FileExtension;
+
+    file.Open(filepath.c_str(), FileAccess::Write);
+
+    ErrorIf(!file.Validate(), "Factory", "Invalid file!");
+
+    archetype.Serialize(file);
+
+    file.Close();
+  }
+
+  void Factory::SaveArchetypeToFile(std::string name)
+  {
+    const Archetype& archetype = GetArchetype(name);
+
+    if (&archetype != &Archetype::null)
+      SaveArchetypeToFile(archetype);
+  }
+
+  bool Factory::LoadArchetypeFromFile(const char* name)
+  {
+    File file; // File to load from
+    std::string filepath = name;
+    std::string archetype = name;
+
+    //Check if we need to do any trimming
+    if (filepath.substr(0, ArchetypePrefix.length()) != ArchetypePrefix)
+    {
+      // Add the prefix on if it's not there
+      filepath = ArchetypePrefix + name;
+    }
+    else
+    {
+      // Remove the prefix if it is there from the actual archetype name
+      archetype = archetype.substr(ArchetypePrefix.length(), archetype.length() - ArchetypePrefix.length());
+    }
+
+    // Quickly grab the archetype from our map if it exists
+    const Archetype& aType = GetArchetype(archetype);
+
+    // Check to see if the archetype is valid
+    if (&aType != &Archetype::null)
+    {
+      // Make the object!
+      return true;
+    }
+
+    filepath += FileExtension;
+
+    if (!File::FileExists(filepath.c_str()))
+    {
+      return false;
+    }
+
+    file.Open(filepath.c_str(), FileAccess::Read);
+
+    ErrorIf(!file.Validate(), "Factory", "Invalid file!");
+
+    Archetype buffer;
+    Archetype::Deserialize(file, buffer);
+    buffer.archetype = archetype;
+
+    ArchetypeMap[buffer.archetype] = buffer;
+
+    return true;
   }
 
 }

@@ -23,15 +23,28 @@ namespace Framework
     T* GetComponent(EComponent type) const;
 
     const GameComponent* GetComponent(unsigned int type) const;
+    
     bool HasComponent(EComponent type) const;
 
     void SerializeDifferences(GameObject* obj, File& file) const;
+
+    // Serialization routine
+    void Serialize(File& file) const;
+    // Deserialization routine, var must be an empty archetype (buffer)
+    static void Deserialize(File& file, Archetype& arch);
+
+    GameObject* CreateObject(GameSpace* space) const;
 
     static const Archetype null;
 
   private:
     void CopyObject(GameObject*);
+
+    GameComponent* GetComponent(unsigned int type);
+
     GameComponent* m_components[ecountComponents];
+
+    Archetype& operator=(const Archetype& rhs);
 
     friend class Factory;
     friend class GameSpace;
