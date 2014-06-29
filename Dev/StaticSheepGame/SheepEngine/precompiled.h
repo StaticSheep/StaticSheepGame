@@ -3,7 +3,7 @@
 
 #include "Qualifiers.h"
 #include "Macros.h"
-
+#include "Utilities.h"
 #include "ObjectAllocator.h"
 #include "File.h"
 #include "Variable.h"
@@ -14,6 +14,7 @@
 #include "HandleManager.h"
 #include "Component.h"
 #include "ComponentCreator.h"
+#include "Archetype.h"
 #include "Object.h"
 #include "SlotArray.h"
 #include "Message.h"

@@ -35,8 +35,9 @@ namespace Framework
     }
 
     template <typename T>
-    const TypeInfo *GetType( void ) const;
-    const TypeInfo *GetType( const char *typeName ) const;
+    const TypeInfo* GetType( void ) const;
+    const TypeInfo* GetType( const char* typeName ) const;
+    const TypeInfo* GetType( std::string& typeName) const;
     template <typename T>
     const TypeInfo *RegisterType( unsigned size, const char *name, bool isPOD );
 

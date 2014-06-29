@@ -103,6 +103,9 @@
     <ClInclude Include="CTester.h">
       <Filter>Components\Tester</Filter>
     </ClInclude>
+    <ClInclude Include="Archetype.h">
+      <Filter>BaseTypes\Object\Archetype</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="precompiled.cpp">
@@ -179,6 +182,12 @@
     </ClCompile>
     <ClCompile Include="CTester.cpp">
       <Filter>Components\Tester</Filter>
+    </ClCompile>
+    <ClCompile Include="Archetype.cpp">
+      <Filter>BaseTypes\Object\Archetype</Filter>
+    </ClCompile>
+    <ClCompile Include="Component.cpp">
+      <Filter>BaseTypes\Component</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -292,6 +301,9 @@
     </Filter>
     <Filter Include="Components\Tester">
       <UniqueIdentifier>{94e46304-9909-4046-8509-bdc52a8dce0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BaseTypes\Object\Archetype">
+      <UniqueIdentifier>{00901678-85ac-48f2-8633-8efce0936f6a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

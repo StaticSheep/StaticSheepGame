@@ -169,6 +169,11 @@ namespace Framework
     GET_TYPE(GameObject)->Serialize(file, *obj);
 
     file.Close(); // Force close, will save now
+
+    //if (ArchetypeMap.find(obj->archetype) == ArchetypeMap.end())
+      
+    ArchetypeMap[obj->archetype].CopyObject(obj);
+    
   }
 
   GameObject* Factory::LoadObjectFromArchetype(GameSpace* space, const char* name)
@@ -190,10 +195,14 @@ namespace Framework
 
     filepath += FileExtension;
 
+    if (!File::FileExists(filepath.c_str()))
+    {
+      return nullptr;
+    }
+
     file.Open(filepath.c_str(), FileAccess::Read);
 
-    if (!file.Validate())
-      assert(false);
+    ErrorIf(!file.Validate(), "Factory", "Invalid file!");
 
     // Create an empty object
     GameObject* obj = space->CreateEmptyObject();
@@ -202,7 +211,11 @@ namespace Framework
     // Deserialize the file into the object
     GET_TYPE(GameObject)->Deserialize(file, var);
 
-    obj->m_archetype = archetype;
+    obj->archetype = archetype;
+
+    // The archetype was not found, so we will save the object into our map
+    if (ArchetypeMap.find(archetype) == ArchetypeMap.end())
+      ArchetypeMap[archetype].CopyObject(obj);
 
     return obj;
   }
@@ -219,7 +232,7 @@ namespace Framework
   /// By default data which has been modified on an archetype is not saved. By adding instance data parameters to this you can tell the serialized
   /// to save specific parameters of the object.
   /// <param name="includeGeneric">If this is true, then objects which are not from an archetype will be serialized inside of the level file</param>
-  /// <param name="allData">If this is true, then every attribute of an archetype will be serialized, this isgnores the object instance data list</param>
+  /// <param name="allData">If this is true, then every modified value of an archetype will be saved</param>
   void Factory::SaveSpaceToLevel(GameSpace* space, const char* name, std::vector<std::string>* objInstanceData, bool includeGeneric, bool allData)
   {
     File file; // File to save the space to
@@ -288,10 +301,18 @@ namespace Framework
 
     file.Open(filepath.c_str(), FileAccess::Read); // Open the file
 
-    assert(file.Validate());
+    ErrorIf(!file.Validate(), "Factory - Load Level", "Invalid level: %s", filepath.c_str());
 
     Variable(*space).Deserialize(file);
 
+  }
+
+  const Archetype& Factory::GetArchetype(std::string name)
+  {
+    if (ArchetypeMap.find(name) != ArchetypeMap.end())
+      return ArchetypeMap[name];
+
+    return Archetype::null;
   }
 
 }

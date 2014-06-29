@@ -143,7 +143,7 @@ namespace Framework
     for (auto it = space->m_objects.begin<GameObject>(); it != space->m_objects.end<GameObject>(); ++it)
     {
 
-      if (it->m_archetype.length() == 0 && includeGeneric || standalone)
+      if (it->archetype.length() == 0 && includeGeneric || standalone)
       {
         // We couldn't find an archetype, so we are going to
         // serialize the object into the level
@@ -156,22 +156,38 @@ namespace Framework
       }
 
       // Write the name of the archetype
-      file.Write("ach_%s\n", it->m_archetype.c_str());
+      file.Write("ach_%s\n", it->archetype.c_str());
 
-      // Get the name member of the object
-      const Member* nameMember = GET_TYPE(GameObject)->GetMember("name");
+      // Check to see if we have the object's archetypes cached in our map
+      const Archetype& objectArchetype = FACTORY->GetArchetype(it->archetype);
 
-      // Pad and write the name of the member
-      file.Write("  %s ", nameMember->Name());
+      if (&objectArchetype == &Archetype::null || objectArchetype.name != it->name)
+      {
+        // Get the name member of the object
+        const Member* nameMember = GET_TYPE(GameObject)->GetMember("name");
 
-      // Create a variable and write to the file
-      Variable name(nameMember->Type(), (char*)it + nameMember->Offset());
-      name.GetTypeInfo()->Serialize(file, name);
+        // Pad and write the name of the member
+        file.Write("  %s ", nameMember->Name());
 
+        // Create a variable and write to the file
+        Variable name(nameMember->Type(), (char*)it + nameMember->Offset());
+        name.GetTypeInfo()->Serialize(file, name);
+      }
+
+      // All data saving routines
       if (allData)
       {
-        std::string instance;
 
+        // Our object archetype is valid
+        if (&objectArchetype != &Archetype::null)
+        {
+          // We have the archetype so we will only serialize the differences
+          objectArchetype.SerializeDifferences(it, file);
+          continue;
+        }
+        
+        // The archetype was not found so we are going to print out every single member
+        std::string instance;
         for (unsigned int j = 0; j < ecountComponents; ++j)
         {
           if (it->HasComponent((EComponent)j))
@@ -264,6 +280,10 @@ namespace Framework
 
         // Deserialize the file into the object
         GET_TYPE(GameObject)->Deserialize(file, var);
+
+        if (obj->archetype.length() > 0)
+          if (&FACTORY->GetArchetype(obj->archetype) == &Archetype::null)
+            FACTORY->ArchetypeMap[obj->archetype].CopyObject(obj);
         continue;
       }
 
@@ -274,6 +294,9 @@ namespace Framework
         obj = FACTORY->LoadObjectFromArchetype(space, line.c_str());
         continue;
       }
+
+      if (obj == nullptr)
+        continue;
 
       if (line == "name")
       {

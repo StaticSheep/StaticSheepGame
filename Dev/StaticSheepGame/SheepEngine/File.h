@@ -46,6 +46,8 @@ namespace Framework
 
     FILE* fp; // C file pointer
     char buffer[1024 * 32];
+
+    static bool FileExists(const char* name);
   };
 
 

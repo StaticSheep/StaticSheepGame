@@ -225,7 +225,7 @@ namespace Framework
     const TypeInfo* info = Serializer::Get()->PeekType(file);
 
     // Make sure it is indeed an object
-    assert( var.GetTypeInfo( ) == info );
+    ErrorIf(var.GetTypeInfo( ) != info, "GameObject deserialization", "Invalid type found");
 
     // Our peek function was nice enough to figure out the starting level for us
     int startLevel = ++Serializer::Get()->GetPadLevel();

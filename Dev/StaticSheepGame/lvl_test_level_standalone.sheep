@@ -1,7 +1,24 @@
 GameObject
 {
   name std::string "Old Object"
-  m_archetype std::string ""
+  archetype std::string ""
+  Transform
+  {
+    val1 int 13
+    val2 int 42
+    val3 int 128
+  }
+
+  Tester
+  {
+    testvalue1 int 6
+    testvalue2 int 505
+  }
+}
+GameObject
+{
+  name std::string "Bob Junior"
+  archetype std::string "test_type"
   Transform
   {
     val1 int 13
@@ -18,7 +35,7 @@ GameObject
 GameObject
 {
   name std::string "TestName"
-  m_archetype std::string "test_type"
+  archetype std::string "test_type"
   Transform
   {
     val1 int 13
@@ -35,24 +52,7 @@ GameObject
 GameObject
 {
   name std::string "TestName"
-  m_archetype std::string "test_type"
-  Transform
-  {
-    val1 int 13
-    val2 int 42
-    val3 int 128
-  }
-
-  Tester
-  {
-    testvalue1 int 6
-    testvalue2 int 505
-  }
-}
-GameObject
-{
-  name std::string "TestName"
-  m_archetype std::string "test_type"
+  archetype std::string "test_type"
   Transform
   {
     val1 int 13

@@ -24,6 +24,16 @@ namespace Framework
     return nullptr;
   }
 
+  const TypeInfo* IntrospectionManager::GetType(std::string& typeName) const
+  {
+    if (m_typeMap.find(typeName) != m_typeMap.end())
+    {
+      return m_typeMap.at(typeName);
+    }
+
+    return nullptr;
+  }
+
   IntrospectionManager::IntrospectionManager( )
   {
   }
@@ -60,7 +70,7 @@ namespace Framework
 
     TYPE_REGISTER( GameObject );
     TYPE_ADD_MEMBER( GameObject, name );
-    TYPE_ADD_MEMBER( GameObject, m_archetype );
+    TYPE_ADD_MEMBER( GameObject, archetype );
     TYPE_SET_SERIALIZER( GameObject, GameObject::Serialize );
     TYPE_SET_DESERIALIZER( GameObject, GameObject::Deserialize );
 

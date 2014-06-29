@@ -101,8 +101,8 @@ namespace Framework
       break;
     }
     END_DISABLE()
-    
-    assert(fp); // make sure its not null
+
+    ErrorIf(!Validate(), "FileIO", "File pointer is null!");
 
   }
 
@@ -199,6 +199,16 @@ namespace Framework
     }
 
     return std::move( temp );
+  }
+
+
+  bool File::FileExists(const char* name)
+  {
+    FILE* file;
+    bool exists = !fopen_s(&file, name, "r");
+    if (exists)
+      fclose(file);
+    return exists;
   }
 
 }

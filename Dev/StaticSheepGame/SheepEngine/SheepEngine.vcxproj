@@ -92,6 +92,7 @@
     <ClInclude Include="..\includes\engine\sheep_engine.h" />
     <ClInclude Include="..\includes\EnumData.h" />
     <ClInclude Include="..\includes\Utilities.h" />
+    <ClInclude Include="Archetype.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ComponentCreator.h" />
     <ClInclude Include="CTester.h" />
@@ -125,6 +126,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Utilities\Utilities.cpp" />
+    <ClCompile Include="Archetype.cpp" />
+    <ClCompile Include="Component.cpp" />
     <ClCompile Include="CTester.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="CTransform.cpp" />

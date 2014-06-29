@@ -1,7 +1,7 @@
 GameObject
 {
   name std::string "Old Object"
-  m_archetype std::string ""
+  archetype std::string ""
   Transform
   {
     val1 int 13
@@ -16,11 +16,9 @@ GameObject
   }
 }
 ach_test_type
-  name std::string "TestName"
+  name std::string "Bob Junior"
   Transform:val2 int 42
 ach_test_type
-  name std::string "TestName"
   Transform:val2 int 42
 ach_test_type
-  name std::string "TestName"
   Transform:val2 int 1000

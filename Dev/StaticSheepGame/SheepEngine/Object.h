@@ -34,7 +34,7 @@ namespace Framework
       void Destroy();
 
       // Gets the archetype of the object
-      const std::string& GetArchetype() const {return m_archetype;}
+      const std::string& GetArchetype() const {return archetype;}
 
       // Gets a vector of handles which are the objects children
       ChildArray& GetChildren() { return m_children; }
@@ -88,7 +88,7 @@ namespace Framework
       std::string name;
 
       // Name of the archetype
-      std::string m_archetype;
+      std::string archetype;
 
     private:
 
@@ -113,6 +113,7 @@ namespace Framework
 
       friend class Factory;
       friend class GameSpace;
+      friend class Archetype;
   };
 
   

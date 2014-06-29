@@ -66,3 +66,4 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 #define END_DISABLE( ) \
   __pragma( warning( pop ) )
+

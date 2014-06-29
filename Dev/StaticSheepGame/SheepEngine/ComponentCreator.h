@@ -28,6 +28,9 @@ namespace Framework
 
     // Creation function, abstract
     virtual GameComponent* Create(GameSpace* space) = 0;
+
+    // Simply creates a new component
+    virtual GameComponent* Allocate() = 0;
 	  
 	  // Removal function, abstract
 	  virtual void Remove(GameSpace* space, GameComponent* component) = 0;
@@ -52,6 +55,9 @@ namespace Framework
       // Allocate a new component from the allocator
       T* component = (T*)componentList->Allocate();
 
+      // Zero it out
+      memset(component, NULL, sizeof(T));
+
       // Initialize the component
       new (component) T;
 
@@ -64,6 +70,24 @@ namespace Framework
       space->SyncHandles<T>(*componentList);
       
       return component;
+    }
+
+    virtual GameComponent* Allocate()
+    {
+      // Allocate a new component
+      T* comp = new T();
+
+      // Clear it with zeros
+      memset(comp, NULL, sizeof(T));
+
+      // Actually call the constructor
+      new (comp) T();
+
+      // Set the type
+      comp->typeID = typeID; // Set the components type
+
+      // Send back
+      return comp;
     }
 
     virtual void Remove( GameSpace* space, GameComponent* component )

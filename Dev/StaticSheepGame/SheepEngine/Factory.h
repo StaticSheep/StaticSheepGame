@@ -37,9 +37,13 @@ namespace Framework
     static const std::string ArchetypePrefix;
     static const std::string LevelPrefix;
 
+    const Archetype& GetArchetype(std::string name);
+
   protected:
     ComponentCreator* m_componentCreators[ecountComponents];
     const TypeInfo* m_componentTypes[ecountComponents];
+
+    std::hash_map<std::string, Archetype> ArchetypeMap;
 
   private:
     // Deserializes a component from a file
@@ -52,5 +56,6 @@ namespace Framework
 
     friend class GameObject;
     friend class GameSpace;
+    friend class Archetype;
   };
 }

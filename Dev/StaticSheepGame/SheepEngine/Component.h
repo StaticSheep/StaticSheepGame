@@ -8,10 +8,13 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 #pragma once
 
-#include "Space.h"
-
 namespace Framework
 {
+  class GameSpace;
+  class Factory;
+
+  extern Factory* FACTORY;
+
   class GameComponent {
     public:
       // Game Objects have full access to the component
@@ -35,11 +38,19 @@ namespace Framework
 	    Handle self;
 
       // Each type of component has it's own unique ID
-      size_t typeID;
+      EComponent typeID;
 
       // Pointer to the space which the component belongs to
       GameSpace* space;
+      
+      bool operator==(const GameComponent& rhs) const;
+      bool operator!=(const GameComponent& rhs) const;
+
+      GameComponent& operator=(const GameComponent& rhs);
 
   };
+
+  
+
 
 };

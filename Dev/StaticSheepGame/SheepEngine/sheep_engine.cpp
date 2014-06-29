@@ -77,6 +77,8 @@ using namespace Framework;
 
 SHEEP_API void TestStuff(void)
 {
+  //OpenConsole();
+
   // Create the engine
   Engine* SheepEngine = new Engine();
   // Add the GameLogic system which really doesn't do anything right now :v
@@ -118,6 +120,9 @@ SHEEP_API void TestStuff(void)
 
   // Create 3 more objects from the archetype "test_type"
   obj = FACTORY->LoadObjectFromArchetype(space, "test_type");
+  obj->name = "Bob Junior";
+  obj = FACTORY->LoadObjectFromArchetype(space, "test_type");
+  obj->archetype = "Nottheoldone";
   obj = FACTORY->LoadObjectFromArchetype(space, "test_type");
   obj = FACTORY->LoadObjectFromArchetype(space, "test_type");
 
@@ -125,18 +130,18 @@ SHEEP_API void TestStuff(void)
   comp = obj->GetComponent<Transform>(eTransform);
   comp->val2 = 300; // sparta
 
-  // If we want to save instanced object data we need to create
-  // a list of variables we wish to save
-  // I may eventually add archetype caching and only save objects
-  // whose values are different from their archetypes
-  // Also i plan on adding non-archetype object saving support
-  std::vector<std::string> dataList;
-
-  // Lets save val2 from inside of transform
-  dataList.push_back("Transform:val2");
-
-  // Save the space as a level named "test_level"
-  FACTORY->SaveSpaceToLevel(space, "test_level", &dataList, true, false);
+  // Save the space as a level named "test_level" with the following settings
+  // ObjectInstanceDataList = NULL
+  //    We are not providing a white list of object variables
+  //    We wish to print out, regardless if they have changed or not.
+  // IncludeGeneric = true
+  //    We are going to save objects which do not belong to an archetype
+  // AllData = true
+  //    We are going to save all data relating to archetypes.
+  //    If the archetype exists in our archetype map (which means it has been
+  //    saved or loaded once before we are saving the space) then we are
+  //    only going to save any data which differs from the original archetype
+  FACTORY->SaveSpaceToLevel(space, "test_level", NULL, true, true);
 
   // Remove "TestSpace", except i don't even know if this works right
   SheepEngine->RemoveSpace(space);
@@ -175,8 +180,25 @@ SHEEP_API void TestStuff(void)
     comp->val2 = 1000;
   }
 
+  // If we want to save instanced object data we need to create
+  // a list of variables we wish to save
+  // I may eventually add archetype caching and only save objects
+  // whose values are different from their archetypes
+  // Also i plan on adding non-archetype object saving support
+  std::vector<std::string> dataList;
+
+  // Lets save val2 from inside of transform
+  dataList.push_back("Transform:val2");
+
   // Save the space as a level named "test_level"
   FACTORY->SaveSpaceToLevel(space, "test_level2", &dataList, true, false);
+
   FACTORY->SaveSpaceToLevel(space, "test_level_standalone", true);
+
+  SheepEngine->RemoveSpace(space);
+
+  space = SheepEngine->CreateSpace("Stand alone space");
+
+  FACTORY->LoadLevelToSpace(space, "test_level_standalone");
 
 }
