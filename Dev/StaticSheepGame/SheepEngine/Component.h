@@ -15,16 +15,19 @@ namespace Framework
 
   extern Factory* FACTORY;
 
-  class GameComponent {
+  class GameComponent : public Generic
+  {
     public:
       // Game Objects have full access to the component
       friend class GameObject;
 
       // Initialized upon Object creation
       // After all components are constructed
-      virtual void Initialize(){};
+      virtual void Initialize() {};
 
       virtual void Remove() {};
+
+      GameComponent() : Generic(eGameComponent) {};
 
       // Destructor, can be accessed from inherited classes
       ~GameComponent() {};

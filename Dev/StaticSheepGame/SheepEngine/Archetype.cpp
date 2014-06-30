@@ -1,4 +1,3 @@
-#include "Macros.h"
 /*****************************************************************
 Filename: Archetype.cpp
 Project: 
@@ -6,6 +5,10 @@ Author(s): Zachary Nawar (Primary)
 
 All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 *****************************************************************/
+
+#include "Macros.h"
+#include "Object.h"
+#include "TypeInfo.h"
 
 namespace Framework
 {
@@ -169,13 +172,12 @@ namespace Framework
     return obj; // return the object
   }
 
-  void Archetype::Serialize(File& file) const
+  void Archetype::Serialize(File& file, Variable var)
   {
-    Variable var;
-    const Archetype* o = this;
+    Archetype* o = (Archetype*)var.GetData();
+    const TypeInfo* info = GET_TYPE(Archetype);
 
     Serializer *s = Serializer::Get( );
-    const TypeInfo* info = GET_TYPE(GameObject);
     int& pad = s->GetPadLevel( );
 
     s->Padding( file, pad );
@@ -183,15 +185,27 @@ namespace Framework
     s->Padding( file, pad++ );
     file.Write( "{\n" );
 
-    s->Padding( file, pad );
-    file.Write("%s ", "name");
-    var = name;
-    GET_TYPE(std::string)->Serialize(file, var);
+    // Iterate through the members we need to serialize
+    for(unsigned i = 0; i < info->GetMembers().size(); ++i)
+    {
+      // Get a pointer to the member
+      const Member* member = &info->GetMembers().front() + i;
+      // Add some padding in
+      s->Padding( file, pad );
 
-    s->Padding( file, pad );
-    file.Write("%s ", "archetype");
-    var = archetype;
-    GET_TYPE(std::string)->Serialize(file, var);
+      // Get a pointer to the member type
+      const TypeInfo* memberInfo = member->Type();
+      // Write the name of the member
+      file.Write("%s ", member->Name());
+
+      // Get a pointer to the location of the member inside the data
+      // struct/class/whatever itself
+      void* offsetData = PTR_ADD(o, member->Offset());
+
+      // Construct a new variable out of that, and then serialize that variable
+      // yay recursive
+      memberInfo->Serialize(file, Variable(memberInfo, offsetData));
+    }
 
     s->Padding( file, pad );
 
@@ -225,14 +239,14 @@ namespace Framework
 
   }
 
-  void Archetype::Deserialize(File& file, Archetype& arch)
+  void Archetype::Deserialize(File& file, Variable var)
   {
-   
+    Archetype& arch = var.GetValue<Archetype>();
     // Create a virtual game space
     GameSpace* space = new GameSpace();
     // Create an empty object in the virtual game space
     GameObject* obj = space->CreateEmptyObject();
-    Variable var = *obj; // Set the object as a variable
+    var = *obj; // Set the object as a variable
 
     // Deserialize the file into the object
     GET_TYPE(GameObject)->Deserialize(file, var);

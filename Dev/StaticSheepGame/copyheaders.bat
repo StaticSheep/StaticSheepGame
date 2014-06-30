@@ -1,0 +1,1 @@
+xcopy "$(SolutionDir)SheepEngine\*.h" "$(SolutionDir)includes\engine" /d /y

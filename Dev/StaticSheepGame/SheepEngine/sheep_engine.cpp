@@ -2,6 +2,7 @@
 // Sorry for the terrible naming convention, I wanted to make it clear what each function represented
 
 #include "sheep_engine.h"
+
 #include "Object.h"
 
 #include "Enum.h"
@@ -13,6 +14,7 @@
 #include "PhysicsObject.h"
 #include "GameLogic.h"
 #include "Factory.h"
+#include <functional>
 
 // This is a way to force the project to include the libraries
 // without messing around with project settings
@@ -48,7 +50,7 @@ static int InternalStaticEngineFunction(void)
 
 // This is an exported Engine function that calls
 // the private function inside this file
-SHEEP_API int ExportedEngineFunction(void)
+int ExportedEngineFunction(void)
 {
   // Call an internal function from inside of the engine
   return InternalStaticEngineFunction();
@@ -56,7 +58,7 @@ SHEEP_API int ExportedEngineFunction(void)
 
 // This is an exported Engine function that calls
 // an exported function from the graphics
-SHEEP_API int ExportedEngineGraphicsFunction(void)
+int ExportedEngineGraphicsFunction(void)
 {
   // Call an exported function from the graphics
   return ExportedGraphicsFunction();
@@ -64,7 +66,7 @@ SHEEP_API int ExportedEngineGraphicsFunction(void)
 
 // This is an exported Engine function that calls
 // an exported function from the graphics
-SHEEP_API int ExportedEnginePhysicsFunction(void)
+int ExportedEnginePhysicsFunction(void)
 {
   // Call an exported function from the physics
   return ExportedPhysicsFunction();
@@ -73,9 +75,11 @@ SHEEP_API int ExportedEnginePhysicsFunction(void)
 
 // IGNORE THE STUFF BELOW THIS
 
+void TestMore(void);
+
 using namespace Framework;
 
-SHEEP_API void TestStuff(void)
+void TestStuff(void)
 {
   //OpenConsole();
 
@@ -226,6 +230,35 @@ SHEEP_API void TestStuff(void)
   FACTORY->LoadLevelToSpace(space, "test_level_standalone");
 
   FACTORY->SaveArchetypeToFile("test_type");
+
+  obj = FACTORY->LoadObjectFromArchetype(space, "test_type");
+  
+}
+
+
+void TestMore()
+{
   
 
+
+}
+
+
+void Foo::func1()
+{
+
+}
+
+void Foo::func2()
+{
+
+}
+
+Foo DoCoolStuff()
+{
+  Foo f;
+  f.value1 = 10;
+  f.func1();
+  f.func2();
+  return f;
 }

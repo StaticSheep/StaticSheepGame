@@ -50,6 +50,8 @@ namespace Framework
 
   void EngineTypeRegistration()
   {
+    TYPE_REGISTER(EmptyType);
+
     REGISTER_POD_FULL( int );
 
     REGISTER_POD_FULL( unsigned int );
@@ -68,11 +70,20 @@ namespace Framework
     TYPE_SET_SERIALIZER( std::string, SerializeString );
     TYPE_SET_DESERIALIZER( std::string, DeserializeString );
 
+    TYPE_REGISTER( Handle );
+    TYPE_SET_SERIALIZER( Handle, Handle::Serialize );
+
     TYPE_REGISTER( GameObject );
     TYPE_ADD_MEMBER( GameObject, name );
     TYPE_ADD_MEMBER( GameObject, archetype );
     TYPE_SET_SERIALIZER( GameObject, GameObject::Serialize );
     TYPE_SET_DESERIALIZER( GameObject, GameObject::Deserialize );
+
+    TYPE_REGISTER( Archetype );
+    TYPE_ADD_MEMBER( Archetype, name );
+    TYPE_ADD_MEMBER( Archetype, archetype );
+    TYPE_SET_SERIALIZER( Archetype, Archetype::Serialize );
+    TYPE_SET_DESERIALIZER( Archetype, Archetype::Deserialize );
 
     TYPE_REGISTER( GameSpace );
     TYPE_SET_SERIALIZER( GameSpace, GameSpace::Serialize );
@@ -88,3 +99,4 @@ namespace Framework
     TYPE_ADD_MEMBER( Tester, testvalue2 );
   }
 }
+

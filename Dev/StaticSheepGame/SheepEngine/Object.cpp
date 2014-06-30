@@ -46,6 +46,7 @@ namespace Framework
   }
 
   GameObject::GameObject()
+    : Generic(eGameObject)
   {
     for (unsigned int i = 0; i < ecountComponents; ++i)
       m_components[i] = Handle::null;
@@ -187,29 +188,37 @@ namespace Framework
 
     s->Padding( file, pad );
 
+    //const TypeInfo* typeInfo = GET_TYPE(Handle);
+
+    Serializer::Get()->SetUserData(o->space);
     // Now we are going to iterate through every component and serialize them
     for(unsigned i = 0; i < ecountComponents; ++i)
     {
-      // Find the component type
-      EComponent type = (EComponent)i;
-      if (o->HasComponent( type ))
-      {
-        // If the object has the specified component, then get the type info
-        const TypeInfo *typeInfo = FACTORY->GetComponentType( type );
-        // Create a variable from the component
-        Variable v( typeInfo, o->GetComponent( type ) );
-        // Serialize the component into the file
-        v.Serialize( file );
+      Variable v = o->m_components[i];
+      v.Serialize(file);
+      //// Find the component type
+      //EComponent type = (EComponent)i;
+      //if (o->HasComponent( type ))
+      //{
+      //  // If the object has the specified component, then get the type info
+      //  const TypeInfo *typeInfo = FACTORY->GetComponentType( type );
+      //  // Create a variable from the component
+      //  Variable v( typeInfo, o->GetComponent( type ) );
+      //  // Serialize the component into the file
+      //  v.Serialize( file );
 
-        // If we aren't quite yet at the end of all the components, make a new line
-        // And pad it for any future components
-        if(i != ecountComponents - 1)
-        {
-          file.Write( "\n" );
-          s->Padding( file, pad );
-        }
+      //  // If we aren't quite yet at the end of all the components, make a new line
+      //  // And pad it for any future components
+      if(i != ecountComponents - 1)
+      {
+        file.Write( "\n" );
+        s->Padding( file, pad );
       }
+      //}
     }
+
+    Serializer::Get()->SetUserData(nullptr);
+
     // We are all done so close the bracket
     s->Padding( file, --pad );
     file.Write( "}\n" );

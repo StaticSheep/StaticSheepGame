@@ -19,6 +19,8 @@ namespace Framework
     Handle(unsigned index, unsigned counter);
     Handle(unsigned handle); // conversion
 
+    static void Serialize(File& file, Variable var);
+
     inline operator unsigned(void) const;
 
     unsigned m_index : 16;

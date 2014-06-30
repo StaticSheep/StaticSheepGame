@@ -15,5 +15,6 @@
     <ClInclude Include="precompiled.h">
       <Filter>Precompiled</Filter>
     </ClInclude>
+    <ClInclude Include="..\includes\engine\sheep_engine.h" />
   </ItemGroup>
 </Project>

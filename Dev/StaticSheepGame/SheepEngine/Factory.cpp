@@ -350,7 +350,8 @@ namespace Framework
 
     ErrorIf(!file.Validate(), "Factory", "Invalid file!");
 
-    archetype.Serialize(file);
+    Variable var = archetype;
+    var.Serialize(file);
 
     file.Close();
   }
@@ -403,7 +404,8 @@ namespace Framework
     ErrorIf(!file.Validate(), "Factory", "Invalid file!");
 
     Archetype buffer;
-    Archetype::Deserialize(file, buffer);
+    Variable var = buffer;
+    Archetype::Deserialize(file, var);
     buffer.archetype = archetype;
 
     ArchetypeMap[buffer.archetype] = buffer;

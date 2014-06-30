@@ -20,7 +20,6 @@ namespace Framework
 
   void EngineTypeRegistration(void);
 
-  template <typename T>
   struct EmptyType
   {
   };
@@ -66,3 +65,6 @@ namespace Framework
     return typeInfo;
   }
 }
+
+
+

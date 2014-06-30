@@ -22,7 +22,7 @@ namespace Framework
   typedef Handle* ComponentArray;
   typedef std::vector<Handle> ChildArray;
 
-  class GameObject
+  class GameObject : public Generic
   {
     public:
       friend class Factory;
@@ -93,7 +93,7 @@ namespace Framework
     private:
 
       // Initializes the object, engine use only
-      void Initialize();
+      virtual void Initialize();
 
       // Active flag, if the object is inactive it will be removed
       bool m_active;

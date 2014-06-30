@@ -29,9 +29,9 @@ namespace Framework
     void SerializeDifferences(GameObject* obj, File& file) const;
 
     // Serialization routine
-    void Serialize(File& file) const;
+    static void Serialize(File& file, Variable var);
     // Deserialization routine, var must be an empty archetype (buffer)
-    static void Deserialize(File& file, Archetype& arch);
+    static void Deserialize(File& file, Variable var);
 
     GameObject* CreateObject(GameSpace* space) const;
 

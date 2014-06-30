@@ -41,22 +41,22 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)includes;$(SolutionDir)includes/engine;$(IncludePath)</IncludePath>
-    <ReferencePath>$(SolutionDir)includes;$(SolutionDir)includes/engine;$(ReferencePath)</ReferencePath>
+    <IncludePath>$(SolutionDir)includes;$(IncludePath)</IncludePath>
+    <ReferencePath>$(SolutionDir)includes;$(ReferencePath)</ReferencePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)includes;$(SolutionDir)includes/engine;$(IncludePath)</IncludePath>
-    <ReferencePath>$(SolutionDir)includes;$(SolutionDir)includes/engine;$(ReferencePath)</ReferencePath>
+    <IncludePath>$(SolutionDir)includes;$(IncludePath)</IncludePath>
+    <ReferencePath>$(SolutionDir)includes;$(ReferencePath)</ReferencePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <WarningLevel>Level4</WarningLevel>
+      <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;DLL_ENGINEEXPORT;_DEBUG;_WINDOWS;_USRDLL;DLL_EXPORT;WIN32_LEAN_AND_MEAN;%(PreprocessorDefinitions);DLL_EXPORT</PreprocessorDefinitions>
       <PrecompiledHeaderFile>precompiled.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)includes;$(SolutionDir)includes/engine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ForcedIncludeFiles>precompiled.h</ForcedIncludeFiles>
     </ClCompile>
     <Link>
@@ -65,16 +65,20 @@
       <AdditionalLibraryDirectories>$(SolutionDir)includes;$(SolutionDir)$(Configuration)</AdditionalLibraryDirectories>
       <AdditionalDependencies>SheepGraphics.lib;SheepPhysics.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <WarningLevel>Level4</WarningLevel>
+      <WarningLevel>Level3</WarningLevel>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;DLL_ENGINEEXPORT;NDEBUG;_WINDOWS;_USRDLL;SHEEPENGINE_EXPORTS;%(PreprocessorDefinitions);DLL_EXPORT</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)includes;$(SolutionDir)includes/engine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>precompiled.h</PrecompiledHeaderFile>
       <ForcedIncludeFiles>precompiled.h</ForcedIncludeFiles>
     </ClCompile>
@@ -86,12 +90,15 @@
       <AdditionalLibraryDirectories>$(SolutionDir)includes;$(SolutionDir)$(Configuration)</AdditionalLibraryDirectories>
       <AdditionalDependencies>SheepGraphics.lib;SheepPhysics.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\includes\engine\api.h" />
-    <ClInclude Include="..\includes\engine\sheep_engine.h" />
     <ClInclude Include="..\includes\EnumData.h" />
     <ClInclude Include="..\includes\Utilities.h" />
+    <ClInclude Include="api.h" />
     <ClInclude Include="Archetype.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ComponentCreator.h" />
@@ -102,7 +109,9 @@
     <ClInclude Include="Factory.h" />
     <ClInclude Include="File.h" />
     <ClInclude Include="GameLogic.h" />
+    <ClInclude Include="Generic.h" />
     <ClInclude Include="Hash.h" />
+    <ClInclude Include="Hooks.h" />
     <ClInclude Include="IntrospectionManager.h" />
     <ClInclude Include="Macros.h" />
     <ClInclude Include="ObjectAllocator.h" />
@@ -118,6 +127,7 @@
     <ClInclude Include="Object.h" />
     <ClInclude Include="precompiled.h" />
     <ClInclude Include="SheepPhysics.h" />
+    <ClInclude Include="sheep_engine.h" />
     <ClInclude Include="SlotArray.h" />
     <ClInclude Include="Space.h" />
     <ClInclude Include="System.h" />
@@ -136,6 +146,7 @@
     <ClCompile Include="File.cpp" />
     <ClCompile Include="GameLogic.cpp" />
     <ClCompile Include="Hash.cpp" />
+    <ClCompile Include="Hooks.cpp" />
     <ClCompile Include="IntrospectionManager.cpp" />
     <ClCompile Include="ObjectAllocator.cpp" />
     <ClCompile Include="PhysicsObject.cpp" />

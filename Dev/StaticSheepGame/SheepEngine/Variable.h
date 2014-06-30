@@ -26,8 +26,8 @@ namespace Framework
     template <typename T>
     Variable(T* rhs);
 
-    void *GetData(void) const;
-    const TypeInfo *GetTypeInfo(void) const;
+    void* GetData(void) const;
+    const TypeInfo* GetTypeInfo(void) const;
     bool IsValid(void) const;
 
     template <typename T>

@@ -12,20 +12,20 @@ namespace Framework
 {
   class Engine;
 
-  extern Engine* ENGINE;
+  SHEEP_API extern Engine* ENGINE;
 
   class Engine
   {
   public:
-    Engine();
-    ~Engine();
+    SHEEP_API Engine();
+    SHEEP_API ~Engine();
 
-    void AddSystem(ISystem* system);
-    void Initialize();
-    void MainLoop();
-    void Shutdown();
+    SHEEP_API void AddSystem(ISystem* system);
+    SHEEP_API void Initialize();
+    SHEEP_API void MainLoop();
+    SHEEP_API void Shutdown();
 
-    bool Running() const;
+    SHEEP_API bool Running() const;
 
 
     GameSpace* CreateSpace(const char* name);
