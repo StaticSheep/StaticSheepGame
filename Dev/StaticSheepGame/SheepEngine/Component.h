@@ -51,6 +51,8 @@ namespace Framework
 
       GameComponent& operator=(const GameComponent& rhs);
 
+      const TypeInfo* typeinfo;
+
   };
 
   

@@ -35,6 +35,12 @@ namespace Framework
     template <typename T>
     const T& GetValue(void) const;
 
+    void ToLua(lua_State* L) const;
+    void FromLua(lua_State* L, int index);
+
+    void PlacementNew(void);
+    void PlacementDelete(void);
+    void Delete(void);
     void Serialize(File& file) const;
     void Deserialize(File& file);
     Variable& operator=(const Variable& rhs);

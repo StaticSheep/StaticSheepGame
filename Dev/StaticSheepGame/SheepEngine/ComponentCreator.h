@@ -65,6 +65,7 @@ namespace Framework
       component->self = space->GetHandles().Insert(component); // Push a handle into the HandleManager
       component->space = space; // Reference back to the space
       component->typeID = typeID; // Set the components type
+      component->typeinfo = GET_TYPE(T);
 
       // Sync the handles
       space->SyncHandles<T>(*componentList);
@@ -85,6 +86,7 @@ namespace Framework
 
       // Set the type
       comp->typeID = typeID; // Set the components type
+      comp->typeinfo = GET_TYPE(T);
 
       // Send back
       return comp;

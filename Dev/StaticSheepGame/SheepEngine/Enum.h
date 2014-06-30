@@ -35,6 +35,8 @@ namespace Framework
 
   #include "EnumData.h"
 
+  void RegisterEnums();
+
   struct Enum
   {
     Enum( const char *name);
@@ -64,4 +66,24 @@ namespace Framework
 
   #include "EnumData.h"
 
+
+  template <typename EnumTYpe>
+  void SerializeEnum(File& file, Variable var);
+
+  #undef  E_NAME
+  #define E_NAME(NAME)\
+  template<>\
+  void SerializeEnum<E##NAME>(File& file, Variable var);
+
+  #include "EnumData.h"
+
+  template <typename EnumTYpe>
+  void DeserializeEnum(File& file, Variable var);
+
+  #undef  E_NAME
+  #define E_NAME(NAME)\
+  template<>\
+  void DeserializeEnum<E##NAME>(File& file, Variable var);
+
+  #include "EnumData.h"
 }

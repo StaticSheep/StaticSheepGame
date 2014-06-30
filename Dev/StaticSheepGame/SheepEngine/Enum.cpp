@@ -71,6 +71,47 @@ namespace Framework
   }
 
   #undef  E_NAME
+  #define E_NAME( NAME )\
+    template <>\
+    void SerializeEnum<E##NAME>( File& file, Variable var ) { \
+    Enum *e = GET_ENUM(NAME); \
+    file.Write(STRINGIZE(E##NAME)); \
+    file.Write(" "); \
+    file.Write("\"");  \
+    file.Write(e->m_literals[var.GetValue<E##NAME>()].c_str() ); \
+    file.Write("\"");  \
+    file.Write("\n"); }
+
+  #include "EnumData.h"
+
+    // Create deserialization from file routines
+  #undef  E_NAME
+  #define E_NAME( NAME )  \
+    template <>   \
+    void DeserializeEnum<E##NAME>( File& file, Variable var ) {  \
+    Enum *e = GET_ENUM(NAME); \
+    const TypeInfo *typeFromFile =     \
+    Serializer::Get()->PeekType( file, Serializer::Get()->GetPadLevel() );   \
+    char temp[256]; \
+    file.Read("%*[^\"]\"");  \
+    file.Read("%[^\"]\"", temp); \
+    var.GetValue<E##NAME>() = (E##NAME)e->GetIndexFromString(temp); }
+
+  #include "EnumData.h"
+
+  // Create type info registration
+  #undef  E_NAME
+  #define E_NAME( NAME ) \
+  TYPE_REGISTER( E##NAME );  \
+  TYPE_SET_SERIALIZER( E##NAME, SerializeEnum<E##NAME> ); \
+  TYPE_SET_DESERIALIZER( E##NAME, DeserializeEnum<E##NAME> );
+
+  void RegisterEnums()
+  {
+    #include "EnumData.h"
+  }
+
+  #undef  E_NAME
   #define E_NAME( NAME ) \
     const char *k_##NAME##literalArray[] = {
 

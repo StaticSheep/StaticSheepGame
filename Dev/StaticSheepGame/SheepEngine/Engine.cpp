@@ -11,7 +11,7 @@ namespace Framework
   Engine* ENGINE = NULL;
 
   Engine::Engine()
-    : m_running(true)
+    : m_running(true), L(nullptr)
   {
 
     EngineTypeRegistration();
@@ -35,10 +35,15 @@ namespace Framework
 
   void Engine::Initialize()
   {
+    L = Lua::CreateEnvironment();
+
+    Lua::BindDefaultFunctions();
+
+    Lua::CallFunc(L, "Test");
+    Lua::CallFunc(L, "Test2", 10);
+
     for (unsigned int i = 0; i < m_systems.size(); ++i)
-    {
       m_systems[i]->Initialize();
-    }
   }
 
   void Engine::MainLoop()
@@ -76,6 +81,15 @@ namespace Framework
     delete space;
   }
 
+  lua_State* Engine::Lua() const
+  {
+    return L;
+  }
+
+  void Engine::LuaError(const char* msg)
+  {
+    Error("LuaError","%s", msg);
+  }
 
 
 }

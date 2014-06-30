@@ -1,17 +1,34 @@
+
+extern "C"
+{
+  #include "lua/lua.h"
+  #include "lua/lua.hpp"
+  #include "lua/lauxlib.h"
+  #include "lua/luaconf.h"
+  #include "lua/lualib.h"
+  #include "lua/lfs.h"
+}
+
+
+
 #include "api.h"
 #include <assert.h>
-
-
 
 #include "Qualifiers.h"
 #include "Macros.h"
 #include "Utilities.h"
+
 #include "File.h"
+#include "Variable.h"
 #include "Enum.h"
 #include "Hooks.h"
-#include "Variable.h"
 #include "TypeInfo.h"
+#include "FuncSignature.h"
+#include "Function.h"
+#include "LuaTransfer.h"
+#include "LuaInterface.h"
 #include "IntrospectionManager.h"
+#include "LuaDefaultBinds.h"
 
 #include "Serialization.h"
 #include "PODSerialization.h"

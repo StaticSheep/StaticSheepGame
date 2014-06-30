@@ -36,9 +36,8 @@ namespace Framework
     GameSpace* space = (GameSpace*)Serializer::Get()->GetUserData();
     Generic* data = space->GetHandles().GetAs<Generic>(h);
 
-    GameObject* obj;
     GameComponent* comp;
-    const TypeInfo* type = GET_TYPE(EmptyType);
+    const TypeInfo* type = GET_TYPE(int);
 
     if (data == nullptr)
       return;

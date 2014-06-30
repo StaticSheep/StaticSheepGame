@@ -24,12 +24,9 @@ namespace Framework
   }
 
   TypeInfo::TypeInfo()
-    : m_serialize(NULL)
-    , m_deserialize(NULL)
-  {
-  }
+    : m_serialize(nullptr), m_deserialize(nullptr), m_metatable(nullptr), m_fromLua(nullptr), m_toLua(nullptr) {}
 
-  void TypeInfo::Init(const char *name, unsigned size)
+  void TypeInfo::Init(const char* name, unsigned int size)
   {
     std::string clean = "";
     std::string theName = name;
@@ -42,7 +39,7 @@ namespace Framework
     m_size = size;
   }
 
-  void TypeInfo::AddMember(const TypeInfo *typeInfo, const char *name, unsigned offset)
+  void TypeInfo::AddMember(const TypeInfo* typeInfo, const char* name, unsigned int offset)
   {
     Member mem;
     mem.m_name = name;
@@ -59,7 +56,7 @@ namespace Framework
         return &m_members[i];
     }
 
-    return NULL;
+    return nullptr;
   }
 
   void TypeInfo::SetSerializer(SerializeCB cb)
@@ -98,6 +95,36 @@ namespace Framework
     return m_name.c_str();
   }
 
+  const char* TypeInfo::LuaMetaTable() const
+  {
+    return m_metatable;
+  }
+
+  void TypeInfo::ToLua(lua_State* L, Variable var) const
+  {
+    if (m_toLua)
+      m_toLua(L, var);
+    else
+      Lua::GenericToLua(L, var); // Generic lua pass function
+  }
+
+  void TypeInfo::FromLua(lua_State* L, int index, Variable* var) const
+  {
+    if (m_fromLua)
+      m_fromLua(L, index, var);
+    else
+      Lua::GenericFromLua(L, index, var);
+  }
+
+  void TypeInfo::SetFromLua(FromLuaCB cb)
+  {
+    m_fromLua = cb;
+  }
+
+  void TypeInfo::SetToLua(ToLuaCB cb)
+  {
+    m_toLua = cb;
+  }
 
   const std::vector<Member>& TypeInfo::GetMembers() const
   {

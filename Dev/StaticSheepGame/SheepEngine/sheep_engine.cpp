@@ -20,6 +20,7 @@
 // without messing around with project settings
 #pragma comment (lib, "SheepGraphics.lib")
 #pragma comment (lib, "SheepPhysics.lib")
+#pragma comment (lib, "luaSource.lib")
 
 // ********* INTERNAL FUNCTIONS ********* //
 
@@ -75,13 +76,16 @@ int ExportedEnginePhysicsFunction(void)
 
 // IGNORE THE STUFF BELOW THIS
 
-void TestMore(void);
+void TestMore(void)
+{
+
+}
 
 using namespace Framework;
 
 void TestStuff(void)
 {
-  //OpenConsole();
+  OpenConsole();
 
   Serializer* s;
   // Create the engine
@@ -233,15 +237,11 @@ void TestStuff(void)
 
   obj = FACTORY->LoadObjectFromArchetype(space, "test_type");
   
+
+  Function f = BUILD_FUNCTION(TestMore);
+  //f();
 }
 
-
-void TestMore()
-{
-  
-
-
-}
 
 
 void Foo::func1()

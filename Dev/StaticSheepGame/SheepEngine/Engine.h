@@ -27,6 +27,10 @@ namespace Framework
 
     SHEEP_API bool Running() const;
 
+    SHEEP_API lua_State* Lua(void) const;
+
+    SHEEP_API static void LuaError(const char* msg);
+
 
     GameSpace* CreateSpace(const char* name);
     void RemoveSpace(GameSpace* space);
@@ -37,9 +41,18 @@ namespace Framework
     bool m_running;
     std::vector<ISystem*> m_systems;
 
+    lua_State* L;
+
     std::hash_map<std::string, GameSpace*> m_spaceMap;
     std::vector<GameSpace*> m_spaces;
 
     friend class GameLogic;
   };
+
+
+  // Bound to lua as "GetComponent"
+  GameComponent* LuaGetComponent(const char* space, unsigned int handle, const char* type);
+
+  // Bound to lua as "RemoveGameObject"
+  void RemoveObjectFromEngine(const char* space, unsigned int handle);
 }

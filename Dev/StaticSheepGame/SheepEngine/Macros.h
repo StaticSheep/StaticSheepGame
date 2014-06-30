@@ -18,11 +18,11 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 // Special data types
 #define TYPE_REGISTER( T ) \
-  Framework::IntrospectionManager::Get( )->RegisterType<Framework::RemoveQualifiers<T>::type>( sizeof( T ), #T, false )
+  Framework::IntrospectionManager::Get( )->RegisterType<Framework::RemoveQualifiers<T>::type>( sizeof( T ), #T, STRINGIZE(__##T##_MT), false )
 
 // Plain old data types
 #define TYPE_REGISTER_POD( T ) \
-  Framework::IntrospectionManager::Get( )->RegisterType<Framework::RemoveQualifiers<T>::type>( sizeof( T ), #T, true )
+  Framework::IntrospectionManager::Get( )->RegisterType<Framework::RemoveQualifiers<T>::type>( sizeof( T ), #T, STRINGIZE(__##T##_MT), true )
 
 #define GET_TYPE( T ) \
   Framework::IntrospectionManager::Get( )->GetType<Framework::RemoveQualifiers<T>::type>( )
@@ -44,6 +44,24 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 #define TYPE_SET_DESERIALIZER( T, DESERIALIZER ) \
   ((Framework::TypeInfo *)GET_TYPE( T ))->SetDeserializer( DESERIALIZER )
+
+#define BUILD_FUNCTION(FN) \
+  Framework::BuildFunction<decltype( &FN ), &FN>( &FN )
+
+#define BIND_FUNCTION(L, FN) \
+  static Framework::Function FN##Function = BUILD_FUNCTION(FN); \
+  Framework::Lua::BindFunctionToLua(L, &FN##Function, #FN)
+
+// Explicit bind
+#define BIND_FUNCTION_EX(L, FN, NAME) \
+  static Framework::Function NAME##Function = BUILD_FUNCTION(FN); \
+  Framework::Lua::BindFunctionToLua(L, &NAME##Function, #NAME)
+
+#define TYPE_SET_TO_LUA(T, CB)\
+  ((Framework::TypeInfo*)GET_TYPE(T))->SetToLua(CB)
+
+#define TYPE_SET_FROM_LUA(T, CB)\
+  ((Framework::TypeInfo*)GET_TYPE(T))->SetFromLua(CB)
 
 
 // Add a pointer by an integral offset (bytes)

@@ -37,6 +37,8 @@ namespace Framework
 
     static const Archetype null;
 
+    Archetype& operator=(const Archetype& rhs);
+
   private:
     void CopyObject(GameObject*);
 
@@ -44,7 +46,7 @@ namespace Framework
 
     GameComponent* m_components[ecountComponents];
 
-    Archetype& operator=(const Archetype& rhs);
+    
 
     friend class Factory;
     friend class GameSpace;

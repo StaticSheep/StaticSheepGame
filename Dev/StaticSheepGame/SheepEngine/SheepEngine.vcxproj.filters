@@ -112,6 +112,21 @@
     <ClInclude Include="Hooks.h">
       <Filter>Systems\Hooks</Filter>
     </ClInclude>
+    <ClInclude Include="FuncSignature.h">
+      <Filter>Engine\Introspection\Functions\Signature</Filter>
+    </ClInclude>
+    <ClInclude Include="Function.h">
+      <Filter>Engine\Introspection\Functions\Function</Filter>
+    </ClInclude>
+    <ClInclude Include="LuaInterface.h">
+      <Filter>Engine\Lua\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="LuaTransfer.h">
+      <Filter>Engine\Lua\Transfer</Filter>
+    </ClInclude>
+    <ClInclude Include="LuaDefaultBinds.h">
+      <Filter>Engine\Lua\DefaultBinds</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="precompiled.cpp">
@@ -197,6 +212,21 @@
     </ClCompile>
     <ClCompile Include="Hooks.cpp">
       <Filter>Systems\Hooks</Filter>
+    </ClCompile>
+    <ClCompile Include="FuncSignature.cpp">
+      <Filter>Engine\Introspection\Functions\Signature</Filter>
+    </ClCompile>
+    <ClCompile Include="Function.cpp">
+      <Filter>Engine\Introspection\Functions\Function</Filter>
+    </ClCompile>
+    <ClCompile Include="LuaInterface.cpp">
+      <Filter>Engine\Lua\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="LuaTransfer.cpp">
+      <Filter>Engine\Lua\Transfer</Filter>
+    </ClCompile>
+    <ClCompile Include="LuaDefaultBinds.cpp">
+      <Filter>Engine\Lua\DefaultBinds</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -319,6 +349,27 @@
     </Filter>
     <Filter Include="Systems\Hooks">
       <UniqueIdentifier>{ad424f03-4e6f-40d5-8d42-74cfc164e782}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Introspection\Functions">
+      <UniqueIdentifier>{c1fcac08-e0bb-47e4-946b-40cc3570d42b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Introspection\Functions\Signature">
+      <UniqueIdentifier>{71492726-cff5-4fb9-8c7a-793eb659f756}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Introspection\Functions\Function">
+      <UniqueIdentifier>{a0782aba-65a7-4dbc-a315-38c184ba780c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Lua">
+      <UniqueIdentifier>{7cd7e1bc-c6c0-425d-9f34-e271f7ea2a2e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Lua\Interface">
+      <UniqueIdentifier>{d361bfcc-a196-480f-9d2f-d71298fac53c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Lua\Transfer">
+      <UniqueIdentifier>{0ee93d00-d747-4761-88a8-4dffd82155c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Lua\DefaultBinds">
+      <UniqueIdentifier>{8eb5bb04-307d-434d-98eb-5e15bcbd9d3c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -12,6 +12,12 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 namespace Framework
 {
+
+  const std::hash_map<std::string, TypeInfo*>& IntrospectionManager::GetTypeMap() const
+  {
+    return m_typeMap;
+  }
+
   const TypeInfo* IntrospectionManager::GetType(const char* typeName) const
   {
     std::string typeNameStr = typeName;
@@ -50,17 +56,32 @@ namespace Framework
 
   void EngineTypeRegistration()
   {
-    TYPE_REGISTER(EmptyType);
 
-    REGISTER_POD_FULL( int );
+    TYPE_REGISTER_POD( int );
 
-    REGISTER_POD_FULL( unsigned int );
+    TYPE_REGISTER_POD( unsigned int );
+    TYPE_SET_TO_LUA( unsigned int, Lua::UIntToLua );
+    TYPE_SET_FROM_LUA( unsigned int, Lua::IntFromLua );
 
-    REGISTER_POD_FULL( bool );
+    TYPE_REGISTER_POD(const char*);
+    TYPE_SET_TO_LUA(char*, Lua::CharPToLua);
+    TYPE_SET_FROM_LUA(char*, Lua::CharPFromLua);
 
-    REGISTER_POD_FULL( float );
+    TYPE_REGISTER_POD( float );
 
-    REGISTER_POD_FULL( double );
+    TYPE_SET_SERIALIZER( int, SerializePOD<int> );
+    TYPE_SET_DESERIALIZER( int, DeserializePOD<int> );
+    TYPE_SET_TO_LUA( int, Lua::IntToLua );
+    TYPE_SET_FROM_LUA( int, Lua::IntFromLua );
+
+    TYPE_SET_SERIALIZER( float, SerializePOD<float> );
+    TYPE_SET_DESERIALIZER( float, DeserializePOD<float> );
+    TYPE_SET_TO_LUA( float, Lua::FloatToLua );
+    TYPE_SET_FROM_LUA( float, Lua::FloatFromLua );
+
+    TYPE_REGISTER_POD( bool );
+    TYPE_SET_SERIALIZER( bool, SerializePOD<bool> );
+    TYPE_SET_DESERIALIZER( bool, DeserializePOD<bool> );
 
     TYPE_REGISTER( std::vector<int> );
     TYPE_SET_SERIALIZER( std::vector<int>, SerializeArray<int> );
@@ -69,6 +90,8 @@ namespace Framework
     TYPE_REGISTER( std::string );
     TYPE_SET_SERIALIZER( std::string, SerializeString );
     TYPE_SET_DESERIALIZER( std::string, DeserializeString );
+    TYPE_SET_TO_LUA( std::string, Lua::StringToLua );
+    TYPE_SET_FROM_LUA( std::string, Lua::StringFromLua );
 
     TYPE_REGISTER( Handle );
     TYPE_SET_SERIALIZER( Handle, Handle::Serialize );
@@ -97,6 +120,8 @@ namespace Framework
     TYPE_REGISTER( Tester );
     TYPE_ADD_MEMBER( Tester, testvalue1 );
     TYPE_ADD_MEMBER( Tester, testvalue2 );
+
+    RegisterEnums();
   }
 }
 
