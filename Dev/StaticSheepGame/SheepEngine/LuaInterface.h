@@ -48,5 +48,7 @@ namespace Framework
       CallFuncFinal(L, funcName, args, 1);
     }
 
+    void Shutdown(lua_State* L);
+
   }
 }

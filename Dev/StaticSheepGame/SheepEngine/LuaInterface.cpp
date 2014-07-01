@@ -67,6 +67,8 @@ namespace Framework
       // Creates a new lua environment
       lua_State* L = luaL_newstate();
 
+      
+
       // Initialization routine
       luaL_openlibs(L);
       luaopen_lfs(L); // Opens the file system
@@ -96,6 +98,8 @@ namespace Framework
           lua_pop(L, 1);
         }
       }
+
+      
 
       return L;
     }
@@ -327,6 +331,11 @@ namespace Framework
       return 0;
     }
 
+
+    void Shutdown(lua_State* L)
+    {
+      lua_close(L);
+    }
 
   }
 }

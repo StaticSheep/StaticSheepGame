@@ -26,7 +26,7 @@ namespace Framework
 
   Factory::~Factory()
   {
-
+    FACTORY = nullptr;
   }
 
   void Factory::RegisterComponentCreator(ComponentCreator& creator, const TypeInfo* type)

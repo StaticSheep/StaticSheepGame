@@ -21,10 +21,10 @@ namespace Framework
 
   Engine::~Engine()
   {
-    for (unsigned int i = m_systems.size() - 1; i > 0; --i)
-    {
-      delete m_systems[i];
-    }
+    if (m_systems.size() > 0)
+      for (unsigned int i = 0; i < m_systems.size(); ++i)
+        delete m_systems[i];
+
   }
 
   void Engine::AddSystem(ISystem* system)
@@ -46,6 +46,14 @@ namespace Framework
       m_systems[i]->Initialize();
   }
 
+  void Engine::Shutdown()
+  {
+    for (unsigned int i = 0; i < m_systems.size(); ++i)
+      m_systems[i]->Shutdown();
+
+    Lua::Shutdown(L);
+  }
+
   void Engine::MainLoop()
   {
     const float dt = 1.0f / 60.0f; // 60 frames per second
@@ -57,7 +65,7 @@ namespace Framework
   GameSpace* Engine::CreateSpace(const char* name)
   {
     // Allocate space for a new space
-    GameSpace* space = new GameSpace();
+    GameSpace* space = DBG_NEW GameSpace();
 
     space->m_name = name;
 

@@ -243,7 +243,7 @@ namespace Framework
   {
     Archetype& arch = var.GetValue<Archetype>();
     // Create a virtual game space
-    GameSpace* space = new GameSpace();
+    GameSpace* space = DBG_NEW GameSpace();
     // Create an empty object in the virtual game space
     GameObject* obj = space->CreateEmptyObject();
     var = *obj; // Set the object as a variable

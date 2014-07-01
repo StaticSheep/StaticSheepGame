@@ -88,6 +88,7 @@ void TestStuff(void)
   OpenConsole();
 
   Serializer* s;
+
   // Create the engine
   Engine* SheepEngine = new Engine();
   // Add the GameLogic system which really doesn't do anything right now :v
@@ -243,9 +244,22 @@ void TestStuff(void)
   g.Bind(obj);
   g();
 
+  HookManager hm;
+
+  Function cf = BUILD_FUNCTION(Transform::Test);
+  cf.Bind(comp);
+
+  hm.Add("TestEvent", comp->self, cf);
+  hm.Call("TestEvent");
+  hm.Remove("TestEvent", comp->self);
+  hm.Call("TestEvent");
   Lua::CallFunc(ENGINE->Lua(), "Test");
 
+  SheepEngine->RemoveSpace(space);
 
+  SheepEngine->Shutdown();
+
+  delete SheepEngine;
 
   // Add a comment here
 }

@@ -35,6 +35,8 @@ namespace Framework
 		// Systems can have names too!
 		virtual std::string GetName() = 0;
 
+    virtual void Shutdown() {};
+
 		// Virtual deconstructer
 		virtual ~ISystem() {};
 		

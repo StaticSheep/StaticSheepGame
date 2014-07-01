@@ -20,7 +20,7 @@ namespace Framework
 
 	SheepPhysics::~SheepPhysics()
 	{
-
+    PHYSICS = nullptr;
 	}
 
   void SheepPhysics::RegisterComponents()

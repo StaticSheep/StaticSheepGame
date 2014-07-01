@@ -60,7 +60,7 @@
       <ForcedIncludeFiles>precompiled.h</ForcedIncludeFiles>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)includes;$(SolutionDir)$(Configuration)</AdditionalLibraryDirectories>
       <AdditionalDependencies>SheepGraphics.lib;SheepPhysics.lib;%(AdditionalDependencies)</AdditionalDependencies>

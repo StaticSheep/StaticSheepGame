@@ -31,6 +31,8 @@ namespace Framework
 
     void Add(Handle owner, const Function& fn);
 
+    void Remove(Handle owner);
+
     void Trigger(void);
     template <typename Arg1>
     void Trigger(Arg1 arg1);
@@ -70,9 +72,6 @@ namespace Framework
     template <typename Arg1>
     void Call(std::string eventName, Arg1 arg1);
 
-    template <typename Arg1, typename Arg2>
-    void Call(std::string eventName, Arg1 arg1, Arg2 arg2);
-
     void Clear(std::string eventName);
     void ClearAll();
 
@@ -81,4 +80,11 @@ namespace Framework
 
     std::hash_map<std::string, HookCollection> HookMap;
   };
+
+  template <typename Arg1>
+  void HookManager::Call(std::string eventName, Arg1 arg1)
+  {
+    HookMap[eventName].Trigger(arg1);
+  }
+
 }

@@ -21,6 +21,7 @@ namespace Framework
 
   GameLogic::~GameLogic()
   {
+    GAMELOGIC = nullptr;
     // Free anything that was allocated
   }
 

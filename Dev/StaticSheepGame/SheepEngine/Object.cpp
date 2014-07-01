@@ -194,8 +194,11 @@ namespace Framework
     // Now we are going to iterate through every component and serialize them
     for(unsigned i = 0; i < ecountComponents; ++i)
     {
-      Variable v = o->m_components[i];
-      v.Serialize(file);
+      if (o->HasComponent(EComponent(i)))
+      {
+        Variable v = o->m_components[i];
+        v.Serialize(file);
+      }
       //// Find the component type
       //EComponent type = (EComponent)i;
       //if (o->HasComponent( type ))

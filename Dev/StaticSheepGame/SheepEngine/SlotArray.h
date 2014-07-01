@@ -22,9 +22,11 @@ namespace Framework
 	class SlotArray
 	{
 	public:
-		SlotArray( );
+		SlotArray();
 
 		SlotArray(unsigned int numElements);
+
+    ~SlotArray();
 
 		// Allocation
 		unsigned Allocate(void);
@@ -81,6 +83,8 @@ namespace Framework
 		void Grow(void);
 		void GrowInternal(void);
 
+    void Clear();
+
 		// Move data from one index to another (Like swapping)
 		void Move(unsigned int a, unsigned int b);
 	};
@@ -90,6 +94,20 @@ namespace Framework
 	
 	template <typename T>
 	SlotArray<T>::SlotArray(unsigned int numElements) : m_array( (T*)malloc(sizeof(T) * numElements) ), m_size(0), m_capacity(numElements), m_grew(false) {};
+
+  template <typename T>
+  SlotArray<T>::~SlotArray()
+  {
+    Clear();
+  }
+
+  template <typename T>
+  void SlotArray<T>::Clear()
+  {
+    if (m_array)
+      delete m_array;
+  }
+
 
 	template <typename T>
 	unsigned int SlotArray<T>::Allocate( void )

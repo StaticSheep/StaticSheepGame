@@ -76,7 +76,7 @@ namespace Framework
     virtual GameComponent* Allocate()
     {
       // Allocate a new component
-      T* comp = new T();
+      T* comp = DBG_NEW T();
 
       // Clear it with zeros
       memset(comp, NULL, sizeof(T));
