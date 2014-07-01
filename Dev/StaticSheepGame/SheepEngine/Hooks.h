@@ -11,85 +11,74 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 namespace Framework
 {
-  class Handle;
 
-  template <typename HF>
   struct Hook
   {
-    Hook(EHooks type, const HF& fn);
+    Hook(Handle owner, const Function& fn);
 
     bool Hook::operator==(const Hook& rhs) const;
 
-    const EHooks type;
-    HF function;
+    Function func;
     Handle owner;
   };
 
-  template <typename HF>
-  Hook<HF>::Hook(EHooks type, const HF& fn) :type(type), function(fn) {}
-
-  template <typename HF>
-  bool Hook<HF>::operator==(const Hook& rhs) const { return type == rhs.type; }
-  
-  class Collection
-  {
-
-  };
-
-  template <typename HF>
-  class HookCollection : public Collection
+  class HookCollection
   {
   public:
 
-    HookCollection<HF>(EHooks type) :type(type) {};
+    HookCollection() {};
+    ~HookCollection();
 
-    void Subscribe(Handle owner, const HF& func);
+    void Add(Handle owner, const Function& fn);
 
-    void Pull(void);
+    void Trigger(void);
     template <typename Arg1>
-    void Pull(Arg1 arg1);
+    void Trigger(Arg1 arg1);
     template <typename Arg1, typename Arg2>
-    void Pull(Arg1 arg1, Arg2 arg2);
+    void Trigger(Arg1 arg1, Arg2 arg2);
 
-    std::unordered_multimap<unsigned int, Hook<HF>* > m_hooks;
-
-    const EHooks type;
+    std::unordered_multimap<unsigned int, Hook* > m_hooks;
   };
 
-  template <typename HF>
-  void HookCollection<HF>::Subscribe(Handle owner, const HF& func)
-  {
-    // Creates a new hook
-    Hook<HF>* newHook = new Hook<HF>(type, func);
-    newHook->owner = owner;
-
-    // Inserts the hook into the map
-    m_hooks.insert( std::pair<Handle, Hook<HF>* >(owner, newHook));
-  }
-
-  template <typename HF>
-  void HookCollection<HF>::Pull()
-  {
-    // Goes through every hook in the list and pulls them
-    for (auto i = m_hooks.first; i != m_hooks.second; ++i)
-      i->second->function();
-  }
-
-  template <typename HF>
   template <typename Arg1>
-  void HookCollection<HF>::Pull(Arg1 arg1)
+  void HookCollection::Trigger(Arg1 arg1)
   {
     // Goes through every hook in the list and pulls them
     for (auto it = m_hooks.begin(); it != m_hooks.end(); ++it)
-      it->second->function(arg1);
+      it->second->func(arg1);
   }
 
-  template <typename HF>
   template <typename Arg1, typename Arg2>
-  void HookCollection<HF>::Pull(Arg1 arg1, Arg2 arg2)
+  void HookCollection::Trigger(Arg1 arg1, Arg2 arg2)
   {
     // Goes through every hook in the list and pulls them
     for (auto it = m_hooks.begin(); it != m_hooks.end(); ++it)
-      it->second->function(arg1, arg2);
+      it->second->func(arg1, arg2);
   }
+
+
+  class HookManager
+  {
+  public:
+    HookManager() {};
+
+    void Add(std::string eventName, Handle owner, const Function& func);
+    void Remove(std::string eventName, Handle owner);
+
+    void Call(std::string eventName);
+
+    template <typename Arg1>
+    void Call(std::string eventName, Arg1 arg1);
+
+    template <typename Arg1, typename Arg2>
+    void Call(std::string eventName, Arg1 arg1, Arg2 arg2);
+
+    void Clear(std::string eventName);
+    void ClearAll();
+
+  private:
+    void Verify(std::string eventName);
+
+    std::hash_map<std::string, HookCollection> HookMap;
+  };
 }

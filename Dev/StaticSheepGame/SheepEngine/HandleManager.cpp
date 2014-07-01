@@ -88,7 +88,9 @@ namespace Framework
 		// Get the handle entry
 		HandleEntry* entry = m_array + handle.m_index;
 
-		assert(entry->m_allocated == true);
+    if (!entry->m_allocated)
+      return;
+		//assert(entry->m_allocated == true);
 
 		// Set the entries pointer
 		entry->m_ptr = ptr;

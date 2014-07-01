@@ -237,14 +237,15 @@ void TestStuff(void)
 
   obj = FACTORY->LoadObjectFromArchetype(space, "test_type");
   
-  Handle h(3, 0);
-  GameObject* x = space->GetHandles().GetAs<GameObject>(h);
+  comp = obj->GetComponent<Transform>(eTransform);
+
+  Function g = BUILD_FUNCTION(GameObject::Destroy);
+  g.Bind(obj);
+  g();
 
   Lua::CallFunc(ENGINE->Lua(), "Test");
 
 
-
-  Function f = BUILD_FUNCTION(TestMore);
 
   // Add a comment here
 }
