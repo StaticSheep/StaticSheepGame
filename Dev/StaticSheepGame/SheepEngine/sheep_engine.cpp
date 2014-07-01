@@ -245,7 +245,7 @@ void TestStuff(void)
 
 
   Function f = BUILD_FUNCTION(TestMore);
-  //f();
+  f();
 }
 
 
