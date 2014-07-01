@@ -39,8 +39,8 @@ namespace Framework
 
     Lua::BindDefaultFunctions();
 
-    Lua::CallFunc(L, "Test");
-    Lua::CallFunc(L, "Test2", 10);
+    Lua::CallFunc(L, "filesystem.UpdateOldFiles");
+
 
     for (unsigned int i = 0; i < m_systems.size(); ++i)
       m_systems[i]->Initialize();
@@ -89,6 +89,31 @@ namespace Framework
   void Engine::LuaError(const char* msg)
   {
     Error("LuaError","%s", msg);
+  }
+
+  GameSpace* Engine::GetSpace(const char* name)
+  {
+    std::string spaceName = name;
+    if (m_spaceMap.find(spaceName) != m_spaceMap.end())
+      return m_spaceMap[spaceName];
+    return nullptr;
+  }
+
+  GameComponent* LuaGetComponent(const char* name, unsigned int handle, const char* type)
+  {
+    GameSpace* space = (GameSpace*)ENGINE->GetSpace(name);
+
+    ErrorIf(space == nullptr, "Engine-Lua Interface", "Space not found: %s", name);
+
+    const char* mt = GET_TYPE(Transform)->LuaMetaTable();
+
+    EComponent cType = (EComponent)GET_ENUM(Component)->GetIndexFromString(type);
+    return space->GetHandles().GetAs<GameObject>(handle)->GetComponent(cType);
+  }
+
+  void RemoveObjectFromEngine(const char* space, unsigned int handle)
+  {
+    ENGINE->GetSpace(space)->GetHandles().GetAs<GameObject>(handle)->Destroy();
   }
 
 

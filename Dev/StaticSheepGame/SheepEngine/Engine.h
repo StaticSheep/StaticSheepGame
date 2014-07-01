@@ -51,7 +51,7 @@ namespace Framework
 
 
   // Bound to lua as "GetComponent"
-  GameComponent* LuaGetComponent(const char* space, unsigned int handle, const char* type);
+  GameComponent* LuaGetComponent(const char* name, unsigned int handle, const char* type);
 
   // Bound to lua as "RemoveGameObject"
   void RemoveObjectFromEngine(const char* space, unsigned int handle);

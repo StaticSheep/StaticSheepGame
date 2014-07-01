@@ -95,6 +95,11 @@ namespace Framework
 
     TYPE_REGISTER( Handle );
     TYPE_SET_SERIALIZER( Handle, Handle::Serialize );
+    TYPE_SET_TO_LUA(Handle, Lua::UIntToLua);
+    TYPE_SET_FROM_LUA(Handle, Lua::IntFromLua);
+
+    TYPE_REGISTER_POD( GameComponent* );
+    TYPE_SET_TO_LUA(GameComponent*, Lua::ComponentToLua);
 
     TYPE_REGISTER( GameObject );
     TYPE_ADD_MEMBER( GameObject, name );
@@ -111,6 +116,7 @@ namespace Framework
     TYPE_REGISTER( GameSpace );
     TYPE_SET_SERIALIZER( GameSpace, GameSpace::Serialize );
     TYPE_SET_DESERIALIZER( GameSpace, GameSpace::Deserialize );
+    TYPE_REGISTER_PTR( GameSpace* );
 
     TYPE_REGISTER( Transform );
     TYPE_ADD_MEMBER(Transform, val1);

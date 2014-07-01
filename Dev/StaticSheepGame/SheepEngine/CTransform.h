@@ -18,5 +18,7 @@ namespace Framework
     int val1;
     int val2;
     int val3;
+
+    void Test();
   };
 }

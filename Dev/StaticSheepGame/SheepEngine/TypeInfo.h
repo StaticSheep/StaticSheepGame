@@ -98,105 +98,105 @@ namespace Framework
   };
 
   template <typename T>
-  inline T *Cast( void *data )
+  inline T* Cast( void* data )
   {
     return reinterpret_cast<T *>(data);
   }
 
   template <typename T>
-  inline const T *Cast( const void *data )
+  inline const T* Cast( const void* data )
   {
-    return reinterpret_cast<const T *>(data);
+    return reinterpret_cast<const T*>(data);
   }
 
   template <typename T>
-  inline void *New( void )
+  inline void* New( void )
   {
-    T *data = (T *)malloc( sizeof( T ) );
-    new (data) T( );
+    T *data = (T*)malloc( sizeof(T) );
+    new (data) T();
     return data;
   }
 
   template <typename T>
-  inline void *PODNew( void )
+  inline void* PODNew(void)
   {
-    return malloc( sizeof( T ) );
+    return malloc( sizeof(T) );
   }
 
   template <typename T>
-  inline void PlacementNew( void *data )
+  inline void PlacementNew(void* data)
   {
     new (data) T( );
   }
 
   DISABLE_WARNING(4100)
   template <typename T>
-  inline void PODPlacementNew( void *data )
+  inline void PODPlacementNew(void* data)
   {
   }
   END_DISABLE()
 
   template <typename T>
-  inline void Copy( void *dest, const void *src )
+  inline void Copy(void* dest, const void* src)
   {
     *(Cast<T>( dest )) = *(Cast<T>( src ));
   }
 
   template <typename T>
-  inline void PODCopy( void *dest, const void *src )
+  inline void PODCopy(void* dest, const void* src)
   {
     std::memcpy( dest, src, sizeof( T ) );
   }
 
   template <typename T>
-  inline void PlacementCopy( void *data, const void *src )
+  inline void PlacementCopy(void* data, const void* src)
   {
     new (data) T( *(Cast<T>( src )) );
   }
 
   template <typename T>
-  inline void PODPlacementCopy( void *data, const void *src )
+  inline void PODPlacementCopy(void* data, const void* src)
   {
     std::memcpy( data, src, sizeof( T ) );
   }
 
   template <typename T>
-  inline void NewCopy( void **dest, const void *src )
+  inline void NewCopy(void** dest, const void* src)
   {
-    T *newData = (T *)malloc( sizeof( T ) );
+    T* newData = (T*)malloc( sizeof(T) );
     new (newData) T( *Cast<T>( src ) );
     *dest = newData;
   }
 
   template <typename T>
-  inline void PODNewCopy( void **dest, const void *src )
+  inline void PODNewCopy( void** dest, const void* src )
   {
     *dest = malloc( sizeof( T ) );
     std::memcpy( *dest, src, sizeof( T ) );
   }
 
   template <typename T>
-  inline void Delete( void *data )
+  inline void Delete( void* data )
   {
     Cast<T>( data )->~T( );
     free( data );
   }
 
   template <typename T>
-  inline void PODDelete( void *data )
+  inline void PODDelete( void* data )
   {
     free( data );
   }
 
   template <typename T>
-  inline void PlacementDelete( void *data )
+  inline void PlacementDelete( void* data )
   {
     Cast<T>( data )->~T( );
   }
 
   DISABLE_WARNING(4100)
     template <typename T>
-  inline void PODPlacementDelete( void *data )
+  inline void PODPlacementDelete( void* data )
   {
   }
   END_DISABLE()

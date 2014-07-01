@@ -36,6 +36,8 @@ namespace Framework
 
     void BindFunctionToLua(lua_State* L, Function* fn, const char* name);
 
+    int SetPath(lua_State* L, const char* path);
+
     void StackDump(lua_State* L);
 
     template<typename A1>

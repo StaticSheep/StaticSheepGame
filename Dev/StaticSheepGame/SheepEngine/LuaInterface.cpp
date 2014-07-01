@@ -7,6 +7,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 *****************************************************************/
 
 #include <iostream>
+#include <direct.h>
+#include <stdlib.h>
 
 namespace Framework
 {
@@ -37,7 +39,9 @@ namespace Framework
 
     void GenericFromLua(lua_State* L, int index, Variable* var)
     {
-      ErrorIf(!lua_islightuserdata(L, index), "Lua Interface", "Couldn't find self, try using :Func() and not .Func()");
+      //StackDump(L);
+
+      ErrorIf(!lua_isuserdata(L, index), "Lua Interface", "Couldn't find self, try using :Func() and not .Func()");
       *var = *((Variable*)lua_touserdata(L, index));
     }
 
@@ -50,6 +54,16 @@ namespace Framework
 
     lua_State* CreateEnvironment(void)
     {
+      char cDirectory[512]; // buffer
+      std::string lDirectory;
+      _getcwd(cDirectory, sizeof(cDirectory));
+
+      lDirectory = "LUA_PATH=";
+      lDirectory += cDirectory;
+      lDirectory += "\\content";
+
+      _putenv(lDirectory.c_str());
+
       // Creates a new lua environment
       lua_State* L = luaL_newstate();
 
@@ -58,9 +72,11 @@ namespace Framework
       luaopen_lfs(L); // Opens the file system
 
       lua_pop(L, -1); // Pop the stack
+
+      //SetPath(L, Directory);
       
-      LoadFile(L, "content/lua/engine/LuaInterface.lua");
-      CallFunc(L, "LoadLuaFiles", "content/lua/engine/");
+      LoadFile(L, "content/lua/includes/interface.lua");
+      CallFunc(L, "filesystem.LoadLuaFiles", "content/lua/");
 
       // Setup the __index method for meta tables (FUCK YEAH TABLES)
       for (auto it = IntrospectionManager::Get()->GetTypeMap().begin(); it != IntrospectionManager::Get()->GetTypeMap().end(); ++it)
@@ -92,24 +108,64 @@ namespace Framework
 
     void CallFuncFinal(lua_State* L, const char* funcName, Variable* args, size_t argCount)
     {
+      std::string module = funcName;
+      std::string function;
+
+      function = module.substr(module.find('.') + 1, module.length() - module.find('.') - 1);
+      module = module.substr(0, module.find('.'));
+
+
       lua_pushcfunction(L, ErrorFunc); // Stack 1
 
-      lua_getglobal(L, funcName); // Stack 2
+      if (module.length() > 0 && module != function)
+      {
+        lua_getglobal(L, module.c_str()); // Stack 2
 
-      for (size_t i = 0; i < argCount; ++i)
-        args[i].ToLua(L);
+        lua_getfield(L, 2, function.c_str()); // Stack 3
 
-      // Save the index of the error function
-      int ErrorFuncIndex = -((int)(argCount + 1));
 
-      // Call pcall, which is a protected call which will run the
-      // error function in case of execution error
-      lua_pcall(L, argCount, 1, ErrorFuncIndex);
+        for (size_t i = 0; i < argCount; ++i)
+          args[i].ToLua(L);
 
-      // Pop the error function
-      lua_remove(L, lua_gettop(L) - 1);
+        // Save the index of the error function
+        int ErrorFuncIndex = -((int)(argCount + 3));
 
-      lua_pop(L, 1); // pops nil
+        // Call pcall, which is a protected call which will run the
+        // error function in case of execution error
+        lua_pcall(L, argCount, 1, ErrorFuncIndex);
+
+        //StackDump(L);
+
+        // Pop the error function
+        lua_remove(L, lua_gettop(L) - 2);
+
+        // Pop the module table
+        lua_remove(L, lua_gettop(L) - 1);
+
+        lua_pop(L, 1); // pops nil
+
+        //StackDump(L);
+      }
+      else
+      {
+        lua_getglobal(L, funcName); // Stack 2
+
+        for (size_t i = 0; i < argCount; ++i)
+          args[i].ToLua(L);
+
+        // Save the index of the error function
+        int ErrorFuncIndex = -((int)(argCount + 2));
+
+        // Call pcall, which is a protected call which will run the
+        // error function in case of execution error
+        lua_pcall(L, argCount, 1, ErrorFuncIndex);
+
+        // Pop the error function
+        lua_remove(L, lua_gettop(L) - 1);
+
+        lua_pop(L, 1); // pops nil
+      }
+      
     }
 
     void StackDump(lua_State* L)
@@ -255,6 +311,20 @@ namespace Framework
         lua_setglobal(L, name);
       }
 
+    }
+
+    int SetPath(lua_State* L, const char* path)
+    {
+      lua_getglobal(L, "package"); // -1
+      lua_getfield(L, -1, "path"); // Gets the path field from the top of the stack -2
+      std::string cur_path = lua_tostring(L, -1); // Grab the string from the stack
+      cur_path.append(1,';');
+      cur_path.append(path);
+      lua_pop(L, 1); // Get rid of the string on the stack -1
+      lua_pushstring(L, cur_path.c_str()); // push the string -2
+      lua_setfield(L, -2, "path"); // Set the field "path" in the table at -2 with the value at the top
+      lua_pop(L,1); // Pop off the package table from the stack
+      return 0;
     }
 
 

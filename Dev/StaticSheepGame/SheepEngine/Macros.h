@@ -24,6 +24,9 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #define TYPE_REGISTER_POD( T ) \
   Framework::IntrospectionManager::Get( )->RegisterType<Framework::RemoveQualifiers<T>::type>( sizeof( T ), #T, STRINGIZE(__##T##_MT), true )
 
+#define TYPE_REGISTER_PTR(T) \
+  Framework::IntrospectionManager::Get( )->RegisterType<Framework::RemoveQualifiers<T>::type>( sizeof(T), #T, GET_TYPE(RemovePtr<RemoveQualifiers<T>::type>::type)->LuaMetaTable(), true)
+
 #define GET_TYPE( T ) \
   Framework::IntrospectionManager::Get( )->GetType<Framework::RemoveQualifiers<T>::type>( )
 
@@ -50,7 +53,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 #define BIND_FUNCTION(L, FN) \
   static Framework::Function FN##Function = BUILD_FUNCTION(FN); \
-  Framework::Lua::BindFunctionToLua(L, &FN##Function, #FN)
+  Framework::Lua::BindFunctionToLua(L, &FN, #FN##Function)
 
 // Explicit bind
 #define BIND_FUNCTION_EX(L, FN, NAME) \

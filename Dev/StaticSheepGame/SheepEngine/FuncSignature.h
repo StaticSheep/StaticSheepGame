@@ -39,6 +39,20 @@ namespace Framework
       m_args = args;
     }
 
+    template<typename R, typename A1, typename A2>
+    FunctionSignature(R (*fn)(A1, A2)) : m_ret(GET_TYPE(R)), m_argCount(2), m_context(NULL)
+    {
+      static const TypeInfo* args[] = { GET_TYPE(A1), GET_TYPE(A2) };
+      m_args = args;
+    }
+
+    template<typename R, typename A1, typename A2, typename A3>
+    FunctionSignature(R (*fn)(A1, A2, A3)) : m_ret(GET_TYPE(R)), m_argCount(3), m_context(NULL)
+    {
+      static const TypeInfo* args[] = { GET_TYPE(A1), GET_TYPE(A2), GET_TYPE(A3) };
+      m_args = args;
+    }
+
     // Static functions with no return value -----------------------------------------------
 
     FunctionSignature( void (*)( void ) );
@@ -48,6 +62,13 @@ namespace Framework
     FunctionSignature(void (*fn)(A1)) : m_ret(NULL), m_argCount(1), m_context(NULL)
     {
       static const TypeInfo* args[] = { GET_TYPE(A1) };
+      m_args = args;
+    }
+
+    template<typename A1, typename A2>
+    FunctionSignature(void (*fn)(A1, A2)) : m_ret(NULL), m_argCount(2), m_context(NULL)
+    {
+      static const TypeInfo* args[] = { GET_TYPE(A1), GET_TYPE(A2) };
       m_args = args;
     }
 

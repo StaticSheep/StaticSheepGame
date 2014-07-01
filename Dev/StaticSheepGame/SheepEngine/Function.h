@@ -30,6 +30,22 @@ namespace Framework
     ret->GetValue<R>() = (*FuncPtr)(args[0].GetValue<A1>());
   }
 
+  template <typename FuncType, FuncType FuncPtr, typename R, typename A1, typename A2>
+  void Call(Variable* ret, void* context, Variable* args, size_t argCount)
+  {
+    ErrorIf(argCount != 2, "FunctionBinding", "Wrong overload!");
+
+    ret->GetValue<R>() = (*FuncPtr)(args[0].GetValue<A1>(), args[1].GetValue<A2>());
+  }
+
+  template <typename FuncType, FuncType FuncPtr, typename R, typename A1, typename A2, typename A3>
+  void Call(Variable* ret, void* context, Variable* args, size_t argCount)
+  {
+    ErrorIf(argCount != 3, "FunctionBinding", "Wrong overload!");
+
+    ret->GetValue<R>() = (*FuncPtr)(args[0].GetValue<A1>(), args[1].GetValue<A2>(),
+      args[2].GetValue<A3>());
+  }
 
 
 
@@ -51,6 +67,13 @@ namespace Framework
     (*FuncPtr)(args[0].GetValue<A1>());
   }
 
+
+  template <typename FuncType, FuncType FuncPtr, typename A1, typename A2>
+  void CallVoid(Variable* ret, void* context, Variable* args, size_t argCount)
+  {
+    ErrorIf(argCount != 2, "FunctionBinding", "Wrong overload!");
+    (*FuncPtr)(args[0].GetValue<A1>(), args[1].GetValue<A2>());
+  }
 
 
 
@@ -131,12 +154,21 @@ namespace Framework
     template<typename R, typename A1>
     Function(R (*fn)(A1), void (*helper)(Variable*, void*, Variable*, size_t));
 
+    template<typename R, typename A1, typename A2>
+    Function(R (*fn)(A1, A2), void (*helper)(Variable*, void*, Variable*, size_t));
+
+    template<typename R, typename A1, typename A2, typename A3>
+    Function(R (*fn)(A1, A2, A3), void (*helper)(Variable*, void*, Variable*, size_t));
+
     
     // Static function without a return value ===================================================
     Function(void (*fn)(void), void (*helper)(Variable*, void*, Variable*, size_t));
 
     template<typename A1>
     Function(void (*fn)(A1), void (*helper)(Variable*, void*, Variable*, size_t));
+
+    template<typename A1, typename A2>
+    Function(void (*fn)(A1, A2), void (*helper)(Variable*, void*, Variable*, size_t));
 
 
     // Class methods with return values! non-const ====================================================
@@ -179,12 +211,28 @@ namespace Framework
     void operator()(Variable& ret, Variable* args, size_t argCount);
 
     void operator()(Variable& ret) const;
+
     template <typename A1>
     void operator()(Variable& ret, A1 arg1) const;
 
+    template <typename A1, typename A2>
+    void operator()(Variable& ret, A1 arg1, A2 arg2) const;
+
+    template <typename A1, typename A2, typename A3>
+    void operator()(Variable& ret, A1 arg1, A2 arg2, A3 arg3) const;
+
+
+
     void operator()(void) const;
+
     template <typename A1>
     void operator()(A1 arg1) const;
+
+    template <typename A1, typename A2>
+    void operator()(A1 arg1, A2 arg2) const;
+
+    template <typename A1, typename A2, typename A3>
+    void operator()(A1 arg1, A2 arg2, A3 arg3) const;
 
 
 
@@ -211,10 +259,19 @@ namespace Framework
   template<typename R, typename A1>
   Function::Function(R (*fn)(A1), HP) PE;
 
+  template<typename R, typename A1, typename A2>
+  Function::Function(R (*fn)(A1, A2), HP) PE;
+
+  template<typename R, typename A1, typename A2, typename A3>
+  Function::Function(R (*fn)(A1, A2, A3), HP) PE;
+
   // STATIC FUNCTIONS WITHOUT RETURN VALUE
 
   template<typename A1>
   Function::Function(void (*fn)(A1), HP) PE;
+
+  template<typename A1, typename A2>
+  Function::Function(void (*fn)(A1, A2), HP) PE;
 
   // METHODS WITH RETURN VALUE, NON CONST
 
@@ -257,7 +314,7 @@ namespace Framework
   // Static function with return value
 
   #define TS(...) template<typename FuncType, FuncType FuncPtr, ##__VA_ARGS__>
-  #define RV(...) Function(fn, &Call<FunctionType, FunctionPtr, ##__VA_ARGS__> )
+  #define RV(...) Function(fn, &Call<FuncType, FuncPtr, ##__VA_ARGS__> )
   
   TS(typename R)
   Function BuildFunction(R (*fn)(void))
@@ -269,6 +326,18 @@ namespace Framework
   Function BuildFunction(R (*fn)(A1))
   {
     return RV(R, A1);
+  }
+
+  TS(typename R, typename A1, typename A2)
+    Function BuildFunction(R (*fn)(A1, A2))
+  {
+    return RV(R, A1, A2);
+  }
+
+  template<typename FuncType, FuncType FuncPtr, typename R, typename A1, typename A2, typename A3>
+    Function BuildFunction(R (*fn)(A1, A2, A3))
+  {
+    return Function(fn, &Call<FuncType, FuncPtr, R, A1, A2, A3>);
   }
 
   // Static function without return value
@@ -286,6 +355,12 @@ namespace Framework
   Function BuildFunction(void (*fn)(A1))
   {
     return RV(A1);
+  }
+
+  TS(typename A1, typename A2)
+    Function BuildFunction(void (*fn)(A1, A2))
+  {
+    return RV(A1, A2);
   }
 
 
@@ -379,6 +454,35 @@ namespace Framework
     m_callHelper(&ret, m_context.GetData(), argStack, m_sig.ArgCount());
   }
 
+  template<typename A1, typename A2>
+  void Function::operator()(Variable& ret, A1 arg1, A2 arg2) const
+  {
+    ErrorIf(m_sig.ArgCount() != 1, "Bound Function calling", "Wrong Overload!");
+    ErrorIf(m_sig.GetArg(0) != GET_TYPE(A1), "Bound Function calling", "Argument type error!");
+
+    Variable argStack[2];
+
+    new (argStack) Variable(arg1);
+    new (argStack + 1) Variable(arg2);
+
+    m_callHelper(&ret, m_context.GetData(), argStack, m_sig.ArgCount());
+  }
+
+  template<typename A1, typename A2, typename A3>
+  void Function::operator()(Variable& ret, A1 arg1, A2 arg2, A3 arg3) const
+  {
+    ErrorIf(m_sig.ArgCount() != 1, "Bound Function calling", "Wrong Overload!");
+    ErrorIf(m_sig.GetArg(0) != GET_TYPE(A1), "Bound Function calling", "Argument type error!");
+
+    Variable argStack[3];
+
+    new (argStack) Variable(arg1);
+    new (argStack + 1) Variable(arg2);
+    new (argStack + 2) Variable(arg3);
+
+    m_callHelper(&ret, m_context.GetData(), argStack, m_sig.ArgCount());
+  }
+
   // Functions without return value
 
   template<typename A1>
@@ -390,6 +494,35 @@ namespace Framework
     Variable argStack[1];
 
     new (argStack) Variable(arg1);
+
+    m_callHelper(NULL, m_context.GetData(), argStack, m_sig.ArgCount());
+  }
+
+  template<typename A1, typename A2>
+  void Function::operator()(A1 arg1, A2 arg2) const
+  {
+    ErrorIf(m_sig.ArgCount() != 2, "Bound Function calling", "Wrong Overload!");
+    ErrorIf(m_sig.GetArg(0) != GET_TYPE(A1), "Bound Function calling", "Argument type error!");
+
+    Variable argStack[2];
+
+    new (argStack) Variable(arg1);
+    new (argStack + 1) Variable(arg2);
+
+    m_callHelper(NULL, m_context.GetData(), argStack, m_sig.ArgCount());
+  }
+
+  template<typename A1, typename A2, typename A3>
+  void Function::operator()(A1 arg1, A2 arg2, A3 arg3) const
+  {
+    ErrorIf(m_sig.ArgCount() != 3, "Bound Function calling", "Wrong Overload!");
+    ErrorIf(m_sig.GetArg(0) != GET_TYPE(A1), "Bound Function calling", "Argument type error!");
+
+    Variable argStack[3];
+
+    new (argStack) Variable(arg1);
+    new (argStack + 1) Variable(arg2);
+    new (argStack + 2) Variable(arg3);
 
     m_callHelper(NULL, m_context.GetData(), argStack, m_sig.ArgCount());
   }

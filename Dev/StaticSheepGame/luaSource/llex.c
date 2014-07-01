@@ -429,6 +429,25 @@ static int llex (LexState *ls, SemInfo *seminfo) {
           next(ls);  /* skip until end of line (or end of file) */
         break;
       }
+      case '/': {  /* '/' or '//' (comment) */
+        next(ls);
+        if (ls->current != '/') return '/';
+        /* else is a comment */
+        next(ls);
+        if (ls->current == '[') {  /* long comment? */
+          int sep = skip_sep(ls);
+          luaZ_resetbuffer(ls->buff);  /* `skip_sep' may dirty the buffer */
+          if (sep >= 0) {
+            read_long_string(ls, NULL, sep);  /* skip long comment */
+            luaZ_resetbuffer(ls->buff);  /* previous call may dirty the buff. */
+            break;
+          }
+        }
+        /* else short comment */
+        while (!currIsNewline(ls) && ls->current != EOZ)
+          next(ls);  /* skip until end of line (or end of file) */
+        break;
+      }
       case '[': {  /* long string or simply '[' */
         int sep = skip_sep(ls);
         if (sep >= 0) {
