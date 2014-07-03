@@ -110,7 +110,7 @@
       <Filter>Export\Demo</Filter>
     </ClInclude>
     <ClInclude Include="Hooks.h">
-      <Filter>Systems\Hooks</Filter>
+      <Filter>BaseTypes\Hooks</Filter>
     </ClInclude>
     <ClInclude Include="FuncSignature.h">
       <Filter>Engine\Introspection\Functions\Signature</Filter>
@@ -211,7 +211,7 @@
       <Filter>BaseTypes\Component</Filter>
     </ClCompile>
     <ClCompile Include="Hooks.cpp">
-      <Filter>Systems\Hooks</Filter>
+      <Filter>BaseTypes\Hooks</Filter>
     </ClCompile>
     <ClCompile Include="FuncSignature.cpp">
       <Filter>Engine\Introspection\Functions\Signature</Filter>
@@ -347,9 +347,6 @@
     <Filter Include="BaseTypes\Archetype">
       <UniqueIdentifier>{00901678-85ac-48f2-8633-8efce0936f6a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Systems\Hooks">
-      <UniqueIdentifier>{ad424f03-4e6f-40d5-8d42-74cfc164e782}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\Introspection\Functions">
       <UniqueIdentifier>{c1fcac08-e0bb-47e4-946b-40cc3570d42b}</UniqueIdentifier>
     </Filter>
@@ -370,6 +367,9 @@
     </Filter>
     <Filter Include="Engine\Lua\DefaultBinds">
       <UniqueIdentifier>{8eb5bb04-307d-434d-98eb-5e15bcbd9d3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BaseTypes\Hooks">
+      <UniqueIdentifier>{ad424f03-4e6f-40d5-8d42-74cfc164e782}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
