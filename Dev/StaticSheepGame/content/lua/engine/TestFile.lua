@@ -1,13 +1,17 @@
 function TestHook(self)
-	--TransformTest()
-	--self:Test()
+  --TransformTest()
+  --self:Test()
 end
 
 function Test()
-	print("Test function ran!")
-	local o = GetComponent("Stand alone space", 3, "Transform")
-	PrintTable(o)
-	hook.Add("test", o, TestHook)
-	hook.Call("test")
-	testlib.DoSomething()
+  OBJTEST = GetComponent("Stand alone space", 3, "Transform")
+  OBJTEST.blah = 10
+  OBJTEST:TransformTest()
+  OBJTEST:DoSomeLuaStuff()
+end
+
+function Test2()
+  print(OBJTEST)
+  print(OBJTEST.test)
+  OBJTEST:TransformTest()
 end

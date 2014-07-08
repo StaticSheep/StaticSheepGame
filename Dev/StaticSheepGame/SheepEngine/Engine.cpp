@@ -41,6 +41,7 @@ namespace Framework
     Lua::BindDefaultFunctions();
 
     Lua::CallFunc(L, "filesystem.UpdateOldFiles");
+    
 
 
     for (unsigned int i = 0; i < m_systems.size(); ++i)

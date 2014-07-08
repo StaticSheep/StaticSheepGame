@@ -254,8 +254,11 @@ void TestStuff(void)
   hm.Remove("TestEvent", comp->self);
   hm.Call("TestEvent");
   Lua::CallFunc(ENGINE->Lua(), "Test");
+  Lua::CallMemberFunc(ENGINE->Lua(), Variable(*comp), "DoSomeLuaStuff");
 
   SheepEngine->RemoveSpace(space);
+
+  
 
   SheepEngine->Shutdown();
 

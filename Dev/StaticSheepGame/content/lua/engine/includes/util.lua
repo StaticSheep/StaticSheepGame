@@ -1,5 +1,3 @@
-print("util loaded")
-
 local __pairs = pairs
 function pairs(value)
 	if type(value) == "userdata" then
@@ -29,10 +27,10 @@ function PrintTable(tbl)
 		if (type(v) == "table") then
 			Pad()
 			io.write(tostring(k)..":".."\n")
-			--PrintTable(v)
+			PrintTable(v)
 		else
 			Pad()
-			io.write(tostring(k)..": "..tostring(v))
+			io.write(tostring(k)..": "..tostring(v).. "\n")
 		end
 
 	end
@@ -93,4 +91,35 @@ if not module then
     function package.seeall(modul)
         setmetatable(modul,{__index=_G})
     end
+end
+
+function SetupMetatables()
+  _R.METAVALUES = {}
+
+  for key, meta in pairs(_R) do
+
+      function meta.__index(self, key, ...)
+          _R.METAVALUES[tostring(self)] = _R.METAVALUES[tostring(self)] or {}
+          if _R.METAVALUES[tostring(self)][key] then
+              return _R.METAVALUES[tostring(self)][key]
+          end
+
+          return meta[key]
+      end
+
+      function meta.__newindex(self, key, value)
+
+          _R.METAVALUES[tostring(self)] = _R.METAVALUES[tostring(self)] or {}
+
+          _R.METAVALUES[tostring(self)][key] = value
+      end
+
+      function meta:__gc()
+          _R.METAVALUES[tostring(self)] = nil
+      end
+  end
+end
+
+function GetMeta(name)
+    return _R["__"..name.."_MT"]
 end

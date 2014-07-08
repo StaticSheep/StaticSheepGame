@@ -15,9 +15,11 @@ namespace Framework
   namespace Lua
   {
 
+    static const bool CrashOnLuaError = true;
+
     void LoadFile(lua_State* L, const char* name)
     {
-      if (luaL_dofile(L, name))
+      if (luaL_dofile(L, name) && CrashOnLuaError)
       {
         ErrorIf(true, "Lua Interface", "Error loading file:\n%s", lua_tostring(L, -1));
       }
@@ -33,7 +35,7 @@ namespace Framework
       luaL_getmetatable(L, var.GetTypeInfo()->LuaMetaTable());
 
       ErrorIf(lua_type(L, -1) != LUA_TTABLE, "Lua Interface", "META TABLE DOES NOT EXIST!");
-
+ 
       lua_setmetatable(L, -2);
     }
 
@@ -77,8 +79,7 @@ namespace Framework
 
       //SetPath(L, Directory);
       
-      LoadFile(L, "content/lua/includes/interface.lua");
-      CallFunc(L, "filesystem.LoadLuaFiles", "content/lua/");
+      LoadFile(L, "content/lua/engine/includes/interface.lua");
 
       // Setup the __index method for meta tables (FUCK YEAH TABLES)
       for (auto it = IntrospectionManager::Get()->GetTypeMap().begin(); it != IntrospectionManager::Get()->GetTypeMap().end(); ++it)
@@ -87,10 +88,21 @@ namespace Framework
         if (lua_isnil(L, 1))
         {
           lua_pop(L, 1);
-          luaL_newmetatable(L, it->second->LuaMetaTable()); // index 1
-          lua_pushstring(L, "__index"); // index 2
-          lua_pushvalue(L, -2); // index 3
-          lua_settable(L, -3); // 1[2] = 3
+
+          lua_getglobal(L, "_R"); // index 1
+
+          luaL_newmetatable(L, it->second->LuaMetaTable()); // index 2
+
+          lua_pushstring(L, "__index"); // index 3
+          lua_pushvalue(L, -2); // 4
+          lua_settable(L, -3); // 2[3] = 4
+
+          
+
+          lua_pushstring(L, it->second->LuaMetaTable()); // 3
+          lua_pushvalue(L, -2); // 4
+          lua_settable(L, -4); // 2[3] = 4
+
           lua_settop(L, 0);
         }
         else
@@ -99,18 +111,57 @@ namespace Framework
         }
       }
 
-      
+      Lua::CallFunc(L, "SetupMetatables");
+
+      CallFunc(L, "filesystem.LoadLuaFiles", "content/lua/");
 
       return L;
+    }
+
+    void CallMemberFunc(lua_State* L, Variable& var, const char* funcName)
+    {
+      CallMemberFuncFinal(L, var, funcName, nullptr, 0);
+    }
+
+    void CallMemberFuncFinal(lua_State* L, Variable& member, const char* funcName, Variable* args, size_t argCount)
+    {
+      lua_pushcfunction(L, ErrorFunc); // Stack 1
+      luaL_getmetatable(L, member.GetTypeInfo()->LuaMetaTable()); // Stack 2
+      lua_getfield(L, 2, funcName); // Stack 3
+      member.ToLua(L); // Stack 4
+      //StackDump(L); 
+
+      for (size_t i = 0; i < argCount; ++i)
+        args[i].ToLua(L);
+
+      // Save the index of the error function
+      int ErrorFuncIndex = -((int)(argCount + 4));
+
+      //StackDump(L); 
+
+      // Call pcall, which is a protected call which will run the
+      // error function in case of execution error
+      lua_pcall(L, argCount + 1, 1, ErrorFuncIndex);
+
+      //StackDump(L); 
+
+      // Pop the error function
+      lua_remove(L, lua_gettop(L) - 2);
+      //StackDump(L); 
+
+      // Pop the meta table
+      lua_remove(L, lua_gettop(L) - 1);
+
+      lua_pop(L, 1); // pops nil
     }
 
 
     void CallFunc(lua_State* L, const char* funcName)
     {
-      CallFuncFinal(L, funcName, nullptr, 0);
+      CallStaticFuncFinal(L, funcName, nullptr, 0);
     }
 
-    void CallFuncFinal(lua_State* L, const char* funcName, Variable* args, size_t argCount)
+    void CallStaticFuncFinal(lua_State* L, const char* funcName, Variable* args, size_t argCount)
     {
       std::string module = funcName;
       std::string function;
@@ -184,7 +235,7 @@ namespace Framework
         switch (type)
         {
         case LUA_TSTRING:
-          std::cout << "  "<<i<<": "<<lua_tostring(L, i)<<"\n";
+          std::cout << "  "<<i<<": \""<<lua_tostring(L, i)<<"\"\n";
           break;
         case LUA_TBOOLEAN:
           std::cout << "  "<<i<<": "<<lua_toboolean(L, i)<<"\n";

@@ -25,11 +25,16 @@ namespace Framework
     int ErrorFunc(lua_State* L);
 
     // Final step before calling a lua function
-    void CallFuncFinal(lua_State* L, const char* funcName, Variable* args, size_t argCount);
+    void CallStaticFuncFinal(lua_State* L, const char* funcName, Variable* args, size_t argCount);
+    
+    void CallMemberFuncFinal(lua_State* L, Variable& member, const char* funcName, Variable* args, size_t argCount);
+
     // Function calling overloads
     void CallFunc(lua_State* L, const char* funcName);
     template<typename A1>
     void CallFunc(lua_State* L, const char* funcName, A1 arg1);
+
+    void CallMemberFunc(lua_State* L, Variable& var, const char* funcName);
 
     void GenericToLua(lua_State* L, Variable& var);
     void GenericFromLua(lua_State* L, int index, Variable* var);
@@ -47,7 +52,7 @@ namespace Framework
     {
       Variable args[] = {arg1};
       
-      CallFuncFinal(L, funcName, args, 1);
+      CallStaticFuncFinal(L, funcName, args, 1);
     }
 
     void Shutdown(lua_State* L);
