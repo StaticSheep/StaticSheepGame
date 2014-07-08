@@ -97,11 +97,11 @@ namespace Framework
           lua_pushvalue(L, -2); // 4
           lua_settable(L, -3); // 2[3] = 4
 
-          
+          //StackDump(L);
 
           lua_pushstring(L, it->second->LuaMetaTable()); // 3
           lua_pushvalue(L, -2); // 4
-          lua_settable(L, -4); // 2[3] = 4
+          lua_settable(L, -4); // 1[3] = 4
 
           lua_settop(L, 0);
         }

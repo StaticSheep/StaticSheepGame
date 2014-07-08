@@ -5,6 +5,7 @@ end
 
 function Test()
   OBJTEST = GetComponent("Stand alone space", 3, "Transform")
+  PrintTable(getmetatable(OBJTEST))
   OBJTEST.blah = 10
   OBJTEST:TransformTest()
   OBJTEST:DoSomeLuaStuff()
