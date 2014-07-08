@@ -31,6 +31,7 @@ namespace Framework
 
     SHEEP_API static void LuaError(const char* msg);
 
+    static void DoSomething();
 
     GameSpace* CreateSpace(const char* name);
     void RemoveSpace(GameSpace* space);

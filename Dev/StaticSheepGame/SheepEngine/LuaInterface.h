@@ -34,11 +34,13 @@ namespace Framework
     void GenericToLua(lua_State* L, Variable& var);
     void GenericFromLua(lua_State* L, int index, Variable* var);
 
-    void BindFunctionToLua(lua_State* L, Function* fn, const char* name);
+    void BindFunctionToLua(lua_State* L, Function* fn, const char* name, const char* table = nullptr);
 
     int SetPath(lua_State* L, const char* path);
 
     void StackDump(lua_State* L);
+
+    void CreateNewGTable(lua_State* L, const char* name);
 
     template<typename A1>
     void CallFunc(lua_State* L, const char* funcName, A1 arg1)

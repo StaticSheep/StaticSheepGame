@@ -166,7 +166,7 @@ void InitD3D(HWND hWnd)
     scd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;     // how swap chain is to be used
     scd.OutputWindow = hWnd;                               // the window to be used
     scd.SampleDesc.Count = 4;                              // how many multisamples
-    scd.Windowed = FALSE;                                  // windowed/full-screen mode
+    scd.Windowed = TRUE;                                  // windowed/full-screen mode
     scd.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;    // allow full-screen switching
 
     // create a device, device context and swap chain using the information in the scd struct

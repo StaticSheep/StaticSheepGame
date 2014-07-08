@@ -1,3 +1,4 @@
+#include <iostream>
 /*****************************************************************
 Filename: Engine.cpp
 Project: 
@@ -105,6 +106,11 @@ namespace Framework
     if (m_spaceMap.find(spaceName) != m_spaceMap.end())
       return m_spaceMap[spaceName];
     return nullptr;
+  }
+
+  void Engine::DoSomething()
+  {
+    std::cout << "Did something";
   }
 
   GameComponent* LuaGetComponent(const char* name, unsigned int handle, const char* type)

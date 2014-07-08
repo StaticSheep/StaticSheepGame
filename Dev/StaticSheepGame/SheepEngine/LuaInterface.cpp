@@ -288,8 +288,22 @@ namespace Framework
       return 0;
     }
 
-    void BindFunctionToLua(lua_State* L, Function* fn, const char* name)
+    void BindFunctionToLua(lua_State* L, Function* fn, const char* name, const char* table)
     {
+      if (table != nullptr)
+      {
+        lua_getglobal(L, table);
+        lua_pushstring(L, name);
+        lua_pushlightuserdata(L, fn);
+        lua_pushcclosure(L, GenericFunc, 1);
+        // Insert the function into the 1[2] = 3
+        lua_settable(L, -3);
+
+        // Set the top of th stack
+        lua_settop(L, 0);
+
+        return;
+      }
       // First check if the function is a member function
       if (fn->IsMethod())
       {
@@ -315,6 +329,12 @@ namespace Framework
         lua_setglobal(L, name);
       }
 
+    }
+
+    void CreateNewGTable(lua_State* L, const char* name)
+    {
+      lua_newtable(L);
+      lua_setglobal(L, name);
     }
 
     int SetPath(lua_State* L, const char* path)
