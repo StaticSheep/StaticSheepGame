@@ -22,13 +22,17 @@ IDXGISwapChain *swapchain;             // the pointer to the swap chain interfac
 ID3D11Device *dev;                     // the pointer to our Direct3D device interface
 ID3D11DeviceContext *devcon;           // the pointer to our Direct3D device context
 ID3D11RenderTargetView *backbuffer;    // the pointer to our back buffer
+ID3D11DepthStencilView *zbuffer;        // the pointer to our depth buffer
 ID3D11InputLayout *pLayout;            // the pointer to the input layout
 ID3D11VertexShader *pVS;               // the pointer to the vertex shader
 ID3D11PixelShader *pPS;                // the pointer to the pixel shader
 ID3D11Buffer *pVBuffer;                // the pointer to the vertex buffer
+ID3D11Buffer *pCBuffer;                // the pointer to the constant buffer
+ID3D11Buffer *pIBuffer;
 
 // a struct to define a single vertex
 struct VERTEX{FLOAT X, Y, Z; D3DXCOLOR Color;};
+struct PERFRAME{D3DXCOLOR Color; FLOAT X, Y, Z;};
 
 // function prototypes
 void InitD3D(HWND hWnd);    // sets up and initializes Direct3D
@@ -36,6 +40,7 @@ void RenderFrame(void);     // renders a single frame
 void CleanD3D(void);        // closes Direct3D and releases memory
 void InitGraphics(void);    // creates the shape to render
 void InitPipeline(void);    // loads and prepares the shaders
+void init_geometry(void);
 
 // Inits Winmain and configures window
 HRESULT InitWindow(HINSTANCE hInstance, int nCmdShow, HWND &hWnd);
@@ -183,6 +188,31 @@ void InitD3D(HWND hWnd)
                                   NULL,
                                   &devcon);
 
+    // create the depth buffer texture
+    D3D11_TEXTURE2D_DESC texd;
+    ZeroMemory(&texd, sizeof(texd));
+
+    texd.Width = SCREEN_WIDTH;
+    texd.Height = SCREEN_HEIGHT;
+    texd.ArraySize = 1;
+    texd.MipLevels = 1;
+    texd.SampleDesc.Count = 4;
+    texd.Format = DXGI_FORMAT_D32_FLOAT;
+    texd.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+
+    ID3D11Texture2D *pDepthBuffer;
+    dev->CreateTexture2D(&texd, NULL, &pDepthBuffer);
+
+    // create the depth buffer
+    D3D11_DEPTH_STENCIL_VIEW_DESC dsvd;
+    ZeroMemory(&dsvd, sizeof(dsvd));
+
+    dsvd.Format = DXGI_FORMAT_D32_FLOAT;
+    dsvd.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2DMS;
+
+    dev->CreateDepthStencilView(pDepthBuffer, &dsvd, &zbuffer);
+    pDepthBuffer->Release();
+
 
     // get the address of the back buffer
     ID3D11Texture2D *pBackBuffer;
@@ -193,7 +223,7 @@ void InitD3D(HWND hWnd)
     pBackBuffer->Release();
 
     // set the render target as the back buffer
-    devcon->OMSetRenderTargets(1, &backbuffer, NULL);
+    devcon->OMSetRenderTargets(1, &backbuffer, zbuffer);
 
 
     // Set the viewport
@@ -204,30 +234,71 @@ void InitD3D(HWND hWnd)
     viewport.TopLeftY = 0;
     viewport.Width = SCREEN_WIDTH;
     viewport.Height = SCREEN_HEIGHT;
+    viewport.MinDepth = 0;    // the closest an object can be on the depth buffer is 0.0
+    viewport.MaxDepth = 1;    // the farthest an object can be on the depth buffer is 1.0
 
     devcon->RSSetViewports(1, &viewport);
 
     InitPipeline();
-    InitGraphics();
+    //InitGraphics();
+    init_geometry();
+    
 }
 
 
 // this is the function used to render a single frame
 void RenderFrame(void)
 {
+    D3DXMATRIX matRotate[2], matTranslate[2], matView, matProjection;
+    D3DXMATRIX matFinal[2];
+
+    static float Time = 0.0f; Time += 0.001f;
+
+    // create a world matrices
+    //D3DXMatrixRotationY(&matRotate, Time);
+    D3DXMatrixRotationYawPitchRoll(&matRotate[0], Time, 0.5f, Time * 2.0f);
+    D3DXMatrixRotationYawPitchRoll(&matRotate[1], Time, 0.5f, -Time * 2.0f);
+    D3DXMatrixTranslation(&matTranslate[0], 0.0f, 0.0f, 1.5f);
+    D3DXMatrixTranslation(&matTranslate[1], 0.0f, 0.0f, -1.5f);
+    
+
+    // create a view matrix
+    D3DXMatrixLookAtLH(&matView,
+                       &D3DXVECTOR3(0.0f, 0.0f, 5.5f),    // the camera position
+                       &D3DXVECTOR3(0.0f, 0.0f, 0.0f),    // the look-at position
+                       &D3DXVECTOR3(0.0f, 1.0f, 0.0f));   // the up direction
+
+    // create a projection matrix
+    D3DXMatrixPerspectiveFovLH(&matProjection,
+                               (FLOAT)D3DXToRadian(75),                    // field of view
+                               (FLOAT)SCREEN_WIDTH / (FLOAT)SCREEN_HEIGHT, // aspect ratio
+                               1.0f,                                       // near view-plane
+                               100.0f);                                    // far view-plane
+
+    // create the final transform
+    matFinal[0] = matTranslate[0] * matRotate[0] * matView * matProjection;
+    matFinal[1] = matTranslate[1] * matRotate[1] * matView * matProjection;
+
     // clear the back buffer to a deep blue
-    devcon->ClearRenderTargetView(backbuffer, Colors::MidnightBlue);
+    devcon->ClearRenderTargetView(backbuffer, D3DXCOLOR(0.0f, 0.2f, 0.4f, 1.0f));
+
+    // clear the depth buffer
+    devcon->ClearDepthStencilView(zbuffer, D3D11_CLEAR_DEPTH, 1.0f, 0);
 
         // select which vertex buffer to display
         UINT stride = sizeof(VERTEX);
         UINT offset = 0;
         devcon->IASetVertexBuffers(0, 1, &pVBuffer, &stride, &offset);
+        devcon->IASetIndexBuffer(pIBuffer, DXGI_FORMAT_R32_UINT, 0);
 
         // select which primtive type we are using
-        devcon->IASetPrimitiveTopology(D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+        devcon->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-        // draw the vertex buffer to the back buffer
-        devcon->Draw(3, 0);
+        // draw each triangle
+        devcon->UpdateSubresource(pCBuffer, 0, 0, &matFinal[0], 0, 0);
+        devcon->DrawIndexed(36, 0, 0);
+        devcon->UpdateSubresource(pCBuffer, 0, 0, &matFinal[1], 0, 0);
+        devcon->DrawIndexed(36, 0, 0);
 
     // switch the back buffer and the front buffer
     swapchain->Present(0, 0);
@@ -243,7 +314,9 @@ void CleanD3D(void)
     pLayout->Release();
     pVS->Release();
     pPS->Release();
+    zbuffer->Release();
     pVBuffer->Release();
+    pCBuffer->Release();
     swapchain->Release();
     backbuffer->Release();
     dev->Release();
@@ -257,9 +330,10 @@ void InitGraphics()
     // create a triangle using the VERTEX struct
     VERTEX OurVertices[] =
     {
-        {0.0f, 0.5f, 0.0f, Colors::Blue},
-        {0.45f, -0.5, 0.0f, Colors::Green},
-        {-0.45f, -0.5f, 0.0f, Colors::Red}
+        {-1.0f, 1.0f, 0.0f, D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f)},
+        {1.0f, 1.0f, 0.0f, D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f)},
+        {-1.0f, -1.0f, 0.0f, D3DXCOLOR(0.0f, 0.0f, 1.0f, 1.0f)},
+        {1.0f, -1.0f, 0.0f, D3DXCOLOR(0.0f, 1.0f, 1.0f, 1.0f)}
     };
 
 
@@ -268,7 +342,7 @@ void InitGraphics()
     ZeroMemory(&bd, sizeof(bd));
 
     bd.Usage = D3D11_USAGE_DYNAMIC;                // write access access by CPU and GPU
-    bd.ByteWidth = sizeof(VERTEX) * 3;             // size is the VERTEX struct * 3
+    bd.ByteWidth = sizeof(VERTEX) * 4;             // size is the VERTEX struct * 3
     bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;       // use as a vertex buffer
     bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;    // allow CPU to write in buffer
 
@@ -287,9 +361,42 @@ void InitGraphics()
 void InitPipeline()
 {
     // load and compile the two shaders
-    ID3D10Blob *VS, *PS; // Raw data type used to hold buffers
-    D3DX11CompileFromFile(L"shaders.shader", 0, 0, "VShader", "vs_4_0", 0, 0, 0, &VS, 0, 0);
-    D3DX11CompileFromFile(L"shaders.shader", 0, 0, "PShader", "ps_4_0", 0, 0, 0, &PS, 0, 0);
+    ID3D10Blob *VS, *PS, *Errors; // Raw data type used to hold buffers
+    D3DX11CompileFromFile(L"shaders.hlsl", 
+                          0, 
+                          0, 
+                          "VShader", 
+                          "vs_4_0", 
+                          D3D10_SHADER_OPTIMIZATION_LEVEL3 | D3D10_SHADER_WARNINGS_ARE_ERRORS, // fully optimized shader
+                          0, 
+                          0, 
+                          &VS, 
+                          &Errors, 
+                          0);
+
+    if(Errors) // if there are any errors...
+    {
+        swapchain->SetFullscreenState(FALSE, NULL);    // switch to windowed mode
+        MessageBox(NULL, L"The vertex shader failed to compile.", L"Error", MB_OK);
+    }
+
+    D3DX11CompileFromFile(L"shaders.hlsl", 
+                          0, 
+                          0, 
+                          "PShader", 
+                          "ps_4_0", 
+                          D3D10_SHADER_OPTIMIZATION_LEVEL3 | D3D10_SHADER_WARNINGS_ARE_ERRORS,
+                          0, 
+                          0, 
+                          &PS, 
+                          &Errors, 
+                          0);
+
+    if(Errors) // if there are any errors...
+    {
+        swapchain->SetFullscreenState(FALSE, NULL);    // switch to windowed mode
+        MessageBox(NULL, L"The Pixel shader failed to compile.", L"Error", MB_OK);
+    }
 
     // encapsulate both shaders into shader objects
     dev->CreateVertexShader(VS->GetBufferPointer(), VS->GetBufferSize(), NULL, &pVS);
@@ -308,4 +415,81 @@ void InitPipeline()
 
     dev->CreateInputLayout(ied, 2, VS->GetBufferPointer(), VS->GetBufferSize(), &pLayout);
     devcon->IASetInputLayout(pLayout);
+
+    D3D11_BUFFER_DESC bd;
+    ZeroMemory(&bd, sizeof(bd));
+
+    bd.Usage = D3D11_USAGE_DEFAULT;
+    bd.ByteWidth = 64;
+    bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+
+    dev->CreateBuffer(&bd, NULL, &pCBuffer);
+    devcon->VSSetConstantBuffers(0, 1, &pCBuffer);
+}
+
+// this is the function that creates the geometry to render
+void init_geometry(void)
+{
+    // create eight vertices to represent the corners of the cube
+    VERTEX OurVertices[] =
+    {
+        {-1.0f, 1.0f, -1.0f, D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f)},
+        {1.0f, 1.0f, -1.0f, D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f)},
+        {-1.0f, -1.0f, -1.0f, D3DXCOLOR(0.0f, 0.0f, 1.0f, 1.0f)},
+        {1.0f, -1.0f, -1.0f, D3DXCOLOR(1.0f, 0.0f, 1.0f, 1.0f)},
+        {-1.0f, 1.0f, 1.0f, D3DXCOLOR(0.0f, 1.0f, 1.0f, 1.0f)},
+        {1.0f, 1.0f, 1.0f, D3DXCOLOR(1.0f, 0.0f, 1.0f, 1.0f)},
+        {-1.0f, -1.0f, 1.0f, D3DXCOLOR(1.0f, 1.0f, 0.0f, 1.0f)},
+        {1.0f, -1.0f, 1.0f, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f)}, 
+    };
+
+    // create the vertex buffer
+    D3D11_BUFFER_DESC bd;
+    ZeroMemory(&bd, sizeof(bd));
+
+    bd.Usage = D3D11_USAGE_DYNAMIC;
+    bd.ByteWidth = sizeof(VERTEX) * 8;
+    bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+    bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+
+    dev->CreateBuffer(&bd, NULL, &pVBuffer);
+
+    // copy the vertices into the buffer
+    D3D11_MAPPED_SUBRESOURCE ms;
+    devcon->Map(pVBuffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);    // map the buffer
+    memcpy(ms.pData, OurVertices, sizeof(OurVertices));                 // copy the data
+    devcon->Unmap(pVBuffer, NULL);                                      // unmap the buffer
+
+
+    // create the index buffer out of DWORDs
+    DWORD OurIndices[] = 
+    {
+        0, 1, 2,    // side 1
+        2, 1, 3,
+        4, 0, 6,    // side 2
+        6, 0, 2,
+        7, 5, 6,    // side 3
+        6, 5, 4,
+        3, 1, 7,    // side 4
+        7, 1, 5,
+        4, 5, 0,    // side 5
+        0, 5, 1,
+        3, 7, 2,    // side 6
+        2, 7, 6,
+    };
+
+    // create the index buffer
+    // D3D11_BUFFER_DESC bd;    // redefinition
+    bd.Usage = D3D11_USAGE_DYNAMIC;
+    bd.ByteWidth = sizeof(DWORD) * 36;
+    bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
+    bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+    bd.MiscFlags = 0;
+
+    dev->CreateBuffer(&bd, NULL, &pIBuffer);
+
+    // D3D11_MAPPED_SUBRESOURCE ms;    // redefinition
+    devcon->Map(pIBuffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);    // map the buffer
+    memcpy(ms.pData, OurIndices, sizeof(OurIndices));                   // copy the data
+    devcon->Unmap(pIBuffer, NULL);
 }
