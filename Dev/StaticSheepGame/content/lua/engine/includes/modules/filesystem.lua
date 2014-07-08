@@ -26,7 +26,7 @@ end
 
 function LoadLuaFiles( path )
   for file in lfs.dir( path ) do
-    if file != "." and file != ".." then
+    if file ~= "." and file ~= ".." then
       -- Grab the file attributes
       local filePath = path .. file
       local attr = lfs.attributes( filePath )
@@ -59,7 +59,7 @@ end
 
 function LoadLuaFile(path, needle)
   for file in lfs.dir( path) do
-    if file != "." and file != ".." then
+    if file ~= "." and file ~= ".." then
       -- Grab the file attributes
       local filePath = path .. file
       local attr = lfs.attributes( filePath )

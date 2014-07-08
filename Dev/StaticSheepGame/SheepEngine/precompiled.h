@@ -9,16 +9,29 @@
 #endif
 
 
-
+#ifdef LUAJIT
 extern "C"
 {
-  #include "lua/lua.h"
-  #include "lua/lua.hpp"
-  #include "lua/lauxlib.h"
-  #include "lua/luaconf.h"
-  #include "lua/lualib.h"
-  #include "lua/lfs.h"
+#include "luajit/lua.h"
+#include "luajit/lua.hpp"
+#include "luajit/lauxlib.h"
+#include "luajit/luaconf.h"
+#include "luajit/lualib.h"
+#include "luajit/lfs.h"
 }
+#else
+extern "C"
+{
+#include "lua/lua.h"
+#include "lua/lua.hpp"
+#include "lua/lauxlib.h"
+#include "lua/luaconf.h"
+#include "lua/lualib.h"
+#include "lua/lfs.h"
+}
+#endif
+
+
 
 
 

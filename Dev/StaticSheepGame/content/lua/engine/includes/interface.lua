@@ -2,6 +2,8 @@
                   Static Sheep Lua Interface                           
 ----------------------------------------------------------------------]]
 
+print("TEST")
+
 if (not CONTENT_PATH) then CONTENT_PATH = package.path end
 
 if (not LUA_PATH) then LUA_PATH = CONTENT_PATH .. "/lua/" end

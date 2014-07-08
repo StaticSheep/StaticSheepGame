@@ -60,11 +60,11 @@ namespace Framework
       std::string lDirectory;
       _getcwd(cDirectory, sizeof(cDirectory));
 
-      lDirectory = "LUA_PATH=";
-      lDirectory += cDirectory;
+      //lDirectory = "LUA_PATH=";
+      lDirectory = cDirectory;
       lDirectory += "\\content";
 
-      _putenv(lDirectory.c_str());
+      //_putenv(lDirectory.c_str());
 
       // Creates a new lua environment
       lua_State* L = luaL_newstate();
@@ -76,7 +76,7 @@ namespace Framework
       luaopen_lfs(L); // Opens the file system
 
       lua_pop(L, -1); // Pop the stack
-
+      SetPath(L, lDirectory.c_str());
       //SetPath(L, Directory);
       
       LoadFile(L, "content/lua/engine/includes/interface.lua");
@@ -393,10 +393,10 @@ namespace Framework
       lua_getglobal(L, "package"); // -1
       lua_getfield(L, -1, "path"); // Gets the path field from the top of the stack -2
       std::string cur_path = lua_tostring(L, -1); // Grab the string from the stack
-      cur_path.append(1,';');
-      cur_path.append(path);
+      //cur_path.append(1,';');
+      //cur_path.append(path);
       lua_pop(L, 1); // Get rid of the string on the stack -1
-      lua_pushstring(L, cur_path.c_str()); // push the string -2
+      lua_pushstring(L, path); // push the string -2
       lua_setfield(L, -2, "path"); // Set the field "path" in the table at -2 with the value at the top
       lua_pop(L,1); // Pop off the package table from the stack
       return 0;
