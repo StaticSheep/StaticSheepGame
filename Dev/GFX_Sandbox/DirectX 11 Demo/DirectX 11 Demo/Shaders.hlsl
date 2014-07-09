@@ -1,29 +1,42 @@
 cbuffer ConstantBuffer
 {
-  float4x4 matFinal;
+    float4x4 final;
+    float4x4 rotation;    // the rotation matrix
+    float4 lightvec;      // the light's vector
+    float4 lightcol;      // the light's color
+    float4 ambientcol;    // the ambient light's color
 }
+
+Texture2D Texture;
+SamplerState ss;
 
 struct VOut
 {
-  float4 position : SV_POSITION;
-  float4 color : COLOR;
+    float4 color : COLOR;
+    float2 texcoord : TEXCOORD;    // texture coordinates
+    float4 position : SV_POSITION;
 };
 
-VOut VShader(float4 position : POSITION, float4 color : COLOR)
+VOut VShader(float4 position : POSITION, float4 normal : NORMAL, float2 texcoord : TEXCOORD)
 {
-  // create a VOut struct
-  VOut output;
+    VOut output;
 
-  // set the output values
-  output.position = mul(matFinal, position);  // transform the vertex from 3D to 2D
+    output.position = mul(final, position);
 
-  output.color = color;
+    // set the ambient light
+    output.color = ambientcol;
 
-  // return the output values
-  return output;
+    // calculate the diffuse light and add it to the ambient light
+    float4 norm = normalize(mul(rotation, normal));
+    float diffusebrightness = saturate(dot(norm, lightvec));
+    output.color += lightcol * diffusebrightness;
+
+    output.texcoord = texcoord;    // set the texture coordinates, unmodified
+
+    return output;
 }
 
-float4 PShader(float4 position : SV_POSITION, float4 color : COLOR) : SV_TARGET
+float4 PShader(float4 color : COLOR, float2 texcoord : TEXCOORD) : SV_TARGET
 {
-  return color;
+    return color * Texture.Sample(ss, texcoord);
 }

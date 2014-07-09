@@ -28,11 +28,20 @@ ID3D11VertexShader *pVS;               // the pointer to the vertex shader
 ID3D11PixelShader *pPS;                // the pointer to the pixel shader
 ID3D11Buffer *pVBuffer;                // the pointer to the vertex buffer
 ID3D11Buffer *pCBuffer;                // the pointer to the constant buffer
-ID3D11Buffer *pIBuffer;
+ID3D11Buffer *pIBuffer;                // the pointer to the index buffer
+ID3D11ShaderResourceView *pTexture;     // the pointer to the texture
 
 // a struct to define a single vertex
-struct VERTEX{FLOAT X, Y, Z; D3DXCOLOR Color;};
-struct PERFRAME{D3DXCOLOR Color; FLOAT X, Y, Z;};
+struct VERTEX{FLOAT X, Y, Z; D3DXVECTOR3 Normal; FLOAT U, V;};
+
+struct CBUFFER
+{
+  D3DMATRIX Final;
+  D3DMATRIX Rotation;
+  D3DXVECTOR4 LightVector;
+  D3DXCOLOR LightColor;
+  D3DXCOLOR AmbientColor;
+};
 
 // function prototypes
 void InitD3D(HWND hWnd);    // sets up and initializes Direct3D
@@ -249,6 +258,16 @@ void InitD3D(HWND hWnd)
 // this is the function used to render a single frame
 void RenderFrame(void)
 {
+    CBUFFER cBuffer[2];
+
+    cBuffer[0].LightVector = D3DXVECTOR4(1.0f, 1.0f, 1.0f, 0.0f);
+    cBuffer[0].LightColor = (D3DXCOLOR)Colors::White;
+    cBuffer[0].AmbientColor = (D3DXCOLOR)Colors::DarkSlateGray;
+
+    cBuffer[1].LightVector = D3DXVECTOR4(1.0f, 1.0f, 1.0f, 0.0f);
+    cBuffer[1].LightColor = (D3DXCOLOR)Colors::White;
+    cBuffer[1].AmbientColor = (D3DXCOLOR)Colors::DarkSlateGray;
+
     D3DXMATRIX matRotate[2], matTranslate[2], matView, matProjection;
     D3DXMATRIX matFinal[2];
 
@@ -279,8 +298,15 @@ void RenderFrame(void)
     matFinal[0] = matTranslate[0] * matRotate[0] * matView * matProjection;
     matFinal[1] = matTranslate[1] * matRotate[1] * matView * matProjection;
 
+    // load the matrices into the constant buffer
+    cBuffer[0].Final = matTranslate[0] * matRotate[0] * matView * matProjection;
+    cBuffer[0].Rotation = matRotate[0];
+
+    cBuffer[1].Final = matTranslate[1] * matRotate[1] * matView * matProjection;
+    cBuffer[1].Rotation = matRotate[1];
+
     // clear the back buffer to a deep blue
-    devcon->ClearRenderTargetView(backbuffer, D3DXCOLOR(0.0f, 0.2f, 0.4f, 1.0f));
+    devcon->ClearRenderTargetView(backbuffer, (D3DXCOLOR)Colors::Black);
 
     // clear the depth buffer
     devcon->ClearDepthStencilView(zbuffer, D3D11_CLEAR_DEPTH, 1.0f, 0);
@@ -295,9 +321,11 @@ void RenderFrame(void)
         devcon->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
         // draw each triangle
-        devcon->UpdateSubresource(pCBuffer, 0, 0, &matFinal[0], 0, 0);
+        devcon->UpdateSubresource(pCBuffer, 0, 0, &cBuffer[0], 0, 0);
+        devcon->PSSetShaderResources(0, 1, &pTexture);
         devcon->DrawIndexed(36, 0, 0);
-        devcon->UpdateSubresource(pCBuffer, 0, 0, &matFinal[1], 0, 0);
+        devcon->UpdateSubresource(pCBuffer, 0, 0, &cBuffer[1], 0, 0);
+        devcon->PSSetShaderResources(0, 1, &pTexture);
         devcon->DrawIndexed(36, 0, 0);
 
     // switch the back buffer and the front buffer
@@ -311,12 +339,16 @@ void CleanD3D(void)
     swapchain->SetFullscreenState(FALSE, NULL);    // switch to windowed mode
 
     // close and release all existing COM objects
+    
+    // close and release all existing COM objects
+    zbuffer->Release();
     pLayout->Release();
     pVS->Release();
     pPS->Release();
-    zbuffer->Release();
     pVBuffer->Release();
+    pIBuffer->Release();
     pCBuffer->Release();
+    pTexture->Release();
     swapchain->Release();
     backbuffer->Release();
     dev->Release();
@@ -410,17 +442,18 @@ void InitPipeline()
     D3D11_INPUT_ELEMENT_DESC ied[] =
     {
         {"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
-        {"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0},
+        {"NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0},
+        {"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 24, D3D11_INPUT_PER_VERTEX_DATA, 0},
     };
 
-    dev->CreateInputLayout(ied, 2, VS->GetBufferPointer(), VS->GetBufferSize(), &pLayout);
+    dev->CreateInputLayout(ied, 3, VS->GetBufferPointer(), VS->GetBufferSize(), &pLayout);
     devcon->IASetInputLayout(pLayout);
 
     D3D11_BUFFER_DESC bd;
     ZeroMemory(&bd, sizeof(bd));
 
     bd.Usage = D3D11_USAGE_DEFAULT;
-    bd.ByteWidth = 64;
+    bd.ByteWidth = 176;
     bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 
     dev->CreateBuffer(&bd, NULL, &pCBuffer);
@@ -433,14 +466,35 @@ void init_geometry(void)
     // create eight vertices to represent the corners of the cube
     VERTEX OurVertices[] =
     {
-        {-1.0f, 1.0f, -1.0f, D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f)},
-        {1.0f, 1.0f, -1.0f, D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f)},
-        {-1.0f, -1.0f, -1.0f, D3DXCOLOR(0.0f, 0.0f, 1.0f, 1.0f)},
-        {1.0f, -1.0f, -1.0f, D3DXCOLOR(1.0f, 0.0f, 1.0f, 1.0f)},
-        {-1.0f, 1.0f, 1.0f, D3DXCOLOR(0.0f, 1.0f, 1.0f, 1.0f)},
-        {1.0f, 1.0f, 1.0f, D3DXCOLOR(1.0f, 0.0f, 1.0f, 1.0f)},
-        {-1.0f, -1.0f, 1.0f, D3DXCOLOR(1.0f, 1.0f, 0.0f, 1.0f)},
-        {1.0f, -1.0f, 1.0f, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f)}, 
+        {-1.0f, -1.0f, 1.0f, D3DXVECTOR3(0.0f, 0.0f, 1.0f), 0.0f, 0.0f},    // side 1
+        {1.0f, -1.0f, 1.0f, D3DXVECTOR3(0.0f, 0.0f, 1.0f), 0.0f, 1.0f},
+        {-1.0f, 1.0f, 1.0f, D3DXVECTOR3(0.0f, 0.0f, 1.0f), 1.0f, 0.0f},
+        {1.0f, 1.0f, 1.0f, D3DXVECTOR3(0.0f, 0.0f, 1.0f), 1.0f, 1.0f},
+
+        {-1.0f, -1.0f, -1.0f, D3DXVECTOR3(0.0f, 0.0f, -1.0f), 0.0f, 0.0f},    // side 2
+        {-1.0f, 1.0f, -1.0f, D3DXVECTOR3(0.0f, 0.0f, -1.0f), 0.0f, 1.0f},
+        {1.0f, -1.0f, -1.0f, D3DXVECTOR3(0.0f, 0.0f, -1.0f), 1.0f, 0.0f},
+        {1.0f, 1.0f, -1.0f, D3DXVECTOR3(0.0f, 0.0f, -1.0f), 1.0f, 1.0f},
+
+        {-1.0f, 1.0f, -1.0f, D3DXVECTOR3(0.0f, 1.0f, 0.0f), 0.0f, 0.0f},    // side 3
+        {-1.0f, 1.0f, 1.0f, D3DXVECTOR3(0.0f, 1.0f, 0.0f), 0.0f, 1.0f},
+        {1.0f, 1.0f, -1.0f, D3DXVECTOR3(0.0f, 1.0f, 0.0f), 1.0f, 0.0f},
+        {1.0f, 1.0f, 1.0f, D3DXVECTOR3(0.0f, 1.0f, 0.0f), 1.0f, 1.0f},
+
+        {-1.0f, -1.0f, -1.0f, D3DXVECTOR3(0.0f, -1.0f, 0.0f), 0.0f, 0.0f},    // side 4
+        {1.0f, -1.0f, -1.0f, D3DXVECTOR3(0.0f, -1.0f, 0.0f), 0.0f, 1.0f},
+        {-1.0f, -1.0f, 1.0f, D3DXVECTOR3(0.0f, -1.0f, 0.0f), 1.0f, 0.0f},
+        {1.0f, -1.0f, 1.0f, D3DXVECTOR3(0.0f, -1.0f, 0.0f), 1.0f, 1.0f},
+
+        {1.0f, -1.0f, -1.0f, D3DXVECTOR3(1.0f, 0.0f, 0.0f), 0.0f, 0.0f},    // side 5
+        {1.0f, 1.0f, -1.0f, D3DXVECTOR3(1.0f, 0.0f, 0.0f), 0.0f, 1.0f},
+        {1.0f, -1.0f, 1.0f, D3DXVECTOR3(1.0f, 0.0f, 0.0f), 1.0f, 0.0f},
+        {1.0f, 1.0f, 1.0f, D3DXVECTOR3(1.0f, 0.0f, 0.0f), 1.0f, 1.0f},
+
+        {-1.0f, -1.0f, -1.0f, D3DXVECTOR3(-1.0f, 0.0f, 0.0f), 0.0f, 0.0f},    // side 6
+        {-1.0f, -1.0f, 1.0f, D3DXVECTOR3(-1.0f, 0.0f, 0.0f), 0.0f, 1.0f},
+        {-1.0f, 1.0f, -1.0f, D3DXVECTOR3(-1.0f, 0.0f, 0.0f), 1.0f, 0.0f},
+        {-1.0f, 1.0f, 1.0f, D3DXVECTOR3(-1.0f, 0.0f, 0.0f), 1.0f, 1.0f} 
     };
 
     // create the vertex buffer
@@ -448,7 +502,7 @@ void init_geometry(void)
     ZeroMemory(&bd, sizeof(bd));
 
     bd.Usage = D3D11_USAGE_DYNAMIC;
-    bd.ByteWidth = sizeof(VERTEX) * 8;
+    bd.ByteWidth = sizeof(VERTEX) * 24;
     bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
     bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 
@@ -466,16 +520,16 @@ void init_geometry(void)
     {
         0, 1, 2,    // side 1
         2, 1, 3,
-        4, 0, 6,    // side 2
-        6, 0, 2,
-        7, 5, 6,    // side 3
-        6, 5, 4,
-        3, 1, 7,    // side 4
-        7, 1, 5,
-        4, 5, 0,    // side 5
-        0, 5, 1,
-        3, 7, 2,    // side 6
-        2, 7, 6,
+        4, 5, 6,    // side 2
+        6, 5, 7,
+        8, 9, 10,    // side 3
+        10, 9, 11,
+        12, 13, 14,    // side 4
+        14, 13, 15,
+        16, 17, 18,    // side 5
+        18, 17, 19,
+        20, 21, 22,    // side 6
+        22, 21, 23,
     };
 
     // create the index buffer
@@ -492,4 +546,11 @@ void init_geometry(void)
     devcon->Map(pIBuffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);    // map the buffer
     memcpy(ms.pData, OurIndices, sizeof(OurIndices));                   // copy the data
     devcon->Unmap(pIBuffer, NULL);
+
+    D3DX11CreateShaderResourceViewFromFile(dev,        // the Direct3D device
+                                       L"Wood.png",    // load Wood.png in the local folder
+                                       NULL,           // no additional information
+                                       NULL,           // no multithreading
+                                       &pTexture,      // address of the shader-resource-view
+                                       NULL);          // no multithreading
 }
