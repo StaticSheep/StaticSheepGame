@@ -52,6 +52,8 @@ namespace Framework
     GameComponent* GetComponent(EComponent type, Handle owner);
 
     HandleManager& GetHandles();
+
+    HookManager hooks;
     
   private:
     // The collection of all game objects in this game space

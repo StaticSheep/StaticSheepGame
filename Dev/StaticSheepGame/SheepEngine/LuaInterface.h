@@ -31,8 +31,12 @@ namespace Framework
 
     // Function calling overloads
     void CallFunc(lua_State* L, const char* funcName);
+
     template<typename A1>
     void CallFunc(lua_State* L, const char* funcName, A1 arg1);
+
+    template<typename A1, typename A2>
+    void CallFunc(lua_State* L, const char* funcName, A1 arg1, A2 arg2);
 
     void CallMemberFunc(lua_State* L, Variable& var, const char* funcName);
 
@@ -53,6 +57,14 @@ namespace Framework
       Variable args[] = {arg1};
       
       CallStaticFuncFinal(L, funcName, args, 1);
+    }
+
+    template<typename A1, typename A2>
+    void CallFunc(lua_State* L, const char* funcName, A1 arg1, A2 arg2)
+    {
+      Variable args[] = {arg1, arg2};
+
+      CallStaticFuncFinal(L, funcName, args, 2);
     }
 
     void Shutdown(lua_State* L);

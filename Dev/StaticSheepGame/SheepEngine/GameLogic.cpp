@@ -36,6 +36,14 @@ namespace Framework
     for (auto it = ENGINE->m_spaces.begin(); it != ENGINE->m_spaces.end(); ++it)
     {
       space = *it;
+      space->hooks.Call("LogicUpdate", dt);
+    }
+
+    Lua::CallFunc(ENGINE->Lua(), "hook.Call", "LogicUpdate", dt);
+
+    for (auto it = ENGINE->m_spaces.begin(); it != ENGINE->m_spaces.end(); ++it)
+    {
+      space = *it;
       space->Cleanup();
     }
   }
