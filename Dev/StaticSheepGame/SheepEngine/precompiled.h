@@ -80,6 +80,7 @@ extern "C"
 
 #include "CTester.h"
 #include "CTransform.h"
+#include "CLuaComponent.h"
 
 
 

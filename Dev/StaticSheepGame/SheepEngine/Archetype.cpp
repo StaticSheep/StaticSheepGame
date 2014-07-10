@@ -29,13 +29,17 @@ namespace Framework
     for (unsigned int i = 0; i < ecountComponents; ++i)
       if (m_components[i] != nullptr)
         delete m_components[i];
+
+    for (unsigned int i = 0; i < m_luaComponents.size(); ++i)
+      if (m_luaComponents[i] != nullptr)
+        delete m_luaComponents[i];
   }
 
   void Archetype::CopyObject(GameObject* obj)
   {
     for (unsigned int i = 0; i < ecountComponents; ++i)
     {
-      if (obj->HasComponent(EComponent(i)))
+      if (obj->HasComponent(EComponent(i)) && i != eLuaComponent)
       {
         // We do not have that component so lets create it quickly
         if (m_components[i] == nullptr)
@@ -49,8 +53,12 @@ namespace Framework
         {
           // Get the actual member
           const Member member = typeInfo->GetMembers()[m];
+
           // Copy over the member data from the object into the archetype
-          memcpy((char*)m_components[i] + member.Offset(), (char*)obj->GetComponent(i) + member.Offset(), member.Type()->Size());
+          Variable LVar = Variable(member.Type(), (char*)m_components[i] + member.Offset());
+          Variable RVar = Variable(member.Type(), (char*)obj->GetComponent(i) + member.Offset());
+
+          member.Type()->PlacementCopy(LVar.GetData(), RVar.GetData());
         }
 
         // Copy over everything from the object's component into the archetype. This could be dangerous
@@ -66,6 +74,45 @@ namespace Framework
         m_components[i] = nullptr;
       }
     } // End component iteration
+
+    const TypeInfo *typeInfo = GET_TYPE(LuaComponent);
+
+    if (m_luaComponents.size() > 0)
+    {
+      for (unsigned int i = 0; i < m_luaComponents.size(); ++i)
+      {
+        delete m_luaComponents[i];
+      }
+
+      m_luaComponents.clear();
+    }
+
+    for (unsigned int i = 0; i < obj->m_luaComponents.size(); ++i)
+    {
+      LuaComponent* comp = (LuaComponent*)FACTORY->m_componentCreators[eLuaComponent]->Allocate();
+      m_luaComponents.push_back(comp);
+
+      LuaComponent* objLC = obj->space->GetHandles().GetAs<LuaComponent>(obj->m_luaComponents[i]);
+
+      if (obj->space->GetName().length() > 0)
+        objLC->QueryLoadCommand();
+
+      // Iterate through all members in the component that are registered to be serialized
+      for (unsigned int m = 0; m < typeInfo->GetMembers().size(); ++m)
+      {
+        // Get the actual member
+        const Member member = typeInfo->GetMembers()[m];
+
+        // Copy over the member data from the object into the archetype
+        Variable LVar = Variable(member.Type(), (char*)comp + member.Offset());
+        Variable RVar = Variable(member.Type(), (char*)objLC + member.Offset());
+
+        member.Type()->PlacementCopy(LVar.GetData(), RVar.GetData());
+      }
+
+    } // End component iteration
+
+
 
     // Copy over the name and archetype of the object
     name = obj->name;
@@ -84,7 +131,7 @@ namespace Framework
 
   bool Archetype::HasComponent(EComponent type) const
   {
-    return m_components[type] != nullptr;
+    return m_components[type] != nullptr || (type == eLuaComponent && m_luaComponents.size() > 0);
   }
 
   void Archetype::SerializeDifferences(GameObject* obj, File& file) const
@@ -143,7 +190,7 @@ namespace Framework
 
     for (unsigned int i = 0; i < ecountComponents; ++i)
     {
-      if (HasComponent(EComponent(i)))
+      if (HasComponent(EComponent(i)) && i != eLuaComponent)
       {
         // Create the component that is needed
         GameComponent* comp = space->CreateComponent(EComponent(i));
@@ -160,11 +207,33 @@ namespace Framework
           // Get the actual member
           const Member member = typeInfo->GetMembers()[m];
           // Copy over the member data from the archetype into the object
-          memcpy((char*)obj->GetComponent(i) + member.Offset(), (char*)m_components[i] + member.Offset(), member.Type()->Size());
+          Variable LVar = Variable(member.Type(), (char*)comp + member.Offset());
+          Variable RVar = Variable(member.Type(), (char*)m_components[i] + member.Offset());
+          member.Type()->PlacementCopy(LVar.GetData(), RVar.GetData());
         }
 
       }
     } // End component iteration
+
+    const TypeInfo* typeInfo = GET_TYPE(LuaComponent);
+
+    for (unsigned int i = 0; i < m_luaComponents.size(); ++i)
+    {
+      LuaComponent* comp = (LuaComponent*)space->CreateComponent(eLuaComponent);
+      obj->AddComponent(comp);
+
+      // Iterate through all members in the component that are registered to be serialized
+      for (unsigned int m = 0; m < typeInfo->GetMembers().size(); ++m)
+      {
+        // Get the actual member
+        const Member member = typeInfo->GetMembers()[m];
+        // Copy over the member data from the archetype into the object
+        Variable LVar = Variable(member.Type(), (char*)comp + member.Offset());
+        Variable RVar = Variable(member.Type(), (char*)m_luaComponents[i] + member.Offset());
+        member.Type()->PlacementCopy(LVar.GetData(), RVar.GetData());
+      }
+
+    }
 
     // We added all components, now initialize the object
     obj->Initialize();
@@ -214,7 +283,7 @@ namespace Framework
     {
       // Find the component type
       EComponent type = (EComponent)i;
-      if (o->HasComponent( type ))
+      if (o->HasComponent( type ) && type != eLuaComponent)
       {
         // If the object has the specified component, then get the type info
         const TypeInfo *typeInfo = FACTORY->GetComponentType( type );
@@ -232,6 +301,28 @@ namespace Framework
         }
       }
     }
+
+
+    const TypeInfo *typeInfo = GET_TYPE(LuaComponent);
+
+    for (unsigned int i = 0; i < o->m_luaComponents.size(); ++i)
+    {
+      // Create a variable from the component
+      const Variable v( typeInfo, o->m_luaComponents[i] );
+
+      // Serialize the component into the file
+      v.Serialize( file );
+
+      // If we aren't quite yet at the end of all the components, make a new line
+      // And pad it for any future components
+      if(i != ecountComponents - 1)
+      {
+        file.Write( "\n" );
+        s->Padding( file, pad );
+      }
+    }
+
+
     // We are all done so close the bracket
     s->Padding( file, --pad );
     file.Write( "}\n" );
@@ -263,13 +354,19 @@ namespace Framework
     archetype = rhs.archetype;
 
     for (unsigned int i = 0; i < ecountComponents; ++i)
-      if (rhs.HasComponent(EComponent(i)))
+      if (rhs.HasComponent(EComponent(i)) && i != eLuaComponent)
       {
         m_components[i] = FACTORY->m_componentCreators[i]->Allocate();
         *(m_components[i]) = *(rhs.m_components[i]);
       }
 
-     return *this;
+      for (unsigned int i = 0; i < rhs.m_luaComponents.size(); ++i)
+      {
+        m_luaComponents.push_back((LuaComponent*)FACTORY->m_componentCreators[eLuaComponent]->Allocate());
+        *(m_luaComponents[i]) = *(rhs.m_luaComponents[i]);
+      }
+
+    return *this;
   }
 
 

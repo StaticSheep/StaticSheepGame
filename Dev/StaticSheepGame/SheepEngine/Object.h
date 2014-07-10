@@ -17,6 +17,7 @@ namespace Framework
 
   // Forward Declaration
   class GameObject;
+  class LuaComponent;
 
   // So life is easier
   typedef Handle* ComponentArray;
@@ -78,6 +79,10 @@ namespace Framework
       GameComponent* GetComponent(unsigned int type);
       GameComponent* GetComponent(const char* type);
 
+      LuaComponent* GetLuaComponent(unsigned int index);
+
+      
+
       // The space which this object resides inside of
       GameSpace* space;
 
@@ -103,6 +108,9 @@ namespace Framework
 
       // Vector of the components belonging to this object
       Handle m_components[ecountComponents];
+
+      // Vector of all lua components
+      std::vector<Handle> m_luaComponents;
 
       // Vector of the children belonging to this object
       ChildArray m_children;

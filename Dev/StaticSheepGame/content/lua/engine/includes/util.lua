@@ -1,49 +1,59 @@
-local __pairs = pairs
-function pairs(value)
-	if type(value) == "userdata" then
-		local g = getmetatable(value)
-		return g.__pairs(value)
-	else
-		return __pairs(value)
-	end
-end
+-- local __pairs = pairs
+-- function pairs(value)
+--   if type(value) == "userdata" then
+--     local g = getmetatable(value)
+--     return g.__pairs(value)
+--   else
+--     return __pairs(value)
+--   end
+-- end
 
 local function Pad()
-	for i=1,padding do
-		io.write("  ")
-	end
+  for i=1,padding do
+    io.write("  ")
+  end
 end
 
 function PrintTable(tbl)
-	if not padding then padding = 0 end
+  if not padding then padding = 0 end
 
-	Pad()
-	print("{")
+  Pad()
+  print("{")
 
-	padding = padding + 1
+  padding = padding + 1
 
-	for k,v in pairs(tbl) do
+  for k,v in pairs(tbl) do
 
-		if (type(v) == "table") then
-			Pad()
-			io.write(tostring(k)..":".."\n")
-			PrintTable(v)
-		else
-			Pad()
-			io.write(tostring(k)..": "..tostring(v).. "\n")
-		end
+    if (type(v) == "table") then
+      Pad()
+      io.write(tostring(k)..":".."\n")
+      PrintTable(v)
+    else
+      Pad()
+      io.write(tostring(k)..": "..tostring(v).. "\n")
+    end
 
-	end
+  end
 
-	padding = padding - 1
+  padding = padding - 1
 
-	Pad()
-	print("}")
+  Pad()
+  print("}")
+end
+
+function loopcheck(table)
+  for k,v in pairs(table) do
+  end
 end
 
 function IsValid(object)
-	if object == nil then return false end
-	return type(object) == "userdata"
+  if object == nil then return false end
+  if type(object) == "table" then
+    if not pcall(loopcheck, object) then
+      return false
+    end
+  end
+  return type(object) == "userdata" or type(object) == "table"
 end
 
 if not module then
@@ -93,33 +103,63 @@ if not module then
     end
 end
 
+function SetupMetatable(key, meta)
+
+  function meta.__index(self, key, ...)
+    _R.METAVALUES[tostring(self)] = _R.METAVALUES[tostring(self)] or {}
+
+    if _R.METAVALUES[tostring(self)][key] then
+      --print("Found meta value: ".. key)
+      return _R.METAVALUES[tostring(self)][key]
+    end
+
+    --print("Didn't find meta value: ".. key)
+
+    return meta[key]
+  end
+
+  function meta.__newindex(self, key, value)
+    _R.METAVALUES[tostring(self)] = _R.METAVALUES[tostring(self)] or {}
+
+    --print("Insert new index into meta table, key: "..key.." value: "..tostring(value) )
+
+    _R.METAVALUES[tostring(self)][key] = value
+  end
+
+  function meta:__gc()
+    _R.METAVALUES[tostring(self)] = nil
+  end
+
+  function meta:__next(k)
+    return next(_R.METAVALUES[tostring(self)], k)
+  end
+
+  function meta:__pairs()
+    return meta.__next, self, nil
+  end
+
+end
+
+
 function SetupMetatables()
   _R.METAVALUES = {}
 
   for key, meta in pairs(_R) do
-
-      function meta.__index(self, key, ...)
-          _R.METAVALUES[tostring(self)] = _R.METAVALUES[tostring(self)] or {}
-          if _R.METAVALUES[tostring(self)][key] then
-              return _R.METAVALUES[tostring(self)][key]
-          end
-
-          return meta[key]
-      end
-
-      function meta.__newindex(self, key, value)
-
-          _R.METAVALUES[tostring(self)] = _R.METAVALUES[tostring(self)] or {}
-
-          _R.METAVALUES[tostring(self)][key] = value
-      end
-
-      function meta:__gc()
-          _R.METAVALUES[tostring(self)] = nil
-      end
+    SetupMetatable(key, meta)
   end
 end
 
 function GetMeta(name)
-    return _R["__"..name.."_MT"]
+  if _R["__"..name.."_MT"] == nil then
+    print("Metatable not found for: \""..name.."\" creating one!")
+    _R["__"..name.."_MT"] = {}
+    
+    SetupMetatable(name, _R["__"..name.."_MT"])
+  end
+  
+  return _R["__"..name.."_MT"]
+end
+
+function RunString(command, ...)
+  load("return function() " .. command .. " end")()(...)
 end

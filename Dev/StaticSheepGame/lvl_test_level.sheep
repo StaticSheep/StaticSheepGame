@@ -1,3 +1,4 @@
+ach_test_type2
 GameObject
 {
   name std::string "Old Object"
@@ -14,18 +15,16 @@ GameObject
     testvalue1 int 6
     testvalue2 int 505
   }
+
 }
 ach_test_type
   name std::string "Bob Junior"
 ach_Nottheoldone
   name std::string "TestName"
-  Transform:val1 int 13
-  Transform:val2 int 42
-  Transform:val3 int 128
-  Tester:testvalue1 int 6
-  Tester:testvalue2 int 505
 ach_test_type
+  name std::string "TestName"
 ach_test_type
+  name std::string "TestName"
   Transform:val2 int 300
-ach_test_type2
+ach_test_type
   Transform:val2 int 1300

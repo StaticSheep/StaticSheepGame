@@ -1,6 +1,6 @@
 GameObject
 {
-  name std::string "TestName"
+  name std::string "This is wow"
   archetype std::string "test_type"
   Transform
   {
@@ -14,4 +14,11 @@ GameObject
     testvalue1 int 6
     testvalue2 int 505
   }
-}
+
+  LuaComponent
+  {
+    name std::string "Flancomp"
+    loadCommand std::string ""
+  }
+
+  }

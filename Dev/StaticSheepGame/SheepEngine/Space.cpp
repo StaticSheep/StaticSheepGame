@@ -15,7 +15,8 @@ namespace Framework
 {
 
   GameSpace::GameSpace() :
-    m_objects(sizeof(GameObject))
+    m_objects(sizeof(GameObject)),
+    m_shuttingDown(false)
   {
     for(unsigned i = 0; i < ecountComponents; ++i)
     {
@@ -26,6 +27,7 @@ namespace Framework
 
   GameSpace::~GameSpace()
   {
+   
     // Should probably clean stuff up
   }
 
@@ -101,16 +103,16 @@ namespace Framework
     for (unsigned int i = 0; i < m_objects.Size(); ++i)
     {
       GameObject* obj = (GameObject*)m_objects[i];
-      if (!obj->m_active)
+      if (!obj->m_active || m_shuttingDown)
       {
         // If the object is not active, time to destroy it
-        for (unsigned int j = 0; j < ecountComponents - 1; ++j)
+        for (unsigned int j = 0; j < ecountComponents; ++j)
         {
           // Get the enum type of the component
           EComponent type = (EComponent)j;
 
           // Check to see if the Object has that type of component
-          if (obj->HasComponent(type))
+          if (obj->HasComponent(type) && type != eLuaComponent)
           {
             // Get the component
             GameComponent* comp = obj->GetComponent(type);
@@ -123,6 +125,18 @@ namespace Framework
           }
         } // End component loop
 
+        for (unsigned int j = 0; j < obj->m_luaComponents.size(); ++j)
+        {
+          LuaComponent* comp = obj->GetLuaComponent(j);
+          comp->Remove();
+
+          GameComponent* moved = (GameComponent*)GetComponents(eLuaComponent)->Free(comp);
+          if (moved)
+            m_handles.Update(moved, moved->self);
+
+        } // End component loop
+
+        obj->~GameObject();
         RemoveGameObject(obj);
       } // End object not active loop
     }
@@ -185,37 +199,6 @@ namespace Framework
           objectArchetype.SerializeDifferences(it, file);
           continue;
         }
-        
-        // The archetype was not found so we are going to print out every single member
-        std::string instance;
-        for (unsigned int j = 0; j < ecountComponents; ++j)
-        {
-          if (it->HasComponent((EComponent)j))
-          {
-            const TypeInfo* CType = GET_STR_TYPE(GET_ENUM(Component)->m_literals[j].c_str());
-
-            instance = CType->Name();
-            instance += ":";
-
-            for (unsigned int m = 0; m < CType->GetMembers().size(); ++m)
-            {
-              const Member member = CType->GetMembers()[m];
-              file.Write("  %s%s ", instance.c_str(), member.Name());
-
-              Variable var(member.Type(), (char*)it->GetComponent(j) + member.Offset());
-
-              var.Serialize(file);
-            }
-
-            // Move to the next component
-          }
-
-          // The object didn't have the component
-        }
-
-        // Since we just serialized all the data from the component, we can move on
-        // to the next object that needs to be serialized
-        continue;
       }
 
       // We are provided instance data to save
@@ -321,6 +304,11 @@ namespace Framework
       // Deserialize the member
       member->Type()->Deserialize(file, var);
     }
+  }
+
+  const std::string GameSpace::GetName() const
+  {
+    return m_name;
   }
 
 

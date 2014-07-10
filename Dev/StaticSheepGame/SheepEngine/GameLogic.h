@@ -23,10 +23,12 @@ namespace Framework
     virtual std::string GetName() {return "GameLogic";};
 
     // Initialization call
-    void Initialize(void);
+    virtual void Initialize(void);
 
     // Update per frame
-    void Update(float dt);
+    virtual void Update(float dt);
+
+    virtual void RegisterComponents();
   };
 
   extern GameLogic* GAMELOGIC;

@@ -20,10 +20,6 @@ to the corresponding C++ enumeration index
 All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 *****************************************************************/
 
-E_NAME(Hooks)
-  E_ENTRY(FrameUpdate)
-  E_ENTRY(LogicUpdate)
-E_END(Hooks)
 
 E_NAME(Generics)
   E_ENTRY(GameComponent)
@@ -33,5 +29,6 @@ E_END(Generics)
 E_NAME(Component)
   E_ENTRY(Transform)
   E_ENTRY(Tester)
+  E_ENTRY(LuaComponent)
   E_ENTRY(countComponents)
 E_END(Component)

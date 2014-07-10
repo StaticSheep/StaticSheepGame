@@ -38,6 +38,15 @@ namespace Framework
     template<typename A1, typename A2>
     void CallFunc(lua_State* L, const char* funcName, A1 arg1, A2 arg2);
 
+    template<typename A1, typename A2, typename A3>
+    void CallFunc(lua_State* L, const char* funcName, A1 arg1, A2 arg2, A3 arg3);
+
+    template<typename A1, typename A2, typename A3, typename A4>
+    void CallFunc(lua_State* L, const char* funcName, A1 arg1, A2 arg2, A3 arg3, A4 arg4);
+
+    template<typename A1, typename A2, typename A3, typename A4, typename A5>
+    void CallFunc(lua_State* L, const char* funcName, A1 arg1, A2 arg2, A3 arg3, A4 arg4, A5 arg5);
+
     void CallMemberFunc(lua_State* L, Variable& var, const char* funcName);
 
     void GenericToLua(lua_State* L, Variable& var);
@@ -65,6 +74,30 @@ namespace Framework
       Variable args[] = {arg1, arg2};
 
       CallStaticFuncFinal(L, funcName, args, 2);
+    }
+
+    template<typename A1, typename A2, typename A3>
+    void CallFunc(lua_State* L, const char* funcName, A1 arg1, A2 arg2, A3 arg3)
+    {
+      Variable args[] = {arg1, arg2, arg3};
+
+      CallStaticFuncFinal(L, funcName, args, 3);
+    }
+
+    template<typename A1, typename A2, typename A3, typename A4>
+    void CallFunc(lua_State* L, const char* funcName, A1 arg1, A2 arg2, A3 arg3, A4 arg4)
+    {
+      Variable args[] = {arg1, arg2, arg3, arg4};
+
+      CallStaticFuncFinal(L, funcName, args, 4);
+    }
+
+    template<typename A1, typename A2, typename A3, typename A4, typename A5>
+    void CallFunc(lua_State* L, const char* funcName, A1 arg1, A2 arg2, A3 arg3, A4 arg4, A5 arg5)
+    {
+      Variable args[] = {arg1, arg2, arg3, arg4, arg5};
+
+      CallStaticFuncFinal(L, funcName, args, 5);
     }
 
     void Shutdown(lua_State* L);

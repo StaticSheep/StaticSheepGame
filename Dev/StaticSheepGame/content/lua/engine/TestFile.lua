@@ -4,15 +4,8 @@ function TestHook(self)
 end
 
 function Test()
-  OBJTEST = GetComponent("Stand alone space", 3, "Transform")
-  PrintTable(getmetatable(OBJTEST))
-  OBJTEST.blah = 10
-  OBJTEST:TransformTest()
-  OBJTEST:DoSomeLuaStuff()
+  PrintTable(_R.METAVALUES)
 end
 
 function Test2()
-  print(OBJTEST)
-  print(OBJTEST.test)
-  OBJTEST:TransformTest()
 end

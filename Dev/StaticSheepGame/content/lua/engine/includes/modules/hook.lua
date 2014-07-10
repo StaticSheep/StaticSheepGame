@@ -5,19 +5,24 @@
 local pairs = pairs
 local type = type
 local IsValid = IsValid
+local setmetatable = setmetatable
+
+--local print = print
+--local PrintTable = PrintTable
 
 module("hook")
 
 local Hooks = {}
+
 
 function GetTable() return Hooks end
 
 function Add(event, name, func)
 	if type(func) ~= "function" then return end
 	if type(event) ~= "string" then return end
-
+	
 	if Hooks[event] == nil then
-		Hooks[event] = {}
+		Hooks[event] = setmetatable({}, {__mode = 'k' })
 	end
 
 	Hooks[event][name] = func
@@ -35,11 +40,12 @@ function Run(event, ...)
 end
 
 function Call(event, ...)
-	local HookTable = Hooks[event]
 
-	if HookTable ~= nil then
+	if Hooks[event] ~= nil then
 
-		for k,v in pairs(HookTable) do
+		--PrintTable(HookTable)
+
+		for k,v in pairs(Hooks[event]) do
 
 			if type(k) == "string" then
 
@@ -48,14 +54,13 @@ function Call(event, ...)
 			else
 
 				if IsValid(k) then -- Assume it is a component or object
-
 					-- If the object is valid, pass the first argument as self
 					v(k, ...)
 
 				else
 					-- If the object is not valid, remove the hook
-
-					HookTable[k] = nil
+					--print("Invalid! Removing!")
+					Hooks[event][k] = nil
 				end
 
 			end

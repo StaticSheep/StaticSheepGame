@@ -54,6 +54,10 @@ namespace Framework
     HandleManager& GetHandles();
 
     HookManager hooks;
+
+    const std::string GetName() const;
+
+    bool paused;
     
   private:
     // The collection of all game objects in this game space
@@ -70,6 +74,8 @@ namespace Framework
 
     // Global Unique ID counter
     unsigned int m_guid;
+
+    bool m_shuttingDown;
 
     struct SerializerData
     {

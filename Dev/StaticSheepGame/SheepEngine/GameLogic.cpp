@@ -25,6 +25,11 @@ namespace Framework
     // Free anything that was allocated
   }
 
+  void GameLogic::RegisterComponents()
+  {
+    REGISTER_COMPONENT(LuaComponent);
+  }
+
   void GameLogic::Initialize()
   {
   }
@@ -36,10 +41,15 @@ namespace Framework
     for (auto it = ENGINE->m_spaces.begin(); it != ENGINE->m_spaces.end(); ++it)
     {
       space = *it;
-      space->hooks.Call("LogicUpdate", dt);
+
+      if (!space->paused)
+        space->hooks.Call("LogicUpdate", dt);
+
+      space->hooks.Call("FrameUpdate", dt);
     }
 
     Lua::CallFunc(ENGINE->Lua(), "hook.Call", "LogicUpdate", dt);
+    Lua::CallFunc(ENGINE->Lua(), "hook.Call", "FrameUpdate", dt);
 
     for (auto it = ENGINE->m_spaces.begin(); it != ENGINE->m_spaces.end(); ++it)
     {

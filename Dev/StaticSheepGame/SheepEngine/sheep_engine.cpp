@@ -105,8 +105,12 @@ void TestStuff(void)
 
   FACTORY->LoadArchetypeFromFile("test_type2");
 
+  GameObject* obj = FACTORY->LoadObjectFromArchetype(space, "test_type2");
+  FACTORY->SaveObjectToArchetype(obj, "test_type2");
+
+
   // Create an empty object inside "TestSpace"
-  GameObject* obj = space->CreateEmptyObject();
+  obj = space->CreateEmptyObject();
 
   // Create a Transform component in the space
   Transform* comp = (Transform*)space->CreateComponent(eTransform);
@@ -145,8 +149,12 @@ void TestStuff(void)
   comp->val2 = 300; // sparta
 
   obj = FACTORY->LoadObjectFromArchetype(space, "test_type");
-  obj->archetype = "test_type2";
   obj->name = "This is wow";
+
+  LuaComponent* LC = (LuaComponent*)space->CreateComponent(eLuaComponent);
+  LC->name = "Flancomp";
+  obj->AddComponent(LC);
+
   FACTORY->SaveObjectToArchetype(obj, "test_type2");
 
   // Get the Transform component from one of those objects
@@ -179,33 +187,7 @@ void TestStuff(void)
   FACTORY->LoadLevelToSpace(space, "test_level");
 
   s = Serializer::Get();
-  // Handle manager looks like this right now
-  // Handle 0: Object
-  // Handle 1: Transform Component
-  // Handle 2: Tester Component
-  // Handle 3: Object
-  // Handle 4: Transform Component
-  // Handle 5: Tester Component
-  // Handle 6: Object
-  // Handle 7: Transform Component
-  // Handle 8: Tester Component
-  // Handle 9: Object
-  // Handle 10: Transform Component
-  // Handle 11: Tester Component
 
-  // Lets grab the 3rd object, in reality this would never work
-  // But I can create a fake handle since this is such a controlled test
-  obj = space->GetHandles().GetAs<GameObject>(Handle(9, 0));
-
-  // And lets get the transform variable
-  comp = obj->GetComponent<Transform>(eTransform);
-
-  int a = comp->val2;
-
-  if (a == 300)
-  {
-    comp->val2 = 1000;
-  }
 
   // If we want to save instanced object data we need to create
   // a list of variables we wish to save
@@ -221,7 +203,7 @@ void TestStuff(void)
   FACTORY->SaveSpaceToLevel(space, "test_level2", &dataList, true, false);
 
   // Make 100 more objects
-  for (unsigned int i = 0; i < 100; ++i)
+  for (unsigned int i = 0; i < 5; ++i)
     FACTORY->LoadObjectFromArchetype(space, "test_type");
 
   // Save the space as a standalone level (Does not rely on archetypes)
@@ -239,28 +221,14 @@ void TestStuff(void)
   FACTORY->SaveArchetypeToFile("test_type");
 
   obj = FACTORY->LoadObjectFromArchetype(space, "test_type");
+
   
-  comp = obj->GetComponent<Transform>(eTransform);
 
-  Function g = BUILD_FUNCTION(GameObject::Destroy);
-  g.Bind(obj);
-  g();
-
-  HookManager hm;
-
-  Function cf = BUILD_FUNCTION(Transform::Test);
-  cf.Bind(comp);
-
-  hm.Add("TestEvent", comp->self, cf);
-  hm.Call("TestEvent");
-  hm.Remove("TestEvent", comp->self);
-  hm.Call("TestEvent");
-  Lua::CallFunc(ENGINE->Lua(), "Test");
   Lua::CallMemberFunc(ENGINE->Lua(), Variable(*comp), "DoSomeLuaStuff");
 
-  SheepEngine->RemoveSpace(space);
+  Lua::CallFunc(ENGINE->Lua(), "hook.Call", "LogicUpdate", 10.0f);
 
-  
+  SheepEngine->RemoveSpace(space);
 
   SheepEngine->Shutdown();
 

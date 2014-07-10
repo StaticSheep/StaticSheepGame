@@ -46,6 +46,7 @@ namespace Framework
 
     GameComponent* m_components[ecountComponents];
 
+    std::vector<LuaComponent*> m_luaComponents;
     
 
     friend class Factory;

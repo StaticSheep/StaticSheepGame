@@ -60,6 +60,6 @@ filesystem.BlacklistFolder("includes")
 
 include("gamespace.lua")
 
-hook.Add("LogicUpdate", "CheckFiles", filesystem.UpdateOldFiles)
+hook.Add("FrameUpdate", "CheckFiles", filesystem.UpdateOldFiles)
 
 

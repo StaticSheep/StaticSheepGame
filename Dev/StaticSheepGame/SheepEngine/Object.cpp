@@ -41,8 +41,8 @@ namespace Framework
   /// Marks the object for deletion
   /// </summary>
   void GameObject::Destroy()
-  { 
-    // @TODO: Tell the object manager (Space?Layer?) to delete this when possible
+  {
+    m_active = false;
   }
 
   GameObject::GameObject()
@@ -68,10 +68,22 @@ namespace Framework
     GameComponent* component;
     for (size_t i = 0; i < ecountComponents; ++i)
     {
+      if (m_components[i] == Handle::null)
+        continue;
       component = space->GetHandles().GetAs<GameComponent>(m_components[i]);
       component->owner = self;
       component->Initialize();
     }
+
+    if (space->GetName().length() > 0)
+      for (size_t i = 0; i < m_luaComponents.size(); ++i)
+      {
+        component = space->GetHandles().GetAs<GameComponent>(m_luaComponents[i]);
+        component->owner = self;
+        component->Initialize();
+      }
+
+    
   }
 
   bool GameObject::ObjectSorter(Handle left, Handle right)
@@ -87,7 +99,10 @@ namespace Framework
   {
     // Set the component's owner to ourself
     component->owner = self;
-    m_components[component->typeID] = component->self;
+    if (component->typeID == eLuaComponent)
+      m_luaComponents.push_back(component->self);
+    else
+      m_components[component->typeID] = component->self;
   }
 
   /// <summary>
@@ -151,6 +166,11 @@ namespace Framework
     return space->GetHandles().GetAs<GameComponent>(m_components[type]);
   }
 
+  LuaComponent* GameObject::GetLuaComponent(unsigned int index)
+  {
+    return space->GetHandles().GetAs<LuaComponent>(m_luaComponents[index]);
+  }
+
   void GameObject::Serialize(File& file, Variable var)
   {
     GameObject *o = &var.GetValue<GameObject>( );
@@ -186,38 +206,47 @@ namespace Framework
       memberInfo->Serialize(file, Variable(memberInfo, offsetData));
     }
 
-    s->Padding( file, pad );
+    //s->Padding( file, pad );
 
     //const TypeInfo* typeInfo = GET_TYPE(Handle);
 
     Serializer::Get()->SetUserData(o->space);
     // Now we are going to iterate through every component and serialize them
-    for(unsigned i = 0; i < ecountComponents; ++i)
+    for ( unsigned int i = 0; i < ecountComponents; ++i)
     {
-      if (o->HasComponent(EComponent(i)))
+
+      
+      if (o->HasComponent(EComponent(i)) && i != eLuaComponent)
       {
+        s->Padding( file, pad );
+
         Variable v = o->m_components[i];
         v.Serialize(file);
       }
-      //// Find the component type
-      //EComponent type = (EComponent)i;
-      //if (o->HasComponent( type ))
-      //{
-      //  // If the object has the specified component, then get the type info
-      //  const TypeInfo *typeInfo = FACTORY->GetComponentType( type );
-      //  // Create a variable from the component
-      //  Variable v( typeInfo, o->GetComponent( type ) );
-      //  // Serialize the component into the file
-      //  v.Serialize( file );
 
-      //  // If we aren't quite yet at the end of all the components, make a new line
-      //  // And pad it for any future components
       if(i != ecountComponents - 1)
       {
         file.Write( "\n" );
-        s->Padding( file, pad );
       }
-      //}
+    }
+
+    // Serialize lua components
+    info = GET_TYPE(LuaComponent);
+    for (unsigned int i = 0; i < o->m_luaComponents.size(); ++i)
+    {
+      LuaComponent* LC = o->space->GetHandles().GetAs<LuaComponent>(o->m_luaComponents[i]);
+
+      LC->QueryLoadCommand();
+
+      s->Padding(file, pad);
+      Variable v(info, LC);
+      v.Serialize(file);
+
+      if (i != o->m_luaComponents.size() - 1)
+      {
+        file.Write("\n");
+      }
+
     }
 
     Serializer::Get()->SetUserData(nullptr);
