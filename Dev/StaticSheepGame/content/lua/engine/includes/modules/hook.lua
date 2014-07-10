@@ -7,6 +7,7 @@ local type = type
 local IsValid = IsValid
 local setmetatable = setmetatable
 
+
 --local print = print
 --local PrintTable = PrintTable
 
@@ -18,7 +19,7 @@ local Hooks = {}
 function GetTable() return Hooks end
 
 function Add(event, name, func)
-	if type(func) ~= "function" then return end
+	if type(func) ~= "function" and type(func) ~= "string" then return end
 	if type(event) ~= "string" then return end
 	
 	if Hooks[event] == nil then
@@ -54,8 +55,13 @@ function Call(event, ...)
 			else
 
 				if IsValid(k) then -- Assume it is a component or object
+
 					-- If the object is valid, pass the first argument as self
-					v(k, ...)
+					if (type(v) == "string") then
+						k[v](k, ...)
+					else
+						v(k, ...)
+					end
 
 				else
 					-- If the object is not valid, remove the hook

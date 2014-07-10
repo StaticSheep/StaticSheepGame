@@ -61,7 +61,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
   Framework::Lua::BindFunctionToLua(L, &NAME##Function, #NAME, __VA_ARGS__)
 
 #define CREATE_TABLE(L, NAME) \
-  Framework::Lua::CreateNewGTable(L, #NAME)
+  Framework::Lua::CreateNewGTable(L, NAME)
 
 #define TYPE_SET_TO_LUA(T, CB)\
   ((Framework::TypeInfo*)GET_TYPE(T))->SetToLua(CB)

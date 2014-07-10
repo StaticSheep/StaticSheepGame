@@ -2,7 +2,8 @@
                   Static Sheep Lua Interface                           
 ----------------------------------------------------------------------]]
 
-print("TEST")
+print("=================== Static Sheep Lua ===================")
+print("Loading engine lua interface...")
 
 if (not CONTENT_PATH) then CONTENT_PATH = package.path end
 
@@ -43,8 +44,11 @@ AddPath("/lua/")
 -- Initialize some tables
 SheepModules = {}
 Spaces = {}
+LuaSpaces = {} -- Pure lua objects
 
 include("util.lua")
+include("luaspace.lua")
+include("gamespace.lua")
 
 require("filesystem")
 require("hook")
@@ -57,9 +61,8 @@ for k,v in pairs(SheepModules) do
 end
 
 filesystem.BlacklistFolder("includes")
+filesystem.BlacklistFolder("levels")
 
-include("gamespace.lua")
-
-hook.Add("FrameUpdate", "CheckFiles", filesystem.UpdateOldFiles)
+hook.Add("LogicUpdate", "CheckFiles", filesystem.UpdateOldFiles)
 
 

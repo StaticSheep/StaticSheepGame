@@ -35,14 +35,25 @@ namespace Framework
       lua_pushstring(L, var.GetValue<std::string>().c_str());
     }
 
-    void ComponentToLua(lua_State* L, Variable& var)
+    void GameComponentToLua(lua_State* L, Variable& var)
     {
       GameComponent* comp = (GameComponent*)var.GetData();
       comp->typeinfo->ToLua(ENGINE->Lua(), Variable(comp->typeinfo, comp));
     }
 
+    void GameSpaceToLua(lua_State* L, Variable& var)
+    {
+      GameSpace* space = (GameSpace*)var.GetData();
+      const TypeInfo* type = GET_TYPE(GameSpace);
+      type->ToLua(ENGINE->Lua(), Variable(type, space));
+    }
 
-
+    void GameObjectToLua(lua_State* L, Variable& var)
+    {
+      GameObject* obj = (GameObject*)var.GetData();
+      const TypeInfo* type = GET_TYPE(GameObject);
+      type->ToLua(ENGINE->Lua(), Variable(type, obj));
+    }
 
     void IntFromLua(lua_State* L, int index, Variable* ref)
     {

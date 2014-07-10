@@ -18,7 +18,7 @@ namespace Framework
   typedef signed short int16;
   typedef signed int int32;
 
-  void EngineTypeRegistration(void);
+  
 
   template <typename T>
   struct EmptyType

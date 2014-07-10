@@ -276,7 +276,7 @@ namespace Framework
       memberInfo->Serialize(file, Variable(memberInfo, offsetData));
     }
 
-    s->Padding( file, pad );
+    //s->Padding( file, pad );
 
     // Now we are going to iterate through every component and serialize them
     for(unsigned i = 0; i < ecountComponents; ++i)
@@ -285,6 +285,7 @@ namespace Framework
       EComponent type = (EComponent)i;
       if (o->HasComponent( type ) && type != eLuaComponent)
       {
+        s->Padding( file, pad );
         // If the object has the specified component, then get the type info
         const TypeInfo *typeInfo = FACTORY->GetComponentType( type );
         // Create a variable from the component
@@ -297,7 +298,7 @@ namespace Framework
         if(i != ecountComponents - 1)
         {
           file.Write( "\n" );
-          s->Padding( file, pad );
+          
         }
       }
     }
@@ -310,6 +311,7 @@ namespace Framework
       // Create a variable from the component
       const Variable v( typeInfo, o->m_luaComponents[i] );
 
+      s->Padding( file, pad );
       // Serialize the component into the file
       v.Serialize( file );
 
@@ -318,7 +320,7 @@ namespace Framework
       if(i != ecountComponents - 1)
       {
         file.Write( "\n" );
-        s->Padding( file, pad );
+        
       }
     }
 

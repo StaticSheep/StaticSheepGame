@@ -53,6 +53,7 @@ extern "C"
 #include "LuaTransfer.h"
 #include "LuaInterface.h"
 #include "IntrospectionManager.h"
+#include "DefaultTypes.h"
 #include "LuaDefaultBinds.h"
 
 #include "Serialization.h"

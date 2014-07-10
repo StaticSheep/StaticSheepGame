@@ -3,27 +3,45 @@
                   Game spaces                    
 ----------------------------------------------------------------------]]
 
+function ReloadComponents()
+  for space_name, space in pairs(Spaces) do
+    for object_handle, object in pairs(space) do
+      if type(object) == "table" then
+        for component_handle, component in pairs(object) do
+
+          if component.SetupHooks then
+            component:SetupHooks()
+          elseif component.OnScriptReload then
+            component:OnScriptReload()
+          end
+
+        end
+      end
+    end
+  end
+end
+
 function AddGameSpace(name)
-  print("Added gamespace: "..name)
+  print("Added C++ GameSpace: "..name)
   Spaces[name] = {}
   Spaces[name].paused = false
 end
 
 function RemoveGameSpace(name)
-  print("Removed game space: "..name)
+  print("Removed C++ GameSpace: "..name)
   Spaces[name] = nil
 
   collectgarbage()
 end
 
-function RemoveGameObject(space, guid)
-  print("RemovedGameObject")
-  Spaces[space][guid] = nil
+function RemoveGameObject(space, handle)
+  print("[Space: "..space.."] Removed C++ GameObject: "..handle)
+  Spaces[space][handle] = nil
 end
 
-function RemoveComponentFromGameObject(space, handle, cid)
-  print("Removed Component from game object")
-  Spaces[space][handle][cid] = nil
+function RemoveComponentFromGameObject(space, handle, chandle)
+  print("[Space: "..space.."] Removed LuaComponent ("..chandle..") from C++ GameObject: "..handle)
+  Spaces[space][handle][chandle] = nil
 end
 
 function PauseGameSpace(name, paused)
@@ -61,6 +79,8 @@ function AttachComponentToObject(space, owner, cid, cname)
   component._space = space
   component._cid = cid
   component._type = cname
+
+  print("[Space: "..space.."] Attached LuaComponent ("..cid..") to C++ GameObject: "..owner)
 
   component:Init()
 end
@@ -103,6 +123,7 @@ function SerializeComponent(space, owner, cid, CLComp)
   string = string .. "end"
 
   --print("send back")
+  --PrintTable(getmetatable(CLComp))
 
   CLComp:SendLoadCommand(string)
 

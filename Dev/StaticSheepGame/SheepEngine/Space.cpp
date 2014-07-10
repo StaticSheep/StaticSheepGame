@@ -77,8 +77,21 @@ namespace Framework
     return object;
   }
 
+  GameObject* GameSpace::GetGameObject(Handle handle)
+  {
+    return m_handles.GetAs<GameObject>(handle);
+  }
+
+  void GameSpace::RemoveGameObjectByHandle(Handle handle)
+  {
+    RemoveGameObject(GetHandles().GetAs<GameObject>(handle));
+  }
+
   void GameSpace::RemoveGameObject(GameObject* object)
   {
+    // Removes all components
+    object->~GameObject();
+
     // Remove the object from the handle manager
     GetHandles().Remove(object->self);
 
@@ -105,38 +118,6 @@ namespace Framework
       GameObject* obj = (GameObject*)m_objects[i];
       if (!obj->m_active || m_shuttingDown)
       {
-        // If the object is not active, time to destroy it
-        for (unsigned int j = 0; j < ecountComponents; ++j)
-        {
-          // Get the enum type of the component
-          EComponent type = (EComponent)j;
-
-          // Check to see if the Object has that type of component
-          if (obj->HasComponent(type) && type != eLuaComponent)
-          {
-            // Get the component
-            GameComponent* comp = obj->GetComponent(type);
-            comp->Remove(); // Remove the component
-
-            // Free the component and update any handles
-            GameComponent* moved = (GameComponent*)GetComponents(type)->Free(comp);
-            if (moved)
-              m_handles.Update(moved, moved->self);
-          }
-        } // End component loop
-
-        for (unsigned int j = 0; j < obj->m_luaComponents.size(); ++j)
-        {
-          LuaComponent* comp = obj->GetLuaComponent(j);
-          comp->Remove();
-
-          GameComponent* moved = (GameComponent*)GetComponents(eLuaComponent)->Free(comp);
-          if (moved)
-            m_handles.Update(moved, moved->self);
-
-        } // End component loop
-
-        obj->~GameObject();
         RemoveGameObject(obj);
       } // End object not active loop
     }
@@ -309,6 +290,23 @@ namespace Framework
   const std::string GameSpace::GetName() const
   {
     return m_name;
+  }
+
+  void GameSpace::SetPaused(bool paused)
+  {
+    m_paused = paused;
+
+    Lua::CallFunc(ENGINE->Lua(), "PauseGameSpace", m_name, paused);
+  }
+
+  bool GameSpace::Paused()
+  {
+    return m_paused;
+  }
+
+  GameObject* GameSpace::CreateObjectFromArchetype(const char* name)
+  {
+    return FACTORY->LoadObjectFromArchetype(this, name);
   }
 
 

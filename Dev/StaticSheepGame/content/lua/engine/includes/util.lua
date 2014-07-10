@@ -138,6 +138,17 @@ function SetupMetatable(key, meta)
     return meta.__next, self, nil
   end
 
+  function meta:SetupHooks()
+  end
+
+  function meta:Init()
+    self:SetupHooks()
+  end
+
+  function meta.__New()
+    return setmetatable({}, meta)
+  end
+
 end
 
 
@@ -161,5 +172,5 @@ function GetMeta(name)
 end
 
 function RunString(command, ...)
-  load("return function() " .. command .. " end")()(...)
+  load("return function(...) " .. command .. " end")()(...)
 end

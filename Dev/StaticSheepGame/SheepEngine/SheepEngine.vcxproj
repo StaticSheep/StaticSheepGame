@@ -104,6 +104,7 @@
     <ClInclude Include="Component.h" />
     <ClInclude Include="ComponentCreator.h" />
     <ClInclude Include="CTester.h" />
+    <ClInclude Include="DefaultTypes.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="CTransform.h" />
     <ClInclude Include="Enum.h" />
@@ -146,6 +147,7 @@
     <ClCompile Include="CLuaComponent.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="CTester.cpp" />
+    <ClCompile Include="DefaultTypes.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="CTransform.cpp" />
     <ClCompile Include="Enum.cpp" />

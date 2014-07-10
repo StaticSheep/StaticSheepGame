@@ -53,9 +53,42 @@ namespace Framework
     fastChildSearch = false;
   }
 
+
+  /// <summary>
+  /// Removes all components from the game object
+  /// </summary>
   GameObject::~GameObject()
   {
-    // @TODO: Delete every component
+    // If the object is not active, time to destroy it
+    for (unsigned int j = 0; j < ecountComponents; ++j)
+    {
+      // Get the enum type of the component
+      EComponent type = (EComponent)j;
+
+      // Check to see if the Object has that type of component
+      if (HasComponent(type) && type != eLuaComponent)
+      {
+        // Get the component
+        GameComponent* comp = GetComponent(type);
+        comp->Remove(); // Remove the component
+
+        // Free the component and update any handles
+        GameComponent* moved = (GameComponent*)space->GetComponents(type)->Free(comp);
+        if (moved)
+          space->GetHandles().Update(moved, moved->self);
+      }
+    } // End component loop
+
+    for (unsigned int j = 0; j < m_luaComponents.size(); ++j)
+    {
+      LuaComponent* comp = GetLuaComponent(j);
+      comp->Remove();
+
+      GameComponent* moved = (GameComponent*)space->GetComponents(eLuaComponent)->Free(comp);
+      if (moved)
+        space->GetHandles().Update(moved, moved->self);
+
+    } // End component loop
   }
 
   

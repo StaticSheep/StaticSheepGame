@@ -89,148 +89,22 @@ void TestStuff(void)
 {
   OpenConsole();
 
-  Serializer* s;
-
   // Create the engine
   Engine* SheepEngine = new Engine();
-  // Add the GameLogic system which really doesn't do anything right now :v
+
   SheepEngine->AddSystem(new GameLogic());
-  // Add the Physics engine which will register the transform component for us
   SheepEngine->AddSystem(new SheepPhysics());
-  // Initialize the engine and the systems
+
   SheepEngine->Initialize();
 
-  // Create a space named "TestSpace"
-  GameSpace* space = SheepEngine->CreateSpace("TestSpace");
+  SheepEngine->LoadLevel("test_level");
 
-  FACTORY->LoadArchetypeFromFile("test_type2");
+  SheepEngine->LoadLuaLevel("content/lua/engine/levels/editor.lua");
 
-  GameObject* obj = FACTORY->LoadObjectFromArchetype(space, "test_type2");
-  FACTORY->SaveObjectToArchetype(obj, "test_type2");
-
-
-  // Create an empty object inside "TestSpace"
-  obj = space->CreateEmptyObject();
-
-  // Create a Transform component in the space
-  Transform* comp = (Transform*)space->CreateComponent(eTransform);
-  comp->val1 = 13; // Set some values
-  comp->val2 = 42;
-  comp->val3 = 128;
-  // Add the component to the object
-  obj->AddComponent(comp);
-
-  // Create a Tester component and set some stuff
-  Tester* comp2 = (Tester*)space->CreateComponent(eTester);
-  comp2->testvalue1 = 6;
-  comp2->testvalue2 = 505;
-
-  obj->AddComponent(comp2);
-  
-  // Set a name
-  obj->name = "TestName";
-
-  // Save the object as an archetype named "test_type"
-  FACTORY->SaveObjectToArchetype(obj, "test_type");
-
-  obj->name = "Old Object";
-
-
-  // Create 3 more objects from the archetype "test_type"
-  obj = FACTORY->LoadObjectFromArchetype(space, "test_type");
-  obj->name = "Bob Junior";
-  obj = FACTORY->LoadObjectFromArchetype(space, "test_type");
-  obj->archetype = "Nottheoldone";
-  obj = FACTORY->LoadObjectFromArchetype(space, "test_type");
-  obj = FACTORY->LoadObjectFromArchetype(space, "test_type");
-
-  // Get the Transform component from one of those objects
-  comp = obj->GetComponent<Transform>(eTransform);
-  comp->val2 = 300; // sparta
-
-  obj = FACTORY->LoadObjectFromArchetype(space, "test_type");
-  obj->name = "This is wow";
-
-  LuaComponent* LC = (LuaComponent*)space->CreateComponent(eLuaComponent);
-  LC->name = "Flancomp";
-  obj->AddComponent(LC);
-
-  FACTORY->SaveObjectToArchetype(obj, "test_type2");
-
-  // Get the Transform component from one of those objects
-  comp = obj->GetComponent<Transform>(eTransform);
-  comp->val2 = 1300;
-  
-
-  // Save the space as a level named "test_level" with the following settings
-  // ObjectInstanceDataList = NULL
-  //    We are not providing a white list of object variables
-  //    We wish to print out, regardless if they have changed or not.
-  // IncludeGeneric = true
-  //    We are going to save objects which do not belong to an archetype
-  // AllData = true
-  //    We are going to save all data relating to archetypes.
-  //    If the archetype exists in our archetype map (which means it has been
-  //    saved or loaded once before we are saving the space) then we are
-  //    only going to save any data which differs from the original archetype
-  FACTORY->SaveSpaceToLevel(space, "test_level", NULL, true, true);
-
-  // Remove "TestSpace", except i don't even know if this works right
-  SheepEngine->RemoveSpace(space);
-
-  // Create a new space called "CoolSpace"
-  space = SheepEngine->CreateSpace("CoolSpace");
-
-  s = Serializer::Get();
-
-  // Load the level into the space
-  FACTORY->LoadLevelToSpace(space, "test_level");
-
-  s = Serializer::Get();
-
-
-  // If we want to save instanced object data we need to create
-  // a list of variables we wish to save
-  // I may eventually add archetype caching and only save objects
-  // whose values are different from their archetypes
-  // Also i plan on adding non-archetype object saving support
-  std::vector<std::string> dataList;
-
-  // Lets save val2 from inside of transform
-  dataList.push_back("Transform:val2");
-
-  // Save the space as a level named "test_level2"
-  FACTORY->SaveSpaceToLevel(space, "test_level2", &dataList, true, false);
-
-  // Make 100 more objects
-  for (unsigned int i = 0; i < 5; ++i)
-    FACTORY->LoadObjectFromArchetype(space, "test_type");
-
-  // Save the space as a standalone level (Does not rely on archetypes)
-  FACTORY->SaveSpaceToLevel(space, "test_level_standalone", true);
-
-  // Save the space as a level named "test_level3" Notice the difference in file size
-  FACTORY->SaveSpaceToLevel(space, "test_level3", NULL, true, true);
-
-  SheepEngine->RemoveSpace(space);
-
-  space = SheepEngine->CreateSpace("Stand alone space");
-
-  FACTORY->LoadLevelToSpace(space, "test_level_standalone");
-
-  FACTORY->SaveArchetypeToFile("test_type");
-
-  obj = FACTORY->LoadObjectFromArchetype(space, "test_type");
-
-  
-
-  Lua::CallMemberFunc(ENGINE->Lua(), Variable(*comp), "DoSomeLuaStuff");
-
-  Lua::CallFunc(ENGINE->Lua(), "hook.Call", "LogicUpdate", 10.0f);
-
-  SheepEngine->RemoveSpace(space);
-
-  SheepEngine->Shutdown();
+  while (SheepEngine->Running())
+  {
+    SheepEngine->MainLoop();
+  }
 
   delete SheepEngine;
 

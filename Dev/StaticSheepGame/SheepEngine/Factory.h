@@ -38,9 +38,11 @@ namespace Framework
     void SaveSpaceToLevel(GameSpace* space, const char* name, bool standalone);
     void LoadLevelToSpace(GameSpace* space, const char* name);
 
-    static const std::string FileExtension;
+    static const std::string ArchetypeFileExtension;
     static const std::string ArchetypePrefix;
-    static const std::string LevelPrefix;
+    static const std::string LevelFileExtension;
+
+    static GameObject* LuaLoadObjectFromArchetype(GameSpace* space, const char* name);
 
     const Archetype& GetArchetype(std::string name);
 

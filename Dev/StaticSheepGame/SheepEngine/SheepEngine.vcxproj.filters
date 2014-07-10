@@ -130,6 +130,9 @@
     <ClInclude Include="CLuaComponent.h">
       <Filter>Components\LuaComponent</Filter>
     </ClInclude>
+    <ClInclude Include="DefaultTypes.h">
+      <Filter>Engine\Introspection\DefaultTypes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="precompiled.cpp">
@@ -233,6 +236,9 @@
     </ClCompile>
     <ClCompile Include="CLuaComponent.cpp">
       <Filter>Components\LuaComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="DefaultTypes.cpp">
+      <Filter>Engine\Introspection\DefaultTypes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -379,6 +385,9 @@
     </Filter>
     <Filter Include="Components\LuaComponent">
       <UniqueIdentifier>{cdde82c1-9c86-4eb9-80f9-7b8aca97e7b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Introspection\DefaultTypes">
+      <UniqueIdentifier>{06fadf3e-8f28-44e2-9fbc-031832a551bd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

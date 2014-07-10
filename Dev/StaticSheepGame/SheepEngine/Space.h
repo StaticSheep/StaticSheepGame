@@ -22,6 +22,9 @@ namespace Framework
     GameSpace();
     ~GameSpace();
 
+    void SetPaused(bool paused);
+    bool Paused();
+
     template <typename T>
     void SyncHandles(ObjectAllocator& m_allocator, bool force = false);
 
@@ -32,10 +35,12 @@ namespace Framework
     GameObject* CreateEmptyObject();
 
     void RemoveGameObject(GameObject* object);
-    //void RemoveGameObject(Handle handle);
+    void RemoveGameObjectByHandle(Handle handle);
 
     void RemoveComponent(GameComponent* comp);
     void RemoveComponent(Handle handle);
+
+    GameObject* GetGameObject(Handle handle);
 
     void Cleanup();
 
@@ -57,7 +62,11 @@ namespace Framework
 
     const std::string GetName() const;
 
-    bool paused;
+
+    // =================================================
+
+    GameObject* CreateObjectFromArchetype(const char* name);
+    
     
   private:
     // The collection of all game objects in this game space
@@ -76,6 +85,8 @@ namespace Framework
     unsigned int m_guid;
 
     bool m_shuttingDown;
+
+    bool m_paused;
 
     struct SerializerData
     {

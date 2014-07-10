@@ -31,10 +31,19 @@ namespace Framework
 
     SHEEP_API static void LuaError(const char* msg);
 
-    static void DoSomething();
+    SHEEP_API void LoadLevel(const char* name);
+    SHEEP_API void LoadLuaLevel(const char* path);
+
+    // Static Lua binds
+    static GameSpace* LuaCreateSpace(const char* name);
+    static GameSpace* LuaGetSpace(const char* name);
+    static GameComponent* LuaGetComponent(const char* name, unsigned int handle, const char* type);
+    static void LuaRemoveObjectFromEngine(const char* space, unsigned int handle);
 
     GameSpace* CreateSpace(const char* name);
+
     void RemoveSpace(GameSpace* space);
+
     GameSpace* GetSpace(const char* name);
 
     Factory ObjectFactory;
@@ -51,9 +60,5 @@ namespace Framework
   };
 
 
-  // Bound to lua as "GetComponent"
-  GameComponent* LuaGetComponent(const char* name, unsigned int handle, const char* type);
-
-  // Bound to lua as "RemoveGameObject"
-  void RemoveObjectFromEngine(const char* space, unsigned int handle);
+  
 }

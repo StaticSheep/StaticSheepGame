@@ -40,9 +40,7 @@ namespace Framework
 
     Lua::BindDefaultFunctions();
 
-    Lua::CallFunc(L, "filesystem.UpdateOldFiles");
-    
-
+    //Lua::CallFunc(L, "filesystem.UpdateOldFiles");
 
     for (unsigned int i = 0; i < m_systems.size(); ++i)
       m_systems[i]->Initialize();
@@ -117,12 +115,35 @@ namespace Framework
     return nullptr;
   }
 
-  void Engine::DoSomething()
+  void Engine::LoadLevel(const char* name)
   {
-    std::cout << "Did something";
+    GameSpace* space = CreateSpace(name);
+
+    FACTORY->LoadLevelToSpace(space, name);
   }
 
-  GameComponent* LuaGetComponent(const char* name, unsigned int handle, const char* type)
+  void Engine::LoadLuaLevel(const char* path)
+  {
+    Lua::LoadFile(L, path);
+  }
+
+  bool Engine::Running() const
+  {
+    return m_running;
+  }
+
+  GameSpace* Engine::LuaCreateSpace(const char* name)
+  {
+    // Creates the space
+    return ENGINE->CreateSpace(name);
+  }
+
+  GameSpace* Engine::LuaGetSpace(const char* name)
+  {
+    return ENGINE->GetSpace(name);
+  }
+
+  GameComponent* Engine::LuaGetComponent(const char* name, unsigned int handle, const char* type)
   {
     GameSpace* space = (GameSpace*)ENGINE->GetSpace(name);
 
@@ -134,7 +155,7 @@ namespace Framework
     return space->GetHandles().GetAs<GameObject>(handle)->GetComponent(cType);
   }
 
-  void RemoveObjectFromEngine(const char* space, unsigned int handle)
+  void Engine::LuaRemoveObjectFromEngine(const char* space, unsigned int handle)
   {
     ENGINE->GetSpace(space)->GetHandles().GetAs<GameObject>(handle)->Destroy();
   }

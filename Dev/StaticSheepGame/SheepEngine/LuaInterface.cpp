@@ -347,6 +347,7 @@ namespace Framework
         lua_pushstring(L, name);
         lua_pushlightuserdata(L, fn);
         lua_pushcclosure(L, GenericFunc, 1);
+        //StackDump(L);
         // Insert the function into the 1[2] = 3
         lua_settable(L, -3);
 

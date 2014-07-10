@@ -7,6 +7,10 @@ local print = print
 local string = string
 local lfs = lfs
 local dofile = dofile
+local ReloadComponents = ReloadComponents
+local ReloadObjects = ReloadObjects
+
+local PrintTable = PrintTable
 
 module( "filesystem" )
 
@@ -88,9 +92,19 @@ end
 function UpdateOldFiles()
   for _, file in pairs(Files) do
     local attr = lfs.attributes(file[1])
-    if attr.modification > file[2] then
+
+    --PrintTable(file)
+    --PrintTable(attr)
+
+    if attr ~= nil and attr.modification > file[2] then
+      print("Reloaded "..file[1])
+
       file[2] = attr.modification
       dofile(file[1])
+
+      ReloadObjects()
+      ReloadComponents()
     end
+
   end
 end

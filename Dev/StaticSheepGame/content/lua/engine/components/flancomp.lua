@@ -8,12 +8,18 @@ function META:Init()
   self.bang = false
   self.boom = "wow"
 
-  hook.Add("LogicUpdate", self, self.Update)
+  
 
+  self:SetupHooks()
   --print(SerializeComponent(self._space, self._owner, self._cid))
+end
 
+function META:SetupHooks()
+  hook.Add("LogicUpdate", self, self.Update)
 end
 
 function META:Update(deltaTime)
+  --print(self.boomboom)
+  --print("UPDATE2")
   --print("Update! SPACE: "..self._space.." CID="..self._cid)
 end
