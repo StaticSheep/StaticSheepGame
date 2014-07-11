@@ -3,11 +3,14 @@ print("\n=== Loading Editor Lua Level ===")
 
 local space = CreateLuaSpace("EditorSpace")
 local obj = space:CreateObject("BasicObject")
+
+
 local gspace = engine.CreateSpace("test")
 
 local object
 
 local function Update()
+  --print("Stop!")
   -- for i=0,1000 do
   --   object = gspace:CreateObject("test_type2")
   --   object:Destroy()
@@ -16,7 +19,7 @@ end
 
 
 local function Reload()
-  engine.Quit()
+  --engine.Quit()
   print("Reloaded")
   print("Lua Memory: " .. collectgarbage("count").."KB")
   --PrintTable(LuaSpaces)

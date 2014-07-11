@@ -95,10 +95,10 @@ namespace Framework
       // Name of the archetype
       std::string archetype;
 
-    private:
-
       // Initializes the object, engine use only
       virtual void Initialize();
+
+    private:
 
       // Active flag, if the object is inactive it will be removed
       bool m_active;

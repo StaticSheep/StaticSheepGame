@@ -28,7 +28,7 @@ namespace Framework
 
 	void SheepGraphics::Initialize()
 	{
-		// Open window
+		
 		// Create DirectX object
 		// Initialize graphics system
 	}

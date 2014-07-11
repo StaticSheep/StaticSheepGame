@@ -1,0 +1,13 @@
+GameObject
+{
+  name std::string "Bob Smith"
+  archetype std::string "player"
+  Transform
+  {
+    val1 int 0
+    val2 int 0
+    val3 int 0
+  }
+
+
+}
