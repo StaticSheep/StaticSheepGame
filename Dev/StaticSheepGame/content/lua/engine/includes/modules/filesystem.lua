@@ -9,6 +9,7 @@ local lfs = lfs
 local dofile = dofile
 local ReloadComponents = ReloadComponents
 local ReloadObjects = ReloadObjects
+local hook = hook
 
 local PrintTable = PrintTable
 
@@ -61,7 +62,7 @@ function LoadLuaFiles( path )
   end
 end
 
-function LoadLuaFile(path, needle)
+function LoadLuaFile(path, needle, canReload)
   for file in lfs.dir( path) do
     if file ~= "." and file ~= ".." then
       -- Grab the file attributes
@@ -74,6 +75,12 @@ function LoadLuaFile(path, needle)
         local ext = string.match( file, "([^.]+)$" )
 
         if(ext == "lua" and file == needle) then
+
+          if (canReload ~= nil) then
+            print("Loading File: "..filePath)
+            Files[#Files + 1] = {filePath, attr.modification}
+          end
+
           -- Load this file into the global environment
           dofile( filePath )
           return true
@@ -85,6 +92,29 @@ function LoadLuaFile(path, needle)
           -- Recursively search all subdirectories
           LoadLuaFile( filePath .. "/", needle )
       end
+    end
+  end
+end
+
+function LoadSingleLuaFile(file, canReload)
+  local filePath = file
+  local attr = lfs.attributes( filePath )
+
+  -- Only process files (not directories)
+  if attr.mode == "file" then
+    -- Retrieve the file extension
+    local ext = string.match( file, "([^.]+)$" )
+
+    if(ext == "lua" and file) then
+
+      if (canReload ~= nil) then
+        print("Loading File: "..filePath)
+        Files[#Files + 1] = {filePath, attr.modification}
+      end
+
+      -- Load this file into the global environment
+      dofile( filePath )
+      return true
     end
   end
 end
@@ -104,6 +134,8 @@ function UpdateOldFiles()
 
       ReloadObjects()
       ReloadComponents()
+
+      hook.Call("ScriptReload")
     end
 
   end

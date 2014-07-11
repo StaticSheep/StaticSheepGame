@@ -170,9 +170,8 @@ namespace Framework
 
     file.Close(); // Force close, will save now
 
-    //if (ArchetypeMap.find(obj->archetype) == ArchetypeMap.end())
-      
-    ArchetypeMap[obj->archetype].CopyObject(obj);
+    if (ArchetypeMap.find(obj->archetype) == ArchetypeMap.end())
+      ArchetypeMap[obj->archetype].CopyObject(obj);
     
   }
 
@@ -234,6 +233,8 @@ namespace Framework
     // The archetype was not found, so we will save the object into our map
     if (ArchetypeMap.find(archetype) == ArchetypeMap.end())
       ArchetypeMap[archetype].CopyObject(obj);
+
+    file.Close();
 
     return obj;
   }
@@ -328,6 +329,8 @@ namespace Framework
     ErrorIf(!file.Validate(), "Factory - Load Level", "Invalid level: %s", filepath.c_str());
 
     Variable(*space).Deserialize(file);
+
+    file.Close();
 
   }
 

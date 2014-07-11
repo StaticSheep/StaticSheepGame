@@ -13,7 +13,7 @@ namespace Framework
   class LuaComponent : public GameComponent
   {
   public:
-    LuaComponent();
+    //LuaComponent();
 
     virtual void Initialize();
     virtual void Remove();

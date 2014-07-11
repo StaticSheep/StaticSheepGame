@@ -131,6 +131,7 @@ namespace Framework
       // Move over one more character so we aren't at the \"
       file.SeekByOffset(1);
     }
+
     var.GetValue<std::string>() = temp;
   }
 }

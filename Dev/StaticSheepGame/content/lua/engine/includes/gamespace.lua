@@ -4,17 +4,17 @@
 ----------------------------------------------------------------------]]
 
 function ReloadComponents()
-  for space_name, space in pairs(Spaces) do
+  for space_name, space in pairs(GameSpaces) do
     for object_handle, object in pairs(space) do
       if type(object) == "table" then
         for component_handle, component in pairs(object) do
-
-          if component.SetupHooks then
-            component:SetupHooks()
-          elseif component.OnScriptReload then
-            component:OnScriptReload()
+          if type(component) == "table" then
+            if component.SetupHooks then
+              component:SetupHooks()
+            elseif component.OnScriptReload then
+              component:OnScriptReload()
+            end
           end
-
         end
       end
     end
@@ -23,30 +23,34 @@ end
 
 function AddGameSpace(name)
   print("Added C++ GameSpace: "..name)
-  Spaces[name] = {}
-  Spaces[name].paused = false
+  GameSpaces[name] = {}
+  GameSpaces[name]._paused = false
+  GameSpaces[name]._name = name
 end
 
 function RemoveGameSpace(name)
   print("Removed C++ GameSpace: "..name)
-  Spaces[name] = nil
+  GameSpaces[name] = nil
 
   collectgarbage()
 end
 
 function RemoveGameObject(space, handle)
-  print("[Space: "..space.."] Removed C++ GameObject: "..handle)
-  Spaces[space][handle] = nil
+  print("[GameSpace: "..space.."] Removed C++ GameObject: "..handle)
+
+  if GameSpaces[space] == nil then return end
+
+  GameSpaces[space][handle] = nil
 end
 
 function RemoveComponentFromGameObject(space, handle, chandle)
-  print("[Space: "..space.."] Removed LuaComponent ("..chandle..") from C++ GameObject: "..handle)
-  Spaces[space][handle][chandle] = nil
+  print("[GameSpace: "..space.."] Removed LuaComponent ("..chandle..") from C++ GameObject: "..handle)
+  GameSpaces[space][handle][chandle] = nil
 end
 
 function PauseGameSpace(name, paused)
-  if Spaces[name] == nil then Spaces[name] = {} end
-  Spaces[name].paused = paused
+  if GameSpaces[name] == nil then GameSpaces[name] = {} end
+  GameSpaces[name].paused = paused
 end
 
 
@@ -60,12 +64,13 @@ end
 function AttachComponentToObject(space, owner, cid, cname)
 
   -- Try to find the object
-  local object = Spaces[space][owner]
+  local object = GameSpaces[space][owner]
 
   -- Create the object if it doesn't exist
   if not object then
-    Spaces[space][owner] = {}
-    object = Spaces[space][owner]
+    GameSpaces[space][owner] = {}
+    object = GameSpaces[space][owner]
+    object._self = owner
   end
 
   -- Create a table for the object
@@ -80,13 +85,13 @@ function AttachComponentToObject(space, owner, cid, cname)
   component._cid = cid
   component._type = cname
 
-  print("[Space: "..space.."] Attached LuaComponent ("..cid..") to C++ GameObject: "..owner)
+  print("[GameSpace: "..space.."] Attached LuaComponent ("..cid..") to C++ GameObject: "..owner)
 
   component:Init()
 end
 
 function DeserializeComponent(space, owner, cid, command)
-  local object = Spaces[space][owner]
+  local object = GameSpaces[space][owner]
 
   if not object then return end
 
@@ -96,7 +101,7 @@ function DeserializeComponent(space, owner, cid, command)
 end
 
 function SerializeComponent(space, owner, cid, CLComp)
-  local object = Spaces[space][owner]
+  local object = GameSpaces[space][owner]
 
   if not object then return end
 
@@ -109,9 +114,9 @@ function SerializeComponent(space, owner, cid, CLComp)
     if type(v) ~= "table" and type(v) ~= "userdata" then
       if string.sub(k, 0, 1) != "_" then
         if type(v) == "string" then
-          string = string .. "self." .. tostring(k) .. " = '" ..tostring(v) .. "';"
+          string = string .. "self." .. tostring(k) .. " = '" ..tostring(v) .. "' "
         else
-          string = string .. "self." .. tostring(k) .. " = " ..tostring(v) .. ";"
+          string = string .. "self." .. tostring(k) .. " = " ..tostring(v) .. " "
         end
         
       end
@@ -122,10 +127,12 @@ function SerializeComponent(space, owner, cid, CLComp)
 
   string = string .. "end"
 
+  --string = "asdfasdfasdfffffffaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaafffffaaaaafffffaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaafffffaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaafffffaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaafffffaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+
   --print("send back")
   --PrintTable(getmetatable(CLComp))
 
   CLComp:SendLoadCommand(string)
 
-  return string
+  --return string
 end

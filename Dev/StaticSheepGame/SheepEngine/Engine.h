@@ -25,6 +25,8 @@ namespace Framework
     SHEEP_API void MainLoop();
     SHEEP_API void Shutdown();
 
+    SHEEP_API void Quit();
+
     SHEEP_API bool Running() const;
 
     SHEEP_API lua_State* Lua(void) const;
@@ -39,6 +41,7 @@ namespace Framework
     static GameSpace* LuaGetSpace(const char* name);
     static GameComponent* LuaGetComponent(const char* name, unsigned int handle, const char* type);
     static void LuaRemoveObjectFromEngine(const char* space, unsigned int handle);
+    static void LuaQuit();
 
     GameSpace* CreateSpace(const char* name);
 

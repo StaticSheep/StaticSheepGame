@@ -78,12 +78,6 @@ namespace Framework
       // Allocate a new component
       T* comp = DBG_NEW T();
 
-      // Clear it with zeros
-      memset(comp, NULL, sizeof(T));
-
-      // Actually call the constructor
-      new (comp) T();
-
       // Set the type
       comp->typeID = typeID; // Set the components type
       comp->typeinfo = GET_TYPE(T);

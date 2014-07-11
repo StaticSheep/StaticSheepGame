@@ -27,7 +27,7 @@ namespace Framework
 
       virtual void Remove() {};
 
-      GameComponent() : Generic(eGameComponent) {};
+      GameComponent() : Generic(eGameComponent), space(nullptr) {};
 
       // Destructor, can be accessed from inherited classes
       ~GameComponent() {};

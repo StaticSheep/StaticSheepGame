@@ -75,6 +75,7 @@ namespace Framework
     {
       ErrorIf(!lua_isstring(L, index), "LuaTransfer", "Type mismatch! Wrong argument type lua->C++ ?");
       const char* temp = lua_tostring(L, index);
+      //var->SetData(temp);
       *var = temp;
     }
 

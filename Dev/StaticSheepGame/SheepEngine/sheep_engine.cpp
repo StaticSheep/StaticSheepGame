@@ -87,6 +87,7 @@ using namespace Framework;
 
 void TestStuff(void)
 {
+
   OpenConsole();
 
   // Create the engine
@@ -97,14 +98,22 @@ void TestStuff(void)
 
   SheepEngine->Initialize();
 
-  SheepEngine->LoadLevel("test_level");
+  //GameSpace* space = SheepEngine->CreateSpace("memory_space");
+  //GameObject* obj = FACTORY->LoadObjectFromArchetype(space, "test_type2");
+  //obj = FACTORY->LoadObjectFromArchetype(space, "test_type2");
+  //SheepEngine->LoadLevel("test_level");
 
   SheepEngine->LoadLuaLevel("content/lua/engine/levels/editor.lua");
+
+  //SheepEngine->MainLoop();
+
 
   while (SheepEngine->Running())
   {
     SheepEngine->MainLoop();
   }
+
+  SheepEngine->Shutdown();
 
   delete SheepEngine;
 

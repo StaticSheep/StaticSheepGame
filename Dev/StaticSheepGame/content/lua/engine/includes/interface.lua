@@ -43,15 +43,17 @@ AddPath("/lua/")
 
 -- Initialize some tables
 SheepModules = {}
-Spaces = {}
+GameSpaces = {}
 LuaSpaces = {} -- Pure lua objects
 
 include("util.lua")
+include("level.lua")
 include("luaspace.lua")
 include("gamespace.lua")
 
-require("filesystem")
 require("hook")
+require("filesystem")
+
 
 -- Initialize all of the modules
 for k,v in pairs(SheepModules) do

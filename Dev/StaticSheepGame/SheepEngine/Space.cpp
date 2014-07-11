@@ -11,11 +11,14 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "File.h"
 #include "Variable.h"
 
+
+#include <iostream>
+
 namespace Framework
 {
 
   GameSpace::GameSpace() :
-    m_objects(sizeof(GameObject)),
+    m_objects(sizeof(GameObject), 10),
     m_shuttingDown(false)
   {
     for(unsigned i = 0; i < ecountComponents; ++i)
@@ -27,7 +30,13 @@ namespace Framework
 
   GameSpace::~GameSpace()
   {
-   
+    m_objects.~ObjectAllocator();
+
+    for(unsigned i = 0; i < ecountComponents; ++i)
+    {
+      if (FACTORY->m_componentCreators[i])
+        m_components[i].Clear();
+    }
     // Should probably clean stuff up
   }
 
@@ -82,15 +91,14 @@ namespace Framework
     return m_handles.GetAs<GameObject>(handle);
   }
 
-  void GameSpace::RemoveGameObjectByHandle(Handle handle)
-  {
-    RemoveGameObject(GetHandles().GetAs<GameObject>(handle));
-  }
-
   void GameSpace::RemoveGameObject(GameObject* object)
   {
+    //std::cout << "Removing game object: " << object->self.operator size_t() << "\n";
+
     // Removes all components
     object->~GameObject();
+
+    Lua::CallFunc(ENGINE->Lua(), "RemoveGameObject", m_name, object->self.operator size_t());
 
     // Remove the object from the handle manager
     GetHandles().Remove(object->self);
@@ -113,14 +121,23 @@ namespace Framework
 
   void GameSpace::Cleanup()
   {
+    std::vector<GameObject*> removeList;
+
     for (unsigned int i = 0; i < m_objects.Size(); ++i)
     {
       GameObject* obj = (GameObject*)m_objects[i];
       if (!obj->m_active || m_shuttingDown)
       {
-        RemoveGameObject(obj);
+        removeList.push_back(obj);   
       } // End object not active loop
     }
+
+    for (unsigned int i = 0; i < removeList.size(); ++i)
+    {
+      RemoveGameObject(removeList[i]);
+    }
+
+    removeList.clear();
   }
 
   // Serialization routine
@@ -248,6 +265,7 @@ namespace Framework
         if (obj->archetype.length() > 0)
           if (&FACTORY->GetArchetype(obj->archetype) == &Archetype::null)
             FACTORY->ArchetypeMap[obj->archetype].CopyObject(obj);
+
         continue;
       }
 

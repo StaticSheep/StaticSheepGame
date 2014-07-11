@@ -67,7 +67,7 @@ namespace Framework
   {
     std::string entryName = entryNameStr;
 
-    return m_literalMap[entryName.c_str( )];
+    return m_literalMap[entryName];
   }
 
   #undef  E_NAME

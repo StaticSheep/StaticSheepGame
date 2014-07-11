@@ -60,7 +60,7 @@
       <PrecompiledHeaderFile>precompiled.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)includes;$(SolutionDir)$(Configuration)</AdditionalLibraryDirectories>
       <AdditionalDependencies>SheepEngine.lib;%(AdditionalDependencies)</AdditionalDependencies>

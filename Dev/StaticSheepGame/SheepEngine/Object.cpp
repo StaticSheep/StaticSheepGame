@@ -46,7 +46,9 @@ namespace Framework
   }
 
   GameObject::GameObject()
-    : Generic(eGameObject)
+    : Generic(eGameObject),
+    archetype(),
+    name()
   {
     for (unsigned int i = 0; i < ecountComponents; ++i)
       m_components[i] = Handle::null;
@@ -72,6 +74,9 @@ namespace Framework
         GameComponent* comp = GetComponent(type);
         comp->Remove(); // Remove the component
 
+        // Remove the handle from the space
+        space->GetHandles().Remove(comp->self);
+
         // Free the component and update any handles
         GameComponent* moved = (GameComponent*)space->GetComponents(type)->Free(comp);
         if (moved)
@@ -81,14 +86,22 @@ namespace Framework
 
     for (unsigned int j = 0; j < m_luaComponents.size(); ++j)
     {
+      // Get the component
       LuaComponent* comp = GetLuaComponent(j);
-      comp->Remove();
+      comp->Remove(); // Call the remove routine
 
+      // Remove the handle from the space
+      space->GetHandles().Remove(comp->self);
+
+      // Free the component and update any handles
       GameComponent* moved = (GameComponent*)space->GetComponents(eLuaComponent)->Free(comp);
       if (moved)
         space->GetHandles().Update(moved, moved->self);
 
     } // End component loop
+
+    name.~basic_string();
+    archetype.~basic_string();
   }
 
   
@@ -115,8 +128,6 @@ namespace Framework
         component->owner = self;
         component->Initialize();
       }
-
-    
   }
 
   bool GameObject::ObjectSorter(Handle left, Handle right)

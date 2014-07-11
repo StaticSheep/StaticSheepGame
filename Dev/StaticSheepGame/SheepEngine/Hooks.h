@@ -63,6 +63,7 @@ namespace Framework
   {
   public:
     HookManager() {};
+    ~HookManager();
 
     void Add(std::string eventName, Handle owner, const Function& func);
     void Remove(std::string eventName, Handle owner);

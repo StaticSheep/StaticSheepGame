@@ -27,12 +27,27 @@ namespace Framework
   {
     // Delete any components which we had allocated
     for (unsigned int i = 0; i < ecountComponents; ++i)
+    {
       if (m_components[i] != nullptr)
+      {
+        m_components[i]->Remove();
         delete m_components[i];
+      }
+    }
 
     for (unsigned int i = 0; i < m_luaComponents.size(); ++i)
+    {
       if (m_luaComponents[i] != nullptr)
+      {
+        m_luaComponents[i]->Remove();
         delete m_luaComponents[i];
+      }
+    }
+
+    m_luaComponents.clear();
+
+    name.~basic_string();
+    archetype.~basic_string();
   }
 
   void Archetype::CopyObject(GameObject* obj)
@@ -68,7 +83,10 @@ namespace Framework
       {
         // The Object does not have the component, lets check to see if for some reason we do
         if (m_components[i] != nullptr)
+        {
+          m_components[i]->Remove();
           delete m_components[i]; // Delete the component
+        }
 
         // Make sure that it is a nullptr
         m_components[i] = nullptr;
@@ -81,6 +99,7 @@ namespace Framework
     {
       for (unsigned int i = 0; i < m_luaComponents.size(); ++i)
       {
+        m_luaComponents[i]->Remove();
         delete m_luaComponents[i];
       }
 
@@ -89,7 +108,7 @@ namespace Framework
 
     for (unsigned int i = 0; i < obj->m_luaComponents.size(); ++i)
     {
-      LuaComponent* comp = (LuaComponent*)FACTORY->m_componentCreators[eLuaComponent]->Allocate();
+      LuaComponent* comp = (LuaComponent*)(FACTORY->m_componentCreators[eLuaComponent]->Allocate());
       m_luaComponents.push_back(comp);
 
       LuaComponent* objLC = obj->space->GetHandles().GetAs<LuaComponent>(obj->m_luaComponents[i]);
@@ -107,6 +126,7 @@ namespace Framework
         Variable LVar = Variable(member.Type(), (char*)comp + member.Offset());
         Variable RVar = Variable(member.Type(), (char*)objLC + member.Offset());
 
+        member.Type()->PlacementDelete(LVar.GetData());
         member.Type()->PlacementCopy(LVar.GetData(), RVar.GetData());
       }
 
@@ -230,6 +250,8 @@ namespace Framework
         // Copy over the member data from the archetype into the object
         Variable LVar = Variable(member.Type(), (char*)comp + member.Offset());
         Variable RVar = Variable(member.Type(), (char*)m_luaComponents[i] + member.Offset());
+
+        member.Type()->PlacementDelete(LVar.GetData());
         member.Type()->PlacementCopy(LVar.GetData(), RVar.GetData());
       }
 

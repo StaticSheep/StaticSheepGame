@@ -31,6 +31,9 @@ namespace Framework
     bool IsValid(void) const;
 
     template <typename T>
+    void SetData(T data);
+
+    template <typename T>
     T& GetValue(void);
     template <typename T>
     const T& GetValue(void) const;
@@ -46,9 +49,15 @@ namespace Framework
     Variable& operator=(const Variable& rhs);
 
   private:
-    void *m_data;
+    void* m_data;
     const TypeInfo *m_typeInfo;
   };
+
+  template <typename T>
+  void Variable::SetData(T data)
+  {
+    *((T*)m_data) = data; 
+  }
 
   template <typename T>
   Variable::Variable(const T& rhs)

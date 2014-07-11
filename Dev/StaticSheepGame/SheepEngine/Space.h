@@ -34,8 +34,7 @@ namespace Framework
     // Creates an empty object
     GameObject* CreateEmptyObject();
 
-    void RemoveGameObject(GameObject* object);
-    void RemoveGameObjectByHandle(Handle handle);
+    
 
     void RemoveComponent(GameComponent* comp);
     void RemoveComponent(Handle handle);
@@ -87,6 +86,8 @@ namespace Framework
     bool m_shuttingDown;
 
     bool m_paused;
+
+    void RemoveGameObject(GameObject* object);
 
     struct SerializerData
     {

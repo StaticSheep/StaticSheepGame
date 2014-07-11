@@ -19,8 +19,15 @@ namespace Framework
 
   HookCollection::~HookCollection()
   {
+    if (m_hooks.size() == 0)
+    {
+      m_hooks.clear();
+    }
+
     for (auto i = m_hooks.begin(); i != m_hooks.end(); ++i)
       delete i->second;
+
+    m_hooks.clear();
   }
 
   void HookCollection::Add(Handle owner, const Function& fn)
@@ -48,6 +55,11 @@ namespace Framework
     {
       i->second->func();
     }
+  }
+
+  HookManager::~HookManager()
+  {
+    ClearAll();
   }
 
   void HookManager::Verify(std::string eventName)
@@ -82,11 +94,9 @@ namespace Framework
 
   void HookManager::ClearAll()
   {
-    for (auto i = HookMap.begin(); i != HookMap.end(); ++i)
-    {
-      i->second.~HookCollection();
-      HookMap.erase(i);
-    }
+    HookMap.clear();
   }
+
+  
 
 }

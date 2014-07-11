@@ -20,7 +20,12 @@ function ReloadObjects()
 end
 
 function CreateLuaSpace(name)
+  if LuaSpaces[name] ~= nil then
+    DestroyLuaSpace(name)
+  end
+
   print("Created LuaSpace: "..name)
+
   LuaSpaces[name] = setmetatable({}, META)
   LuaSpaces[name]._name = name
 
@@ -48,3 +53,9 @@ function CreateLuaObject(space, type, name)
 
   return object
 end
+
+
+--  name std::string "Bob Junior"
+--ach_test_type2
+--  name std::string "Bob Junior2"
+

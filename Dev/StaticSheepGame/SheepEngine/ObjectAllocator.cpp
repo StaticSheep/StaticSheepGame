@@ -73,7 +73,7 @@ namespace Framework
 
 	void ObjectAllocator::Grow()
 	{
-		m_capacity = m_capacity * 2 + 10;
+		m_capacity = m_capacity * 3 + 10;
 
 		m_grew = true;
 
@@ -83,7 +83,7 @@ namespace Framework
 	void ObjectAllocator::GrowInteral()
 	{
 		// Allocates a new array
-		void* new_array = malloc(m_objectSize * m_capacity);
+		void* new_array = calloc(m_objectSize, m_capacity);
 
 		// Copies over all of the data from the old array into the new
 		memcpy(new_array, m_array, m_size * m_objectSize);

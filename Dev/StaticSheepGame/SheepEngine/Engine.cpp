@@ -22,10 +22,14 @@ namespace Framework
 
   Engine::~Engine()
   {
-    if (m_systems.size() > 0)
-      for (unsigned int i = 0; i < m_systems.size(); ++i)
-        delete m_systems[i];
+    ENGINE = nullptr;
 
+    for (unsigned int i = 0; i < m_systems.size(); ++i)
+      delete m_systems[i];
+
+    m_systems.clear();
+    m_spaces.clear();
+    m_spaceMap.clear();
   }
 
   void Engine::AddSystem(ISystem* system)
@@ -48,10 +52,26 @@ namespace Framework
 
   void Engine::Shutdown()
   {
+    for (unsigned int i = 0; i < m_spaces.size(); ++i)
+    {
+      GameSpace* space = m_spaces[i];
+
+      m_spaceMap.erase(space->m_name);
+
+      space->m_shuttingDown = true;
+      space->Cleanup();
+
+      Lua::CallFunc(ENGINE->Lua(), "RemoveGameSpace", space->m_name);
+
+      delete space;
+    }
+
     for (unsigned int i = 0; i < m_systems.size(); ++i)
       m_systems[i]->Shutdown();
 
     Lua::Shutdown(L);
+
+    L = nullptr;
   }
 
   void Engine::MainLoop()
@@ -124,7 +144,8 @@ namespace Framework
 
   void Engine::LoadLuaLevel(const char* path)
   {
-    Lua::LoadFile(L, path);
+    Lua::CallFunc(L, "LoadLuaLevel", path);
+    //Lua::LoadFile(L, path);
   }
 
   bool Engine::Running() const
@@ -134,8 +155,18 @@ namespace Framework
 
   GameSpace* Engine::LuaCreateSpace(const char* name)
   {
-    // Creates the space
-    return ENGINE->CreateSpace(name);
+    GameSpace* space = ENGINE->GetSpace(name);
+    if (space == nullptr)
+    {
+      // Creates the space
+      return ENGINE->CreateSpace(name);
+    }
+    return space;
+  }
+
+  void Engine::Quit()
+  {
+    m_running = false;
   }
 
   GameSpace* Engine::LuaGetSpace(const char* name)
@@ -158,6 +189,11 @@ namespace Framework
   void Engine::LuaRemoveObjectFromEngine(const char* space, unsigned int handle)
   {
     ENGINE->GetSpace(space)->GetHandles().GetAs<GameObject>(handle)->Destroy();
+  }
+
+  void Engine::LuaQuit()
+  {
+    ENGINE->Quit();
   }
 
 

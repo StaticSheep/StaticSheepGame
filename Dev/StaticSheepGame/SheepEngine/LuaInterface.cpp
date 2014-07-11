@@ -257,6 +257,7 @@ namespace Framework
 
     int GenericFunc(lua_State* L)
     {
+
       // Create a pointer to the function as a function bind
       Function* fn = (Function*)lua_touserdata(L, lua_upvalueindex(1));
       assert(fn);
@@ -326,15 +327,26 @@ namespace Framework
 
       // Run destructors on the arguments now that we are one
       for (size_t i = 0; i < fn->Signature()->ArgCount(); ++i)
+      {
+        //_freea((stackArgs[i].GetData()));
         stackArgs[i].PlacementDelete();
+      }
+
+      //_freea(stackArgs);
 
       if (returns)
       {
         ret.ToLua(L);
         // destructor for the return value
         ret.PlacementDelete();
+
+        //_freea(ret.GetData());
+
         return 1;
       }
+
+       
+       
 
       return 0;
     }

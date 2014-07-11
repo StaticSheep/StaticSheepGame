@@ -409,10 +409,10 @@ namespace Framework
   }
 
 
-  TS(typename C, typename A1)
+  template<typename FuncType, FuncType FuncPtr, typename C, typename A1>
   Function BuildFunction(void (C::*fn)(A1))
   {
-    return RV(C, A1);
+    return Function(fn, &CallMethodVoid<FuncType, FuncPtr, C, A1> );
   }
 
 

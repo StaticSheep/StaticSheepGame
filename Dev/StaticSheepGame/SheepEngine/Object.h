@@ -113,8 +113,8 @@ namespace Framework
       std::vector<Handle> m_luaComponents;
 
       // Vector of the children belonging to this object
-      ChildArray m_children;
-      typedef ChildArray::iterator ChildrenIt;
+      std::vector<Handle> m_children;
+      typedef std::vector<Handle>::iterator ChildrenIt;
 
       // The parent of the object;
       Handle m_parent;

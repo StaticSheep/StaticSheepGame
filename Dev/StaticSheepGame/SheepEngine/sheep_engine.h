@@ -21,6 +21,7 @@ SHEEP_API void TestStuff(void);
 class SHEEP_API Foo
 {
 public:
+  Foo() {};
   void func1();
   void func2();
   int value1;

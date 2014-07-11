@@ -4,8 +4,23 @@ print("\n=== Loading Editor Lua Level ===")
 local space = CreateLuaSpace("EditorSpace")
 local obj = space:CreateObject("BasicObject")
 local gspace = engine.CreateSpace("test")
-local object = factory.CreateObjectFromType(gspace, "test_type")
-gspace:RemoveObject(object)
 
-object = gspace:CreateObject("test_type")
-gspace:RemoveObject(object)
+local object
+
+local function Update()
+  -- for i=0,1000 do
+  --   object = gspace:CreateObject("test_type2")
+  --   object:Destroy()
+  -- end
+end
+
+
+local function Reload()
+  engine.Quit()
+  print("Reloaded")
+  print("Lua Memory: " .. collectgarbage("count").."KB")
+  --PrintTable(LuaSpaces)
+end
+
+hook.Add("ScriptReload", "OnHookReloadx", Reload)
+hook.Add("LogicUpdate", "EditorUpdate", Update)

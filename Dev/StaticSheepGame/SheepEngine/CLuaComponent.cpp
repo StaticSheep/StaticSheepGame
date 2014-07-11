@@ -8,9 +8,9 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 namespace Framework
 {
-  LuaComponent::LuaComponent()
-  {
-  }
+  //LuaComponent::LuaComponent()
+  //{
+  //}
 
   void LuaComponent::Initialize()
   {
@@ -34,7 +34,12 @@ namespace Framework
 
   void LuaComponent::Remove()
   {
-    Lua::CallFunc(ENGINE->Lua(), "RemoveComponentFromGameObject", space->GetName().c_str(), owner.operator size_t(), self.operator size_t());
+    // The object will do this for us so yeah who cares
+    //if (space != nullptr)
+    //  Lua::CallFunc(ENGINE->Lua(), "RemoveComponentFromGameObject", space->GetName().c_str(), owner.operator size_t(), self.operator size_t());
+
+    name.~basic_string();
+    loadCommand.~basic_string();
   }
 
   LuaComponent& LuaComponent::operator=(const LuaComponent& rhs)
