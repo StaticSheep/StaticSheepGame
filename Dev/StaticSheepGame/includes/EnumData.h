@@ -24,6 +24,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 E_NAME(Generics)
   E_ENTRY(GameComponent)
   E_ENTRY(GameObject)
+  E_ENTRY(Abstract)
 E_END(Generics)
 
 E_NAME(Component)

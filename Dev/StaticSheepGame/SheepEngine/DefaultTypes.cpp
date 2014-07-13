@@ -59,6 +59,12 @@ namespace Framework
     TYPE_SET_TO_LUA(Handle, Lua::UIntToLua);
     TYPE_SET_FROM_LUA(Handle, Lua::IntFromLua);
 
+    TYPE_REGISTER( Generic );
+    TYPE_REGISTER_PTR( Generic* );
+
+    TYPE_REGISTER( Member );
+    TYPE_REGISTER_PTR( Member* );
+
     TYPE_REGISTER( GameComponent );
 
     TYPE_REGISTER_PTR( GameComponent* );

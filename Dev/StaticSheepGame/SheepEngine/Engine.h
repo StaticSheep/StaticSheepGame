@@ -42,6 +42,8 @@ namespace Framework
     static GameComponent* LuaGetComponent(const char* name, unsigned int handle, const char* type);
     static void LuaRemoveObjectFromEngine(const char* space, unsigned int handle);
     static void LuaQuit();
+    static void LuaSetVariable(Generic* obj, Member* member, int dummy);
+    static void LuaGetVariable(Generic* obj, Member* member);
 
     GameSpace* CreateSpace(const char* name);
 

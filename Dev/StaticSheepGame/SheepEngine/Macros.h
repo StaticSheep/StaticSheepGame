@@ -60,8 +60,12 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
   static Framework::Function NAME##Function = BUILD_FUNCTION(FN); \
   Framework::Lua::BindFunctionToLua(L, &NAME##Function, #NAME, __VA_ARGS__)
 
+#define BIND_FUNCTION_TABLE(L, FN, NAME, TABLE) \
+  static Framework::Function TABLE##NAME##Function = BUILD_FUNCTION(FN); \
+  Framework::Lua::BindFunctionToLua(L, &TABLE##NAME##Function, #NAME, #TABLE)
+
 #define CREATE_TABLE(L, NAME) \
-  Framework::Lua::CreateNewGTable(L, NAME)
+  Framework::Lua::CreateNewGTable(L, #NAME)
 
 #define TYPE_SET_TO_LUA(T, CB)\
   ((Framework::TypeInfo*)GET_TYPE(T))->SetToLua(CB)

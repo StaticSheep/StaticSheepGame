@@ -98,30 +98,9 @@ void TestStuff(void)
 
   SheepEngine->Initialize();
 
-  /*GameSpace* space = SheepEngine->CreateSpace("test_space");
+  //GameSpace* space = SheepEngine->CreateSpace("test_space");
 
-  GameObject* obj = space->CreateEmptyObject();
-  Transform* tcomp = (Transform*)space->CreateComponent(eTransform);
-  obj->AddComponent(tcomp);
-
-  obj->archetype = "player";
-
-  obj->name = "Bob Smith";
-
-  obj->Initialize();
-
-  FACTORY->SaveObjectToArchetype(obj, "player");
-
-  GameObject* obj2 = FACTORY->LoadObjectFromArchetype(space, "player");
-  obj2->name = "John Doe";
-
-
-  FACTORY->SaveSpaceToLevel(space, "MyLevel", nullptr, true, true);*/
-
-
-
-
-  //obj = FACTORY->LoadObjectFromArchetype(space, "test_type2");
+  //GameObject* obj = FACTORY->LoadObjectFromArchetype(space, "test_type2");
   //SheepEngine->LoadLevel("test_level");
 
   SheepEngine->LoadLuaLevel("content/lua/engine/levels/editor.lua");

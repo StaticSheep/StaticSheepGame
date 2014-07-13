@@ -327,5 +327,17 @@ namespace Framework
     return FACTORY->LoadObjectFromArchetype(this, name);
   }
 
+  GameSpace* GameSpace::CopyGameSpace(const char* new_name)
+  {
+    // Make the new space
+    GameSpace* space = ENGINE->CreateSpace(new_name);
+
+    FACTORY->SaveSpaceToLevel(this, "temp_space", true);
+
+    FACTORY->LoadLevelToSpace(space, "temp_space");
+
+    return space;
+  }
+
 
 }

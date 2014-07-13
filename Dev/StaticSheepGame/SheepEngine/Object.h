@@ -81,7 +81,9 @@ namespace Framework
 
       LuaComponent* GetLuaComponent(unsigned int index);
 
-      
+
+      // Used from lua
+      void LuaGetComponent(size_t type);
 
       // The space which this object resides inside of
       GameSpace* space;

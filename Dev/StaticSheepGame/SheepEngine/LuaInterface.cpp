@@ -97,7 +97,22 @@ namespace Framework
           lua_pushvalue(L, -2); // 4
           lua_settable(L, -3); // 2[3] = 4
 
-          //StackDump(L);
+          lua_pushstring(L, "__members"); // 3
+          lua_createtable(L, 0, 0); // 4
+          lua_settable(L, -3); // 2[3] = 4
+
+          lua_getfield(L, -1, "__members"); // index 3
+
+          for (size_t i = 0; i < it->second->GetMembers().size(); ++i)
+          {
+            const Member* mem = &it->second->GetMembers()[i];
+
+            lua_pushstring(L, mem->Name()); // index 4
+            it->second->ToLua(L, mem); // index 5
+            lua_settable(L, -3); // 3[4] = 5
+          }
+
+          lua_pop(L, 1);
 
           lua_pushstring(L, it->second->LuaMetaTable()); // 3
           lua_pushvalue(L, -2); // 4
@@ -345,10 +360,7 @@ namespace Framework
         return 1;
       }
 
-       
-       
-
-      return 0;
+      return lua_gettop(L) - fn->Signature()->ArgCount();
     }
 
     void BindFunctionToLua(lua_State* L, Function* fn, const char* name, const char* table)

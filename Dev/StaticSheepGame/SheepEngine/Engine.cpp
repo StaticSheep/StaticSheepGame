@@ -196,5 +196,26 @@ namespace Framework
     ENGINE->Quit();
   }
 
+  void Engine::LuaSetVariable(Generic* obj, Member* member, int dummy)
+  {
+    Variable value;
+
+    void* buffer = alloca(member->Type()->Size());
+
+    new (&value) Variable(member->Type(), buffer);
+    value.PlacementNew();
+
+    value.FromLua(ENGINE->Lua(), 3); // 2 + 1 (Argument 2 [zero based], + 1) 
+
+    member->Type()->PlacementCopy((char*)obj + member->Offset(), buffer);
+  }
+
+  void Engine::LuaGetVariable(Generic* obj, Member* member)
+  {
+    Variable value(member->Type(), (char*)obj + member->Offset());
+
+    value.ToLua(ENGINE->Lua());
+  }
+
 
 }

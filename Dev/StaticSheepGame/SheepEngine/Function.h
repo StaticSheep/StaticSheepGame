@@ -75,6 +75,13 @@ namespace Framework
     (*FuncPtr)(args[0].GetValue<A1>(), args[1].GetValue<A2>());
   }
 
+  template <typename FuncType, FuncType FuncPtr, typename A1, typename A2, typename A3>
+  void CallVoid(Variable* ret, void* context, Variable* args, size_t argCount)
+  {
+    ErrorIf(argCount != 3, "FunctionBinding", "Wrong overload!");
+    (*FuncPtr)(args[0].GetValue<A1>(), args[1].GetValue<A2>(), args[2].GetValue<A3>());
+  }
+
 
 
   // Function that returns something ============================================================
@@ -98,7 +105,7 @@ namespace Framework
 
 
 
-  // Function that returns something ============================================================
+  // Function that returns nothing ============================================================
 
   template <typename FuncType, FuncType FuncPtr, typename C>
   void CallMethodVoid(Variable* ret, void* context, Variable* args, size_t argCount)
@@ -114,6 +121,14 @@ namespace Framework
     ErrorIf(argCount != 1, "FunctionBinding", "Wrong overload!");
 
     (((C*)context)->*FuncPtr)(args[0].GetValue<A1>());
+  }
+
+  template <typename FuncType, FuncType FuncPtr, typename C, typename A1, typename A2>
+  void CallMethodVoid(Variable* ret, void* context, Variable* args, size_t argCount)
+  {
+    ErrorIf(argCount != 2, "FunctionBinding", "Wrong overload!");
+
+    (((C*)context)->*FuncPtr)(args[0].GetValue<A1>(), args[1].GetValue<A2>());
   }
 
   //  ============================================================ ============================================================
@@ -170,6 +185,9 @@ namespace Framework
     template<typename A1, typename A2>
     Function(void (*fn)(A1, A2), void (*helper)(Variable*, void*, Variable*, size_t));
 
+    template<typename A1, typename A2, typename A3>
+    Function(void (*fn)(A1, A2, A3), void (*helper)(Variable*, void*, Variable*, size_t));
+
 
     // Class methods with return values! non-const ====================================================
 
@@ -187,6 +205,9 @@ namespace Framework
     template<typename C, typename A1>
     Function(void (C::*fn)(A1), void (*helper)(Variable*, void*, Variable*, size_t));
 
+    template<typename C, typename A1, typename A2>
+    Function(void (C::*fn)(A1, A2), void (*helper)(Variable*, void*, Variable*, size_t));
+
     // Class methods with return values! const ====================================================
 
     template<typename R, typename C>
@@ -202,6 +223,9 @@ namespace Framework
 
     template<typename C, typename A1>
     Function(void (C::*fn)(A1) const, void (*helper)(Variable*, void*, Variable*, size_t));
+
+    template<typename C, typename A1, typename A2>
+    Function(void (C::*fn)(A1, A2) const, void (*helper)(Variable*, void*, Variable*, size_t));
 
 
 
@@ -273,6 +297,9 @@ namespace Framework
   template<typename A1, typename A2>
   Function::Function(void (*fn)(A1, A2), HP) PE;
 
+  template<typename A1, typename A2, typename A3>
+  Function::Function(void (*fn)(A1, A2, A3), HP) PE;
+
   // METHODS WITH RETURN VALUE, NON CONST
 
   template<typename R, typename C>
@@ -289,6 +316,9 @@ namespace Framework
   template<typename C, typename A1>
   Function::Function(void (C::*fn)(A1), HP) PE;
 
+  template<typename C, typename A1, typename A2>
+  Function::Function(void (C::*fn)(A1, A2), HP) PE;
+
   // METHODS WITH RETURN VALUE, CONST
 
   template<typename R, typename C>
@@ -304,6 +334,9 @@ namespace Framework
 
   template<typename C, typename A1>
   Function::Function(void (C::*fn)(A1) const, HP) PE;
+
+  template<typename C, typename A1, typename A2>
+  Function::Function(void (C::*fn)(A1, A2) const, HP) PE;
 
   #undef HP
   #undef PE
@@ -363,6 +396,12 @@ namespace Framework
     return RV(A1, A2);
   }
 
+  TS(typename A1, typename A2, typename A3)
+    Function BuildFunction(void (*fn)(A1, A2, A3))
+  {
+    return RV(A1, A2, A3);
+  }
+
 
   // Methods with return value, non -const
 
@@ -415,6 +454,12 @@ namespace Framework
     return Function(fn, &CallMethodVoid<FuncType, FuncPtr, C, A1> );
   }
 
+  template<typename FuncType, FuncType FuncPtr, typename C, typename A1, typename A2>
+  Function BuildFunction(void (C::*fn)(A1, A2))
+  {
+    return Function(fn, &CallMethodVoid<FuncType, FuncPtr, C, A1, A2> );
+  }
+
 
   // methods without return value, const
 
@@ -432,6 +477,12 @@ namespace Framework
     Function BuildFunction(void (C::*fn)(A1) const)
   {
     return RV(C, A1);
+  }
+
+  TS(typename C, typename A1, typename A2)
+    Function BuildFunction(void (C::*fn)(A1, A2) const)
+  {
+    return RV(C, A1, A2);
   }
 
   #undef TS

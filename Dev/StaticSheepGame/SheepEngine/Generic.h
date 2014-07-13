@@ -16,11 +16,10 @@ namespace Framework
   public:
     EGenerics genericType;
 
-    virtual void Initialize() = 0;
+    virtual void Initialize() {};
 
     Generic(EGenerics type) : genericType(type) {};
-  protected:
-    Generic();
+    Generic() : genericType(eAbstract) {};
   };
 
 }

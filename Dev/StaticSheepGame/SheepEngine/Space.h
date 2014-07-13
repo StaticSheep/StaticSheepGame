@@ -61,10 +61,14 @@ namespace Framework
 
     const std::string GetName() const;
 
+    
+
 
     // =================================================
 
     GameObject* CreateObjectFromArchetype(const char* name);
+
+    GameSpace* CopyGameSpace(const char* new_name);
     
     
   private:

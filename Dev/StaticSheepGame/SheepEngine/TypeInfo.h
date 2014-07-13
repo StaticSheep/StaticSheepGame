@@ -80,8 +80,6 @@ namespace Framework
 
     std::vector<Member> m_members;
 
-    std::vector<luaL_Reg> m_luaMethods;
-
     const char* m_metatable;
 
     SerializeCB m_serialize;

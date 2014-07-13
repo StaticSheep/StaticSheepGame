@@ -18,7 +18,7 @@ local Hooks = {}
 
 function GetTable() return Hooks end
 
-function Add(event, name, func)
+function Add(event, name, func, checkfunc)
 	if type(func) ~= "function" and type(func) ~= "string" then return end
 	if type(event) ~= "string" then return end
 	
@@ -26,7 +26,7 @@ function Add(event, name, func)
 		Hooks[event] = setmetatable({}, {__mode = 'k' })
 	end
 
-	Hooks[event][name] = func
+	Hooks[event][name] = {func, checkfunc}
 end
 
 function Remove(event, name)
@@ -50,17 +50,25 @@ function Call(event, ...)
 
 			if type(k) == "string" then
 
-				v(...)
+				if v[2] ~= nil then
+					if v[2](...) then
+						v[1](...)
+					end
+				else
+					v[1](...)
+				end
 
 			else
 
 				if IsValid(k) then -- Assume it is a component or object
 
 					-- If the object is valid, pass the first argument as self
-					if (type(v) == "string") then
-						k[v](k, ...)
+					if v[2] ~= nil then
+						if v[2](k, ...) then
+							v[1](k, ...)
+						end
 					else
-						v(k, ...)
+						v[1](k, ...)
 					end
 
 				else

@@ -1,5 +1,7 @@
 local META = GetMeta("Flancomp")
 
+InheritMeta(META, "LuaComponent")
+
 function META:Init()
   --print("flanya west init yo SPACE: "..self._space.." CID="..self._cid.." TABLE="..tostring(self))
 
@@ -10,16 +12,15 @@ function META:Init()
 
   
 
-  self:SetupHooks()
-  --print(SerializeComponent(self._space, self._owner, self._cid))
+  self.super.Init(self)
 end
 
 function META:SetupHooks()
-  hook.Add("LogicUpdate", self, self.Update)
+  hook.Add("LogicUpdate", self, self.Update, self.CanUpdate)
 end
 
 function META:Update(deltaTime)
   --print(self.boomboom)
-  --print("UPDATE2")
+  --print("UPDATE")
   --print("Update! SPACE: "..self._space.." CID="..self._cid)
 end

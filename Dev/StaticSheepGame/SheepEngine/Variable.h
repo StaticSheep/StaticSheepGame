@@ -102,7 +102,8 @@ namespace Framework
   template <typename T>
   T& Variable::GetValue(void)
   {
-    assert(GET_TYPE(T) == m_typeInfo);
+    //assert(GET_TYPE(T) == m_typeInfo);
+    
     return CastHelper<T>::Cast(m_data);
   }
 

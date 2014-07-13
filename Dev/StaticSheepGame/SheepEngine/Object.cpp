@@ -359,4 +359,18 @@ namespace Framework
     }
   }
 
+
+  void GameObject::LuaGetComponent(size_t type)
+  {
+    if (!HasComponent(EComponent(type)))
+    {
+      return;
+    }
+    Variable var(GET_STR_TYPE(EnumComponent.m_literals[type].c_str()), space->GetHandles().Get(m_components[type]));
+
+    Lua::GenericToLua(ENGINE->Lua(), var);
+
+    return;
+  }
+
 };

@@ -28,6 +28,8 @@ namespace Framework
     return true;
   }
 
+  
+
   bool GameComponent::operator!=(const GameComponent& rhs) const
   {
     return !operator==(rhs);

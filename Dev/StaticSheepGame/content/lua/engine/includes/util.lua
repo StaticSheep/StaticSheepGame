@@ -113,15 +113,19 @@ function SetupMetatable(key, meta)
       return _R.METAVALUES[tostring(self)][key]
     end
 
-    --print("Didn't find meta value: ".. key)
+    if meta[key] == nil and meta.__base ~= nil and meta.__base[key] ~= nil then
+      return meta.__base[key]
+    end
+
+    if key == "super" then
+      return meta.__base
+    end
 
     return meta[key]
   end
 
   function meta.__newindex(self, key, value)
     _R.METAVALUES[tostring(self)] = _R.METAVALUES[tostring(self)] or {}
-
-    --print("Insert new index into meta table, key: "..key.." value: "..tostring(value) )
 
     _R.METAVALUES[tostring(self)][key] = value
   end
@@ -149,6 +153,22 @@ function SetupMetatable(key, meta)
     return setmetatable({}, meta)
   end
 
+  if (meta.__members ~= nil) then
+
+    for name, member in pairs(meta.__members) do
+      meta["Set"..name] = function(self, value)
+        engine.SetVariable(self, member, value)
+      end
+
+      meta["Get"..name] = function(self)
+        return engine.GetVariable(self, member)
+      end
+
+    end
+
+  end
+
+
 end
 
 
@@ -158,6 +178,7 @@ function SetupMetatables()
   for key, meta in pairs(_R) do
     SetupMetatable(key, meta)
   end
+
 end
 
 function GetMeta(name)
@@ -169,6 +190,16 @@ function GetMeta(name)
   end
   
   return _R["__"..name.."_MT"]
+end
+
+function SetAs(table, meta)
+  return setmetatable(table, GetMeta(meta))
+end
+
+function InheritMeta(meta, name)
+  local imeta = GetMeta(name)
+
+  meta.__base = imeta;
 end
 
 function RunString(command, ...)
