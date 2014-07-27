@@ -18,10 +18,12 @@
     <ClInclude Include="..\includes\graphics\Sprite.h" />
     <ClInclude Include="..\includes\graphics\VertexTypes.h" />
     <ClInclude Include="..\includes\graphics\WindowsIncludes.h" />
+    <ClInclude Include="..\includes\Utilities.h" />
     <ClInclude Include="GFX_Core.h" />
     <ClInclude Include="precompiled.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Utilities\Utilities.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="precompiled.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

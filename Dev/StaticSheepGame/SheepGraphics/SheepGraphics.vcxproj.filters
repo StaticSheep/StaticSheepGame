@@ -28,6 +28,9 @@
     <ClInclude Include="GFX_Core.h">
       <Filter>Export\System</Filter>
     </ClInclude>
+    <ClInclude Include="..\includes\Utilities.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="precompiled.cpp">
@@ -41,6 +44,9 @@
     </ClCompile>
     <ClCompile Include="Sprite.cpp">
       <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utilities\Utilities.cpp">
+      <Filter>Utility</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

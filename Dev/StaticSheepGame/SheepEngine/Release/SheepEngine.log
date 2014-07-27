@@ -1,0 +1,18 @@
+﻿Build started 7/27/2014 2:17:48 PM.
+     1>Project "C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\SheepEngine\SheepEngine.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /IC:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\includes /Zi /nologo /W3 /WX- /O2 /Oi /Oy- /GL /D WIN32 /D DLL_ENGINEEXPORT /D NDEBUG /D _WINDOWS /D _USRDLL /D SHEEPENGINE_EXPORTS /D _WINDLL /D _UNICODE /D UNICODE /D DLL_EXPORT /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Yc"precompiled.h" /Fp"Release\SheepEngine.pch" /Fo"Release\\" /Fd"Release\vc110.pdb" /Gd /TP /FIprecompiled.h /analyze- /errorReport:prompt precompiled.cpp
+         precompiled.cpp
+     1>C:\Program Files (x86)\Windows Kits\8.0\Include\um\objidl.h(9175): error C2059: syntax error : '('
+     1>C:\Program Files (x86)\Windows Kits\8.0\Include\um\objidl.h(9175): error C2334: unexpected token(s) preceding ':'; skipping apparent function body
+     1>C:\Program Files (x86)\Windows Kits\8.0\Include\um\objidl.h(9175): error C2760: syntax error : expected '{' not ';'
+     1>C:\Program Files (x86)\Windows Kits\8.0\Include\um\objidl.h(9177): error C2144: syntax error : 'int' should be preceded by '}'
+     1>C:\Program Files (x86)\Windows Kits\8.0\Include\um\objidl.h(9177): error C2226: syntax error : unexpected type 'HRESULT'
+     1>C:\Program Files (x86)\Windows Kits\8.0\Include\um\objidl.h(9180): error C2143: syntax error : missing ')' before ';'
+     1>C:\Program Files (x86)\Windows Kits\8.0\Include\um\objidl.h(9180): error C2238: unexpected token(s) preceding ';'
+         Compiling Precompiled Header File...
+     1>Done Building Project "C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\SheepEngine\SheepEngine.vcxproj" (Build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:01.08

@@ -1,16 +1,51 @@
 #include "GFX_Core.h"
-DirectX_Core *CORE = NULL;
+#include "VertexTypes.h"
 
 #pragma comment (lib, "d3d11.lib")
 #pragma comment (lib, "d3dx11.lib")
 #pragma comment (lib, "d3dx10.lib")
+#pragma comment (lib, "DxErr.lib")
+
+using namespace Framework;
+DirectX_Core *Framework::CORE = NULL;
+VertexBufferQuad *Framework::QUAD = NULL;
+extern ID3D11InputLayout *Framework::LAYOUT;
+
 
 using namespace DirectX;
 GFX_API void GFX_Init_D3D(HWND hWnd, int ScreenWidth, int ScreenHeight)
 {
 
+  HRESULT hr = S_OK;
+  D3D_DRIVER_TYPE driverType = D3D_DRIVER_TYPE_NULL;
+  D3D_FEATURE_LEVEL featureLevel = D3D_FEATURE_LEVEL_11_0;
+
   CORE = new DirectX_Core();
   ZeroMemory(CORE, sizeof(DirectX_Core));
+
+  UINT deviceFlags = 0;
+
+#if defined (_DEBUG)
+  deviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
+#endif
+
+  D3D_DRIVER_TYPE driverTypes[] =
+  {
+    D3D_DRIVER_TYPE_HARDWARE,
+    D3D_DRIVER_TYPE_WARP,
+    D3D_DRIVER_TYPE_REFERENCE,
+  };
+
+  UINT numDriverTypes = ARRAYSIZE(driverTypes);
+
+  D3D_FEATURE_LEVEL featureLevels[] =
+  {
+    D3D_FEATURE_LEVEL_11_0,
+    D3D_FEATURE_LEVEL_10_1,
+    D3D_FEATURE_LEVEL_10_0,
+  };
+
+  UINT numFeatureLevels = ARRAYSIZE(featureLevels);
 
    // create a struct to hold information about the swap chain
   DXGI_SWAP_CHAIN_DESC scd;
@@ -30,28 +65,36 @@ GFX_API void GFX_Init_D3D(HWND hWnd, int ScreenWidth, int ScreenHeight)
   scd.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;    // allow full-screen switching
 
   // create a device, device context and swap chain using the information in the scd struct
-  D3D11CreateDeviceAndSwapChain(NULL,
-                                D3D_DRIVER_TYPE_HARDWARE,
+
+  for(UINT driverTypeIndex = 0; driverTypeIndex < numDriverTypes; driverTypeIndex++)
+  {
+    driverType = driverTypes[driverTypeIndex];
+
+    hr = D3D11CreateDeviceAndSwapChain(NULL,
+                                driverType,
                                 NULL,
-                                NULL,
-                                NULL,
-                                NULL,
+                                deviceFlags,
+                                featureLevels,
+                                numFeatureLevels,
                                 D3D11_SDK_VERSION,
                                 &scd,
                                 &CORE->swapchain,
                                 &CORE->dev,
-                                NULL,
+                                &featureLevel,
                                 &CORE->devcon);
 
+    if(SUCCEEDED(hr))
+      break;
+  }
 
-
+  DXVerify(hr);
 
   // get the address of the back buffer
   ID3D11Texture2D *pBackBuffer;
-  CORE->swapchain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer);
+  DXVerify(CORE->swapchain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer));
 
   // use the back buffer address to create the render target
-  CORE->dev->CreateRenderTargetView(pBackBuffer, NULL, &CORE->backbuffer);
+  DXVerify(CORE->dev->CreateRenderTargetView(pBackBuffer, NULL, &CORE->backbuffer));
   pBackBuffer->Release();
 
   // set the render target as the back buffer
@@ -66,9 +109,10 @@ GFX_API void GFX_Init_D3D(HWND hWnd, int ScreenWidth, int ScreenHeight)
   viewport.TopLeftY = 0;
   viewport.Width = (float)ScreenHeight;
   viewport.Height = (float)ScreenHeight;
-  viewport.MinDepth = 0;    // the closest an object can be on the depth buffer is 0.0
-  viewport.MaxDepth = 1;    // the farthest an object can be on the depth buffer is 1.0
+  viewport.MinDepth = 0.0f;    // the closest an object can be on the depth buffer is 0.0
+  viewport.MaxDepth = 1.0f;    // the farthest an object can be on the depth buffer is 1.0
 
+  CORE->devcon->RSSetViewports(1, &viewport);
   // create the depth buffer texture
   D3D11_TEXTURE2D_DESC texd;
   ZeroMemory(&texd, sizeof(texd));
@@ -82,7 +126,7 @@ GFX_API void GFX_Init_D3D(HWND hWnd, int ScreenWidth, int ScreenHeight)
   texd.BindFlags = D3D11_BIND_DEPTH_STENCIL;
 
   ID3D11Texture2D *pDepthBuffer;
-  CORE->dev->CreateTexture2D(&texd, NULL, &pDepthBuffer);
+  DXVerify(CORE->dev->CreateTexture2D(&texd, NULL, &pDepthBuffer));
 
   // create the depth buffer
   D3D11_DEPTH_STENCIL_VIEW_DESC dsvd;
@@ -91,19 +135,22 @@ GFX_API void GFX_Init_D3D(HWND hWnd, int ScreenWidth, int ScreenHeight)
   dsvd.Format = DXGI_FORMAT_D32_FLOAT;
   dsvd.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2DMS;
 
-  CORE->dev->CreateDepthStencilView(pDepthBuffer, &dsvd, &CORE->zbuffer);
+  DXVerify(CORE->dev->CreateDepthStencilView(pDepthBuffer, &dsvd, &CORE->zbuffer));
   pDepthBuffer->Release();
 
-  CORE->devcon->RSSetViewports(1, &viewport);
+
 }
 
 GFX_API void GFX_Release_D3D(void)
 {
-  CORE->zbuffer->Release();
-  CORE->backbuffer->Release();
-  CORE->devcon->Release();
-  CORE->dev->Release();
-  CORE->swapchain->Release();
+  if(CORE->swapchain)
+    CORE->swapchain->SetFullscreenState(FALSE, NULL);    // switch to windowed mode
+
+  SafeRelease(CORE->zbuffer);
+  SafeRelease(CORE->backbuffer);
+  SafeRelease(CORE->devcon);
+  SafeRelease(CORE->dev);
+  SafeRelease(CORE->swapchain);
   delete CORE;
   CORE = NULL;
 }
@@ -116,3 +163,9 @@ GFX_API void GFX_Draw(void)
 
   CORE->swapchain->Present(0, 0);
 }
+
+GFX_API bool InitGeometry()
+{
+  return true;
+}
+
