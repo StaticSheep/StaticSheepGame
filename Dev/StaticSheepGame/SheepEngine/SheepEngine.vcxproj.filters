@@ -103,9 +103,6 @@
     <ClInclude Include="Generic.h">
       <Filter>BaseTypes\Generic</Filter>
     </ClInclude>
-    <ClInclude Include="api.h">
-      <Filter>Export</Filter>
-    </ClInclude>
     <ClInclude Include="sheep_engine.h">
       <Filter>Export\Demo</Filter>
     </ClInclude>
@@ -135,6 +132,9 @@
     </ClInclude>
     <ClInclude Include="Window.h">
       <Filter>Engine\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Api.h">
+      <Filter>Export</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
