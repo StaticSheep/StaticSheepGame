@@ -8,6 +8,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 #pragma once
 
+#include "Window.h"
+
 namespace Framework
 {
   class Engine;
@@ -21,6 +23,7 @@ namespace Framework
     SHEEP_API ~Engine();
 
     SHEEP_API void AddSystem(ISystem* system);
+    SHEEP_API void MakeWindow(HINSTANCE hInstance, int show);
     SHEEP_API void Initialize();
     SHEEP_API void MainLoop();
     SHEEP_API void Shutdown();
@@ -52,6 +55,7 @@ namespace Framework
     GameSpace* GetSpace(const char* name);
 
     Factory ObjectFactory;
+    SheepWindow Window;
   private:
     bool m_running;
     std::vector<ISystem*> m_systems;

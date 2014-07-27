@@ -360,7 +360,7 @@ namespace Framework
         return 1;
       }
 
-      return lua_gettop(L) - fn->Signature()->ArgCount();
+      return lua_gettop(L) - fn->Signature()->ArgCount() - 1;
     }
 
     void BindFunctionToLua(lua_State* L, Function* fn, const char* name, const char* table)

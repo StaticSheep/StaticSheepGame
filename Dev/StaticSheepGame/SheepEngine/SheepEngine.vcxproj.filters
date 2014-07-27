@@ -133,6 +133,9 @@
     <ClInclude Include="DefaultTypes.h">
       <Filter>Engine\Introspection\DefaultTypes</Filter>
     </ClInclude>
+    <ClInclude Include="Window.h">
+      <Filter>Engine\Window</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="precompiled.cpp">
@@ -239,6 +242,9 @@
     </ClCompile>
     <ClCompile Include="DefaultTypes.cpp">
       <Filter>Engine\Introspection\DefaultTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="Window.cpp">
+      <Filter>Engine\Window</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -388,6 +394,9 @@
     </Filter>
     <Filter Include="Engine\Introspection\DefaultTypes">
       <UniqueIdentifier>{06fadf3e-8f28-44e2-9fbc-031832a551bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Window">
+      <UniqueIdentifier>{bc423fda-fda0-45de-8f60-f308931d39a1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

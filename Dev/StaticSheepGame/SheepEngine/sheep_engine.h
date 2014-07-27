@@ -3,6 +3,7 @@
 #pragma once
 
 #include "api.h"
+#include <wtypes.h>
 
 // This function can be called from inside of the engine (current project)
 // but cannot be called from another project since it is not exported
@@ -16,7 +17,7 @@ SHEEP_API int ExportedEngineFunction(void);
 SHEEP_API int ExportedEnginePhysicsFunction(void);
 SHEEP_API int ExportedEngineGraphicsFunction(void);
 
-SHEEP_API void TestStuff(void);
+SHEEP_API void TestStuff(HINSTANCE hInstance, int show);
 
 class SHEEP_API Foo
 {

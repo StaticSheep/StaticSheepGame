@@ -50,6 +50,11 @@ namespace Framework
       m_systems[i]->Initialize();
   }
 
+  void Engine::MakeWindow(HINSTANCE hInstance, int show)
+  {
+    Window.MakeWindow(hInstance, show);
+  }
+
   void Engine::Shutdown()
   {
     for (unsigned int i = 0; i < m_spaces.size(); ++i)
@@ -77,6 +82,8 @@ namespace Framework
   void Engine::MainLoop()
   {
     const float dt = 1.0f / 60.0f; // 60 frames per second
+
+    Window.Update();
 
     for (unsigned int i = 0; i < m_systems.size(); ++i)
       m_systems[i]->Update(dt);

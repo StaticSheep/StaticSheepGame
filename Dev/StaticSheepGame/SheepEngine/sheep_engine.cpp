@@ -85,7 +85,7 @@ void TestMore(void)
 
 using namespace Framework;
 
-void TestStuff(void)
+void TestStuff(HINSTANCE hInstance, int show)
 {
 
   OpenConsole();
@@ -96,6 +96,7 @@ void TestStuff(void)
   SheepEngine->AddSystem(new GameLogic());
   SheepEngine->AddSystem(new SheepPhysics());
 
+  SheepEngine->MakeWindow(hInstance, show);
   SheepEngine->Initialize();
 
   //GameSpace* space = SheepEngine->CreateSpace("test_space");
