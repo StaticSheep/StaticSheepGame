@@ -100,6 +100,7 @@
     <ClInclude Include="..\includes\Utilities.h" />
     <ClInclude Include="api.h" />
     <ClInclude Include="Archetype.h" />
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="CLuaComponent.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ComponentCreator.h" />
@@ -137,6 +138,7 @@
     <ClInclude Include="sheep_engine.h" />
     <ClInclude Include="SlotArray.h" />
     <ClInclude Include="Space.h" />
+    <ClInclude Include="Sprite.h" />
     <ClInclude Include="System.h" />
     <ClInclude Include="TypeInfo.h" />
     <ClInclude Include="Variable.h" />
@@ -145,6 +147,7 @@
   <ItemGroup>
     <ClCompile Include="..\Utilities\Utilities.cpp" />
     <ClCompile Include="Archetype.cpp" />
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CLuaComponent.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="CTester.cpp" />
@@ -179,6 +182,7 @@
     <ClCompile Include="SheepPhysics.cpp" />
     <ClCompile Include="sheep_engine.cpp" />
     <ClCompile Include="Space.cpp" />
+    <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="TypeInfo.cpp" />
     <ClCompile Include="Variable.cpp" />
     <ClCompile Include="Window.cpp" />

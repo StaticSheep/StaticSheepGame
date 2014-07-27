@@ -1,0 +1,20 @@
+﻿Build started 7/27/2014 1:04:39 PM.
+     1>Project "C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\SheepPhysics\SheepPhysics.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /IC:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\includes /IC:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\includes/physics /Zi /nologo /W4 /WX- /O2 /Oi /Oy- /GL /D WIN32 /D DLL_PHYEXPORT /D NDEBUG /D _WINDOWS /D _USRDLL /D SHEEPPHYSICS_EXPORTS /D _WINDLL /D _UNICODE /D UNICODE /D DLL_EXPORT /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Yc"precompiled.h" /Fp"Release\SheepPhysics.pch" /Fo"Release\\" /Fd"Release\vc110.pdb" /Gd /TP /FIprecompiled.h /analyze- /errorReport:prompt precompiled.cpp
+         precompiled.cpp
+         Compiling Precompiled Header File...
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /IC:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\includes /IC:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\includes/physics /Zi /nologo /W4 /WX- /O2 /Oi /Oy- /GL /D WIN32 /D DLL_PHYEXPORT /D NDEBUG /D _WINDOWS /D _USRDLL /D SHEEPPHYSICS_EXPORTS /D _WINDLL /D _UNICODE /D UNICODE /D DLL_EXPORT /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Yu"precompiled.h" /Fp"Release\SheepPhysics.pch" /Fo"Release\\" /Fd"Release\vc110.pdb" /Gd /TP /FIprecompiled.h /analyze- /errorReport:prompt sheep_physics.cpp
+         sheep_physics.cpp
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\Release\SheepPhysics.dll" /INCREMENTAL:NO /NOLOGO /LIBPATH:C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\includes /LIBPATH:C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\Release kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\Release\SheepPhysics.pdb" /SUBSYSTEM:WINDOWS /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\Release\SheepPhysics.lib" /MACHINE:X86 /SAFESEH /DLL Release\precompiled.obj
+         Release\sheep_physics.obj
+            Creating library C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\Release\SheepPhysics.lib and object C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\Release\SheepPhysics.exp
+         Generating code
+         Finished generating code
+         SheepPhysics.vcxproj -> C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\Release\SheepPhysics.dll
+     1>Done Building Project "C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\SheepPhysics\SheepPhysics.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:00.60

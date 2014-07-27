@@ -8,6 +8,9 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 #pragma once
 
+#include <crtdbg.h>
+#include <assert.h>
+
 #define STRINGIZE( _ ) #_
 
 #define H1(s,i,x)   (x*65599u+(uint8_t)s[(i)<strlen(s)?strlen(s)-1-(i):strlen(s)])

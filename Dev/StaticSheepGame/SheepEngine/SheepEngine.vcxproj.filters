@@ -136,6 +136,12 @@
     <ClInclude Include="Window.h">
       <Filter>Engine\Window</Filter>
     </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Components\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprite.h">
+      <Filter>Components\Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="precompiled.cpp">
@@ -245,6 +251,12 @@
     </ClCompile>
     <ClCompile Include="Window.cpp">
       <Filter>Engine\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Components\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Sprite.cpp">
+      <Filter>Components\Graphics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -397,6 +409,9 @@
     </Filter>
     <Filter Include="Engine\Window">
       <UniqueIdentifier>{bc423fda-fda0-45de-8f60-f308931d39a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\Graphics">
+      <UniqueIdentifier>{42b3dca6-312f-4781-a3da-20c5aba5ab04}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
