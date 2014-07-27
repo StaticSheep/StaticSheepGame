@@ -18,6 +18,7 @@
     <ClInclude Include="..\includes\graphics\Sprite.h" />
     <ClInclude Include="..\includes\graphics\VertexTypes.h" />
     <ClInclude Include="..\includes\graphics\WindowsIncludes.h" />
+    <ClInclude Include="GFX_Core.h" />
     <ClInclude Include="precompiled.h" />
   </ItemGroup>
   <ItemGroup>

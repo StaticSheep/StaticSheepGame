@@ -61,14 +61,6 @@ int ExportedEngineFunction(void)
 
 // This is an exported Engine function that calls
 // an exported function from the graphics
-int ExportedEngineGraphicsFunction(void)
-{
-  // Call an exported function from the graphics
-  return ExportedGraphicsFunction();
-}
-
-// This is an exported Engine function that calls
-// an exported function from the graphics
 int ExportedEnginePhysicsFunction(void)
 {
   // Call an exported function from the physics
@@ -92,9 +84,11 @@ void TestStuff(HINSTANCE hInstance, int show)
 
   // Create the engine
   Engine* SheepEngine = new Engine();
+  
 
   SheepEngine->AddSystem(new GameLogic());
   SheepEngine->AddSystem(new SheepPhysics());
+  SheepEngine->AddSystem(new SheepGraphics());
 
   SheepEngine->MakeWindow(hInstance, show);
   SheepEngine->Initialize();

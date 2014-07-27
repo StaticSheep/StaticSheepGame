@@ -1,3 +1,4 @@
+#include "GFX_Core.h"
 DirectX_Core *CORE = NULL;
 
 #pragma comment (lib, "d3d11.lib")
@@ -9,7 +10,7 @@ GFX_API void GFX_Init_D3D(HWND hWnd, int ScreenWidth, int ScreenHeight)
 {
 
   CORE = new DirectX_Core();
-  ZeroMemory(&CORE, sizeof(DirectX_Core));
+  ZeroMemory(CORE, sizeof(DirectX_Core));
 
    // create a struct to hold information about the swap chain
   DXGI_SWAP_CHAIN_DESC scd;
@@ -96,19 +97,20 @@ GFX_API void GFX_Init_D3D(HWND hWnd, int ScreenWidth, int ScreenHeight)
 
 GFX_API void GFX_Release_D3D(void)
 {
-  CORE->pLayout->Release();
   CORE->zbuffer->Release();
   CORE->backbuffer->Release();
   CORE->devcon->Release();
   CORE->dev->Release();
   CORE->swapchain->Release();
+  delete CORE;
+  CORE = NULL;
 }
 
 GFX_API void GFX_Draw(void)
 {
   CORE->devcon->ClearDepthStencilView(CORE->zbuffer, D3D11_CLEAR_DEPTH, 1.0f, 0);
 
-  CORE->devcon->ClearRenderTargetView(CORE->backbuffer, (D3DXCOLOR)Colors::Black);
+  CORE->devcon->ClearRenderTargetView(CORE->backbuffer, (D3DXCOLOR)Colors::Red);
 
   CORE->swapchain->Present(0, 0);
 }

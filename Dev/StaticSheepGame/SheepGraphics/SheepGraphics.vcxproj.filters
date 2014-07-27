@@ -25,6 +25,9 @@
     <ClInclude Include="..\includes\graphics\VertexTypes.h">
       <Filter>Utility</Filter>
     </ClInclude>
+    <ClInclude Include="GFX_Core.h">
+      <Filter>Export\System</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="precompiled.cpp">

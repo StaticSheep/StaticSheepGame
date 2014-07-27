@@ -28,18 +28,16 @@ namespace Framework
     GFX_Release_D3D();
 	}
 
-  void SheepGraphics::SetWindwProperties(HWND hWnd, int screenWidth, int screenHeight)
-  {
-    _HWnd = hWnd;
-    _ScreenWidth = screenWidth;
-    _ScreenHeight = screenHeight;
-  }
-
 	void SheepGraphics::Initialize()
 	{
 		
 		// Create DirectX object
 		// Initialize graphics system
+
+    _HWnd = ENGINE->Window.GetHandle();
+    _ScreenWidth = ENGINE->Window.width;
+    _ScreenHeight = ENGINE->Window.height;
+
     GFX_Init_D3D(_HWnd, _ScreenWidth, _ScreenHeight);
 	}
 

@@ -19,6 +19,7 @@ namespace Framework
     void MakeWindow(HINSTANCE hInstance, int nCmdShow);
     void Update();
     HWND GetHandle();
+    int width, height;
   protected:
     HWND Handle;
   };

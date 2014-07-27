@@ -23,7 +23,6 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_l
 
   // Call some functions from inside of the engine
   //a = ExportedEngineFunction();
-  b = ExportedEngineGraphicsFunction();
   //c = ExportedEnginePhysicsFunction();
 
   // This will not compile since the function was not exported from the engine project
