@@ -1,6 +1,6 @@
 #include "Camera.h"
 
-namespace Framework
+/*namespace Framework
 {
   Camera::Camera()
   {
@@ -18,5 +18,5 @@ namespace Framework
   {
 
   }
-}
+}*/
 

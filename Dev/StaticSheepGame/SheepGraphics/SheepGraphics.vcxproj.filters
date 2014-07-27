@@ -4,31 +4,31 @@
     <ClInclude Include="precompiled.h">
       <Filter>Precompiled</Filter>
     </ClInclude>
-    <ClInclude Include="..\includes\graphics\api.h">
-      <Filter>Export</Filter>
-    </ClInclude>
-    <ClInclude Include="..\includes\graphics\sheep_graphics.h">
-      <Filter>Export\System</Filter>
-    </ClInclude>
-    <ClInclude Include="..\includes\graphics\DirectXIncludes.h">
-      <Filter>Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="..\includes\graphics\WindowsIncludes.h">
-      <Filter>Utility</Filter>
-    </ClInclude>
     <ClInclude Include="..\includes\graphics\Camera.h">
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="..\includes\graphics\Sprite.h">
       <Filter>Components</Filter>
     </ClInclude>
-    <ClInclude Include="..\includes\graphics\VertexTypes.h">
-      <Filter>Utility</Filter>
-    </ClInclude>
     <ClInclude Include="GFX_Core.h">
       <Filter>Export\System</Filter>
     </ClInclude>
     <ClInclude Include="..\includes\Utilities.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="api.h">
+      <Filter>Export\System</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexTypes.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowsIncludes.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="sheep_graphics.h">
+      <Filter>Export\System</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXIncludes.h">
       <Filter>Utility</Filter>
     </ClInclude>
   </ItemGroup>
@@ -70,10 +70,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="..\includes\graphics\Shaders\Basic.fx">
+    <FxCompile Include="Shaders\Basic.fx">
       <Filter>Shaders</Filter>
     </FxCompile>
-    <FxCompile Include="..\includes\graphics\Shaders\Debug.fx">
+    <FxCompile Include="Shaders\Debug.fx">
       <Filter>Shaders</Filter>
     </FxCompile>
   </ItemGroup>

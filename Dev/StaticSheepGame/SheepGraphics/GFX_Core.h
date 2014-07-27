@@ -1,6 +1,6 @@
 #pragma once
 
-namespace Framework
+namespace Sheep_GFX
 {
   struct DirectX_Core
   {
@@ -12,7 +12,6 @@ namespace Framework
     ID3D11InputLayout *pLayout;            // the pointer to the input layout
   };
 
-  extern DirectX_Core *CORE;
 
 	template< typename RefType >
 	void SafeRelease( RefType& interfacePtr )

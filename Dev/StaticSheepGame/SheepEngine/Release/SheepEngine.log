@@ -1,18 +1,54 @@
-﻿Build started 7/27/2014 2:17:48 PM.
+﻿Build started 7/27/2014 3:45:14 PM.
      1>Project "C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\SheepEngine\SheepEngine.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /IC:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\includes /Zi /nologo /W3 /WX- /O2 /Oi /Oy- /GL /D WIN32 /D DLL_ENGINEEXPORT /D NDEBUG /D _WINDOWS /D _USRDLL /D SHEEPENGINE_EXPORTS /D _WINDLL /D _UNICODE /D UNICODE /D DLL_EXPORT /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Yc"precompiled.h" /Fp"Release\SheepEngine.pch" /Fo"Release\\" /Fd"Release\vc110.pdb" /Gd /TP /FIprecompiled.h /analyze- /errorReport:prompt precompiled.cpp
-         precompiled.cpp
-     1>C:\Program Files (x86)\Windows Kits\8.0\Include\um\objidl.h(9175): error C2059: syntax error : '('
-     1>C:\Program Files (x86)\Windows Kits\8.0\Include\um\objidl.h(9175): error C2334: unexpected token(s) preceding ':'; skipping apparent function body
-     1>C:\Program Files (x86)\Windows Kits\8.0\Include\um\objidl.h(9175): error C2760: syntax error : expected '{' not ';'
-     1>C:\Program Files (x86)\Windows Kits\8.0\Include\um\objidl.h(9177): error C2144: syntax error : 'int' should be preceded by '}'
-     1>C:\Program Files (x86)\Windows Kits\8.0\Include\um\objidl.h(9177): error C2226: syntax error : unexpected type 'HRESULT'
-     1>C:\Program Files (x86)\Windows Kits\8.0\Include\um\objidl.h(9180): error C2143: syntax error : missing ')' before ';'
-     1>C:\Program Files (x86)\Windows Kits\8.0\Include\um\objidl.h(9180): error C2238: unexpected token(s) preceding ';'
-         Compiling Precompiled Header File...
-     1>Done Building Project "C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\SheepEngine\SheepEngine.vcxproj" (Build target(s)) -- FAILED.
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /IC:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\includes /Zi /nologo /W3 /WX- /O2 /Oi /Oy- /GL /D WIN32 /D DLL_ENGINEEXPORT /D NDEBUG /D _WINDOWS /D _USRDLL /D SHEEPENGINE_EXPORTS /D _WINDLL /D DLL_EXPORT /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Yu"precompiled.h" /Fp"Release\SheepEngine.pch" /Fo"Release\\" /Fd"Release\vc110.pdb" /Gd /TP /FIprecompiled.h /analyze- /errorReport:prompt SheepGraphics.cpp sheep_engine.cpp
+         SheepGraphics.cpp
+         sheep_engine.cpp
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\Release\SheepEngine.dll" /INCREMENTAL:NO /NOLOGO /LIBPATH:C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\includes /LIBPATH:C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\Release SheepGraphics.lib SheepPhysics.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\Release\SheepEngine.pdb" /SUBSYSTEM:WINDOWS /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\Release\SheepEngine.lib" /MACHINE:X86 /SAFESEH /DLL Release\Utilities.obj
+         Release\Archetype.obj
+         Release\Camera.obj
+         Release\CLuaComponent.obj
+         Release\Component.obj
+         Release\CTester.obj
+         Release\DefaultTypes.obj
+         Release\Engine.obj
+         Release\CTransform.obj
+         Release\Enum.obj
+         Release\Factory.obj
+         Release\File.obj
+         Release\FuncSignature.obj
+         Release\Function.obj
+         Release\GameLogic.obj
+         Release\Hash.obj
+         Release\Hooks.obj
+         Release\IntrospectionManager.obj
+         Release\LuaDefaultBinds.obj
+         Release\LuaInterface.obj
+         Release\LuaTransfer.obj
+         Release\ObjectAllocator.obj
+         Release\PhysicsObject.obj
+         Release\PODSerialization.obj
+         Release\Serialization.obj
+         Release\SheepAudio.obj
+         Release\SheepGraphics.obj
+         Release\Handle.obj
+         Release\HandleManager.obj
+         Release\Object.obj
+         Release\precompiled.obj
+         Release\SheepPhysics.obj
+         Release\sheep_engine.obj
+         Release\Space.obj
+         Release\Sprite.obj
+         Release\TypeInfo.obj
+         Release\Variable.obj
+         Release\Window.obj
+            Creating library C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\Release\SheepEngine.lib and object C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\Release\SheepEngine.exp
+         Generating code
+         Finished generating code
+         SheepEngine.vcxproj -> C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\Release\SheepEngine.dll
+     1>Done Building Project "C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\SheepEngine\SheepEngine.vcxproj" (Build target(s)).
 
-Build FAILED.
+Build succeeded.
 
-Time Elapsed 00:00:01.08
+Time Elapsed 00:00:02.85

@@ -11,16 +11,16 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\includes\graphics\api.h" />
     <ClInclude Include="..\includes\graphics\Camera.h" />
-    <ClInclude Include="..\includes\graphics\DirectXIncludes.h" />
-    <ClInclude Include="..\includes\graphics\sheep_graphics.h" />
     <ClInclude Include="..\includes\graphics\Sprite.h" />
-    <ClInclude Include="..\includes\graphics\VertexTypes.h" />
-    <ClInclude Include="..\includes\graphics\WindowsIncludes.h" />
     <ClInclude Include="..\includes\Utilities.h" />
+    <ClInclude Include="api.h" />
+    <ClInclude Include="DirectXIncludes.h" />
     <ClInclude Include="GFX_Core.h" />
     <ClInclude Include="precompiled.h" />
+    <ClInclude Include="sheep_graphics.h" />
+    <ClInclude Include="VertexTypes.h" />
+    <ClInclude Include="WindowsIncludes.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Utilities\Utilities.cpp" />
@@ -33,11 +33,11 @@
     <ClCompile Include="Sprite.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="..\includes\graphics\Shaders\Basic.fx">
+    <FxCompile Include="Shaders\Basic.fx">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </FxCompile>
-    <FxCompile Include="..\includes\graphics\Shaders\Debug.fx">
+    <FxCompile Include="Shaders\Debug.fx">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </FxCompile>
@@ -73,14 +73,14 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)includes;$(SolutionDir)includes/graphics;$(IncludePath);$(DXSDK_DIR)Include</IncludePath>
-    <ReferencePath>$(SolutionDir)includes;$(SolutionDir)includes/graphics;$(ReferencePath)</ReferencePath>
+    <IncludePath>$(SolutionDir)includes;$(IncludePath);$(DXSDK_DIR)Include</IncludePath>
+    <ReferencePath>$(SolutionDir)includes;$(ReferencePath)</ReferencePath>
     <LibraryPath>$(LibraryPath);$(DXSDK_DIR)Lib\x86</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)includes;$(SolutionDir)includes/graphics;$(IncludePath);$(DXSDK_DIR)Include</IncludePath>
-    <ReferencePath>$(SolutionDir)includes;$(SolutionDir)includes/graphics;$(ReferencePath)</ReferencePath>
+    <IncludePath>$(SolutionDir)includes;$(IncludePath);$(DXSDK_DIR)Include</IncludePath>
+    <ReferencePath>$(SolutionDir)includes;$(ReferencePath)</ReferencePath>
     <LibraryPath>$(LibraryPath);$(DXSDK_DIR)Lib\x86</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

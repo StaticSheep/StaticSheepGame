@@ -26,7 +26,7 @@ namespace Framework
 	SheepGraphics::~SheepGraphics()
 	{
 		// Free anything that was allocated
-    GFX_Release_D3D();
+    Sheep_GFX::GFX_Release_D3D();
 	}
 
 	void SheepGraphics::Initialize()
@@ -39,14 +39,14 @@ namespace Framework
     _ScreenWidth = ENGINE->Window.width;
     _ScreenHeight = ENGINE->Window.height;
 
-    GFX_Init_D3D(_HWnd, _ScreenWidth, _ScreenHeight);
+    Sheep_GFX::GFX_Init_D3D(_HWnd, _ScreenWidth, _ScreenHeight);
 	}
 
 	void SheepGraphics::Update(float dt)
 	{
 		// Draw stuff
 
-		GFX_Draw();
+		Sheep_GFX::GFX_Draw();
 	}
 
 	void SheepGraphics::Draw()
