@@ -1,6 +1,6 @@
 #pragma once
 
-namespace Sheep_GFX
+namespace DirectSheep
 {
   struct DirectX_Core
   {
@@ -12,6 +12,7 @@ namespace Sheep_GFX
     ID3D11InputLayout *pLayout;            // the pointer to the input layout
   };
 
+  
 
 	template< typename RefType >
 	void SafeRelease( RefType& interfacePtr )
@@ -20,3 +21,5 @@ namespace Sheep_GFX
 		interfacePtr = NULL;
 	}
 }
+
+extern DirectSheep::DirectX_Core* CORE;

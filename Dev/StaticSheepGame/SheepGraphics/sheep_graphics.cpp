@@ -3,14 +3,15 @@
 #pragma comment (lib, "d3dx10.lib")
 #pragma comment (lib, "DxErr.lib")
 
+using namespace DirectX;
 
-namespace Sheep_GFX
+DirectSheep::DirectX_Core* CORE = nullptr;
+DirectSheep::VertexBufferQuad *QUAD = NULL;
+ID3D11InputLayout *LAYOUT = NULL;
+
+namespace DirectSheep
 {
-  DirectX_Core* CORE = nullptr;
-  VertexBufferQuad *QUAD = NULL;
-  ID3D11InputLayout *LAYOUT = NULL;
 
-  using namespace DirectX;
   GFX_API void GFX_Init_D3D(HWND hWnd, int ScreenWidth, int ScreenHeight)
   {
 

@@ -2,7 +2,7 @@
 
 
 
-namespace Sheep_GFX
+namespace DirectSheep
 {
   // Our Custom Vertex
 
@@ -14,13 +14,14 @@ namespace Sheep_GFX
     float tu, tv;  // u, v
   };
 
-  extern ID3D11InputLayout *LAYOUT;
-
   struct VertexBufferQuad
   {
     ID3D11Buffer *vBuffer;
     ID3D11Buffer *cBuffer;
   };
 
-  extern VertexBufferQuad *QUAD;
+  
 }
+
+extern ID3D11InputLayout *LAYOUT;
+extern DirectSheep::VertexBufferQuad *QUAD;
