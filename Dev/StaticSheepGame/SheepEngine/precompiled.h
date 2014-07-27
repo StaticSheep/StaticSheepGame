@@ -8,18 +8,6 @@
 #define DBG_NEW new
 #endif
 
-
-#ifdef LUAJIT
-extern "C"
-{
-#include "luajit/lua.h"
-#include "luajit/lua.hpp"
-#include "luajit/lauxlib.h"
-#include "luajit/luaconf.h"
-#include "luajit/lualib.h"
-#include "luajit/lfs.h"
-}
-#else
 extern "C"
 {
 #include "lua/lua.h"
@@ -29,21 +17,21 @@ extern "C"
 #include "lua/lualib.h"
 #include "lua/lfs.h"
 }
-#endif
 
+// Engine API
+#include "Api.h"
 
-
-
-
-#include "api.h"
+// Pre Reqs
 #include <assert.h>
 
-#include "Qualifiers.h"
-#include "Macros.h"
-#include "Utilities.h"
+// Utilities
+#include "Qualifiers.h" // Qualifier removal
+#include "Macros.h" // Macro Helpers
+#include "Utilities.h" // Debug macros and helpers
 
-#include "File.h"
-#include "Variable.h"
+// Serialization
+#include "File.h" // File handler
+#include "Variable.h" // V
 #include "Enum.h"
 #include "Handle.h"
 #include "TypeInfo.h"

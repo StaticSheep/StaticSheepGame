@@ -19,9 +19,6 @@ void PrintError( const char *exp, const char *file, int line, const char *msg, .
   __debugbreak( )
 
 
-
-
-
 // Don't forget to use END_DISABLE
 #define DISABLE_WARNING( WARN_ID ) \
   __pragma( warning( push ) ) \

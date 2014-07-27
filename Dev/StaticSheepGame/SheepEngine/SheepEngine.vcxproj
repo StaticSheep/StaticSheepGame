@@ -98,7 +98,7 @@
   <ItemGroup>
     <ClInclude Include="..\includes\EnumData.h" />
     <ClInclude Include="..\includes\Utilities.h" />
-    <ClInclude Include="api.h" />
+    <ClInclude Include="Api.h" />
     <ClInclude Include="Archetype.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CLuaComponent.h" />
