@@ -11,6 +11,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "System.h"
 #include <Windows.h>
 
+
 namespace Framework
 {
   class Camera;

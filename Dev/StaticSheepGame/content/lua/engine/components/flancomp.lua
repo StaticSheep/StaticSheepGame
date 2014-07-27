@@ -8,9 +8,8 @@ function META:Init()
   self.testval1 = 10
   self.boomboom = 20
   self.bang = false
-  self.boom = "wow"
-
   
+  self.boom = "wow"
 
   self.super.Init(self)
 end
