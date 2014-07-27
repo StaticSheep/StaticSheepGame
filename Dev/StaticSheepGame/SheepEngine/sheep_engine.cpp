@@ -11,6 +11,7 @@
 #include "physics\sheep_physics.h"
 #include "graphics\sheep_graphics.h"
 #include "SheepPhysics.h"
+#include "SheepGraphics.h"
 #include "PhysicsObject.h"
 #include "GameLogic.h"
 #include "Factory.h"

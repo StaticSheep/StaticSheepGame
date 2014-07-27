@@ -27,8 +27,6 @@ namespace Framework
 
       virtual void Remove() {};
 
-      
-
       GameComponent() : Generic(eGameComponent), space(nullptr) {};
 
       // Destructor, can be accessed from inherited classes
@@ -52,6 +50,9 @@ namespace Framework
       bool operator!=(const GameComponent& rhs) const;
 
       GameComponent& operator=(const GameComponent& rhs);
+
+      // Gets the owning game object
+      GameObject* GetOwner();
 
       const TypeInfo* typeinfo;
 

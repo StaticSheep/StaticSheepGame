@@ -194,6 +194,22 @@ namespace Framework
     return m_components[type] != Handle::null;
   }
 
+  Handle GameObject::GetComponentHandle(const char* type)
+  {
+    if (GET_ENUM(Component)->IsAnEntry(type))
+    {
+      EComponent i = (EComponent)GET_ENUM(Component)->GetIndexFromString(type);
+      return GetComponentHandle(i);
+    }
+
+    return Handle::null;
+  }
+
+  Handle GameObject::GetComponentHandle(EComponent type)
+  {
+    return space->GetHandles().GetAs<GameComponent>(m_components[type])->self;
+  }
+
   GameComponent* GameObject::GetComponent(const char *type)
   {
     if (GET_ENUM(Component)->IsAnEntry(type))

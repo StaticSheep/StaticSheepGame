@@ -52,4 +52,10 @@ namespace Framework
 
     return *this;
   }
+
+
+  GameObject* GameComponent::GetOwner()
+  {
+    return space->GetHandles().GetAs<GameObject>(owner);
+  }
 }

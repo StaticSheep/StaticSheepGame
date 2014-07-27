@@ -13,6 +13,8 @@ namespace Framework
   class Transform : public GameComponent
   {
   public:
+    Transform();
+    ~Transform();
     virtual void Initialize(){};
 
     int val1;

@@ -8,6 +8,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 #include "SheepGraphics.h"
 #include "graphics\sheep_graphics.h"
+#include <Windows.h>
 
 namespace Framework
 {
