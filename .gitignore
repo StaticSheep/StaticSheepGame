@@ -25,10 +25,7 @@ Dev/StaticSheepGame/SheepEngine/Debug/
 Dev/StaticSheepGame/SheepGraphics/Debug/
 Dev/StaticSheepGame/SheepPhysics/Debug/
 Dev/StaticSheepGame/ipch/
-Dev/StaticSheepGame/Game/Game.vcxproj.user
-Dev/StaticSheepGame/StaticSheepGame.opensdf
 Dev/StaticSheepGame/StaticSheepGame.v11.suo
-Dev/StaticSheepGame/StaticSheepGame.sdf
 Dev/StaticSheepGame/luaSource/Debug/
 Dev/GFX_Sandbox/DirectX 11 Demo/DirectX 11 Demo.sdf
 Dev/GFX_Sandbox/DirectX 11 Demo/DirectX 11 Demo/Debug/CL.read.1.tlog
@@ -50,3 +47,5 @@ Dev/GFX_Sandbox/DirectX 11 Demo/Debug/DirectX 11 Demo.ilk
 Dev/GFX_Sandbox/DirectX 11 Demo/Debug/DirectX 11 Demo.pdb
 Documents/~$Introspection.pptx
 Dev/GFX_Sandbox/DirectX 11 Demo/DirectX 11 Demo.opensdf
+Dev/GFX_Sandbox/DirectX 11 Demo/DirectX 11 Demo/Debug/DirectX 11 Demo.unsuccessfulbuild
+Dev/StaticSheepGame/StaticSheepGame.opensdf
