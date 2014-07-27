@@ -12,15 +12,32 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\includes\graphics\api.h" />
+    <ClInclude Include="..\includes\graphics\Camera.h" />
+    <ClInclude Include="..\includes\graphics\DirectXIncludes.h" />
     <ClInclude Include="..\includes\graphics\sheep_graphics.h" />
+    <ClInclude Include="..\includes\graphics\Sprite.h" />
+    <ClInclude Include="..\includes\graphics\VertexTypes.h" />
+    <ClInclude Include="..\includes\graphics\WindowsIncludes.h" />
     <ClInclude Include="precompiled.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="precompiled.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="sheep_graphics.cpp" />
+    <ClCompile Include="Sprite.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\includes\graphics\Shaders\Basic.fx">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="..\includes\graphics\Shaders\Debug.fx">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </FxCompile>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{51CDDDDC-1DE9-422F-B6E3-54E11CA802FE}</ProjectGuid>
@@ -53,13 +70,15 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)includes;$(SolutionDir)includes/graphics;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)includes;$(SolutionDir)includes/graphics;$(IncludePath);$(DXSDK_DIR)Include</IncludePath>
     <ReferencePath>$(SolutionDir)includes;$(SolutionDir)includes/graphics;$(ReferencePath)</ReferencePath>
+    <LibraryPath>$(LibraryPath);$(DXSDK_DIR)Lib\x86</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)includes;$(SolutionDir)includes/graphics;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)includes;$(SolutionDir)includes/graphics;$(IncludePath);$(DXSDK_DIR)Include</IncludePath>
     <ReferencePath>$(SolutionDir)includes;$(SolutionDir)includes/graphics;$(ReferencePath)</ReferencePath>
+    <LibraryPath>$(LibraryPath);$(DXSDK_DIR)Lib\x86</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
