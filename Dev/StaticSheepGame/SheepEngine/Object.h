@@ -81,6 +81,9 @@ namespace Framework
 
       LuaComponent* GetLuaComponent(unsigned int index);
 
+      Handle GetComponentHandle(EComponent type);
+      Handle GetComponentHandle(const char* type);
+
 
       // Used from lua
       void LuaGetComponent(size_t type);

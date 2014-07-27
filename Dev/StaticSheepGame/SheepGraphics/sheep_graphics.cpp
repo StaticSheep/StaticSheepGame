@@ -43,30 +43,7 @@ GFX_API void GFX_Init_D3D(HWND hWnd, int ScreenWidth, int ScreenHeight)
                                 NULL,
                                 &CORE->devcon);
 
-  // create the depth buffer texture
-  D3D11_TEXTURE2D_DESC texd;
-  ZeroMemory(&texd, sizeof(texd));
 
-  texd.Width = ScreenWidth;
-  texd.Height = ScreenHeight;
-  texd.ArraySize = 1;
-  texd.MipLevels = 1;
-  texd.SampleDesc.Count = 4;
-  texd.Format = DXGI_FORMAT_D32_FLOAT;
-  texd.BindFlags = D3D11_BIND_DEPTH_STENCIL;
-
-  ID3D11Texture2D *pDepthBuffer;
-  CORE->dev->CreateTexture2D(&texd, NULL, &pDepthBuffer);
-
-  // create the depth buffer
-  D3D11_DEPTH_STENCIL_VIEW_DESC dsvd;
-  ZeroMemory(&dsvd, sizeof(dsvd));
-
-  dsvd.Format = DXGI_FORMAT_D32_FLOAT;
-  dsvd.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2DMS;
-
-  CORE->dev->CreateDepthStencilView(pDepthBuffer, &dsvd, &CORE->zbuffer);
-  pDepthBuffer->Release();
 
 
   // get the address of the back buffer
@@ -91,6 +68,31 @@ GFX_API void GFX_Init_D3D(HWND hWnd, int ScreenWidth, int ScreenHeight)
   viewport.Height = (float)ScreenHeight;
   viewport.MinDepth = 0;    // the closest an object can be on the depth buffer is 0.0
   viewport.MaxDepth = 1;    // the farthest an object can be on the depth buffer is 1.0
+
+  // create the depth buffer texture
+  D3D11_TEXTURE2D_DESC texd;
+  ZeroMemory(&texd, sizeof(texd));
+
+  texd.Width = ScreenWidth;
+  texd.Height = ScreenHeight;
+  texd.ArraySize = 1;
+  texd.MipLevels = 1;
+  texd.SampleDesc.Count = 4;
+  texd.Format = DXGI_FORMAT_D32_FLOAT;
+  texd.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+
+  ID3D11Texture2D *pDepthBuffer;
+  CORE->dev->CreateTexture2D(&texd, NULL, &pDepthBuffer);
+
+  // create the depth buffer
+  D3D11_DEPTH_STENCIL_VIEW_DESC dsvd;
+  ZeroMemory(&dsvd, sizeof(dsvd));
+
+  dsvd.Format = DXGI_FORMAT_D32_FLOAT;
+  dsvd.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2DMS;
+
+  CORE->dev->CreateDepthStencilView(pDepthBuffer, &dsvd, &CORE->zbuffer);
+  pDepthBuffer->Release();
 
   CORE->devcon->RSSetViewports(1, &viewport);
 }
