@@ -107,3 +107,7 @@ Dev/StaticSheepGame/luaSource/Release/luaSource.lastbuildstate
 Dev/StaticSheepGame/luaSource/Release/luaSource.log
 Dev/StaticSheepGame/luaSource/Release/vc110.pdb
 *.opensdf
+*.tlog
+*.log
+*.lastbuildstate
+*.pch
