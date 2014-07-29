@@ -65,18 +65,18 @@ namespace Framework
     {
       space = *it;
       if (!space->Hidden())
-        space->hooks.Call("Draw", dt);
+        space->hooks.Call("Draw");
     }
-    Lua::CallFunc(ENGINE->Lua(), "hook.Call", "Draw", dt);
+    Lua::CallFunc(ENGINE->Lua(), "hook.Call", "Draw");
 
     // Post Draw
     for (auto it = ENGINE->Spaces().begin(); it != ENGINE->Spaces().end(); ++it)
     {
       space = *it;
       if (!space->Hidden())
-        space->hooks.Call("PostDraw", dt);
+        space->hooks.Call("PostDraw");
     }
-    Lua::CallFunc(ENGINE->Lua(), "hook.Call", "PostDraw", dt);
+    Lua::CallFunc(ENGINE->Lua(), "hook.Call", "PostDraw");
 	}
 
   void SheepGraphics::SetupMatrices()
