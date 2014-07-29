@@ -322,6 +322,18 @@ namespace Framework
     return m_paused;
   }
 
+  void GameSpace::SetHidden(bool hidden)
+  {
+    m_hidden = hidden;
+
+    // Lua hide
+  }
+
+  bool GameSpace::Hidden()
+  {
+    return m_hidden;
+  }
+
   GameObject* GameSpace::CreateObjectFromArchetype(const char* name)
   {
     return FACTORY->LoadObjectFromArchetype(this, name);

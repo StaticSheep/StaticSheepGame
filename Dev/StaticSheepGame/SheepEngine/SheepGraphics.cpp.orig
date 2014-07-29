@@ -47,18 +47,24 @@ namespace Framework
 	{
 		// Draw stuff
 
+<<<<<<< HEAD
 		DirectSheep::GFX_Update(dt);
-
-    Draw();
+=======
+		DirectSheep::GFX_Draw();
+>>>>>>> a09223542907cc60ee0214a25032b473619a3a4d
 
     Draw();
 	}
 
 	void SheepGraphics::Draw()
 	{
+<<<<<<< HEAD
+    SetupMatrices();
+
+    DirectSheep::GFX_Draw();
+=======
     // Draw Hooks
     GameSpace* space;
-    SetupMatrices();
 
     // Regular Draw
     for (auto it = ENGINE->Spaces().begin(); it != ENGINE->Spaces().end(); ++it)
@@ -77,6 +83,7 @@ namespace Framework
         space->hooks.Call("PostDraw", dt);
     }
     Lua::CallFunc(ENGINE->Lua(), "hook.Call", "PostDraw", dt);
+>>>>>>> a09223542907cc60ee0214a25032b473619a3a4d
 	}
 
   void SheepGraphics::SetupMatrices()

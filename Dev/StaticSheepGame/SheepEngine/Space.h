@@ -25,6 +25,9 @@ namespace Framework
     void SetPaused(bool paused);
     bool Paused();
 
+    void SetHidden(bool hidden);
+    bool Hidden();
+
     template <typename T>
     void SyncHandles(ObjectAllocator& m_allocator, bool force = false);
 
@@ -90,6 +93,7 @@ namespace Framework
     bool m_shuttingDown;
 
     bool m_paused;
+    bool m_hidden;
 
     void RemoveGameObject(GameObject* object);
 

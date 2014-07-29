@@ -39,6 +39,8 @@ namespace Framework
     SHEEP_API void LoadLevel(const char* name);
     SHEEP_API void LoadLuaLevel(const char* path);
 
+    SHEEP_API std::vector<GameSpace*>& Spaces();
+
     // Static Lua binds
     static GameSpace* LuaCreateSpace(const char* name);
     static GameSpace* LuaGetSpace(const char* name);

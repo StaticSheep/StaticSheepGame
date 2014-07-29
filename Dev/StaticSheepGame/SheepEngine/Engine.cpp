@@ -124,6 +124,11 @@ namespace Framework
     delete space;
   }
 
+  std::vector<GameSpace*>& Engine::Spaces()
+  {
+    return m_spaces;
+  }
+
   lua_State* Engine::Lua() const
   {
     return L;
