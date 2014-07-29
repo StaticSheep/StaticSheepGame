@@ -10,6 +10,22 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 namespace Framework
 {
+  struct Vec2
+  {
+    Vec2::Vec2(float _x, float _y)
+    {
+      x = _x;
+      y = _y;
+    }
+
+    Vec2::Vec2()
+    {
+    }
+
+    float x;
+    float y;
+  };
+
   class Transform : public GameComponent
   {
   public:
@@ -17,10 +33,7 @@ namespace Framework
     ~Transform();
     virtual void Initialize(){};
 
-    int val1;
-    int val2;
-    int val3;
-
-    void Test();
+    Vec2 position;
+    float rotation;
   };
 }

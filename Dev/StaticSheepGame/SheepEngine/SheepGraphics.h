@@ -15,35 +15,25 @@ namespace Framework
 {
   class Camera;
 
-  enum Shaders
-  {
-    Basic = 0,
-    Debug,
-    NumberOfShaders
-  };
-
 	class SheepGraphics : public ISystem
 	{
 	public:
+    // Update per frame
+		void Update(float dt);
+
+    virtual std::string GetName() {return "SheepGraphics";};
+
 		// Sheep graphics interface constructor
 		SheepGraphics();
 		// Sheep graphics interface deconstructor
 		~SheepGraphics();
 
-		virtual std::string GetName() {return "SheepGraphics";};
-
-    void SetWindwProperties(HWND hWnd, int screenWidth, int screenHeight);
-
-		// Update per frame
-		void Update(float dt);
-
 	private:
-		void Draw(void);
 
     // Initialization call
 		void Initialize(void);
 
-    bool InitGeometry();
+    void InitGeometry();
 
     void LoadAssets();
 
@@ -51,7 +41,7 @@ namespace Framework
 
     void SetupMatrices();
 
-    bool LoadEffect(int index, const std::string& filename);
+		void Draw(void);
 
   public:
 
@@ -59,8 +49,6 @@ namespace Framework
     HWND _HWnd;
     int _ScreenWidth;
     int _ScreenHeight;
-
-
 
 	};
 

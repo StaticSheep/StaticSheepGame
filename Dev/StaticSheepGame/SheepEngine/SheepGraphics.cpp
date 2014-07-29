@@ -20,6 +20,7 @@ namespace Framework
 		// This should load any required materials, set constants
 		// Pre-initialization logic
 
+    ErrorIf(GRAPHICS != NULL, "SheepGraphics", "Graphics already initialized");
 		GRAPHICS = this;
 	}
 
@@ -46,11 +47,20 @@ namespace Framework
 	{
 		// Draw stuff
 
-		DirectSheep::GFX_Draw();
+		DirectSheep::GFX_Update(dt);
+
+    Draw();
 	}
 
 	void SheepGraphics::Draw()
 	{
+    SetupMatrices();
 
+    DirectSheep::GFX_Draw();
 	}
+
+  void SheepGraphics::SetupMatrices()
+  {
+    DirectSheep::SetupMatrices();
+  }
 }

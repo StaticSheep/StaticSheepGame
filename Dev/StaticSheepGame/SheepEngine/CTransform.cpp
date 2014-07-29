@@ -10,17 +10,11 @@ namespace Framework
 {
   Transform::Transform()
   {
-    val1 = 10;
+     position = Vec2(0,0);
+     rotation = 0;
   }
 
   Transform::~Transform()
   {
-    val1 = 10;
-  }
-
-  void Transform::Test()
-  {
-    int a = 10;
-    a++;
   }
 }
