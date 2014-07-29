@@ -85,7 +85,6 @@ namespace DirectSheep
       if(SUCCEEDED(hr))
         break;
     }
-
     DXVerify(hr);
 
     // get the address of the back buffer
