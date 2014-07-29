@@ -1,3 +1,4 @@
+#include "CTransform.h"
 namespace Framework
 {
   class Transform;
@@ -13,11 +14,9 @@ namespace Framework
 
     Vec2 Size;
 
-    Transform * transform;
+    Transform *transform;
 
     std::string SpriteName;
-
-    Vec4 Color;
 
     void Draw();
   };

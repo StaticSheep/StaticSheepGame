@@ -14,10 +14,6 @@ namespace Framework
   Sprite::Sprite()
   {
     transform = NULL;
-    Color.a = 0;
-    Color.g = 0;
-    Color.b = 0;
-    Color.r = 1;
   }
 
   Sprite::~Sprite()
@@ -31,6 +27,6 @@ namespace Framework
 
   void Sprite::Draw()
   {
-    DirectSheep::GFX_Draw(Size, transform->position, transform->rotation);
+    //DirectSheep::GFX_Draw(Size, transform->position, transform->rotation);
   }
 }
