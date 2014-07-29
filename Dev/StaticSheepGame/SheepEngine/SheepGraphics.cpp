@@ -47,10 +47,31 @@ namespace Framework
 		// Draw stuff
 
 		DirectSheep::GFX_Draw();
+
+    Draw();
 	}
 
 	void SheepGraphics::Draw()
 	{
+    // Draw Hooks
+    GameSpace* space;
 
+    // Regular Draw
+    for (auto it = ENGINE->Spaces().begin(); it != ENGINE->Spaces().end(); ++it)
+    {
+      space = *it;
+      if (!space->Hidden())
+        space->hooks.Call("Draw", dt);
+    }
+    Lua::CallFunc(ENGINE->Lua(), "hook.Call", "Draw", dt);
+
+    // Post Draw
+    for (auto it = ENGINE->Spaces().begin(); it != ENGINE->Spaces().end(); ++it)
+    {
+      space = *it;
+      if (!space->Hidden())
+        space->hooks.Call("PostDraw", dt);
+    }
+    Lua::CallFunc(ENGINE->Lua(), "hook.Call", "PostDraw", dt);
 	}
 }
