@@ -111,3 +111,4 @@ Dev/StaticSheepGame/luaSource/Release/vc110.pdb
 *.log
 *.lastbuildstate
 *.pch
+*.sdf
