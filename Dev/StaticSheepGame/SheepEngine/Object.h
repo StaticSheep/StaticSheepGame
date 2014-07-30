@@ -64,7 +64,10 @@ namespace Framework
       Handle self;
 
       // Checks to see if the object owns a specific component type
-      bool HasComponent(EComponent type);
+      bool HasComponent(EComponent type) const;
+
+      // Checks to see if the object owns a specific component type
+      bool HasComponent(size_t type) const;
 
       // Serialization routine
       static void Serialize(File& file, Variable var);
@@ -102,6 +105,8 @@ namespace Framework
 
       // Initializes the object, engine use only
       virtual void Initialize();
+
+      //GameObject& operator=(const GameObject& rhs);
 
     private:
 

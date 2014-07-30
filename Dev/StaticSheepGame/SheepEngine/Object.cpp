@@ -189,7 +189,12 @@ namespace Framework
     space->GetHandles().GetAs<GameObject>(obj)->AddChild(self);
   }
 
-  bool GameObject::HasComponent( EComponent type )
+  bool GameObject::HasComponent( EComponent type ) const
+  {
+    return m_components[type] != Handle::null;
+  }
+
+  bool GameObject::HasComponent( size_t type ) const
   {
     return m_components[type] != Handle::null;
   }
@@ -374,6 +379,17 @@ namespace Framework
       file.GetLine("}");
     }
   }
+
+  //GameObject& GameObject::operator=(const GameObject& rhs)
+  //{
+  //  for (size_t i = 0; i < ecountComponents; ++i)
+  //  {
+  //    if (rhs.HasComponent(i) && i != eLuaComponent)
+  //    {
+
+  //    }
+  //  }
+  //}
 
 
   void GameObject::LuaGetComponent(size_t type)
