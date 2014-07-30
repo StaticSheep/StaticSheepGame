@@ -86,4 +86,25 @@ namespace Framework
   {
     DirectSheep::SetupMatrices();
   }
+
+  void SheepGraphics::SetPosition(float x, float y)
+  {
+    DirectSheep::GFX_SetPosition(x, y);
+  }
+  void SheepGraphics::SetRotation(float theta)
+  {
+    DirectSheep::GFX_SetRotation(theta);
+  }
+  void SheepGraphics::SetSize(float x, float y)
+  {
+    DirectSheep::GFX_SetSize(x, y);
+  }
+  void SheepGraphics::SetTexture(std::string filepath)
+  {
+    DirectSheep::GFX_SetTexture(filepath);
+  }
+  void SheepGraphics::DrawSprite(void)
+  {
+    DirectSheep::GFX_Draw();
+  }
 }
