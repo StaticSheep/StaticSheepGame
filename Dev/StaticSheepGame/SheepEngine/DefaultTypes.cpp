@@ -101,6 +101,8 @@ namespace Framework
     TYPE_ADD_MEMBER( Tester, testvalue1 );
     TYPE_ADD_MEMBER( Tester, testvalue2 );
 
+    TYPE_REGISTER( Sprite );
+
     TYPE_REGISTER( LuaComponent );
     TYPE_ADD_MEMBER( LuaComponent, name );
     TYPE_ADD_MEMBER( LuaComponent, loadCommand );

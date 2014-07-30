@@ -64,6 +64,7 @@ extern "C"
 
 #include "CTester.h"
 #include "CTransform.h"
+#include "CSprite.h"
 #include "CLuaComponent.h"
 
 #include "DefaultTypes.h"

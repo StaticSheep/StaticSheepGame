@@ -50,8 +50,6 @@ namespace Framework
 		DirectSheep::GFX_Update(dt);
 
     Draw();
-
-    Draw();
 	}
 
 	void SheepGraphics::Draw()

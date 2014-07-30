@@ -158,7 +158,7 @@ namespace DirectSheep
 
   }
 
-  GFX_API void GFX_Draw(Vec2 scale, Vec2 position, float rotation, Vec4 Color, std::string texture)
+  GFX_API void GFX_Draw(Vec2 scale, Vec2 position, float rotation)
   {
     Mat4 matFinal;
 
