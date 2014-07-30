@@ -1,5 +1,7 @@
 #include <assert.h>
 #include <crtdbg.h>
+#include <map>
+#include <string>
 
 #include "api.h"
 
@@ -10,6 +12,7 @@
 #include "DirectXIncludes.h"
 #include "VertexTypes.h"
 #include "GFX_Core.h"
+#include "Camera.h"
 
 #include "sheep_graphics.h"
 

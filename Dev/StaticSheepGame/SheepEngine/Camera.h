@@ -1,6 +1,6 @@
 #pragma once
 
-namespace Framework
+/*namespace Framework
 {
   class Camera : public GameComponent
   {
@@ -12,4 +12,4 @@ namespace Framework
     Transform * transform;
   };
 
-}
+}*/

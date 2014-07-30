@@ -20,6 +20,7 @@ namespace Framework
 		// This should load any required materials, set constants
 		// Pre-initialization logic
 
+    ErrorIf(GRAPHICS != NULL, "SheepGraphics", "Graphics already initialized");
 		GRAPHICS = this;
 	}
 
@@ -46,7 +47,9 @@ namespace Framework
 	{
 		// Draw stuff
 
-		DirectSheep::GFX_Draw();
+		DirectSheep::GFX_Update(dt);
+
+    Draw();
 
     Draw();
 	}
@@ -55,6 +58,7 @@ namespace Framework
 	{
     // Draw Hooks
     GameSpace* space;
+    SetupMatrices();
 
     // Regular Draw
     for (auto it = ENGINE->Spaces().begin(); it != ENGINE->Spaces().end(); ++it)
@@ -74,4 +78,9 @@ namespace Framework
     }
     Lua::CallFunc(ENGINE->Lua(), "hook.Call", "PostDraw");
 	}
+
+  void SheepGraphics::SetupMatrices()
+  {
+    DirectSheep::SetupMatrices();
+  }
 }

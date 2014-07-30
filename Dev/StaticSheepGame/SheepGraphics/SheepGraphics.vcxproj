@@ -11,10 +11,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\includes\graphics\Camera.h" />
     <ClInclude Include="..\includes\graphics\Sprite.h" />
     <ClInclude Include="..\includes\Utilities.h" />
     <ClInclude Include="api.h" />
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="DirectXIncludes.h" />
     <ClInclude Include="GFX_Core.h" />
     <ClInclude Include="precompiled.h" />
@@ -33,10 +33,9 @@
     <ClCompile Include="Sprite.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Shaders\Basic.fx">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </FxCompile>
+    <None Include="Shaders\Shaders.hlsl">
+      <FileType>Document</FileType>
+    </None>
     <FxCompile Include="Shaders\Debug.fx">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>

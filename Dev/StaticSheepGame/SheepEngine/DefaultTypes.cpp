@@ -93,9 +93,9 @@ namespace Framework
     //TYPE_SET_TO_LUA( GameSpace*, Lua::GameSpaceToLua);
 
     TYPE_REGISTER( Transform );
-    TYPE_ADD_MEMBER(Transform, val1);
+    /*TYPE_ADD_MEMBER(Transform, val1);
     TYPE_ADD_MEMBER(Transform, val2);
-    TYPE_ADD_MEMBER(Transform, val3);
+    TYPE_ADD_MEMBER(Transform, val3);*/
 
     TYPE_REGISTER( Tester );
     TYPE_ADD_MEMBER( Tester, testvalue1 );
