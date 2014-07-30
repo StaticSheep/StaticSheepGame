@@ -245,7 +245,7 @@ namespace DirectSheep
   {
     InitGeometry();
 
-    LoadTexture("content/test.png");
+    LoadTexture("content/bricks.png");
 
     //GFX_TODO call LoadTexture(filename) 
     //for every texture you want on the texture map

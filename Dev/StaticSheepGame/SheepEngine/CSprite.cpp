@@ -29,8 +29,8 @@ namespace Framework
 
     GRAPHICS->SetPosition(trans->position.x, trans->position.y);
     GRAPHICS->SetRotation(time);
-    GRAPHICS->SetSize(128.0f * 1.6f, 100.0f * 1.6f);
-    GRAPHICS->SetTexture("content/test.png");
+    GRAPHICS->SetSize(256.0f, 256.0f);
+    GRAPHICS->SetTexture("content/bricks.png");
     GRAPHICS->DrawSprite();
 
     /*GRAPHICS->SetPosition(transform., y);
