@@ -64,7 +64,7 @@ namespace Framework
     const char *Name( void ) const;
     inline bool IsPOD( void ) const { return m_isPOD; };
 
-
+    bool HasToLuaCB(void) const { return m_toLua != nullptr; };
 
     void *(*New)( void );
     void (*Copy)( void *data, const void *src );

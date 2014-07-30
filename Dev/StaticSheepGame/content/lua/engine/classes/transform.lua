@@ -1,7 +1,10 @@
 local META = GetMeta("Transform")
 
 
-function META:DoSomeLuaStuff()
-  self:TransformTest()
-  print("lua meta function")
+function META:SetPos(pos)
+  self:Settranslation(pos)
+end
+
+function META:GetPos()
+  return self:Gettranslation()
 end

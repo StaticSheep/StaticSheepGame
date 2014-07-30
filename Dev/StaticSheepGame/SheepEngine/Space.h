@@ -40,6 +40,7 @@ namespace Framework
     // Creates an empty object
     GameObject* CreateEmptyObject();
 
+    void Clear();
     
 
     void RemoveComponent(GameComponent* comp);

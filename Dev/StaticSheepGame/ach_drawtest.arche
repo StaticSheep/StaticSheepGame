@@ -4,10 +4,10 @@ GameObject
   archetype std::string "drawtest"
   Transform
   {
-    position Vec2
+    translation Vec2
     {
-      x float 10.000000
-      y float 0.000000
+      X float 100.000000
+      Y float 0.000000
     }
   }
 

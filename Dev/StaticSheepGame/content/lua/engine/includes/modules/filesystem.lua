@@ -129,13 +129,15 @@ function UpdateOldFiles()
     if attr ~= nil and attr.modification > file[2] then
       print("Reloaded "..file[1])
 
+      hook.Call("ScriptStartReload")
+
       file[2] = attr.modification
       dofile(file[1])
 
       ReloadObjects()
       ReloadComponents()
 
-      hook.Call("ScriptReload")
+      hook.Call("ScriptFinishReload")
     end
 
   end

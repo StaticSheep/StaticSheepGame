@@ -21,13 +21,18 @@ namespace Framework
     space->hooks.Add("Draw", self, BUILD_FUNCTION(Sprite::Draw));
   }
 
+  void Sprite::Remove()
+  {
+    space->hooks.Remove("Draw", self);
+  }
+
   void Sprite::Draw()
   {
     time += 0.001f;
 
     Transform* trans = space->GetHandles().GetAs<Transform>(transform);
 
-    GRAPHICS->SetPosition(trans->position.x, trans->position.y);
+    GRAPHICS->SetPosition(trans->translation.X, trans->translation.Y);
     GRAPHICS->SetRotation(time);
     GRAPHICS->SetSize(256.0f, 256.0f);
     GRAPHICS->SetTexture("content/bricks.png");

@@ -14,6 +14,7 @@ namespace Framework
     ~Sprite();
 
     virtual void Initialize();
+    virtual void Remove();
 
     Vec2 Size;
 

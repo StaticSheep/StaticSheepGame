@@ -57,7 +57,7 @@ namespace Framework
 
     void IntFromLua(lua_State* L, int index, Variable* ref)
     {
-      ErrorIf(!lua_isnumber(L, index), "LuaTransfer", "Type mismatch!");
+      //ErrorIf(!lua_isnumber(L, index), "LuaTransfer", "Type mismatch!");
 
       int temp = lua_tointeger(L, index);
       ref->GetTypeInfo()->PlacementCopy(ref->GetData(), &temp);
