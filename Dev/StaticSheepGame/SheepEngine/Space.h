@@ -34,6 +34,9 @@ namespace Framework
     // Creates a component of a specific type
     GameComponent* CreateComponent(EComponent type);
 
+    // Creates a component of a specific type
+    GameComponent* CreateComponent(size_t type);
+
     // Creates an empty object
     GameObject* CreateEmptyObject();
 
@@ -44,6 +47,8 @@ namespace Framework
 
     GameObject* GetGameObject(Handle handle);
 
+    // Cleans up a space of any (to be) removed game objects.
+    // Called at the end of the GameLogic update
     void Cleanup();
 
     // Serialization routine

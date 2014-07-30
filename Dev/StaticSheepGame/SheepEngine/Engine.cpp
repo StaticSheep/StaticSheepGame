@@ -7,6 +7,12 @@ Author(s): Zachary Nawar (Primary)
 All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 *****************************************************************/
 
+// This is a way to force the project to include the libraries
+// without messing around with project settings
+#pragma comment (lib, "SheepGraphics.lib")
+#pragma comment (lib, "SheepPhysics.lib")
+#pragma comment (lib, "luaSource.lib")
+
 namespace Framework
 {
   Engine* ENGINE = NULL;

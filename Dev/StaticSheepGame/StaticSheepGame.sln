@@ -2,12 +2,10 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SheepPhysics", "SheepPhysics\SheepPhysics.vcxproj", "{26BC6EC5-84FC-4E70-A8E8-741453556375}"
-	ProjectSection(ProjectDependencies) = postProject
-		{51CDDDDC-1DE9-422F-B6E3-54E11CA802FE} = {51CDDDDC-1DE9-422F-B6E3-54E11CA802FE}
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SheepEngine", "SheepEngine\SheepEngine.vcxproj", "{FCA983C5-4389-4AD6-A712-3134D0FBF671}"
 	ProjectSection(ProjectDependencies) = postProject
+		{65C67172-0AB7-4521-B2AC-7BB6BE05A731} = {65C67172-0AB7-4521-B2AC-7BB6BE05A731}
 		{26BC6EC5-84FC-4E70-A8E8-741453556375} = {26BC6EC5-84FC-4E70-A8E8-741453556375}
 		{51CDDDDC-1DE9-422F-B6E3-54E11CA802FE} = {51CDDDDC-1DE9-422F-B6E3-54E11CA802FE}
 	EndProjectSection

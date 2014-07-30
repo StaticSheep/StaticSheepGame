@@ -45,6 +45,11 @@ namespace Framework
     return FACTORY->m_componentCreators[type]->Create(this);
   }
 
+  GameComponent* GameSpace::CreateComponent(size_t type)
+  {
+    return FACTORY->m_componentCreators[type]->Create(this);
+  }
+
   ObjectAllocator* GameSpace::GetComponents(EComponent type)
   {
     return &m_components[type];
@@ -340,9 +345,19 @@ namespace Framework
   }
 
   GameSpace* GameSpace::CopyGameSpace(const char* new_name)
-  {
+  { 
     // Make the new space
     GameSpace* space = ENGINE->CreateSpace(new_name);
+
+    //for (GameObject* it = m_objects.begin<GameObject>(); it != m_objects.end<GameObject>(); ++it)
+    //{
+    //  // Create a new game object and copy over all data
+    //  GameObject* obj = space->CreateEmptyObject();
+
+    //  GET_TYPE(GameObject)->Copy(obj, it);
+
+    //  obj->Initialize();
+    //}
 
     FACTORY->SaveSpaceToLevel(this, "temp_space", true);
 

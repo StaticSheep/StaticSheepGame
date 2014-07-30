@@ -4,8 +4,6 @@ print("\n=== Loading Editor Lua Level ===")
 local gspace = engine.CreateSpace("test")
 local object = gspace:CreateObject("test_type2")
 local transform = object:GetComponent(0)
-transform:Setval1(10)
-print(transform:Getval1())
 
 local function Update()
   --print("Stop!")

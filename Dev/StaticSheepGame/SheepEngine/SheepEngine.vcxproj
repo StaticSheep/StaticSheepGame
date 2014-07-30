@@ -138,7 +138,7 @@
     <ClInclude Include="sheep_engine.h" />
     <ClInclude Include="SlotArray.h" />
     <ClInclude Include="Space.h" />
-    <ClInclude Include="Sprite.h" />
+    <ClInclude Include="CSprite.h" />
     <ClInclude Include="System.h" />
     <ClInclude Include="TypeInfo.h" />
     <ClInclude Include="Variable.h" />
@@ -182,7 +182,7 @@
     <ClCompile Include="SheepPhysics.cpp" />
     <ClCompile Include="sheep_engine.cpp" />
     <ClCompile Include="Space.cpp" />
-    <ClCompile Include="Sprite.cpp" />
+    <ClCompile Include="CSprite.cpp" />
     <ClCompile Include="TypeInfo.cpp" />
     <ClCompile Include="Variable.cpp" />
     <ClCompile Include="Window.cpp" />

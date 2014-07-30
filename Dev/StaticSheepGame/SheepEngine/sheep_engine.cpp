@@ -17,13 +17,7 @@
 #include "Factory.h"
 #include <functional>
 
-// This is a way to force the project to include the libraries
-// without messing around with project settings
-#pragma comment (lib, "SheepGraphics.lib")
-#pragma comment (lib, "SheepPhysics.lib")
-//#pragma comment (lib, "lua51.lib")
-//#pragma comment (lib, "lfs.lib")
-#pragma comment (lib, "luaSource.lib")
+
 
 // ********* INTERNAL FUNCTIONS ********* //
 

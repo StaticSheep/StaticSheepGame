@@ -137,10 +137,10 @@
       <Filter>Engine\Window</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
-      <Filter>Components\Graphics</Filter>
+      <Filter>Components\Graphics\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="Sprite.h">
-      <Filter>Components\Graphics</Filter>
+    <ClInclude Include="CSprite.h">
+      <Filter>Components\Graphics\Sprite</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -253,10 +253,10 @@
       <Filter>Engine\Window</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
-      <Filter>Components\Graphics</Filter>
+      <Filter>Components\Graphics\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="Sprite.cpp">
-      <Filter>Components\Graphics</Filter>
+    <ClCompile Include="CSprite.cpp">
+      <Filter>Components\Graphics\Sprite</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -412,6 +412,12 @@
     </Filter>
     <Filter Include="Components\Graphics">
       <UniqueIdentifier>{42b3dca6-312f-4781-a3da-20c5aba5ab04}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\Graphics\Camera">
+      <UniqueIdentifier>{b2ca9bbe-b924-410d-99e2-41e15ccf5869}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\Graphics\Sprite">
+      <UniqueIdentifier>{8710e3c5-0045-4790-9e60-5de0ee272902}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
