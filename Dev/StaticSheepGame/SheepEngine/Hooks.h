@@ -22,11 +22,14 @@ namespace Framework
     Handle owner;
   };
 
+  class GameSpace;
+
   class HookCollection
   {
   public:
 
     HookCollection() {};
+    HookCollection(GameSpace* space);
     ~HookCollection();
 
     void Add(Handle owner, const Function& fn);
@@ -39,6 +42,8 @@ namespace Framework
     template <typename Arg1, typename Arg2>
     void Trigger(Arg1 arg1, Arg2 arg2);
 
+    GameSpace* space;
+
     std::unordered_multimap<unsigned int, Hook* > m_hooks;
   };
 
@@ -47,7 +52,10 @@ namespace Framework
   {
     // Goes through every hook in the list and pulls them
     for (auto it = m_hooks.begin(); it != m_hooks.end(); ++it)
+    {
+      it->second->func.Bind(space->GetHandles().Get(it->second->owner));
       it->second->func(arg1);
+    }
   }
 
   template <typename Arg1, typename Arg2>
@@ -55,7 +63,10 @@ namespace Framework
   {
     // Goes through every hook in the list and pulls them
     for (auto it = m_hooks.begin(); it != m_hooks.end(); ++it)
+    {
+      it->second->func.Bind(space->GetHandles().Get(it->second->owner));
       it->second->func(arg1, arg2);
+    }
   }
 
 
@@ -75,6 +86,8 @@ namespace Framework
 
     void Clear(std::string eventName);
     void ClearAll();
+
+    GameSpace* space;
 
   private:
     void Verify(std::string eventName);

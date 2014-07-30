@@ -24,6 +24,11 @@ namespace Framework
 		GRAPHICS = this;
 	}
 
+  void SheepGraphics::RegisterComponents()
+  {
+    REGISTER_COMPONENT(Sprite);
+  }
+
 	SheepGraphics::~SheepGraphics()
 	{
 		// Free anything that was allocated

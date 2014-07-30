@@ -21,6 +21,8 @@ namespace Framework
     // Update per frame
 		void Update(float dt);
 
+    virtual void RegisterComponents();
+
     virtual std::string GetName() {return "SheepGraphics";};
 
 		// Sheep graphics interface constructor

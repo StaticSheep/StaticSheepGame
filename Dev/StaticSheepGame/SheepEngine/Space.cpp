@@ -19,13 +19,17 @@ namespace Framework
 
   GameSpace::GameSpace() :
     m_objects(sizeof(GameObject), 10),
-    m_shuttingDown(false)
+    m_shuttingDown(false),
+    m_paused(false),
+    m_hidden(false)
   {
     for(unsigned i = 0; i < ecountComponents; ++i)
     {
       if (FACTORY->m_componentCreators[i])
         m_components[i].Initialize(FACTORY->m_componentCreators[i]->m_size, 10);
     }
+    
+    hooks.space = this;
   }
 
   GameSpace::~GameSpace()

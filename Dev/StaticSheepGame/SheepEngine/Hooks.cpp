@@ -17,6 +17,12 @@ namespace Framework
     return owner == rhs.owner;
   }
 
+  HookCollection::HookCollection(GameSpace* space)
+    :space(space)
+  {
+  }
+  
+
   HookCollection::~HookCollection()
   {
     if (m_hooks.size() == 0)
@@ -53,6 +59,7 @@ namespace Framework
     // Goes through every hook in the list and pulls them
     for (auto i = m_hooks.begin(); i != m_hooks.end(); ++i)
     {
+      i->second->func.Bind(space->GetHandles().Get(i->second->owner));
       i->second->func();
     }
   }
@@ -65,7 +72,7 @@ namespace Framework
   void HookManager::Verify(std::string eventName)
   {
     if (HookMap.find(eventName) == HookMap.end())
-      new (&HookMap[eventName]) HookCollection;
+      new (&HookMap[eventName]) HookCollection(space);
   }
 
 

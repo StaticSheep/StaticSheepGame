@@ -13,7 +13,9 @@ namespace Framework
   class Tester : public GameComponent
   {
   public:
-    virtual void Initialize(){};
+    virtual void Initialize();
+
+    void Update(float dt);
 
     int testvalue1;
     int testvalue2;

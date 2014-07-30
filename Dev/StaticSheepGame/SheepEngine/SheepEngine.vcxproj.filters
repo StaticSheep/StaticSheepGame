@@ -55,9 +55,6 @@
     <ClInclude Include="Enum.h">
       <Filter>Engine\Introspection\Enum</Filter>
     </ClInclude>
-    <ClInclude Include="..\includes\EnumData.h">
-      <Filter>Engine\Introspection\Enum</Filter>
-    </ClInclude>
     <ClInclude Include="CTransform.h">
       <Filter>Components\Transform</Filter>
     </ClInclude>
@@ -141,6 +138,9 @@
     </ClInclude>
     <ClInclude Include="CSprite.h">
       <Filter>Components\Graphics\Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="..\includes\EnumData.h">
+      <Filter>Engine\EngineCore</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
