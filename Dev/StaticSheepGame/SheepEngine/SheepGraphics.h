@@ -28,6 +28,12 @@ namespace Framework
 		// Sheep graphics interface deconstructor
 		~SheepGraphics();
 
+    void SetPosition(float x, float y);
+    void SetRotation(float theta);
+    void SetSize(float x, float y);
+    void SetTexture(std::string filepath);
+    void DrawSprite(void);
+
 	private:
 
     // Initialization call

@@ -23,12 +23,10 @@ namespace Framework
 
   void Sprite::Draw()
   {
-    // GRAPHICS->SetPosition(x, y)
-    // GRAPHICS->SetRotation(p, y)
-    // GRAPHICS->SetSize(x, y)
-    // GRAPHICS->SetTexture(textureID/something)
-    // GRAPHICS->DrawSprite()
-
-    //DirectSheep::GFX_Draw(Size, transform->position, transform->rotation);
+    /*GRAPHICS->SetPosition(transform., y);
+    GRAPHICS->SetRotation(p, y);
+    GRAPHICS->SetSize(x, y);
+    GRAPHICS->SetTexture(textureID/something);
+    GRAPHICS->DrawSprite();*/
   }
 }

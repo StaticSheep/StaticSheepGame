@@ -23,6 +23,15 @@ namespace DirectSheep
     ID3D11BlendState *BS;                // a typical blend state
   };
 
+  struct shapeStates
+  {
+    Vec2 position;
+    Vec2 scale;
+    float rotation;
+    Vec4 Color;
+    std::string filename;
+  };
+
   typedef std::map<std::string, ID3D11ShaderResourceView*> TextureMap;
 
 	template< typename RefType >

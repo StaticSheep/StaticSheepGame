@@ -10,6 +10,7 @@ DirectSheep::VertexBufferQuad *QUAD = NULL;
 DirectSheep::Camera *CAMERA = NULL;
 DirectSheep::States *STATES = NULL;
 DirectSheep::TextureMap TEXTUREMAP;
+DirectSheep::shapeStates SHAPESTATES;
 
 namespace DirectSheep
 {
@@ -158,21 +159,23 @@ namespace DirectSheep
 
   }
 
-  GFX_API void GFX_Draw(Vec2 scale, Vec2 position, float rotation)
+  GFX_API void GFX_Draw()
   {
     Mat4 matFinal;
 
     D3DXMATRIX scaleMat, rotMat, transMat;
+
+    ID3D11ShaderResourceView* Texture = GetTexture(SHAPESTATES.filename);
     static float time = 0.0f;
     time += .01;
     D3DXMatrixIdentity(&rotMat);
     D3DXMatrixIdentity(&transMat);
     D3DXMatrixIdentity(&scaleMat);
 
-    D3DXMatrixScaling(&scaleMat, scale.x, scale.y, 1.0f);
-    D3DXMatrixRotationZ(&rotMat, rotation);
+    D3DXMatrixScaling(&scaleMat,SHAPESTATES.scale.x, SHAPESTATES.scale.y, 1.0f);
+    D3DXMatrixRotationZ(&rotMat, SHAPESTATES.rotation);
     D3DXMatrixMultiply(&scaleMat, &scaleMat, &rotMat);
-    D3DXMatrixTranslation(&transMat, floor(position.x), floor(position.y), floor(0.0f));
+    D3DXMatrixTranslation(&transMat, floor(SHAPESTATES.position.x), floor(SHAPESTATES.position.y), floor(0.0f));
     D3DXMatrixMultiply(&scaleMat, &scaleMat, &transMat);
 
      matFinal = scaleMat * CAMERA->ViewProjMatrix;
@@ -184,6 +187,7 @@ namespace DirectSheep
     CORE->devcon->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
     CORE->devcon->UpdateSubresource(CORE->pCBuffer, 0, 0, &matFinal, 0, 0);
+    CORE->devcon->PSSetShaderResources(0, 1, &Texture);
     CORE->devcon->Draw(6, 0);
 
     CORE->swapchain->Present(0, 0);
@@ -436,6 +440,23 @@ namespace DirectSheep
       return it->second;
     else
       return NULL;
+  }
+
+  GFX_API void GFX_SetPosition(float x, float y)
+  {
+    SHAPESTATES.position = Vec2(x, y);
+  }
+  GFX_API void GFX_SetRotation(float theta)
+  {
+    SHAPESTATES.rotation = theta;
+  }
+  GFX_API void GFX_SetSize(float x, float y)
+  {
+    SHAPESTATES.scale = Vec2(x, y);
+  }
+  GFX_API void GFX_SetTexture(std::string& filepath)
+  {
+    SHAPESTATES.filename = filepath;
   }
 }
 
