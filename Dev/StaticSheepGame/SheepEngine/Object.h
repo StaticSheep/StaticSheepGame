@@ -55,13 +55,9 @@ namespace Framework
       // If true, GetChild is enabled and the children list will be sorted
       bool fastChildSearch;
 
-
       GameObject();
 
       ~GameObject();
-
-      // Self handle
-      Handle self;
 
       // Checks to see if the object owns a specific component type
       bool HasComponent(EComponent type) const;
@@ -90,9 +86,6 @@ namespace Framework
 
       // Used from lua
       void LuaGetComponent(size_t type);
-
-      // The space which this object resides inside of
-      GameSpace* space;
 
       // The objects Globally Unique ID
       size_t guid;

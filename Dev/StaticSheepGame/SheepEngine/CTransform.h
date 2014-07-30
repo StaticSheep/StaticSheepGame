@@ -10,22 +10,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 namespace Framework
 {
-  class Vec2
-  {
-  public:
-    Vec2::Vec2(float _x, float _y)
-    {
-      x = _x;
-      y = _y;
-    }
-
-    Vec2::Vec2()
-    {
-    }
-
-    float x;
-    float y;
-  };
+  
 
   class Transform : public GameComponent
   {
@@ -34,7 +19,8 @@ namespace Framework
     ~Transform();
     virtual void Initialize(){};
 
-    Vec2 position;
+    Vec2 translation;
+    Vec2 scale;
     float rotation;
   };
 }

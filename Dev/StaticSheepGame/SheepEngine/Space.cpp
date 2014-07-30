@@ -343,6 +343,15 @@ namespace Framework
     return m_hidden;
   }
 
+  void GameSpace::Clear()
+  {
+    for (unsigned int i = 0; i < m_objects.Size(); ++i)
+    {
+      GameObject* obj = (GameObject*)m_objects[i];
+      obj->m_active = false;
+    }
+  }
+
   GameObject* GameSpace::CreateObjectFromArchetype(const char* name)
   {
     return FACTORY->LoadObjectFromArchetype(this, name);

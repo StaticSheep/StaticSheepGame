@@ -36,7 +36,7 @@ void TestStuff(HINSTANCE hInstance, int show)
   SheepEngine->MakeWindow(hInstance, show);
   SheepEngine->Initialize();
 
-  GameSpace* space = SheepEngine->CreateSpace("test_space");
+  //GameSpace* space = SheepEngine->CreateSpace("test_space");
 
   /*GameObject* obj = space->CreateEmptyObject();
 
@@ -57,9 +57,9 @@ void TestStuff(HINSTANCE hInstance, int show)
   FACTORY->SaveSpaceToLevel(space, "WowSpace", true);*/
   
 
-  SheepEngine->LoadLevel("WowSpace");
+  //SheepEngine->LoadLevel("WowSpace");
 
-  //SheepEngine->LoadLuaLevel("content/lua/engine/levels/editor.lua");
+  SheepEngine->LoadLuaLevel("content/lua/engine/levels/editor.lua");
 
 
   while (SheepEngine->Running())

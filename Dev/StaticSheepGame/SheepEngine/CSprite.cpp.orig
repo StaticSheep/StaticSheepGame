@@ -32,10 +32,15 @@ namespace Framework
 
     Transform* trans = space->GetHandles().GetAs<Transform>(transform);
 
-    GRAPHICS->SetPosition(trans->translation.X, trans->translation.Y);
-
+<<<<<<< HEAD
+    GRAPHICS->SetPosition(trans->position.x, trans->position.y);
     GRAPHICS->SetRotation(-time);
     GRAPHICS->SetSize(200, 200);
+=======
+    GRAPHICS->SetPosition(trans->translation.X, trans->translation.Y);
+    GRAPHICS->SetRotation(time);
+    GRAPHICS->SetSize(256.0f, 256.0f);
+>>>>>>> eb9b23f284e0d05a8f3bcbb1f095e1adb9337f81
     GRAPHICS->SetTexture("content/bricks.png");
     GRAPHICS->DrawSprite();
   }

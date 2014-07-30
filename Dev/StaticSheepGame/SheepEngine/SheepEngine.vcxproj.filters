@@ -49,9 +49,6 @@
     <ClInclude Include="Space.h">
       <Filter>BaseTypes\Space</Filter>
     </ClInclude>
-    <ClInclude Include="Hash.h">
-      <Filter>Engine\Hash</Filter>
-    </ClInclude>
     <ClInclude Include="Enum.h">
       <Filter>Engine\Introspection\Enum</Filter>
     </ClInclude>
@@ -142,6 +139,9 @@
     <ClInclude Include="..\includes\EnumData.h">
       <Filter>Engine\EngineCore</Filter>
     </ClInclude>
+    <ClInclude Include="Vec2.h">
+      <Filter>BaseTypes\Vectors\Vec2</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="precompiled.cpp">
@@ -179,9 +179,6 @@
     </ClCompile>
     <ClCompile Include="Space.cpp">
       <Filter>BaseTypes\Space</Filter>
-    </ClCompile>
-    <ClCompile Include="Hash.cpp">
-      <Filter>Engine\Hash</Filter>
     </ClCompile>
     <ClCompile Include="Enum.cpp">
       <Filter>Engine\Introspection\Enum</Filter>
@@ -258,6 +255,9 @@
     <ClCompile Include="CSprite.cpp">
       <Filter>Components\Graphics\Sprite</Filter>
     </ClCompile>
+    <ClCompile Include="Vec2.cpp">
+      <Filter>BaseTypes\Vectors\Vec2</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Precompiled">
@@ -316,9 +316,6 @@
     </Filter>
     <Filter Include="BaseTypes\Component">
       <UniqueIdentifier>{956f2b6a-be3b-4794-8f9e-0f041df9f022}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Hash">
-      <UniqueIdentifier>{fee18b8a-780b-428e-82e3-880c8a61128d}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\Memory\ObjectAllocator">
       <UniqueIdentifier>{4a245ebf-67a3-4cfd-8eae-e1b07fba5f99}</UniqueIdentifier>
@@ -418,6 +415,12 @@
     </Filter>
     <Filter Include="Components\Graphics\Sprite">
       <UniqueIdentifier>{8710e3c5-0045-4790-9e60-5de0ee272902}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BaseTypes\Vectors">
+      <UniqueIdentifier>{1bc8c498-cfe0-4cd5-a8d7-a039eb21a4d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BaseTypes\Vectors\Vec2">
+      <UniqueIdentifier>{6c7d8c33-3dfe-4027-95bf-c76e53cf88a8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

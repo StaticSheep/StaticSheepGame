@@ -106,10 +106,14 @@ end
 function SetupMetatable(key, meta)
 
   function meta.__index(self, key, ...)
+    if type(self) == "table" then
+      return rawget(self, key)
+    end
+
     _R.METAVALUES[tostring(self)] = _R.METAVALUES[tostring(self)] or {}
 
     if _R.METAVALUES[tostring(self)][key] then
-      --print("Found meta value: ".. key)
+      print("Found meta value: ".. key)
       return _R.METAVALUES[tostring(self)][key]
     end
 
@@ -121,10 +125,24 @@ function SetupMetatable(key, meta)
       return meta.__base
     end
 
+    if meta.__members ~= nil and meta.__members[key] ~= nil then
+      return meta["Get"..key](self)
+    end
+
     return meta[key]
   end
 
   function meta.__newindex(self, key, value)
+    if type(self) == "table" then
+      rawset(self, key, value)
+      return
+    end
+
+    if meta.__members ~= nil and meta.__members[key] ~= nil then
+      meta["Set"..key](self, value)
+      return
+    end
+
     _R.METAVALUES[tostring(self)] = _R.METAVALUES[tostring(self)] or {}
 
     _R.METAVALUES[tostring(self)][key] = value
@@ -135,6 +153,9 @@ function SetupMetatable(key, meta)
   end
 
   function meta:__next(k)
+    if type(self) == "table" then
+      return next(self, k)
+    end
     return next(_R.METAVALUES[tostring(self)], k)
   end
 

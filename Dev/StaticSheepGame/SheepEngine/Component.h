@@ -27,7 +27,7 @@ namespace Framework
 
       virtual void Remove() {};
 
-      GameComponent() : Generic(eGameComponent), space(nullptr) {};
+      GameComponent() : Generic(eGameComponent) {};
 
       // Destructor, can be accessed from inherited classes
       ~GameComponent() {};
@@ -37,14 +37,10 @@ namespace Framework
 	    // The handle to the owner of this component
       Handle owner;
 
-	    // The handle to the component itself
-	    Handle self;
-
       // Each type of component has it's own unique ID
       EComponent typeID;
 
-      // Pointer to the space which the component belongs to
-      GameSpace* space;
+      
       
       bool operator==(const GameComponent& rhs) const;
       bool operator!=(const GameComponent& rhs) const;

@@ -115,7 +115,6 @@
     <ClInclude Include="Function.h" />
     <ClInclude Include="GameLogic.h" />
     <ClInclude Include="Generic.h" />
-    <ClInclude Include="Hash.h" />
     <ClInclude Include="Hooks.h" />
     <ClInclude Include="IntrospectionManager.h" />
     <ClInclude Include="LuaDefaultBinds.h" />
@@ -142,6 +141,7 @@
     <ClInclude Include="System.h" />
     <ClInclude Include="TypeInfo.h" />
     <ClInclude Include="Variable.h" />
+    <ClInclude Include="Vec2.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
@@ -160,7 +160,6 @@
     <ClCompile Include="FuncSignature.cpp" />
     <ClCompile Include="Function.cpp" />
     <ClCompile Include="GameLogic.cpp" />
-    <ClCompile Include="Hash.cpp" />
     <ClCompile Include="Hooks.cpp" />
     <ClCompile Include="IntrospectionManager.cpp" />
     <ClCompile Include="LuaDefaultBinds.cpp" />
@@ -185,6 +184,7 @@
     <ClCompile Include="CSprite.cpp" />
     <ClCompile Include="TypeInfo.cpp" />
     <ClCompile Include="Variable.cpp" />
+    <ClCompile Include="Vec2.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

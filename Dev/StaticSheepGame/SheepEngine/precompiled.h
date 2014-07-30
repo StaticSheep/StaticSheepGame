@@ -29,44 +29,58 @@ extern "C"
 #include "Macros.h" // Macro Helpers
 #include "Utilities.h" // Debug macros and helpers
 
-// Serialization
+
 #include "File.h" // File handler
-#include "Variable.h" // V
-#include "Enum.h"
-#include "Handle.h"
-#include "TypeInfo.h"
-#include "FuncSignature.h"
-#include "Function.h"
-#include "Hooks.h"
-#include "LuaTransfer.h"
-#include "LuaInterface.h"
-#include "IntrospectionManager.h"
+#include "Variable.h" // Variable delegate
+#include "Enum.h" // Enumeration Serialization/Introspection
+#include "TypeInfo.h" // Type introspection
+#include "Serialization.h" // Serialization
+#include "PODSerialization.h" // Plain old Data serialization routines
 
-#include "Serialization.h"
-#include "PODSerialization.h"
-#include "ObjectAllocator.h"
+#include "FuncSignature.h" // Function Signatures (For Binding)
+#include "Function.h" // Function binding
 
-#include "Generic.h"
+#include "IntrospectionManager.h" // Introspection
 
-#include "HandleManager.h"
-#include "Component.h"
-#include "ComponentCreator.h"
-#include "Object.h"
-#include "Archetype.h"
-#include "SlotArray.h"
-#include "Message.h"
-#include "Space.h"
-#include "System.h"
-#include "GameLogic.h"
-#include "Factory.h"
-#include "Engine.h"
+#include "LuaTransfer.h" // Lua<->C++ Transfer
+#include "LuaInterface.h" // Lua interface
 
+#include "Handle.h" // Handle type
 
+#include "ObjectAllocator.h" // Object Memory manager
+#include "Generic.h" // Generic Object/Component type
+
+#include "HandleManager.h" // Handle management
+
+#include "Hooks.h" // Hook System
+
+#include "Component.h" // Component type
+#include "ComponentCreator.h" // Component Factory
+
+#include "Object.h" // Object type
+#include "Archetype.h" // Object Archetype (Virtual type)
+
+#include "SlotArray.h" // Slot array storage
+
+#include "Message.h" // Messaging system
+
+#include "Space.h" // Game Space type
+
+#include "System.h" // Generic System/Interface type
+#include "GameLogic.h" // GameLogic system
+
+#include "Factory.h" // Object Factory
+#include "Engine.h" // Core Engine
+
+#include "Vec2.h" // Vector 2
+
+// Components
 #include "CTester.h"
 #include "CTransform.h"
 #include "CSprite.h"
 #include "CLuaComponent.h"
 
+// Type and function Binding
 #include "DefaultTypes.h"
 #include "LuaDefaultBinds.h"
 
