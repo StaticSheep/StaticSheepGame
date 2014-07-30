@@ -12,6 +12,10 @@ GameObject
     testvalue2 int 505
   }
 
+  Sprite
+  {
+  }
+
   LuaComponent
   {
     name std::string "Flancomp"

@@ -1,5 +1,5 @@
 #include "CSprite.h"
-#include "graphics\sheep_graphics.h"
+#include "SheepGraphics.h"
 
 namespace Framework
 {
@@ -23,6 +23,16 @@ namespace Framework
 
   void Sprite::Draw()
   {
+    time += 0.001f;
+
+    Transform* trans = space->GetHandles().GetAs<Transform>(transform);
+
+    GRAPHICS->SetPosition(trans->position.x, trans->position.y);
+    GRAPHICS->SetRotation(time);
+    GRAPHICS->SetSize(128.0f * 1.6f, 100.0f * 1.6f);
+    GRAPHICS->SetTexture("content/test.png");
+    GRAPHICS->DrawSprite();
+
     /*GRAPHICS->SetPosition(transform., y);
     GRAPHICS->SetRotation(p, y);
     GRAPHICS->SetSize(x, y);

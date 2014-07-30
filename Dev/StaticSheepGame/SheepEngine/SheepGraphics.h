@@ -36,6 +36,9 @@ namespace Framework
     void SetTexture(std::string filepath);
     void DrawSprite(void);
 
+    //void StartFrame(void); //?
+    void FinishFrame(void);
+
 	private:
 
     // Initialization call

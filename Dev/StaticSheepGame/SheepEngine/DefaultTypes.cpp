@@ -65,6 +65,10 @@ namespace Framework
     TYPE_REGISTER( Member );
     TYPE_REGISTER_PTR( Member* );
 
+    TYPE_REGISTER(Vec2);
+    TYPE_ADD_MEMBER(Vec2, x);
+    TYPE_ADD_MEMBER(Vec2, y);
+
     TYPE_REGISTER( GameComponent );
 
     TYPE_REGISTER_PTR( GameComponent* );
@@ -93,6 +97,7 @@ namespace Framework
     //TYPE_SET_TO_LUA( GameSpace*, Lua::GameSpaceToLua);
 
     TYPE_REGISTER( Transform );
+    TYPE_ADD_MEMBER(Transform, position);
     /*TYPE_ADD_MEMBER(Transform, val1);
     TYPE_ADD_MEMBER(Transform, val2);
     TYPE_ADD_MEMBER(Transform, val3);*/

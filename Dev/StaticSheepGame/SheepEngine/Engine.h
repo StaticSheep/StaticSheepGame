@@ -56,6 +56,8 @@ namespace Framework
 
     GameSpace* GetSpace(const char* name);
 
+    int shittyFramerate;
+
     Factory ObjectFactory;
     SheepWindow Window;
   private:

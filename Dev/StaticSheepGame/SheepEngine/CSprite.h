@@ -19,6 +19,8 @@ namespace Framework
 
     Handle transform;
 
+    float time;
+
     std::string SpriteName;
 
     void Draw();

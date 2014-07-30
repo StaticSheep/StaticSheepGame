@@ -10,8 +10,9 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 namespace Framework
 {
-  struct Vec2
+  class Vec2
   {
+  public:
     Vec2::Vec2(float _x, float _y)
     {
       x = _x;

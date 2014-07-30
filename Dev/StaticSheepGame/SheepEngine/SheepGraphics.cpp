@@ -55,6 +55,8 @@ namespace Framework
 		DirectSheep::GFX_Update(dt);
 
     Draw();
+
+    FinishFrame();
 	}
 
 	void SheepGraphics::Draw()
@@ -80,6 +82,8 @@ namespace Framework
         space->hooks.Call("PostDraw");
     }
     Lua::CallFunc(ENGINE->Lua(), "hook.Call", "PostDraw");
+
+    
 	}
 
   void SheepGraphics::SetupMatrices()
@@ -106,5 +110,9 @@ namespace Framework
   void SheepGraphics::DrawSprite(void)
   {
     DirectSheep::GFX_Draw();
+  }
+  void SheepGraphics::FinishFrame()
+  {
+    DirectSheep::GFX_FinishFrame();
   }
 }

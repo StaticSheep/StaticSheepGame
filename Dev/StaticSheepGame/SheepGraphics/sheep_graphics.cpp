@@ -17,7 +17,7 @@ namespace DirectSheep
   void LoadAssets(void);
   void LoadEffect(void);
   void SetStates(void);
-  //ID3D11ShaderResourceView* GetTexture(std::string texture);
+  ID3D11ShaderResourceView* GetTexture(std::string texture);
 
   GFX_API void GFX_Init_D3D(HWND hWnd, int ScreenWidth, int ScreenHeight)
   {
@@ -166,8 +166,7 @@ namespace DirectSheep
     D3DXMATRIX scaleMat, rotMat, transMat;
 
     ID3D11ShaderResourceView* Texture = GetTexture(SHAPESTATES.filename);
-    static float time = 0.0f;
-    time += .01;
+
     D3DXMatrixIdentity(&rotMat);
     D3DXMatrixIdentity(&transMat);
     D3DXMatrixIdentity(&scaleMat);
@@ -189,7 +188,10 @@ namespace DirectSheep
     CORE->devcon->UpdateSubresource(CORE->pCBuffer, 0, 0, &matFinal, 0, 0);
     CORE->devcon->PSSetShaderResources(0, 1, &Texture);
     CORE->devcon->Draw(6, 0);
+  }
 
+  GFX_API void GFX_FinishFrame()
+  {
     CORE->swapchain->Present(0, 0);
   }
 
@@ -242,6 +244,8 @@ namespace DirectSheep
   void LoadAssets(void)
   {
     InitGeometry();
+
+    LoadTexture("content/test.png");
 
     //GFX_TODO call LoadTexture(filename) 
     //for every texture you want on the texture map
@@ -374,6 +378,9 @@ namespace DirectSheep
     rd.DepthBias = 0;
     rd.DepthBiasClamp = 0.0f;
     rd.SlopeScaledDepthBias = 0.0f;
+
+    //rd.FillMode = D3D11_FILL_WIREFRAME;
+    //rd.AntialiasedLineEnable = TRUE;
 
     DXVerify(CORE->dev->CreateRasterizerState(&rd, &STATES->RSDefault));
 

@@ -4,9 +4,16 @@ GameObject
   archetype std::string "drawtest"
   Transform
   {
+    position Vec2
+    {
+      x float 10.000000
+      y float 0.000000
+    }
   }
+
 
   Sprite
   {
   }
+
 }
