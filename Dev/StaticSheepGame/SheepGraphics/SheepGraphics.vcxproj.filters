@@ -4,9 +4,6 @@
     <ClInclude Include="precompiled.h">
       <Filter>Precompiled</Filter>
     </ClInclude>
-    <ClInclude Include="..\includes\graphics\Sprite.h">
-      <Filter>Components</Filter>
-    </ClInclude>
     <ClInclude Include="GFX_Core.h">
       <Filter>Export\System</Filter>
     </ClInclude>
@@ -29,7 +26,7 @@
       <Filter>Utility</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
-      <Filter>Components</Filter>
+      <Filter>Export\System\Camera</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -39,14 +36,11 @@
     <ClCompile Include="sheep_graphics.cpp">
       <Filter>Export\System</Filter>
     </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Sprite.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
     <ClCompile Include="..\Utilities\Utilities.cpp">
       <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Export\System\Camera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -65,8 +59,8 @@
     <Filter Include="Export\System">
       <UniqueIdentifier>{ffd8dbc0-5b20-4e20-b1b1-9efa8e28ff5a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Components">
-      <UniqueIdentifier>{d7cff41c-44d1-4bcf-8f16-92bb912b79a9}</UniqueIdentifier>
+    <Filter Include="Export\System\Camera">
+      <UniqueIdentifier>{7630c33b-d3c6-43d5-812a-bf5ff5e6ea98}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

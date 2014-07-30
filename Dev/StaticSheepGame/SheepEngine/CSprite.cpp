@@ -28,15 +28,9 @@ namespace Framework
     Transform* trans = space->GetHandles().GetAs<Transform>(transform);
 
     GRAPHICS->SetPosition(trans->position.x, trans->position.y);
-    GRAPHICS->SetRotation(time);
-    GRAPHICS->SetSize(256.0f, 256.0f);
+    GRAPHICS->SetRotation(-time);
+    GRAPHICS->SetSize(200, 200);
     GRAPHICS->SetTexture("content/bricks.png");
     GRAPHICS->DrawSprite();
-
-    /*GRAPHICS->SetPosition(transform., y);
-    GRAPHICS->SetRotation(p, y);
-    GRAPHICS->SetSize(x, y);
-    GRAPHICS->SetTexture(textureID/something);
-    GRAPHICS->DrawSprite();*/
   }
 }

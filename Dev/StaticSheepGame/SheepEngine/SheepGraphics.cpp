@@ -32,7 +32,7 @@ namespace Framework
 	SheepGraphics::~SheepGraphics()
 	{
 		// Free anything that was allocated
-    DirectSheep::GFX_Release_D3D();
+    DirectSheep::ReleaseD3D();
 	}
 
 	void SheepGraphics::Initialize()
@@ -45,14 +45,14 @@ namespace Framework
     _ScreenWidth = ENGINE->Window.width;
     _ScreenHeight = ENGINE->Window.height;
 
-    DirectSheep::GFX_Init_D3D(_HWnd, _ScreenWidth, _ScreenHeight);
+    DirectSheep::InitD3D(_HWnd, _ScreenWidth, _ScreenHeight);
 	}
 
 	void SheepGraphics::Update(float dt)
 	{
 		// Draw stuff
 
-		DirectSheep::GFX_Update(dt);
+		DirectSheep::StartFrame(dt);
 
     Draw();
 
@@ -93,26 +93,26 @@ namespace Framework
 
   void SheepGraphics::SetPosition(float x, float y)
   {
-    DirectSheep::GFX_SetPosition(x, y);
+    DirectSheep::SetPosition(x, y);
   }
   void SheepGraphics::SetRotation(float theta)
   {
-    DirectSheep::GFX_SetRotation(theta);
+    DirectSheep::SetRotation(theta);
   }
   void SheepGraphics::SetSize(float x, float y)
   {
-    DirectSheep::GFX_SetSize(x, y);
+    DirectSheep::SetSize(x, y);
   }
   void SheepGraphics::SetTexture(std::string filepath)
   {
-    DirectSheep::GFX_SetTexture(filepath);
+    DirectSheep::SetTexture(filepath);
   }
   void SheepGraphics::DrawSprite(void)
   {
-    DirectSheep::GFX_Draw();
+    DirectSheep::Draw();
   }
   void SheepGraphics::FinishFrame()
   {
-    DirectSheep::GFX_FinishFrame();
+    DirectSheep::FinishFrame();
   }
 }

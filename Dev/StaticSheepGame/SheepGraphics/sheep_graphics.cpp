@@ -7,10 +7,10 @@ using namespace DirectX;
 
 DirectSheep::DirectX_Core* CORE = NULL;
 DirectSheep::VertexBufferQuad *QUAD = NULL;
-DirectSheep::Camera *CAMERA = NULL;
 DirectSheep::States *STATES = NULL;
 DirectSheep::TextureMap TEXTUREMAP;
 DirectSheep::shapeStates SHAPESTATES;
+DirectSheep::Camera *CAMERA = NULL;
 
 namespace DirectSheep
 {
@@ -19,7 +19,7 @@ namespace DirectSheep
   void SetStates(void);
   ID3D11ShaderResourceView* GetTexture(std::string texture);
 
-  GFX_API void GFX_Init_D3D(HWND hWnd, int ScreenWidth, int ScreenHeight)
+  GFX_API void InitD3D(HWND hWnd, int ScreenWidth, int ScreenHeight)
   {
 
     HRESULT hr = S_OK;
@@ -28,13 +28,13 @@ namespace DirectSheep
 
     CORE = new DirectX_Core;
     QUAD = new VertexBufferQuad;
-    CAMERA = new Camera;
     STATES = new States;
+    CAMERA = new Camera;
 
     ZeroMemory(CORE, sizeof(DirectX_Core));
     ZeroMemory(QUAD, sizeof(VertexBufferQuad));
-    ZeroMemory(CAMERA, sizeof(Camera));
     ZeroMemory(STATES, sizeof(States));
+    ZeroMemory(CAMERA, sizeof(Camera));
 
     UINT deviceFlags = 0;
 
@@ -151,7 +151,7 @@ namespace DirectSheep
     CORE->devcon->RSSetViewports(1, &viewport);
     // create the depth buffer texture
 
-    CAMERA->ScreenDimensions = Vec2((float)ScreenWidth, (float)ScreenHeight);
+    CAMERA->ScreenDimensions = Vec2(ScreenWidth, ScreenHeight);
 
     SetStates();
     LoadAssets();
@@ -159,7 +159,7 @@ namespace DirectSheep
 
   }
 
-  GFX_API void GFX_Draw()
+  GFX_API void Draw()
   {
     Mat4 matFinal;
 
@@ -179,6 +179,12 @@ namespace DirectSheep
 
      matFinal = scaleMat * CAMERA->ViewProjMatrix;
 
+    CORE->devcon->RSSetState(STATES->RSDefault);
+
+    CORE->devcon->PSSetSamplers(0, 1, &STATES->SS);
+
+    CORE->devcon->OMSetBlendState(STATES->BS, 0, 0xffffffff);
+
     UINT stride = sizeof(Vertex2D);
     UINT offset = 0;
     CORE->devcon->IASetVertexBuffers(0, 1, &QUAD->vBuffer, &stride, &offset);
@@ -190,19 +196,13 @@ namespace DirectSheep
     CORE->devcon->Draw(6, 0);
   }
 
-  GFX_API void GFX_FinishFrame()
+  GFX_API void FinishFrame()
   {
     CORE->swapchain->Present(0, 0);
   }
 
-  GFX_API void GFX_Update(float dt)
+  GFX_API void StartFrame(float dt)
   {
-
-    CORE->devcon->RSSetState(STATES->RSDefault);
-
-    CORE->devcon->PSSetSamplers(0, 1, &STATES->SS);
-
-    CORE->devcon->OMSetBlendState(STATES->BS, 0, 0xffffffff);
 
     CORE->devcon->ClearRenderTargetView(CORE->backbuffer, (D3DXCOLOR)Colors::Black);
 
@@ -215,13 +215,13 @@ namespace DirectSheep
     // create a triangle using the VERTEX struct
     Vertex2D QuadVertices[] =
     {
-        {Vec3(-0.5f, -0.5f, 0.0f), D3DXCOLOR(Colors::Purple), 0.0f, 1.0f},
-        {Vec3(-0.5f, 0.5f, 0.0f), D3DXCOLOR(Colors::Purple), 0.0f, 0.0f},
-        {Vec3(0.5f, -0.5f, 0.0f), D3DXCOLOR(Colors::Purple), 1.0f, 1.0f},
+        {Vec3(-0.5f, -0.5f, 0.0f), D3DXCOLOR(Colors::White), 0.0f, 1.0f},
+        {Vec3(-0.5f, 0.5f, 0.0f), D3DXCOLOR(Colors::White), 0.0f, 0.0f},
+        {Vec3(0.5f, -0.5f, 0.0f), D3DXCOLOR(Colors::White), 1.0f, 1.0f},
 
-        {Vec3(-0.5f, 0.5f, 0.0f), D3DXCOLOR(Colors::Purple), 0.0f, 0.0f},
-        {Vec3(0.5f, 0.5f, 0.0f), D3DXCOLOR(Colors::Purple), 1.0f, 0.0f},        
-        {Vec3(0.5f, -0.5f, 0.0f), D3DXCOLOR(Colors::Purple), 1.0f, 1.0f},
+        {Vec3(-0.5f, 0.5f, 0.0f), D3DXCOLOR(Colors::White), 0.0f, 0.0f},
+        {Vec3(0.5f, 0.5f, 0.0f), D3DXCOLOR(Colors::White), 1.0f, 0.0f},        
+        {Vec3(0.5f, -0.5f, 0.0f), D3DXCOLOR(Colors::White), 1.0f, 1.0f},
     };
 
     D3D11_BUFFER_DESC bd;
@@ -340,11 +340,17 @@ namespace DirectSheep
     CAMERA->ViewProjMatrix = matView * matProj;
   }
 
-  GFX_API void GFX_Release_D3D(void)
+  GFX_API void ReleaseD3D(void)
   {
     if(CORE->swapchain)
       CORE->swapchain->SetFullscreenState(FALSE, NULL);    // switch to windowed mode
 
+    for( TextureMap::iterator it = TEXTUREMAP.begin(); it != TEXTUREMAP.end(); ++it)
+      it->second->Release();
+
+    SafeRelease(STATES->BS);
+    SafeRelease(STATES->RSDefault);
+    SafeRelease(STATES->SS);
     SafeRelease(QUAD->vBuffer);
     SafeRelease(CORE->pCBuffer);
     SafeRelease(CORE->pPS);
@@ -355,10 +361,11 @@ namespace DirectSheep
     SafeRelease(CORE->devcon);
     SafeRelease(CORE->dev);
     SafeRelease(CORE->swapchain);
+
     delete CORE;
     delete QUAD;
-    delete CAMERA;
     delete STATES;
+
     CORE = NULL;
     QUAD = NULL;
     CAMERA = NULL;
@@ -406,7 +413,9 @@ namespace DirectSheep
 
     DXVerify(CORE->dev->CreateSamplerState(&sd, &STATES->SS));     // create the default sampler
 
+    
     D3D11_BLEND_DESC bd;
+    ZeroMemory(&bd, sizeof(D3D11_BLEND_DESC));
     bd.RenderTarget[0].BlendEnable = TRUE;
     bd.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
     bd.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
@@ -416,7 +425,7 @@ namespace DirectSheep
     bd.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
     bd.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
     bd.IndependentBlendEnable = FALSE;
-    bd.AlphaToCoverageEnable = FALSE;
+    bd.AlphaToCoverageEnable = TRUE;
 
     DXVerify(CORE->dev->CreateBlendState(&bd, &STATES->BS));
   }
@@ -446,22 +455,25 @@ namespace DirectSheep
     if(it != TEXTUREMAP.end())
       return it->second;
     else
-      return NULL;
+    {
+       LoadTexture(texture);
+       return GetTexture(texture); 
+    }
   }
 
-  GFX_API void GFX_SetPosition(float x, float y)
+  GFX_API void SetPosition(float x, float y)
   {
     SHAPESTATES.position = Vec2(x, y);
   }
-  GFX_API void GFX_SetRotation(float theta)
+  GFX_API void SetRotation(float theta)
   {
     SHAPESTATES.rotation = theta;
   }
-  GFX_API void GFX_SetSize(float x, float y)
+  GFX_API void SetSize(float x, float y)
   {
     SHAPESTATES.scale = Vec2(x, y);
   }
-  GFX_API void GFX_SetTexture(std::string& filepath)
+  GFX_API void SetTexture(std::string& filepath)
   {
     SHAPESTATES.filename = filepath;
   }

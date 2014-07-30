@@ -20,7 +20,7 @@
 
 
 #if defined(_DEBUG)
-#define DXVerify(exp) if(FAILED(exp)){DirectSheep::GFX_Release_D3D(); ErrorIf(true, "sheep_grahics", "DX Error %s", DXGetErrorDescription(exp));}
+#define DXVerify(exp) if(FAILED(exp)){DirectSheep::ReleaseD3D(); ErrorIf(true, "sheep_grahics", "DX Error %s", DXGetErrorDescription(exp));}
 #else
 #define DXVerify(x) (x)
 #endif
