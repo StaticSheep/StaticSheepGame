@@ -23,7 +23,11 @@ namespace Framework
 
   void Sprite::Remove()
   {
-    space->hooks.Remove("Draw", self);
+    if (space != nullptr)
+    {
+      space->hooks.Remove("Draw", self);
+    }
+    
     SpriteName.~basic_string();
   }
 

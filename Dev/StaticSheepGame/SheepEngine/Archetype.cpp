@@ -30,7 +30,7 @@ namespace Framework
     {
       if (m_components[i] != nullptr)
       {
-        //m_components[i]->Remove();
+        m_components[i]->Remove();
         delete m_components[i];
       }
     }
@@ -73,7 +73,7 @@ namespace Framework
           Variable LVar = Variable(member.Type(), (char*)m_components[i] + member.Offset());
           Variable RVar = Variable(member.Type(), (char*)obj->GetComponent(i) + member.Offset());
 
-          member.Type()->PlacementCopy(LVar.GetData(), RVar.GetData());
+          member.Type()->Copy(LVar.GetData(), RVar.GetData());
         }
 
         // Copy over everything from the object's component into the archetype. This could be dangerous
