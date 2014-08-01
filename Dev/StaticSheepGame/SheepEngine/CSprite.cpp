@@ -11,6 +11,7 @@ namespace Framework
 
   Sprite::~Sprite()
   {
+    SpriteName.~basic_string();
   }
 
   void Sprite::Initialize()
@@ -23,10 +24,7 @@ namespace Framework
 
   void Sprite::Remove()
   {
-    if (space != nullptr)
-    {
-      space->hooks.Remove("Draw", self);
-    }
+    space->hooks.Remove("Draw", self);
     
     SpriteName.~basic_string();
   }

@@ -30,7 +30,7 @@ namespace Framework
     {
       if (m_components[i] != nullptr)
       {
-        m_components[i]->Remove();
+        //m_components[i]->Remove();
         delete m_components[i];
       }
     }
@@ -229,7 +229,7 @@ namespace Framework
           // Copy over the member data from the archetype into the object
           Variable LVar = Variable(member.Type(), (char*)comp + member.Offset());
           Variable RVar = Variable(member.Type(), (char*)m_components[i] + member.Offset());
-          member.Type()->PlacementCopy(LVar.GetData(), RVar.GetData());
+          member.Type()->Copy(LVar.GetData(), RVar.GetData());
         }
 
       }

@@ -30,7 +30,7 @@ namespace Framework
       GameComponent() : Generic(eGameComponent) {};
 
       // Destructor, can be accessed from inherited classes
-      ~GameComponent() {};
+      virtual ~GameComponent() {};
 
       //virtual void Serialize(){};
 
