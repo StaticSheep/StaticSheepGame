@@ -30,7 +30,7 @@ namespace Framework
     {
       if (m_components[i] != nullptr)
       {
-        m_components[i]->Remove();
+        //m_components[i]->Remove();
         delete m_components[i];
       }
     }
