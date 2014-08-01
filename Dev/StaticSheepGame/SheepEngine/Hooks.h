@@ -73,7 +73,7 @@ namespace Framework
   class HookManager
   {
   public:
-    HookManager() {};
+    HookManager() : HookCollections(sizeof(HookCollection), 2) {};
     ~HookManager();
 
     void Add(std::string eventName, Handle owner, const Function& func);
@@ -90,15 +90,19 @@ namespace Framework
     GameSpace* space;
 
   private:
-    void Verify(std::string eventName);
+    void Verify(std::string& eventName);
 
-    std::hash_map<std::string, HookCollection> HookMap;
+    ObjectAllocator HookCollections;
+    std::unordered_map<std::string, HookCollection*> HookMap;
   };
 
   template <typename Arg1>
   void HookManager::Call(std::string eventName, Arg1 arg1)
   {
-    HookMap[eventName].Trigger(arg1);
+    if (HookMap.find(eventName) != HookMap.end())
+    {
+      HookMap.at(eventName)->Trigger(arg1);
+    }
   }
 
 }

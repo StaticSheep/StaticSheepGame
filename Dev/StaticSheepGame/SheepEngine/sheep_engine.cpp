@@ -36,12 +36,12 @@ void TestStuff(HINSTANCE hInstance, int show)
   SheepEngine->MakeWindow(hInstance, show);
   SheepEngine->Initialize();
 
-  //GameSpace* space = SheepEngine->CreateSpace("test_space");
+  GameSpace* space = SheepEngine->CreateSpace("test_space");
 
-  /*GameObject* obj = space->CreateEmptyObject();
+  GameObject* obj = space->CreateEmptyObject();
 
   Transform* trans = (Transform*)space->CreateComponent(eTransform);
-  trans->position.x = 10.0f;
+  trans->translation.X = 10.0f;
   obj->AddComponent(trans);
 
   Sprite* sprite = (Sprite*)space->CreateComponent(eSprite);
@@ -49,17 +49,16 @@ void TestStuff(HINSTANCE hInstance, int show)
 
   obj->Initialize();
 
+  //obj->archetype = "drawtest";
 
-  obj->archetype = "drawtest";
+  //FACTORY->SaveObjectToArchetype(obj, "drawtest");
 
-  FACTORY->SaveObjectToArchetype(obj, "drawtest");
-
-  FACTORY->SaveSpaceToLevel(space, "WowSpace", true);*/
+  //FACTORY->SaveSpaceToLevel(space, "WowSpace", true);
   
 
   //SheepEngine->LoadLevel("WowSpace");
 
-  SheepEngine->LoadLuaLevel("content/lua/engine/levels/editor.lua");
+  //SheepEngine->LoadLuaLevel("content/lua/engine/levels/editor.lua");
 
 
   while (SheepEngine->Running())

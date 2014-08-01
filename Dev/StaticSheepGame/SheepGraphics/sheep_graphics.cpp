@@ -365,6 +365,7 @@ namespace DirectSheep
     delete CORE;
     delete QUAD;
     delete STATES;
+    delete CAMERA;
 
     CORE = NULL;
     QUAD = NULL;
