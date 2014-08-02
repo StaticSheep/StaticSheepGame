@@ -7,6 +7,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 *****************************************************************/
 
 #include "GameLogic.h"
+#include <iostream>
 
 namespace Framework
 {
@@ -55,7 +56,6 @@ namespace Framework
       space = *it;
       space->Cleanup();
     }
-
 
   }
 

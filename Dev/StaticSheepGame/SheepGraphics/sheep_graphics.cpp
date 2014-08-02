@@ -188,10 +188,7 @@ namespace DirectSheep
     
     D3DXMatrixMultiply(&scaleMat, &scaleMat, &transMat);
 
-    if (SHAPESTATES.useCamera)
-      matFinal = scaleMat * CAMERA->ViewProjMatrix;
-    else
-      matFinal = scaleMat * CAMERA->ViewProjMatrix; //matFinal = scaleMat;
+    matFinal = scaleMat * CAMERA->ViewProjMatrix;
 
     CORE->devcon->RSSetState(STATES->RSDefault);
 

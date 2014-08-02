@@ -42,6 +42,8 @@ void OpenConsole()
   errFile = _fdopen(errHandle, "w");
   inFile =  _fdopen(inHandle, "r");
 
+  //int a = SetConsoleMode((HANDLE)inHandle, ENABLE_ECHO_INPUT + ENABLE_LINE_INPUT);
+
   *stdout = *outFile;
   *stderr = *errFile;
   *stdin = *inFile;
