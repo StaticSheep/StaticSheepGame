@@ -13,5 +13,6 @@ namespace DirectSheep
   GFX_API void SetPosition(float x, float y);
   GFX_API void SetRotation(float theta);
   GFX_API void SetSize(float x, float y);
-  GFX_API void SetTexture(std::string& filepath);
+  GFX_API void SetTexture(int ID);
+  GFX_API int GetTextureID(std::string& texture);
 }

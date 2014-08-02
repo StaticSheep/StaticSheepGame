@@ -29,10 +29,14 @@ namespace DirectSheep
     Vec2 scale;
     float rotation;
     Vec4 Color;
-    std::string filename;
+    int TexID;
   };
 
-  typedef std::map<std::string, ID3D11ShaderResourceView*> TextureMap;
+  struct TextureMap
+  {
+    std::vector<ID3D11ShaderResourceView*> TextureVec;
+    std::map<std::string, int> TextureIndex;
+  };
 
 	template< typename RefType >
 	void SafeRelease( RefType& interfacePtr )
@@ -44,4 +48,4 @@ namespace DirectSheep
 
 extern DirectSheep::DirectX_Core* CORE;
 extern DirectSheep::States *STATES;
-extern DirectSheep::TextureMap TEXTUREMAP;
+extern DirectSheep::TextureMap *TEXTUREMAP;

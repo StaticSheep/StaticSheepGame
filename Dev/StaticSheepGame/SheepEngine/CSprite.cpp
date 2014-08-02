@@ -17,6 +17,10 @@ namespace Framework
   {
     transform = this->GetOwner()->GetComponentHandle(eTransform);
 
+    if (this->SpriteName.length() == 0)
+      this->SpriteName = "content/bricks.png";
+    //SetTexture(this->SpriteName);
+
     //TODO not sure if we have a GetOwner()->has working
     space->hooks.Add("Draw", self, BUILD_FUNCTION(Sprite::Draw));
   }
@@ -36,7 +40,13 @@ namespace Framework
 
     GRAPHICS->SetRotation(-time);
     GRAPHICS->SetSize(200, 200);
-    GRAPHICS->SetTexture("content/bricks.png");
+    GRAPHICS->SetTexture(SpriteID);
     GRAPHICS->DrawSprite();
+  }
+
+  void Sprite::SetTexture(std::string& texture)
+  {
+    SpriteName = texture;
+    SpriteID = GRAPHICS->GetTextureID(texture);
   }
 }

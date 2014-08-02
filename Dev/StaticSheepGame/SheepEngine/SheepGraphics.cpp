@@ -103,9 +103,9 @@ namespace Framework
   {
     DirectSheep::SetSize(x, y);
   }
-  void SheepGraphics::SetTexture(std::string filepath)
+  void SheepGraphics::SetTexture(int ID)
   {
-    DirectSheep::SetTexture(filepath);
+    DirectSheep::SetTexture(ID);
   }
   void SheepGraphics::DrawSprite(void)
   {
@@ -114,5 +114,10 @@ namespace Framework
   void SheepGraphics::FinishFrame()
   {
     DirectSheep::FinishFrame();
+  }
+
+  int SheepGraphics::GetTextureID(std::string& texture)
+  {
+    return DirectSheep::GetTextureID(texture);
   }
 }

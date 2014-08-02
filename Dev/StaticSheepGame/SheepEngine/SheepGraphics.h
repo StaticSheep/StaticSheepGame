@@ -33,8 +33,9 @@ namespace Framework
     void SetPosition(float x, float y);
     void SetRotation(float theta);
     void SetSize(float x, float y);
-    void SetTexture(std::string filepath);
+    void SetTexture(int ID);
     void DrawSprite(void);
+    int GetTextureID(std::string& texture);
 
     //void StartFrame(void); //?
     void FinishFrame(void);

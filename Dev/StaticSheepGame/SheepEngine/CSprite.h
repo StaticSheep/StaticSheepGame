@@ -23,7 +23,11 @@ namespace Framework
     float time;
 
     std::string SpriteName;
+    int SpriteID;
 
     void Draw();
+
+  private:
+    void SetTexture(std::string& texture);
   };
 }
