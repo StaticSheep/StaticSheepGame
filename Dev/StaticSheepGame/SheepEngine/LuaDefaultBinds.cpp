@@ -41,6 +41,15 @@ namespace Framework
       BIND_FUNCTION_TABLE(ENGINE->Lua(), Engine::LuaSetVariable, SetVariable, engine);
       BIND_FUNCTION_TABLE(ENGINE->Lua(), Engine::LuaGetVariable, GetVariable, engine);
 
+      CREATE_TABLE(ENGINE->Lua(), surface);
+      BIND_FUNCTION_TABLE(ENGINE->Lua(), Draw::SetColor, SetColor, surface);
+      BIND_FUNCTION_TABLE(ENGINE->Lua(), Draw::SetTexture, SetTexture, surface);
+      BIND_FUNCTION_TABLE(ENGINE->Lua(), Draw::SetUseCamera, SetUseCamera, surface);
+      BIND_FUNCTION_TABLE(ENGINE->Lua(), Draw::SetTextPos, SetTextPos, surface);
+      BIND_FUNCTION_TABLE(ENGINE->Lua(), Draw::DrawRect, DrawRect, surface);
+      BIND_FUNCTION_TABLE(ENGINE->Lua(), Draw::DrawTexturedRect, DrawTexturedRect, surface);
+      BIND_FUNCTION_TABLE(ENGINE->Lua(), Draw::DrawLine, DrawLine, surface);
+      BIND_FUNCTION_TABLE(ENGINE->Lua(), Draw::DrawString, DrawString, surface);
 
       CREATE_TABLE(ENGINE->Lua(), factory);
       BIND_FUNCTION_TABLE(ENGINE->Lua(), Factory::LuaLoadObjectFromArchetype, CreateObjectFromType, factory);

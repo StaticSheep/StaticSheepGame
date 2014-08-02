@@ -79,6 +79,20 @@ namespace Framework
       m_args = args;
     }
 
+    template<typename A1, typename A2, typename A3, typename A4>
+    FunctionSignature(void (*fn)(A1, A2, A3, A4)) : m_ret(NULL), m_argCount(4), m_context(NULL)
+    {
+      static const TypeInfo* args[] = { GET_TYPE(A1), GET_TYPE(A2), GET_TYPE(A3), GET_TYPE(A4) };
+      m_args = args;
+    }
+
+    template<typename A1, typename A2, typename A3, typename A4, typename A5>
+    FunctionSignature(void (*fn)(A1, A2, A3, A4, A5)) : m_ret(NULL), m_argCount(5), m_context(NULL)
+    {
+      static const TypeInfo* args[] = { GET_TYPE(A1), GET_TYPE(A2), GET_TYPE(A3), GET_TYPE(A4), GET_TYPE(A5) };
+      m_args = args;
+    }
+
     // Function with a return value, non - const ------------------------------------------------
 
     template <typename C, typename R>
