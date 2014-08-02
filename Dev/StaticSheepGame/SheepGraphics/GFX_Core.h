@@ -30,6 +30,7 @@ namespace DirectSheep
     float rotation;
     Vec4 Color;
     std::string filename;
+    bool useCamera;
   };
 
   typedef std::map<std::string, ID3D11ShaderResourceView*> TextureMap;
@@ -45,3 +46,5 @@ namespace DirectSheep
 extern DirectSheep::DirectX_Core* CORE;
 extern DirectSheep::States *STATES;
 extern DirectSheep::TextureMap TEXTUREMAP;
+extern float ScreenWidth;
+extern float ScreenHeight;

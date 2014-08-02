@@ -11,7 +11,6 @@ namespace Framework
 
   Sprite::~Sprite()
   {
-    SpriteName.~basic_string();
   }
 
   void Sprite::Initialize()
@@ -26,7 +25,7 @@ namespace Framework
   {
     space->hooks.Remove("Draw", self);
     
-    SpriteName.~basic_string();
+    //SpriteName.~basic_string();
   }
 
   void Sprite::Draw()
@@ -40,6 +39,13 @@ namespace Framework
     GRAPHICS->SetRotation(-time);
     GRAPHICS->SetSize(200, 200);
     GRAPHICS->SetTexture("content/bricks.png");
-    GRAPHICS->DrawSprite();
+    //GRAPHICS->DrawSprite();
+
+    Draw::SetUseCamera(false);
+    //Draw::DrawRect(80, 80, 6, 6);
+    //Draw::DrawRect(700, 400, 6, 6);
+    //Draw::DrawLine(80, 80, 700, 400, 2);
+
+    Draw::DrawRect(5, 5, 256, 256);
   }
 }

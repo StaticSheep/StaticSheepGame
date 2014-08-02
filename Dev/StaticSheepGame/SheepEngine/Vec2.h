@@ -13,14 +13,10 @@ namespace Framework
   class Vec2
   {
   public:
-    Vec2::Vec2(float _x, float _y)
+    Vec2::Vec2(float _x = 0, float _y = 0)
     {
       X = _x;
       Y = _y;
-    }
-
-    Vec2::Vec2()
-    {
     }
 
     static void ToLua(lua_State* L, Variable& var);

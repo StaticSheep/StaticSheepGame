@@ -34,6 +34,7 @@ namespace Framework
     void SetRotation(float theta);
     void SetSize(float x, float y);
     void SetTexture(std::string filepath);
+    void SetUseCamera(bool useCam);
     void DrawSprite(void);
 
     //void StartFrame(void); //?

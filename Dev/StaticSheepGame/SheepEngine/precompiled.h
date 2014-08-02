@@ -72,7 +72,10 @@ extern "C"
 #include "Factory.h" // Object Factory
 #include "Engine.h" // Core Engine
 
-#include "Vec2.h" // Vector 2
+#include "Vec2.h" // Vector 2D
+#include "Vec4.h" // Vector 4D
+
+#include "DrawLib.h" // Drawing Extension Library
 
 // Components
 #include "CTester.h"

@@ -12,6 +12,9 @@ DirectSheep::TextureMap TEXTUREMAP;
 DirectSheep::shapeStates SHAPESTATES;
 DirectSheep::Camera *CAMERA = NULL;
 
+float ScreenHeight = 0;
+float ScreenWidth = 0;
+
 namespace DirectSheep
 {
   void LoadAssets(void);
@@ -19,7 +22,7 @@ namespace DirectSheep
   void SetStates(void);
   ID3D11ShaderResourceView* GetTexture(std::string texture);
 
-  GFX_API void InitD3D(HWND hWnd, int ScreenWidth, int ScreenHeight)
+  GFX_API void InitD3D(HWND hWnd, int screenWidth, int screenHeight)
   {
 
     HRESULT hr = S_OK;
@@ -31,10 +34,15 @@ namespace DirectSheep
     STATES = new States;
     CAMERA = new Camera;
 
+    ScreenWidth = (int)screenWidth;
+    ScreenHeight = (int)screenHeight;
+
     ZeroMemory(CORE, sizeof(DirectX_Core));
     ZeroMemory(QUAD, sizeof(VertexBufferQuad));
     ZeroMemory(STATES, sizeof(States));
     ZeroMemory(CAMERA, sizeof(Camera));
+
+    SHAPESTATES.useCamera = true;
 
     UINT deviceFlags = 0;
 
@@ -69,8 +77,8 @@ namespace DirectSheep
     // fill the swap chain description struct
     scd.BufferCount = 1;                                   // one back buffer
     scd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;    // use 32-bit color
-    scd.BufferDesc.Width = ScreenWidth;                    // set the back buffer width
-    scd.BufferDesc.Height = ScreenHeight;                  // set the back buffer height
+    scd.BufferDesc.Width = screenWidth;                    // set the back buffer width
+    scd.BufferDesc.Height = screenHeight;                  // set the back buffer height
     scd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;     // how swap chain is to be used
     scd.OutputWindow = hWnd;                               // the window to be used
     scd.SampleDesc.Count = 4;                              // how many multisamples
@@ -104,8 +112,8 @@ namespace DirectSheep
     D3D11_TEXTURE2D_DESC texd;
     ZeroMemory(&texd, sizeof(texd));
 
-    texd.Width = ScreenWidth;
-    texd.Height = ScreenHeight;
+    texd.Width = screenWidth;
+    texd.Height = screenHeight;
     texd.ArraySize = 1;
     texd.MipLevels = 1;
     texd.SampleDesc.Count = 4;
@@ -143,8 +151,8 @@ namespace DirectSheep
 
     viewport.TopLeftX = 0;
     viewport.TopLeftY = 0;
-    viewport.Width = (float)ScreenWidth;
-    viewport.Height = (float)ScreenHeight;
+    viewport.Width = (float)screenWidth;
+    viewport.Height = (float)screenHeight;
     viewport.MinDepth = 0.0f;    // the closest an object can be on the depth buffer is 0.0
     viewport.MaxDepth = 1.0f;    // the farthest an object can be on the depth buffer is 1.0
 
@@ -155,11 +163,9 @@ namespace DirectSheep
 
     SetStates();
     LoadAssets();
-
-
   }
 
-  GFX_API void Draw()
+  GFX_API void DrawSprite()
   {
     Mat4 matFinal;
 
@@ -174,10 +180,18 @@ namespace DirectSheep
     D3DXMatrixScaling(&scaleMat,SHAPESTATES.scale.x, SHAPESTATES.scale.y, 1.0f);
     D3DXMatrixRotationZ(&rotMat, SHAPESTATES.rotation);
     D3DXMatrixMultiply(&scaleMat, &scaleMat, &rotMat);
-    D3DXMatrixTranslation(&transMat, floor(SHAPESTATES.position.x), floor(SHAPESTATES.position.y), floor(0.0f));
+
+    if (SHAPESTATES.useCamera)
+      D3DXMatrixTranslation(&transMat, floor(SHAPESTATES.position.x), floor(SHAPESTATES.position.y), floor(0.0f));
+    else
+      D3DXMatrixTranslation(&transMat, floor(SHAPESTATES.position.x) - ScreenWidth / 2, floor(-SHAPESTATES.position.y) + ScreenHeight / 2, floor(0.0f));
+    
     D3DXMatrixMultiply(&scaleMat, &scaleMat, &transMat);
 
-     matFinal = scaleMat * CAMERA->ViewProjMatrix;
+    if (SHAPESTATES.useCamera)
+      matFinal = scaleMat * CAMERA->ViewProjMatrix;
+    else
+      matFinal = scaleMat * CAMERA->ViewProjMatrix; //matFinal = scaleMat;
 
     CORE->devcon->RSSetState(STATES->RSDefault);
 
@@ -477,6 +491,10 @@ namespace DirectSheep
   GFX_API void SetTexture(std::string& filepath)
   {
     SHAPESTATES.filename = filepath;
+  }
+  GFX_API void SetUseCamera(bool useCam)
+  {
+    SHAPESTATES.useCamera = useCam;
   }
 }
 

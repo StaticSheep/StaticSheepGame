@@ -109,10 +109,14 @@ namespace Framework
   }
   void SheepGraphics::DrawSprite(void)
   {
-    DirectSheep::Draw();
+    DirectSheep::DrawSprite();
   }
   void SheepGraphics::FinishFrame()
   {
     DirectSheep::FinishFrame();
+  }
+  void SheepGraphics::SetUseCamera(bool useCam)
+  {
+    DirectSheep::SetUseCamera(useCam);
   }
 }
