@@ -109,7 +109,7 @@ namespace Framework
   }
   void SheepGraphics::DrawSprite(void)
   {
-    DirectSheep::Draw();
+    DirectSheep::DrawSprite();
   }
   void SheepGraphics::FinishFrame()
   {
@@ -119,5 +119,9 @@ namespace Framework
   int SheepGraphics::GetTextureID(std::string& texture)
   {
     return DirectSheep::GetTextureID(texture);
+  }
+  void SheepGraphics::SetUseCamera(bool useCam)
+  {
+    DirectSheep::SetUseCamera(useCam);
   }
 }

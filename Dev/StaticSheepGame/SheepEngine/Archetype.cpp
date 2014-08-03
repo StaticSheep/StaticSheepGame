@@ -73,7 +73,7 @@ namespace Framework
           Variable LVar = Variable(member.Type(), (char*)m_components[i] + member.Offset());
           Variable RVar = Variable(member.Type(), (char*)obj->GetComponent(i) + member.Offset());
 
-          member.Type()->PlacementCopy(LVar.GetData(), RVar.GetData());
+          member.Type()->Copy(LVar.GetData(), RVar.GetData());
         }
 
         // Copy over everything from the object's component into the archetype. This could be dangerous
@@ -229,7 +229,7 @@ namespace Framework
           // Copy over the member data from the archetype into the object
           Variable LVar = Variable(member.Type(), (char*)comp + member.Offset());
           Variable RVar = Variable(member.Type(), (char*)m_components[i] + member.Offset());
-          member.Type()->PlacementCopy(LVar.GetData(), RVar.GetData());
+          member.Type()->Copy(LVar.GetData(), RVar.GetData());
         }
 
       }

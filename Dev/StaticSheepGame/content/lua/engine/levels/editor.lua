@@ -7,13 +7,14 @@ local pos = nil
 local function Init()
   local gspace = engine.CreateSpace("test")
   local object = gspace:CreateObject("drawtest")
-  transform = object:GetComponent(0)
+  object = gspace:CreateObject("drawtest")
+  -- transform = object:GetComponent(0)
 
-  pos = transform:GetPos()
-  pos.x = 0
-  transform:SetPos(pos)
+  -- pos = transform:GetPos()
+  -- pos.x = 0
+  -- transform:SetPos(pos)
 
-  print(transform)
+  -- print(transform)
 end
 
 local right = true
@@ -24,7 +25,6 @@ local function Update()
     pos.x = pos.x + 0.5
     transform:SetPos(pos)
     if pos.x > 300 then
-      print(transform)
       right = false
     end
   else
@@ -54,4 +54,4 @@ end
 
 hook.Add("ScriptStartReload", "OnHookReloadx", StartReload)
 hook.Add("ScriptFinishReload", "OnHookReloadx", FinishReload)
-hook.Add("LogicUpdate", "EditorUpdate", Update)
+--hook.Add("LogicUpdate", "EditorUpdate", Update)

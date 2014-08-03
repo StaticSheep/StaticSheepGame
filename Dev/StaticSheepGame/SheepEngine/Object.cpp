@@ -77,6 +77,9 @@ namespace Framework
         // Remove the handle from the space
         space->GetHandles().Remove(comp->self);
 
+        // Deconstruct the game component
+        comp->~GameComponent();
+
         // Free the component and update any handles
         GameComponent* moved = (GameComponent*)space->GetComponents(type)->Free(comp);
         if (moved)

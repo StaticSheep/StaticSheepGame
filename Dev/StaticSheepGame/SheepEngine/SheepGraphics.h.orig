@@ -33,8 +33,12 @@ namespace Framework
     void SetPosition(float x, float y);
     void SetRotation(float theta);
     void SetSize(float x, float y);
+<<<<<<< HEAD
     void SetTexture(int ID);
+=======
+    void SetTexture(std::string filepath);
     void SetUseCamera(bool useCam);
+>>>>>>> 5cb4d933d5fd5cbfe516b21c4a2173472925ae25
     void DrawSprite(void);
     int GetTextureID(std::string& texture);
 

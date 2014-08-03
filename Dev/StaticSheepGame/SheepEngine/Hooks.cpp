@@ -6,6 +6,8 @@ Author(s): Zachary Nawar (Primary)
 All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 *****************************************************************/
 
+#include <utility>
+
 namespace Framework
 {
   Hook::Hook(Handle owner, const Function& fn) : func(fn), owner(owner)
@@ -69,10 +71,15 @@ namespace Framework
     ClearAll();
   }
 
-  void HookManager::Verify(std::string eventName)
+  void HookManager::Verify(std::string& eventName)
   {
     if (HookMap.find(eventName) == HookMap.end())
-      new (&HookMap[eventName]) HookCollection(space);
+    {
+      HookCollection* hc = (HookCollection*)HookCollections.Allocate();
+      new (hc) HookCollection(space);
+      
+      HookMap[eventName] = hc;
+    }
   }
 
 
@@ -80,27 +87,37 @@ namespace Framework
   {
     Verify(eventName);
 
-    HookMap[eventName].Add(owner, func);
+    HookMap.at(eventName)->Add(owner, func);
   }
 
   void HookManager::Call(std::string eventName)
   {
-    HookMap[eventName].Trigger();
+    if (HookMap.find(eventName) != HookMap.end())
+    {
+      HookMap.at(eventName)->Trigger();
+    }
   }
 
   void HookManager::Remove(std::string eventName, Handle owner)
   {
-    HookMap[eventName].Remove(owner);
+    if (HookMap.find(eventName) != HookMap.end())
+    {
+      HookMap.at(eventName)->Remove(owner);
+    }
   }
 
   void HookManager::Clear(std::string eventName)
   {
-    HookMap[eventName].~HookCollection();
+    HookMap.at(eventName)->~HookCollection();
     HookMap.erase(HookMap.find(eventName));
   }
 
   void HookManager::ClearAll()
   {
+    for(auto it = HookMap.begin(); it != HookMap.end(); ++it)
+    {
+      it->second->~HookCollection();
+    }
     HookMap.clear();
   }
 

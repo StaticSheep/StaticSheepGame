@@ -28,6 +28,8 @@ namespace Framework
     void CharPFromLua(lua_State* L, int index, Variable* ref);
     void StringFromLua(lua_State* L, int index, Variable* ref);
 
+    void GenericObjectFromLua(lua_State* L, int index, Variable* ref);
+
     
   }
 }

@@ -55,6 +55,18 @@ namespace Framework
       type->ToLua(ENGINE->Lua(), Variable(type, obj));
     }
 
+    void GenericObjectFromLua(lua_State* L, int index, Variable* ref)
+    {
+      Variable* var = ((Variable*)lua_touserdata(L, index));
+      Generic* obj = var->GetValue<Generic*>();
+
+      new (ref) Variable(var->GetTypeInfo(), obj->space->GetHandles().Get(obj->self));
+      
+    }
+
+
+
+
     void IntFromLua(lua_State* L, int index, Variable* ref)
     {
       //ErrorIf(!lua_isnumber(L, index), "LuaTransfer", "Type mismatch!");

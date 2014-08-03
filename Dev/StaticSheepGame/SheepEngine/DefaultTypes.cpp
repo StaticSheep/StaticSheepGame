@@ -60,7 +60,9 @@ namespace Framework
     TYPE_SET_FROM_LUA(Handle, Lua::IntFromLua);
 
     TYPE_REGISTER( Generic );
+    TYPE_SET_FROM_LUA( Generic, Lua::GenericObjectFromLua );
     TYPE_REGISTER_PTR( Generic* );
+    TYPE_SET_FROM_LUA( Generic*, Lua::GenericObjectFromLua );
 
     TYPE_REGISTER( Member );
     TYPE_REGISTER_PTR( Member* );
@@ -72,6 +74,7 @@ namespace Framework
     TYPE_SET_FROM_LUA(Vec2, Vec2::FromLua);
 
     TYPE_REGISTER( GameComponent );
+    TYPE_SET_FROM_LUA( GameComponent, Lua::GenericObjectFromLua );
 
     TYPE_REGISTER_PTR( GameComponent* );
     //TYPE_SET_TO_LUA( GameComponent*, Lua::GameComponentToLua);
@@ -81,6 +84,7 @@ namespace Framework
     TYPE_ADD_MEMBER( GameObject, archetype );
     TYPE_SET_SERIALIZER( GameObject, GameObject::Serialize );
     TYPE_SET_DESERIALIZER( GameObject, GameObject::Deserialize );
+    TYPE_SET_FROM_LUA( GameObject, Lua::GenericObjectFromLua );
 
     TYPE_REGISTER_PTR( GameObject* );
     //TYPE_SET_TO_LUA( GameObject*, Lua::GameObjectToLua );
@@ -100,9 +104,7 @@ namespace Framework
 
     TYPE_REGISTER( Transform );
     TYPE_ADD_MEMBER(Transform, translation);
-    /*TYPE_ADD_MEMBER(Transform, val1);
-    TYPE_ADD_MEMBER(Transform, val2);
-    TYPE_ADD_MEMBER(Transform, val3);*/
+    TYPE_SET_FROM_LUA( Transform, Lua::GenericObjectFromLua );
 
     TYPE_REGISTER_PTR(Transform*);
 
@@ -111,10 +113,13 @@ namespace Framework
     TYPE_ADD_MEMBER( Tester, testvalue2 );
 
     TYPE_REGISTER( Sprite );
+    TYPE_ADD_MEMBER( Sprite, SpriteName );
+    TYPE_SET_FROM_LUA( Sprite, Lua::GenericObjectFromLua );
 
     TYPE_REGISTER( LuaComponent );
     TYPE_ADD_MEMBER( LuaComponent, name );
     TYPE_ADD_MEMBER( LuaComponent, loadCommand );
+    TYPE_SET_FROM_LUA( LuaComponent, Lua::GenericObjectFromLua );
 
     TYPE_REGISTER_PTR( LuaComponent* );
     //TYPE_SET_TO_LUA( LuaComponent*, Lua::GameComponentToLua);

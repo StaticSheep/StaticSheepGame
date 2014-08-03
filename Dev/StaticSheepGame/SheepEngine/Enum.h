@@ -4,19 +4,6 @@
 #include <hash_map>
 #include <string>
 
-/** BEGIN FIX **/
-namespace std                                                                                 
-{                                                                                             
-  template<> struct hash< std::string >                                                       
-  {                                                                                           
-    size_t operator()( const std::string& x ) const                                           
-    {                                                                                         
-      return hash< const char* >()( x.c_str() );                                              
-    }                                                                                         
-  };                                                                                          
-}          
-/** END FIX **/
-
 namespace Framework
 {
 

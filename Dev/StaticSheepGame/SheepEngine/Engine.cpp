@@ -157,9 +157,9 @@ namespace Framework
 
   GameSpace* Engine::GetSpace(const char* name)
   {
-    std::string spaceName = name;
-    if (m_spaceMap.find(spaceName) != m_spaceMap.end())
-      return m_spaceMap[spaceName];
+    //std::string spaceName = name;
+    if (m_spaceMap.find(name) != m_spaceMap.end())
+      return m_spaceMap[name];
     return nullptr;
   }
 

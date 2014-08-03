@@ -29,16 +29,16 @@
       <Filter>BaseTypes\Message</Filter>
     </ClInclude>
     <ClInclude Include="SheepGraphics.h">
-      <Filter>Systems\Graphics</Filter>
+      <Filter>Systems\SheepGraphics</Filter>
     </ClInclude>
     <ClInclude Include="SheepPhysics.h">
-      <Filter>Systems\Physics</Filter>
+      <Filter>Systems\SheepPhysics</Filter>
     </ClInclude>
     <ClInclude Include="SlotArray.h">
       <Filter>Engine\Memory\SlotArray</Filter>
     </ClInclude>
     <ClInclude Include="PhysicsObject.h">
-      <Filter>Systems\Physics\Object</Filter>
+      <Filter>Systems\SheepPhysics\Object</Filter>
     </ClInclude>
     <ClInclude Include="SheepAudio.h">
       <Filter>Systems\Audio</Filter>
@@ -142,6 +142,12 @@
     <ClInclude Include="Vec2.h">
       <Filter>BaseTypes\Vectors\Vec2</Filter>
     </ClInclude>
+    <ClInclude Include="DrawLib.h">
+      <Filter>Systems\SheepGraphics\DrawLibrary</Filter>
+    </ClInclude>
+    <ClInclude Include="Vec4.h">
+      <Filter>BaseTypes\Vectors\Vec4</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="precompiled.cpp">
@@ -163,13 +169,13 @@
       <Filter>Engine\HandleManager</Filter>
     </ClCompile>
     <ClCompile Include="SheepGraphics.cpp">
-      <Filter>Systems\Graphics</Filter>
+      <Filter>Systems\SheepGraphics</Filter>
     </ClCompile>
     <ClCompile Include="SheepPhysics.cpp">
-      <Filter>Systems\Physics</Filter>
+      <Filter>Systems\SheepPhysics</Filter>
     </ClCompile>
     <ClCompile Include="PhysicsObject.cpp">
-      <Filter>Systems\Physics\Object</Filter>
+      <Filter>Systems\SheepPhysics\Object</Filter>
     </ClCompile>
     <ClCompile Include="SheepAudio.cpp">
       <Filter>Systems\Audio</Filter>
@@ -258,6 +264,12 @@
     <ClCompile Include="Vec2.cpp">
       <Filter>BaseTypes\Vectors\Vec2</Filter>
     </ClCompile>
+    <ClCompile Include="DrawLib.cpp">
+      <Filter>Systems\SheepGraphics\DrawLibrary</Filter>
+    </ClCompile>
+    <ClCompile Include="Vec4.cpp">
+      <Filter>BaseTypes\Vectors\Vec4</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Precompiled">
@@ -278,17 +290,8 @@
     <Filter Include="Systems\Generic">
       <UniqueIdentifier>{3a439a3c-d085-4fc6-bb59-a35f509a1c64}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Systems\Graphics">
-      <UniqueIdentifier>{a968d908-06c5-4e5c-82f0-a974fd4acac9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Systems\Physics">
-      <UniqueIdentifier>{769279fe-5748-46f1-9dd9-423d9ea3d18e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Systems\Audio">
       <UniqueIdentifier>{bc7e198a-5dab-4dd4-915f-67b9dee23935}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Systems\Physics\Object">
-      <UniqueIdentifier>{fa43fa63-ae4a-429d-8981-dd9b59a0e321}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine">
       <UniqueIdentifier>{f26780e7-b0b3-43e3-8254-3bbfaee7090d}</UniqueIdentifier>
@@ -421,6 +424,21 @@
     </Filter>
     <Filter Include="BaseTypes\Vectors\Vec2">
       <UniqueIdentifier>{6c7d8c33-3dfe-4027-95bf-c76e53cf88a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BaseTypes\Vectors\Vec4">
+      <UniqueIdentifier>{a3dcabed-9f70-443b-8446-6fcc87ae54d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\SheepGraphics">
+      <UniqueIdentifier>{a968d908-06c5-4e5c-82f0-a974fd4acac9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\SheepGraphics\DrawLibrary">
+      <UniqueIdentifier>{6123afe0-6b3c-4c65-944f-904d578f9749}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\SheepPhysics">
+      <UniqueIdentifier>{769279fe-5748-46f1-9dd9-423d9ea3d18e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\SheepPhysics\Object">
+      <UniqueIdentifier>{fa43fa63-ae4a-429d-8981-dd9b59a0e321}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
