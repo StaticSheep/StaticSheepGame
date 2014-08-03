@@ -1,6 +1,7 @@
 #include <assert.h>
 #include <crtdbg.h>
 #include <map>
+#include <vector>
 #include <string>
 
 #include "api.h"

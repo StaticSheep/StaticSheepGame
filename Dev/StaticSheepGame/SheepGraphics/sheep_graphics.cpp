@@ -8,7 +8,7 @@ using namespace DirectX;
 DirectSheep::DirectX_Core* CORE = NULL;
 DirectSheep::VertexBufferQuad *QUAD = NULL;
 DirectSheep::States *STATES = NULL;
-DirectSheep::TextureMap TEXTUREMAP;
+DirectSheep::TextureMap *TEXTUREMAP = NULL;
 DirectSheep::shapeStates SHAPESTATES;
 DirectSheep::Camera *CAMERA = NULL;
 
@@ -20,7 +20,6 @@ namespace DirectSheep
   void LoadAssets(void);
   void LoadEffect(void);
   void SetStates(void);
-  ID3D11ShaderResourceView* GetTexture(std::string texture);
 
   GFX_API void InitD3D(HWND hWnd, int screenWidth, int screenHeight)
   {
@@ -32,6 +31,7 @@ namespace DirectSheep
     CORE = new DirectX_Core;
     QUAD = new VertexBufferQuad;
     STATES = new States;
+    TEXTUREMAP = new TextureMap;
     CAMERA = new Camera;
 
     ScreenWidth = (int)screenWidth;
@@ -171,8 +171,6 @@ namespace DirectSheep
 
     D3DXMATRIX scaleMat, rotMat, transMat;
 
-    ID3D11ShaderResourceView* Texture = GetTexture(SHAPESTATES.filename);
-
     D3DXMatrixIdentity(&rotMat);
     D3DXMatrixIdentity(&transMat);
     D3DXMatrixIdentity(&scaleMat);
@@ -203,7 +201,7 @@ namespace DirectSheep
     CORE->devcon->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
     CORE->devcon->UpdateSubresource(CORE->pCBuffer, 0, 0, &matFinal, 0, 0);
-    CORE->devcon->PSSetShaderResources(0, 1, &Texture);
+    CORE->devcon->PSSetShaderResources(0, 1, &TEXTUREMAP->TextureVec[SHAPESTATES.TexID]);
     CORE->devcon->Draw(6, 0);
   }
 
@@ -356,9 +354,6 @@ namespace DirectSheep
     if(CORE->swapchain)
       CORE->swapchain->SetFullscreenState(FALSE, NULL);    // switch to windowed mode
 
-    for( TextureMap::iterator it = TEXTUREMAP.begin(); it != TEXTUREMAP.end(); ++it)
-      it->second->Release();
-
     SafeRelease(STATES->BS);
     SafeRelease(STATES->RSDefault);
     SafeRelease(STATES->SS);
@@ -373,8 +368,12 @@ namespace DirectSheep
     SafeRelease(CORE->dev);
     SafeRelease(CORE->swapchain);
 
+    for(int i  = 0; i < TEXTUREMAP->TextureVec.size(); ++i)
+      SafeRelease(TEXTUREMAP->TextureVec[i]);
+      
     delete CORE;
     delete QUAD;
+    delete CAMERA;
     delete STATES;
     delete CAMERA;
 
@@ -446,14 +445,15 @@ namespace DirectSheep
   {
     ID3D11ShaderResourceView* newTexture = NULL;
 
-    if(SUCCEEDED(D3DX11CreateShaderResourceViewFromFile(CORE->dev,        // the Direct3D device
-                                                        filename.c_str(),   // load Wood.png in the local folder
-                                                        NULL,             // no additional information
-                                                        NULL,             // no multithreading
-                                                        &newTexture,      // address of the shader-resource-view
+    if(SUCCEEDED(D3DX11CreateShaderResourceViewFromFile(CORE->dev,       // the Direct3D device
+                                                        filename.c_str(),// load texture at path
+                                                        NULL,            // no additional information
+                                                        NULL,            // no multithreading
+                                                        &newTexture,     // address of the shader-resource-view
                                                         NULL)))          // no multithreading
     {
-      TEXTUREMAP[filename.c_str()] = newTexture;
+      TEXTUREMAP->TextureVec.push_back(newTexture);
+      TEXTUREMAP->TextureIndex[filename.c_str()] = TEXTUREMAP->TextureVec.size() - 1;
     }
     else
     {
@@ -461,15 +461,15 @@ namespace DirectSheep
     }
   }
 
-  ID3D11ShaderResourceView* GetTexture(std::string texture)
+ GFX_API int GetTextureID(std::string& texture)
   {
-    TextureMap::iterator it = TEXTUREMAP.find(texture);
-    if(it != TEXTUREMAP.end())
+    auto it = TEXTUREMAP->TextureIndex.find(texture);
+    if(it != TEXTUREMAP->TextureIndex.end())
       return it->second;
     else
     {
-       LoadTexture(texture);
-       return GetTexture(texture); 
+      LoadTexture(texture);
+      return GetTextureID(texture);
     }
   }
 
@@ -477,17 +477,20 @@ namespace DirectSheep
   {
     SHAPESTATES.position = Vec2(x, y);
   }
+
   GFX_API void SetRotation(float theta)
   {
     SHAPESTATES.rotation = theta;
   }
+
   GFX_API void SetSize(float x, float y)
   {
     SHAPESTATES.scale = Vec2(x, y);
   }
-  GFX_API void SetTexture(std::string& filepath)
+
+  GFX_API void SetTexture(int ID)
   {
-    SHAPESTATES.filename = filepath;
+    SHAPESTATES.TexID = ID;
   }
   GFX_API void SetUseCamera(bool useCam)
   {

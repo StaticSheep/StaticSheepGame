@@ -24,10 +24,15 @@ namespace Framework
 		GRAPHICS = this;
 	}
 
+  void SheepGraphics::RegisterComponents()
+  {
+    REGISTER_COMPONENT(Sprite);
+  }
+
 	SheepGraphics::~SheepGraphics()
 	{
 		// Free anything that was allocated
-    DirectSheep::GFX_Release_D3D();
+    DirectSheep::ReleaseD3D();
 	}
 
 	void SheepGraphics::Initialize()
@@ -40,54 +45,85 @@ namespace Framework
     _ScreenWidth = ENGINE->Window.width;
     _ScreenHeight = ENGINE->Window.height;
 
-    DirectSheep::GFX_Init_D3D(_HWnd, _ScreenWidth, _ScreenHeight);
+    DirectSheep::InitD3D(_HWnd, _ScreenWidth, _ScreenHeight);
 	}
 
 	void SheepGraphics::Update(float dt)
 	{
 		// Draw stuff
 
-<<<<<<< HEAD
-		DirectSheep::GFX_Update(dt);
-=======
-		DirectSheep::GFX_Draw();
->>>>>>> a09223542907cc60ee0214a25032b473619a3a4d
+		DirectSheep::StartFrame(dt);
 
     Draw();
+
+    FinishFrame();
 	}
 
 	void SheepGraphics::Draw()
 	{
-<<<<<<< HEAD
-    SetupMatrices();
-
-    DirectSheep::GFX_Draw();
-=======
     // Draw Hooks
     GameSpace* space;
+    SetupMatrices();
 
     // Regular Draw
     for (auto it = ENGINE->Spaces().begin(); it != ENGINE->Spaces().end(); ++it)
     {
       space = *it;
       if (!space->Hidden())
-        space->hooks.Call("Draw", dt);
+        space->hooks.Call("Draw");
     }
-    Lua::CallFunc(ENGINE->Lua(), "hook.Call", "Draw", dt);
+    Lua::CallFunc(ENGINE->Lua(), "hook.Call", "Draw");
 
     // Post Draw
     for (auto it = ENGINE->Spaces().begin(); it != ENGINE->Spaces().end(); ++it)
     {
       space = *it;
       if (!space->Hidden())
-        space->hooks.Call("PostDraw", dt);
+        space->hooks.Call("PostDraw");
     }
-    Lua::CallFunc(ENGINE->Lua(), "hook.Call", "PostDraw", dt);
->>>>>>> a09223542907cc60ee0214a25032b473619a3a4d
+    Lua::CallFunc(ENGINE->Lua(), "hook.Call", "PostDraw");
+
+    
 	}
 
   void SheepGraphics::SetupMatrices()
   {
     DirectSheep::SetupMatrices();
+  }
+
+  void SheepGraphics::SetPosition(float x, float y)
+  {
+    DirectSheep::SetPosition(x, y);
+  }
+  void SheepGraphics::SetRotation(float theta)
+  {
+    DirectSheep::SetRotation(theta);
+  }
+  void SheepGraphics::SetSize(float x, float y)
+  {
+    DirectSheep::SetSize(x, y);
+  }
+  void SheepGraphics::SetTexture(int ID)
+  {
+    DirectSheep::SetTexture(ID);
+  }
+  void SheepGraphics::DrawSprite(void)
+  {
+    DirectSheep::DrawSprite();
+  }
+  void SheepGraphics::FinishFrame()
+  {
+    DirectSheep::FinishFrame();
+  }
+<<<<<<< HEAD
+
+  int SheepGraphics::GetTextureID(std::string& texture)
+  {
+    return DirectSheep::GetTextureID(texture);
+=======
+  void SheepGraphics::SetUseCamera(bool useCam)
+  {
+    DirectSheep::SetUseCamera(useCam);
+>>>>>>> 5cb4d933d5fd5cbfe516b21c4a2173472925ae25
   }
 }
