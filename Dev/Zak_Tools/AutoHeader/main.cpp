@@ -30,6 +30,14 @@ void ParseLines(std::vector<std::string>& contents, std::string& pattern);
 /*****************************************************************************/
 int main(int argc, char* argv[])
 {
+
+  char wPath[ MAX_PATH ];
+  GetModuleFileName( NULL, wPath, MAX_PATH );
+
+  wPath[strlen(wPath) - strlen(argv[0])] = 0;
+
+  std::cout << "Working Path: " << wPath << "\n";
+
   //check if enough arguments were given.
   
   if(argc != 4)
@@ -42,8 +50,12 @@ int main(int argc, char* argv[])
   //example command line
   //a C:\Users\Zakary\Desktop\SandBox\AutoHeader\ C:\Users\Zakary\Desktop\SandBox\AutoHeader\output\ SHEEP_API
   
-  std::string sourcePath = argv[1];
-  std::string destPath = argv[2];
+  std::string sourcePath = wPath;
+  sourcePath += argv[1];
+
+  std::string destPath = wPath;
+  destPath += argv[2];
+
   std::string keepPattern = argv[3];
   
   //look for header files
@@ -70,7 +82,7 @@ int main(int argc, char* argv[])
   if( hFind == INVALID_HANDLE_VALUE )
   {
       //exit out
-      std::cout << "Error searching directory\n";
+      std::cout << "Error searching directory.\n";
       return -1;
   }
   
@@ -80,7 +92,7 @@ int main(int argc, char* argv[])
   //do this while there are still files to be found
   do
   {
-    std::string filePath = fileData.cFileName;
+    std::string filePath = sourcePath + fileData.cFileName;
     std::cout << filePath << "\n";
     
     std::ifstream in( filePath.c_str() );
@@ -88,10 +100,7 @@ int main(int argc, char* argv[])
     //about to open a file...
     std::ofstream out;
     
-    fullOut = destPath + filePath;
-    
-    //open the file in the output directory
-    out.open(fullOut.c_str());
+    fullOut = destPath + fileData.cFileName;
     
     //if the file was opened
     if(in)
@@ -113,6 +122,9 @@ int main(int argc, char* argv[])
       ParseLines(contents, keepPattern);
       
       std::cout << fullOut.c_str() << "\n";
+
+      //open the file in the output directory
+      out.open(fullOut.c_str());
       
       //if the file was correctly opened for writing
       if(out)
@@ -124,8 +136,12 @@ int main(int argc, char* argv[])
         for( it = contents.begin(); it != contents.end(); ++it)
         {
           //shove it in there
-          out << contents[i++];
+          out << contents[i++] << "\n";
         }
+      }
+      else
+      {
+        std::cout << "Unable to open output file!\n";
       }
       
       //clear our vector
@@ -136,8 +152,25 @@ int main(int argc, char* argv[])
     }
     else
     {
+      DWORD dw = GetLastError();
+      LPVOID lpMsgBuf;
+
+      FormatMessage(
+        FORMAT_MESSAGE_ALLOCATE_BUFFER | 
+        FORMAT_MESSAGE_FROM_SYSTEM |
+        FORMAT_MESSAGE_IGNORE_INSERTS,
+        NULL,
+        dw,
+        MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+        (LPTSTR) &lpMsgBuf,
+        0, NULL );
+
+
       std::cout << "Problem opening file " 
                 << fileData.cFileName << "\n";
+      std::cout << (LPSTR)lpMsgBuf << "\n";
+
+      LocalFree(lpMsgBuf);
     }
   }
   //while there are more files, open the next one
