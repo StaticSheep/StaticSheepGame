@@ -6,7 +6,7 @@ local pos = nil
 
 local function Init()
   local gspace = engine.CreateSpace("test")
-  local object = gspace:CreateObject("drawtest")
+  -- local object = gspace:CreateObject("drawtest")
   -- object = gspace:CreateObject("drawtest")
   -- transform = object:GetComponent(0)
 
@@ -64,15 +64,27 @@ local function Draw()
   -- surface.DrawRect(0, 0, 256, 256)
   -- surface.DrawRect(0, 0, 512, 128)
   -- surface.DrawLine(50, 500 + 5 * i, 700, 200 + 5 * i, 10)
-  -- if up then
-  --   i = i + 1
-  --   if i > 10 then up = false end
-  -- else
-  --   i = i - 1
-  --   if i < 1 then up = true end
-  -- end
 
-  surface.DrawRect(0, 0, 400, 300)
+
+  if up then
+    i = i + 1
+    if i > 10 then up = false end
+  else
+    i = i - 1
+    if i < 1 then up = true end
+  end
+
+  local texID = surface.GetTextureID("content/test.png")
+  surface.SetTexture(texID)
+  surface.DrawTexturedRect(0, i * 50, 256, 256)
+
+  local texID2 = surface.GetTextureID("content/bricks.png")
+  surface.SetTexture(texID2)
+  surface.DrawTexturedRect(256, i * 50, 256, 256)
+
+
+
+  -- surface.DrawRect(0, 0, 400, 300)
 
 end
 

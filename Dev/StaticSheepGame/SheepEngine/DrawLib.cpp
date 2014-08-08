@@ -25,7 +25,13 @@ namespace Framework
   void Draw::SetTexture(UINT texID)
   {
     Draw::m_TextureID = texID;
-    //GRAPHICS->SetTexture(texID);
+    GRAPHICS->SetTexture(texID);
+  }
+
+  int Draw::GetTextureID(const char* texName)
+  {
+    std::string texString = texName;
+    return GRAPHICS->GetTextureID(texString);
   }
 
   //void Draw::SetColor(Vec4& color)
@@ -70,6 +76,8 @@ namespace Framework
 
   void Draw::DrawTexturedRect(float x, float y, float width, float height)
   {
+    m_useCamera = false;
+
     if (Draw::m_useCamera)
       GRAPHICS->SetPosition(x + width / 2, y - height / 2);
     else
@@ -78,9 +86,9 @@ namespace Framework
     GRAPHICS->SetSize(width, height);
     GRAPHICS->SetRotation(0.0f);
 
-    //GRAPHICS->SetTexture(m_TextureID);
+    GRAPHICS->SetTexture(m_TextureID);
 
-    //GRAPHICS->SetUseCamera(m_useCamera);
+    GRAPHICS->SetUseCamera(m_useCamera);
 
     GRAPHICS->DrawSprite();
   }

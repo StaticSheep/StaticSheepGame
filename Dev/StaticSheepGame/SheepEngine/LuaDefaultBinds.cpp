@@ -46,6 +46,7 @@ namespace Framework
       BIND_FUNCTION_TABLE(ENGINE->Lua(), Draw::SetTexture, SetTexture, surface);
       BIND_FUNCTION_TABLE(ENGINE->Lua(), Draw::SetUseCamera, SetUseCamera, surface);
       BIND_FUNCTION_TABLE(ENGINE->Lua(), Draw::SetTextPos, SetTextPos, surface);
+      BIND_FUNCTION_TABLE(ENGINE->Lua(), Draw::GetTextureID, GetTextureID, surface);
       BIND_FUNCTION_TABLE(ENGINE->Lua(), Draw::DrawRect, DrawRect, surface);
       BIND_FUNCTION_TABLE(ENGINE->Lua(), Draw::DrawTexturedRect, DrawTexturedRect, surface);
       BIND_FUNCTION_TABLE(ENGINE->Lua(), Draw::DrawLine, DrawLine, surface);

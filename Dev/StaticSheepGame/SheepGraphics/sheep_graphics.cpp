@@ -34,8 +34,8 @@ namespace DirectSheep
     TEXTUREMAP = new TextureMap;
     CAMERA = new Camera;
 
-    ScreenWidth = (int)screenWidth;
-    ScreenHeight = (int)screenHeight;
+    ScreenWidth = (float)screenWidth;
+    ScreenHeight = (float)screenHeight;
 
     ZeroMemory(CORE, sizeof(DirectX_Core));
     ZeroMemory(QUAD, sizeof(VertexBufferQuad));
@@ -343,6 +343,7 @@ namespace DirectSheep
 
     Mat4 matProj;
     D3DXMatrixOrthoLH(&matProj, CAMERA->ScreenDimensions.x, CAMERA->ScreenDimensions.y, 1.0f, 100.0f);
+    //XMMatrixOrthographicOffCenterLH(0, ScreenWidth, ScreenHeight, 0, 1.0f, 100.0f);
 
     CAMERA->ProjMatrix = matProj;
 
@@ -375,7 +376,7 @@ namespace DirectSheep
     delete QUAD;
     delete CAMERA;
     delete STATES;
-    delete CAMERA;
+    delete TEXTUREMAP;
 
     CORE = NULL;
     QUAD = NULL;

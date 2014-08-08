@@ -15,6 +15,7 @@ namespace Framework
   public:
     static void SetUseCamera(bool useCam);
     static void SetTexture(UINT texID);
+    static int  GetTextureID(const char* texName);
     //static void SetColor(Vec4& color);
     static void SetColor(float r, float g, float b, float a=255);
     static void SetTextPos(float x, float y);

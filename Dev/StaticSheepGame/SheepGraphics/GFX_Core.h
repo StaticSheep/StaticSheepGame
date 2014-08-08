@@ -49,6 +49,6 @@ namespace DirectSheep
 
 extern DirectSheep::DirectX_Core* CORE;
 extern DirectSheep::States *STATES;
-extern DirectSheep::TextureMap TEXTUREMAP;
+extern DirectSheep::TextureMap *TEXTUREMAP;
 extern float ScreenWidth;
 extern float ScreenHeight;
