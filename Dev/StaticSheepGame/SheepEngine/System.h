@@ -38,7 +38,9 @@ namespace Framework
     virtual void Shutdown() {};
 
 		// Virtual deconstructer
-		virtual ~ISystem() {};
+		SHEEP_API virtual ~ISystem() {};
+
+    SHEEP_API ISystem() {};
 		
 	};
 }

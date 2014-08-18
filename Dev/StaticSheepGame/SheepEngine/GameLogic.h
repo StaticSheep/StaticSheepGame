@@ -16,9 +16,9 @@ namespace Framework
   {
   public:
     // Sheep graphics interface constructor
-    GameLogic();
+    SHEEP_API GameLogic();
     // Sheep graphics interface deconstructor
-    ~GameLogic();
+    SHEEP_API ~GameLogic();
 
     virtual std::string GetName() {return "GameLogic";};
 

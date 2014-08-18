@@ -270,6 +270,7 @@
     <ClCompile Include="Vec4.cpp">
       <Filter>BaseTypes\Vectors\Vec4</Filter>
     </ClCompile>
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Precompiled">

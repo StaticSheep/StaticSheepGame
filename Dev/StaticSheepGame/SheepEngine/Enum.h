@@ -4,6 +4,10 @@
 #include <hash_map>
 #include <string>
 
+#include "Macros.h"
+#include "File.h"
+#include "Variable.h"
+
 namespace Framework
 {
 

@@ -60,23 +60,17 @@ namespace Framework
   }
 
   template <typename T>
-  Variable::Variable(const T& rhs)
-    : m_data((T* )&rhs)
-    , m_typeInfo(GET_TYPE(T))
+  Variable::Variable(const T& rhs) : m_data((T* )&rhs), m_typeInfo(GET_TYPE(T))
   {
   }
 
   template <typename T>
-  Variable::Variable(const T* rhs)
-    : m_data((T* )rhs)
-    , m_typeInfo(GET_TYPE(T* ))
+  Variable::Variable(const T* rhs) : m_data((T* )rhs), m_typeInfo(GET_TYPE(T* ))
   {
   }
 
   template <typename T>
-  Variable::Variable(T* rhs)
-    : m_data((T* )rhs)
-    , m_typeInfo(GET_TYPE(T* ))
+  Variable::Variable(T* rhs) : m_data((T* )rhs), m_typeInfo(GET_TYPE(T* ))
   {
   }
 
@@ -84,26 +78,18 @@ namespace Framework
   template <typename T>
   struct CastHelper
   {
-    static T& Cast(void *& data)
-    {
-      return *(T* &)(data);
-    }
+    static T& Cast(void *& data) { return *(T* &)(data); }
   };
 
   template <typename T>
   struct CastHelper<T* >
   {
-    static T* & Cast(void *& data)
-    {
-      return (T* &)data;
-    }
+    static T* & Cast(void *& data) { return (T* &)data; }
   };
 
   template <typename T>
   T& Variable::GetValue(void)
   {
-    //assert(GET_TYPE(T) == m_typeInfo);
-    
     return CastHelper<T>::Cast(m_data);
   }
 
