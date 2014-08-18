@@ -36,7 +36,7 @@ int main(int argc, char* argv[])
 
   wPath[strlen(wPath) - strlen(argv[0])] = 0;
 
-  std::cout << "Working Path: " << wPath << "\n";
+  //std::cout << "Working Path: " << wPath << "\n";
 
   //check if enough arguments were given.
   
@@ -65,7 +65,7 @@ int main(int argc, char* argv[])
   //create the entire path
   std::string fullOut;
   
-  std::cout << fullPath << std::endl;
+  //std::cout << fullPath << std::endl;
   
   //stores the file data
   WIN32_FIND_DATA fileData;
@@ -93,15 +93,34 @@ int main(int argc, char* argv[])
   do
   {
     std::string filePath = sourcePath + fileData.cFileName;
-    std::cout << filePath << "\n";
     
     std::ifstream in( filePath.c_str() );
-    
+
     //about to open a file...
     std::ofstream out;
     
     fullOut = destPath + fileData.cFileName;
-    
+
+    WIN32_FIND_DATA outFileData;
+    HANDLE outHFind;
+
+    outHFind = FindFirstFile(fullOut.c_str(), &outFileData);
+
+    bool updateFile = true;
+
+    if (outHFind != INVALID_HANDLE_VALUE)
+    {
+      int fileNewer = CompareFileTime(&fileData.ftLastWriteTime, &outFileData.ftLastWriteTime);
+
+      if (fileNewer < 0)
+        updateFile = false;
+    }
+
+    if(!updateFile)
+      continue;
+
+    std::cout << "Updating: " << filePath << "\n";
+
     //if the file was opened
     if(in)
     {
@@ -121,7 +140,7 @@ int main(int argc, char* argv[])
       //non API functions
       ParseLines(contents, keepPattern);
       
-      std::cout << fullOut.c_str() << "\n";
+      //std::cout << fullOut.c_str() << "\n";
 
       //open the file in the output directory
       out.open(fullOut.c_str());
