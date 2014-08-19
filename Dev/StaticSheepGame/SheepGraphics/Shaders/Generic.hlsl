@@ -3,31 +3,36 @@ cbuffer ConstantBuffer
     float4x4 matFinal;
 }
 
-Texture2D Texture;
-SamplerState ss;
+Texture2D Texture : register(t0);
+Texture2D boop : register(t1);
 
-struct VOut
+SamplerState ss : register(s0);
+
+struct VertexShaderInput
+{
+  float3 position : POSITION0;
+  float2 texcoord : TEXCOORD;
+};
+
+struct PixelShaderInput
 {
     float4 position : SV_POSITION;
-    float4 color : COLOR;
     float2 texcoord : TEXCOORD;    // texture coordinates
 };
 
-VOut VShader(float3 position : POSITION, float4 color : COLOR, float2 texcoord : TEXCOORD)
+PixelShaderInput VShader(VertexShaderInput input)
 {
-    VOut output;
+    PixelShaderInput output;
 
-    output.position = mul(matFinal, float4(position, 1));
+    output.position = mul(matFinal, float4(input.position, 1));
 
-    output.color = color;
-
-    output.texcoord = texcoord;    // set the texture coordinates, unmodified
+    output.texcoord = input.texcoord;    // set the texture coordinates, unmodified
 
     return output;
 }
 
-float4 PShader(float4 position : SV_POSITION, float4 color : COLOR, float2 texcoord : TEXCOORD) : SV_TARGET
+float4 PShader(PixelShaderInput input) : SV_TARGET
 {
-    float4 newcolor = color * Texture.Sample(ss, texcoord);
+    float4 newcolor = Texture.Sample(ss, input.texcoord);
     return newcolor;
 }
