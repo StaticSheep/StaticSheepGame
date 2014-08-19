@@ -15,9 +15,10 @@
     <ClInclude Include="api.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="DirectXIncludes.h" />
-    <ClInclude Include="GFX_Core.h" />
+    <ClInclude Include="DataTypes.h" />
     <ClInclude Include="precompiled.h" />
-    <ClInclude Include="sheep_graphics.h" />
+    <ClInclude Include="RenderMain.h" />
+    <ClInclude Include="System.h" />
     <ClInclude Include="VertexTypes.h" />
     <ClInclude Include="WindowsIncludes.h" />
   </ItemGroup>
@@ -28,10 +29,11 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="sheep_graphics.cpp" />
+    <ClCompile Include="RenderMain.cpp" />
+    <ClCompile Include="System.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Shaders\Shaders.hlsl">
+    <None Include="Shaders\Generic.hlsl">
       <FileType>Document</FileType>
     </None>
     <FxCompile Include="Shaders\Debug.fx">

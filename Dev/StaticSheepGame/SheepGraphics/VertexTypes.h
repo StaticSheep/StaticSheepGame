@@ -23,11 +23,5 @@ namespace DirectSheep
     float tu, tv;  // u, v
   };
 
-  struct VertexBufferQuad
-  {
-    ID3D11Buffer *vBuffer;
-  };
-
 }
 
-extern DirectSheep::VertexBufferQuad *QUAD;

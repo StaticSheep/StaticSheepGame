@@ -8,20 +8,20 @@
 
 #include "Utilities.h"
 
-
 #include "WindowsIncludes.h"
 #include "DirectXIncludes.h"
 #include "VertexTypes.h"
-#include "GFX_Core.h"
+#include "DataTypes.h"
 #include "Camera.h"
 
-#include "sheep_graphics.h"
+#include "System.h"
+#include "RenderMain.h"
 
 
 
 
 #if defined(_DEBUG)
-#define DXVerify(exp) if(FAILED(exp)){DirectSheep::ReleaseD3D(); ErrorIf(true, "sheep_grahics", "DX Error %s", DXGetErrorDescription(exp));}
+#define DXVerify(exp) if(FAILED(exp)){DirectSheep::Release(); ErrorIf(true, "sheep_grahics", "DX Error %s", DXGetErrorDescription(exp));}
 #else
 #define DXVerify(x) (x)
 #endif

@@ -4,51 +4,52 @@
     <ClInclude Include="precompiled.h">
       <Filter>Precompiled</Filter>
     </ClInclude>
-    <ClInclude Include="GFX_Core.h">
-      <Filter>Export\System</Filter>
-    </ClInclude>
     <ClInclude Include="..\includes\Utilities.h">
       <Filter>Utility</Filter>
     </ClInclude>
-    <ClInclude Include="api.h">
-      <Filter>Export\System</Filter>
+    <ClInclude Include="Camera.h">
+      <Filter>Camera</Filter>
     </ClInclude>
-    <ClInclude Include="VertexTypes.h">
-      <Filter>Utility</Filter>
+    <ClInclude Include="api.h" />
+    <ClInclude Include="DataTypes.h">
+      <Filter>System</Filter>
     </ClInclude>
-    <ClInclude Include="WindowsIncludes.h">
-      <Filter>Utility</Filter>
+    <ClInclude Include="System.h">
+      <Filter>System</Filter>
     </ClInclude>
-    <ClInclude Include="sheep_graphics.h">
-      <Filter>Export\System</Filter>
+    <ClInclude Include="RenderMain.h">
+      <Filter>Rendering</Filter>
     </ClInclude>
     <ClInclude Include="DirectXIncludes.h">
-      <Filter>Utility</Filter>
+      <Filter>DirectX</Filter>
     </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>Export\System\Camera</Filter>
+    <ClInclude Include="WindowsIncludes.h">
+      <Filter>Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexTypes.h">
+      <Filter>Rendering</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="precompiled.cpp">
       <Filter>Precompiled</Filter>
     </ClCompile>
-    <ClCompile Include="sheep_graphics.cpp">
-      <Filter>Export\System</Filter>
-    </ClCompile>
     <ClCompile Include="..\Utilities\Utilities.cpp">
       <Filter>Utility</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
-      <Filter>Export\System\Camera</Filter>
+      <Filter>Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="System.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderMain.cpp">
+      <Filter>Rendering</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Precompiled">
       <UniqueIdentifier>{a5a560d4-872a-453a-97cc-59e7f8f44453}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Export">
-      <UniqueIdentifier>{04419d11-f29c-4779-aaf2-d0393ab8a53f}</UniqueIdentifier>
     </Filter>
     <Filter Include="Utility">
       <UniqueIdentifier>{1279bd1c-a70e-4ca6-8348-ec1f2f850348}</UniqueIdentifier>
@@ -56,11 +57,20 @@
     <Filter Include="Shaders">
       <UniqueIdentifier>{7d703b8e-8695-4c5f-9375-a38fee5840e4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Export\System">
-      <UniqueIdentifier>{ffd8dbc0-5b20-4e20-b1b1-9efa8e28ff5a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Export\System\Camera">
+    <Filter Include="Camera">
       <UniqueIdentifier>{7630c33b-d3c6-43d5-812a-bf5ff5e6ea98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="System">
+      <UniqueIdentifier>{04419d11-f29c-4779-aaf2-d0393ab8a53f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rendering">
+      <UniqueIdentifier>{f8bdda45-6281-44f0-8d70-2374333d8453}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DirectX">
+      <UniqueIdentifier>{01a266ec-e1df-4303-b9f7-626e9c184612}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Win32">
+      <UniqueIdentifier>{0e4f961d-8cad-4d84-988e-dafa50f577d3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -69,7 +79,7 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Shaders\Shaders.hlsl">
+    <None Include="Shaders\Generic.hlsl">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

@@ -7,7 +7,9 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 *****************************************************************/
 
 #include "SheepGraphics.h"
-#include "graphics\sheep_graphics.h"
+#include "graphics\api.h"
+#include "graphics\System.h"
+#include "graphics\RenderMain.h"
 #include <Windows.h>
 
 namespace Framework
@@ -32,7 +34,7 @@ namespace Framework
 	SheepGraphics::~SheepGraphics()
 	{
 		// Free anything that was allocated
-    DirectSheep::ReleaseD3D();
+    DirectSheep::Release();
 	}
 
 	void SheepGraphics::Initialize()
@@ -45,7 +47,7 @@ namespace Framework
     _ScreenWidth = ENGINE->Window.width;
     _ScreenHeight = ENGINE->Window.height;
 
-    DirectSheep::InitD3D(_HWnd, _ScreenWidth, _ScreenHeight);
+    DirectSheep::Init(_HWnd, _ScreenWidth, _ScreenHeight);
 	}
 
 	void SheepGraphics::Update(float dt)
@@ -63,7 +65,6 @@ namespace Framework
 	{
     // Draw Hooks
     GameSpace* space;
-    SetupMatrices();
 
     // Regular Draw
     for (auto it = ENGINE->Spaces().begin(); it != ENGINE->Spaces().end(); ++it)
@@ -82,14 +83,8 @@ namespace Framework
         space->hooks.Call("PostDraw");
     }
     Lua::CallFunc(ENGINE->Lua(), "hook.Call", "PostDraw");
-
     
 	}
-
-  void SheepGraphics::SetupMatrices()
-  {
-    DirectSheep::SetupMatrices();
-  }
 
   void SheepGraphics::SetPosition(float x, float y)
   {

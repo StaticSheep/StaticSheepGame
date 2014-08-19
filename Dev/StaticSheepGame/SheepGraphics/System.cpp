@@ -9,19 +9,20 @@ DirectSheep::DirectX_Core* CORE = NULL;
 DirectSheep::VertexBufferQuad *QUAD = NULL;
 DirectSheep::States *STATES = NULL;
 DirectSheep::TextureMap *TEXTUREMAP = NULL;
-DirectSheep::shapeStates SHAPESTATES;
-DirectSheep::Camera *CAMERA = NULL;
+DirectSheep::ShaderMap SHADERMAP;
 
 float ScreenHeight = 0;
 float ScreenWidth = 0;
 
 namespace DirectSheep
 {
-  void LoadAssets(void);
-  void LoadEffect(void);
-  void SetStates(void);
+  void InitGeometry(void);
+  void SetStates(void); //TODO
+  void LoadDefaultShader(void);
+  void SetupMatrices(void);
+  void CreateConstantBuffer(void);
 
-  GFX_API void InitD3D(HWND hWnd, int screenWidth, int screenHeight)
+  GFX_API void Init(HWND hWnd, int screenWidth, int screenHeight)
   {
 
     HRESULT hr = S_OK;
@@ -162,226 +163,11 @@ namespace DirectSheep
     CAMERA->ScreenDimensions = Vec2(ScreenWidth, ScreenHeight);
 
     SetStates();
-    LoadAssets();
-  }
 
-  GFX_API void DrawSprite()
-  {
-    Mat4 matFinal;
-
-    D3DXMATRIX scaleMat, rotMat, transMat;
-
-    D3DXMatrixIdentity(&rotMat);
-    D3DXMatrixIdentity(&transMat);
-    D3DXMatrixIdentity(&scaleMat);
-
-    D3DXMatrixScaling(&scaleMat,SHAPESTATES.scale.x, SHAPESTATES.scale.y, 1.0f);
-    D3DXMatrixRotationZ(&rotMat, SHAPESTATES.rotation);
-    D3DXMatrixMultiply(&scaleMat, &scaleMat, &rotMat);
-
-    if (SHAPESTATES.useCamera)
-      D3DXMatrixTranslation(&transMat, floor(SHAPESTATES.position.x), floor(SHAPESTATES.position.y), floor(0.0f));
-    else
-      D3DXMatrixTranslation(&transMat, floor(SHAPESTATES.position.x) - ScreenWidth / 2, floor(-SHAPESTATES.position.y) + ScreenHeight / 2, floor(0.0f));
-    
-    D3DXMatrixMultiply(&scaleMat, &scaleMat, &transMat);
-
-    matFinal = scaleMat * CAMERA->ViewProjMatrix;
-
-    CORE->devcon->RSSetState(STATES->RSDefault);
-
-    CORE->devcon->PSSetSamplers(0, 1, &STATES->SS);
-
-    CORE->devcon->OMSetBlendState(STATES->BS, 0, 0xffffffff);
-
-    UINT stride = sizeof(Vertex2D);
-    UINT offset = 0;
-    CORE->devcon->IASetVertexBuffers(0, 1, &QUAD->vBuffer, &stride, &offset);
-
-    CORE->devcon->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
-    CORE->devcon->UpdateSubresource(CORE->pCBuffer, 0, 0, &matFinal, 0, 0);
-    CORE->devcon->PSSetShaderResources(0, 1, &TEXTUREMAP->TextureVec[SHAPESTATES.TexID]);
-    CORE->devcon->Draw(6, 0);
-  }
-
-  GFX_API void FinishFrame()
-  {
-    CORE->swapchain->Present(0, 0);
-  }
-
-  GFX_API void StartFrame(float dt)
-  {
-
-    CORE->devcon->ClearRenderTargetView(CORE->backbuffer, (D3DXCOLOR)Colors::Black);
-
-    CORE->devcon->ClearDepthStencilView(CORE->zbuffer, D3D11_CLEAR_DEPTH, 1.0f, 0);
-  }
-
-  GFX_API void InitGeometry(void)
-  {
-
-    // create a triangle using the VERTEX struct
-    Vertex2D QuadVertices[] =
-    {
-        {Vec3(-0.5f, -0.5f, 0.0f), D3DXCOLOR(Colors::White), 0.0f, 1.0f},
-        {Vec3(-0.5f, 0.5f, 0.0f), D3DXCOLOR(Colors::White), 0.0f, 0.0f},
-        {Vec3(0.5f, -0.5f, 0.0f), D3DXCOLOR(Colors::White), 1.0f, 1.0f},
-
-        {Vec3(-0.5f, 0.5f, 0.0f), D3DXCOLOR(Colors::White), 0.0f, 0.0f},
-        {Vec3(0.5f, 0.5f, 0.0f), D3DXCOLOR(Colors::White), 1.0f, 0.0f},        
-        {Vec3(0.5f, -0.5f, 0.0f), D3DXCOLOR(Colors::White), 1.0f, 1.0f},
-    };
-
-    D3D11_BUFFER_DESC bd;
-    ZeroMemory(&bd, sizeof(bd));
-    bd.Usage = D3D11_USAGE_DYNAMIC;                // write access by CPU and GPU
-    bd.ByteWidth = sizeof(Vertex2D) * (sizeof(QuadVertices) / sizeof(Vertex2D));  // size is the VERTEX struct
-    bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;       // use as a vertex buffer
-    bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;    // allow CPU to write in buffer
-
-    DXVerify(CORE->dev->CreateBuffer(&bd, NULL, &QUAD->vBuffer));       // create the buffer
-
-    // copy the vertices into the buffer
-    D3D11_MAPPED_SUBRESOURCE ms;
-    CORE->devcon->Map(QUAD->vBuffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);    // map the buffer
-    memcpy(ms.pData, QuadVertices, sizeof(QuadVertices));                 // copy the data
-    CORE->devcon->Unmap(QUAD->vBuffer, NULL);
-
-  }
-
-  void LoadAssets(void)
-  {
     InitGeometry();
-
     LoadTexture("content/bricks.png");
-
-    //GFX_TODO call LoadTexture(filename) 
-    //for every texture you want on the texture map
-    LoadEffect();
-  }
-
-  void LoadEffect(void)
-  {
-    HRESULT hr;
-        // load and compile the two shaders
-    ID3D10Blob *VS, *PS, *Errors; // Raw data type used to hold buffers
-    D3DX11CompileFromFile("SheepGraphics/Shaders/Shaders.hlsl", 
-                          0, 
-                          0, 
-                          "VShader", 
-                          "vs_4_0", 
-                          D3D10_SHADER_OPTIMIZATION_LEVEL3 | D3D10_SHADER_WARNINGS_ARE_ERRORS, // fully optimized shader
-                          0, 
-                          0, 
-                          &VS, 
-                          &Errors, 
-                          0);
-
-    ErrorIf(Errors || !VS, "ShaderCompile", "Vertex Shader Failed To Compile"); // if there are any errors...
-
-    D3DX11CompileFromFile("SheepGraphics/Shaders/Shaders.hlsl", 
-                          0, 
-                          0, 
-                          "PShader", 
-                          "ps_4_0", 
-                          D3D10_SHADER_OPTIMIZATION_LEVEL3 | D3D10_SHADER_WARNINGS_ARE_ERRORS,
-                          0, 
-                          0, 
-                          &PS, 
-                          &Errors, 
-                          0);
-
-    ErrorIf(Errors || !PS, "ShaderCompile", "Pixel Shader Failed To Compile"); // if there are any errors...
-
-    // encapsulate both shaders into shader objects
-    DXVerify(CORE->dev->CreateVertexShader(VS->GetBufferPointer(), VS->GetBufferSize(), NULL, &CORE->pVS));
-    DXVerify(CORE->dev->CreatePixelShader(PS->GetBufferPointer(), PS->GetBufferSize(), NULL, &CORE->pPS));
-
-    // set the shader objects
-    CORE->devcon->VSSetShader(CORE->pVS, 0, 0);
-    CORE->devcon->PSSetShader(CORE->pPS, 0, 0);
-
-    // create the input layout object
-    D3D11_INPUT_ELEMENT_DESC ied[] =
-    {
-        {"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
-        {"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0},
-        {"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 28, D3D11_INPUT_PER_VERTEX_DATA, 0},
-    };
-
-    DXVerify(CORE->dev->CreateInputLayout(ied, ARRAYSIZE(ied), VS->GetBufferPointer(), VS->GetBufferSize(), &CORE->pLayout));
-    CORE->devcon->IASetInputLayout(CORE->pLayout);
-
-    D3D11_BUFFER_DESC bd;
-    ZeroMemory(&bd, sizeof(bd));
-
-    bd.Usage = D3D11_USAGE_DEFAULT;
-    bd.ByteWidth = 64;
-    bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-
-   DXVerify(CORE->dev->CreateBuffer(&bd, NULL, &CORE->pCBuffer));
-    CORE->devcon->VSSetConstantBuffers(0, 1, &CORE->pCBuffer);
-  }
-
-  GFX_API void SetupMatrices(void)
-  {
-    float cameraX = 0.0f;
-    float cameraY = 0.0f;
-    float cameraZ = -10.0f;
-
-    Vec3 eyepoint(cameraX, cameraY, cameraZ);
-
-    Vec3 lootAtPoint(cameraX, cameraY, 0.0f);
-
-    Vec3 upVector( 0.0f, 1.0f, 0.0f);
-
-    Mat4 matView;
-    D3DXMatrixLookAtLH(&matView, &eyepoint, &lootAtPoint, &upVector);
-
-    CAMERA->ViewMatrix = matView;
-
-    Mat4 matProj;
-    D3DXMatrixOrthoLH(&matProj, CAMERA->ScreenDimensions.x, CAMERA->ScreenDimensions.y, 1.0f, 100.0f);
-    //XMMatrixOrthographicOffCenterLH(0, ScreenWidth, ScreenHeight, 0, 1.0f, 100.0f);
-
-    CAMERA->ProjMatrix = matProj;
-
-    CAMERA->ViewProjMatrix = matView * matProj;
-  }
-
-  GFX_API void ReleaseD3D(void)
-  {
-    if(CORE->swapchain)
-      CORE->swapchain->SetFullscreenState(FALSE, NULL);    // switch to windowed mode
-
-    SafeRelease(STATES->BS);
-    SafeRelease(STATES->RSDefault);
-    SafeRelease(STATES->SS);
-    SafeRelease(QUAD->vBuffer);
-    SafeRelease(CORE->pCBuffer);
-    SafeRelease(CORE->pPS);
-    SafeRelease(CORE->pVS);
-    SafeRelease(CORE->pLayout);
-    SafeRelease(CORE->zbuffer);
-    SafeRelease(CORE->backbuffer);
-    SafeRelease(CORE->devcon);
-    SafeRelease(CORE->dev);
-    SafeRelease(CORE->swapchain);
-
-    for(int i  = 0; i < TEXTUREMAP->TextureVec.size(); ++i)
-      SafeRelease(TEXTUREMAP->TextureVec[i]);
-      
-    delete CORE;
-    delete QUAD;
-    delete CAMERA;
-    delete STATES;
-    delete TEXTUREMAP;
-
-    CORE = NULL;
-    QUAD = NULL;
-    CAMERA = NULL;
-    STATES = NULL;
+    LoadDefaultShader();
+    CreateConstantBuffer();
   }
 
   void SetStates(void)
@@ -442,6 +228,159 @@ namespace DirectSheep
     DXVerify(CORE->dev->CreateBlendState(&bd, &STATES->BS));
   }
 
+  void InitGeometry(void)
+  {
+    // create a triangle using the VERTEX struct
+    Vertex2D QuadVertices[] =
+    {
+        {Vec3(-0.5f, -0.5f, 0.0f), D3DXCOLOR(Colors::White), 0.0f, 1.0f},
+        {Vec3(-0.5f, 0.5f, 0.0f), D3DXCOLOR(Colors::White), 0.0f, 0.0f},
+        {Vec3(0.5f, -0.5f, 0.0f), D3DXCOLOR(Colors::White), 1.0f, 1.0f},
+
+        {Vec3(-0.5f, 0.5f, 0.0f), D3DXCOLOR(Colors::White), 0.0f, 0.0f},
+        {Vec3(0.5f, 0.5f, 0.0f), D3DXCOLOR(Colors::White), 1.0f, 0.0f},        
+        {Vec3(0.5f, -0.5f, 0.0f), D3DXCOLOR(Colors::White), 1.0f, 1.0f},
+    };
+
+    D3D11_BUFFER_DESC bd;
+    ZeroMemory(&bd, sizeof(bd));
+    bd.Usage = D3D11_USAGE_DYNAMIC;                // write access by CPU and GPU
+    bd.ByteWidth = sizeof(Vertex2D) * (sizeof(QuadVertices) / sizeof(Vertex2D));  // size is the VERTEX struct
+    bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;       // use as a vertex buffer
+    bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;    // allow CPU to write in buffer
+
+    DXVerify(CORE->dev->CreateBuffer(&bd, NULL, &QUAD->vBuffer));       // create the buffer
+
+    // copy the vertices into the buffer
+    D3D11_MAPPED_SUBRESOURCE ms;
+    CORE->devcon->Map(QUAD->vBuffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);    // map the buffer
+    memcpy(ms.pData, QuadVertices, sizeof(QuadVertices));                 // copy the data
+    CORE->devcon->Unmap(QUAD->vBuffer, NULL);
+  }
+
+  void LoadDefaultShader(void)
+  {
+    //HRESULT hr;
+
+        // load and compile the two shaders
+    ID3D10Blob *VS, *PS, *Errors; // Raw data type used to hold buffers
+
+    ID3D11VertexShader* tempVS;
+    ID3D11PixelShader* tempPS;
+    ID3D11InputLayout* tempInput;
+
+    D3DX11CompileFromFile("SheepGraphics/Shaders/Generic.hlsl", 
+                          0, 
+                          0, 
+                          "VShader", 
+                          "vs_4_0", 
+                          D3D10_SHADER_OPTIMIZATION_LEVEL3 | D3D10_SHADER_WARNINGS_ARE_ERRORS, // fully optimized shader
+                          0, 
+                          0, 
+                          &VS, 
+                          &Errors, 
+                          0);
+
+    ErrorIf(Errors || !VS, "ShaderCompile", "Vertex Shader Failed To Compile"); // if there are any errors...
+
+    D3DX11CompileFromFile("SheepGraphics/Shaders/Generic.hlsl", 
+                          0, 
+                          0, 
+                          "PShader", 
+                          "ps_4_0", 
+                          D3D10_SHADER_OPTIMIZATION_LEVEL3 | D3D10_SHADER_WARNINGS_ARE_ERRORS,
+                          0, 
+                          0, 
+                          &PS, 
+                          &Errors, 
+                          0);
+
+    ErrorIf(Errors || !PS, "ShaderCompile", "Pixel Shader Failed To Compile"); // if there are any errors...
+
+    // encapsulate both shaders into shader objects
+    DXVerify(CORE->dev->CreateVertexShader(VS->GetBufferPointer(), VS->GetBufferSize(), NULL, &tempVS));
+    DXVerify(CORE->dev->CreatePixelShader(PS->GetBufferPointer(), PS->GetBufferSize(), NULL, &tempPS));
+
+    // create the input layout object
+    D3D11_INPUT_ELEMENT_DESC ied[] =
+    {
+        {"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
+        {"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0},
+        {"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 28, D3D11_INPUT_PER_VERTEX_DATA, 0},
+    };
+
+    DXVerify(CORE->dev->CreateInputLayout(ied, ARRAYSIZE(ied), VS->GetBufferPointer(), VS->GetBufferSize(), &tempInput));
+
+    DXShader newShader;
+    newShader.VS = tempVS;
+    newShader.PS = tempPS;
+    newShader.Input = tempInput;
+
+    SHADERMAP["Generic"] = newShader;
+
+    CORE->pVS = tempVS;
+    CORE->pPS = tempPS;
+    CORE->pLayout = tempInput;
+
+    // set the shader objects
+    CORE->devcon->VSSetShader(CORE->pVS, 0, 0);
+    CORE->devcon->PSSetShader(CORE->pPS, 0, 0);
+    CORE->devcon->IASetInputLayout(CORE->pLayout);
+  }
+
+  void CreateConstantBuffer(void)
+  {
+    D3D11_BUFFER_DESC bd;
+    ZeroMemory(&bd, sizeof(bd));
+
+    bd.Usage = D3D11_USAGE_DEFAULT;
+    bd.ByteWidth = 64;
+    bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+
+    DXVerify(CORE->dev->CreateBuffer(&bd, NULL, &CORE->pCBuffer));
+    CORE->devcon->VSSetConstantBuffers(0, 1, &CORE->pCBuffer);
+  }
+  
+
+  GFX_API void Release(void)
+  {
+    if(CORE->swapchain)
+      CORE->swapchain->SetFullscreenState(FALSE, NULL);    // switch to windowed mode
+
+    SafeRelease(STATES->BS);
+    SafeRelease(STATES->RSDefault);
+    SafeRelease(STATES->SS);
+    SafeRelease(QUAD->vBuffer);
+    SafeRelease(CORE->pCBuffer);
+    SafeRelease(CORE->pPS);
+    SafeRelease(CORE->pVS);
+    SafeRelease(CORE->pLayout);
+    SafeRelease(CORE->zbuffer);
+    SafeRelease(CORE->backbuffer);
+    SafeRelease(CORE->devcon);
+    SafeRelease(CORE->dev);
+    SafeRelease(CORE->swapchain);
+
+    for(unsigned i  = 0; i < TEXTUREMAP->TextureVec.size(); ++i)
+      SafeRelease(TEXTUREMAP->TextureVec[i]);
+
+    delete CORE;
+    delete QUAD;
+    delete CAMERA;
+    delete STATES;
+    delete TEXTUREMAP;
+
+    CORE = NULL;
+    QUAD = NULL;
+    CAMERA = NULL;
+    STATES = NULL;
+  }
+
+  GFX_API void LoadShader(const std::string& name)
+  {
+    // TODO
+  }
+
   GFX_API void LoadTexture(const std::string& filename)
   {
     ID3D11ShaderResourceView* newTexture = NULL;
@@ -474,29 +413,6 @@ namespace DirectSheep
     }
   }
 
-  GFX_API void SetPosition(float x, float y)
-  {
-    SHAPESTATES.position = Vec2(x, y);
-  }
-
-  GFX_API void SetRotation(float theta)
-  {
-    SHAPESTATES.rotation = theta;
-  }
-
-  GFX_API void SetSize(float x, float y)
-  {
-    SHAPESTATES.scale = Vec2(x, y);
-  }
-
-  GFX_API void SetTexture(int ID)
-  {
-    SHAPESTATES.TexID = ID;
-  }
-  GFX_API void SetUseCamera(bool useCam)
-  {
-    SHAPESTATES.useCamera = useCam;
-  }
 }
 
 

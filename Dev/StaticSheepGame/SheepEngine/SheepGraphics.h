@@ -52,8 +52,6 @@ namespace Framework
 
     void LoadTexture(const std::string& filename);
 
-    void SetupMatrices();
-
 		void Draw(void);
 
   public:
