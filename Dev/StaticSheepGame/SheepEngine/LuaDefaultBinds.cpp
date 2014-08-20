@@ -43,6 +43,7 @@ namespace Framework
 
       CREATE_TABLE(ENGINE->Lua(), surface);
       BIND_FUNCTION_TABLE(ENGINE->Lua(), Draw::SetColor, SetColor, surface);
+      BIND_FUNCTION_TABLE(ENGINE->Lua(), Draw::SetRotation, SetRotation, surface);
       BIND_FUNCTION_TABLE(ENGINE->Lua(), Draw::SetTexture, SetTexture, surface);
       BIND_FUNCTION_TABLE(ENGINE->Lua(), Draw::SetUseCamera, SetUseCamera, surface);
       BIND_FUNCTION_TABLE(ENGINE->Lua(), Draw::SetTextPos, SetTextPos, surface);
