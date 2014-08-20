@@ -15,7 +15,7 @@ struct VOut
 
 VOut VShader(float3 position : POSITION, float4 color : COLOR, float2 texcoord : TEXCOORD)
 {
-    VOut output;
+    VOut output = (VOut)0;
 
     output.position = mul(matFinal, float4(position, 1));
 

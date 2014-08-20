@@ -14,25 +14,29 @@ namespace DirectSheep
 
   struct DirectX_Core
   {
-    IDXGISwapChain *swapchain;             // the pointer to the swap chain interface
-    ID3D11Device *dev;                     // the pointer to our Direct3D device interface
-    ID3D11DeviceContext *devcon;           // the pointer to our Direct3D device context
-    ID3D11RenderTargetView *backbuffer;    // the pointer to our back buffer
-    ID3D11DepthStencilView *zbuffer;       // the pointer to our depth buffer
+    IDXGISwapChain *swapchain;             // Pointer to swap chain interface
+    ID3D11Device *dev;                     // Pointer to D3D device
+    ID3D11DeviceContext *devcon;           // Pointer to D3D device context
+    ID3D11RenderTargetView *backbuffer;    // Pointer to back buffer
+    ID3D11DepthStencilView *zbuffer;       // Pointer to depth buffer
 
-    ID3D11VertexShader *pVS;               // the pointer to the current vertex shader
-    ID3D11PixelShader *pPS;                // the pointer to the current pixel shader
-    ID3D11InputLayout *pLayout;            // the pointer to the current input layout
+    ID3D11VertexShader *pVS;               // Pointer to current Vertex Shader
+    ID3D11PixelShader *pPS;                // Pointer to current Pixel Shader
+    ID3D11InputLayout *pLayout;            // Pointer to current Input Layout
 
-    ID3D11Buffer *pCBuffer;                // the pointer to the constant buffer
+    ID3D11Buffer *pCBuffer;                // Pointer to constant buffer
+
+    IFW1Factory *pFW1Factory;
+	
+    IFW1FontWrapper *pFontWrapper;
   };
 
   struct States
   {
-    ID3D11RasterizerState *RSDefault;    // the default rasterizer state
-    //ID3D11RasterizerState *pRSWireFrame;  // a rasterizer using wireframe
-    ID3D11SamplerState *SS;              // three sampler states
-    ID3D11BlendState *BS;                // a typical blend state
+    ID3D11RasterizerState *RSDefault;    // Standard rasterizer state
+    //ID3D11RasterizerState *pRSWireFrame;  // Wireframe (primitive debug draw)
+    ID3D11SamplerState *SS;              // Sampler State
+    ID3D11BlendState *BS;                // Blend State (alpha, blending)
   };
 
   struct ShapeStates

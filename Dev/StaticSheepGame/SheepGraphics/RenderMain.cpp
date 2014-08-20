@@ -16,7 +16,7 @@ namespace DirectSheep
     CORE->devcon->ClearRenderTargetView(CORE->backbuffer, (D3DXCOLOR)Colors::Black);
     CORE->devcon->ClearDepthStencilView(CORE->zbuffer, D3D11_CLEAR_DEPTH, 1.0f, 0);
 
-    SetupMatrices(); //Do we even need to do this every frame?
+    SetupMatrices();
   }
 
   void SetupMatrices(void)
@@ -38,7 +38,7 @@ namespace DirectSheep
 
     Mat4 matProj;
     D3DXMatrixOrthoLH(&matProj, CAMERA->ScreenDimensions.x, CAMERA->ScreenDimensions.y, 1.0f, 100.0f);
-    //XMMatrixOrthographicOffCenterLH(0, ScreenWidth, ScreenHeight, 0, 1.0f, 100.0f);
+    //D3DXMatrixOrthoOffCenterLH(&matProj, 0.0f, CAMERA->ScreenDimensions.x, 0.0f, CAMERA->ScreenDimensions.y, 1.0f, 100.0f);
 
     CAMERA->ProjMatrix = matProj;
 
@@ -104,10 +104,8 @@ namespace DirectSheep
     D3DXMatrixRotationZ(&rotMat, SHAPESTATES.rotation);
     D3DXMatrixMultiply(&scaleMat, &scaleMat, &rotMat);
 
-    if (SHAPESTATES.useCamera)
-      D3DXMatrixTranslation(&transMat, floor(SHAPESTATES.position.x), floor(SHAPESTATES.position.y), floor(0.0f));
-    else
-      D3DXMatrixTranslation(&transMat, floor(SHAPESTATES.position.x) - ScreenWidth / 2, floor(-SHAPESTATES.position.y) + ScreenHeight / 2, floor(0.0f));
+    D3DXMatrixTranslation(&transMat, floor(SHAPESTATES.position.x), floor(SHAPESTATES.position.y), floor(0.0f));
+
 
     D3DXMatrixMultiply(&scaleMat, &scaleMat, &transMat);
 
@@ -127,7 +125,20 @@ namespace DirectSheep
 
     CORE->devcon->UpdateSubresource(CORE->pCBuffer, 0, 0, &matFinal, 0, 0);
     CORE->devcon->PSSetShaderResources(0, 1, &TEXTUREMAP->TextureVec[SHAPESTATES.TexID]);
+
     CORE->devcon->Draw(6, 0);
+
+    CORE->pFontWrapper->DrawString(
+	  CORE->devcon,
+		L"Hello World",// String
+		128.0f,// Font size
+		0,// X position
+		0,// Y position
+		0xff0099ff,// Text color, 0xAaBbGgRr
+		FW1_RESTORESTATE// Flags (for example FW1_RESTORESTATE to keep context states unchanged)
+	);
+
+
   }
 
   

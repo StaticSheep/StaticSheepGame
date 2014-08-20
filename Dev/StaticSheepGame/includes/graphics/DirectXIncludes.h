@@ -11,3 +11,4 @@
 #include <d3dx11.h>
 #include <d3dx10.h>
 #include <directxcolors.h>
+#include <FW1FontWrapper.h>
