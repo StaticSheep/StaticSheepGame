@@ -16,7 +16,6 @@ namespace DirectSheep
     CORE->devcon->ClearRenderTargetView(CORE->backbuffer, (D3DXCOLOR)Colors::Black);
     CORE->devcon->ClearDepthStencilView(CORE->zbuffer, D3D11_CLEAR_DEPTH, 1.0f, 0);
 
-
     SetupMatrices();
   }
 
@@ -125,10 +124,13 @@ namespace DirectSheep
     CORE->devcon->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
     CORE->devcon->UpdateSubresource(CORE->pCBuffer, 0, 0, &matFinal, 0, 0);
+<<<<<<< HEAD
+    CORE->devcon->PSSetShaderResources(0, 1, &TEXTUREMAP->TextureVec[SHAPESTATES.TexID]);
 
+=======
     CORE->devcon->PSSetShaderResources(0, 1, &TEXTUREMAP->TextureVec[0]);
     CORE->devcon->PSSetShaderResources(1, 1, &TEXTUREMAP->TextureVec[1]);
-
+>>>>>>> 1ea686dd14d5eec3ca34124331a40423f6d3dd45
     CORE->devcon->Draw(6, 0);
 
     CORE->pFontWrapper->DrawString(

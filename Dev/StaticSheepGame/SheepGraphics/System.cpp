@@ -239,13 +239,13 @@ namespace DirectSheep
     // create a triangle using the VERTEX struct
     Vertex2D QuadVertices[] =
     {
-        {Vec3(-0.5f, -0.5f, 0.0f), D3DXCOLOR(Colors::White), 0.0f, 1.0f},
-        {Vec3(-0.5f, 0.5f, 0.0f), D3DXCOLOR(Colors::White), 0.0f, 0.0f},
-        {Vec3(0.5f, -0.5f, 0.0f), D3DXCOLOR(Colors::White), 1.0f, 1.0f},
+        {Vec3(-0.5f, -0.5f, 0.0f), 0.0f, 1.0f},
+        {Vec3(-0.5f, 0.5f, 0.0f), 0.0f, 0.0f},
+        {Vec3(0.5f, -0.5f, 0.0f), 1.0f, 1.0f},
 
-        {Vec3(-0.5f, 0.5f, 0.0f), D3DXCOLOR(Colors::White), 0.0f, 0.0f},
-        {Vec3(0.5f, 0.5f, 0.0f), D3DXCOLOR(Colors::White), 1.0f, 0.0f},        
-        {Vec3(0.5f, -0.5f, 0.0f), D3DXCOLOR(Colors::White), 1.0f, 1.0f},
+        {Vec3(-0.5f, 0.5f, 0.0f), 0.0f, 0.0f},
+        {Vec3(0.5f, 0.5f, 0.0f), 1.0f, 0.0f},        
+        {Vec3(0.5f, -0.5f, 0.0f), 1.0f, 1.0f},
     };
 
     D3D11_BUFFER_DESC bd;
@@ -311,8 +311,8 @@ namespace DirectSheep
     D3D11_INPUT_ELEMENT_DESC ied[] =
     {
         {"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
-        {"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0},
-        {"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 28, D3D11_INPUT_PER_VERTEX_DATA, 0},
+        //{"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0},
+        {"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0},
     };
 
     DXVerify(CORE->dev->CreateInputLayout(ied, ARRAYSIZE(ied), VS->GetBufferPointer(), VS->GetBufferSize(), &tempInput));

@@ -17,6 +17,7 @@ namespace Framework
     static void SetTexture(UINT texID);
     static int  GetTextureID(const char* texName);
     //static void SetColor(Vec4& color);
+    static void SetRotation(float theta);
     static void SetColor(float r, float g, float b, float a=255);
     static void SetTextPos(float x, float y);
     //static void SetTextPos(Vec2& pos);

@@ -19,10 +19,10 @@ namespace DirectSheep
   struct Vertex2D
   {
     Vec3 Position; // x, y, z
-    D3DXCOLOR Color;
+
     float tu, tv;  // u, v
   };
-
+      //D3DXCOLOR Color;
 }
 
 

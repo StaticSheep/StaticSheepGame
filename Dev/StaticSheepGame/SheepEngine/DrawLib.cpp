@@ -34,6 +34,11 @@ namespace Framework
     return GRAPHICS->GetTextureID(texString);
   }
 
+  void Draw::SetRotation(float theta)
+  {
+    GRAPHICS->SetRotation(theta);
+  }
+
   //void Draw::SetColor(Vec4& color)
   //{
   //  Draw::m_Color = color;
