@@ -1,0 +1,6 @@
+{94cd65e3-dc6b-4742-86f4-e59897496f78} event:/SFX/jaguar
+{c90219ce-b9f6-4521-9c91-121226caab59} bus:/
+{888e8f74-3716-4ff9-b3d8-bef90567585d} bus:/Reverb
+{6322ae6f-6a27-4aec-a76c-588164565b7d} vca:/New VCA
+{de8e197c-7574-4ddb-b171-4f22347a7d28} bank:/SFX
+{08a2ce84-aaf9-4fa7-a7e6-3ce71b5812d0} bank:/Master Bank
