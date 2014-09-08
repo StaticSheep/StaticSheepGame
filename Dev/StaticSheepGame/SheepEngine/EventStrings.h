@@ -1,0 +1,24 @@
+/*****************************************************************
+Filename: EventStrings.h
+Project: 
+Author(s): Zakary Wilson
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+*****************************************************************/
+
+////////////////////////////////////////////////////////////////////////////////
+#ifndef EVENT_STRINGS_H
+#define EVENT_STRINGS_H
+////////////////////////////////////////////////////////////////////////////////
+
+
+namespace AudioEvent {
+
+    // this is where we will define sound names
+    #define MUSIC_TOPGUN "Music/TopGun"
+
+}
+
+////////////////////////////////////////////////////////////////////////////////
+#endif // !EVENT_STRINGS_H
+////////////////////////////////////////////////////////////////////////////////

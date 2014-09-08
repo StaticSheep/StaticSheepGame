@@ -43,6 +43,7 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>..\Build\$(Configuration)\</OutDir>
     <IntDir>..\Link\$(Configuration)\</IntDir>
+    <LibraryPath>$(ProjectPath)LIB;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>

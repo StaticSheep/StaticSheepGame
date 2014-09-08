@@ -96,6 +96,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)includes;$(SolutionDir)$(Configuration);$(ProjectDir)FW1FontWrapper\x86</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SheepGraphics.lib;SheepPhysics.lib;fmodL_vc.lib;fmodstudioL_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>$(SolutionDir)AutoHeaderVS.exe $(SolutionDir)SheepGraphics\ $(SolutionDir)includes\graphics\ GFX_API

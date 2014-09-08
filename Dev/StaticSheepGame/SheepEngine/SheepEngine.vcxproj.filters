@@ -151,6 +151,15 @@
     <ClInclude Include="CGamePad.h">
       <Filter>Components\GamePad</Filter>
     </ClInclude>
+    <ClInclude Include="SheepFMOD.h">
+      <Filter>Systems\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="SheepSoundEvent.h">
+      <Filter>Systems\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="EventStrings.h">
+      <Filter>Systems\Audio</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="precompiled.cpp">
@@ -276,6 +285,9 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="CGamePad.cpp">
       <Filter>Components\GamePad</Filter>
+    </ClCompile>
+    <ClCompile Include="SheepSoundEvent.cpp">
+      <Filter>Systems\Audio</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

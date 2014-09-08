@@ -316,10 +316,15 @@ void LoadEvent(SOUND::System *system, std::string &name, EventMap &events)
   // create a new event...
   SoundEvent newEvent(system, name);
 
-  std::cout << "Loading " << name << std::endl;
+  std::size_t pos = name.find("/");
+  std::size_t endPos = name.length() - pos;
+
+  std::string newName = name.substr((pos + 1), endPos);
+
+  std::cout << newName << std::endl;
 
   // and shove it into the map with the string name..
-  events[name] = newEvent;
+  events[newName] = newEvent;
 
   // then gtfo
   return;

@@ -12,12 +12,12 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 // lets just call this an event map...
 typedef std::unordered_map<std::string, SoundEvent> EventMap;
 
-// and this a vector of banks...
+// and this a vector of banks... bank pointers really
 typedef std::vector<SOUND::Bank *> BankVector;
 
 // static prototypes
 static void ParseBanks(SOUND::System *system, std::ifstream &file, BankVector &bank);
-static void ParseEvents(SOUND::System *system, std::ifstream &file, EventMap &event);
+static void ParseEvents(SOUND::System *system, std::ifstream &file, EventMap &eventMap);
 static void LoadBank(SOUND::System *system, std::string &name, BankVector &bank);
 static void LoadEvent(SOUND::System *system, std::string &name, EventMap &events);
 
@@ -33,7 +33,7 @@ namespace Framework
     Default constructor for the SheepAudio class
 */
 /*****************************************************************************/
-	SheepAudio::SheepAudio() : _GUID("GUIDs.txt") // do not change this.
+	SheepAudio::SheepAudio() : _GUID("GUIDs.txt") // need to find the GUIDs file
 	{
     // set the global pointer 
 		AUDIO = this;
@@ -243,7 +243,7 @@ void ParseBanks(SOUND::System *system, std::ifstream &file, BankVector &bank)
     into.
 */
 /*****************************************************************************/
-void ParseEvents(SOUND::System *system, std::ifstream &file, EventMap &event)
+void ParseEvents(SOUND::System *system, std::ifstream &file, EventMap &eventMap)
 {
   // string for extraction
   std::string str;
@@ -263,7 +263,7 @@ void ParseEvents(SOUND::System *system, std::ifstream &file, EventMap &event)
       std::size_t endPos = str.length() - position;
 
       // loading the event (substring)
-      LoadEvent(system, str.substr(position, endPos), event);
+      LoadEvent(system, str.substr(position, endPos), eventMap);
     }
   }
 }
@@ -287,9 +287,11 @@ void LoadBank(SOUND::System *system, std::string &name, BankVector &bank)
 {
   SOUND::Bank *newBank = NULL;
 
+  std::string pathName = SoundUtility::SourcePath(name, SoundUtility::TYPE_AUDIO);
+
   // load the bank file into memory, do non-blocking for asynchronous loading
-  ErrorCheck(system->loadBankFile(SoundUtility::SourcePath(name, SoundUtility::TYPE_AUDIO).c_str(), FMOD_STUDIO_LOAD_BANK_NONBLOCKING, &newBank));
-  ErrorCheck ( newBank->loadSampleData());
+  ErrorCheck(system->loadBankFile(pathName.c_str(), FMOD_STUDIO_LOAD_BANK_NONBLOCKING, &newBank));
+  ErrorCheck (newBank->loadSampleData());
 
   // push the pointer to the bank onto the vector
   bank.push_back(newBank);
@@ -317,8 +319,17 @@ void LoadEvent(SOUND::System *system, std::string &name, EventMap &events)
   // create a new event...
   SoundEvent newEvent(system, name);
 
+  // lets get rid of the event:/ part...
+  std::size_t pos = name.find("/");
+  std::size_t endPos = name.length() - pos;
+
+  std::string newName = name.substr((pos + 1), endPos);
+
   // and shove it into the map with the string name..
-  events[name] = newEvent;
+  events[newName] = newEvent;
+
+  // we can now access the event by "Folder/Event
+  // example... Music/TopGun... or with the EventString defines... MUSIC_TOPGUN
 
   // then gtfo
   return;

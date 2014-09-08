@@ -1,5 +1,5 @@
-{0e1f2e7f-f428-4861-93f6-46325c199a42} event:/Music/theme - top gun
-{8761f106-08a5-40dd-97a4-a79e516d53d7} bus:/
-{c4c193e7-03b2-497c-9cf9-b06e63cb0385} bus:/Reverb
-{e70c4b20-b002-4b7b-bfcf-5531702a98c4} bank:/Music
-{f60072ba-9059-471f-aeb9-fe65ecc788e7} bank:/Master Bank
+{d4a07af7-50bc-4df9-bb07-e2f7fb1784b0} event:/Music/TopGun
+{b90f6e03-fbe8-4858-90aa-63e4b3ee4f4d} bus:/
+{e3302424-32db-4dd9-82ec-94ebbbe02a2c} bus:/Reverb
+{f1a8128c-5c1b-4d99-aa6b-3527f78153bf} bank:/Master Bank
+{0d4d063f-7f13-4d5c-87b2-75de70ca7f6a} bank:/Music

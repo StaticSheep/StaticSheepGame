@@ -23,7 +23,7 @@ void main(int argc, char **argv)
         if (soundManager.GetLoadState() && !i)
         {
             printf("DONE LOADING ALL BANKS AND EVENTS - PLAYING OUR FIRST SOUND");
-            soundManager.Play(SFX_JAGUAR, PLAY_LOOP);
+            soundManager.Play("Music/TopGun", PLAY_LOOP);
             ++i;
         }
         soundManager.Update();
