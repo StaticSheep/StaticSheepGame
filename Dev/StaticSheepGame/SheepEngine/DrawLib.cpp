@@ -111,8 +111,8 @@ namespace Framework
     GRAPHICS->DrawSprite();
   }
 
-  void Draw::DrawString(const char* text)
+  void Draw::DrawString(const char* text, float size, const char* font)
   {
-    // @TODO
+    GRAPHICS->DrawSpriteText(text, size, font);
   }
 }

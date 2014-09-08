@@ -1,3 +1,12 @@
+/*****************************************************************************/
+/*!
+\file   System.cpp
+\author Scott Nelson
+\date   9/4/2014<BR>
+\brief  
+    Initializes DirectX graphics system, shaders, states, textures, and meshes
+*/
+/*****************************************************************************/
 #pragma comment (lib, "d3d11.lib")
 #pragma comment (lib, "d3dx11.lib")
 #pragma comment (lib, "d3dx10.lib")
@@ -6,68 +15,91 @@
 
 using namespace DirectX;
 
+// Structs containing all necessary system pointers
 DirectSheep::DirectX_Core* CORE = NULL;
 DirectSheep::VertexBufferQuad *QUAD = NULL;
 DirectSheep::States *STATES = NULL;
 DirectSheep::TextureMap *TEXTUREMAP = NULL;
 DirectSheep::ShaderMap SHADERMAP;
 
-float ScreenHeight = 0;
-float ScreenWidth = 0;
-
 namespace DirectSheep
 {
-  void InitGeometry(void);
-  void SetStates(void);
-  void LoadDefaultShader(void);
-  void SetupMatrices(void);
-  void CreateConstantBuffer(void);
+  void InitGeometry(void);         // Initializes unit square and registers mesh with Device
+  void SetStates(void);            // Initializes Rasterizer, Sampler, and Blend States
+  void LoadDefaultShader(void);    // Loads generic shader
+  void SetupMatrices(void);        // Sets up Camera with view and projection matrices
+  void CreateConstantBuffer(void); // Initializes constant buffer used to send vars to shader
 
+/************************************************************************/
+/*!
+  \brief
+    Initializes DirectX dev, devcontext, swapchain
+  
+  \param hWnd
+    Handle to the window
+
+  \param screenWidth
+    Width of Window
+
+  \param screenHeight
+    Height of Window
+*/
+/*************************************************************************/
   GFX_API void Init(HWND hWnd, int screenWidth, int screenHeight)
   {
 
-    HRESULT hr = S_OK;
+    HRESULT hr = S_OK; // Error check, remains S_OK if no problems
+
+    // Fallback if device can't find drivers attempt to init without
     D3D_DRIVER_TYPE driverType = D3D_DRIVER_TYPE_NULL;
-    D3D_FEATURE_LEVEL featureLevel = D3D_FEATURE_LEVEL_11_0;
 
-    CORE = new DirectX_Core;
-    QUAD = new VertexBufferQuad;
-    STATES = new States;
-    TEXTUREMAP = new TextureMap;
-    CAMERA = new Camera;
+    D3D_FEATURE_LEVEL featureLevel = D3D_FEATURE_LEVEL_11_0; // Using DirectX 11
 
-    ScreenWidth = (float)screenWidth;
-    ScreenHeight = (float)screenHeight;
+    CORE = new DirectX_Core; // Allocate CORE(dev, devcon, swapchain)
+    QUAD = new VertexBufferQuad; // Allocate QUAD(unit square mesh)
+    STATES = new States;         // Allocate STATES
+    TEXTUREMAP = new TextureMap; // Allocate TEXTURMAP(All loaded texture assets)
+    CAMERA = new Camera;         // Allocate CAMERA
 
+    
+
+    // Zero memory of key systems
     ZeroMemory(CORE, sizeof(DirectX_Core));
     ZeroMemory(QUAD, sizeof(VertexBufferQuad));
     ZeroMemory(STATES, sizeof(States));
     ZeroMemory(CAMERA, sizeof(Camera));
 
+    CAMERA->ScreenDimensions = Vec2(screenWidth, screenHeight); // Set Screen Dimensions for Camera
+
+    // Set camera to defualt
     SHAPESTATES.useCamera = true;
 
-    UINT deviceFlags = 0;
+    UINT deviceFlags = 0; // Flags for registering device
 
   #if defined (_DEBUG)
-    deviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
+    deviceFlags |= D3D11_CREATE_DEVICE_DEBUG; // If in debug mode set DirectX to debug mode
   #endif
-
+    
+    // Array of driver types in order of most prefered to least
     D3D_DRIVER_TYPE driverTypes[] =
     {
-      D3D_DRIVER_TYPE_HARDWARE,
-      D3D_DRIVER_TYPE_WARP,
-      D3D_DRIVER_TYPE_REFERENCE,
+      D3D_DRIVER_TYPE_HARDWARE, // Hardware acceleration
+      D3D_DRIVER_TYPE_WARP,     // High performance Software Renderer
+      D3D_DRIVER_TYPE_REFERENCE,// Slow but accurate Software Renderer
     };
 
+    // Number of Driver options
     UINT numDriverTypes = ARRAYSIZE(driverTypes);
-
+    
+    // Feature set to Init Device with
     D3D_FEATURE_LEVEL featureLevels[] =
     {
-      D3D_FEATURE_LEVEL_11_0,
-      D3D_FEATURE_LEVEL_10_1,
-      D3D_FEATURE_LEVEL_10_0,
+      D3D_FEATURE_LEVEL_11_0, // DirectX 11
+      D3D_FEATURE_LEVEL_10_1, // '' '' 10.1
+      D3D_FEATURE_LEVEL_10_0, // '' '' 10
     };
 
+    // Number of fearure options
     UINT numFeatureLevels = ARRAYSIZE(featureLevels);
 
     // struct to hold information about the swapchain
@@ -82,57 +114,59 @@ namespace DirectSheep
     swapDesc.BufferDesc.Width = screenWidth;                    // back buffer width
     swapDesc.BufferDesc.Height = screenHeight;                  // back buffer height
     swapDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;     // use buffer as render target
-    swapDesc.OutputWindow = hWnd;                               // link to window
-    swapDesc.SampleDesc.Count = 4;                              // multisamples
+    swapDesc.OutputWindow = hWnd;                               // attach to window
+    swapDesc.SampleDesc.Count = 4;                              // # of multisamples
     swapDesc.Windowed = TRUE;                                   // windowed/full-screen mode
     swapDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;    // allow full-screen switching
 
     // create DirectX device, it's context, and swapchain using swapDesc
 
+    // Loops through and attempts to init with highest driver settings
     for(UINT driverTypeIndex = 0; driverTypeIndex < numDriverTypes; driverTypeIndex++)
     {
-      driverType = driverTypes[driverTypeIndex];
+      driverType = driverTypes[driverTypeIndex]; // Grabs driver type
 
-      hr = D3D11CreateDeviceAndSwapChain(NULL,
-                                  driverType,
-                                  NULL,
-                                  deviceFlags,
-                                  featureLevels,
-                                  numFeatureLevels,
-                                  D3D11_SDK_VERSION,
-                                  &swapDesc,
-                                  &CORE->swapchain,
-                                  &CORE->dev,
-                                  &featureLevel,
-                                  &CORE->devcon);
+      // Attempts to init
+      hr = D3D11CreateDeviceAndSwapChain(NULL,      // No adapter
+                                  driverType,       // Current driver setting attempt
+                                  NULL,             // Don't want to use software
+                                  deviceFlags,      // Special flags(debug)
+                                  featureLevels,    // Pointer to feature levels
+                                  numFeatureLevels, // Size of feature level array
+                                  D3D11_SDK_VERSION,// Use DirectX 11 SDK
+                                  &swapDesc,        // Struct with all params for device creatiosn
+                                  &CORE->swapchain, // Set swapchain pointer
+                                  &CORE->dev,       // Set device pointer
+                                  &featureLevel,    // Give array of fearure levels DX will use best option
+                                  &CORE->devcon);   // Set devic context pointer
 
-      if(SUCCEEDED(hr))
+      if(SUCCEEDED(hr)) // If succeeded then break otherwise try lower driver settings
         break;
     }
-    DXVerify(hr);
+    DXVerify(hr); // Check for any DirectX specific error messages
 
-    D3D11_TEXTURE2D_DESC texd;
-    ZeroMemory(&texd, sizeof(texd));
+    D3D11_TEXTURE2D_DESC texd;       // Description structure for depth buffer texture
+    ZeroMemory(&texd, sizeof(texd)); // Null all members
 
-    texd.Width = screenWidth;
-    texd.Height = screenHeight;
-    texd.ArraySize = 1;
-    texd.MipLevels = 1;
-    texd.SampleDesc.Count = 4;
-    texd.Format = DXGI_FORMAT_D32_FLOAT;
-    texd.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+    texd.Width = CAMERA->ScreenDimensions.x; // Set screen dimensions
+    texd.Height = CAMERA->ScreenDimensions.y;
+    texd.ArraySize = 1;                      // Only one depth buffer
+    texd.MipLevels = 1;                      // Mip Mapping
+    texd.SampleDesc.Count = 4;                
+    texd.Format = DXGI_FORMAT_D32_FLOAT;     
+    texd.BindFlags = D3D11_BIND_DEPTH_STENCIL; // This is a depth stencil
 
     ID3D11Texture2D *pDepthBuffer;
     DXVerify(CORE->dev->CreateTexture2D(&texd, NULL, &pDepthBuffer));
 
     // create a depth buffer (z-sorting)
     D3D11_DEPTH_STENCIL_VIEW_DESC dsvd;
-    ZeroMemory(&dsvd, sizeof(dsvd));
+    ZeroMemory(&dsvd, sizeof(dsvd));   // Zero members
 
     dsvd.Format = DXGI_FORMAT_D32_FLOAT;
     dsvd.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2DMS;
 
-    DXVerify(CORE->dev->CreateDepthStencilView(pDepthBuffer, &dsvd, &CORE->zbuffer));
+    DXVerify(CORE->dev->CreateDepthStencilView(pDepthBuffer, &dsvd, &CORE->depthbuffer));
     pDepthBuffer->Release();
 
     // find the address of the backbuffer
@@ -144,7 +178,7 @@ namespace DirectSheep
     pBackBuffer->Release();
 
     // Set render target as the backbuffer
-    CORE->devcon->OMSetRenderTargets(1, &CORE->backbuffer, CORE->zbuffer);
+    CORE->devcon->OMSetRenderTargets(1, &CORE->backbuffer, CORE->depthbuffer);
 
 
     // Init viewport
@@ -162,11 +196,22 @@ namespace DirectSheep
     CORE->devcon->RSSetViewports(1, &viewport);
 
     // Set screen dimensions for camera
-    CAMERA->ScreenDimensions = Vec2(ScreenWidth, ScreenHeight);
 
 	  HRESULT hResult = FW1CreateFactory(FW1_VERSION, &CORE->pFW1Factory);
+
+    FW1_FONTWRAPPERCREATEPARAMS Params;
+    ZeroMemory(&Params, sizeof(Params));
+
+    Params.SheetMipLevels = 5;
+	  Params.AnisotropicFiltering = TRUE;
+	  Params.DefaultFontParams.pszFontFamily = L"Arial";
+	  Params.DefaultFontParams.FontWeight = DWRITE_FONT_WEIGHT_NORMAL;
+	  Params.DefaultFontParams.FontStyle = DWRITE_FONT_STYLE_NORMAL;
+	  Params.DefaultFontParams.FontStretch = DWRITE_FONT_STRETCH_NORMAL;
 	
-	  hResult = CORE->pFW1Factory->CreateFontWrapper(CORE->dev, L"Arial", &CORE->pFontWrapper);
+	  hResult = CORE->pFW1Factory->CreateFontWrapper(CORE->dev, NULL, &Params, &CORE->pFontWrapper);
+
+    SafeRelease(CORE->pFW1Factory);
 
     SetStates();
 
@@ -193,7 +238,7 @@ namespace DirectSheep
     //rd.FillMode = D3D11_FILL_WIREFRAME;
     //rd.AntialiasedLineEnable = TRUE;
 
-    DXVerify(CORE->dev->CreateRasterizerState(&rd, &STATES->RSDefault));
+    DXVerify(CORE->dev->CreateRasterizerState(&rd, &STATES->RState));
 
     /*// set the changed values for wireframe mode
     rd.FillMode = D3D11_FILL_WIREFRAME;
@@ -215,7 +260,7 @@ namespace DirectSheep
     sd.MaxLOD = FLT_MAX;
     sd.MipLODBias = 0.0f;
 
-    DXVerify(CORE->dev->CreateSamplerState(&sd, &STATES->SS));     // create the default sampler
+    DXVerify(CORE->dev->CreateSamplerState(&sd, &STATES->SamplerState));     // create the default sampler
 
     
     D3D11_BLEND_DESC bd;
@@ -231,7 +276,37 @@ namespace DirectSheep
     bd.IndependentBlendEnable = FALSE;
     bd.AlphaToCoverageEnable = TRUE;
 
-    DXVerify(CORE->dev->CreateBlendState(&bd, &STATES->BS));
+    DXVerify(CORE->dev->CreateBlendState(&bd, &STATES->BlendState));
+
+    D3D11_DEPTH_STENCIL_DESC dsDesc;
+
+    // Paramaters for Depth test
+    dsDesc.DepthEnable = true;
+    dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+    dsDesc.DepthFunc = D3D11_COMPARISON_LESS;
+
+    // Paramaters for Stencil test
+    dsDesc.StencilEnable = true;
+    dsDesc.StencilReadMask = 0xFF;
+    dsDesc.StencilWriteMask = 0xFF;
+
+    // If Pixel is front facing
+    dsDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+    dsDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
+    dsDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+    dsDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+
+    // If Pixel is back facing
+    dsDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+    dsDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
+    dsDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+    dsDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+
+    // Create depth stencil state
+    DXVerify(CORE->dev->CreateDepthStencilState(&dsDesc, &STATES->DepthState));
+
+    // Bind state to device
+    
   }
 
   void InitGeometry(void)
@@ -255,13 +330,13 @@ namespace DirectSheep
     bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;       // use as a vertex buffer
     bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;    // allow CPU to write in buffer
 
-    DXVerify(CORE->dev->CreateBuffer(&bd, NULL, &QUAD->vBuffer));       // create the buffer
+    DXVerify(CORE->dev->CreateBuffer(&bd, NULL, &QUAD->VertexBuffer));       // create the buffer
 
     // copy the vertices into the buffer
     D3D11_MAPPED_SUBRESOURCE ms;
-    CORE->devcon->Map(QUAD->vBuffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);    // map the buffer
+    CORE->devcon->Map(QUAD->VertexBuffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);    // map the buffer
     memcpy(ms.pData, QuadVertices, sizeof(QuadVertices));                 // copy the data
-    CORE->devcon->Unmap(QUAD->vBuffer, NULL);
+    CORE->devcon->Unmap(QUAD->VertexBuffer, NULL);
   }
 
   void LoadDefaultShader(void)
@@ -324,14 +399,14 @@ namespace DirectSheep
 
     SHADERMAP["Generic"] = newShader;
 
-    CORE->pVS = tempVS;
-    CORE->pPS = tempPS;
-    CORE->pLayout = tempInput;
+    CORE->pVertexShader = tempVS;
+    CORE->pPixelShader = tempPS;
+    CORE->pInputLayout = tempInput;
 
     // set the shader objects
-    CORE->devcon->VSSetShader(CORE->pVS, 0, 0);
-    CORE->devcon->PSSetShader(CORE->pPS, 0, 0);
-    CORE->devcon->IASetInputLayout(CORE->pLayout);
+    CORE->devcon->VSSetShader(CORE->pVertexShader, 0, 0);
+    CORE->devcon->PSSetShader(CORE->pPixelShader, 0, 0);
+    CORE->devcon->IASetInputLayout(CORE->pInputLayout);
   }
 
   void CreateConstantBuffer(void)
@@ -353,17 +428,16 @@ namespace DirectSheep
     if(CORE->swapchain)
       CORE->swapchain->SetFullscreenState(FALSE, NULL);    // switch to windowed mode
 
-    SafeRelease(STATES->BS);
-    SafeRelease(STATES->RSDefault);
-    SafeRelease(STATES->SS);
-    SafeRelease(QUAD->vBuffer);
+    SafeRelease(STATES->BlendState);
+    SafeRelease(STATES->RState);
+    SafeRelease(STATES->SamplerState);
+    SafeRelease(QUAD->VertexBuffer);
     SafeRelease(CORE->pFontWrapper);
-    SafeRelease(CORE->pFW1Factory);
     SafeRelease(CORE->pCBuffer);
-    SafeRelease(CORE->pPS);
-    SafeRelease(CORE->pVS);
-    SafeRelease(CORE->pLayout);
-    SafeRelease(CORE->zbuffer);
+    SafeRelease(CORE->pPixelShader);
+    SafeRelease(CORE->pVertexShader);
+    SafeRelease(CORE->pInputLayout);
+    SafeRelease(CORE->depthbuffer);
     SafeRelease(CORE->backbuffer);
     SafeRelease(CORE->devcon);
     SafeRelease(CORE->dev);
@@ -422,5 +496,3 @@ namespace DirectSheep
   }
 
 }
-
-

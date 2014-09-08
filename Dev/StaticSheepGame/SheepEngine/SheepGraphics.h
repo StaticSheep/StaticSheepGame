@@ -37,6 +37,7 @@ namespace Framework
     void SetUseCamera(bool useCam);
     void DrawSprite(void);
     int GetTextureID(std::string& texture);
+    void DrawSpriteText(const char * text, float size, const char * font);
 
     //void StartFrame(void); //?
     void FinishFrame(void);

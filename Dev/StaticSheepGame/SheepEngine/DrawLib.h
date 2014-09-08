@@ -25,7 +25,7 @@ namespace Framework
     static void DrawRect(float x, float y, float width, float height);
     static void DrawTexturedRect(float x, float y, float width, float height);
     static void DrawLine(float sX, float sY, float eX, float eY, float width=1);
-    static void DrawString(const char* text);
+    static void DrawString(const char* text, float size, const char* font);
   private:
     static UINT m_TextureID;
     static Vec4 m_Color;
