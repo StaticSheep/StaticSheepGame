@@ -415,7 +415,7 @@ namespace DirectSheep
     ZeroMemory(&bd, sizeof(bd));
 
     bd.Usage = D3D11_USAGE_DEFAULT;
-    bd.ByteWidth = 64;
+    bd.ByteWidth = sizeof(DefaultBuffer);
     bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 
     DXVerify(CORE->dev->CreateBuffer(&bd, NULL, &CORE->pCBuffer));

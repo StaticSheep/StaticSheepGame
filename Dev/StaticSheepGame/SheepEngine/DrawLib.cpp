@@ -45,9 +45,9 @@ namespace Framework
   //  //GRAPHICS->SetColor(color);
   //}
 
-  void Draw::SetColor(float r, float g, float b, float a/* =255 */)
+  void Draw::SetColor(float r, float g, float b, float a)
   {
-    new (&Draw::m_Color) Vec4(r, g, b, a);
+    //new (&Draw::m_Color) Vec4(r, g, b, a);
     //GRAPHICS->SetColor(Draw::m_Color);
   }
 
