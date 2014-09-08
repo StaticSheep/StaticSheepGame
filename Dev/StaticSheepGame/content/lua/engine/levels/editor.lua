@@ -58,7 +58,8 @@ hook.Add("ScriptFinishReload", "OnHookReloadx", FinishReload)
 
 local i = 0
 local up = true
-
+local dt = 0
+  
 local function Draw()
   -- surface.SetUseCamera(0)
   -- surface.DrawRect(0, 0, 256, 256)
@@ -73,10 +74,12 @@ local function Draw()
   --   i = i - 1
   --   if i < 1 then up = true end
   -- end
-
+  dt = dt + .01
   local texID = surface.GetTextureID("content/test.png")
   surface.SetTexture(texID)
-  surface.DrawTexturedRect(0, i * 50, 256, 256)
+  surface.DrawTexturedRect(0, 0, 200, 10)
+  surface.SetRotation(dt)
+  surface.DrawString("asfasfea", 90, "Calibri")
 
   -- local texID2 = surface.GetTextureID("content/bricks.png")
   -- surface.SetTexture(texID2)

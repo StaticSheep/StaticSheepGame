@@ -1,7 +1,7 @@
 /*****************************************************************
-Filename: GraphicsInterface.cpp
+Filename: SheepGraphics.cpp
 Project: 
-Author(s): Zachary Nawar
+Author(s): Scott Nelson
 
 All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 *****************************************************************/
@@ -90,22 +90,27 @@ namespace Framework
   {
     DirectSheep::SetPosition(x, y);
   }
+
   void SheepGraphics::SetRotation(float theta)
   {
     DirectSheep::SetRotation(theta);
   }
+
   void SheepGraphics::SetSize(float x, float y)
   {
     DirectSheep::SetSize(x, y);
   }
+
   void SheepGraphics::SetTexture(int ID)
   {
     DirectSheep::SetTexture(ID);
   }
+
   void SheepGraphics::DrawSprite(void)
   {
     DirectSheep::DrawSprite();
   }
+
   void SheepGraphics::FinishFrame()
   {
     DirectSheep::FinishFrame();
@@ -115,8 +120,14 @@ namespace Framework
   {
     return DirectSheep::GetTextureID(texture);
   }
+
   void SheepGraphics::SetUseCamera(bool useCam)
   {
     DirectSheep::SetUseCamera(useCam);
+  }
+
+  void SheepGraphics::DrawSpriteText(const char * text, float size, const char * font)
+  {
+    DirectSheep::DrawSpriteText(text, size, font);
   }
 }
