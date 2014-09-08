@@ -393,6 +393,7 @@ namespace DirectSheep
   {
     ID3D11ShaderResourceView* newTexture = NULL;
 
+
     if(SUCCEEDED(D3DX11CreateShaderResourceViewFromFile(CORE->dev,       // the Direct3D device
                                                         filename.c_str(),// load texture at path
                                                         NULL,            // no additional information

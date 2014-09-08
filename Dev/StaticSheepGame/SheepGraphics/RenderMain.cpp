@@ -1,4 +1,5 @@
 
+
 using namespace DirectX;
 
 DirectSheep::ShapeStates SHAPESTATES;
@@ -124,13 +125,18 @@ namespace DirectSheep
 
     CORE->devcon->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-    CORE->devcon->UpdateSubresource(CORE->pCBuffer, 0, 0, &matFinal, 0, 0);
+    DefaultBuffer buffer;
+    buffer.Final = matFinal;
+    buffer.World = scaleMat;
+    buffer.BlendColor = SHAPESTATES.Color;
+
+    CORE->devcon->UpdateSubresource(CORE->pCBuffer, 0, 0, &buffer, 0, 0);
 
     CORE->devcon->PSSetShaderResources(0, 1, &TEXTUREMAP->TextureVec[0]);
-    CORE->devcon->PSSetShaderResources(1, 1, &TEXTUREMAP->TextureVec[1]);
 
     CORE->devcon->Draw(6, 0);
 
+    
     CORE->pFontWrapper->DrawString(
 	  CORE->devcon,
 		L"Hello World",// String

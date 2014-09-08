@@ -11,9 +11,11 @@ namespace DirectSheep
   typedef D3DXVECTOR4 Vec4;
   typedef D3DXMATRIXA16 Mat4;
 
-  struct CBUFFER
+  struct DefaultBuffer
   {
+    Mat4 World;
     Mat4 Final;
+    Vec4 BlendColor;
   };
 
   struct Vertex2D
