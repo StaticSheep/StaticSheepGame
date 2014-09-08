@@ -18,11 +18,11 @@ namespace DirectSheep
     ID3D11Device *dev;                     // Pointer to D3D device
     ID3D11DeviceContext *devcon;           // Pointer to D3D device context
     ID3D11RenderTargetView *backbuffer;    // Pointer to back buffer
-    ID3D11DepthStencilView *depthbuffer;       // Pointer to depth buffer
+    ID3D11DepthStencilView *zbuffer;       // Pointer to depth buffer
 
-    ID3D11VertexShader *pVertexShader;               // Pointer to current Vertex Shader
-    ID3D11PixelShader *pPixelShader;                // Pointer to current Pixel Shader
-    ID3D11InputLayout *pInputLayout;            // Pointer to current Input Layout
+    ID3D11VertexShader *pVS;               // Pointer to current Vertex Shader
+    ID3D11PixelShader *pPS;                // Pointer to current Pixel Shader
+    ID3D11InputLayout *pLayout;            // Pointer to current Input Layout
 
     ID3D11Buffer *pCBuffer;                // Pointer to constant buffer
 
@@ -33,7 +33,6 @@ namespace DirectSheep
 
   struct States
   {
-    ID3D11DepthStencilState *DepthState;
   };
 
   struct ShapeStates
@@ -54,7 +53,7 @@ namespace DirectSheep
 
   struct VertexBufferQuad
   {
-    ID3D11Buffer *VertexBuffer;
+    ID3D11Buffer *vBuffer;
   };
 
 }
@@ -65,3 +64,6 @@ extern DirectSheep::TextureMap *TEXTUREMAP;
 extern DirectSheep::ShapeStates SHAPESTATES;
 extern DirectSheep::VertexBufferQuad *QUAD;
 extern DirectSheep::ShaderMap SHADERMAP;
+
+extern float ScreenWidth;
+extern float ScreenHeight;

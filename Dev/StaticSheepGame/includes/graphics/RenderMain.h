@@ -15,6 +15,4 @@ namespace DirectSheep
 
   GFX_API void DrawSprite();
 
-  GFX_API void DrawSpriteText(const char * text, float size, const char * font);
-
 }

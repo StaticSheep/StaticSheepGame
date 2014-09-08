@@ -4,8 +4,6 @@ using namespace DirectX;
 DirectSheep::ShapeStates SHAPESTATES;
 DirectSheep::Camera *CAMERA = NULL;
 
-
-#define RGBTOBGR(color) (color & 0xFF000000) | ((color & 0xFF0000) >> 16) | (color & 0x00ff00) | ((color & 0x0000ff) << 16)
 namespace DirectSheep
 {
 
@@ -16,7 +14,7 @@ namespace DirectSheep
     UNREFERENCED_PARAMETER(dt);
 
     CORE->devcon->ClearRenderTargetView(CORE->backbuffer, (D3DXCOLOR)Colors::Black);
-    CORE->devcon->ClearDepthStencilView(CORE->depthbuffer, D3D11_CLEAR_DEPTH, 1.0f, 0);
+    CORE->devcon->ClearDepthStencilView(CORE->zbuffer, D3D11_CLEAR_DEPTH, 1.0f, 0);
 
 
     SetupMatrices();
@@ -26,7 +24,7 @@ namespace DirectSheep
   {
     float cameraX = 0.0f;
     float cameraY = 0.0f;
-    float cameraZ = -400.0f;
+    float cameraZ = -10.0f;
 
     Vec3 eyepoint(cameraX, cameraY, cameraZ);
 
@@ -40,7 +38,8 @@ namespace DirectSheep
     CAMERA->ViewMatrix = matView;
 
     Mat4 matProj;
-    D3DXMatrixPerspectiveFovLH(&matProj, (FLOAT)D3DXToRadian(75), CAMERA->ScreenDimensions.x / CAMERA->ScreenDimensions.y, 1.0f, 1000.0f);
+    D3DXMatrixOrthoLH(&matProj, CAMERA->ScreenDimensions.x, CAMERA->ScreenDimensions.y, 1.0f, 100.0f);
+    //D3DXMatrixOrthoOffCenterLH(&matProj, 0.0f, CAMERA->ScreenDimensions.x, 0.0f, CAMERA->ScreenDimensions.y, 1.0f, 100.0f);
 
     CAMERA->ProjMatrix = matProj;
 
@@ -56,14 +55,14 @@ namespace DirectSheep
   {
     DXShader& newShader = SHADERMAP[name];
 
-    CORE->pVertexShader = newShader.VS;
-    CORE->pPixelShader = newShader.PS;
-    CORE->pInputLayout = newShader.Input;
+    CORE->pVS = newShader.VS;
+    CORE->pPS = newShader.PS;
+    CORE->pLayout = newShader.Input;
 
     // set the shader objects
-    CORE->devcon->VSSetShader(CORE->pVertexShader, 0, 0);
-    CORE->devcon->PSSetShader(CORE->pPixelShader, 0, 0);
-    CORE->devcon->IASetInputLayout(CORE->pInputLayout);
+    CORE->devcon->VSSetShader(CORE->pVS, 0, 0);
+    CORE->devcon->PSSetShader(CORE->pPS, 0, 0);
+    CORE->devcon->IASetInputLayout(CORE->pLayout);
   }
 
 
@@ -113,15 +112,15 @@ namespace DirectSheep
 
     matFinal = scaleMat * CAMERA->ViewProjMatrix;
 
-    CORE->devcon->RSSetState(STATES->RState);
+    CORE->devcon->RSSetState(STATES->RSDefault);
 
-    CORE->devcon->PSSetSamplers(0, 1, &STATES->SamplerState);
+    CORE->devcon->PSSetSamplers(0, 1, &STATES->SS);
 
-    CORE->devcon->OMSetBlendState(STATES->BlendState, 0, 0xffffffff);
+    CORE->devcon->OMSetBlendState(STATES->BS, 0, 0xffffffff);
 
     UINT stride = sizeof(Vertex2D);
     UINT offset = 0;
-    CORE->devcon->IASetVertexBuffers(0, 1, &QUAD->VertexBuffer, &stride, &offset);
+    CORE->devcon->IASetVertexBuffers(0, 1, &QUAD->vBuffer, &stride, &offset);
 
     CORE->devcon->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
@@ -130,50 +129,22 @@ namespace DirectSheep
     CORE->devcon->PSSetShaderResources(0, 1, &TEXTUREMAP->TextureVec[0]);
     CORE->devcon->PSSetShaderResources(1, 1, &TEXTUREMAP->TextureVec[1]);
 
-    CORE->devcon->Draw(6,0);
-  }
-
-void DrawSpriteText(const char * text, float size, const char * font)
-{
-    Mat4 matFinal;
-
-    Mat4 rotMat, transMat;
-
-    D3DXMatrixIdentity(&rotMat);
-    D3DXMatrixIdentity(&transMat);
-
-    D3DXMatrixRotationYawPitchRoll(&rotMat, 0.0f, -D3DX_PI, -SHAPESTATES.rotation);
-
-    D3DXMatrixTranslation(&transMat, floor(0), floor(0), floor(0.0f));
-
-    D3DXMatrixMultiply(&rotMat, &rotMat, &transMat);
-
-    matFinal = rotMat * CAMERA->ViewProjMatrix;
-
-    FW1_RECTF rect;
-		rect.Left = rect.Right = 0.0f;
-		rect.Top = rect.Bottom = 0.0f;
-
-    std::string boop(text);
-
-    std::wstring test(boop.begin(), boop.end());
-
-    std::string sfont(font);
-    std::wstring WFont(sfont.begin(), sfont.end());
+    CORE->devcon->Draw(6, 0);
 
     CORE->pFontWrapper->DrawString(
-    CORE->devcon,
-    test.c_str(),// String
-    WFont.c_str(),
-    size,
-    &rect,
-    RGBTOBGR(D3DXCOLOR(Colors::Purple)),// Text color, 0xAaBbGgRr
-    NULL,
-    matFinal,
-    FW1_RESTORESTATE | FW1_CENTER | FW1_VCENTER | FW1_NOWORDWRAP
-    );
-}
+	  CORE->devcon,
+		L"Hello World",// String
+		128.0f,// Font size
+		0,// X position
+		0,// Y position
+		0xff0099ff,// Text color, 0xAaBbGgRr
+		FW1_RESTORESTATE// Flags (for example FW1_RESTORESTATE to keep context states unchanged)
+	);
+
+
+  }
+
+  
 
 
 };
-
