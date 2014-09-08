@@ -148,6 +148,9 @@
     <ClInclude Include="Vec4.h">
       <Filter>BaseTypes\Vectors\Vec4</Filter>
     </ClInclude>
+    <ClInclude Include="CGamePad.h">
+      <Filter>Components\GamePad</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="precompiled.cpp">
@@ -271,6 +274,9 @@
       <Filter>BaseTypes\Vectors\Vec4</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="CGamePad.cpp">
+      <Filter>Components\GamePad</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Precompiled">
@@ -440,6 +446,9 @@
     </Filter>
     <Filter Include="Systems\SheepPhysics\Object">
       <UniqueIdentifier>{fa43fa63-ae4a-429d-8981-dd9b59a0e321}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\GamePad">
+      <UniqueIdentifier>{9b86fffc-06dc-4572-a6d8-8f1f67f7b0b9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

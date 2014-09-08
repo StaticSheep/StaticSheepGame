@@ -60,6 +60,7 @@ namespace Framework
 
       // Initialize the component
       new (component) T;
+      float* f = new float(3);
 
       // Setup the internals in the component
       component->self = space->GetHandles().Insert(component); // Push a handle into the HandleManager

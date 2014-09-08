@@ -7,6 +7,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 *****************************************************************/
 
 #include "GameLogic.h"
+#include "CGamePad.h"
 #include <iostream>
 
 namespace Framework
@@ -29,6 +30,7 @@ namespace Framework
   void GameLogic::RegisterComponents()
   {
     REGISTER_COMPONENT(LuaComponent);
+    REGISTER_COMPONENT(GamePad);
   }
 
   void GameLogic::Initialize()
