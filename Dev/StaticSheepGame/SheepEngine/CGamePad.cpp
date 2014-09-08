@@ -1,5 +1,5 @@
 #include "CGamePad.h"
-#pragma comment(lib, "Xinput.lib")
+#pragma comment(lib, "Xinput9_1_0.lib")
 
 namespace Framework
 {
