@@ -216,7 +216,7 @@ namespace DirectSheep
     SetStates();
 
     InitGeometry();
-    LoadTexture("content/bricks.png");
+    //LoadTexture("content/bricks.png");
     LoadDefaultShader();
     CreateConstantBuffer();
   }
@@ -239,12 +239,6 @@ namespace DirectSheep
     //rd.AntialiasedLineEnable = TRUE;
 
     DXVerify(CORE->dev->CreateRasterizerState(&rd, &STATES->RState));
-
-    /*// set the changed values for wireframe mode
-    rd.FillMode = D3D11_FILL_WIREFRAME;
-    rd.AntialiasedLineEnable = TRUE;
-
-    dev->CreateRasterizerState(&rd, &pRSWireFrame);*/
 
     D3D11_SAMPLER_DESC sd;
     sd.Filter = D3D11_FILTER_ANISOTROPIC;
@@ -335,7 +329,7 @@ namespace DirectSheep
     // copy the vertices into the buffer
     D3D11_MAPPED_SUBRESOURCE ms;
     CORE->devcon->Map(QUAD->VertexBuffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);    // map the buffer
-    memcpy(ms.pData, QuadVertices, sizeof(QuadVertices));                 // copy the data
+    memcpy(ms.pData, QuadVertices, sizeof(QuadVertices));                               // copy the data
     CORE->devcon->Unmap(QUAD->VertexBuffer, NULL);
   }
 
@@ -364,7 +358,7 @@ namespace DirectSheep
 
     ErrorIf(Errors || !VS, "ShaderCompile", "Vertex Shader Failed To Compile"); // if there are any errors...
 
-    D3DX11CompileFromFile("SheepGraphics/Shaders/Generic.hlsl", 
+    D3DX11CompileFromFile("SheepGraphics/Shaders/Generic.hlsl",
                           0, 
                           0, 
                           "PShader", 
@@ -373,7 +367,7 @@ namespace DirectSheep
                           0, 
                           0, 
                           &PS, 
-                          &Errors, 
+                          &Errors,
                           0);
 
     ErrorIf(Errors || !PS, "ShaderCompile", "Pixel Shader Failed To Compile"); // if there are any errors...
@@ -386,7 +380,6 @@ namespace DirectSheep
     D3D11_INPUT_ELEMENT_DESC ied[] =
     {
         {"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
-        //{"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0},
         {"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0},
     };
 
@@ -420,6 +413,7 @@ namespace DirectSheep
 
     DXVerify(CORE->dev->CreateBuffer(&bd, NULL, &CORE->pCBuffer));
     CORE->devcon->VSSetConstantBuffers(0, 1, &CORE->pCBuffer);
+    CORE->devcon->PSSetConstantBuffers(0, 1, &CORE->pCBuffer);
   }
   
 
@@ -431,6 +425,7 @@ namespace DirectSheep
     SafeRelease(STATES->BlendState);
     SafeRelease(STATES->RState);
     SafeRelease(STATES->SamplerState);
+    SafeRelease(STATES->DepthState);
     SafeRelease(QUAD->VertexBuffer);
     SafeRelease(CORE->pFontWrapper);
     SafeRelease(CORE->pCBuffer);

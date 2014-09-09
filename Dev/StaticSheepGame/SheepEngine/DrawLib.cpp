@@ -47,8 +47,8 @@ namespace Framework
 
   void Draw::SetColor(float r, float g, float b, float a)
   {
-    //new (&Draw::m_Color) Vec4(r, g, b, a);
-    //GRAPHICS->SetColor(Draw::m_Color);
+    new (&Draw::m_Color) Vec4(r, g, b, a);
+    GRAPHICS->SetColor(Draw::m_Color);
   }
 
   //void Draw::SetTextPos(Vec2& pos)
@@ -65,35 +65,18 @@ namespace Framework
 
   void Draw::DrawRect(float x, float y, float width, float height)
   {
-    if (Draw::m_useCamera)
-      GRAPHICS->SetPosition(x + width / 2, y - height / 2);
-    else
-      GRAPHICS->SetPosition(x + width / 2, y + height / 2);
-
     GRAPHICS->SetSize(width, height);
-    GRAPHICS->SetRotation(0.0f);
-
-    //GRAPHICS->SetTexture(0);
-    //GRAPHICS->SetUseCamera(m_useCamera);
+    GRAPHICS->SetTexture(GRAPHICS->GetTextureID(std::string("content/White.png")));
+    GRAPHICS->SetPosition(x, y);
 
     GRAPHICS->DrawSprite();
   }
 
   void Draw::DrawTexturedRect(float x, float y, float width, float height)
   {
-    m_useCamera = false;
-
-    if (Draw::m_useCamera)
-      GRAPHICS->SetPosition(x + width / 2, y - height / 2);
-    else
-      GRAPHICS->SetPosition(x + width / 2, y + height / 2);
-
     GRAPHICS->SetSize(width, height);
-    GRAPHICS->SetRotation(0.0f);
 
-    GRAPHICS->SetTexture(m_TextureID);
-
-    GRAPHICS->SetUseCamera(m_useCamera);
+    GRAPHICS->SetPosition(x, y);
 
     GRAPHICS->DrawSprite();
   }

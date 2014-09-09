@@ -45,14 +45,11 @@ float4 PShader(PSInput input) : SV_TARGET
   //diffuseLighting *= (1 / dot(lightDir, lightDir));
 
   //float3 h = normalize(normalize(cCameraPos - input.worldPos.xyz) - lightDir);
-  
-  float4 texCol = gTexture.Sample(gSampler, input.texCoord);
+  return cBlendColor * gTexture.Sample(gSampler, input.texCoord);
 
   //return float4(lightDir, 1);
   //return float4(texCol.xyz * diffuseLighting, 1);
 
   /*return float4(saturate(float4(0, 0, 0, 1) + (texCol *
   float4(1, 1, 1, 1) * diffuseLighting * 0.6)));*/
-
-  return texCol * cBlendColor;
 }

@@ -93,6 +93,11 @@ namespace DirectSheep
     SHAPESTATES.useCamera = useCam;
   }
   
+  GFX_API void SetBlendColor(float r, float g, float b, float a)
+  {
+    SHAPESTATES.Color = D3DXCOLOR(r, g, b, a);
+  }
+
   GFX_API void DrawSprite()
   {
     Mat4 matFinal;
@@ -133,7 +138,7 @@ namespace DirectSheep
 
     CORE->devcon->UpdateSubresource(CORE->pCBuffer, 0, 0, &buffer, 0, 0);
 
-    CORE->devcon->PSSetShaderResources(0, 1, &TEXTUREMAP->TextureVec[0]);
+    CORE->devcon->PSSetShaderResources(0, 1, &TEXTUREMAP->TextureVec[SHAPESTATES.TexID]);
 
     CORE->devcon->Draw(6,0);
   }
@@ -173,7 +178,7 @@ void DrawSpriteText(const char * text, float size, const char * font)
     WFont.c_str(),
     size,
     &rect,
-    RGBTOBGR(D3DXCOLOR(Colors::Purple)),// Text color, 0xAaBbGgRr
+    RGBTOBGR(D3DXCOLOR(SHAPESTATES.Color)),// Text color, 0xAaBbGgRr
     NULL,
     matFinal,
     FW1_RESTORESTATE | FW1_CENTER | FW1_VCENTER | FW1_NOWORDWRAP
