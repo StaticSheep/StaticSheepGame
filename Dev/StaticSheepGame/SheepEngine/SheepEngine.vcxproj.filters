@@ -160,6 +160,9 @@
     <ClInclude Include="EventStrings.h">
       <Filter>Systems\Audio</Filter>
     </ClInclude>
+    <ClInclude Include="Input.h">
+      <Filter>Systems\Input</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="precompiled.cpp">
@@ -288,6 +291,9 @@
     </ClCompile>
     <ClCompile Include="SheepSoundEvent.cpp">
       <Filter>Systems\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="Input.cpp">
+      <Filter>Systems\Input</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -461,6 +467,9 @@
     </Filter>
     <Filter Include="Components\GamePad">
       <UniqueIdentifier>{9b86fffc-06dc-4572-a6d8-8f1f67f7b0b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\Input">
+      <UniqueIdentifier>{cf08f41f-fac7-4646-86a7-142228b605a6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

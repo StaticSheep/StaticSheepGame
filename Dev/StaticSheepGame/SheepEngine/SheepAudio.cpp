@@ -6,6 +6,9 @@ Author(s): Zakary Wilson
 All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 *****************************************************************/
 
+#pragma comment(lib, "fmodL_vc.lib")
+#pragma comment(lib, "fmodStudioL_vc.lib")
+
 #include "SheepAudio.h"
 #include <fstream>
 
@@ -334,3 +337,4 @@ void LoadEvent(SOUND::System *system, std::string &name, EventMap &events)
   // then gtfo
   return;
 }
+
