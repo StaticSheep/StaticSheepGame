@@ -91,7 +91,8 @@ local function Draw()
   surface.SetColorEx(1,0,1,.9)
   surface.SetTexture(texID)
   surface.DrawTexturedRect(75, 0, 200, 200)
-  --surface.DrawString("aasdf", 60, "")
+  surface.SetPos(100, 50)
+  surface.DrawString("aasdf", 60, "")
   
   
 

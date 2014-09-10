@@ -211,7 +211,7 @@ namespace DirectSheep
 	
 	  hResult = CORE->pFW1Factory->CreateFontWrapper(CORE->dev, NULL, &Params, &CORE->pFontWrapper);
 
-    SafeRelease(CORE->pFW1Factory);
+    Release(CORE->pFW1Factory);
 
     SetStates();
 
@@ -422,24 +422,24 @@ namespace DirectSheep
     if(CORE->swapchain)
       CORE->swapchain->SetFullscreenState(FALSE, NULL);    // switch to windowed mode
 
-    SafeRelease(STATES->BlendState);
-    SafeRelease(STATES->RState);
-    SafeRelease(STATES->SamplerState);
-    SafeRelease(STATES->DepthState);
-    SafeRelease(QUAD->VertexBuffer);
-    SafeRelease(CORE->pFontWrapper);
-    SafeRelease(CORE->pCBuffer);
-    SafeRelease(CORE->pPixelShader);
-    SafeRelease(CORE->pVertexShader);
-    SafeRelease(CORE->pInputLayout);
-    SafeRelease(CORE->depthbuffer);
-    SafeRelease(CORE->backbuffer);
-    SafeRelease(CORE->devcon);
-    SafeRelease(CORE->dev);
-    SafeRelease(CORE->swapchain);
+    Release(STATES->BlendState);
+    Release(STATES->RState);
+    Release(STATES->SamplerState);
+    Release(STATES->DepthState);
+    Release(QUAD->VertexBuffer);
+    Release(CORE->pFontWrapper);
+    Release(CORE->pCBuffer);
+    Release(CORE->pPixelShader);
+    Release(CORE->pVertexShader);
+    Release(CORE->pInputLayout);
+    Release(CORE->depthbuffer);
+    Release(CORE->backbuffer);
+    Release(CORE->devcon);
+    Release(CORE->dev);
+    Release(CORE->swapchain);
 
     for(unsigned i  = 0; i < TEXTUREMAP->TextureVec.size(); ++i)
-      SafeRelease(TEXTUREMAP->TextureVec[i]);
+      Release(TEXTUREMAP->TextureVec[i]);
 
     delete CORE;
     delete QUAD;

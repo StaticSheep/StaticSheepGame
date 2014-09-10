@@ -62,10 +62,12 @@ namespace DirectSheep
   };
 
 	template< typename RefType >
-	void SafeRelease( RefType& interfacePtr )
+	void Release( RefType& ptr )
 	{
-		if( interfacePtr ) interfacePtr->Release();
-		interfacePtr = NULL;
+		if( ptr )         // If pointer exists
+      ptr->Release(); // Release
+
+		ptr = NULL;       // Set pointer to NULL
 	}
 }
 

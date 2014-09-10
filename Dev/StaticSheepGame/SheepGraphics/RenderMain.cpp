@@ -11,6 +11,7 @@ namespace DirectSheep
 {
 
   void SetupMatrices(void);
+  void resetDrawStates(void);
 
   GFX_API void StartFrame(float dt)
   {
@@ -21,6 +22,15 @@ namespace DirectSheep
 
 
     SetupMatrices();
+  }
+
+  void resetDrawStates(void)
+  {
+    SHAPESTATES.Color = D3DXCOLOR(1, 1, 1, 1);
+    SHAPESTATES.position = Vec2(0, 0);
+    SHAPESTATES.rotation = 0;
+    SHAPESTATES.scale = Vec2(64, 64);
+
   }
 
   void SetupMatrices(void)
@@ -155,7 +165,7 @@ void DrawSpriteText(const char * text, float size, const char * font)
 
     D3DXMatrixRotationYawPitchRoll(&rotMat, 0.0f, -D3DX_PI, -SHAPESTATES.rotation);
 
-    D3DXMatrixTranslation(&transMat, floor(0), floor(0), floor(0.0f));
+    D3DXMatrixTranslation(&transMat, floor(SHAPESTATES.position.x), floor(SHAPESTATES.position.y), floor(0.0f));
 
     D3DXMatrixMultiply(&rotMat, &rotMat, &transMat);
 
