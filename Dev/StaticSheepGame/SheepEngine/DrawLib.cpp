@@ -1,7 +1,8 @@
 /*****************************************************************
 Filename: DrawLib.cpp
 Project: 
-Author(s): Zachary Nawar
+Author(s): Scott Nelson(primary)
+           Zachary Nawar
 
 All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 *****************************************************************/
@@ -39,29 +40,16 @@ namespace Framework
     GRAPHICS->SetRotation(theta);
   }
 
-  //void Draw::SetColor(Vec4& color)
-  //{
-  //  Draw::m_Color = color;
-  //  //GRAPHICS->SetColor(color);
-  //}
+  void Draw::SetPosition(float x, float y)
+  {
+    GRAPHICS->SetPosition(x, y);
+  }
 
   void Draw::SetColor(float r, float g, float b, float a)
   {
     new (&Draw::m_Color) Vec4(r, g, b, a);
     GRAPHICS->SetColor(Draw::m_Color);
   }
-
-  //void Draw::SetTextPos(Vec2& pos)
-  //{
-  //  Draw::m_TextPos = pos;
-  //}
-
-  void Draw::SetTextPos(float x, float y)
-  {
-    new (&Draw::m_TextPos) Vec2(x, y);
-  }
-
-
 
   void Draw::DrawRect(float x, float y, float width, float height)
   {
