@@ -69,10 +69,10 @@ local function Draw()
 
   if up then
      i = i + 1
-     if i > 500 then up = false end
+     if i > 400 then up = false end
    else
      i = i - 1
-     if i < -500 then up = true end
+     if i < -400 then up = true end
    end
   dt = dt + .001
 
@@ -80,7 +80,7 @@ texID = surface.GetTextureID("content/maverick.jpg")
   surface.SetRotation(dt)
   surface.SetTexture(texID)
   surface.SetColorEx(1,1,1,1)
-  surface.DrawTexturedRect(i, 0, 200, 200)
+  surface.DrawTexturedRect(i, 0, 225, 225)
   
   surface.SetRotation(-dt * 5)
   surface.SetColorEx(1,1,1,1)
@@ -90,10 +90,10 @@ texID = surface.GetTextureID("content/maverick.jpg")
   surface.SetColorEx(1,1,1,1)
   texID = surface.GetTextureID("content/goose.jpg")
   surface.SetTexture(texID)
-  surface.DrawTexturedRect(-i, 0, 200, 200)
+  surface.DrawTexturedRect(-i, 0, 174, 290)
   surface.SetPos(0, 0)
   surface.SetColorEx(1,0,0,1)
-  surface.DrawString("Top Gun!", i / 4, "")
+  surface.DrawString("Top Gun!", i / 3, "")
   
   
 
