@@ -115,3 +115,4 @@ Dev/StaticSheepGame/luaSource/Release/vc110.pdb
 *.ilk
 *.idb
 *.pdb
+*.fobj

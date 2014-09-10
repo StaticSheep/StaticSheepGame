@@ -1,0 +1,4 @@
+{0e1f2e7f-f428-4861-93f6-46325c199a42} event:/theme - top gun
+{8761f106-08a5-40dd-97a4-a79e516d53d7} bus:/
+{c4c193e7-03b2-497c-9cf9-b06e63cb0385} bus:/Reverb
+{f60072ba-9059-471f-aeb9-fe65ecc788e7} bank:/Master Bank

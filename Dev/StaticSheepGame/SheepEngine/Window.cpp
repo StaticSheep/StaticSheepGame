@@ -7,6 +7,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 *****************************************************************/
 
 #include "Window.h"
+#include "Input.h"
 
 #include <windows.h>
 #include <windowsx.h>
@@ -59,6 +60,8 @@ namespace Framework
   {
     PAINTSTRUCT ps;                         // Data to redraw window if moved
     HDC hdc;                                // Hande to a Device Context
+    MSG msg;
+    InputManager input;
 
     switch( message )                       // Check message
     {
@@ -71,6 +74,38 @@ namespace Framework
       ENGINE->Quit();
       PostQuitMessage( 0 );
       break;
+
+/*****************************************************************************/
+//    Mouse Events
+/*****************************************************************************/
+    case WM_MOUSEMOVE:
+
+    case WM_LBUTTONDOWN:
+
+    case WM_LBUTTONUP:
+
+    case WM_LBUTTONDBLCLK:
+
+    case WM_RBUTTONDOWN:
+
+    case WM_RBUTTONUP:
+
+    case WM_RBUTTONDBLCLK:
+
+    case WM_MBUTTONDOWN:
+
+    case WM_MBUTTONUP:
+
+    case WM_MBUTTONDBLCLK:
+
+      TranslateMessage(&msg);
+      input.Mouse.Update();
+
+      break;
+
+/*****************************************************************************/
+//    Mouse Events End
+/*****************************************************************************/
 
     default:
       return DefWindowProc( hWnd, message, wParam, lParam );
