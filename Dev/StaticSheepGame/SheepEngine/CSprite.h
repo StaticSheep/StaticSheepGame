@@ -16,7 +16,10 @@ namespace Framework
     virtual void Initialize();
     virtual void Remove();
 
-    Vec2 Size;
+    void SetTexture(std::string texture);
+
+    Vec2 m_Size;
+    Vec4 m_Color;
 
     Handle transform;
 
@@ -28,6 +31,6 @@ namespace Framework
     void Draw();
 
   private:
-    void SetTexture(std::string& texture);
+    
   };
 }
