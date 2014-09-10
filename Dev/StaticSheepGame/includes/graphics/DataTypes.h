@@ -41,7 +41,7 @@ namespace DirectSheep
     Vec2 position;
     Vec2 scale;
     float rotation;
-    Vec4 Color;
+    D3DXCOLOR Color;
     int TexID;
     bool useCamera;
   };

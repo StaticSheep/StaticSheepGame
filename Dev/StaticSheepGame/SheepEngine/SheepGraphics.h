@@ -34,6 +34,7 @@ namespace Framework
     void SetRotation(float theta);
     void SetSize(float x, float y);
     void SetTexture(int ID);
+    void SetColor(Vec4 Color);
     void SetUseCamera(bool useCam);
     void DrawSprite(void);
     int GetTextureID(std::string& texture);

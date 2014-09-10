@@ -11,6 +11,7 @@ namespace DirectSheep
   GFX_API void SetRotation(float theta);
   GFX_API void SetSize(float x, float y);
   GFX_API void SetTexture(int ID);
+  GFX_API void SetBlendColor(float r, float g, float b, float a);
   GFX_API void SetUseCamera(bool useCam);
 
   GFX_API void DrawSprite();

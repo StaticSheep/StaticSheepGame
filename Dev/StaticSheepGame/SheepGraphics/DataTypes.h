@@ -45,7 +45,7 @@ namespace DirectSheep
     Vec2 position;
     Vec2 scale;
     float rotation;
-    Vec4 Color;
+    D3DXCOLOR Color;
     int TexID;
     bool useCamera;
   };
@@ -62,10 +62,12 @@ namespace DirectSheep
   };
 
 	template< typename RefType >
-	void SafeRelease( RefType& interfacePtr )
+	void Release( RefType& ptr )
 	{
-		if( interfacePtr ) interfacePtr->Release();
-		interfacePtr = NULL;
+		if( ptr )         // If pointer exists
+      ptr->Release(); // Release
+
+		ptr = NULL;       // Set pointer to NULL
 	}
 }
 

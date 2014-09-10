@@ -11,6 +11,7 @@ namespace DirectSheep
 {
 
   void SetupMatrices(void);
+  void resetDrawStates(void);
 
   GFX_API void StartFrame(float dt)
   {
@@ -21,6 +22,15 @@ namespace DirectSheep
 
 
     SetupMatrices();
+  }
+
+  void resetDrawStates(void)
+  {
+    SHAPESTATES.Color = D3DXCOLOR(1, 1, 1, 1);
+    SHAPESTATES.position = Vec2(0, 0);
+    SHAPESTATES.rotation = 0;
+    SHAPESTATES.scale = Vec2(64, 64);
+
   }
 
   void SetupMatrices(void)
@@ -93,6 +103,11 @@ namespace DirectSheep
     SHAPESTATES.useCamera = useCam;
   }
   
+  GFX_API void SetBlendColor(float r, float g, float b, float a)
+  {
+    SHAPESTATES.Color = D3DXCOLOR(r, g, b, a);
+  }
+
   GFX_API void DrawSprite()
   {
     Mat4 matFinal;
@@ -133,7 +148,7 @@ namespace DirectSheep
 
     CORE->devcon->UpdateSubresource(CORE->pCBuffer, 0, 0, &buffer, 0, 0);
 
-    CORE->devcon->PSSetShaderResources(0, 1, &TEXTUREMAP->TextureVec[0]);
+    CORE->devcon->PSSetShaderResources(0, 1, &TEXTUREMAP->TextureVec[SHAPESTATES.TexID]);
 
     CORE->devcon->Draw(6,0);
   }
@@ -150,7 +165,7 @@ void DrawSpriteText(const char * text, float size, const char * font)
 
     D3DXMatrixRotationYawPitchRoll(&rotMat, 0.0f, -D3DX_PI, -SHAPESTATES.rotation);
 
-    D3DXMatrixTranslation(&transMat, floor(0), floor(0), floor(0.0f));
+    D3DXMatrixTranslation(&transMat, floor(SHAPESTATES.position.x), floor(SHAPESTATES.position.y), floor(0.0f));
 
     D3DXMatrixMultiply(&rotMat, &rotMat, &transMat);
 
@@ -173,7 +188,7 @@ void DrawSpriteText(const char * text, float size, const char * font)
     WFont.c_str(),
     size,
     &rect,
-    RGBTOBGR(D3DXCOLOR(Colors::Purple)),// Text color, 0xAaBbGgRr
+    RGBTOBGR(D3DXCOLOR(SHAPESTATES.Color)),// Text color, 0xAaBbGgRr
     NULL,
     matFinal,
     FW1_RESTORESTATE | FW1_CENTER | FW1_VCENTER | FW1_NOWORDWRAP

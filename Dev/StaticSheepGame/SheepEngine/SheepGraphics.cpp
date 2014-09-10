@@ -1,7 +1,8 @@
 /*****************************************************************
 Filename: SheepGraphics.cpp
 Project: 
-Author(s): Scott Nelson
+Author(s): Scott Nelson(Primary)
+           Zachary Nawar
 
 All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 *****************************************************************/
@@ -104,6 +105,11 @@ namespace Framework
   void SheepGraphics::SetTexture(int ID)
   {
     DirectSheep::SetTexture(ID);
+  }
+
+  void SheepGraphics::SetColor(Vec4 Color)
+  {
+    DirectSheep::SetBlendColor(Color.R, Color.G, Color.B, Color.A);
   }
 
   void SheepGraphics::DrawSprite(void)

@@ -74,12 +74,27 @@ local function Draw()
   --   i = i - 1
   --   if i < 1 then up = true end
   -- end
-  dt = dt + .01
-  local texID = surface.GetTextureID("content/test.png")
-  surface.SetTexture(texID)
-  surface.DrawTexturedRect(0, 0, 200, 10)
+  dt = dt + .001
+
+  texID = surface.GetTextureID("content/White.png")
   surface.SetRotation(dt)
-  surface.DrawString("asfasfea", 90, "Calibri")
+  surface.SetColorEx(1,1,1,.5)
+  surface.SetTexture(texID)
+  surface.DrawTexturedRect(-150, 0, 200, 200)
+  texID = surface.GetTextureID("content/bricks.png")
+  surface.SetRotation(-dt * 2)
+  surface.SetColorEx(1,1,0,.75)
+  surface.SetTexture(texID)
+  surface.DrawRect(0, 0, 200, 200)
+  surface.GetTextureID("content/White.png")
+  surface.SetRotation(-dt)
+  surface.SetColorEx(1,0,1,.9)
+  surface.SetTexture(texID)
+  surface.DrawTexturedRect(75, 0, 200, 200)
+  surface.SetPos(100, 50)
+  surface.DrawString("aasdf", 60, "")
+  
+  
 
   -- local texID2 = surface.GetTextureID("content/bricks.png")
   -- surface.SetTexture(texID2)
