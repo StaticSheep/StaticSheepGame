@@ -67,32 +67,33 @@ local function Draw()
   -- surface.DrawLine(50, 500 + 5 * i, 700, 200 + 5 * i, 10)
 
 
-  -- if up then
-  --   i = i + 1
-  --   if i > 10 then up = false end
-  -- else
-  --   i = i - 1
-  --   if i < 1 then up = true end
-  -- end
+  if up then
+     i = i + 1
+     if i > 500 then up = false end
+   else
+     i = i - 1
+     if i < -500 then up = true end
+   end
   dt = dt + .001
 
-  texID = surface.GetTextureID("content/White.png")
+texID = surface.GetTextureID("content/maverick.jpg")
   surface.SetRotation(dt)
-  surface.SetColorEx(1,1,1,.5)
   surface.SetTexture(texID)
-  surface.DrawTexturedRect(-150, 0, 200, 200)
-  texID = surface.GetTextureID("content/bricks.png")
-  surface.SetRotation(-dt * 2)
-  surface.SetColorEx(1,1,0,.75)
+  surface.SetColorEx(1,1,1,1)
+  surface.DrawTexturedRect(i, 0, 200, 200)
+  
+  surface.SetRotation(-dt * 5)
+  surface.SetColorEx(1,1,1,1)
   surface.SetTexture(texID)
-  surface.DrawRect(0, 0, 200, 200)
-  surface.GetTextureID("content/White.png")
+  --surface.DrawRect(0, 0, 200, 200)
   surface.SetRotation(-dt)
-  surface.SetColorEx(1,0,1,.9)
+  surface.SetColorEx(1,1,1,1)
+  texID = surface.GetTextureID("content/goose.jpg")
   surface.SetTexture(texID)
-  surface.DrawTexturedRect(75, 0, 200, 200)
-  surface.SetPos(100, 50)
-  surface.DrawString("aasdf", 60, "")
+  surface.DrawTexturedRect(-i, 0, 200, 200)
+  surface.SetPos(0, 0)
+  surface.SetColorEx(1,0,0,1)
+  surface.DrawString("Top Gun!", i / 4, "")
   
   
 
