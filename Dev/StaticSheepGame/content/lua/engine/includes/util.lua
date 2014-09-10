@@ -125,6 +125,10 @@ function SetupMetatable(key, meta)
       return meta.__base
     end
 
+    if key == "Transform" then
+      return self:GetComponent(0)
+    end
+
     if meta.__members ~= nil and meta.__members[key] ~= nil then
       return meta["Get"..key](self)
     end
