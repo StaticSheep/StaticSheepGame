@@ -9,7 +9,6 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #pragma once
 
 #include "System.h"
-#include <Windows.h>
 #include <unordered_map>
 #include "SheepSoundEvent.h"
 

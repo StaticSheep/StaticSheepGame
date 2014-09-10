@@ -19,7 +19,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 namespace SOUND = FMOD::Studio;
 
-void ErrorCheck(FMOD_RESULT result);
+bool ErrorCheck(FMOD_RESULT result);
 
 ////////////////////////////////////////////////////////////////////////////////
 #endif // SHEEP_FMOD_H

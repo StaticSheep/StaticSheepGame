@@ -1,41 +1,81 @@
 #include <Windows.h>
+#include "System.h"
 
-struct Pos
+#define MOUSE_OFFSET 0x0201
+#define LMB 0
+#define RMB 1
+#define MMB 2
+
+namespace Framework
 {
-  float x;
-  float y;
-};
 
-struct Control
-{
-  bool IsPressed;
-  bool IsDown;
-  bool IsReleased;
-};
+  class MouseInput
+  {
+  public:
 
-class MouseInput
-{
-public:
+    MouseInput();
+    ~MouseInput();
 
-  void Update(void);
-  void GetWorldPosition(void);
-  void GetScreenPosition(void);
+    void Initialize(void);
+    void Update(void);
+    void GetWorldPosition(void); // change this for working with everything else
+    void GetScreenPosition(void); // change this for working with everything else
   
+    bool ButtonPressed(unsigned int button) const;
+    bool ButtonDown(unsigned int button) const;
+    bool ButtonReleased(unsigned int button) const;
 
-private:
+  private:
 
-  Control LMB;
-  Control RMB;
-  Pos _position;
+    bool _previousState[3];
+    bool _currentState[3];
 
-  void _UpdateButton(MSG* msg);
-  void _UpdateMove(MSG* msg);
+    void _UpdateButton(unsigned int);
+    void _UpdateMove(MSG* msg);
 
-};
+    void _ScreenToWorld();
 
-class InputManager
-{
-public:
+  };
 
-  MouseInput Mouse;
-};
+  class KeyboardInput
+  {
+  public:
+
+    KeyboardInput();
+    ~KeyboardInput();
+
+    void Initialize();
+    void Update();
+
+    bool KeyIsPressed(unsigned int key) const;
+    bool KeyIsDown(unsigned int key) const;
+    bool KeyIsReleased(unsigned int key) const;
+
+    void SetActive(bool);
+    bool GetActiveState(void) const;
+
+  private:
+
+    bool _active;
+    bool _previousState[256];
+    bool _currentState[256];
+  };
+
+
+  class InputManager  : public ISystem
+  {
+  public:
+
+    InputManager();
+    ~InputManager();
+
+    virtual std::string GetName() {return "SheepInput";};
+
+    void Initialize();
+    void Update(float dt);
+
+    MouseInput Mouse;
+    KeyboardInput Keyboard;
+
+  };
+}

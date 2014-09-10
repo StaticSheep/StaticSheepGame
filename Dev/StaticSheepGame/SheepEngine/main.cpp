@@ -6,7 +6,9 @@
 //#include <wtypes.h>
 #include <Windows.h>
 
+#include "Input.h"
 #include "SheepGraphics.h"
+#include "SheepAudio.h"
 #include "GameLogic.h"
 
 #pragma comment (lib, "SheepGraphics.lib")
@@ -23,8 +25,11 @@ int WINAPI WinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
 
   Engine* Core = new Engine();
 
+  Core->AddSystem(new SheepAudio());
   Core->AddSystem(new SheepGraphics());
   Core->AddSystem(new GameLogic());
+  
+  Core->AddSystem(new InputManager());
 
   Core->MakeWindow(hInstance, nShowCmd);
 

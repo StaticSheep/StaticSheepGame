@@ -91,6 +91,9 @@ namespace Framework
 	{
     float temp = dt; // get rid of warning
 
+    if(_events["Music/TopGun"].PlayState() == 0)
+      _events["Music/TopGun"].Play(PLAY_LOOP);
+
     // update all of the sounds
     ErrorCheck(_system->update());
     return;
@@ -208,6 +211,9 @@ void ParseBanks(SOUND::System *system, std::ifstream &file, BankVector &bank)
   file.clear();
   file.seekg(0, file.beg);
 
+  
+  
+
   // using getline to retain whitespaces
   while (std::getline(file, str))
   {
@@ -293,11 +299,13 @@ void LoadBank(SOUND::System *system, std::string &name, BankVector &bank)
   std::string pathName = SoundUtility::SourcePath(name, SoundUtility::TYPE_AUDIO);
 
   // load the bank file into memory, do non-blocking for asynchronous loading
-  ErrorCheck(system->loadBankFile(pathName.c_str(), FMOD_STUDIO_LOAD_BANK_NONBLOCKING, &newBank));
+  ErrorCheck(system->loadBankFile(pathName.c_str(), FMOD_STUDIO_LOAD_BANK_NORMAL, &newBank));
   ErrorCheck (newBank->loadSampleData());
 
   // push the pointer to the bank onto the vector
   bank.push_back(newBank);
+
+  
 
   return;
 }
