@@ -49,6 +49,10 @@ namespace Framework
     static void LuaQuit();
     static void LuaSetVariable(Generic* obj, Member* member, int dummy);
     static void LuaGetVariable(Generic* obj, Member* member);
+    static void LuaClearSpaces();
+    static void LuaRemoveSpace(const char* name);
+
+    void ClearSpaces();
 
     GameSpace* CreateSpace(const char* name);
 

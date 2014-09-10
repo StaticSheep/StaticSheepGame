@@ -86,6 +86,7 @@ namespace Framework
 
       // Used from lua
       void LuaGetComponent(size_t type);
+      bool LuaHasComponent(size_t type);
 
       // The objects Globally Unique ID
       size_t guid;

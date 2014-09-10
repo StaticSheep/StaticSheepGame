@@ -36,7 +36,7 @@ int WINAPI WinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
 
   Core->Initialize();
 
-  Core->LoadLuaLevel("content/lua/engine/levels/editor.lua");
+  Core->LoadLuaLevel("content/lua/engine/levels/testlevel.lua");
 
   while (Core->Running())
   {

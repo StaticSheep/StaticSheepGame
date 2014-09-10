@@ -21,7 +21,8 @@ namespace Framework
     m_objects(sizeof(GameObject), 10),
     m_shuttingDown(false),
     m_paused(false),
-    m_hidden(false)
+    m_hidden(false),
+    m_valid(true)
   {
     for(unsigned i = 0; i < ecountComponents; ++i)
     {

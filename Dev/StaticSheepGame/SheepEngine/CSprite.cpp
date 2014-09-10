@@ -38,7 +38,7 @@ namespace Framework
     GRAPHICS->SetPosition(trans->Translation.X, trans->Translation.Y);
 
     GRAPHICS->SetRotation(trans->Rotation);
-    GRAPHICS->SetSize(Size.X, Size.Y);
+    GRAPHICS->SetSize(Size.X * trans->Scale.X, Size.Y * trans->Scale.Y);
     GRAPHICS->SetTexture(SpriteID);
     GRAPHICS->SetColor(Color);
     GRAPHICS->DrawSprite();

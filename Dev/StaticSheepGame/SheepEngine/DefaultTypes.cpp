@@ -104,6 +104,8 @@ namespace Framework
 
     TYPE_REGISTER( Transform );
     TYPE_ADD_MEMBER(Transform, Translation);
+    TYPE_ADD_MEMBER(Transform, Scale);
+    TYPE_ADD_MEMBER(Transform, Rotation);
     TYPE_SET_FROM_LUA( Transform, Lua::GenericObjectFromLua );
 
     TYPE_REGISTER_PTR(Transform*);
@@ -114,6 +116,7 @@ namespace Framework
 
     TYPE_REGISTER( Sprite );
     TYPE_ADD_MEMBER( Sprite, SpriteName );
+    TYPE_ADD_MEMBER( Sprite, Size );
     TYPE_SET_FROM_LUA( Sprite, Lua::GenericObjectFromLua );
 
     TYPE_REGISTER( LuaComponent );
