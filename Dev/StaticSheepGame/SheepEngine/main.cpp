@@ -10,6 +10,7 @@
 #include "SheepGraphics.h"
 #include "SheepAudio.h"
 #include "GameLogic.h"
+#include "SheepPhysics.h"
 
 #pragma comment (lib, "SheepGraphics.lib")
 #pragma comment (lib, "SheepPhysics.lib")
@@ -25,17 +26,17 @@ int WINAPI WinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
 
   Engine* Core = new Engine();
 
+  Core->AddSystem(new InputManager());
+  Core->AddSystem(new GameLogic());
+  Core->AddSystem(new SheepPhysics());
   Core->AddSystem(new SheepAudio());
   Core->AddSystem(new SheepGraphics());
-  Core->AddSystem(new GameLogic());
-  
-  Core->AddSystem(new InputManager());
 
   Core->MakeWindow(hInstance, nShowCmd);
 
   Core->Initialize();
 
-  Core->LoadLuaLevel("content/lua/engine/levels/editor.lua");
+  Core->LoadLuaLevel("content/lua/engine/levels/testlevel.lua");
 
   while (Core->Running())
   {

@@ -5,6 +5,7 @@ namespace Framework
 {
 
   Sprite::Sprite()
+    :Color(1, 1, 1, 1), Size(32, 32)
   {
     transform = NULL;
   }
@@ -19,8 +20,8 @@ namespace Framework
 
     if (this->SpriteName.length() == 0)
       this->SpriteName = "content/bricks.png";
-    //SetTexture(this->SpriteName);
 
+    SetTexture(this->SpriteName);
     //TODO not sure if we have a GetOwner()->has working
     space->hooks.Add("Draw", self, BUILD_FUNCTION(Sprite::Draw));
   }
@@ -32,19 +33,18 @@ namespace Framework
 
   void Sprite::Draw()
   {
-    time += 0.001f;
-
     Transform* trans = space->GetHandles().GetAs<Transform>(transform);
 
-    GRAPHICS->SetPosition(trans->translation.X, trans->translation.Y);
+    GRAPHICS->SetPosition(trans->Translation.X, trans->Translation.Y);
 
-    GRAPHICS->SetRotation(-time);
-    GRAPHICS->SetSize(200, 200);
+    GRAPHICS->SetRotation(trans->Rotation);
+    GRAPHICS->SetSize(Size.X, Size.Y);
     GRAPHICS->SetTexture(SpriteID);
+    GRAPHICS->SetColor(Color);
     GRAPHICS->DrawSprite();
   }
 
-  void Sprite::SetTexture(std::string& texture)
+  void Sprite::SetTexture(std::string texture)
   {
     SpriteName = texture;
     SpriteID = GRAPHICS->GetTextureID(texture);

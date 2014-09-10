@@ -9,7 +9,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 namespace Framework
 {
   Transform::Transform()
-    :translation(0,0), rotation(0), scale(0,0)
+    :Translation(0,0), Rotation(0), Scale(1,1)
   {
   }
 

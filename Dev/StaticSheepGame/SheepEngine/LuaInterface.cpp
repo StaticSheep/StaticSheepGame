@@ -129,6 +129,9 @@ namespace Framework
         }
       }
 
+      //CreateNewGTable(L, "Components");
+
+
       Lua::CallFunc(L, "SetupMetatables");
 
       CallFunc(L, "filesystem.LoadLuaFiles", "content/lua/");
