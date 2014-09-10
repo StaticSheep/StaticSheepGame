@@ -1,4 +1,4 @@
-local META = GetMeta("Vector")
+local META = GetMeta("Vector2")
 
 function META.__add(a, b)
   if type(a) == "number" then
@@ -120,4 +120,4 @@ function META:__set(x, y)
   self.y = y
 end
 
-Vector = META
+Vector2 = setmetatable(META, META)

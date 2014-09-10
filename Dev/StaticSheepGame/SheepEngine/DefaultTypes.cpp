@@ -103,7 +103,7 @@ namespace Framework
     //TYPE_SET_TO_LUA( GameSpace*, Lua::GameSpaceToLua);
 
     TYPE_REGISTER( Transform );
-    TYPE_ADD_MEMBER(Transform, translation);
+    TYPE_ADD_MEMBER(Transform, Translation);
     TYPE_SET_FROM_LUA( Transform, Lua::GenericObjectFromLua );
 
     TYPE_REGISTER_PTR(Transform*);

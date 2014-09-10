@@ -18,8 +18,8 @@ namespace Framework
 
     void SetTexture(std::string texture);
 
-    Vec2 m_Size;
-    Vec4 m_Color;
+    Vec2 Size;
+    Vec4 Color;
 
     Handle transform;
 

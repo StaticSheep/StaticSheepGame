@@ -19,8 +19,8 @@ namespace Framework
     ~Transform();
     virtual void Initialize(){};
 
-    Vec2 translation;
-    Vec2 scale;
-    float rotation;
+    Vec2 Translation;
+    Vec2 Scale;
+    float Rotation;
   };
 }

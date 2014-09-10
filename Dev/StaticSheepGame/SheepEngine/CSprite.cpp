@@ -5,7 +5,7 @@ namespace Framework
 {
 
   Sprite::Sprite()
-    :m_Color(1, 1, 1, 1)
+    :Color(1, 1, 1, 1), Size(32, 32)
   {
     transform = NULL;
   }
@@ -35,11 +35,12 @@ namespace Framework
   {
     Transform* trans = space->GetHandles().GetAs<Transform>(transform);
 
-    GRAPHICS->SetPosition(trans->translation.X, trans->translation.Y);
+    GRAPHICS->SetPosition(trans->Translation.X, trans->Translation.Y);
 
-    GRAPHICS->SetRotation(trans->rotation);
-    GRAPHICS->SetSize(m_Size.X, m_Size.Y);
+    GRAPHICS->SetRotation(trans->Rotation);
+    GRAPHICS->SetSize(Size.X, Size.Y);
     GRAPHICS->SetTexture(SpriteID);
+    GRAPHICS->SetColor(Color);
     GRAPHICS->DrawSprite();
   }
 
