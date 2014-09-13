@@ -40,19 +40,15 @@ namespace Framework
         _UpdateMove(msg);
         break;
 
-      // intentional fall through
       case WM_LBUTTONDOWN:
-        std::cout << "Left button down" << std::endl;
         _UpdateButton(LMB, true);
         break;
 
       case WM_RBUTTONDOWN:
-        std::cout << "Right button down" << std::endl;
         _UpdateButton(RMB, true);
         break;
 
       case WM_MBUTTONDOWN:
-        std::cout << "Middle button down" << std::endl;
         _UpdateButton(MMB, true);
         break;
 
@@ -81,35 +77,6 @@ namespace Framework
     {
       _previousState[i] = _currentState[i];
     }
-
-
-    // grab all of the mouse events.
-    //while(PeekMessage(&msg, NULL, WM_MOUSEFIRST, WM_MOUSELAST, PM_NOREMOVE))
-    //{
-    //  switch(msg.message)
-    //  {
-    //    case WM_MOUSEMOVE:
-    //      _UpdateMove(&msg);
-    //     break;
-
-    //    // intentional fall through
-    //    case WM_LBUTTONDOWN:
-    //      _UpdateButton(LMB);
-    //      break;
-
-    //    case WM_RBUTTONDOWN:
-    //      _UpdateButton(RMB);
-    //      break;
-
-    //    case WM_MBUTTONDOWN:
-    //      _UpdateButton(MMB);
-    //      break;
-
-    //    default:
-    //      break;
-    //  }
-    //}
-
   }
 
   bool MouseInput::ButtonPressed(unsigned int button) const
@@ -138,14 +105,14 @@ namespace Framework
       return false;
   }
 
-  void MouseInput::GetWorldPosition(void)
+  Vec2 MouseInput::GetWorldPosition(void)
   {
-    return;
+    return _worldPosition;
   }
 
-  void MouseInput::GetScreenPosition(void)
+  Vec2 MouseInput::GetScreenPosition(void)
   {
-    return;
+    return _screenPosition;
   }
 
   void MouseInput::_UpdateButton(unsigned int button, bool state)
@@ -156,12 +123,23 @@ namespace Framework
 
   void MouseInput::_UpdateMove(MSG* msg)
   {
+    POINT window;
+    GetCursorPos(&window);
+
+    if(ScreenToClient(ENGINE->Window.GetHandle(), &window))
+    {
+      _screenPosition.X = window.x;
+      _screenPosition.Y = window.y;
+    }
+
+    _ScreenToWorld();
+
     return;
   }
 
   void MouseInput::_ScreenToWorld()
   {
-    // do stuff
+    
   }
 
   /*****************************************************************************/
@@ -214,25 +192,10 @@ namespace Framework
 
   void KeyboardInput::Update()
   {
-    //MSG msg;
-
     for(int i = 0; i < 256; ++i)
     {
       _previousState[i] = _currentState[i];
     }
-
-    //while(PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) // Query message queue
-    //{
-    //  
-    //  DispatchMessage(&msg);                   // Dispatch
-    //}
-
-    //// grab all of the keyboard events
-    //while(PeekMessage(&msg, NULL, WM_KEYFIRST, WM_KEYLAST, PM_NOREMOVE))
-    //{
-    //  
-    //}
-
   }
 
   bool KeyboardInput::KeyIsPressed(unsigned int key) const
@@ -298,13 +261,6 @@ namespace Framework
   {
     MSG msg = {0};
 
-    if (frame == false)
-    {
-      frame = true;
-      return;
-    }
-    frame = false;
-
     Mouse.Update();
     Keyboard.Update();
 
@@ -314,24 +270,6 @@ namespace Framework
       Keyboard.GetMsg(&msg);
       DispatchMessage(&msg);                   // Dispatch
     }
-
-    if (Keyboard.KeyIsPressed('C'))
-    {
-      std::cout << "C Pressed" << std::endl;
-    }
-
-    if (Keyboard.KeyIsReleased('C'))
-    {
-      std::cout << "C Released" << std::endl;
-    }
-
-    if (Mouse.ButtonPressed(0))
-      std::cout << "LButton pressed" << std::endl;
-
-    if (Mouse.ButtonReleased(0))
-      std::cout << "LButton Released" << std::endl;
-
-    float poop = dt;
 
     return;
   }

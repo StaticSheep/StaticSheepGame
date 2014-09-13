@@ -19,8 +19,8 @@ namespace Framework
 
     void Initialize(void);
     void Update(void);
-    void GetWorldPosition(void); // change this for working with everything else
-    void GetScreenPosition(void); // change this for working with everything else
+    Vec2 GetWorldPosition(void); // change this for working with everything else
+    Vec2 GetScreenPosition(void); // change this for working with everything else
   
     bool ButtonPressed(unsigned int button) const;
     bool ButtonDown(unsigned int button) const;
@@ -30,6 +30,9 @@ namespace Framework
 
     bool _previousState[3];
     bool _currentState[3];
+
+    Vec2 _screenPosition;
+    Vec2 _worldPosition;
 
     void GetMsg(MSG* msg);
 
