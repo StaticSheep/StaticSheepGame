@@ -8,6 +8,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 #include "Input.h"
 #include <iostream>
+#include <windows.h>
 
 namespace Framework
 {
@@ -31,6 +32,47 @@ namespace Framework
     }
   }
 
+  void MouseInput::GetMsg(MSG* msg)
+  {
+    switch(msg->message)
+    {
+      case WM_MOUSEMOVE:
+        _UpdateMove(msg);
+        break;
+
+      // intentional fall through
+      case WM_LBUTTONDOWN:
+        std::cout << "Left button down" << std::endl;
+        _UpdateButton(LMB, true);
+        break;
+
+      case WM_RBUTTONDOWN:
+        std::cout << "Right button down" << std::endl;
+        _UpdateButton(RMB, true);
+        break;
+
+      case WM_MBUTTONDOWN:
+        std::cout << "Middle button down" << std::endl;
+        _UpdateButton(MMB, true);
+        break;
+
+      case WM_LBUTTONUP:
+        _UpdateButton(LMB, false);
+        break;
+
+      case WM_RBUTTONUP:
+        _UpdateButton(RMB, false);
+        break;
+
+      case WM_MBUTTONUP:
+        _UpdateButton(MMB, false);
+        break;
+
+      default:
+        break;
+    }
+  }
+
   void MouseInput::Update()
   {
     MSG msg;
@@ -38,35 +80,35 @@ namespace Framework
     for(int i = 0; i < 3; ++i)
     {
       _previousState[i] = _currentState[i];
-      _currentState[i] = 0;
     }
+
 
     // grab all of the mouse events.
-    while(PeekMessage(&msg, NULL, WM_MOUSEFIRST, WM_MOUSELAST, PM_REMOVE))
-    {
-      switch(msg.message)
-      {
-        case WM_MOUSEMOVE:
-          _UpdateMove(&msg);
-          break;
+    //while(PeekMessage(&msg, NULL, WM_MOUSEFIRST, WM_MOUSELAST, PM_NOREMOVE))
+    //{
+    //  switch(msg.message)
+    //  {
+    //    case WM_MOUSEMOVE:
+    //      _UpdateMove(&msg);
+    //     break;
 
-        // intentional fall through
-        case WM_LBUTTONDOWN:
-          _UpdateButton(LMB);
-          break;
+    //    // intentional fall through
+    //    case WM_LBUTTONDOWN:
+    //      _UpdateButton(LMB);
+    //      break;
 
-        case WM_RBUTTONDOWN:
-          _UpdateButton(RMB);
-          break;
+    //    case WM_RBUTTONDOWN:
+    //      _UpdateButton(RMB);
+    //      break;
 
-        case WM_MBUTTONDOWN:
-          _UpdateButton(MMB);
-          break;
+    //    case WM_MBUTTONDOWN:
+    //      _UpdateButton(MMB);
+    //      break;
 
-        default:
-          break;
-      }
-    }
+    //    default:
+    //      break;
+    //  }
+    //}
 
   }
 
@@ -106,9 +148,10 @@ namespace Framework
     return;
   }
 
-  void MouseInput::_UpdateButton(unsigned int button)
+  void MouseInput::_UpdateButton(unsigned int button, bool state)
   {
-    _currentState[button] = 1;
+    _previousState[button] = _currentState[button];
+    _currentState[button] = state;
   }
 
   void MouseInput::_UpdateMove(MSG* msg)
@@ -137,32 +180,58 @@ namespace Framework
 
   void KeyboardInput::Initialize()
   {
+    for(int i = 0; i < 256; ++i)
+    {
+      _previousState[i] = 0;
+      _currentState[i] = 0;
+    }
+  }
+
+  void KeyboardInput::UpdateKey(unsigned int key, bool state)
+  {
+    _previousState[key] = _currentState[key];
+    _currentState[key] = state;
+  }
+
+  void KeyboardInput::GetMsg(MSG* msg)
+  {
+    switch(msg->message)
+    {
+    case WM_KEYUP:
+      TranslateMessage(msg);
+      UpdateKey(msg->wParam, false);
+      break;
+    case WM_KEYDOWN:
+      TranslateMessage(msg);
+      //std::cout << (char)msg->wParam << std::endl;
+      UpdateKey(msg->wParam, true);
+      break;
+
+    default:
+      break;
+    }
   }
 
   void KeyboardInput::Update()
   {
-    MSG msg;
+    //MSG msg;
 
     for(int i = 0; i < 256; ++i)
     {
       _previousState[i] = _currentState[i];
-      _currentState[i] = 0;
     }
 
-    // grab all of the keyboard events
-    while(PeekMessage(&msg, NULL, WM_KEYFIRST, WM_KEYLAST, PM_REMOVE))
-    {
-      switch(msg.message)
-      {
-      case WM_KEYDOWN:
-        TranslateMessage(&msg);
-        _currentState[msg.wParam] = 1;
-        break;
+    //while(PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) // Query message queue
+    //{
+    //  
+    //  DispatchMessage(&msg);                   // Dispatch
+    //}
 
-      default:
-        break;
-      }
-    }
+    //// grab all of the keyboard events
+    //while(PeekMessage(&msg, NULL, WM_KEYFIRST, WM_KEYLAST, PM_NOREMOVE))
+    //{
+    //  
+    //}
 
   }
 
@@ -221,13 +290,46 @@ namespace Framework
     Mouse.Initialize();
     Keyboard.Initialize();
 
+    frame = true;
+
     return;
   }
   void InputManager::Update(float dt)
   {
+    MSG msg = {0};
+
+    if (frame == false)
+    {
+      frame = true;
+      return;
+    }
+    frame = false;
 
     Mouse.Update();
     Keyboard.Update();
+
+    while(PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) // Query message queue
+    {
+      Mouse.GetMsg(&msg);
+      Keyboard.GetMsg(&msg);
+      DispatchMessage(&msg);                   // Dispatch
+    }
+
+    if (Keyboard.KeyIsPressed('C'))
+    {
+      std::cout << "C Pressed" << std::endl;
+    }
+
+    if (Keyboard.KeyIsReleased('C'))
+    {
+      std::cout << "C Released" << std::endl;
+    }
+
+    if (Mouse.ButtonPressed(0))
+      std::cout << "LButton pressed" << std::endl;
+
+    if (Mouse.ButtonReleased(0))
+      std::cout << "LButton Released" << std::endl;
 
     float poop = dt;
 

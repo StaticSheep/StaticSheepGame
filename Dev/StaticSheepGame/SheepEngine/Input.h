@@ -1,10 +1,11 @@
-#include <Windows.h>
 #include "System.h"
 
 #define MOUSE_OFFSET 0x0201
 #define LMB 0
 #define RMB 1
 #define MMB 2
+
+class Msg;
 
 namespace Framework
 {
@@ -30,10 +31,14 @@ namespace Framework
     bool _previousState[3];
     bool _currentState[3];
 
-    void _UpdateButton(unsigned int);
+    void GetMsg(MSG* msg);
+
+    void _UpdateButton(unsigned int, bool state);
     void _UpdateMove(MSG* msg);
 
     void _ScreenToWorld();
+
+    friend class InputManager;
 
   };
 
@@ -51,14 +56,20 @@ namespace Framework
     bool KeyIsDown(unsigned int key) const;
     bool KeyIsReleased(unsigned int key) const;
 
+    void UpdateKey(unsigned int key, bool down);
+
     void SetActive(bool);
     bool GetActiveState(void) const;
 
   private:
 
+    void GetMsg(MSG*);
+
     bool _active;
     bool _previousState[256];
     bool _currentState[256];
+
+    friend class InputManager;
   };
 
 
@@ -73,6 +84,8 @@ namespace Framework
 
     void Initialize();
     void Update(float dt);
+
+    bool frame;
 
     MouseInput Mouse;
     KeyboardInput Keyboard;
