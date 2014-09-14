@@ -1,6 +1,6 @@
 #pragma once
 
-
+#define USE_ANTTWEAKBAR 1
 
 namespace DirectSheep
 {
@@ -12,4 +12,8 @@ namespace DirectSheep
 
   GFX_API void LoadTexture(const std::string& filename);
   GFX_API int GetTextureID(std::string& texture);
+
+
+  GFX_API bool AntTweakBarLoaded();
+
 }

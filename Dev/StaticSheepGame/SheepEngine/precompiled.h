@@ -1,3 +1,8 @@
+
+
+#define USE_ANTTWEAKBAR 1
+
+
 #define _CRTDBG_MAP_ALLOC
 #include <stdlib.h>
 #include <crtdbg.h>
@@ -88,7 +93,6 @@ extern "C"
 #include "LuaDefaultBinds.h"
 
 
-#include <AntTweak/AntTweakBar.h>
 
 
 

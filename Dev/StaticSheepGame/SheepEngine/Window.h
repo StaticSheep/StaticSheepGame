@@ -26,6 +26,7 @@ namespace Framework
   protected:
     HWND Handle;
     int width, height;
+    
   };
 
 

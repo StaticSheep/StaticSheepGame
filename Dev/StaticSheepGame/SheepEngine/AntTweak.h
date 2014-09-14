@@ -21,10 +21,14 @@ namespace Framework
 
     void ReceiveMessage(Message msg);
 
+    bool IsValid();
+
     //virtual void RegisterComponents();
 
     virtual std::string GetName() {return "AntTweakBar";};
   private:
-
+    bool m_Valid;
   };
+
+  extern AntTweak* ATWEAK;
 }

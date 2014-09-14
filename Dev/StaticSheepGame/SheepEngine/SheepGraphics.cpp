@@ -43,12 +43,10 @@ namespace Framework
 		
 		// Create DirectX object
 		// Initialize graphics system
-
-    _HWnd = ENGINE->Window.GetHandle();
     _ScreenWidth = ENGINE->Window.GetWidth();
     _ScreenHeight = ENGINE->Window.GetHeight();
 
-    DirectSheep::Init(_HWnd, _ScreenWidth, _ScreenHeight);
+    DirectSheep::Init(ENGINE->Window.GetHandle(), _ScreenWidth, _ScreenHeight);
 	}
 
 	void SheepGraphics::Update(float dt)
@@ -143,5 +141,10 @@ namespace Framework
   ID3D11Device* SheepGraphics::GetDevice()
   {
     return (ID3D11Device*)DirectSheep::GetDevice();
+  }
+
+  bool SheepGraphics::AntTweakBarLoaded()
+  {
+    return DirectSheep::AntTweakBarLoaded();
   }
 }

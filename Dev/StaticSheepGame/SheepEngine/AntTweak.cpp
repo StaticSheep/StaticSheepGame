@@ -13,23 +13,34 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 namespace Framework
 {
+  AntTweak* ATWEAK = nullptr;
+
   void AntTweak::Initialize()
   {
-    TwInit(TW_DIRECT3D11, GRAPHICS->GetDevice());
-    TwWindowSize(400, 300);
-    //TwWindowSize(ENGINE->Window.GetWidth(), ENGINE->Window.GetHeight());
+    m_Valid = GRAPHICS->AntTweakBarLoaded();
+
+    if (m_Valid)
+      TwWindowSize(ENGINE->Window.GetWidth(), ENGINE->Window.GetHeight());
+
+    ATWEAK = this;
   }
 
   void AntTweak::ReceiveMessage(Message msg)
   {
     if (msg.MessageId == Message::PostDraw)
     {
-       TwDraw();
+      if (m_Valid)
+        TwDraw();
     }
   }
 
   void AntTweak::Update(float dt)
   {
     
+  }
+
+  bool AntTweak::IsValid()
+  {
+    return m_Valid;
   }
 }

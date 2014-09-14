@@ -9,7 +9,6 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #pragma once
 
 #include "System.h"
-#include <wtypes.h>
 
 class ID3D11Device;
 
@@ -45,6 +44,8 @@ namespace Framework
     //void StartFrame(void); //?
     void FinishFrame(void);
 
+    bool AntTweakBarLoaded();
+
     ID3D11Device* GetDevice(void);
 
 	private:
@@ -63,7 +64,6 @@ namespace Framework
   public:
 
     Camera* CurrentCamera;
-    HWND _HWnd;
     int _ScreenWidth;
     int _ScreenHeight;
 

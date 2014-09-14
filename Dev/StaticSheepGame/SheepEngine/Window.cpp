@@ -11,9 +11,12 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 #include <windows.h>
 #include <windowsx.h>
+#include "AntTweak\AntTweakBar.h"
 
 namespace Framework
 {
+  static bool localATValid = false;
+
   LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
   void SheepWindow::MakeWindow(HINSTANCE hInstance, int nCmdShow)
@@ -62,6 +65,11 @@ namespace Framework
     HDC hdc;                                // Hande to a Device Context
     MSG msg;
     InputManager input;
+
+#if USE_ANTTWEAKBAR
+    if (TwEventWin(hWnd, message, wParam, lParam))
+      return 0; // Event has been handled by AntTweakBar
+#endif
 
     switch( message )                       // Check message
     {
