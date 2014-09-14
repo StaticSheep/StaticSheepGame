@@ -11,9 +11,11 @@
 #include "SheepAudio.h"
 #include "GameLogic.h"
 #include "SheepPhysics.h"
+#include "AntTweak.h"
 
 #pragma comment (lib, "SheepGraphics.lib")
 #pragma comment (lib, "SheepPhysics.lib")
+#pragma comment (lib, "AntTweakBar.lib")
 //#pragma comment (lib, "SheepGraphics.lib")
 
 using namespace Framework;
@@ -31,6 +33,7 @@ int WINAPI WinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
   Core->AddSystem(new SheepPhysics());
   Core->AddSystem(new SheepAudio());
   Core->AddSystem(new SheepGraphics());
+  Core->AddSystem(new AntTweak());
 
   Core->MakeWindow(hInstance, nShowCmd);
 

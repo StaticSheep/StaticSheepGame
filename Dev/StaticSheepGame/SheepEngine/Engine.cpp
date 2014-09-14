@@ -86,6 +86,12 @@ namespace Framework
     L = nullptr;
   }
 
+  void Engine::SystemMessage(Message& msg)
+  {
+    for (unsigned int i = 0; i < m_systems.size(); ++i)
+      m_systems[i]->ReceiveMessage(msg);
+  }
+
   void Engine::MainLoop()
   {
     const float dt = 1.0f / 60.0f; // 60 frames per second

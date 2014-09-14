@@ -11,9 +11,6 @@ function foo()
 
 end
 
-for i=1,10 do
-  print("A")
-end
 
 function Draw()
   surface.SetColorEx(1,1,1,1)

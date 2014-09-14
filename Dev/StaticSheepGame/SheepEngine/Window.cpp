@@ -129,4 +129,14 @@ namespace Framework
   {
     return Handle;
   }
+
+  int SheepWindow::GetWidth()
+  {
+    return width;
+  }
+
+  int SheepWindow::GetHeight()
+  {
+    return height;
+  }
 }

@@ -62,11 +62,12 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)includes\FMOD;$(SolutionDir)includes;$(SolutionDir)$(Configuration)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)includes\AntTweak;$(SolutionDir)includes\FMOD;$(SolutionDir)includes;$(SolutionDir)$(Configuration)</AdditionalLibraryDirectories>
       <AdditionalDependencies>SheepGraphics.lib;SheepPhysics.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy $(SolutionDir)includes\FMOD\*.dll $(SolutionDir)$(Configuration)\ /f /y </Command>
+      <Command>xcopy $(SolutionDir)includes\FMOD\*.dll $(SolutionDir)$(Configuration)\ /f /y 
+xcopy $(SolutionDir)includes\AntTweak\*.dll $(SolutionDir)$(Configuration)\ /f /y </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -86,16 +87,18 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(SolutionDir)includes\FMOD;$(SolutionDir)includes;$(SolutionDir)$(Configuration)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)includes\AntTweak;$(SolutionDir)includes\FMOD;$(SolutionDir)includes;$(SolutionDir)$(Configuration)</AdditionalLibraryDirectories>
       <AdditionalDependencies>SheepGraphics.lib;SheepPhysics.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy $(SolutionDir)includes\FMOD\*.dll $(SolutionDir)$(Configuration)\ /f /y </Command>
+      <Command>xcopy $(SolutionDir)includes\FMOD\*.dll $(SolutionDir)$(Configuration)\ /f /y 
+xcopy $(SolutionDir)includes\AntTweak\*.dll $(SolutionDir)$(Configuration)\ /f /y </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\includes\EnumData.h" />
     <ClInclude Include="..\includes\Utilities.h" />
+    <ClInclude Include="AntTweak.h" />
     <ClInclude Include="Api.h" />
     <ClInclude Include="Archetype.h" />
     <ClInclude Include="Camera.h" />
@@ -151,6 +154,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Utilities\Utilities.cpp" />
+    <ClCompile Include="AntTweak.cpp" />
     <ClCompile Include="Archetype.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CGamePad.cpp" />

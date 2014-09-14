@@ -221,6 +221,11 @@ namespace DirectSheep
     CreateConstantBuffer();
   }
 
+  void* GetDevice(void)
+  {
+    return CORE->dev;
+  }
+
   void SetStates(void)
   {
     D3D11_RASTERIZER_DESC rd;

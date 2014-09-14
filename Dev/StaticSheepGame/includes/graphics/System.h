@@ -1,9 +1,12 @@
 #pragma once
 
+
+
 namespace DirectSheep
 {
   GFX_API void Init(HWND hWnd, int ScreenWidth, int ScreenHeight);
   GFX_API void Release(void);
+  GFX_API void* GetDevice(void);
 
   GFX_API void LoadShader(const std::string& name);
 

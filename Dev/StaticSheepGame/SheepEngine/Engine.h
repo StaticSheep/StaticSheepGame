@@ -41,6 +41,8 @@ namespace Framework
 
     SHEEP_API std::vector<GameSpace*>& Spaces();
 
+    void SystemMessage(Message& msg);
+
     // Static Lua binds
     static GameSpace* LuaCreateSpace(const char* name);
     static GameSpace* LuaGetSpace(const char* name);

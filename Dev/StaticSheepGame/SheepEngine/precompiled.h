@@ -88,6 +88,8 @@ extern "C"
 #include "LuaDefaultBinds.h"
 
 
+#include <AntTweak/AntTweakBar.h>
+
 
 
 

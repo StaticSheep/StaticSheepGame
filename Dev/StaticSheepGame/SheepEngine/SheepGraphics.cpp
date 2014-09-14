@@ -45,8 +45,8 @@ namespace Framework
 		// Initialize graphics system
 
     _HWnd = ENGINE->Window.GetHandle();
-    _ScreenWidth = ENGINE->Window.width;
-    _ScreenHeight = ENGINE->Window.height;
+    _ScreenWidth = ENGINE->Window.GetWidth();
+    _ScreenHeight = ENGINE->Window.GetHeight();
 
     DirectSheep::Init(_HWnd, _ScreenWidth, _ScreenHeight);
 	}
@@ -84,7 +84,10 @@ namespace Framework
         space->hooks.Call("PostDraw");
     }
     Lua::CallFunc(ENGINE->Lua(), "hook.Call", "PostDraw");
-    
+
+    Message msg(Message::PostDraw);
+    ENGINE->SystemMessage(msg);
+
 	}
 
   void SheepGraphics::SetPosition(float x, float y)
@@ -135,5 +138,10 @@ namespace Framework
   void SheepGraphics::DrawSpriteText(const char * text, float size, const char * font)
   {
     DirectSheep::DrawSpriteText(text, size, font);
+  }
+
+  ID3D11Device* SheepGraphics::GetDevice()
+  {
+    return (ID3D11Device*)DirectSheep::GetDevice();
   }
 }

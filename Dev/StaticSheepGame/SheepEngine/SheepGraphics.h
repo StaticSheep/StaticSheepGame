@@ -11,6 +11,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "System.h"
 #include <wtypes.h>
 
+class ID3D11Device;
+
 namespace Framework
 {
   class Camera;
@@ -42,6 +44,8 @@ namespace Framework
 
     //void StartFrame(void); //?
     void FinishFrame(void);
+
+    ID3D11Device* GetDevice(void);
 
 	private:
 

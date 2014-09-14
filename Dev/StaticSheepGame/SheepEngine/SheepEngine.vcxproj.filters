@@ -163,6 +163,9 @@
     <ClInclude Include="Input.h">
       <Filter>Systems\Input</Filter>
     </ClInclude>
+    <ClInclude Include="AntTweak.h">
+      <Filter>Systems\AntTweak</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="precompiled.cpp">
@@ -294,6 +297,9 @@
     </ClCompile>
     <ClCompile Include="Input.cpp">
       <Filter>Systems\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="AntTweak.cpp">
+      <Filter>Systems\AntTweak</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -470,6 +476,9 @@
     </Filter>
     <Filter Include="Systems\Input">
       <UniqueIdentifier>{cf08f41f-fac7-4646-86a7-142228b605a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\AntTweak">
+      <UniqueIdentifier>{532970db-613b-494b-8710-cdb5b9fb1c1c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
