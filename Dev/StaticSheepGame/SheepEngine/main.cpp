@@ -15,7 +15,7 @@
 
 #pragma comment (lib, "SheepGraphics.lib")
 #pragma comment (lib, "SheepPhysics.lib")
-#pragma comment (lib, "AntTweakBar.lib")
+
 //#pragma comment (lib, "SheepGraphics.lib")
 
 using namespace Framework;

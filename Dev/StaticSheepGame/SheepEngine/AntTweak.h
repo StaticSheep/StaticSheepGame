@@ -14,6 +14,8 @@ namespace Framework
   class AntTweak : public ISystem
   {
   public:
+    AntTweak();
+
     void Initialize(void);
 
     // Update per frame

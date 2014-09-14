@@ -18,6 +18,7 @@ namespace Framework
 	// Global pointer
 	SheepGraphics* GRAPHICS = NULL;
 
+
 	SheepGraphics::SheepGraphics()
 	{
 		// This should load any required materials, set constants
@@ -46,8 +47,15 @@ namespace Framework
     _ScreenWidth = ENGINE->Window.GetWidth();
     _ScreenHeight = ENGINE->Window.GetHeight();
 
-    DirectSheep::Init(ENGINE->Window.GetHandle(), _ScreenWidth, _ScreenHeight);
+    DirectSheep::Init(ENGINE->Window.GetHandle(), _ScreenWidth, _ScreenHeight, SheepGraphics::DeviceInit);
 	}
+
+  void SheepGraphics::DeviceInit()
+  {
+    Message m(Message::GFXDeviceInit);
+    ENGINE->SystemMessage(m);
+  }
+  
 
 	void SheepGraphics::Update(float dt)
 	{
@@ -138,9 +146,9 @@ namespace Framework
     DirectSheep::DrawSpriteText(text, size, font);
   }
 
-  ID3D11Device* SheepGraphics::GetDevice()
+  void* SheepGraphics::GetDevice()
   {
-    return (ID3D11Device*)DirectSheep::GetDevice();
+    return DirectSheep::GetDevice();
   }
 
   bool SheepGraphics::AntTweakBarLoaded()

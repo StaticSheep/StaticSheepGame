@@ -15,22 +15,27 @@ namespace Framework
 {
   AntTweak* ATWEAK = nullptr;
 
+  AntTweak::AntTweak()
+  {
+    ATWEAK = this;
+  }
+
   void AntTweak::Initialize()
   {
-    m_Valid = GRAPHICS->AntTweakBarLoaded();
-
-    if (m_Valid)
-      TwWindowSize(ENGINE->Window.GetWidth(), ENGINE->Window.GetHeight());
-
-    ATWEAK = this;
   }
 
   void AntTweak::ReceiveMessage(Message msg)
   {
     if (msg.MessageId == Message::PostDraw)
     {
-      if (m_Valid)
-        TwDraw();
+      TwDraw();
+      return;
+    }
+    if (msg.MessageId == Message::GFXDeviceInit)
+    {
+      TwInit(TW_DIRECT3D11, GRAPHICS->GetDevice());
+      TwWindowSize(ENGINE->Window.GetWidth(), ENGINE->Window.GetHeight());
+      return;
     }
   }
 

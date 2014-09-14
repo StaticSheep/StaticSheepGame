@@ -14,11 +14,6 @@
 #pragma comment (lib, "FW1FontWrapper.lib")
 
 
-#if USE_ANTTWEAKBAR
-#pragma comment (lib, "AntTweakBar.lib")
-#include "AntTweak/AntTweakBar.h"
-#endif
-
 using namespace DirectX;
 
 // Structs containing all necessary system pointers
@@ -51,7 +46,7 @@ namespace DirectSheep
     Height of Window
 */
 /*************************************************************************/
-  GFX_API void Init(HWND hWnd, int screenWidth, int screenHeight)
+  GFX_API void Init(HWND hWnd, int screenWidth, int screenHeight, void(*callback)(void))
   {
 
     HRESULT hr = S_OK; // Error check, remains S_OK if no problems
@@ -83,7 +78,7 @@ namespace DirectSheep
     UINT deviceFlags = 0; // Flags for registering device
 
   #if defined (_DEBUG)
-    //deviceFlags |= D3D11_CREATE_DEVICE_DEBUG; // If in debug mode set DirectX to debug mode
+    deviceFlags |= D3D11_CREATE_DEVICE_DEBUG; // If in debug mode set DirectX to debug mode
   #endif
     
     // Array of driver types in order of most prefered to least
@@ -151,9 +146,8 @@ namespace DirectSheep
     }
     DXVerify(hr); // Check for any DirectX specific error messages
 
-    #if USE_ANTTWEAKBAR
-    TwInit(TW_DIRECT3D11, CORE->dev);
-    #endif
+
+    callback();
 
     D3D11_TEXTURE2D_DESC texd;       // Description structure for depth buffer texture
     ZeroMemory(&texd, sizeof(texd)); // Null all members

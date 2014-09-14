@@ -23,6 +23,7 @@ namespace Framework
     enum MessageType
     {
       None,
+      GFXDeviceInit,
       PostDraw,
       Pause,
       Quit,

@@ -10,7 +10,6 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 #include "System.h"
 
-class ID3D11Device;
 
 namespace Framework
 {
@@ -46,7 +45,9 @@ namespace Framework
 
     bool AntTweakBarLoaded();
 
-    ID3D11Device* GetDevice(void);
+    void* GetDevice(void);
+
+    static void DeviceInit(void);
 
 	private:
 
