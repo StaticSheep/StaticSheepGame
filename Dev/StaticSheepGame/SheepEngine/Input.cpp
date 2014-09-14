@@ -1,10 +1,10 @@
-/*****************************************************************
+/******************************************************************************
 Filename: Input.cpp
 Project: 
 Author(s): Zakary Wilson
 
 All content © 2014 DigiPen (USA) Corporation, all rights reserved.
-*****************************************************************/
+******************************************************************************/
 
 #include "Input.h"
 #include <iostream>
@@ -13,16 +13,39 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 namespace Framework
 {
 
+
+/*****************************************************************************/
+/*********************************MOUSE***************************************/
+/*****************************************************************************/
+
+/*****************************************************************************/
+/*!
+  \brief
+    Default constructor for mouseinput
+*/
+/*****************************************************************************/
   MouseInput::MouseInput()
   {
 
   }
 
+/*****************************************************************************/
+/*!
+  \brief
+    Default destructor for mouseinput
+*/
+/*****************************************************************************/
   MouseInput::~MouseInput()
   {
 
   }
 
+/*****************************************************************************/
+/*!
+  \brief
+    Initialize function. Set all of the buttons to 0. (not pressed)
+*/
+/*****************************************************************************/
   void MouseInput::Initialize()
   {
     // only doing left, right, and middle buttons
@@ -32,6 +55,16 @@ namespace Framework
     }
   }
 
+/*****************************************************************************/
+/*!
+  \brief
+    Gets passed a msg from peekmessage, and if it is a mouse message, it 
+    filters out which one and updates the mouse accordingly.
+
+  \param msg
+    Pointer the MSG struct that contains the data for the message.
+*/
+/*****************************************************************************/
   void MouseInput::GetMsg(MSG* msg)
   {
     switch(msg->message)
@@ -69,16 +102,26 @@ namespace Framework
     }
   }
 
+/*****************************************************************************/
+/*!
+  \brief
+    Updates the mouse. Sets the previous state to the current state.
+*/
+/*****************************************************************************/
   void MouseInput::Update()
   {
-    MSG msg;
-
     for(int i = 0; i < 3; ++i)
     {
       _previousState[i] = _currentState[i];
     }
   }
 
+/*****************************************************************************/
+/*!
+  \brief
+    Checks to see if a specific button has been pressed.
+*/
+/*****************************************************************************/
   bool MouseInput::ButtonPressed(unsigned int button) const
   {
     if(_previousState[button] == 0 && _currentState[button] == 1)
@@ -89,6 +132,12 @@ namespace Framework
       return false;
   }
 
+/*****************************************************************************/
+/*!
+  \brief
+    Checks to see if a specific button is down.
+*/
+/*****************************************************************************/
   bool MouseInput::ButtonDown(unsigned int button) const
   {
     if(_previousState[button] == 1 && _currentState[button] == 1)
@@ -97,6 +146,12 @@ namespace Framework
       return false;
   }
 
+/*****************************************************************************/
+/*!
+  \brief
+    Checks to see if a specific button has been released this frame.
+*/
+/*****************************************************************************/
   bool MouseInput::ButtonReleased(unsigned int button) const
   {
     if(_previousState[button] == 1 && _currentState[button] == 0)
@@ -105,22 +160,50 @@ namespace Framework
       return false;
   }
 
+/*****************************************************************************/
+/*!
+  \brief
+    Gets the current world position of the mouse.
+*/
+/*****************************************************************************/
   Vec2 MouseInput::GetWorldPosition(void)
   {
     return _worldPosition;
   }
 
+/*****************************************************************************/
+/*!
+  \brief
+    Gets the current screen position of the mouse.
+*/
+/*****************************************************************************/
   Vec2 MouseInput::GetScreenPosition(void)
   {
     return _screenPosition;
   }
 
+/*****************************************************************************/
+/*!
+  \brief
+    Updates a specific button depending on whether it was pressed or released.
+*/
+/*****************************************************************************/
   void MouseInput::_UpdateButton(unsigned int button, bool state)
   {
     _previousState[button] = _currentState[button];
     _currentState[button] = state;
   }
 
+/*****************************************************************************/
+/*!
+  \brief
+    Anytime the mouse is moved in the window, it sets the screen position
+    of the mouse, then updates the world position of the mouse.
+
+  \param msg
+    Pointer to the message that contains positional data.
+*/
+/*****************************************************************************/
   void MouseInput::_UpdateMove(MSG* msg)
   {
     POINT window;
@@ -137,25 +220,51 @@ namespace Framework
     return;
   }
 
+/*****************************************************************************/
+/*!
+  \brief
+    Converts the screen coordinates of the mouse to world coordinates.
+*/
+/*****************************************************************************/
   void MouseInput::_ScreenToWorld()
   {
-    
+    return; // not doing this yet.
   }
 
-  /*****************************************************************************/
-  /*****************************************************************************/
-  /*****************************************************************************/
 
+/*****************************************************************************/
+/*********************************KEYBOARD************************************/
+/*****************************************************************************/
+
+
+/*****************************************************************************/
+/*!
+  \brief
+    Default constructor...
+*/
+/*****************************************************************************/
   KeyboardInput::KeyboardInput()
   {
 
   }
 
+/*****************************************************************************/
+/*!
+  \brief
+    Default destructor
+*/
+/*****************************************************************************/
   KeyboardInput::~KeyboardInput()
   {
 
   }
 
+/*****************************************************************************/
+/*!
+  \brief
+    Initializes all of the keys to 0. (not pressed)
+*/
+/*****************************************************************************/
   void KeyboardInput::Initialize()
   {
     for(int i = 0; i < 256; ++i)
@@ -165,12 +274,37 @@ namespace Framework
     }
   }
 
+/*****************************************************************************/
+/*!
+  \brief
+    Updates the key state to the passed in state.
+
+  \param key
+    The index of the bool to be set.
+
+  \param state
+    The state to change it to.
+*/
+/*****************************************************************************/
   void KeyboardInput::UpdateKey(unsigned int key, bool state)
   {
+    // we are updating... so set the previous to the current
     _previousState[key] = _currentState[key];
+
+    // then set the current to the new state
     _currentState[key] = state;
   }
 
+/*****************************************************************************/
+/*!
+  \brief
+    Translates a MSG from peekmessage, checks to see if it is a keyboard 
+    message, and updates accordingly.
+
+  \param msg
+    Pointer to the MSG struct that contains event data.
+*/
+/*****************************************************************************/
   void KeyboardInput::GetMsg(MSG* msg)
   {
     switch(msg->message)
@@ -190,6 +324,12 @@ namespace Framework
     }
   }
 
+/*****************************************************************************/
+/*!
+  \brief
+    Sets all of the previous states to the current state.
+*/
+/*****************************************************************************/
   void KeyboardInput::Update()
   {
     for(int i = 0; i < 256; ++i)
@@ -198,6 +338,12 @@ namespace Framework
     }
   }
 
+/*****************************************************************************/
+/*!
+  \brief
+    Checks to see if a specific key has been pressed this frame.
+*/
+/*****************************************************************************/
   bool KeyboardInput::KeyIsPressed(unsigned int key) const
   {
     if(_previousState[key] == 0 && _currentState[key] == 1)
@@ -206,6 +352,12 @@ namespace Framework
       return false;
   }
 
+/*****************************************************************************/
+/*!
+  \brief
+    Checks to see if a specific key is being held down.
+*/
+/*****************************************************************************/
   bool KeyboardInput::KeyIsDown(unsigned int key) const
   {
     if(_previousState[key] == 1 && _currentState[key] == 1)
@@ -214,6 +366,12 @@ namespace Framework
       return false;
   }
 
+/*****************************************************************************/
+/*!
+  \brief
+    Checks to see if a specific key has been released this frame.
+*/
+/*****************************************************************************/
   bool KeyboardInput::KeyIsReleased(unsigned int key) const
   {
     if(_previousState[key] == 1 && _currentState[key] == 0)
@@ -222,41 +380,77 @@ namespace Framework
       return false;
   }
 
+/*****************************************************************************/
+/*!
+  \brief
+    Sets the keyboard to active or not... currently doesn't do anything.
+*/
+/*****************************************************************************/
   void KeyboardInput::SetActive(bool flag)
   {
     _active = flag;
     return;
   }
 
+/*****************************************************************************/
+/*!
+  \brief
+    Gets the active state of the keyboard.
+*/
+/*****************************************************************************/
   bool KeyboardInput::GetActiveState(void) const
   {
     return _active;
   }
 
 /*****************************************************************************/
+/*********************************MANAGER*************************************/
 /*****************************************************************************/
+
+
 /*****************************************************************************/
-
-
-
+/*!
+  \brief
+    Default constructor
+*/
+/*****************************************************************************/
   InputManager::InputManager()
   {
 
   }
+
+/*****************************************************************************/
+/*!
+  \brief
+    Default destructor
+*/
+/*****************************************************************************/
   InputManager::~InputManager()
   {
 
   }
 
+/*****************************************************************************/
+/*!
+  \brief
+    Initializes the mouse and keyboard.
+*/
+/*****************************************************************************/
   void InputManager::Initialize()
   {
     Mouse.Initialize();
     Keyboard.Initialize();
 
-    frame = true;
-
     return;
   }
+
+/*****************************************************************************/
+/*!
+  \brief
+    Updates the mouse and keyboard. Then checks the messages in the queue and
+    sets the current state of the mouse and keyboard accordingly.
+*/
+/*****************************************************************************/
   void InputManager::Update(float dt)
   {
     MSG msg = {0};
@@ -268,9 +462,12 @@ namespace Framework
     {
       Mouse.GetMsg(&msg);
       Keyboard.GetMsg(&msg);
-      DispatchMessage(&msg);                   // Dispatch
+
+      // dispatch the msg for anything that was not handled.
+      DispatchMessage(&msg);
     }
 
     return;
   }
-}
+
+}// end namespace

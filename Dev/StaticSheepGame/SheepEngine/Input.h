@@ -1,6 +1,8 @@
+#ifndef SHEEP_INPUT_H
+#define SHEEP_INPUT_H
+
 #include "System.h"
 
-#define MOUSE_OFFSET 0x0201
 #define LMB 0
 #define RMB 1
 #define MMB 2
@@ -14,26 +16,33 @@ namespace Framework
   {
   public:
 
+    // default constructor/destructor
     MouseInput();
     ~MouseInput();
 
+    // basic functions
     void Initialize(void);
     void Update(void);
-    Vec2 GetWorldPosition(void); // change this for working with everything else
-    Vec2 GetScreenPosition(void); // change this for working with everything else
+
+    // getters
+    Vec2 GetWorldPosition(void);
+    Vec2 GetScreenPosition(void);
   
+    // checks the state of the buttons
     bool ButtonPressed(unsigned int button) const;
     bool ButtonDown(unsigned int button) const;
     bool ButtonReleased(unsigned int button) const;
 
   private:
 
+    // the previous frame's state
     bool _previousState[3];
+    // the current frame's state
     bool _currentState[3];
 
+    // positions
     Vec2 _screenPosition;
     Vec2 _worldPosition;
-
     void GetMsg(MSG* msg);
 
     void _UpdateButton(unsigned int, bool state);
@@ -41,6 +50,7 @@ namespace Framework
 
     void _ScreenToWorld();
 
+    // let the manager touch our privates
     friend class InputManager;
 
   };
@@ -49,17 +59,20 @@ namespace Framework
   {
   public:
 
+    // constructors/destructors
     KeyboardInput();
     ~KeyboardInput();
 
+    // basic stuff
     void Initialize();
     void Update();
 
+    // check if things are being touched
     bool KeyIsPressed(unsigned int key) const;
     bool KeyIsDown(unsigned int key) const;
     bool KeyIsReleased(unsigned int key) const;
 
-    void UpdateKey(unsigned int key, bool down);
+    void UpdateKey(unsigned int key, bool state);
 
     void SetActive(bool);
     bool GetActiveState(void) const;
@@ -72,6 +85,7 @@ namespace Framework
     bool _previousState[256];
     bool _currentState[256];
 
+    // let the input manager touch our privates
     friend class InputManager;
   };
 
@@ -88,10 +102,12 @@ namespace Framework
     void Initialize();
     void Update(float dt);
 
-    bool frame;
-
+    // we have one mouse...
     MouseInput Mouse;
+    // and one keyboard...
     KeyboardInput Keyboard;
 
   };
 }
+
+#endif
