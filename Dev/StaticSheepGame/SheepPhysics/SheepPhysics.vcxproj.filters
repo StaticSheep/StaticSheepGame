@@ -10,6 +10,27 @@
     <ClInclude Include="..\includes\physics\sheep_physics.h">
       <Filter>Export\Demo</Filter>
     </ClInclude>
+    <ClInclude Include="Body.h">
+      <Filter>Physics\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Manifold.h">
+      <Filter>Physics\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Material.h">
+      <Filter>Physics\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix.h">
+      <Filter>Physics\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Shape.h">
+      <Filter>Physics\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Step.h">
+      <Filter>Physics\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector.h">
+      <Filter>Physics\Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="precompiled.cpp">
@@ -17,6 +38,24 @@
     </ClCompile>
     <ClCompile Include="sheep_physics.cpp">
       <Filter>Export\Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="Body.cpp">
+      <Filter>Physics\cpps</Filter>
+    </ClCompile>
+    <ClCompile Include="Manifold.cpp">
+      <Filter>Physics\cpps</Filter>
+    </ClCompile>
+    <ClCompile Include="Materials.cpp">
+      <Filter>Physics\cpps</Filter>
+    </ClCompile>
+    <ClCompile Include="Matrix.cpp">
+      <Filter>Physics\cpps</Filter>
+    </ClCompile>
+    <ClCompile Include="Step.cpp">
+      <Filter>Physics\cpps</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector.cpp">
+      <Filter>Physics\cpps</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -28,6 +67,15 @@
     </Filter>
     <Filter Include="Export\Demo">
       <UniqueIdentifier>{67a1aa1b-de32-4d1d-a8ce-eb8e142f86c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Physics">
+      <UniqueIdentifier>{8eb7993d-d64f-4d38-8e37-ba033d260d6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Physics\Headers">
+      <UniqueIdentifier>{78113ff6-a038-417c-bf7a-06ca31f0a88a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Physics\cpps">
+      <UniqueIdentifier>{ebf8833c-a284-439e-a2e1-7b7b56be1383}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

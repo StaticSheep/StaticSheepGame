@@ -14,13 +14,13 @@ void TimeStep::Step(void)
 		{
 
 			//create a manifold and see if there is any interaction
-			Manifold* m = new Manifold(bodies_[i], bodies_[j]);
-			m->Initialize();
-			m->ManifoldInteraction();
+			Manifold m(bodies_[i], bodies_[j]);
+			m.Initialize();
+			m.ManifoldInteraction();
 
 			//if there is an interaction, add the manifold to the list
 			//to iterate through
-			if(m->contactCount > 0)
+			if(m.contactCount > 0)
 				manifolds_.push_back(m);
 		}
 	}
@@ -28,8 +28,8 @@ void TimeStep::Step(void)
 	//apply forces for all manifolds - positional correction first
 	for(int i = 0; i < manifolds_.size(); ++i)
 	{
-		manifolds_[i]->PositionalCorrection();
-		manifolds_[i]->ApplyForces();
+		manifolds_[i].PositionalCorrection();
+		manifolds_[i].ApplyForces();
 		
 	}
 
