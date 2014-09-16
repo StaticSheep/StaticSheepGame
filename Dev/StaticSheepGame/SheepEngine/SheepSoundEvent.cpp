@@ -102,7 +102,7 @@ SoundEvent::SoundEvent(SOUND::System *system, std::string &name) : _mode(PLAY_ON
     How the sound should be played. Once, looped, or streamed
 */
 /*****************************************************************************/
-void SoundEvent::Play(PlayMode mode)
+SOUND::EventInstance* SoundEvent::Play(PlayMode mode)
 {
   // set the mode 
   _mode = mode;
@@ -178,7 +178,7 @@ bool SoundEvent::PlayState()
     Private method for playing the sound only once
 */
 /*****************************************************************************/
-void SoundEvent::_PlayOnce()
+SOUND::EventInstance* SoundEvent::_PlayOnce()
 {
   // create the sound event
   ErrorCheck( _description->createInstance(&_instance) );
@@ -192,7 +192,7 @@ void SoundEvent::_PlayOnce()
   // no longer playing
   _playing = false;
 
-  return;
+  return _instance;
 }
 
 /*****************************************************************************/
@@ -201,7 +201,7 @@ void SoundEvent::_PlayOnce()
     Private method for playing the sound in a loop
 */
 /*****************************************************************************/
-void SoundEvent::_PlayLoop()
+SOUND::EventInstance* SoundEvent::_PlayLoop()
 {
   // if we are already playing this, then just return
   if(_playing)
@@ -216,7 +216,7 @@ void SoundEvent::_PlayLoop()
   // set playing to true
   _playing = true;
 
-  return;
+  return _instance;
 }
 
 /*****************************************************************************/
@@ -225,7 +225,7 @@ void SoundEvent::_PlayLoop()
     Private method for playing the sound in a stream
 */
 /*****************************************************************************/
-void SoundEvent::_PlayStream()
+SOUND::EventInstance* SoundEvent::_PlayStream()
 {
   // if we are not playing... then create the sound instance
   if(!_playing)
@@ -237,5 +237,5 @@ void SoundEvent::_PlayStream()
   // and set playing to true
   _playing = true;
 
-  return;
+  return _instance;
 }

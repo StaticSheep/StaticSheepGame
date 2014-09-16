@@ -92,7 +92,7 @@ namespace Framework
     float temp = dt; // get rid of warning
 
     if(_events["Music/TopGun"].PlayState() == 0)
-      _events["Music/TopGun"].Play(PLAY_STREAM);
+      _events["Music/TopGun"].Play(PLAY_LOOP);
 
     // update all of the sounds
     ErrorCheck(_system->update());
@@ -115,6 +115,7 @@ namespace Framework
   {
     // tell this event to play
     _events[event_name].Play(mode);
+
     return;
   }
 
