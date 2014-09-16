@@ -118,11 +118,11 @@ namespace Framework
   {
     MSG msg = {0}; // msg struct holds return of peek message
 
-    if(PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) // Query message queue
-    {
-      TranslateMessage(&msg);                  // Translate return
-      DispatchMessage(&msg);                   // Dispatch
-    }
+    //if(PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) // Query message queue
+    //{
+    //  TranslateMessage(&msg);                  // Translate return
+    //  DispatchMessage(&msg);                   // Dispatch
+    //}
   }
 
   HWND SheepWindow::GetHandle()
