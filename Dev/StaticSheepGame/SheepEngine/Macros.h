@@ -20,6 +20,9 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #define TYPE_REGISTER( T ) \
   Framework::IntrospectionManager::Get( )->RegisterType<Framework::RemoveQualifiers<T>::type>( sizeof( T ), #T, STRINGIZE(__##T##_MT), false )
 
+#define TYPE_SETAT( T, TYPE) \
+  ((Framework::TypeInfo *)GET_TYPE( T ))->SetAType( TYPE )
+
 // Plain old data types
 #define TYPE_REGISTER_POD( T ) \
   Framework::IntrospectionManager::Get( )->RegisterType<Framework::RemoveQualifiers<T>::type>( sizeof( T ), #T, STRINGIZE(__##T##_MT), true )

@@ -91,7 +91,7 @@ namespace Framework
     object->m_active = true;
 
     // Check to see if we need to sync the GameObject handles
-    SyncHandles<GameObject>(m_objects);
+    m_handles.SyncHandles<GameObject>(m_objects);
 
     return object;
   }

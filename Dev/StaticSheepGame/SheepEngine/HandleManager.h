@@ -31,6 +31,9 @@ namespace Framework
 
 		unsigned FreeSlots(void) const;
 
+    template<typename T>
+    void SyncHandles(ObjectAllocator& allocator, bool force = false);
+
 		static const int m_MaxEntries = 16384; // 2^14
 
 	private:
@@ -64,6 +67,28 @@ namespace Framework
 
 		return nullptr;
 	}
+
+  // Updates all handles to ensure that the HandleManager has accurate
+  // pointers to the data which the handle needs to point at
+  template <typename T>
+  void HandleManager::SyncHandles(ObjectAllocator& m_allocator, bool force)
+  {
+    if (m_allocator.Grew() || force)
+    {
+      // Keep in mind that allocators are essentially a giant vector of
+      // every single component of a certain type. In the case in which
+      // the allocator grows, the location of the data is now in a different
+      // area of RAM and therefore we must update the handle manager
+      // and tell it the new location of the components so the handles don't
+      // point into memory that we don't own!
+      for (auto i = m_allocator.begin<T>(); i != m_allocator.end<T>(); ++i)
+      {
+        Update(&(*i), i->self);
+      }
+
+      m_allocator.ClearGrewFlag();
+    }
+  }
 }
 
 

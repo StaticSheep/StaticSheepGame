@@ -151,8 +151,4 @@ namespace Framework
     return DirectSheep::GetDevice();
   }
 
-  bool SheepGraphics::AntTweakBarLoaded()
-  {
-    return DirectSheep::AntTweakBarLoaded();
-  }
 }

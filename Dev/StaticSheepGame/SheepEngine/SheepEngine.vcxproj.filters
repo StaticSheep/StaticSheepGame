@@ -163,7 +163,7 @@
     <ClInclude Include="Input.h">
       <Filter>Systems\Input</Filter>
     </ClInclude>
-    <ClInclude Include="AntTweak.h">
+    <ClInclude Include="AntTweakModule.h">
       <Filter>Systems\AntTweak</Filter>
     </ClInclude>
   </ItemGroup>
@@ -298,7 +298,7 @@
     <ClCompile Include="Input.cpp">
       <Filter>Systems\Input</Filter>
     </ClCompile>
-    <ClCompile Include="AntTweak.cpp">
+    <ClCompile Include="AntTweakModule.cpp">
       <Filter>Systems\AntTweak</Filter>
     </ClCompile>
   </ItemGroup>

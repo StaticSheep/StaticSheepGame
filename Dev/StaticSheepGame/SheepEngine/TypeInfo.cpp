@@ -100,6 +100,16 @@ namespace Framework
     return m_metatable;
   }
 
+  void TypeInfo::SetAType(AntTweak::TwType type)
+  {
+    m_aType = type;
+  }
+
+  AntTweak::TwType TypeInfo::GetAType(void) const
+  {
+    return m_aType;
+  }
+
   void TypeInfo::ToLua(lua_State* L, Variable var) const
   {
     if (m_toLua)

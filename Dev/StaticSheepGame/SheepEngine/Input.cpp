@@ -157,11 +157,14 @@ namespace Framework
       case WM_KEYDOWN:
         TranslateMessage(&msg);
         _currentState[msg.wParam] = 1;
+        DispatchMessage(&msg);
         break;
 
       default:
         break;
       }
+      TranslateMessage(&msg);
+      DispatchMessage(&msg);
     }
 
   }

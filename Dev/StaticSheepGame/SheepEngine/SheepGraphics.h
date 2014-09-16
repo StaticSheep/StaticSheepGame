@@ -43,8 +43,6 @@ namespace Framework
     //void StartFrame(void); //?
     void FinishFrame(void);
 
-    bool AntTweakBarLoaded();
-
     void* GetDevice(void);
 
     static void DeviceInit(void);

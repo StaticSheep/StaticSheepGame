@@ -100,7 +100,7 @@
   <ItemGroup>
     <ClInclude Include="..\includes\EnumData.h" />
     <ClInclude Include="..\includes\Utilities.h" />
-    <ClInclude Include="AntTweak.h" />
+    <ClInclude Include="AntTweakModule.h" />
     <ClInclude Include="Api.h" />
     <ClInclude Include="Archetype.h" />
     <ClInclude Include="Camera.h" />
@@ -156,7 +156,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Utilities\Utilities.cpp" />
-    <ClCompile Include="AntTweak.cpp" />
+    <ClCompile Include="AntTweakModule.cpp" />
     <ClCompile Include="Archetype.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CGamePad.cpp" />

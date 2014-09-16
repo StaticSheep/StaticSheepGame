@@ -76,9 +76,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\include\AntTweakBar.h">
-      <Filter>Public Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="AntPerfTimer.h">
       <Filter>Private Header Files</Filter>
     </ClInclude>
@@ -141,6 +138,9 @@
     </ClInclude>
     <ClInclude Include="res\TwXCursors.h">
       <Filter>Private Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\includes\AntTweak\AntTweakBar.h">
+      <Filter>Public Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
