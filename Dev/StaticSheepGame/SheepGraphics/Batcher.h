@@ -36,6 +36,6 @@ namespace DirectSheep
     unsigned          m_maxInstances;
   };
 
-#include "GFXBatcher.cpp"
+//#include "GFXBatcher.cpp"
 
 } // namespace Graphics

@@ -6,12 +6,12 @@
 namespace DirectSheep
 {
 
-class Handle : public Tools::Resource
+class Handle
 {
   public:
     Handle();
 
-    oType GetType(void) const;
+    ObjectType GetType(void) const;
 
     int operator*(void) const;
     operator bool(void) const;
@@ -20,9 +20,9 @@ class Handle : public Tools::Resource
     bool operator<(const Handle& rhs) const; // For STL comparisons
 
   private:
-    Handle(oType type, int index);
+    Handle(ObjectType type, int index);
 
-    oType type;
+    ObjectType type;
     int index;
 
     friend class RenderContext;

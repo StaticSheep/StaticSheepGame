@@ -11,6 +11,13 @@ namespace DirectSheep
 namespace DirectSheep
 {
 
+    struct Viewport
+    {
+      Dimension dim;
+      float offsetX;
+      float offsetY;
+    };
+
 class RenderContext
 {
   public:
@@ -59,7 +66,7 @@ class RenderContext
     void BindVertexBuffer(const Handle& vbHandle, size_t stride, size_t offset = 0);
     void BindVertexBuffers(unsigned count, const Handle vertexBuffers[], size_t strides[], size_t offsets[]);
     void BindIndexBuffer(const Handle& ibHandle);
-    void BindConstantBuffer(unsigned slot, const Handle& cbHandle, ObjectType shaderType = OT_VERTEX_SHADER);
+    void BindConstantBuffer(unsigned slot, const Handle& cbHandle, ObjectType shaderType =VERTEX_SHADER);
     void BindRenderTarget(const Handle& rtHandle);
     void BindRenderTargets(unsigned count, const Handle rtHandle, ...);
 
@@ -119,7 +126,7 @@ class RenderContext
     void InitializeDXGI(void);
     void InitializeDisplayModes(void);
     void InitializeDeviceAndSwapChain(void);
-    //void InitializeRasterizerState(void);
+    void InitializeRasterizerState(void);
     void InitializeBackBuffer(void);
     void InitializeBlendModes(void);
     void InitializeSamplerState(void);
@@ -192,14 +199,17 @@ class RenderContext
     std::vector<DXGI_MODE_DESC> m_displayModeDescs;
                                 
     ID3D11RenderTargetView      *m_backBuffer;
+    ID3D11DepthStencilView      *m_depthBuffer;
     Dimension                    m_backBufferSize;
     Viewport                     m_viewport;
     Color                        m_clearColor;
+    PrimitiveTopology            m_primative;
 
     /////////////////////////////////
     // Other render configurations //
     /////////////////////////////////
     ID3D11SamplerState                      *m_sampleStates[2];
+    ID3D11RasterizerState                   *m_rastState;
     std::map<BlendMode, ID3D11BlendState *>  m_blendStateMap;
 
     ///////////////

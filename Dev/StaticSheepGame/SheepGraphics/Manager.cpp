@@ -1,4 +1,4 @@
-/*bool GraphicsManager::Present(float stepInterpolation)
+bool GraphicsManager::Present(float stepInterpolation)
 {
   m_stepInterpolation = stepInterpolation;
  

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "GFXRenderer.h"
-#include "Sprite.h"
+#include "Context.h"
+//#include "Sprite.h"
 
 namespace DirectSheep
 {
