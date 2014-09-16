@@ -211,8 +211,8 @@ namespace Framework
 
     if(ScreenToClient(ENGINE->Window.GetHandle(), &window))
     {
-      _screenPosition.X = window.x;
-      _screenPosition.Y = window.y;
+      _screenPosition.X = (float)window.x;
+      _screenPosition.Y = (float)window.y;
     }
 
     _ScreenToWorld();
