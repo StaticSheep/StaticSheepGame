@@ -1,7 +1,7 @@
 #include "Material.h"
 #include "Shape.h"
 
-namespace PHYSICS
+namespace SheepFizz
 {
 
 struct MassData

@@ -9,7 +9,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "HandleManager.h"
 #include "Handle.h"
 
-namespace Framework
+namespace SheepFizz
 {
 	HandleManager::HandleManager() : m_freeSlots(m_MaxEntries), m_freeList(0)
 	{

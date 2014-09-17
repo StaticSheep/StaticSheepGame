@@ -14,7 +14,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #pragma once
 #include <xutility>
 
-namespace Framework
+namespace SheepFizz
 {
 	class ObjectAllocator
 	{

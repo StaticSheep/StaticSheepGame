@@ -1,4 +1,10 @@
 #include "Matrix.h"
+#include "ObjectAllocator.h"
+#include "Handle.h"
+#include "HandleManager.h"
+
+namespace SheepFizz
+{
 
 #define MAXVERTICES 4
 
@@ -38,13 +44,15 @@ class Shape
 	//set the shape
 	virtual void SetShape(Shapes shape) {shape_ = shape;}
 
+	Handle self;
+
 	private:
 		//moment of Inertia - used in inertia calculation
 		float momentOfInertia_;
 		float area_;	//area for mass calculation
 
 		Shapes shape_;
-
+		
 };
 
 //create a rectangle
@@ -126,3 +134,5 @@ class Circle: public Shape
 		float radius_;
 
 };
+
+}

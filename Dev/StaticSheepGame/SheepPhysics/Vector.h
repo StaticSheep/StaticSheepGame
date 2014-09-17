@@ -1,6 +1,6 @@
 #include <cmath>
 
-namespace PHYSICS
+namespace SheepFizz
 {
 
 #define PI 3.1415926539

@@ -94,9 +94,12 @@
     <ClInclude Include="..\includes\physics\api.h" />
     <ClInclude Include="..\includes\physics\sheep_physics.h" />
     <ClInclude Include="Body.h" />
+    <ClInclude Include="Handle.h" />
+    <ClInclude Include="HandleManager.h" />
     <ClInclude Include="Manifold.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Matrix.h" />
+    <ClInclude Include="ObjectAllocator.h" />
     <ClInclude Include="precompiled.h" />
     <ClInclude Include="Shape.h" />
     <ClInclude Include="Step.h" />
@@ -104,9 +107,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Body.cpp" />
+    <ClCompile Include="Handle.cpp" />
+    <ClCompile Include="HandleManager.cpp" />
     <ClCompile Include="Manifold.cpp" />
-    <ClCompile Include="Materials.cpp" />
     <ClCompile Include="Matrix.cpp" />
+    <ClCompile Include="ObjectAllocator.cpp" />
     <ClCompile Include="precompiled.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>

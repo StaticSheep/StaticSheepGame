@@ -1,20 +1,142 @@
 #include "Step.h"
 
-namespace PHYSICS
+namespace SheepFizz
 {
 
+//body settors
+void PhysicsSpace::SetBodyPos(Handle handle, Vec3D position)
+{
+	Body* body = handles_.GetAs<Body>(handle);
+	body->position_ = position;
+}
+
+void PhysicsSpace::SetBodyVeloc(Handle handle, Vec3D velocity)
+{
+	Body* body = handles_.GetAs<Body>(handle);
+	body->velocity_ = velocity;
+}
+	
+void PhysicsSpace::SetBodyForce(Handle handle, Vec3D force)
+{
+	Body* body = handles_.GetAs<Body>(handle);
+	body->force_ = force;
+}
+	
+void PhysicsSpace::SetBodyRot(Handle handle, float rot)
+{
+	Body* body = handles_.GetAs<Body>(handle);
+	body->orientation_ = rot;
+}
+	
+void PhysicsSpace::SetBodyAngVeloc(Handle handle, float angveloc)
+{
+	Body* body = handles_.GetAs<Body>(handle);
+	body->angularVelocity_ = angveloc;
+}
+	
+void PhysicsSpace::SetBodyTorque(Handle handle, float torque)
+{
+	Body* body = handles_.GetAs<Body>(handle);
+	body->torque_ = torque;
+}
+	
+//change the dt
+void PhysicsSpace::SetTime(float dt) {dt_ = dt;}
+
+//get values for engine
+Vec3D PhysicsSpace::GetBodyPos(Handle handle)
+{
+	Body* body = handles_.GetAs<Body>(handle);
+	return body->position_;
+}
+	
+Vec3D PhysicsSpace::GetBodyVeloc(Handle handle)
+{
+	Body* body = handles_.GetAs<Body>(handle);
+	return body->velocity_;
+}
+	
+Vec3D PhysicsSpace::GetBodyForce(Handle handle)
+{
+	Body* body = handles_.GetAs<Body>(handle);
+	return body->force_;
+}
+
+float PhysicsSpace::GetBodyRot(Handle handle)
+{
+	Body* body = handles_.GetAs<Body>(handle);
+	return body->orientation_;
+}
+
+float PhysicsSpace::GetBodyAngVeloc(Handle handle)
+{
+	Body* body = handles_.GetAs<Body>(handle);
+	return body->angularVelocity_;
+}
+
+float PhysicsSpace::GetBodyTorque(Handle handle)
+{
+	Body* body = handles_.GetAs<Body>(handle);
+	return body->torque_;
+}
+
+//get the time for the engine
+float PhysicsSpace::GetTime(void) {return dt_;}
+
+//add bodies to the body vector
+void PhysicsSpace::AddBody(Shapes shape, Material& material, Vec3D position, float xradius, float yval = 0)
+{	
+
+	switch(shape)
+	{
+		case Rec:
+			{
+				Rectangle* rec = (Rectangle*)shapes_[Rec].Allocate();
+				new (rec) Rectangle(xradius, yval);
+				rec->self = handles_.Insert(rec);
+				handles_.SyncHandles<Rectangle>(shapes_[Rec]);
+			
+				Body* body = (Body*)bodies_.Allocate();
+				new (body) Body(rec, material, position, Vec3D(), Vec3D(), 0);
+				body->self;
+				handles_.SyncHandles<Body>(bodies_);
+				
+				break;
+			}
+
+		case Cir:
+			{
+				Circle* cir = (Circle*)shapes_[Cir].Allocate();
+				new (cir) Rectangle(xradius, yval);
+				cir->self = handles_.Insert(cir);
+				handles_.SyncHandles<Circle>(shapes_[Cir]);
+			
+				Body* body = (Body*)bodies_.Allocate();
+				new (body) Body(cir, material, position, Vec3D(), Vec3D(), 0);
+				body->self;
+				handles_.SyncHandles<Body>(bodies_);
+
+				break;
+			}
+
+		default:
+			break;
+
+	}		
+}
+
 //this function advances the game forward one dt
-void TimeStep::Step(void)
+void PhysicsSpace::Step(void)
 {
 	//iterate through list of bodies
-	for(int i = 0; i < bodies_.size(); ++i)
+	for(int i = 0; i < bodies_.Size(); ++i)
 	{
 		//move one body in vector forward to start
-		for(int j = i + 1; j < bodies_.size(); ++j)
+		for(int j = i + 1; j < bodies_.Size(); ++j)
 		{
 
 			//create a manifold and see if there is any interaction
-			Manifold m(bodies_[i], bodies_[j]);
+			Manifold m((Body*)bodies_[i], (Body*)bodies_[j]);
 			m.Initialize();
 			m.ManifoldInteraction();
 
@@ -37,22 +159,22 @@ void TimeStep::Step(void)
 	manifolds_.clear();
 
 	//apply forces and velocity to all bodies
-	for(int i = 0; i < bodies_.size(); ++i)
-		SymplecticEuler(*(bodies_[i]));
+	for(int i = 0; i < bodies_.Size(); ++i)
+		SymplecticEuler(*((Body*)bodies_[i]));
 
 	//clean up forces so no interference with next loop
-	for(int i = 0; i < bodies_.size(); ++i)
+	for(int i = 0; i < bodies_.Size(); ++i)
 	{
-		bodies_[i]->force_.x_ = 0.0f;
-		bodies_[i]->force_.y_ = 0.0f;
-		bodies_[i]->torque_ = 0.0f;
-		bodies_[i]->torque_ = 0.0f;
+		((Body*)bodies_[i])->force_.x_ = 0.0f;
+		((Body*)bodies_[i])->force_.y_ = 0.0f;
+		((Body*)bodies_[i])->torque_ = 0.0f;
+		((Body*)bodies_[i])->torque_ = 0.0f;
 	}
 
 }//end of Step
 
 
-void TimeStep::SymplecticEuler(Body& body)
+void PhysicsSpace::SymplecticEuler(Body& body)
 {
 	if(body.massData_.mass == 0)
 		return;

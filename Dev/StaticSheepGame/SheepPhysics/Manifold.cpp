@@ -1,6 +1,6 @@
 #include "Manifold.h"
 
-namespace PHYSICS
+namespace SheepFizz
 {
 
 //complex declaration - 2D array of function pointers that take a pointer to a manifold and returns a void

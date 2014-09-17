@@ -1,5 +1,8 @@
 #include "Matrix.h"
 
+namespace SheepFizz
+{
+
 #define MAXVERTICES 4
 
 enum Shapes
@@ -67,3 +70,5 @@ class Circle: public Shape
 		float radius_;
 
 };
+
+}

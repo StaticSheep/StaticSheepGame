@@ -1,6 +1,6 @@
 #include "Body.h"
 
-namespace PHYSICS
+namespace SheepFizz
 {
 
 #define POSCORRECT	0.4f	//the percent for positional correction
@@ -9,27 +9,18 @@ namespace PHYSICS
 //manifold struct is used for collisions
 //it gives the collision normal and depth of penetration for
 //later modifications
-struct Manifold
+class Manifold
 {
+	public:
 	//constructor - requires the two bodies
-	Manifold(Body* a, Body* b) : A(a), B(b) {}
+	Manifold(Body* a, Body* b);
 	
 	//Initialize is used after manifold interactions have been calculated to
 	//determine how the bodies will react - it is not called unless
 	//a manifold has a contact count above 0
 	//calculates the manifold Resitution, StatFric, and DynamFric by taking
 	//the minimum of each
-	void Initialize(void)
-	{
-		mResitution = Minimum(A->material_.GetMaterialResitution(), 
-			B->material_.GetMaterialResitution());
-
-		mStaticFriction = Minimum(A->material_.GetMaterialStaticFriction(), 
-			B->material_.GetMaterialStaticFriction());
-
-		mDynamicFriction = Minimum(A->material_.GetMaterialDynamicFriction(), 
-			B->material_.GetMaterialDynamicFriction());
-	}//end of Initialize
+	void Initialize(void);
 
 	//this function simply contains the jump table used to go to other
 	//collision and resolution functions

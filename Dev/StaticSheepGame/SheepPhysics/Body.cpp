@@ -1,5 +1,8 @@
 #include "Body.h"
 
+namespace SheepFizz
+{
+
 void Body::ComputeMass(void){
 
 	//calculate mass based on area - if mass is 0, it is considered infinite
@@ -15,3 +18,5 @@ void Body::ComputeMass(void){
 	massData_.inverseInertia = massData_.inertia ? 1 / massData_.inertia : 0.0f;
 
 }//end of ComputeMass
+
+}

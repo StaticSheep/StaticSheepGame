@@ -1,16 +1,17 @@
 #include "Material.h"
 #include "Shape.h"
 
-namespace PHYSICS
+namespace SheepFizz
 {
 
-struct MassData
+class MassData
 {
-	float mass;
-	float inverseMass;
+	public:
+		float mass;
+		float inverseMass;
 
-	float inertia;			//used for angular calculations
-	float inverseInertia;
+		float inertia;			//used for angular calculations
+		float inverseInertia;
 };
 
 enum BodyGroup{
@@ -30,7 +31,7 @@ enum CollisionGroup{
 };
 
 
-struct Body
+class Body
 {
 	public:
 		//body requires a shape* to be passed - all others default to base constructors
@@ -90,7 +91,7 @@ struct Body
 		float angularVelocity_;
 		float torque_;
 
-
+		Handle self;
 };
 
 }

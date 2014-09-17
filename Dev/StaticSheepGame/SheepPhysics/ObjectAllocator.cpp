@@ -15,7 +15,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include <stdlib.h>
 #include <string.h>
 
-namespace Framework
+namespace SheepFizz
 {
   ObjectAllocator::ObjectAllocator()
     : m_array(nullptr), m_objectSize(1), m_size(0),

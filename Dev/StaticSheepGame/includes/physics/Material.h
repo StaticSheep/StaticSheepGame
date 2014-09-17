@@ -1,4 +1,4 @@
-namespace PHYSICS
+namespace SheepFizz
 {
 
 struct Material

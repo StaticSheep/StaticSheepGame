@@ -1,6 +1,6 @@
 #include "Vector.h"
 
-namespace PHYSICS
+namespace SheepFizz
 {
 
 struct Matrix2D{

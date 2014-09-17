@@ -1,6 +1,6 @@
 #include "Body.h"
 
-namespace PHYSICS
+namespace SheepFizz
 {
 
 #define POSCORRECT	0.4f	//the percent for positional correction

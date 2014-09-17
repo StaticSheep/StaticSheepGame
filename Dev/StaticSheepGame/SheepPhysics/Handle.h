@@ -9,19 +9,19 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #ifndef OBJ_HANDLE_H
 #define OBJ_HANDLE_H
 
-namespace Framework
+namespace SheepFizz
 {
 
   class Handle
   {
   public:
-    Handle();
-    Handle(unsigned index, unsigned counter);
-    Handle(unsigned handle); // conversion
+    PHY_API Handle();
+    PHY_API Handle(unsigned index, unsigned counter);
+    PHY_API Handle(unsigned handle); // conversion
 
-    static void Serialize(File& file, Variable var);
+    //static void Serialize(File& file, Variable var);
 
-    inline operator unsigned(void) const;
+    PHY_API inline operator unsigned(void) const;
 
     unsigned m_index : 16;
     unsigned m_counter : 16;

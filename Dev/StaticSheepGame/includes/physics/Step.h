@@ -1,7 +1,7 @@
 #include "Manifold.h"
 #include <vector>
 
-namespace PHYSICS
+namespace SheepFizz
 {
 
 #define GRAVITY 10.0f
@@ -19,7 +19,7 @@ struct TimeStep
 
 	//vector of bodies in engine
 	std::vector<Body*> bodies_;
-	std::vector<Manifold*> manifolds_;
+	std::vector<Manifold> manifolds_;
 
 };
 

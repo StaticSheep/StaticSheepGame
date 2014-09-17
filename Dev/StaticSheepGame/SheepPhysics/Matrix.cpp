@@ -1,6 +1,6 @@
 #include "Matrix.h"
 
-namespace PHYSICS
+namespace SheepFizz
 {
 
 Matrix2D& Matrix2D::operator=(Matrix2D& rhs)

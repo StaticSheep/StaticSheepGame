@@ -1,36 +1,27 @@
-namespace PHYSICS
+namespace SheepFizz
 {
 
 struct Material
 {
 	public:
 		//default material
-		Material(){
-
-			density_ = 0.1f;
-			restitution_ = 0.5f;
-			staticFriction_ = 0.5f;
-			dynamicFriction_ = 0.25f;
-
-		}
+		Material();
 
 		//any other material
 		Material(float density, float restitution, float staticFriction, float dynamicFriction,
-			float momentOfInertia = 0): 
-			density_(density), restitution_(restitution), staticFriction_(staticFriction),
-			dynamicFriction_(dynamicFriction) {};
+			float momentOfInertia = 0);
 		
 		//gettors
-		float GetMaterialDensity(void) const { return density_;}
-		float GetMaterialResitution(void) const {return restitution_;}
-		float GetMaterialStaticFriction(void) const {return staticFriction_;}
-		float GetMaterialDynamicFriction(void) const {return dynamicFriction_;}
+		float GetMaterialDensity(void) const;
+		float GetMaterialResitution(void) const;
+		float GetMaterialStaticFriction(void) const;
+		float GetMaterialDynamicFriction(void) const;
 
 		//settors
-		void SetMaterialDensity(float density){ density_ = density;}
-		void SetMaterialResitution(float restitution){ restitution_ = restitution;}
-		void SetMaterialStaticFriction(float staticFriction){staticFriction_ = staticFriction;}
-		void SetMaterialDynamicFriction(float dynamicFriction){dynamicFriction_ = dynamicFriction;}
+		void SetMaterialDensity(float density);
+		void SetMaterialResitution(float restitution);
+		void SetMaterialStaticFriction(float staticFriction);
+		void SetMaterialDynamicFriction(float dynamicFriction);
 
 	private:
 		float density_;
