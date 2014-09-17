@@ -13,11 +13,6 @@
 
 namespace SheepFizz
 {
-	#ifndef DLL_PHYEXPORT
-	using namespace Framework::SheepMath;
-	#else
-	using namespace SheepMath;
-	#endif
 
 	#define GRAVITY 10.0f
 
@@ -61,7 +56,7 @@ namespace SheepFizz
 		PHY_API float GetTime(void);
 
 		//add bodies to the body vector
-		PHY_API void AddBody(Shapes shape, Material& material, SheepMath::Vec3D position, float xradius, float yval = 0);
+		PHY_API Handle AddBody(Shapes shape, Material& material, SheepMath::Vec3D position, float xradius, float yval = 0);
 
 		//perform the timestep - perform all comparisons
 		//and resolve all forces

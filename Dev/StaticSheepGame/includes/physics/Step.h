@@ -23,9 +23,9 @@ namespace SheepFizz
 
 
 		//body settors
-		PHY_API void SetBodyPos(Handle handle, SheepMath::Vec3D position);
-		PHY_API void SetBodyVeloc(Handle handle, SheepMath::Vec3D velocity);
-		PHY_API void SetBodyForce(Handle handle, SheepMath::Vec3D force);
+		PHY_API void SetBodyPos(Handle handle, Vec3D position);
+		PHY_API void SetBodyVeloc(Handle handle, Vec3D velocity);
+		PHY_API void SetBodyForce(Handle handle, Vec3D force);
 		PHY_API void SetBodyRot(Handle handle, float rot);
 		PHY_API void SetBodyAngVeloc(Handle handle, float angveloc);
 		PHY_API void SetBodyTorque(Handle handle, float torque);
@@ -45,7 +45,7 @@ namespace SheepFizz
 		PHY_API float GetTime(void);
 
 		//add bodies to the body vector
-		PHY_API void AddBody(Shapes shape, Material& material, SheepMath::Vec3D position, float xradius, float yval = 0);
+		PHY_API Handle AddBody(Shapes shape, Material& material, SheepMath::Vec3D position, float xradius, float yval = 0);
 
 		//perform the timestep - perform all comparisons
 		//and resolve all forces

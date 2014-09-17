@@ -89,7 +89,7 @@ namespace SheepFizz
 	float PhysicsSpace::GetTime(void) {return dt_;}
 
 	//add bodies to the body vector
-	void PhysicsSpace::AddBody(Shapes shape, Material& material, Vec3D position, float xradius, float yval)
+	Handle PhysicsSpace::AddBody(Shapes shape, Material& material, Vec3D position, float xradius, float yval)
 	{	
 
 		switch(shape)
@@ -105,7 +105,9 @@ namespace SheepFizz
 					new (body) Body(rec, material, position, Vec3D(), Vec3D(), 0);
 					body->self;
 					handles_.SyncHandles<Body>(bodies_);
-				
+
+					return body->self;
+
 					break;
 				}
 
@@ -120,6 +122,8 @@ namespace SheepFizz
 					new (body) Body(cir, material, position, Vec3D(), Vec3D(), 0);
 					body->self;
 					handles_.SyncHandles<Body>(bodies_);
+
+					return body->self;
 
 					break;
 				}
