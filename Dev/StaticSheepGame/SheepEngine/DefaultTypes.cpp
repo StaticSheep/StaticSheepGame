@@ -87,8 +87,8 @@ namespace Framework
     //TYPE_SET_TO_LUA( GameComponent*, Lua::GameComponentToLua);
 
     TYPE_REGISTER( GameObject );
-    TYPE_ADD_MEMBER( GameObject, name );
-    TYPE_ADD_MEMBER( GameObject, archetype );
+    TYPE_ADD_MEMBER( GameObject, name, true);
+    TYPE_ADD_MEMBER( GameObject, archetype, true);
     TYPE_SET_SERIALIZER( GameObject, GameObject::Serialize );
     TYPE_SET_DESERIALIZER( GameObject, GameObject::Deserialize );
     TYPE_SET_FROM_LUA( GameObject, Lua::GenericObjectFromLua );
@@ -112,7 +112,7 @@ namespace Framework
     TYPE_REGISTER( Transform );
     TYPE_ADD_MEMBER(Transform, Translation);
     TYPE_ADD_MEMBER(Transform, Scale);
-    TYPE_ADD_MEMBER(Transform, Rotation);
+    TYPE_ADD_MEMBER(Transform, Rotation, true);
     TYPE_SET_FROM_LUA( Transform, Lua::GenericObjectFromLua );
     TYPE_SETAT( Transform, AntTweak::TW_TYPE_COMPONENT );
     TYPE_REGISTER_PTR(Transform*);
@@ -135,8 +135,8 @@ namespace Framework
     TYPE_REGISTER_PTR( LuaComponent* );
     //TYPE_SET_TO_LUA( LuaComponent*, Lua::GameComponentToLua);
 
-    TYPE_REGISTER( AntTweakModule::TBar );
-    TYPE_REGISTER_PTR( AntTweakModule::TBar* );
+    TYPE_REGISTER( AntTweak::TBar );
+    TYPE_REGISTER_PTR( AntTweak::TBar* );
 
     RegisterEnums();
   }

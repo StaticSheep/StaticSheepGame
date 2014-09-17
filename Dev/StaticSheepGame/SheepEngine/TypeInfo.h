@@ -11,10 +11,11 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 namespace Framework
 {
-
+  
   namespace AntTweak
   {
-    typedef enum ETwType
+    class TBar;
+    typedef enum engineTwType
     {
       TW_TYPE_UNDEF   = 0,
 #ifdef __cplusplus
@@ -53,7 +54,7 @@ namespace Framework
       TW_TYPE_LUACOMPONENT,
       TW_TYPE_OBJECT,
       TW_TYPE_GAMESPACE
-    } TwType;
+    } engineTwType;
   }
   class TypeInfo;
 
@@ -61,18 +62,21 @@ namespace Framework
   {
   public:
     // The type of the member
-    const TypeInfo *Type( void ) const;
+    const TypeInfo *Type(void) const;
     // Memory offset of the member in the class
-    unsigned Offset( void ) const;
+    unsigned Offset(void) const;
     // Name of the member
-    const char *Name( void ) const;
+    const char *Name(void) const;
     // Uses AntTweakBar
-    bool m_tweak;
+    bool Tweak(void) const;
 
   private:
     const char *m_name;
     unsigned m_offset;
     const TypeInfo *m_typeInfo;
+
+    // Uses AntTweakBar
+    bool m_tweak;
 
     friend class TypeInfo;
   };
@@ -85,6 +89,9 @@ namespace Framework
   typedef void (*ToLuaCB)(lua_State*, Variable&);
   typedef void (*FromLuaCB)(lua_State*, int, Variable*);
 
+  // AntTweakBar callback
+  typedef void (*ToTweakCB) (AntTweak::TBar*, Variable&);
+
   class TypeInfo
   {
   public:
@@ -92,7 +99,7 @@ namespace Framework
     // Initilization routine
     void Init( const char *name, unsigned size );
     // Adds a member to the type
-    void AddMember( const TypeInfo *typeInfo, const char *name, unsigned offset );
+    void AddMember( const TypeInfo *typeInfo, const char *name, unsigned offset, bool tweak=false );
     // Gets a member from the type
     const Member *GetMember( const char *memberName ) const;
 
@@ -106,13 +113,16 @@ namespace Framework
     // Deserializes a file into a variable of this type
     void Deserialize(File& file, Variable var) const;
 
+    // Fills out an AntTweak bar with this type
+    void TweakType(AntTweak::TBar* bar, Variable var) const;
+
     // Gets a list of all members in the type
     const std::vector<Member>& GetMembers() const;
 
     // Gets the AntTweakBar enum Type
-    AntTweak::TwType GetAType(void) const;
+    AntTweak::engineTwType GetAType(void) const;
     // Sets the AntTweakBar enum Type
-    void SetAType(AntTweak::TwType);
+    void SetAType(AntTweak::engineTwType);
 
     // Lua stuff
     // The (name of) lua meta table for this class
@@ -126,6 +136,8 @@ namespace Framework
     void SetToLua(ToLuaCB cb);
     // Sets a FromLua callback function
     void SetFromLua(FromLuaCB cb);
+    // Sets how AntTweak bar makes a bar for this type
+    void SetToTweak(ToTweakCB cb);
 
     // Gets the size (in bytes) of this type
     unsigned Size( void ) const;
@@ -160,7 +172,7 @@ namespace Framework
     std::string m_name;
 
     // AntTweakBar type
-    AntTweak::TwType m_aType;
+    AntTweak::engineTwType m_aType;
 
     // List of the memebrs
     std::vector<Member> m_members;
@@ -175,6 +187,9 @@ namespace Framework
     // Pointer to the lua callback functions
     ToLuaCB m_toLua;
     FromLuaCB m_fromLua;
+
+    // Pointer to the AntTweakbar Callback
+    ToTweakCB m_toTweak;
 
     // Is this type POD?
     bool m_isPOD;

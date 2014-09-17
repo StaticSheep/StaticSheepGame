@@ -18,7 +18,7 @@ namespace Framework
   AntTweakModule* ATWEAK = nullptr;
 
   AntTweakModule::AntTweakModule()
-    :m_bars(sizeof(TBar), 10)
+    :m_bars(sizeof(AntTweak::TBar), 10)
   {
     ATWEAK = this;
   }
@@ -45,14 +45,14 @@ namespace Framework
 #endif
   }
 
-  AntTweakModule::TBar* AntTweakModule::CreateBar(const char* name)
+  AntTweak::TBar* AntTweakModule::CreateBar(const char* name)
   {
 #if USE_ANTTWEAKBAR
     // Allocates space for a new bar container
-    TBar* newBar = (TBar*)m_bars.Allocate();
+    AntTweak::TBar* newBar = (AntTweak::TBar*)m_bars.Allocate();
 
     // Placement new on our new container
-    new (newBar) TBar(name);
+    new (newBar) AntTweak::TBar(name);
 
     // Creates a new AntTweakBar and sets the pointer
     newBar->antTweakBar = TwNewBar(name);
@@ -61,7 +61,7 @@ namespace Framework
 
 
     // Sync any handles needed
-    m_handles.SyncHandles<TBar>(m_bars);
+    m_handles.SyncHandles<AntTweak::TBar>(m_bars);
 
     return newBar;
 #else
@@ -69,11 +69,11 @@ namespace Framework
 #endif
   }
 
-  AntTweakModule::TBar* AntTweakModule::GetBar(Handle barHandle)
+  AntTweak::TBar* AntTweakModule::GetBar(Handle barHandle)
   {
 #if USE_ANTTWEAKBAR
     // Gets the container from the handle manager
-    return m_handles.GetAs<TBar>(barHandle);
+    return m_handles.GetAs<AntTweak::TBar>(barHandle);
 #else
     return nullptr;
 #endif
@@ -97,7 +97,7 @@ namespace Framework
 
 
   // Adds a definition to use when creating buttons/vars
-  void AntTweakModule::TBar::AddDefinition(const char* definition, bool persist)
+  void AntTweak::TBar::AddDefinition(const char* definition, bool persist)
   {
 #if USE_ANTTWEAKBAR
     if (persist)
@@ -107,7 +107,7 @@ namespace Framework
 #endif
   }
   // Clears the vector of persistent definitions
-  void AntTweakModule::TBar::ClearDefinitions(void)
+  void AntTweak::TBar::ClearDefinitions(void)
   {
 #if USE_ANTTWEAKBAR
     m_pDefinitions.clear();
@@ -115,7 +115,7 @@ namespace Framework
   }
 
   // Sets the help message for the next button/var
-  void AntTweakModule::TBar::DefineHelpMessage(const char* message)
+  void AntTweak::TBar::DefineHelpMessage(const char* message)
   {
 #if USE_ANTTWEAKBAR
     std::string helpMessage(" help='");
@@ -127,7 +127,7 @@ namespace Framework
 #endif
   }
   // Sets the group for the next button/var
-  void AntTweakModule::TBar::DefineGroup(const char* group)
+  void AntTweak::TBar::DefineGroup(const char* group)
   {
 #if USE_ANTTWEAKBAR
     std::string groupName(" group=");
@@ -139,7 +139,7 @@ namespace Framework
 #endif
   }
   // Sets if the next button/var is visible
-  void AntTweakModule::TBar::DefineVisible(bool visible)
+  void AntTweak::TBar::DefineVisible(bool visible)
   {
 #if USE_ANTTWEAKBAR
     std::string def(" visible=");
@@ -151,7 +151,7 @@ namespace Framework
   }
   // Sets a min/max for the next var
   // If the next value is an integer, then it will truncate
-  void AntTweakModule::TBar::DefineMinMax(float min, float max)
+  void AntTweak::TBar::DefineMinMax(float min, float max)
   {
 #if USE_ANTTWEAKBAR
     std::string def(" min=");
@@ -164,7 +164,7 @@ namespace Framework
 #endif
   }
   // Sets a step value for the variable if it is a slider
-  void AntTweakModule::TBar::DefineStep(float step)
+  void AntTweak::TBar::DefineStep(float step)
   {
 #if USE_ANTTWEAKBAR
     std::string def(" step=");
@@ -176,7 +176,7 @@ namespace Framework
   }
   // Sets a keyboard shortcut for a button
   // Refer to http://anttweakbar.sourceforge.net/doc/tools:anttweakbar:varparamsyntax for help
-  void AntTweakModule::TBar::DefineKeyShortcut(const char* key)
+  void AntTweak::TBar::DefineKeyShortcut(const char* key)
   {
 #if USE_ANTTWEAKBAR
     std::string def(" key=");
@@ -187,7 +187,7 @@ namespace Framework
 #endif
   }
   // Sets a keyboard shortcut for Increment and Decrement
-  void AntTweakModule::TBar::DefineIncDecShortcut(const char* inc, const char* dec)
+  void AntTweak::TBar::DefineIncDecShortcut(const char* inc, const char* dec)
   {
 #if USE_ANTTWEAKBAR
     std::string def(" keyincr=");
@@ -200,7 +200,7 @@ namespace Framework
 #endif
   }
   // Sets a boolean value for the next var
-  void AntTweakModule::TBar::DefineBool(const char* isTrue, const char* isFalse)
+  void AntTweak::TBar::DefineBool(const char* isTrue, const char* isFalse)
   {
 #if USE_ANTTWEAKBAR
     std::string def(" true='");
@@ -214,7 +214,7 @@ namespace Framework
   }
 
   // Opens or closes a variable/button grouping in a bar
-  void AntTweakModule::TBar::SetGroupOpened(const char* groupName, bool isOpen)
+  void AntTweak::TBar::SetGroupOpened(const char* groupName, bool isOpen)
   {
 #if USE_ANTTWEAKBAR
     TwSetParam((TwBar*)antTweakBar, groupName, "opened", TW_PARAM_INT32, 1, &isOpen);
@@ -224,7 +224,7 @@ namespace Framework
 
 
 
-  void AntTweakModule::TBar::AddVarCB(const char* name, AntTweak::TwType type, AntTweakModule::aTSetCB setCB, AntTweakModule::aTGetCB getCB, void* clientData)
+  void AntTweak::TBar::AddVarCB(const char* name, AntTweak::engineTwType type, AntTweak::aTSetCB setCB, AntTweak::aTGetCB getCB, void* clientData)
   {
 #if USE_ANTTWEAKBAR
     std::string defList;
@@ -245,7 +245,7 @@ namespace Framework
 #endif
   }
 
-  void AntTweakModule::TBar::AddVarRW(const char* name, AntTweak::TwType type, void* var)
+  void AntTweak::TBar::AddVarRW(const char* name, AntTweak::engineTwType type, void* var)
   {
 #if USE_ANTTWEAKBAR
     std::string defList;
@@ -266,7 +266,7 @@ namespace Framework
 #endif
   }
 
-  void AntTweakModule::TBar::AddSeparator(const char* name)
+  void AntTweak::TBar::AddSeparator(const char* name)
   {
 #if USE_ANTTWEAKBAR
     std::string defList;
@@ -285,7 +285,7 @@ namespace Framework
 #endif
   }
 
-  void AntTweakModule::TBar::AddButton(const char* name, aTButtonCB callback, void* clientData)
+  void AntTweak::TBar::AddButton(const char* name, aTButtonCB callback, void* clientData)
   {
 #if USE_ANTTWEAKBAR
     std::string defList;
@@ -305,7 +305,7 @@ namespace Framework
   }
 
   // Sets a bar label
-  void AntTweakModule::TBar::SetLabel(const char* name)
+  void AntTweak::TBar::SetLabel(const char* name)
   {
 #if USE_ANTTWEAKBAR
     TwSetParam((TwBar*)antTweakBar, NULL, "label", TW_PARAM_CSTRING, 1, name);
@@ -313,7 +313,7 @@ namespace Framework
   }
 
   // Defines the help message associated with the bar
-  void AntTweakModule::TBar::SetHelpLabel(const char* name)
+  void AntTweak::TBar::SetHelpLabel(const char* name)
   {
 #if USE_ANTTWEAKBAR
     TwSetParam((TwBar*)antTweakBar, NULL, "help", TW_PARAM_CSTRING, 1, name);
@@ -321,7 +321,7 @@ namespace Framework
   }
 
   // Set Bar Color
-  void AntTweakModule::TBar::SetColor(int red, int green, int blue)
+  void AntTweak::TBar::SetColor(int red, int green, int blue)
   {
 #if USE_ANTTWEAKBAR
     int color[3] = {red, green, blue};
@@ -330,7 +330,7 @@ namespace Framework
   }
 
   // Sets the alpha-value of the bar
-  void AntTweakModule::TBar::SetAlpha(int alpha)
+  void AntTweak::TBar::SetAlpha(int alpha)
   {
 #if USE_ANTTWEAKBAR
     TwSetParam((TwBar*)antTweakBar, NULL, "alpha", TW_PARAM_INT32, 1, &alpha);
@@ -338,7 +338,7 @@ namespace Framework
   }
 
   // Sets the position of the bar
-  void AntTweakModule::TBar::SetPos(int x, int y)
+  void AntTweak::TBar::SetPos(int x, int y)
   {
 #if USE_ANTTWEAKBAR
     int pos[2] = {x, y};
@@ -347,7 +347,7 @@ namespace Framework
   }
 
   // Sets the size of the bar
-  void AntTweakModule::TBar::SetSize(int x, int y)
+  void AntTweak::TBar::SetSize(int x, int y)
   {
 #if USE_ANTTWEAKBAR
     int pos[2] = {x, y};
@@ -356,7 +356,7 @@ namespace Framework
   }
 
   // Sets the bar refresh rate
-  void AntTweakModule::TBar::SetRefreshRate(float rate)
+  void AntTweak::TBar::SetRefreshRate(float rate)
   {
 #if USE_ANTTWEAKBAR
     TwSetParam((TwBar*)antTweakBar, NULL, "refresh", TW_PARAM_FLOAT, 1, &rate);
@@ -364,7 +364,7 @@ namespace Framework
   }
 
   // Sets whether the bar is iconified or not
-  void AntTweakModule::TBar::SetIconify(bool icon)
+  void AntTweak::TBar::SetIconify(bool icon)
   {
 #if USE_ANTTWEAKBAR
     TwSetParam((TwBar*)antTweakBar, NULL, "visible", TW_PARAM_INT32, 1, &icon);
@@ -372,7 +372,7 @@ namespace Framework
   }
 
   // Sets whether the bar is movable or not
-  void AntTweakModule::TBar::SetMovable(bool canMove)
+  void AntTweak::TBar::SetMovable(bool canMove)
   {
 #if USE_ANTTWEAKBAR
     TwSetParam((TwBar*)antTweakBar, NULL, "movable", TW_PARAM_INT32, 1, &canMove);
@@ -380,7 +380,7 @@ namespace Framework
   }
 
   // Sets whether the bar is re-sizable
-  void AntTweakModule::TBar::SetResizable(bool canResize)
+  void AntTweak::TBar::SetResizable(bool canResize)
   {
 #if USE_ANTTWEAKBAR
     TwSetParam((TwBar*)antTweakBar, NULL, "resizable", TW_PARAM_INT32, 1, &canResize);
@@ -389,7 +389,7 @@ namespace Framework
 
 
 
-  AntTweak::TwType AntTweakModule::TBar::TranslateType(AntTweak::TwType type)
+  AntTweak::engineTwType AntTweak::TBar::TranslateType(AntTweak::engineTwType type)
   {
     // @TODO
     return type;

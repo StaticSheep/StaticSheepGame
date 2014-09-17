@@ -11,44 +11,15 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 namespace Framework
 {
-  class AntTweakModule : public ISystem
+  class AntTweakModule;
+
+  namespace AntTweak
   {
-  public:
-    class TBar;
-    AntTweakModule();
-    ~AntTweakModule() {};
 
     typedef void(*aTSetCB)(const void* value, void* clientData);
     typedef void(*aTGetCB)(void* value, void* clientData);
     typedef void(*aTButtonCB)(void* clientData);
 
-    void Initialize(void);
-
-    // Update per frame
-    void Update(float dt);
-
-    void ReceiveMessage(Message msg);
-
-    void Shutdown();
-
-    // Creates a new bar of given name and returns a BarContiner*
-    TBar* CreateBar(const char* name);
-    // Gets a TBar from a handle
-    TBar* GetBar(Handle barHandle);
-
-    virtual std::string GetName() {return "AntTweakBar";};
-
-    
-
-  private:
-
-    // Handle manager for AntTweak TBars
-    HandleManager m_handles;
-    // Object allocator for BarContainters
-    ObjectAllocator m_bars;
-
-
-  public:
     class TBar
     {
     public:
@@ -106,9 +77,9 @@ namespace Framework
       //============================================== Content ====================================================//
 
       // Creates a variable with a callback function for setting and getting
-      void AddVarCB(const char* name, AntTweak::TwType type, aTSetCB setCB, aTGetCB getCB, void* clientData);
+      void AddVarCB(const char* name, AntTweak::engineTwType type, aTSetCB setCB, aTGetCB getCB, void* clientData);
       // Creates a Read/Write variable
-      void AddVarRW(const char* name, AntTweak::TwType type, void* var);
+      void AddVarRW(const char* name, AntTweak::engineTwType type, void* var);
       // Adds a seperator into the bar and names it something
       void AddSeparator(const char* name);
       // Adds a button to the bar
@@ -122,7 +93,7 @@ namespace Framework
 
     private:
       // Translates a AntTweak::TwType (Extended Enum) into a TwType enum
-      static AntTweak::TwType TranslateType(AntTweak::TwType type);
+      static AntTweak::engineTwType TranslateType(AntTweak::engineTwType type);
 
       // Pointer to the actual bar
       void* antTweakBar;
@@ -133,6 +104,38 @@ namespace Framework
 
       friend class AntTweakModule;
     };
+  }
+
+  class AntTweakModule : public ISystem
+  {
+  public:
+    AntTweakModule();
+    ~AntTweakModule() {};
+
+    void Initialize(void);
+
+    // Update per frame
+    void Update(float dt);
+
+    void ReceiveMessage(Message msg);
+
+    void Shutdown();
+
+    // Creates a new bar of given name and returns a BarContiner*
+    AntTweak::TBar* CreateBar(const char* name);
+    // Gets a TBar from a handle
+    AntTweak::TBar* GetBar(Handle barHandle);
+
+    virtual std::string GetName() {return "AntTweakBar";};
+
+    
+
+  private:
+
+    // Handle manager for AntTweak TBars
+    HandleManager m_handles;
+    // Object allocator for BarContainters
+    ObjectAllocator m_bars;
   };
 
   extern AntTweakModule* ATWEAK;

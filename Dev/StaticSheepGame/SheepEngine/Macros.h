@@ -42,8 +42,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #define GET_STR_TYPE( STR ) \
   Framework::IntrospectionManager::Get( )->GetType( STR )
 
-#define TYPE_ADD_MEMBER( T, MEMBER ) \
-  ((Framework::TypeInfo *)GET_TYPE( T ))->AddMember( GET_TYPE( GET_TYPE_OF_MEMBER( T, MEMBER ) ), #MEMBER, GET_OFFSET_OF( T, MEMBER ) )
+#define TYPE_ADD_MEMBER( T, MEMBER, ... ) \
+  ((Framework::TypeInfo *)GET_TYPE( T ))->AddMember( GET_TYPE( GET_TYPE_OF_MEMBER( T, MEMBER ) ), #MEMBER, GET_OFFSET_OF( T, MEMBER ), __VA_ARGS__ )
 
 #define TYPE_SET_SERIALIZER( T, SERIALIZER ) \
   ((Framework::TypeInfo *)GET_TYPE( T ))->SetSerializer( SERIALIZER )

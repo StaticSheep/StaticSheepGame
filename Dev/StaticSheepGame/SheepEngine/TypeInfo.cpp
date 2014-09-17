@@ -6,6 +6,8 @@ Author(s): Zachary Nawar (Primary)
 All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 *****************************************************************/
 
+#include "AntTweakModule.h"
+
 namespace Framework
 {
   const TypeInfo *Member::Type(void) const
@@ -23,8 +25,13 @@ namespace Framework
     return m_name;
   }
 
+  bool Member::Tweak(void) const
+  {
+    return m_tweak;
+  }
+
   TypeInfo::TypeInfo()
-    : m_serialize(nullptr), m_deserialize(nullptr), m_metatable(nullptr), m_fromLua(nullptr), m_toLua(nullptr) {}
+    : m_serialize(nullptr), m_deserialize(nullptr), m_metatable(nullptr), m_fromLua(nullptr), m_toLua(nullptr), m_toTweak(nullptr) {}
 
   void TypeInfo::Init(const char* name, unsigned int size)
   {
@@ -39,12 +46,13 @@ namespace Framework
     m_size = size;
   }
 
-  void TypeInfo::AddMember(const TypeInfo* typeInfo, const char* name, unsigned int offset)
+  void TypeInfo::AddMember(const TypeInfo* typeInfo, const char* name, unsigned int offset, bool tweak)
   {
     Member mem;
     mem.m_name = name;
     mem.m_offset = offset;
     mem.m_typeInfo = typeInfo;
+    mem.m_tweak = tweak;
     m_members.push_back(mem);
   }
 
@@ -85,6 +93,12 @@ namespace Framework
       Serializer::Get()->Deserialize(file, var);
   }
 
+  void TypeInfo::TweakType(AntTweak::TBar* bar, Variable var) const
+  {
+    if (m_toTweak)
+      m_toTweak(bar, var);
+  }
+
   unsigned TypeInfo::Size(void) const
   {
     return m_size;
@@ -100,12 +114,12 @@ namespace Framework
     return m_metatable;
   }
 
-  void TypeInfo::SetAType(AntTweak::TwType type)
+  void TypeInfo::SetAType(AntTweak::engineTwType type)
   {
     m_aType = type;
   }
 
-  AntTweak::TwType TypeInfo::GetAType(void) const
+  AntTweak::engineTwType TypeInfo::GetAType(void) const
   {
     return m_aType;
   }
@@ -134,6 +148,11 @@ namespace Framework
   void TypeInfo::SetToLua(ToLuaCB cb)
   {
     m_toLua = cb;
+  }
+
+  void TypeInfo::SetToTweak(ToTweakCB cb)
+  {
+    m_toTweak = cb;
   }
 
   const std::vector<Member>& TypeInfo::GetMembers() const
