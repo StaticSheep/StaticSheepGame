@@ -1,7 +1,7 @@
 /*****************************************************************
 Filename: SheepPhysics.cpp
 Project: 
-Author(s): Zachary Nawar
+Author(s): Zachary Nawar, Jon Sourbeer(primary)
 
 All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 *****************************************************************/
@@ -20,24 +20,31 @@ namespace Framework
 
 	SheepPhysics::~SheepPhysics()
 	{
-    PHYSICS = nullptr;
+		PHYSICS = nullptr;
 	}
 
-  void SheepPhysics::RegisterComponents()
-  {
-    REGISTER_COMPONENT(Transform);
-    REGISTER_COMPONENT(Tester);
-  }
+	void SheepPhysics::Shutdown()
+	{
+
+	}
+
+	void SheepPhysics::RegisterComponents()
+	{
+		REGISTER_COMPONENT(Transform);
+		REGISTER_COMPONENT(Tester);
+	 }
 
 	void SheepPhysics::Initialize()
 	{
-
+		m_space = SheepFizz::PhysicsSpace::Allocate(0.0167f);
 	}
+
 
 	void SheepPhysics::Update(float dt)
 	{
-
+		m_space->Step();
 	}
 
+	
 
 }

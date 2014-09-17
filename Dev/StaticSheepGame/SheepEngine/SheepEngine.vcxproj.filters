@@ -163,6 +163,9 @@
     <ClInclude Include="Input.h">
       <Filter>Systems\Input</Filter>
     </ClInclude>
+    <ClInclude Include="..\includes\Vec3.h">
+      <Filter>BaseTypes\Vectors\Vec3</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="precompiled.cpp">
@@ -294,6 +297,9 @@
     </ClCompile>
     <ClCompile Include="Input.cpp">
       <Filter>Systems\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utilities\Vec3.cpp">
+      <Filter>BaseTypes\Vectors\Vec3</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -470,6 +476,9 @@
     </Filter>
     <Filter Include="Systems\Input">
       <UniqueIdentifier>{cf08f41f-fac7-4646-86a7-142228b605a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BaseTypes\Vectors\Vec3">
+      <UniqueIdentifier>{c28b6611-4245-4f4c-80e1-4c57dcd29318}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

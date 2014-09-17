@@ -1,11 +1,12 @@
+#pragma once
 #include <cmath>
 
-namespace SheepFizz
+namespace SheepMath
 {
 
 #define PI 3.1415926539
 
-struct Vec3D{
+class Vec3D{
 	
 	public:
 		Vec3D(float x = 0, float y = 0, float z = 0): x_(x), y_(y), z_(z) { }

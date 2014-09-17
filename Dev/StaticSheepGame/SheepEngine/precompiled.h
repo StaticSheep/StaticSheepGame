@@ -73,6 +73,7 @@ extern "C"
 #include "Engine.h" // Core Engine
 
 #include "Vec2.h" // Vector 2D
+#include "Vec3.h" // Vector 3D
 #include "Vec4.h" // Vector 4D
 
 #include "DrawLib.h" // Drawing Extension Library
@@ -86,6 +87,11 @@ extern "C"
 // Type and function Binding
 #include "DefaultTypes.h"
 #include "LuaDefaultBinds.h"
+
+namespace Framework
+{
+	using namespace SheepMath;
+}
 
 
 

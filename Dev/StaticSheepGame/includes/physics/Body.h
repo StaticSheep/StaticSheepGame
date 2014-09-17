@@ -1,16 +1,18 @@
+#pragma once
 #include "Material.h"
 #include "Shape.h"
 
 namespace SheepFizz
 {
 
-struct MassData
+class MassData
 {
-	float mass;
-	float inverseMass;
+	public:
+		float mass;
+		float inverseMass;
 
-	float inertia;			//used for angular calculations
-	float inverseInertia;
+		float inertia;			//used for angular calculations
+		float inverseInertia;
 };
 
 enum BodyGroup{
@@ -30,11 +32,15 @@ enum CollisionGroup{
 };
 
 
-struct Body
+class Body
+{
+			CollisionGroup collisionGroup = CollGroup1, BodyGroup bodyGroup = BodyGroup1, float gravityScale = 1, 
+			float gravityOn = 1);
 
 		//used in initialization of body - computes mass
 
 		//apply forces directly to the body - an impulse is an
+		//instantaneous force application, so no dt is applied
 
 		//shape and material used to calculate MassData;
 		//shape and materail are defined by the gameobject
@@ -65,7 +71,7 @@ struct Body
 		float angularVelocity_;
 		float torque_;
 
-
+		Handle self;
 };
 
 }

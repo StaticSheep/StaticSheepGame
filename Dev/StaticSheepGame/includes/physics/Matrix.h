@@ -1,27 +1,25 @@
-#include "Vector.h"
+#pragma once
+#include "Vec3.h"
 
 namespace SheepFizz
 {
+	using namespace SheepMath;
 
-struct Matrix2D{
+	class Matrix2D
+	{
 
-	public:
+		public:
 		
-			x0_ = 1;
-			x1_ = 0;
-			y0_ = 0;
-			y1_ = 1;
-		}
 
 
-		//common operators
+			//common operators
 
 
 	
-		float x0_;
-		float x1_;
-		float y0_;
-		float y1_;
-};
+			float x0_;
+			float x1_;
+			float y0_;
+			float y1_;
+	};
 
 }

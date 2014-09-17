@@ -1,4 +1,11 @@
+#pragma once
+
+
+
 #include "Matrix.h"
+#include "ObjectAllocator.h"
+#include "Handle.h"
+#include "HandleManager.h"
 
 namespace SheepFizz
 {
@@ -16,11 +23,13 @@ enum Shapes
 //base class
 class Shape
 {
+	public:
 
 	//gettors
 	//returns the type of the shape - the shape is not stored
 
 
+	//primary functions - sets up shape - calculates area
 
 	//set the area after calculation
 
@@ -28,22 +37,26 @@ class Shape
 
 	//set the shape
 
+	Handle self;
+
 	private:
 		//moment of Inertia - used in inertia calculation
 		float momentOfInertia_;
 		float area_;	//area for mass calculation
 
 		Shapes shape_;
-
+		
 };
 
 //create a rectangle
 class Rectangle: public Shape
 {
 	public:
+		//constructor
 
 		//gettors
 
+		//initializes area and vertices/normals used in manifold functions
 
 	private:
 		float width_;
@@ -63,6 +76,7 @@ class Rectangle: public Shape
 class Circle: public Shape
 {
 	public:
+
 
 		//gettors
 		

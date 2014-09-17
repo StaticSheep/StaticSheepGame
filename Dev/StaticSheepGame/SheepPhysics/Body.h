@@ -1,3 +1,4 @@
+#pragma once
 #include "Material.h"
 #include "Shape.h"
 
@@ -38,29 +39,14 @@ class Body
 		Body(Shape* shape, Material material, Vec3D position = Vec3D(), Vec3D velocity = Vec3D(), 
 			Vec3D force = Vec3D(), float orientation = PI, float angularVelocity = 0, float torque = 0,
 			CollisionGroup collisionGroup = CollGroup1, BodyGroup bodyGroup = BodyGroup1, float gravityScale = 1, 
-			float gravityOn = 1): 
-			material_(material), shape_(shape), velocity_(velocity), position_(position), force_(force), 
-			orientation_(orientation), angularVelocity_(angularVelocity), torque_(torque),
-			collisionGroup_(collisionGroup), bodyGroup_(bodyGroup), gravityScale_(gravityScale), gravityOn_(gravityOn)
-			{ 
-				shape_->Initialize();
-				ComputeMass();
-			}
+			float gravityOn = 1);
 
 		//used in initialization of body - computes mass
 		void ComputeMass(void);
 
 		//apply forces directly to the body - an impulse is an
 		//instantaneous force application, so no dt is applied
-		void ApplyImpulse(Vec3D& impulse, Vec3D& contactvector)
-		{
-			velocity_ += impulse * massData_.inverseMass;
-
-			//takes the contact vector - which is the distance from center of mass to contact point
-			//and crosses it with the actual impulse, creating angular rotation.  The further out
-			//the contact point, the greater the rotation applied
-			angularVelocity_ += (contactvector * impulse).z_ * massData_.inverseInertia;
-		}
+		void ApplyImpulse(Vec3D& impulse, Vec3D& contactvector);
 
 		//shape and material used to calculate MassData;
 		//shape and materail are defined by the gameobject

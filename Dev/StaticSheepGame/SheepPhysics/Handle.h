@@ -6,8 +6,7 @@ Author(s): Zachary Nawar (Primary)
 All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 *****************************************************************/
 
-#ifndef OBJ_HANDLE_H
-#define OBJ_HANDLE_H
+#pragma once
 
 namespace SheepFizz
 {
@@ -35,7 +34,3 @@ namespace SheepFizz
   }
 
 }
-
-
-
-#endif

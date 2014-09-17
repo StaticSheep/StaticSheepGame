@@ -6,8 +6,9 @@ Filename: HandleManager.h
 #define HANDLEMANAGER_H
 
 #include "Handle.h"
+#include "ObjectAllocator.h"
 
-namespace Framework
+namespace SheepFizz
 {
 	class HandleManager
 	{
@@ -17,6 +18,7 @@ namespace Framework
 
 
 		static const int m_MaxEntries = 16384; // 2^14
+
 
 	private:
 		struct HandleEntry
@@ -34,7 +36,15 @@ namespace Framework
 		HandleEntry m_array[m_MaxEntries];
 	};
 
+
+	// Updates all handles to ensure that the HandleManager has accurate
+  // pointers to the data which the handle needs to point at
 }
+
+
+/*
+    // Re-construct the game object
+*/
 
 
 

@@ -1,3 +1,7 @@
+#pragma once
+
+
+
 #include "Matrix.h"
 #include "ObjectAllocator.h"
 #include "Handle.h"
@@ -20,29 +24,29 @@ enum Shapes
 class Shape
 {
 	public:
-	Shape(): shape_(Count) {}
+	Shape();
 
 	//gettors
 	//returns the type of the shape - the shape is not stored
-	Shapes GetShape(void) {return shape_;}
+	Shapes GetShape(void);
 
-	virtual float GetRadius(void) {return 0;}
-	virtual float GetHeight(void) {return 0;}
-	virtual float GetWidth(void) {return 0;}
-	virtual float GetArea(void) {return area_;}
-	virtual float GetMomentOfInertia(void) {return momentOfInertia_;}
+	virtual float GetRadius(void);
+	virtual float GetHeight(void);
+	virtual float GetWidth(void);
+	virtual float GetArea(void);
+	virtual float GetMomentOfInertia(void);
 
 	//primary functions - sets up shape - calculates area
-	virtual void Initialize(void) {}
+	virtual void Initialize(void);
 
 	//set the area after calculation
-	virtual void SetArea(float area) {area_ = area;}
+	virtual void SetArea(float area);
 
 	//set the moment of inertia after calculation
-	virtual void SetMomentOfInertia(float moment) {momentOfInertia_ = moment;}
+	virtual void SetMomentOfInertia(float moment);
 
 	//set the shape
-	virtual void SetShape(Shapes shape) {shape_ = shape;}
+	virtual void SetShape(Shapes shape);
 
 	Handle self;
 
@@ -60,41 +64,15 @@ class Rectangle: public Shape
 {
 	public:
 		//constructor
-		Rectangle(float width, float height):
-			width_(width), height_(height){};
+		Rectangle(float width, float height);
 
 		//gettors
-		float GetWidth(void) {return width_;}
-		float GetHeight(void) {return height_;}
-		Shapes GetType(void) {return Rec;}
+		float GetWidth(void);
+		float GetHeight(void);
+		Shapes GetType(void);
 
 		//initializes area and vertices/normals used in manifold functions
-		void Initialize(void)
-		{
-			SetArea(width_ * height_);
-			
-			//calculate partial moment - no density
-			SetMomentOfInertia(1/2 * width_ * width_ * height_);
-			
-			SetShape(Rec);
-
-			//vertices oriented counterclockwise
-			vertices_[0] = Vec3D(width_ / 2, height_ / 2);
-			vertices_[1] = Vec3D(-width_ / 2, height_ / 2);
-			vertices_[2] = Vec3D(-width_ / 2, -height_ / 2);
-			vertices_[3] = Vec3D(-width_ / 2, -height_ / 2);
-
-			//calculate side normals - starting with vertice 0 and 1
-			for(int i = 0; i < 4; i++)
-			{
-				//calculate next vertice after this one
-				int nextVertice = i + 1 < 4 ? i + 1 : 0;
-
-				//subtract two vertices for vector and transform into normal
-				normals_[i] = (vertices_[nextVertice] - vertices_[i]).CalculateNormal();
-
-			}
-		}
+		void Initialize(void);
 
 	private:
 		float width_;
@@ -114,21 +92,13 @@ class Rectangle: public Shape
 class Circle: public Shape
 {
 	public:
-		Circle(float radius): radius_(radius) {};
+		Circle(float radius);
 
-		void Initialize(void)
-		{
-			SetArea(radius_ * radius_ * PI);
-			
-			//partial moment calculation - no density;
-			SetMomentOfInertia(PI * radius_ * radius_
-				* radius_ * 1/3);
-			SetShape(Cir);
-		}
+		void Initialize(void);
 
 		//gettors
-		float GetRadius(void) {return radius_;}
-		Shapes GetType(void) {return Cir;}
+		float GetRadius(void);
+		Shapes GetType(void);
 		
 	private:
 		float radius_;

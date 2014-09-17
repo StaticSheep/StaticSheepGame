@@ -10,6 +10,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #define HANDLEMANAGER_H
 
 #include "Handle.h"
+#include "ObjectAllocator.h"
 
 namespace SheepFizz
 {
@@ -83,7 +84,7 @@ namespace SheepFizz
       // point into memory that we don't own!
       for (auto i = m_allocator.begin<T>(); i != m_allocator.end<T>(); ++i)
       {
-        m_handles.Update(&(*i), i->self);
+        Update(&(*i), i->self);
       }
 
       m_allocator.ClearGrewFlag();

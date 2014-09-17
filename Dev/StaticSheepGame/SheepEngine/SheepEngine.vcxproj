@@ -96,6 +96,7 @@
   <ItemGroup>
     <ClInclude Include="..\includes\EnumData.h" />
     <ClInclude Include="..\includes\Utilities.h" />
+    <ClInclude Include="..\includes\Vec3.h" />
     <ClInclude Include="Api.h" />
     <ClInclude Include="Archetype.h" />
     <ClInclude Include="Camera.h" />
@@ -151,6 +152,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Utilities\Utilities.cpp" />
+    <ClCompile Include="..\Utilities\Vec3.cpp" />
     <ClCompile Include="Archetype.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CGamePad.cpp" />

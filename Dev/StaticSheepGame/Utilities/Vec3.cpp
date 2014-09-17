@@ -1,6 +1,7 @@
-#include "Vector.h"
 
-namespace SheepFizz
+#include "Vec3.h"
+
+namespace SheepMath
 {
 
 Vec3D& Vec3D::operator+=(Vec3D& rhs)

@@ -14,6 +14,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "ObjectAllocator.h"
 #include <stdlib.h>
 #include <string.h>
+#include <assert.h>
 
 namespace SheepFizz
 {

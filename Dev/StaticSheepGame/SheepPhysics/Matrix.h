@@ -1,58 +1,62 @@
-#include "Vector.h"
+#pragma once
+#include "Vec3.h"
 
 namespace SheepFizz
 {
+	using namespace SheepMath;
 
-struct Matrix2D{
+	class Matrix2D
+	{
 
-	public:
+		public:
 		
-		//default constructor creates identity matrix
-		Matrix2D(){
-			x0_ = 1;
-			x1_ = 0;
-			y0_ = 0;
-			y1_ = 1;
-		}
+			//default constructor creates identity matrix
+			Matrix2D()
+			{
+				x0_ = 1;
+				x1_ = 0;
+				y0_ = 0;
+				y1_ = 1;
+			}
 
-		//2D matrix
-		Matrix2D(float x0, float y0, float x1, float y1): 
-			x0_(x0), y0_(y0), x1_(x1), y1_(y1){}
+			//2D matrix
+			Matrix2D(float x0, float y0, float x1, float y1): 
+				x0_(x0), y0_(y0), x1_(x1), y1_(y1){}
 
-		//rotation matrix
-		Matrix2D(float radians)
-		{
-			x0_ = cosf(radians);
-			y0_ = -sinf(radians);
-			x1_ = sinf(radians);
-			y1_ = cosf(radians);
-		}
+			//rotation matrix
+			Matrix2D(float radians)
+			{
+				x0_ = cosf(radians);
+				y0_ = -sinf(radians);
+				x1_ = sinf(radians);
+				y1_ = cosf(radians);
+			}
 
-		//common operators
-		Matrix2D& operator=(Matrix2D& rhs);
-		Matrix2D operator*(Matrix2D& rhs);
-		Matrix2D& operator*=(Matrix2D& rhs);
+			//common operators
+			Matrix2D& operator=(Matrix2D& rhs);
+			Matrix2D operator*(Matrix2D& rhs);
+			Matrix2D& operator*=(Matrix2D& rhs);
 
-		Vec3D operator*(Vec3D& rhs);
+			Vec3D operator*(Vec3D& rhs);
 
-		//transpose
-		Matrix2D Transpose(Matrix2D& rhs)
-		{
+			//transpose
+			Matrix2D Transpose(Matrix2D& rhs)
+			{
 
-			Matrix2D transpose;
-			transpose.x0_ = rhs.x0_;
-			transpose.x1_ = rhs.y0_;
-			transpose.y0_ = rhs.x1_;
-			transpose.y1_ = rhs.y1_;
+				Matrix2D transpose;
+				transpose.x0_ = rhs.x0_;
+				transpose.x1_ = rhs.y0_;
+				transpose.y0_ = rhs.x1_;
+				transpose.y1_ = rhs.y1_;
 
-			return transpose;
+				return transpose;
 
-		}
+			}
 	
-		float x0_;
-		float x1_;
-		float y0_;
-		float y1_;
-};
+			float x0_;
+			float x1_;
+			float y0_;
+			float y1_;
+	};
 
 }

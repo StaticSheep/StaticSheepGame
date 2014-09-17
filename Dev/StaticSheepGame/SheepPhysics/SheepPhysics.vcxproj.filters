@@ -34,10 +34,10 @@
     <ClInclude Include="Handle.h">
       <Filter>Physics\EngineLinks</Filter>
     </ClInclude>
-    <ClInclude Include="Vector.h">
+    <ClInclude Include="Matrix.h">
       <Filter>Physics\Math Functions</Filter>
     </ClInclude>
-    <ClInclude Include="Matrix.h">
+    <ClInclude Include="..\includes\Vec3.h">
       <Filter>Physics\Math Functions</Filter>
     </ClInclude>
   </ItemGroup>
@@ -66,10 +66,16 @@
     <ClCompile Include="ObjectAllocator.cpp">
       <Filter>Physics\EngineLinks</Filter>
     </ClCompile>
-    <ClCompile Include="Vector.cpp">
+    <ClCompile Include="Matrix.cpp">
       <Filter>Physics\Math Functions</Filter>
     </ClCompile>
-    <ClCompile Include="Matrix.cpp">
+    <ClCompile Include="Materials.cpp">
+      <Filter>Physics\PhysicsFunctions</Filter>
+    </ClCompile>
+    <ClCompile Include="Shape.cpp">
+      <Filter>Physics\PhysicsFunctions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utilities\Vec3.cpp">
       <Filter>Physics\Math Functions</Filter>
     </ClCompile>
   </ItemGroup>

@@ -1,19 +1,29 @@
 /*****************************************************************
 Filename: SheepPhysics.h
 Project: 
-Author(s): Zachary Nawar
+Author(s): Zachary Nawar, Jon Sourbeer (primary)
 
 All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 *****************************************************************/
 
 #pragma once
 
+namespace SheepFizz
+{
+	using namespace SheepMath;
+}
+
+#include "physics\api.h"
+#include "physics\Handle.h"
+#include "physics\Step.h"
+
 #include "System.h"
-#include "PhysicsObject.h"
-#include "SlotArray.h"
+
+
 
 namespace Framework
 {
+
 	class SheepPhysics : public ISystem
 	{
 	public:
@@ -24,7 +34,7 @@ namespace Framework
 
 		virtual std::string GetName() {return "SheepPhysics";};
 
-    void RegisterComponents();
+		void RegisterComponents();
 
 		// Initialization call
 		void Initialize(void);
@@ -32,12 +42,11 @@ namespace Framework
 		// Update per frame
 		void Update(float dt);
 
-		PhysicsObject* RegisterObject(PhysicsObject& object);
-
-		SlotArray<PhysicsObject> m_objectList;
+		void Shutdown(void);
 
 	private:
-		void PhysicsStep(float dt);
+		//void PhysicsStep(float dt);
+		SheepFizz::PhysicsSpace* m_space;
 
 	};
 

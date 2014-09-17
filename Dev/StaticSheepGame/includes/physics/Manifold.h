@@ -1,3 +1,4 @@
+#pragma once
 #include "Body.h"
 
 namespace SheepFizz
@@ -9,13 +10,16 @@ namespace SheepFizz
 //manifold struct is used for collisions
 //it gives the collision normal and depth of penetration for
 //later modifications
-struct Manifold
+class Manifold
 {
+	public:
+	//constructor - requires the two bodies
 	
 	//Initialize is used after manifold interactions have been calculated to
 	//determine how the bodies will react - it is not called unless
 	//a manifold has a contact count above 0
 	//calculates the manifold Resitution, StatFric, and DynamFric by taking
+	//the minimum of each
 
 	//this function simply contains the jump table used to go to other
 	//collision and resolution functions

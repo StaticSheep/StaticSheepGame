@@ -10,7 +10,7 @@ as a memory manager.
 #pragma once
 #include <xutility>
 
-namespace Framework
+namespace SheepFizz
 {
 	class ObjectAllocator
 	{

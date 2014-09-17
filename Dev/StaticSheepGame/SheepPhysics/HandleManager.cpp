@@ -8,6 +8,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 #include "HandleManager.h"
 #include "Handle.h"
+#include <assert.h>
 
 namespace SheepFizz
 {

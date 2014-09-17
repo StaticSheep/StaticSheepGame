@@ -1,23 +1,28 @@
+#pragma once
+
 namespace SheepFizz
 {
 
-struct Material
+class Material
 {
 	public:
-
-			density_ = 0.1f;
-			restitution_ = 0.5f;
-			staticFriction_ = 0.5f;
-			dynamicFriction_ = 0.25f;
-
-		}
+		//default material
+		PHY_API Material();
 
 		//any other material
-		Material(float density, float restitution, float staticFriction, float dynamicFriction,
+		PHY_API Material(float density, float restitution, float staticFriction, float dynamicFriction, float momentOfInertia = 0);
 		
 		//gettors
+		PHY_API float GetMaterialDensity(void) const;
+		PHY_API float GetMaterialResitution(void) const;
+		PHY_API float GetMaterialStaticFriction(void) const;
+		PHY_API float GetMaterialDynamicFriction(void) const;
 
 		//settors
+		PHY_API void SetMaterialDensity(float density);
+		PHY_API void SetMaterialResitution(float restitution);
+		PHY_API void SetMaterialStaticFriction(float staticFriction);
+		PHY_API void SetMaterialDynamicFriction(float dynamicFriction);
 
 	private:
 		float density_;
