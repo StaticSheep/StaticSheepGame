@@ -11,10 +11,14 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "System.h"
 #include <wtypes.h>
 
+namespace DirectSheep
+{
+  class RenderContext;
+};
+
 namespace Framework
 {
   class Camera;
-
 	class SheepGraphics : public ISystem
 	{
 	public:
@@ -55,6 +59,8 @@ namespace Framework
     void LoadTexture(const std::string& filename);
 
 		void Draw(void);
+
+    DirectSheep::RenderContext *m_renderContext;
 
   public:
 

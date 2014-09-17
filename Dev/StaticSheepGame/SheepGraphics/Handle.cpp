@@ -8,16 +8,6 @@ namespace DirectSheep
     return type;
   }
 
-  int Handle::operator*(void) const
-  {
-
-  }
-
-  Handle::operator bool(void) const
-  {
-
-  }
-
   bool Handle::operator==(const Handle& rhs) const
   {
     if(index == rhs.index && type == rhs.type)

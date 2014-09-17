@@ -17,14 +17,11 @@ class Handle
 
    GFX_API ObjectType GetType(void) const;
 
-    int operator*(void) const;
-    operator bool(void) const;
    GFX_API bool operator==(const Handle& rhs) const;
    GFX_API bool operator!=(const Handle& rhs) const;
    GFX_API bool operator<(const Handle& rhs) const; // For STL comparisons
 
   private:
-    Handle(ObjectType type, int index);
 
     ObjectType type;
     int index;
@@ -34,3 +31,4 @@ class Handle
 };
 
 } //namespace Graphics
+

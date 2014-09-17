@@ -25,8 +25,6 @@ namespace DirectSheep
 class RenderContext
 {
   public:
-    RenderContext(void);
-    ~RenderContext(void);
 
     GFX_API static RenderContext * Allocate(void);
 
@@ -36,7 +34,6 @@ class RenderContext
     //Returns true if successful, else false
    GFX_API bool Initialize(HWND hwnd, float height, float width);
     //Uninitializes the RenderContext
-    void Uninitialize(void);
 
     /////////////////////////////////////////////////////////////
     //                     DRAW FUNCTIONS                      //
@@ -102,21 +99,14 @@ class RenderContext
 
    GFX_API Handle GetBackBuffer(void) const;
    GFX_API bool GetFullscreen(void) const;
-    ID3D11Device* GetDevice(void) const;
-    ID3D11DeviceContext* GetDeviceContext(void) const;
    GFX_API const Dimension& GetNativeResolution(void) const;
    GFX_API const Viewport& GetViewport(void) const;
-    DisplayMode GetCurrentDisplayMode(void) const;
-    int GetCurrentDisplayModeIndex(void) const;
-    const std::vector<DisplayMode>& GetDisplayModes(void) const;
-    const std::string& GetGraphicsCardInfo(void) const;
    GFX_API const Dimension& GetTextureSize(const Handle& texHandle) const;
 
     /////////////////////////////////////////////////////////////
     //                    UTILITY FUNCTIONS                    //
     /////////////////////////////////////////////////////////////
 
-    void CopyData(const Handle& handle, const void *data, size_t size = 0);
    GFX_API void ClearRenderTarget(const Handle& handle, float r, float g, float b, float a);
    GFX_API void ClearRenderTarget(const Handle& handle, Color clearColor);
    GFX_API void ClearBackBuffer(void);
@@ -125,7 +115,6 @@ class RenderContext
     //                 PUBLIC RELEASE FUCNTION                 //
     /////////////////////////////////////////////////////////////
 
-    void Release(const Handle &handle);
 
 #if defined(DLL_GFXEXPORT)
 
@@ -136,26 +125,11 @@ class RenderContext
     //              PRIVATE INITIALIZE FUNCTIONS               //
     /////////////////////////////////////////////////////////////
 
-    void InitializeDXGI(void);
-    void InitializeDisplayModes(void);
-    void InitializeDeviceAndSwapChain(void);
-    void InitializeRasterizerState(void);
-    void InitializeBackBuffer(void);
-    void InitializeBlendModes(void);
-    void InitializeSamplerState(void);
-    void InitializeDepthState(void);
 
     /////////////////////////////////////////////////////////////
     //               INTERNAL RELEASE FUNCTIONS                //
     /////////////////////////////////////////////////////////////
 
-    void ReleaseTextureIntern(const Handle& texture);
-    void ReleaseVertexShaderIntern(const Handle& vertexShader);
-    void ReleasePixelShaderIntern(const Handle& pixelShader);
-    void ReleaseVertexBufferIntern(const Handle& vertexBuffer);
-    void ReleaseIndexBufferIntern(const Handle& indexBuffer);
-    void ReleaseConstantBufferIntern(const Handle& constantBuffer);
-    void ReleaseRenderTargetIntern(const Handle& renderTarget);
 
     //---------//
     // Structs //
@@ -253,3 +227,4 @@ class RenderContext
 };
 
 } //namespace Graphics
+
