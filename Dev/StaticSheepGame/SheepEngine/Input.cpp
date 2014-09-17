@@ -8,6 +8,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 #include "Input.h"
 #include <iostream>
+#include <windows.h>
+
 
 namespace Framework
 {
@@ -111,7 +113,7 @@ namespace Framework
     _currentState[button] = 1;
   }
 
-  void MouseInput::_UpdateMove(MSG* msg)
+  void MouseInput::_UpdateMove(void* msg)
   {
     return;
   }

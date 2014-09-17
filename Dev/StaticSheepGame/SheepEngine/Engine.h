@@ -8,10 +8,10 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 #pragma once
 
-#include "Window.h"
 
 namespace Framework
 {
+  class SheepWindow;
   class Engine;
 
   SHEEP_API extern Engine* ENGINE;
@@ -23,7 +23,7 @@ namespace Framework
     SHEEP_API ~Engine();
 
     SHEEP_API void AddSystem(ISystem* system);
-    SHEEP_API void MakeWindow(HINSTANCE hInstance, int show);
+    SHEEP_API void MakeWindow(void* hInstance, int show);
     SHEEP_API void Initialize();
     SHEEP_API void MainLoop();
     SHEEP_API void Shutdown();
@@ -65,7 +65,7 @@ namespace Framework
     int shittyFramerate;
 
     Factory ObjectFactory;
-    SheepWindow Window;
+    SheepWindow* Window;
   private:
     bool m_running;
     std::vector<ISystem*> m_systems;

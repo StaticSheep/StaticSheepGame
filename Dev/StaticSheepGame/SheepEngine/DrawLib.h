@@ -14,7 +14,7 @@ namespace Framework
   {
   public:
     static void SetUseCamera(bool useCam);
-    static void SetTexture(UINT texID);
+    static void SetTexture(unsigned texID);
     static int  GetTextureID(const char* texName);
     //static void SetColor(Vec4& color);
     static void SetRotation(float theta);
@@ -27,7 +27,7 @@ namespace Framework
     static void DrawLine(float sX, float sY, float eX, float eY, float width=1);
     static void DrawString(const char* text, float size, const char* font);
   private:
-    static UINT m_TextureID;
+    static unsigned m_TextureID;
     static Vec4 m_Color;
     static Vec2 m_TextPos;
     static bool m_useCamera;

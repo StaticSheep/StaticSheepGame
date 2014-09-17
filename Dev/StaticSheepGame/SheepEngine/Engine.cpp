@@ -1,4 +1,3 @@
-#include <iostream>
 /*****************************************************************
 Filename: Engine.cpp
 Project: 
@@ -12,6 +11,9 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #pragma comment (lib, "SheepGraphics.lib")
 #pragma comment (lib, "SheepPhysics.lib")
 #pragma comment (lib, "luaSource.lib")
+
+#include <iostream>
+#include "Window.h"
 
 namespace Framework
 {
@@ -57,9 +59,9 @@ namespace Framework
       m_systems[i]->Initialize();
   }
 
-  void Engine::MakeWindow(HINSTANCE hInstance, int show)
+  void Engine::MakeWindow(void* hInstance, int show)
   {
-    Window.MakeWindow(hInstance, show);
+    Window->MakeWindow(hInstance, show);
   }
 
   void Engine::Shutdown()
@@ -98,7 +100,7 @@ namespace Framework
 
     if (shittyFramerate > 100)
     {
-      Window.Update();
+      Window->Update();
 
       for (unsigned int i = 0; i < m_systems.size(); ++i)
         m_systems[i]->Update(dt);

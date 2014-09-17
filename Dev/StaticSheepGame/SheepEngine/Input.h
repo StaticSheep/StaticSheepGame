@@ -1,4 +1,6 @@
-#include <Windows.h>
+#pragma once
+
+
 #include "System.h"
 
 #define MOUSE_OFFSET 0x0201
@@ -31,7 +33,7 @@ namespace Framework
     bool _currentState[3];
 
     void _UpdateButton(unsigned int);
-    void _UpdateMove(MSG* msg);
+    void _UpdateMove(void* msg);
 
     void _ScreenToWorld();
 

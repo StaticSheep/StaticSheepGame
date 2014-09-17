@@ -1,6 +1,6 @@
 #pragma once
 
-#define USE_ANTTWEAKBAR 1
+#include <windef.h>
 
 namespace DirectSheep
 {

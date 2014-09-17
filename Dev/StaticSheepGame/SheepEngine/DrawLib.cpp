@@ -15,7 +15,7 @@ namespace Framework
   bool Draw::m_useCamera = true;
   Vec4 Draw::m_Color;
   Vec2 Draw::m_TextPos;
-  UINT Draw::m_TextureID;
+  unsigned Draw::m_TextureID;
 
   void Draw::SetUseCamera(bool useCam)
   {
@@ -23,7 +23,7 @@ namespace Framework
     GRAPHICS->SetUseCamera(useCam);
   }
 
-  void Draw::SetTexture(UINT texID)
+  void Draw::SetTexture(unsigned texID)
   {
     Draw::m_TextureID = texID;
     GRAPHICS->SetTexture(texID);

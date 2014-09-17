@@ -9,6 +9,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "AntTweak\AntTweakBar.h"
 #include "AntTweakModule.h"
 
+#include "Window.h"
+
 #include "SheepGraphics.h"
 
 namespace Framework
@@ -39,7 +41,7 @@ namespace Framework
     if (msg.MessageId == Message::GFXDeviceInit)
     {
       TwInit(TW_DIRECT3D11, GRAPHICS->GetDevice());
-      TwWindowSize(ENGINE->Window.GetWidth(), ENGINE->Window.GetHeight());
+      TwWindowSize(ENGINE->Window->GetWidth(), ENGINE->Window->GetHeight());
       return;
     }
 #endif

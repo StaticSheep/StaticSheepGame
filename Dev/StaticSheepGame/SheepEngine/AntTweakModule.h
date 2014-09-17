@@ -80,6 +80,14 @@ namespace Framework
 
       // Opens or closes a variable/button grouping in a bar
       void SetGroupOpened(const char* name, bool isOpen);
+      // Sets a bar label
+      void SetLabel(const char* name);
+      // Defines the help message associated with the bar
+      void SetHelpLabel(const char* name);
+      // Set Bar Color
+      void SetColor(int red, int green, int blue);
+      // Sets the alpha-value of the bar
+      void SetAlpha(int alpha);
 
 
       //============================================== Content ====================================================//

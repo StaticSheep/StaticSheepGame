@@ -7,11 +7,14 @@ Author(s): Scott Nelson(Primary)
 All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 *****************************************************************/
 
+#include <Windows.h>
 #include "SheepGraphics.h"
 #include "graphics\api.h"
 #include "graphics\System.h"
 #include "graphics\RenderMain.h"
-#include <Windows.h>
+
+#include "Window.h"
+
 
 namespace Framework
 {
@@ -44,10 +47,10 @@ namespace Framework
 		
 		// Create DirectX object
 		// Initialize graphics system
-    _ScreenWidth = ENGINE->Window.GetWidth();
-    _ScreenHeight = ENGINE->Window.GetHeight();
+    _ScreenWidth = ENGINE->Window->GetWidth();
+    _ScreenHeight = ENGINE->Window->GetHeight();
 
-    DirectSheep::Init(ENGINE->Window.GetHandle(), _ScreenWidth, _ScreenHeight, SheepGraphics::DeviceInit);
+    DirectSheep::Init(ENGINE->Window->GetHandle(), _ScreenWidth, _ScreenHeight, SheepGraphics::DeviceInit);
 	}
 
   void SheepGraphics::DeviceInit()
