@@ -6,6 +6,8 @@ Author(s): Zachary Nawar (Primary)
 All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 *****************************************************************/
 
+#include "AntTweakModule.h"
+
 namespace Framework
 {
 #define REGISTER_POD_FULL( TYPE ) \
@@ -132,6 +134,9 @@ namespace Framework
     TYPE_SET_FROM_LUA( LuaComponent, Lua::GenericObjectFromLua );
     TYPE_REGISTER_PTR( LuaComponent* );
     //TYPE_SET_TO_LUA( LuaComponent*, Lua::GameComponentToLua);
+
+    TYPE_REGISTER( AntTweakModule::TBar );
+    TYPE_REGISTER_PTR( AntTweakModule::TBar* );
 
     RegisterEnums();
   }

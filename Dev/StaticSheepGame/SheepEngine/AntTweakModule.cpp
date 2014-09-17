@@ -25,9 +25,6 @@ namespace Framework
 
   void AntTweakModule::Initialize()
   {
-    TBar* bc = CreateBar("TestBar");
-    float* f = new float(10);
-    bc->AddVarRW("SomeFloat", AntTweak::TW_TYPE_FLOAT, f);
   }
 
   void AntTweakModule::ReceiveMessage(Message msg)
@@ -42,6 +39,7 @@ namespace Framework
     {
       TwInit(TW_DIRECT3D11, GRAPHICS->GetDevice());
       TwWindowSize(ENGINE->Window->GetWidth(), ENGINE->Window->GetHeight());
+      
       return;
     }
 #endif
@@ -239,6 +237,8 @@ namespace Framework
       defList += m_definitions[i];
     }
 
+    m_definitions.clear();
+
     TwType realType = (TwType)TranslateType(type);
 
     TwAddVarCB((TwBar*)antTweakBar, name, realType, setCB, getCB, clientData, defList.c_str());
@@ -257,6 +257,8 @@ namespace Framework
     {
       defList += m_definitions[i];
     }
+
+    m_definitions.clear();
 
     TwType realType = (TwType)TranslateType(type);
 
@@ -277,9 +279,114 @@ namespace Framework
       defList += m_definitions[i];
     }
 
+    m_definitions.clear();
+
     TwAddSeparator((TwBar*)antTweakBar, name, defList.c_str());
 #endif
   }
+
+  void AntTweakModule::TBar::AddButton(const char* name, aTButtonCB callback, void* clientData)
+  {
+#if USE_ANTTWEAKBAR
+    std::string defList;
+    for (size_t i=0; i < m_definitions.size(); ++i)
+    {
+      defList += m_definitions[i];
+    }
+    for (size_t i=0; i < m_pDefinitions.size(); ++i)
+    {
+      defList += m_definitions[i];
+    }
+
+    m_definitions.clear();
+
+    TwAddButton((TwBar*)antTweakBar, name, callback, clientData, defList.c_str());
+#endif
+  }
+
+  // Sets a bar label
+  void AntTweakModule::TBar::SetLabel(const char* name)
+  {
+#if USE_ANTTWEAKBAR
+    TwSetParam((TwBar*)antTweakBar, NULL, "label", TW_PARAM_CSTRING, 1, name);
+#endif
+  }
+
+  // Defines the help message associated with the bar
+  void AntTweakModule::TBar::SetHelpLabel(const char* name)
+  {
+#if USE_ANTTWEAKBAR
+    TwSetParam((TwBar*)antTweakBar, NULL, "help", TW_PARAM_CSTRING, 1, name);
+#endif
+  }
+
+  // Set Bar Color
+  void AntTweakModule::TBar::SetColor(int red, int green, int blue)
+  {
+#if USE_ANTTWEAKBAR
+    int color[3] = {red, green, blue};
+    TwSetParam((TwBar*)antTweakBar, NULL, "label", TW_PARAM_INT32, 3, &color);
+#endif
+  }
+
+  // Sets the alpha-value of the bar
+  void AntTweakModule::TBar::SetAlpha(int alpha)
+  {
+#if USE_ANTTWEAKBAR
+    TwSetParam((TwBar*)antTweakBar, NULL, "alpha", TW_PARAM_INT32, 1, &alpha);
+#endif
+  }
+
+  // Sets the position of the bar
+  void AntTweakModule::TBar::SetPos(int x, int y)
+  {
+#if USE_ANTTWEAKBAR
+    int pos[2] = {x, y};
+    TwSetParam((TwBar*)antTweakBar, NULL, "position", TW_PARAM_INT32, 2, &pos);
+#endif
+  }
+
+  // Sets the size of the bar
+  void AntTweakModule::TBar::SetSize(int x, int y)
+  {
+#if USE_ANTTWEAKBAR
+    int pos[2] = {x, y};
+    TwSetParam((TwBar*)antTweakBar, NULL, "size", TW_PARAM_INT32, 2, &pos);
+#endif
+  }
+
+  // Sets the bar refresh rate
+  void AntTweakModule::TBar::SetRefreshRate(float rate)
+  {
+#if USE_ANTTWEAKBAR
+    TwSetParam((TwBar*)antTweakBar, NULL, "refresh", TW_PARAM_FLOAT, 1, &rate);
+#endif
+  }
+
+  // Sets whether the bar is iconified or not
+  void AntTweakModule::TBar::SetIconify(bool icon)
+  {
+#if USE_ANTTWEAKBAR
+    TwSetParam((TwBar*)antTweakBar, NULL, "visible", TW_PARAM_INT32, 1, &icon);
+#endif
+  }
+
+  // Sets whether the bar is movable or not
+  void AntTweakModule::TBar::SetMovable(bool canMove)
+  {
+#if USE_ANTTWEAKBAR
+    TwSetParam((TwBar*)antTweakBar, NULL, "movable", TW_PARAM_INT32, 1, &canMove);
+#endif
+  }
+
+  // Sets whether the bar is re-sizable
+  void AntTweakModule::TBar::SetResizable(bool canResize)
+  {
+#if USE_ANTTWEAKBAR
+    TwSetParam((TwBar*)antTweakBar, NULL, "resizable", TW_PARAM_INT32, 1, &canResize);
+#endif
+  }
+
 
 
   AntTweak::TwType AntTweakModule::TBar::TranslateType(AntTweak::TwType type)

@@ -26,6 +26,8 @@ namespace Framework
 
     EngineTypeRegistration();
 
+    Window = new SheepWindow();
+
     ENGINE = this;
   }
 
@@ -39,6 +41,8 @@ namespace Framework
     m_systems.clear();
     m_spaces.clear();
     m_spaceMap.clear();
+
+    delete Window;
   }
 
   void Engine::AddSystem(ISystem* system)

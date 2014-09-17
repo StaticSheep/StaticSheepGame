@@ -11,8 +11,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 namespace Framework
 {
-  class SheepWindow;
   class Engine;
+  class SheepWindow;
 
   SHEEP_API extern Engine* ENGINE;
 

@@ -16,9 +16,11 @@ namespace Framework
   public:
     class TBar;
     AntTweakModule();
+    ~AntTweakModule() {};
 
     typedef void(*aTSetCB)(const void* value, void* clientData);
     typedef void(*aTGetCB)(void* value, void* clientData);
+    typedef void(*aTButtonCB)(void* clientData);
 
     void Initialize(void);
 
@@ -88,7 +90,18 @@ namespace Framework
       void SetColor(int red, int green, int blue);
       // Sets the alpha-value of the bar
       void SetAlpha(int alpha);
-
+      // Sets the position of the bar
+      void SetPos(int x, int y);
+      // Sets the size of the bar
+      void SetSize(int x, int y);
+      // Sets the bar refresh rate
+      void SetRefreshRate(float rate);
+      // Sets whether the bar is iconified or not
+      void SetIconify(bool icon);
+      // Sets whether the bar is movable or not
+      void SetMovable(bool canMove);
+      // Sets whether the bar is re-sizable
+      void SetResizable(bool canResize);
 
       //============================================== Content ====================================================//
 
@@ -98,9 +111,15 @@ namespace Framework
       void AddVarRW(const char* name, AntTweak::TwType type, void* var);
       // Adds a seperator into the bar and names it something
       void AddSeparator(const char* name);
+      // Adds a button to the bar
+      void AddButton(const char* name, aTButtonCB callback, void* clientData);
 
       std::string name;
       Handle self;
+
+      TBar() {};
+      TBar(const char* name) : name(name) {};
+
     private:
       // Translates a AntTweak::TwType (Extended Enum) into a TwType enum
       static AntTweak::TwType TranslateType(AntTweak::TwType type);
@@ -111,9 +130,6 @@ namespace Framework
       std::vector<std::string> m_definitions;
       // List of persistent AntTweakBar definitions
       std::vector<std::string> m_pDefinitions;
-
-      TBar() {};
-      TBar(const char* name) : name(name) {};
 
       friend class AntTweakModule;
     };

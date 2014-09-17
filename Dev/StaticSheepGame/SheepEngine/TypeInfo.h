@@ -66,6 +66,8 @@ namespace Framework
     unsigned Offset( void ) const;
     // Name of the member
     const char *Name( void ) const;
+    // Uses AntTweakBar
+    bool m_tweak;
 
   private:
     const char *m_name;

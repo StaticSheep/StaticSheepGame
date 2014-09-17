@@ -28,7 +28,7 @@ namespace Framework
     wcex.lpfnWndProc = WindowProc;                  // Function to be used for message processing
     wcex.cbClsExtra = 0;
     wcex.cbWndExtra = 0;
-    wcex.hInstance = (HINSTANCE)hInstance;                     // Handle for the window instane being used by winmain
+    wcex.hInstance = *(HINSTANCE*)hInstance;                     // Handle for the window instane being used by winmain
     wcex.hCursor = LoadCursor(nullptr, IDC_ARROW);  // Cursor for window
     wcex.lpszMenuName = nullptr;                    // Menus are not being used
     wcex.lpszClassName = "SheepWindow";               // Name of class
@@ -51,7 +51,7 @@ namespace Framework
       rc.bottom - rc.top,  // Height of Window
       nullptr, 
       nullptr, 
-      (HINSTANCE)hInstance,           // Instance of window to be configured
+      *(HINSTANCE*)hInstance,           // Instance of window to be configured
       nullptr);
 
     ErrorIf(!Handle, "Window", "Window failed to create!");

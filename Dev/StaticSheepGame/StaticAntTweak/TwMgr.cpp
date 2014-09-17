@@ -1894,6 +1894,8 @@ static int TwInitMgr()
     CColorExt::CreateTypes();
     CQuaternionExt::CreateTypes();
 
+    TwDeleteBar(g_TwMgr->m_HelpBar);
+
     return 1;
 }
 
@@ -3042,11 +3044,11 @@ int ANT_CALL TwDeleteBar(TwBar *_Bar)
         g_TwMgr->SetLastError(g_ErrBadParam);
         return 0;
     }
-    if( _Bar==g_TwMgr->m_HelpBar )
-    {
-        g_TwMgr->SetLastError(g_ErrDelHelp);
-        return 0;
-    }
+    //if( _Bar==g_TwMgr->m_HelpBar )
+    //{
+    //    g_TwMgr->SetLastError(g_ErrDelHelp);
+    //    return 0;
+    //}
 
     TwFreeAsyncDrawing(); // For multi-thread savety
 
