@@ -62,18 +62,22 @@ namespace Framework
   {
   public:
     // The type of the member
-    const TypeInfo *Type(void) const;
+    const TypeInfo* Type(void) const;
     // Memory offset of the member in the class
     unsigned Offset(void) const;
     // Name of the member
-    const char *Name(void) const;
+    const char* Name(void) const;
     // Uses AntTweakBar
-    bool Tweak(void) const;
+    bool CanTweak(void) const;
+    // Tweak Label
+    const char* TweakLabel(void) const;
 
   private:
     const char *m_name;
     unsigned m_offset;
     const TypeInfo *m_typeInfo;
+
+    const char* m_tweakLabel;
 
     // Uses AntTweakBar
     bool m_tweak;
@@ -90,7 +94,7 @@ namespace Framework
   typedef void (*FromLuaCB)(lua_State*, int, Variable*);
 
   // AntTweakBar callback
-  typedef void (*ToTweakCB) (AntTweak::TBar*, Variable&);
+  typedef void (*ToTweakCB) (AntTweak::TBar* bar, Variable& var, const char* tempLabel, const char* label);
 
   class TypeInfo
   {
@@ -99,7 +103,7 @@ namespace Framework
     // Initilization routine
     void Init( const char *name, unsigned size );
     // Adds a member to the type
-    void AddMember( const TypeInfo *typeInfo, const char *name, unsigned offset, bool tweak=false );
+    void AddMember( const TypeInfo *typeInfo, const char *name, unsigned offset, bool tweak=false, const char* tweakLabel=nullptr );
     // Gets a member from the type
     const Member *GetMember( const char *memberName ) const;
 
@@ -114,7 +118,7 @@ namespace Framework
     void Deserialize(File& file, Variable var) const;
 
     // Fills out an AntTweak bar with this type
-    void TweakType(AntTweak::TBar* bar, Variable var) const;
+    void Tweak(AntTweak::TBar* bar, Variable var, const char* tempLabel, const char* label) const;
 
     // Gets a list of all members in the type
     const std::vector<Member>& GetMembers() const;

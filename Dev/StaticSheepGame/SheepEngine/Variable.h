@@ -15,14 +15,21 @@ namespace Framework
   class Variable
   {
   public:
+    // Default Variable constructor
     Variable();
+    // Creates a variable, from a Type, and data pointer
     Variable(const TypeInfo* typeInfo, void* data);
+    // Creates a variable from a Type, and const data pointer
     Variable(const TypeInfo* typeInfo, const void* data);
+    // Creates a variable from another variable
     Variable(const Variable& rhs);
+    // Creates a variable from a reference of a type
     template <typename T>
     Variable(const T& rhs);
+    // Creates a variable from a const-pointer to a type
     template <typename T>
     Variable(const T* rhs);
+    // Creates a variable from a pointer to a type
     template <typename T>
     Variable(T* rhs);
 

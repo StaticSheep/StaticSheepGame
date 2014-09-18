@@ -166,6 +166,9 @@
     <ClInclude Include="AntTweakModule.h">
       <Filter>Systems\AntTweak</Filter>
     </ClInclude>
+    <ClInclude Include="TweakHelper.h">
+      <Filter>Systems\AntTweak\Tweaking</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="precompiled.cpp">
@@ -300,6 +303,9 @@
     </ClCompile>
     <ClCompile Include="AntTweakModule.cpp">
       <Filter>Systems\AntTweak</Filter>
+    </ClCompile>
+    <ClCompile Include="TweakHelper.cpp">
+      <Filter>Systems\AntTweak\Tweaking</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -479,6 +485,9 @@
     </Filter>
     <Filter Include="Systems\AntTweak">
       <UniqueIdentifier>{532970db-613b-494b-8710-cdb5b9fb1c1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\AntTweak\Tweaking">
+      <UniqueIdentifier>{c08bfb1b-6056-499d-ac47-ca1ebb71025e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

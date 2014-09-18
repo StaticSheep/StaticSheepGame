@@ -30,6 +30,8 @@ namespace Framework
       void AddDefinition(const char* definition, bool persist=false);
       // Clears the vector of persistent definitions
       void ClearDefinitions(void);
+      // Sets the label for the next bar/button
+      void DefineLabel(const char* label);
       // Sets the help message for the next button/var
       void DefineHelpMessage(const char* message);
       // Sets the group for the next button/var
@@ -90,11 +92,15 @@ namespace Framework
 
       TBar() {};
       TBar(const char* name) : name(name) {};
+      ~TBar();
 
-    private:
+
       // Translates a AntTweak::TwType (Extended Enum) into a TwType enum
       static AntTweak::engineTwType TranslateType(AntTweak::engineTwType type);
 
+
+    private:
+      
       // Pointer to the actual bar
       void* antTweakBar;
       // List of AntTweakBar definitions
@@ -104,13 +110,16 @@ namespace Framework
 
       friend class AntTweakModule;
     };
+
+    
+
   }
 
   class AntTweakModule : public ISystem
   {
   public:
     AntTweakModule();
-    ~AntTweakModule() {};
+    ~AntTweakModule();
 
     void Initialize(void);
 

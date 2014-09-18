@@ -148,6 +148,7 @@
     <ClInclude Include="Space.h" />
     <ClInclude Include="CSprite.h" />
     <ClInclude Include="System.h" />
+    <ClInclude Include="TweakHelper.h" />
     <ClInclude Include="TypeInfo.h" />
     <ClInclude Include="Variable.h" />
     <ClInclude Include="Vec2.h" />
@@ -198,6 +199,7 @@
     <ClCompile Include="sheep_engine.cpp" />
     <ClCompile Include="Space.cpp" />
     <ClCompile Include="CSprite.cpp" />
+    <ClCompile Include="TweakHelper.cpp" />
     <ClCompile Include="TypeInfo.cpp" />
     <ClCompile Include="Variable.cpp" />
     <ClCompile Include="Vec2.cpp" />

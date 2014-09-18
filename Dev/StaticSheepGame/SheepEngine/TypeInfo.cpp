@@ -7,6 +7,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 *****************************************************************/
 
 #include "AntTweakModule.h"
+#include "TweakHelper.h"
 
 namespace Framework
 {
@@ -20,14 +21,19 @@ namespace Framework
     return m_offset;
   }
 
-  const char *Member::Name(void) const
+  const char* Member::Name(void) const
   {
     return m_name;
   }
 
-  bool Member::Tweak(void) const
+  bool Member::CanTweak(void) const
   {
     return m_tweak;
+  }
+
+  const char* Member::TweakLabel(void) const
+  {
+    return m_tweakLabel;
   }
 
   TypeInfo::TypeInfo()
@@ -46,13 +52,14 @@ namespace Framework
     m_size = size;
   }
 
-  void TypeInfo::AddMember(const TypeInfo* typeInfo, const char* name, unsigned int offset, bool tweak)
+  void TypeInfo::AddMember(const TypeInfo* typeInfo, const char* name, unsigned int offset, bool tweak, const char* tweakLabel)
   {
     Member mem;
     mem.m_name = name;
     mem.m_offset = offset;
     mem.m_typeInfo = typeInfo;
     mem.m_tweak = tweak;
+    mem.m_tweakLabel = tweakLabel;
     m_members.push_back(mem);
   }
 
@@ -93,10 +100,12 @@ namespace Framework
       Serializer::Get()->Deserialize(file, var);
   }
 
-  void TypeInfo::TweakType(AntTweak::TBar* bar, Variable var) const
+  void TypeInfo::Tweak(AntTweak::TBar* bar, Variable var, const char* tempLabel, const char* label) const
   {
     if (m_toTweak)
-      m_toTweak(bar, var);
+      m_toTweak(bar, var, tempLabel, label);
+    else
+      AntTweak::DefaultTweak(bar, var, tempLabel, label);
   }
 
   unsigned TypeInfo::Size(void) const

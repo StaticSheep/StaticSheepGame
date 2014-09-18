@@ -17,14 +17,21 @@ namespace Framework
 {
   AntTweakModule* ATWEAK = nullptr;
 
+
   AntTweakModule::AntTweakModule()
     :m_bars(sizeof(AntTweak::TBar), 10)
   {
     ATWEAK = this;
   }
 
+  AntTweakModule::~AntTweakModule()
+  {
+    ATWEAK = nullptr;
+  }
+
   void AntTweakModule::Initialize()
   {
+    AntTweak::TBar* bar = CreateBar("TestBar");
   }
 
   void AntTweakModule::ReceiveMessage(Message msg)
@@ -88,7 +95,12 @@ namespace Framework
 
   void AntTweakModule::Shutdown()
   {
+    for(size_t i = 0; i < m_bars.Size(); ++i)
+    {
+      ((AntTweak::TBar*)(m_bars[i]))->~TBar();
+    }
 #if USE_ANTTWEAKBAR
+    TwDeleteAllBars();
     TwTerminate();
 #endif
   }
@@ -111,6 +123,18 @@ namespace Framework
   {
 #if USE_ANTTWEAKBAR
     m_pDefinitions.clear();
+#endif
+  }
+
+  void AntTweak::TBar::DefineLabel(const char* label)
+  {
+#if USE_ANTTWEAKBAR
+    std::string helpMessage(" label='");
+    helpMessage += label;
+    helpMessage += "' ";
+    // help='<message>' 
+
+    m_definitions.push_back(helpMessage);
 #endif
   }
 
@@ -387,6 +411,11 @@ namespace Framework
 #endif
   }
 
+
+  AntTweak::TBar::~TBar()
+  {
+    name.~basic_string();
+  }
 
 
   AntTweak::engineTwType AntTweak::TBar::TranslateType(AntTweak::engineTwType type)
