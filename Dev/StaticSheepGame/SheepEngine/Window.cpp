@@ -61,7 +61,6 @@ namespace Framework
     PAINTSTRUCT ps;                         // Data to redraw window if moved
     HDC hdc;                                // Hande to a Device Context
     MSG msg;
-    InputManager input;
 
     switch( message )                       // Check message
     {
@@ -99,7 +98,6 @@ namespace Framework
     case WM_MBUTTONDBLCLK:
 
       TranslateMessage(&msg);
-      input.Mouse.Update();
 
       break;
 

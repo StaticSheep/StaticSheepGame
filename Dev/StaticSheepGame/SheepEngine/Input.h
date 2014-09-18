@@ -108,6 +108,9 @@ namespace Framework
     KeyboardInput Keyboard;
 
   };
+
+
+  extern InputManager* SHEEPINPUT;
 }
 
 #endif

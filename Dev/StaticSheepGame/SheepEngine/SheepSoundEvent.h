@@ -39,9 +39,15 @@ public:
   // public methods
   SOUND::EventInstance* Play(PlayMode mode);
   void Stop(FadeOut mode);
+  void Pause();
 
   // getters
   PlayMode GetMode(void);
+
+  void GetChannelGroup(FMOD::ChannelGroup* group);
+
+  void SetPitch(float);
+
   bool PlayState(void);
 
 private:
@@ -52,6 +58,8 @@ private:
   SOUND::EventInstance* _PlayStream(void);
 
   // private members
+
+  float _pitch;
   PlayMode _mode; 
   bool _playing;
   SOUND::ID _id;

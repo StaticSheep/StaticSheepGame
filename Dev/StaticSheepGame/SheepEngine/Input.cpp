@@ -13,6 +13,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 namespace Framework
 {
 
+  InputManager* SHEEPINPUT = NULL;
 
 /*****************************************************************************/
 /*********************************MOUSE***************************************/
@@ -51,7 +52,7 @@ namespace Framework
     // only doing left, right, and middle buttons
     for(int i = 0; i < 3; ++i)
     {
-      _previousState[i] = _currentState[i] = 0;
+      _previousState[i] = _currentState[i] = false;
     }
   }
 
@@ -269,8 +270,8 @@ namespace Framework
   {
     for(int i = 0; i < 256; ++i)
     {
-      _previousState[i] = 0;
-      _currentState[i] = 0;
+      _previousState[i] = false;
+      _currentState[i] = false;
     }
   }
 
@@ -416,7 +417,7 @@ namespace Framework
 /*****************************************************************************/
   InputManager::InputManager()
   {
-
+    SHEEPINPUT = this;
   }
 
 /*****************************************************************************/

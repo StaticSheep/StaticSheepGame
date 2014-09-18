@@ -27,11 +27,13 @@ namespace Framework
 		// Initialization call
 		void Initialize(void);
 
+    void RegisterComponents(void);
+
 		// Update per frame
 		void Update(float dt);
 
     // Play the things! Stop the things!
-    void Play(const std::string &event_name, PlayMode mode);
+    SOUND::EventInstance* Play(const std::string &event_name, PlayMode mode);
     void Stop(const std::string &event_name, FadeOut mode);
     void StopAll(FadeOut mode);
     bool GetLoadState() const;
@@ -46,6 +48,13 @@ namespace Framework
     std::unordered_map<std::string, SoundEvent> _events;
     // vector for all sound banks
     std::vector<SOUND::Bank *> _banks;
+    //vector for all of the instances...
+    std::vector<SOUND::EventInstance* > _instances;
+
+
+    float _MasterVolume;
+    float _SFXVolume;
+    float _MusicVolume;
 
     void** _ninjaPointer; // just in case
 

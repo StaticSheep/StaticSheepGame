@@ -163,6 +163,12 @@
     <ClInclude Include="Input.h">
       <Filter>Systems\Input</Filter>
     </ClInclude>
+    <ClInclude Include="SoundEmitter.h">
+      <Filter>Components\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundPlayer.h">
+      <Filter>Components\Audio</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="precompiled.cpp">
@@ -294,6 +300,12 @@
     </ClCompile>
     <ClCompile Include="Input.cpp">
       <Filter>Systems\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundEmitter.cpp">
+      <Filter>Components\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundPlayer.cpp">
+      <Filter>Components\Audio</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -470,6 +482,9 @@
     </Filter>
     <Filter Include="Systems\Input">
       <UniqueIdentifier>{cf08f41f-fac7-4646-86a7-142228b605a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\Audio">
+      <UniqueIdentifier>{e02606f1-071e-4e97-bd45-3372fb9387f0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

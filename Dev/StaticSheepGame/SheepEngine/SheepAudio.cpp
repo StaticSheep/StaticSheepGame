@@ -1,16 +1,20 @@
-/*****************************************************************
+/******************************************************************************
 Filename: SheepAudio.cpp
 Project: 
 Author(s): Zakary Wilson
 
 All content © 2014 DigiPen (USA) Corporation, all rights reserved.
-*****************************************************************/
+******************************************************************************/
 
 #pragma comment(lib, "fmodL_vc.lib")
 #pragma comment(lib, "fmodStudioL_vc.lib")
 
 #include "SheepAudio.h"
+#include "SoundEmitter.h"
+#include "SoundPlayer.h"
+#include "Input.h"
 #include <fstream>
+#include <iostream>
 
 // lets just call this an event map...
 typedef std::unordered_map<std::string, SoundEvent> EventMap;
@@ -24,6 +28,7 @@ static void ParseEvents(SOUND::System *system, std::ifstream &file, EventMap &ev
 static void LoadBank(SOUND::System *system, std::string &name, BankVector &bank);
 static void LoadEvent(SOUND::System *system, std::string &name, EventMap &events);
 
+static float pitch = 1.0f;
 
 namespace Framework
 {
@@ -40,6 +45,13 @@ namespace Framework
 	{
     // set the global pointer 
 		AUDIO = this;
+
+    // need to read in config files for volume settings later...
+    // but for now just set everything to max volume
+
+    _MasterVolume = 1.0f;
+    _SFXVolume = 1.0f;
+    _MusicVolume = 1.0f;
 	}
 
 /*****************************************************************************/
@@ -67,7 +79,7 @@ namespace Framework
     ErrorCheck(SOUND::System::create(&_system));
 
     // initialize the sound system, with 512 channels... NEVER RUN OUT
-    ErrorCheck(_system->initialize(512, FMOD_STUDIO_INIT_NORMAL, FMOD_STUDIO_INIT_NORMAL, 0) );
+    ErrorCheck(_system->initialize(512, FMOD_STUDIO_INIT_SYNCHRONOUS_UPDATE, FMOD_STUDIO_INIT_SYNCHRONOUS_UPDATE, 0) );
 
     // open the GUID file
     std::ifstream infile(SoundUtility::SourcePath(_GUID, SoundUtility::TYPE_GUIDs).c_str());
@@ -81,6 +93,12 @@ namespace Framework
     ParseEvents(_system, infile, _events);
 	}
 
+  void SheepAudio::RegisterComponents(void)
+  {
+    REGISTER_COMPONENT(SoundEmitter);
+    REGISTER_COMPONENT(SoundPlayer);
+  }
+
 /*****************************************************************************/
 /*!
   \brief
@@ -91,10 +109,56 @@ namespace Framework
 	{
     float temp = dt; // get rid of warning
 
+    /*
     if(_events["Music/TopGun"].PlayState() == 0)
       _events["Music/TopGun"].Play(PLAY_LOOP);
 
-    // update all of the sounds
+    FMOD_STUDIO_LOADING_STATE state;
+
+    if(SHEEPINPUT->Mouse.ButtonPressed(LMB))
+    {
+      _events["Music/TopGun"].Play(PLAY_STREAM);
+    }
+
+    if(SHEEPINPUT->Mouse.ButtonPressed(RMB))
+    {
+      pitch -= 0.5f;
+
+      std::cout << pitch << std::endl;
+
+      FMOD_STUDIO_CPU_USAGE cpu;
+      FMOD::ChannelGroup* master;
+      FMOD::ChannelControl* controller;
+      FMOD::ChannelGroup* slave;
+      FMOD::System* lowlevel;
+      int groupCount;
+      int channels;
+
+      _system->getCPUUsage(&cpu);
+      _system->getLowLevelSystem(&lowlevel);
+
+      lowlevel->getMasterChannelGroup(&master);
+
+      SOUND::ID id;
+      SOUND::EventDescription* desc;
+      SOUND::MixerStrip* mixer;
+     
+      
+      master->getNumGroups(&groupCount);
+      master->getNumChannels(&channels);
+
+      master->setPitch(pitch);
+
+      //_events["Music/TopGun"].SetPitch(pitch);
+    }
+
+    if(SHEEPINPUT->Mouse.ButtonPressed(MMB))
+    {
+      pitch += 0.5f;
+      _events["Music/TopGun"].SetPitch(pitch);
+    }
+
+    // update all of the sounds*/
     ErrorCheck(_system->update());
     return;
 	}
@@ -111,12 +175,10 @@ namespace Framework
     How we want to play the sound. Single-shot, looped, or streamed.
 */
 /*****************************************************************************/
-  void SheepAudio::Play(const std::string &event_name, PlayMode mode)
+  SOUND::EventInstance* SheepAudio::Play(const std::string &event_name, PlayMode mode)
   {
     // tell this event to play
-    _events[event_name].Play(mode);
-
-    return;
+    return _events[event_name].Play(mode);
   }
 
 /*****************************************************************************/
