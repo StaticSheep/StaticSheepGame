@@ -1,6 +1,6 @@
 GameObject
 {
-  name std::string ""
+  name std::string "testName"
   archetype std::string "drawtest"
   Transform
   {

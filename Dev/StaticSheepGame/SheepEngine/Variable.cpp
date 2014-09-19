@@ -91,4 +91,8 @@ namespace Framework
     m_typeInfo->FromLua(L, index, this);
   }
 
+  void Variable::Tweak(AntTweak::TBar* bar, const char* tempLabel, const char* label)
+  {
+    m_typeInfo->Tweak(bar, *this, tempLabel, label);
+  }
 }

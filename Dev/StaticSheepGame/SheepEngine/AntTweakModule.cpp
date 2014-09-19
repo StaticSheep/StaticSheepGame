@@ -8,6 +8,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 #include "AntTweak\AntTweakBar.h"
 #include "AntTweakModule.h"
+#include "TweakHelper.h"
+
 
 #include "Window.h"
 
@@ -17,11 +19,16 @@ namespace Framework
 {
   AntTweakModule* ATWEAK = nullptr;
 
+  void TW_CALL CopyStdStringToClient(std::string& destinationClientString, const std::string& sourceLibraryString)
+  {
+    destinationClientString = sourceLibraryString;
+  }
 
   AntTweakModule::AntTweakModule()
     :m_bars(sizeof(AntTweak::TBar), 10)
   {
     ATWEAK = this;
+
   }
 
   AntTweakModule::~AntTweakModule()
@@ -31,7 +38,7 @@ namespace Framework
 
   void AntTweakModule::Initialize()
   {
-    AntTweak::TBar* bar = CreateBar("TestBar");
+    
   }
 
   void AntTweakModule::ReceiveMessage(Message msg)
@@ -46,6 +53,7 @@ namespace Framework
     {
       TwInit(TW_DIRECT3D11, GRAPHICS->GetDevice());
       TwWindowSize(ENGINE->Window->GetWidth(), ENGINE->Window->GetHeight());
+      TwCopyStdStringToClientFunc(CopyStdStringToClient); // must be called once (just after TwInit for instance)
       
       return;
     }
@@ -411,9 +419,82 @@ namespace Framework
 #endif
   }
 
+  static void TW_CALL GenericSetCB(const void* value, void* rawData)
+  {
+    AntTweak::TweakGenericVar* clientData = (AntTweak::TweakGenericVar*)rawData;
+
+    // Get the type of the member we are changing
+    const TypeInfo* memberType = clientData->genericMember->Type();
+    // Get a pointer to the generic object
+    void* genericObject = clientData->genericSpace->GetHandles().Get(clientData->genericHandle);
+    
+    ErrorIf(genericObject == nullptr, "AntTweakBar GenericObject Variable Set", "Attempted to set a variable on an object which couldn't be found! Member: %s",
+     clientData->genericMember->Name());
+
+    // Use the types copy/assignment operation to set the member to the value
+    memberType->Copy((char*)genericObject + clientData->genericMember->Offset(), value);
+
+  }
+
+  static void TW_CALL GenericGetCB(void* value, void* rawData)
+  {
+    AntTweak::TweakGenericVar* clientData = (AntTweak::TweakGenericVar*)rawData;
+
+    // Get the type of the member we are changing
+    const TypeInfo* memberType = clientData->genericMember->Type();
+    // Get a pointer to the generic object
+    void* genericObject = clientData->genericSpace->GetHandles().Get(clientData->genericHandle);
+
+    ErrorIf(genericObject == nullptr, "AntTweakBar GenericObject Variable Set", "Attempted to set a variable on an object which couldn't be found! Member: %s",
+      clientData->genericMember->Name());
+
+    // Use the types copy/assignment operation to set the value
+    //memberType->Copy(value, (char*)genericObject + clientData->genericMember->Offset());
+    //const char* test = ((std::string*)value)->c_str();
+    *(std::string**)value = (std::string*)((char*)genericObject + clientData->genericMember->Offset());
+  }
+
+  // Adds a Read/Write variable from a generic object
+  void AntTweak::TBar::AddGenericVarRW(const char* name, AntTweak::engineTwType type, const Member* member, Generic* obj)
+  {
+#if USE_ANTTWEAKBAR
+
+    // Establish the definition list
+    std::string defList;
+    for (size_t i=0; i < m_definitions.size(); ++i)
+    {
+      defList += m_definitions[i];
+    }
+    for (size_t i=0; i < m_pDefinitions.size(); ++i)
+    {
+      defList += m_definitions[i];
+    }
+
+    m_definitions.clear();
+
+    // Establish the real type
+    TwType realType = (TwType)TranslateType(type);
+
+    // Create a clientData struct to store the client data for this variable
+    TweakGenericVar* clientData = DBG_NEW TweakGenericVar(member);
+    clientData->genericHandle = obj->self; // Set the handle to use
+    clientData->genericSpace = obj->space; // Set the space to use (Thank god spaces are pretty static or i would flip shit)
+    clientData->self = m_tweakVars.Insert(clientData);
+
+    TwAddVarCB((TwBar*)antTweakBar, name, realType, GenericSetCB, GenericGetCB, clientData, defList.c_str());
+
+#endif
+  }
+
+
+  static void TweakVarDelete(void* data)
+  {
+    delete data;
+  }
 
   AntTweak::TBar::~TBar()
   {
+    m_tweakVars.Run(TweakVarDelete);
     name.~basic_string();
   }
 

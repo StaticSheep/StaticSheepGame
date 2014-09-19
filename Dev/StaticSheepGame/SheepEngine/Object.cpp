@@ -11,6 +11,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include <functional>
 #include <iterator>
 
+#include "AntTweakModule.h"
+
 namespace Framework
 {
 
@@ -381,6 +383,40 @@ namespace Framework
       fsetpos(file.fp, &lastcomp);
       file.GetLine("}");
     }
+  }
+
+  void GameObject::Tweak(AntTweak::TBar* bar, Variable& var, const char* tempLabel, const char* label)
+  {
+
+    // Figure out what to call the bar for tweaking game object
+    GameObject& obj = var.GetValue<GameObject>();
+    std::string objName = "Object: ";
+    objName += obj.name;
+
+    // Create a new bar for this object
+    AntTweak::TBar* objectBar = ATWEAK->CreateBar(objName.c_str());
+
+    // Get a const reference to the object members for speed
+    const std::vector<Member>& objMembers = GET_TYPE(GameObject)->GetMembers();
+    
+    for (size_t i=0; i < objMembers.size(); ++i)
+    {
+      // Create a variable of the object member and then tweak it
+      objectBar->DefineGroup("Properties");
+
+      const Member* member = &objMembers[i];
+
+      if (member->TweakLabel())
+        objectBar->DefineLabel(member->TweakLabel());
+
+      objectBar->AddGenericVarRW(member->Name(), member->Type()->GetAType(), member, &obj);
+
+      //Variable memberVar(objMembers[i].Type(), (char*)var.GetData() + objMembers[i].Offset());
+      //memberVar.Tweak(objectBar, objMembers[i].Name(), member.TweakLabel());
+    }
+
+    // Iterate through components
+    // Tweak Each component
   }
 
   //GameObject& GameObject::operator=(const GameObject& rhs)

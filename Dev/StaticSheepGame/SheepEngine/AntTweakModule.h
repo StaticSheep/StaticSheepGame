@@ -82,6 +82,8 @@ namespace Framework
       void AddVarCB(const char* name, AntTweak::engineTwType type, aTSetCB setCB, aTGetCB getCB, void* clientData);
       // Creates a Read/Write variable
       void AddVarRW(const char* name, AntTweak::engineTwType type, void* var);
+      // Creates a Read/Write variable for a generic object
+      void AddGenericVarRW(const char* name, AntTweak::engineTwType type, const Member* member, Generic* obj);
       // Adds a seperator into the bar and names it something
       void AddSeparator(const char* name);
       // Adds a button to the bar
@@ -107,6 +109,8 @@ namespace Framework
       std::vector<std::string> m_definitions;
       // List of persistent AntTweakBar definitions
       std::vector<std::string> m_pDefinitions;
+      // Handles of tweakvars
+      HandleManager m_tweakVars;
 
       friend class AntTweakModule;
     };
@@ -141,6 +145,7 @@ namespace Framework
 
   private:
 
+    
     // Handle manager for AntTweak TBars
     HandleManager m_handles;
     // Object allocator for BarContainters

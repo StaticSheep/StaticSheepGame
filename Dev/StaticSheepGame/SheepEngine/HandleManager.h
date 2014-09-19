@@ -24,6 +24,8 @@ namespace Framework
 		void Update(void* ptr, Handle& handle);
 		void Remove(Handle handle);
 
+    void Run(void(*runFunc)(void* ptr));
+
 		void* Get(Handle handle) const;
 		bool Exists(Handle handle) const;
 		template <typename T>

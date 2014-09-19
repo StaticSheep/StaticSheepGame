@@ -1878,7 +1878,7 @@ static int TwInitMgr()
     if( g_TwMgr->m_HelpBar )
     {
         g_TwMgr->m_HelpBar->m_Label = "~ Help & Shortcuts ~";
-        g_TwMgr->m_HelpBar->m_PosX = 32;
+        g_TwMgr->m_HelpBar->m_PosX = -620;
         g_TwMgr->m_HelpBar->m_PosY = 32;
         g_TwMgr->m_HelpBar->m_Width = 400;
         g_TwMgr->m_HelpBar->m_Height = 200;
@@ -1886,7 +1886,7 @@ static int TwInitMgr()
         g_TwMgr->m_HelpBar->m_Color = 0xa05f5f5f; //0xd75f5f5f;
         g_TwMgr->m_HelpBar->m_DarkText = false;
         g_TwMgr->m_HelpBar->m_IsHelpBar = true;
-        g_TwMgr->Minimize(g_TwMgr->m_HelpBar);
+        //g_TwMgr->Minimize(g_TwMgr->m_HelpBar);
     }
     else
         return 0;
@@ -1894,7 +1894,7 @@ static int TwInitMgr()
     CColorExt::CreateTypes();
     CQuaternionExt::CreateTypes();
 
-    TwDeleteBar(g_TwMgr->m_HelpBar);
+    //TwDeleteBar(g_TwMgr->m_HelpBar);
 
     return 1;
 }
@@ -4004,10 +4004,22 @@ void ANT_CALL CTwMgr::CCDStdString::GetCB(void *_Value, void *_ClientData)
     {
         // m_ClientGetCallback uses TwCopyStdStringToLibrary to copy string
         // and TwCopyStdStringToLibrary does the VC++ Debug/Release std::string conversion.
-        CDStdString->m_ClientGetCallback(&(CDStdString->m_LocalString[0]), CDStdString->m_ClientData);
+        CDStdString->m_ClientGetCallback(&(CDStdString->m_ClientStdStringPtr), CDStdString->m_ClientData);
+
+        //*DstStrPtr = const_cast<char *>(CDStdString->m_ClientStdStringPtr->c_str());
+        static CTwMgr::CLibStdString s_LibStr; // static because it will be used as a returned value
+        s_LibStr.FromClient(*CDStdString->m_ClientStdStringPtr);
+        *DstStrPtr = const_cast<char *>(s_LibStr.ToLib().c_str());
+
+        //static CTwMgr::CLibStdString s_LibStr; // static because it will be used as a returned value
+        //s_LibStr.FromClient(*CDStdString->m_ClientStdStringPtr);
+        //*DstStrPtr = const_cast<char *>(s_LibStr.ToLib().c_str());
+
         //*DstStrPtr = const_cast<char *>(CDStdString->m_LocalString.c_str());
-        char **StrPtr = (char **)&(CDStdString->m_LocalString[0]);
-        *DstStrPtr = *StrPtr;
+        //char **StrPtr = (char **)&(CDStdString->m_LocalString[0]);
+        //*DstStrPtr = const_cast<char *>(->c_str();
+        //*DstStrPtr = const_cast<char *>(CDStdString->m_LocalString.c_str());
+        
     }
 }
 

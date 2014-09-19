@@ -138,6 +138,15 @@ namespace Framework
 		return m_freeSlots;
 	}
 
+  void HandleManager::Run(void(*runFunc)(void* ptr))
+  {
+    for (unsigned int i = 0; i < m_MaxEntries - 1; ++i)
+    {
+      if (m_array[i].m_allocated)
+        runFunc(m_array[i].m_ptr);
+    }
+  }
+
   
 	
 }

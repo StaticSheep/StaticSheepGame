@@ -10,6 +10,11 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 namespace Framework
 {
+  namespace AntTweak
+  {
+    class TBar;
+  }
+
   class TypeInfo;
 
   class Variable
@@ -47,6 +52,8 @@ namespace Framework
 
     void ToLua(lua_State* L) const;
     void FromLua(lua_State* L, int index);
+    
+    void Tweak(AntTweak::TBar* bar, const char* tempLabel, const char* label);
 
     void PlacementNew(void);
     void PlacementDelete(void);

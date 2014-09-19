@@ -6,7 +6,9 @@ namespace Framework
 {
   namespace AntTweak
   {
-    void DefaultTweak(TBar* bar, const Variable& var, const char* tempLabel, const char* label)
+
+
+    void DefaultTweak(AntTweak::TBar* bar, Variable& var, const char* tempLabel, const char* label)
     {
       const TypeInfo* typeData = var.GetTypeInfo();
       const std::vector<Member> typeMembers = typeData->GetMembers();
@@ -30,6 +32,14 @@ namespace Framework
           bar->DefineLabel(label);
         bar->AddVarRW(tempLabel, TBar::TranslateType(var.GetTypeInfo()->GetAType()), var.GetData());
       }
+    }
+
+
+    void TweakString(AntTweak::TBar* bar, Variable& var, const char* tempLabel, const char* label)
+    {
+      if (label)
+        bar->DefineLabel(label);
+      bar->AddVarRW(tempLabel, AntTweak::TW_TYPE_STDSTRING, var.GetData());
     }
 
 

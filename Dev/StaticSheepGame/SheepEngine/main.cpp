@@ -40,7 +40,13 @@ int WINAPI WinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
 
   Core->Initialize();
 
-  Core->LoadLuaLevel("content/lua/engine/levels/testlevel.lua");
+  //Framework::AntTweak::TBar* bar = ATWEAK->CreateBar("TestBar");
+
+  GameSpace* space = Core->CreateSpace("TestSpace");
+  GameObject* obj = FACTORY->LoadObjectFromArchetype(space, "drawtest");
+  GET_TYPE(GameObject)->Tweak(nullptr, obj, "obj", "GameObject");
+
+  //Core->LoadLuaLevel("content/lua/engine/levels/testlevel.lua");
 
   while (Core->Running())
   {

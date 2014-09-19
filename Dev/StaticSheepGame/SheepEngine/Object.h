@@ -12,6 +12,11 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include <vector>
 #include <memory>
 
+namespace AntTweak
+{
+  class TBar;
+}
+
 namespace Framework
 {
 
@@ -70,6 +75,9 @@ namespace Framework
 
       // Deserialization routine, var must be an empty object
       static void Deserialize(File& file, Variable var);
+
+      // AntTweak bar creator
+      static void Tweak(AntTweak::TBar* bar, Variable& var, const char* tempLabel, const char* label);
 
       // Gets a component properly typed
       template <typename T>
