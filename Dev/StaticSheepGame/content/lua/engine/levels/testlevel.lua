@@ -3,8 +3,10 @@ function foo()
   engine.Wipe()
   -- Clear any gamespaces
 
-  -- local gspace = engine.CreateSpace("space1")
-  -- local obj = gspace:CreateObject("drawtest")
+  local gspace = engine.CreateSpace("space1")
+  local obj = gspace:CreateObject("drawtest")
+  
+  obj.SoundEmitter:Play("Music/TopGun")
   -- local tr = obj.Transform
   -- obj.Transform:SetScale(Vec2(25, 25))
 
