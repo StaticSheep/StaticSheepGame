@@ -36,10 +36,18 @@ class Body
 {
 	public:
 		//body requires a shape* to be passed - all others default to base constructors
-		Body(Shape* shape, Material material, Vec3D position = Vec3D(), Vec3D velocity = Vec3D(), 
-			Vec3D force = Vec3D(), float orientation = PI, float angularVelocity = 0, float torque = 0,
-			CollisionGroup collisionGroup = CollGroup1, BodyGroup bodyGroup = BodyGroup1, float gravityScale = 1, 
-			float gravityOn = 1);
+		Body(Shape* shape, //a pointer to the shape created
+			Material material, 
+			Vec3D position = Vec3D(), 
+			Vec3D velocity = Vec3D(), 
+			Vec3D force = Vec3D(), 
+			float orientation = PI, 
+			float angularVelocity = 0, 
+			float torque = 0,
+			CollisionGroup collisionGroup = CollGroup1, //used for determining collision gorups
+			BodyGroup bodyGroup = BodyGroup1,			//used for certain collisions/resolutions 
+			float gravityScale = 1,						//used to modify gravity
+			float gravityOn = 1);						//used to turn gravity on and off
 
 		//used in initialization of body - computes mass
 		void ComputeMass(void);

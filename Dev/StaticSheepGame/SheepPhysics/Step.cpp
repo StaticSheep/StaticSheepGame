@@ -89,20 +89,23 @@ namespace SheepFizz
 	float PhysicsSpace::GetTime(void) {return dt_;}
 
 	//add bodies to the body vector
-	Handle PhysicsSpace::AddBody(Shapes shape, Material& material, Vec3D position, float xradius, float yval)
+	Handle PhysicsSpace::AddBody(Shapes shape, Material& material, Vec3D position, 
+		float xradius, float yval, float orientation)
 	{	
 
 		switch(shape)
 		{
 			case Rec:
 				{
+					//create the rectangle shape
 					Rectangle* rec = (Rectangle*)shapes_[Rec].Allocate();
 					new (rec) Rectangle(xradius, yval);
 					rec->self = handles_.Insert(rec);
 					handles_.SyncHandles<Rectangle>(shapes_[Rec]);
 			
+					//then add the body
 					Body* body = (Body*)bodies_.Allocate();
-					new (body) Body(rec, material, position, Vec3D(), Vec3D(), 0);
+					new (body) Body(rec, material, position, Vec3D(), Vec3D(), orientation);
 					body->self;
 					handles_.SyncHandles<Body>(bodies_);
 
@@ -113,13 +116,15 @@ namespace SheepFizz
 
 			case Cir:
 				{
+					//create the circle shape
 					Circle* cir = (Circle*)shapes_[Cir].Allocate();
 					new (cir) Circle(xradius);
 					cir->self = handles_.Insert(cir);
 					handles_.SyncHandles<Circle>(shapes_[Cir]);
 			
+					//then add the body
 					Body* body = (Body*)bodies_.Allocate();
-					new (body) Body(cir, material, position, Vec3D(), Vec3D(), 0);
+					new (body) Body(cir, material, position, Vec3D(), Vec3D(), orientation);
 					body->self;
 					handles_.SyncHandles<Body>(bodies_);
 

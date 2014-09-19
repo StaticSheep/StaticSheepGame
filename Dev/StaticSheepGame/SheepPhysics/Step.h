@@ -56,7 +56,13 @@ namespace SheepFizz
 		PHY_API float GetTime(void);
 
 		//add bodies to the body vector
-		PHY_API Handle AddBody(Shapes shape, Material& material, SheepMath::Vec3D position, float xradius, float yval = 0);
+		PHY_API Handle AddBody(
+			Shapes shape,				//shape of the object
+			Material& material,			//the material ref
+			SheepMath::Vec3D position,	//the position of the transform
+			float xradius,				//the radius of circle or width
+			float yval = 0,				//the height - if a rec
+			float orientation = 0);		//the orientation
 
 		//perform the timestep - perform all comparisons
 		//and resolve all forces
