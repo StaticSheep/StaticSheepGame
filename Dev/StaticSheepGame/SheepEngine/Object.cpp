@@ -415,6 +415,26 @@ namespace Framework
       //memberVar.Tweak(objectBar, objMembers[i].Name(), member.TweakLabel());
     }
 
+    //objectBar->AddSeparator("blah");
+    objectBar->AddButton("Components", nullptr, nullptr);
+
+    for (size_t i=0; i < ecountComponents - 1; ++i)
+    {
+      if (obj.HasComponent(i))
+      {
+        
+        std::string compType = EnumComponent.m_literals[i];
+        Variable var(GET_STR_TYPE(compType), obj.GetComponent(i));
+
+        compType = std::string(" group=") + compType;
+
+        objectBar->AddDefinition(compType.c_str(), true);
+        var.Tweak(objectBar, nullptr, nullptr);
+        objectBar->ClearDefinitions();
+
+      }
+    }
+
     // Iterate through components
     // Tweak Each component
   }

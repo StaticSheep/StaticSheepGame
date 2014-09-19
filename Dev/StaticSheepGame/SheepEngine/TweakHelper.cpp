@@ -23,7 +23,7 @@ namespace Framework
           {
             // Setup a variable for the member and send it to be tweaked
             Variable mVar(m.Type(), (char*)var.GetData() + m.Offset());
-            m.Type()->Tweak(bar, m.Type(), m.Name(), m.TweakLabel());
+            mVar.Tweak(bar, m.Name(), m.TweakLabel());
           }
         }
       else

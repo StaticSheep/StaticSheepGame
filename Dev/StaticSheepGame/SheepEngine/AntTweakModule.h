@@ -84,6 +84,8 @@ namespace Framework
       void AddVarRW(const char* name, AntTweak::engineTwType type, void* var);
       // Creates a Read/Write variable for a generic object
       void AddGenericVarRW(const char* name, AntTweak::engineTwType type, const Member* member, Generic* obj);
+      // Creates a variable with a callback function for setting and getting for a Generic Object
+      void AddGenericVarCB(const char* name, AntTweak::engineTwType type, const Member* member, Generic* obj, aTSetCB setCB = nullptr, aTGetCB getCB = nullptr);
       // Adds a seperator into the bar and names it something
       void AddSeparator(const char* name);
       // Adds a button to the bar

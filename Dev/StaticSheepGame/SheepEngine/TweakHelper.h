@@ -9,6 +9,10 @@ namespace Framework
     
     void TweakString(AntTweak::TBar* bar, Variable& var, const char* tempLabel, const char* label);
 
+    typedef void(*SetCallback)(const void* value, void* clientData);
+    typedef void(*GetCallback)(void* value, void* clientData);
+
+
     class TweakGenericVar
     {
     public:
@@ -26,6 +30,10 @@ namespace Framework
       GameSpace* genericSpace;
       // Handle of the TweakGenericVar struct
       Handle self;
+      // Extra Setcallback
+      SetCallback setCB;
+      // Extra Getcallback
+      GetCallback getCB;
     };
 
 

@@ -126,7 +126,7 @@ namespace Framework
     TYPE_ADD_MEMBER( Tester, testvalue2 );
 
     TYPE_REGISTER( Sprite );
-    TYPE_ADD_MEMBER( Sprite, SpriteName );
+    TYPE_ADD_MEMBER( Sprite, SpriteName, true );
     TYPE_ADD_MEMBER( Sprite, Size );
     TYPE_SET_TWEAK_TYPE( Sprite, AntTweak::TW_TYPE_COMPONENT );
     TYPE_SET_FROM_LUA( Sprite, Lua::GenericObjectFromLua );

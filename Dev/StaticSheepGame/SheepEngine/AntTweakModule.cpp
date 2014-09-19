@@ -287,7 +287,7 @@ namespace Framework
     }
     for (size_t i=0; i < m_pDefinitions.size(); ++i)
     {
-      defList += m_definitions[i];
+      defList += m_pDefinitions[i];
     }
 
     m_definitions.clear();
@@ -448,6 +448,26 @@ namespace Framework
     ErrorIf(genericObject == nullptr, "AntTweakBar GenericObject Variable Set", "Attempted to set a variable on an object which couldn't be found! Member: %s",
       clientData->genericMember->Name());
 
+
+    //int* a = (int*)((int)genericObject + clientData->genericMember->Offset());
+    // Use the types copy/assignment operation to set the value
+    memberType->Copy(value, (char*)genericObject + clientData->genericMember->Offset());
+    //const char* test = ((std::string*)value)->c_str();
+    //*(std::string**)value = (std::string*)((char*)genericObject + clientData->genericMember->Offset());
+  }
+
+  static void TW_CALL GenericGetStringCB(void* value, void* rawData)
+  {
+    AntTweak::TweakGenericVar* clientData = (AntTweak::TweakGenericVar*)rawData;
+
+    // Get the type of the member we are changing
+    const TypeInfo* memberType = clientData->genericMember->Type();
+    // Get a pointer to the generic object
+    void* genericObject = clientData->genericSpace->GetHandles().Get(clientData->genericHandle);
+
+    ErrorIf(genericObject == nullptr, "AntTweakBar GenericObject Variable Set", "Attempted to set a variable on an object which couldn't be found! Member: %s",
+      clientData->genericMember->Name());
+
     // Use the types copy/assignment operation to set the value
     //memberType->Copy(value, (char*)genericObject + clientData->genericMember->Offset());
     //const char* test = ((std::string*)value)->c_str();
@@ -456,6 +476,14 @@ namespace Framework
 
   // Adds a Read/Write variable from a generic object
   void AntTweak::TBar::AddGenericVarRW(const char* name, AntTweak::engineTwType type, const Member* member, Generic* obj)
+  {
+#if USE_ANTTWEAKBAR
+    AddGenericVarCB(name, type, member, obj);
+#endif
+  }
+
+  // Adds a Read/Write callback variable from a generic object
+  void AntTweak::TBar::AddGenericVarCB(const char* name, AntTweak::engineTwType type, const Member* member, Generic* obj, aTSetCB setCB, aTGetCB getCB)
   {
 #if USE_ANTTWEAKBAR
 
@@ -480,8 +508,18 @@ namespace Framework
     clientData->genericHandle = obj->self; // Set the handle to use
     clientData->genericSpace = obj->space; // Set the space to use (Thank god spaces are pretty static or i would flip shit)
     clientData->self = m_tweakVars.Insert(clientData);
+    clientData->setCB = setCB;
+    clientData->getCB = getCB;
 
-    TwAddVarCB((TwBar*)antTweakBar, name, realType, GenericSetCB, GenericGetCB, clientData, defList.c_str());
+    if (type == TW_TYPE_STDSTRING)
+    {
+      TwAddVarCB((TwBar*)antTweakBar, name, realType, GenericSetCB, GenericGetStringCB, clientData, defList.c_str());
+    }
+    else
+    {
+      TwAddVarCB((TwBar*)antTweakBar, name, realType, GenericSetCB, GenericGetCB, clientData, defList.c_str());
+    }
+
 
 #endif
   }
