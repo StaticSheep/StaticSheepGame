@@ -4,13 +4,19 @@
 
 namespace Framework
 {
+	//constructor
 	RigidBody::RigidBody(
-		SheepFizz::Shapes shape, 
+		SheepFizz::Shapes shape,
 		SheepFizz::Material* material,
 		float radius,
 		float y,
 		float orientation ) :
-		m_shape(shape), m_material(material), m_xradius(radius), m_yval(y), m_orientation(orientation) {}
+	m_shape(shape), m_material(material), m_xradius(radius), m_yval(y), m_orientation(orientation) {}
+
+	RigidBody::~RigidBody()
+	{
+
+	}
 		
 
 	void RigidBody::Initialize(void)
@@ -30,5 +36,10 @@ namespace Framework
 		if(m_shape == SheepFizz::Cir || m_shape == SheepFizz::Rec)
 			m_handle = PHYSICS->AddBodies(m_shape, *m_material, position, 
 			m_xradius, m_yval, m_orientation);
+	}
+
+	void RigidBody::Remove()
+	{
+		PHYSICS->RemoveBodies(m_handle);
 	}
 }

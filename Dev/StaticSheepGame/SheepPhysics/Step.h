@@ -64,6 +64,9 @@ namespace SheepFizz
 			float yval = 0,				//the height - if a rec
 			float orientation = 0);		//the orientation
 
+		//remove bodies and their shapes from the vector
+		PHY_API void RemoveBody(Handle handle);
+	
 		//perform the timestep - perform all comparisons
 		//and resolve all forces
 		//applied in physics update

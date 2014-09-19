@@ -69,14 +69,14 @@
     <ClCompile Include="Matrix.cpp">
       <Filter>Physics\Math Functions</Filter>
     </ClCompile>
-    <ClCompile Include="Materials.cpp">
-      <Filter>Physics\PhysicsFunctions</Filter>
-    </ClCompile>
     <ClCompile Include="Shape.cpp">
       <Filter>Physics\PhysicsFunctions</Filter>
     </ClCompile>
     <ClCompile Include="..\Utilities\Vec3.cpp">
       <Filter>Physics\Math Functions</Filter>
+    </ClCompile>
+    <ClCompile Include="Material.cpp">
+      <Filter>Physics\PhysicsFunctions</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

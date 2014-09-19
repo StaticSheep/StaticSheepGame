@@ -14,8 +14,8 @@ namespace SheepFizz
 }
 
 #include "physics\api.h"
-#include "physics\Handle.h"
-#include "physics\Step.h"
+#include "physics\handle.h"
+#include "physics\step.h"
 
 #include "System.h"
 
@@ -46,6 +46,9 @@ namespace Framework
 				float xradius,						//the radius or width
 				float yval = 0,						//the height (rec only)
 				float orientation = 0);				//orientation of object
+
+			//remove bodies from the bodies held in the physics engine
+			void RemoveBodies(SheepFizz::Handle handle);
 
 			SheepFizz::Material* GetMaterial(std::string name);
 

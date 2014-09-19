@@ -6,92 +6,98 @@ namespace SheepFizz
 	PhysicsSpace* PhysicsSpace::Allocate(float dt)
 	{
 		return new PhysicsSpace(dt);
-	}
+	}//end of Allocate
 
-	//body settors
+	//body settors//*************
 	void PhysicsSpace::SetBodyPos(Handle handle, Vec3D position)
 	{
 		Body* body = handles_.GetAs<Body>(handle);
 		body->position_ = position;
-	}
+	}//end of SetBodyPos
 
 	void PhysicsSpace::SetBodyVeloc(Handle handle, Vec3D velocity)
 	{
 		Body* body = handles_.GetAs<Body>(handle);
 		body->velocity_ = velocity;
-	}
+	}//end of SetBodyVeloc
 	
 	void PhysicsSpace::SetBodyForce(Handle handle, Vec3D force)
 	{
 		Body* body = handles_.GetAs<Body>(handle);
 		body->force_ = force;
-	}
+	}//end of SetBodyForce
 	
 	void PhysicsSpace::SetBodyRot(Handle handle, float rot)
 	{
 		Body* body = handles_.GetAs<Body>(handle);
 		body->orientation_ = rot;
-	}
+	}//end of SetBodyRot
 	
 	void PhysicsSpace::SetBodyAngVeloc(Handle handle, float angveloc)
 	{
 		Body* body = handles_.GetAs<Body>(handle);
 		body->angularVelocity_ = angveloc;
-	}
+	}//end of SetBodyAngVeloc
 	
 	void PhysicsSpace::SetBodyTorque(Handle handle, float torque)
 	{
 		Body* body = handles_.GetAs<Body>(handle);
 		body->torque_ = torque;
-	}
+	}//end of SetBodyTorque
 	
 	//change the dt
 	void PhysicsSpace::SetTime(float dt) {dt_ = dt;}
+	//end of SetTime
+	//*************end of settors
+
 
 	//get values for engine
 	Vec3D PhysicsSpace::GetBodyPos(Handle handle)
 	{
 		Body* body = handles_.GetAs<Body>(handle);
 		return body->position_;
-	}
+	}//end of GetBodyPos
 	
 	Vec3D PhysicsSpace::GetBodyVeloc(Handle handle)
 	{
 		Body* body = handles_.GetAs<Body>(handle);
 		return body->velocity_;
-	}
+	}//end of GetBodyVeloc
 	
 	Vec3D PhysicsSpace::GetBodyForce(Handle handle)
 	{
 		Body* body = handles_.GetAs<Body>(handle);
 		return body->force_;
-	}
+	}//end of GetBodyForce
 
 	float PhysicsSpace::GetBodyRot(Handle handle)
 	{
 		Body* body = handles_.GetAs<Body>(handle);
 		return body->orientation_;
-	}
+	}//end of GetBodyRot
 
 	float PhysicsSpace::GetBodyAngVeloc(Handle handle)
 	{
 		Body* body = handles_.GetAs<Body>(handle);
 		return body->angularVelocity_;
-	}
+	}//end of GetBodyAngVeloc
 
 	float PhysicsSpace::GetBodyTorque(Handle handle)
 	{
 		Body* body = handles_.GetAs<Body>(handle);
 		return body->torque_;
-	}
+	}//end of GetBodyTorque
 
 	//get the time for the engine
 	float PhysicsSpace::GetTime(void) {return dt_;}
+	//end of GetTime
+	//*************end of gettors
+
 
 	//add bodies to the body vector
 	Handle PhysicsSpace::AddBody(Shapes shape, Material& material, Vec3D position, 
 		float xradius, float yval, float orientation)
-	{	
+	{
 
 		switch(shape)
 		{
@@ -137,6 +143,25 @@ namespace SheepFizz
 				break;
 
 		}		
+	}//end of AddBody
+	//*************
+
+	//remove bodies
+	void PhysicsSpace::RemoveBody(Handle handle)
+	{
+		//find body point from handle, then identify shape handle and pointer
+		Body* body = (Body*)handles_.Get(handle);
+		Shape* shape = (Shape*)handles_.Get(body->shape_->self);
+		
+		//free shape and release handle
+		Shape* shapeRemoved = (Shape*)shapes_[body->shape_->GetShape()].Free(shape);
+		if(shapeRemoved)
+			handles_.Update(shapeRemoved, shapeRemoved->self);
+		
+		//free body and release handle
+		Body* bodyRemoved = (Body*)bodies_.Free(body);
+		if(bodyRemoved)
+			handles_.Update(bodyRemoved, bodyRemoved->self);
 	}
 
 	//this function advances the game forward one dt
@@ -186,7 +211,7 @@ namespace SheepFizz
 		}
 
 	}//end of Step
-
+	//*************
 
 	void PhysicsSpace::SymplecticEuler(Body& body)
 	{
@@ -207,5 +232,5 @@ namespace SheepFizz
 		body.position_ += body.velocity_ * dt_;
 
 	}//end of SymplecticEuler
-
+	//*************
 }

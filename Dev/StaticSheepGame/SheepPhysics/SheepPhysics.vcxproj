@@ -111,7 +111,7 @@
     <ClCompile Include="Handle.cpp" />
     <ClCompile Include="HandleManager.cpp" />
     <ClCompile Include="Manifold.cpp" />
-    <ClCompile Include="Materials.cpp" />
+    <ClCompile Include="Material.cpp" />
     <ClCompile Include="Matrix.cpp" />
     <ClCompile Include="ObjectAllocator.cpp" />
     <ClCompile Include="precompiled.cpp">

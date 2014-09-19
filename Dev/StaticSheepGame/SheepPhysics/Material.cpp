@@ -20,15 +20,15 @@ namespace SheepFizz
 			dynamicFriction_(dynamicFriction) {};
 		
 		//gettors
-		float Material::GetMaterialDensity(void) const { return density_;}
+		float Material::GetMaterialDensity(void) const {return density_;}
 		float Material::GetMaterialResitution(void) const {return restitution_;}
 		float Material::GetMaterialStaticFriction(void) const {return staticFriction_;}
 		float Material::GetMaterialDynamicFriction(void) const {return dynamicFriction_;}
 
 		//settors
-		void Material::SetMaterialDensity(float density){ density_ = density;}
-		void Material::SetMaterialResitution(float restitution){ restitution_ = restitution;}
-		void Material::SetMaterialStaticFriction(float staticFriction){staticFriction_ = staticFriction;}
-		void Material::SetMaterialDynamicFriction(float dynamicFriction){dynamicFriction_ = dynamicFriction;}
+		void Material::SetMaterialDensity(float density) {density_ = density;}
+		void Material::SetMaterialResitution(float restitution) {restitution_ = restitution;}
+		void Material::SetMaterialStaticFriction(float staticFriction) {staticFriction_ = staticFriction;}
+		void Material::SetMaterialDynamicFriction(float dynamicFriction) {dynamicFriction_ = dynamicFriction;}
 
 }

@@ -128,6 +128,7 @@
     <ClInclude Include="PhysicsObject.h" />
     <ClInclude Include="PODSerialization.h" />
     <ClInclude Include="Qualifiers.h" />
+    <ClInclude Include="CRigidBody.h" />
     <ClInclude Include="Serialization.h" />
     <ClInclude Include="SheepAudio.h" />
     <ClInclude Include="SheepFMOD.h" />
@@ -179,6 +180,7 @@
     <ClCompile Include="ObjectAllocator.cpp" />
     <ClCompile Include="PhysicsObject.cpp" />
     <ClCompile Include="PODSerialization.cpp" />
+    <ClCompile Include="CRigidBody.cpp" />
     <ClCompile Include="Serialization.cpp" />
     <ClCompile Include="SheepAudio.cpp" />
     <ClCompile Include="SheepGraphics.cpp" />

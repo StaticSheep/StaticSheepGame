@@ -4,6 +4,8 @@ Filename: Handle.h
 
 #pragma once
 
+#include "physics\api.h"
+
 namespace SheepFizz
 {
 
