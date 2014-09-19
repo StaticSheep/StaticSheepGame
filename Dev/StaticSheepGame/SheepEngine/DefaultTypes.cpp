@@ -116,7 +116,7 @@ namespace Framework
     TYPE_REGISTER( Transform );
     TYPE_ADD_MEMBER(Transform, Translation);
     TYPE_ADD_MEMBER(Transform, Scale);
-    TYPE_ADD_MEMBER(Transform, Rotation, true);
+    TYPE_ADD_MEMBER(Transform, Rotation, false, true);
     TYPE_SET_FROM_LUA( Transform, Lua::GenericObjectFromLua );
     TYPE_SET_TWEAK_TYPE( Transform, AntTweak::TW_TYPE_COMPONENT );
     TYPE_REGISTER_PTR(Transform*);
@@ -126,7 +126,7 @@ namespace Framework
     TYPE_ADD_MEMBER( Tester, testvalue2 );
 
     TYPE_REGISTER( Sprite );
-    TYPE_ADD_MEMBER( Sprite, SpriteName, true );
+    TYPE_ADD_MEMBER( Sprite, SpriteName, false, true);
     TYPE_ADD_MEMBER( Sprite, Size );
     TYPE_SET_TWEAK_TYPE( Sprite, AntTweak::TW_TYPE_COMPONENT );
     TYPE_SET_FROM_LUA( Sprite, Lua::GenericObjectFromLua );

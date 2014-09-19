@@ -52,7 +52,7 @@ namespace Framework
     m_size = size;
   }
 
-  void TypeInfo::AddMember(const TypeInfo* typeInfo, const char* name, unsigned int offset, bool tweak, const char* tweakLabel)
+  void TypeInfo::AddMember(const TypeInfo* typeInfo, const char* name, unsigned int offset, bool autoLua, bool tweak, const char* tweakLabel)
   {
     Member mem;
     mem.m_name = name;
@@ -60,6 +60,7 @@ namespace Framework
     mem.m_typeInfo = typeInfo;
     mem.m_tweak = tweak;
     mem.m_tweakLabel = tweakLabel;
+    mem.m_autoLua = autoLua;
     m_members.push_back(mem);
   }
 

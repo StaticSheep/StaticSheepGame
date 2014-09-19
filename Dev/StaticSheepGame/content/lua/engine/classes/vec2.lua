@@ -6,7 +6,7 @@ function META.__add(a, b)
   elseif type(b) == "number" then
     return META.new(a.x + b, a.y + b)
   else
-    return Vector.new(a.x + b.x, a.y + b.y)
+    return Vector2.new(a.x + b.x, a.y + b.y)
   end
 end
 
@@ -16,7 +16,7 @@ function META.__sub(a, b)
   elseif type(b) == "number" then
     return META.new(a.x - b, a.y - b)
   else
-    return Vector.new(a.x - b.x, a.y - b.y)
+    return Vector2.new(a.x - b.x, a.y - b.y)
   end
 end
 
@@ -26,7 +26,7 @@ function META.__mul(a, b)
   elseif type(b) == "number" then
     return META.new(a.x * b, a.y * b)
   else
-    return Vector.new(a.x * b.x, a.y * b.y)
+    return Vector2.new(a.x * b.x, a.y * b.y)
   end
 end
 
@@ -36,7 +36,7 @@ function META.__div(a, b)
   elseif type(b) == "number" then
     return META.new(a.x / b, a.y / b)
   else
-    return Vector.new(a.x / b.x, a.y / b.y)
+    return Vector2.new(a.x / b.x, a.y / b.y)
   end
 end
 
@@ -122,3 +122,4 @@ end
 
 Vector2 = setmetatable(META, META)
 Vec2 = setmetatable(META, META)
+

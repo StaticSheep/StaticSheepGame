@@ -71,6 +71,8 @@ namespace Framework
     bool CanTweak(void) const;
     // Tweak Label
     const char* TweakLabel(void) const;
+    // Whether or not to auto-create a lua setter/getter
+    bool AutoLua(void) const;
 
   private:
     const char *m_name;
@@ -81,6 +83,8 @@ namespace Framework
 
     // Uses AntTweakBar
     bool m_tweak;
+
+    bool m_autoLua;
 
     friend class TypeInfo;
   };
@@ -103,7 +107,7 @@ namespace Framework
     // Initilization routine
     void Init( const char *name, unsigned size );
     // Adds a member to the type
-    void AddMember( const TypeInfo *typeInfo, const char *name, unsigned offset, bool tweak=false, const char* tweakLabel=nullptr );
+    void AddMember( const TypeInfo *typeInfo, const char *name, unsigned offset, bool autoLua=true, bool tweak=false, const char* tweakLabel=nullptr );
     // Gets a member from the type
     const Member *GetMember( const char *memberName ) const;
 

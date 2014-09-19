@@ -427,13 +427,21 @@ namespace Framework
     const TypeInfo* memberType = clientData->genericMember->Type();
     // Get a pointer to the generic object
     void* genericObject = clientData->genericSpace->GetHandles().Get(clientData->genericHandle);
-    
+
     ErrorIf(genericObject == nullptr, "AntTweakBar GenericObject Variable Set", "Attempted to set a variable on an object which couldn't be found! Member: %s",
-     clientData->genericMember->Name());
+      clientData->genericMember->Name());
 
-    // Use the types copy/assignment operation to set the member to the value
-    memberType->Copy((char*)genericObject + clientData->genericMember->Offset(), value);
+    void* data = (char*)genericObject + clientData->genericMember->Offset();
 
+    if (clientData->setCB)
+    {
+      clientData->setCB(clientData, clientData);
+    }
+    else
+    {
+      // Use the types copy/assignment operation to set the member to the value
+      memberType->Copy(data, value);
+    }
   }
 
   static void TW_CALL GenericGetCB(void* value, void* rawData)
@@ -448,12 +456,18 @@ namespace Framework
     ErrorIf(genericObject == nullptr, "AntTweakBar GenericObject Variable Set", "Attempted to set a variable on an object which couldn't be found! Member: %s",
       clientData->genericMember->Name());
 
+    void* data = (char*)genericObject + clientData->genericMember->Offset();
 
-    //int* a = (int*)((int)genericObject + clientData->genericMember->Offset());
-    // Use the types copy/assignment operation to set the value
-    memberType->Copy(value, (char*)genericObject + clientData->genericMember->Offset());
-    //const char* test = ((std::string*)value)->c_str();
-    //*(std::string**)value = (std::string*)((char*)genericObject + clientData->genericMember->Offset());
+    if (clientData->getCB)
+    {
+      clientData->getCB(clientData, clientData);
+    }
+    else
+    {
+      // Use the types copy/assignment operation to set the value
+      memberType->Copy(value, (char*)genericObject + clientData->genericMember->Offset());
+    }
+
   }
 
   static void TW_CALL GenericGetStringCB(void* value, void* rawData)
@@ -468,10 +482,18 @@ namespace Framework
     ErrorIf(genericObject == nullptr, "AntTweakBar GenericObject Variable Set", "Attempted to set a variable on an object which couldn't be found! Member: %s",
       clientData->genericMember->Name());
 
-    // Use the types copy/assignment operation to set the value
-    //memberType->Copy(value, (char*)genericObject + clientData->genericMember->Offset());
-    //const char* test = ((std::string*)value)->c_str();
-    *(std::string**)value = (std::string*)((char*)genericObject + clientData->genericMember->Offset());
+    void* data = (char*)genericObject + clientData->genericMember->Offset();
+
+    if (clientData->getCB)
+    {
+      clientData->getCB(clientData, clientData);
+    }
+    else
+    {
+      // Use the types copy/assignment operation to set the value
+      *(std::string**)value = (std::string*)((char*)genericObject + clientData->genericMember->Offset());
+    }
+
   }
 
   // Adds a Read/Write variable from a generic object
