@@ -19,6 +19,32 @@ namespace DirectSheep
     return new RenderContext();
   }
 
+  void RenderContext::SetupMatrices(void)
+  {
+    float cameraX = 0.0f;
+    float cameraY = 0.0f;
+    float cameraZ = -30.0f;
+
+
+    Vec3 eyepoint(cameraX, cameraY, cameraZ);
+
+    Vec3 lootAtPoint(cameraX, cameraY, 0.0f);
+
+    Vec3 upVector( 0.0f, 1.0f, 0.0f);
+
+    Mat4 matView;
+    D3DXMatrixLookAtLH(&matView, &eyepoint, &lootAtPoint, &upVector);
+
+    m_camera.view = matView;
+
+    Mat4 matProj;
+    D3DXMatrixPerspectiveFovLH(&matProj, (FLOAT)D3DXToRadian(75), (float)m_viewport.dim.width / (float)m_viewport.dim.height, 1.0f, 1000.0f);
+
+    m_camera.proj = matProj;
+
+    m_camera.viewProj = matView * matProj;
+  }
+
   RenderContext::RenderContext(void)
   {
     m_initialized = false;
@@ -26,7 +52,7 @@ namespace DirectSheep
     m_resolution = Dimension(0,0);
     m_nativeResolution = Dimension(0,0);
     m_fullscreen = true;
-    m_vsync = false;;
+    m_vsync = false;
 
     /////////////
     // DirectX //
@@ -37,13 +63,17 @@ namespace DirectSheep
     m_factory = NULL;
     m_adapter = NULL;
     m_output = NULL;
+    m_sampleStates[0] = NULL;
+    m_sampleStates[1] = NULL;
                                 
     m_displayModeIndex = 0;
                                 
     m_backBuffer = NULL;
     m_depthBuffer.m_depthBuffer = NULL;
     m_backBufferSize = Dimension(0,0);
-    m_clearColor = Color(1,0,1,1);
+    m_clearColor = Color(0,0,0,1.0f);
+    m_spriteBlend = D3DXCOLOR(1,1,1,.5f);
+    m_spriteTrans = Transform(0,0,10,10,0);
     m_primative = PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 
     /////////////////////////////////
@@ -54,7 +84,128 @@ namespace DirectSheep
 
   RenderContext::~RenderContext(void)
   {
-    Handle toRelease(VERTEX_SHADER, 0);
+  }
+
+  //Returns true if the RenderContext is Initialized, else false
+  bool RenderContext::IsInitialized(void) const
+  {
+    return m_initialized;
+  }
+
+  //Initializes the RenderContext
+  //Returns true if successful, else false
+  bool RenderContext::Initialize(HWND hwnd, float height, float width)
+  {
+    m_viewport.dim = Dimension((unsigned)width, (unsigned)height);
+    m_hwnd = hwnd;
+
+    InitializeDeviceAndSwapChain();
+    CreateDepthBuffer();
+    InitializeBackBuffer();
+    
+    SetViewport(0, 0, Dimension((unsigned)width, (unsigned)height));
+
+    CreateFontWrapper();
+    
+    InitializeRasterizerState();
+    InitializeSamplerState();
+    InitializeBlendModes();
+    InitializeDepthState();
+
+    SetupMatrices();
+    m_initialized = true;
+    return true;
+  }
+
+  //Uninitializes the RenderContext
+  void RenderContext::Uninitialize(RenderContext * rCon)
+  {
+        Handle toRelease(VERTEX_SHADER, 0);
+
+    m_swapChain->SetFullscreenState(FALSE, NULL);
+
+    if(m_device)
+    {
+      m_device->Release();
+      m_device = NULL;
+    }
+
+    if(m_deviceContext)
+    {
+      m_deviceContext->Release();
+      m_deviceContext = NULL;
+    }
+
+    if(m_swapChain)
+    {
+      m_swapChain->Release();
+      m_swapChain = NULL;
+    }
+
+    if(m_font.m_fontWrapper)
+    {
+      m_font.m_fontWrapper->Release();
+      m_font.m_fontWrapper = NULL;
+    }
+
+    if(m_backBuffer)
+    {
+      m_backBuffer->Release();
+      m_backBuffer = NULL;
+    }
+
+    if(m_font.m_fontFactory)
+    {
+      m_font.m_fontFactory->Release();
+      m_font.m_fontFactory = NULL;
+    }
+
+    if(m_depthBuffer.m_depthBuffer)
+    {
+      m_depthBuffer.m_depthBuffer->Release();
+      m_depthBuffer.m_depthBuffer = NULL;
+    }
+
+    if(m_depthBuffer.m_depthState)
+    {
+      m_depthBuffer.m_depthState->Release();
+      m_depthBuffer.m_depthState = NULL;
+    }
+
+    if(m_depthBuffer.texture2D)
+    {
+      m_depthBuffer.texture2D->Release();
+      m_depthBuffer.texture2D = NULL;
+    }
+
+    if(m_rastState)
+    {
+      m_rastState->Release();
+      m_rastState = NULL;
+    }
+
+    if(m_sampleStates[0])
+    {
+      m_sampleStates[0]->Release();
+      m_sampleStates[0] = NULL;
+    }
+
+    if(m_sampleStates[1])
+    {
+      m_sampleStates[1]->Release();
+      m_sampleStates[1] = NULL;
+    }
+
+
+
+    for(auto it : m_blendStateMap)
+    {
+      if(it.second)
+      {
+        it.second->Release();
+        it.second = NULL;
+      }
+    }
 
     for(unsigned i = 0; i < m_vertexShaderRes.size(); ++i)
     {
@@ -73,14 +224,6 @@ namespace DirectSheep
     toRelease.type = TEXTURE;
     toRelease.index = 0;
     for(unsigned i = 0; i < m_textureRes.size(); ++i)
-    {
-      Release(toRelease);
-      toRelease.index++;
-    }
-
-    toRelease.type = VERTEX_BUFFER;
-    toRelease.index = 0;
-    for(unsigned i = 0; i < m_vertexBufferRes.size(); ++i)
     {
       Release(toRelease);
       toRelease.index++;
@@ -117,37 +260,8 @@ namespace DirectSheep
       Release(toRelease);
       toRelease.index++;
     }
-  }
 
-  //Returns true if the RenderContext is Initialized, else false
-  bool RenderContext::IsInitialized(void) const
-  {
-    return m_initialized;
-  }
-
-  //Initializes the RenderContext
-  //Returns true if successful, else false
-  bool RenderContext::Initialize(HWND hwnd, float height, float width)
-  {
-    m_viewport.dim = Dimension((unsigned)height, (unsigned)width);
-    m_hwnd = hwnd;
-    InitializeDeviceAndSwapChain();
-    CreateDepthBuffer();
-    InitializeBackBuffer();
-    SetViewport(0, 0, Dimension(height, width));
-    CreateFontWrapper();
-
-    InitializeDepthState();
-    InitializeRasterizerState();
-    InitializeBlendModes();
-    InitializeSamplerState();
-    return true;
-  }
-
-  //Uninitializes the RenderContext
-  void RenderContext::Uninitialize(void)
-  {
-
+      delete rCon;
   }
 
     /////////////////////////////////////////////////////////////
@@ -156,6 +270,29 @@ namespace DirectSheep
 
     void RenderContext::Draw(unsigned vertexCount, unsigned vertexStart)
     {
+      Mat4 matFinal;
+
+      D3DXMATRIX scaleMat, rotMat, transMat;
+
+      D3DXMatrixIdentity(&rotMat);
+      D3DXMatrixIdentity(&transMat);
+      D3DXMatrixIdentity(&scaleMat);
+
+      D3DXMatrixScaling(&scaleMat,m_spriteTrans.w, m_spriteTrans.h, 1.0f);
+      D3DXMatrixRotationZ(&rotMat, m_spriteTrans.theta);
+      D3DXMatrixMultiply(&scaleMat, &scaleMat, &rotMat);
+
+      D3DXMatrixTranslation(&transMat, floor(m_spriteTrans.x), floor(m_spriteTrans.y), floor(0.0f));
+
+
+      D3DXMatrixMultiply(&scaleMat, &scaleMat, &transMat);
+
+      matFinal = scaleMat * m_camera.viewProj;
+
+      DefaultBuffer buffer;
+      buffer.Final = matFinal;
+      buffer.World = scaleMat;
+      buffer.BlendColor = m_spriteBlend;
 
       m_deviceContext->RSSetState(m_rastState);
 
@@ -163,14 +300,12 @@ namespace DirectSheep
 
       SetBlendMode(BLEND_MODE_ALPHA);
 
+      m_deviceContext->UpdateSubresource(m_constBufferRes[0], 0, 0, &buffer, 0, 0);
 
-      m_deviceContext->IASetPrimitiveTopology((D3D11_PRIMITIVE_TOPOLOGY)m_primative);
-
-      m_deviceContext->UpdateSubresource(m_constBufferRes[0], 0, 0, 0, 0, 0); // todo
-
-      BindTexture(0, Handle(TEXTURE, 0));
+      m_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
       m_deviceContext->Draw(vertexCount,vertexStart);
+
     }
 
     void RenderContext::DrawSpriteText(const char * text, float size, const char * font)
@@ -179,39 +314,41 @@ namespace DirectSheep
 
       Mat4 rotMat, transMat;
 
+      D3DXMatrixIdentity(&matFinal);
       D3DXMatrixIdentity(&rotMat);
       D3DXMatrixIdentity(&transMat);
+      static float theta = 0;
+      theta +=.001;
+      D3DXMatrixRotationYawPitchRoll(&rotMat, 0.0f, -D3DX_PI, theta);
 
-      D3DXMatrixRotationYawPitchRoll(&rotMat, 0.0f, -D3DX_PI, 0.0f);
-
-      D3DXMatrixTranslation(&transMat, floor(0.0f), floor(0.0f), floor(0.0f));
+      D3DXMatrixTranslation(&transMat, floor(0), floor(0), floor(0.0f));
 
       D3DXMatrixMultiply(&rotMat, &rotMat, &transMat);
 
-      matFinal = rotMat;
+      matFinal = rotMat * m_camera.viewProj;
 
       FW1_RECTF rect;
 		  rect.Left = rect.Right = 0.0f;
 		  rect.Top = rect.Bottom = 0.0f;
 
       std::string boop(text);
-
       std::wstring test(boop.begin(), boop.end());
 
       std::string sfont(font);
       std::wstring WFont(sfont.begin(), sfont.end());
 
-      m_font.m_fontWrapper->DrawString(
-      m_deviceContext,
-      test.c_str(),// String
-      WFont.c_str(),
-      size,
-      &rect,
-      RGBTOBGR(D3DXCOLOR(1,1,1,1)),// Text color, 0xAaBbGgRr
-      NULL,
-      matFinal,
-      FW1_RESTORESTATE | FW1_CENTER | FW1_VCENTER | FW1_NOWORDWRAP
-      );
+    m_font.m_fontWrapper->DrawString(
+    m_deviceContext,
+    test.c_str(),// String
+    WFont.c_str(),
+    size,
+    &rect,
+    RGBTOBGR(D3DXCOLOR(DirectX::Colors::Red)),// Text color, 0xAaBbGgRr
+    NULL,
+    matFinal,
+    FW1_RESTORESTATE | FW1_CENTER | FW1_VCENTER | FW1_NOWORDWRAP
+    );// Flags (for example FW1_RESTORESTATE to keep context states 
+
     }
     void RenderContext::DrawIndexed(unsigned indexCount, unsigned indexStart, unsigned vertexStart)
     {
@@ -230,7 +367,7 @@ namespace DirectSheep
 
     void RenderContext::Present(void)
     {
-      m_swapChain->Present(0, 0);
+      m_swapChain->Present(m_vsync, 0);
     }
 
     /////////////////////////////////////////////////////////////
@@ -262,16 +399,21 @@ namespace DirectSheep
 
       for(unsigned i = 0; i < inputLayout.size(); ++i)
       {
-        ied[i].SemanticName = inputLayout[i].semantic.c_str();
-        ied[i].SemanticIndex = 0;
-        ied[i].Format = (DXGI_FORMAT)inputLayout[i].format;
-        ied[i].InputSlot = 0;
-        ied[i].AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT;
-        ied[i].InputSlotClass = (D3D11_INPUT_CLASSIFICATION)inputLayout[i].instance;
-        ied[i].InstanceDataStepRate = 0;
+        D3D11_INPUT_ELEMENT_DESC temp;
+        temp.SemanticName = inputLayout[i].semantic.c_str();
+        temp.SemanticIndex = 0;
+        temp.Format = (DXGI_FORMAT)inputLayout[i].format;
+        temp.InputSlot = 0;
+        temp.AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT;
+        temp.InputSlotClass = (D3D11_INPUT_CLASSIFICATION)inputLayout[i].instance;
+        temp.InstanceDataStepRate = 0;
+        ied.push_back(temp);
       }
 
       m_device->CreateInputLayout(ied.data(), ied.size(), VS->GetBufferPointer(), VS->GetBufferSize(), &tempVS.inputLayout);
+        
+        
+      m_deviceContext->IASetInputLayout(tempVS.inputLayout);
 
       m_vertexShaderRes.push_back(tempVS);
       handle.type = VERTEX_SHADER;
@@ -288,7 +430,7 @@ namespace DirectSheep
                             0, 
                             0, 
                             entryFunc.c_str(), 
-                            "vs_4_0", 
+                            "ps_4_0", 
                             D3D10_SHADER_OPTIMIZATION_LEVEL3 | D3D10_SHADER_WARNINGS_ARE_ERRORS, // fully optimized shader
                             0, 
                             0, 
@@ -296,7 +438,7 @@ namespace DirectSheep
                             &Errors, 
                             0);
 
-      ErrorIf(Errors || !PS, "ShaderCompile", "Pixel Shader Failed To Compile"); // if there are any errors...
+      ErrorIf(Errors || !PS, "ShaderCompile", "%s", Errors->GetBufferPointer()); // if there are any errors...
 
       DXVerify(m_device->CreatePixelShader(PS->GetBufferPointer(), PS->GetBufferSize(), NULL, &tempPS));
 
@@ -367,7 +509,22 @@ namespace DirectSheep
 
       DXVerify(m_device->CreateBuffer(&bd, NULL, &tempBuffer));       // create the buffer
 
+      Vertex2D QuadVertices[] =
+      {
+          {Vec3(-0.5f, -0.5f, 0.0f), 0.0f, 1.0f},
+          {Vec3(-0.5f, 0.5f, 0.0f), 0.0f, 0.0f},
+          {Vec3(0.5f, -0.5f, 0.0f), 1.0f, 1.0f},
+
+          {Vec3(-0.5f, 0.5f, 0.0f), 0.0f, 0.0f},
+          {Vec3(0.5f, 0.5f, 0.0f), 1.0f, 0.0f},        
+          {Vec3(0.5f, -0.5f, 0.0f), 1.0f, 1.0f},
+      };
+          D3D11_MAPPED_SUBRESOURCE ms;
+      m_deviceContext->Map(tempBuffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);    // map the buffer
+      memcpy(ms.pData, QuadVertices, sizeof(QuadVertices));                               // copy the data
+      m_deviceContext->Unmap(tempBuffer, NULL);
       m_vertexBufferRes.push_back(tempBuffer);
+
       handle.type = VERTEX_BUFFER;
       handle.index = m_vertexBufferRes.size() - 1;
       return true;
@@ -459,6 +616,7 @@ namespace DirectSheep
 	    DXVerify(m_font.m_fontFactory->CreateFontWrapper(m_device, NULL, &Params, &m_font.m_fontWrapper));
 
       m_font.m_fontFactory->Release();
+      m_font.m_fontFactory = NULL;
 
 
       return true;
@@ -482,7 +640,10 @@ namespace DirectSheep
     void RenderContext::BindVertexShader(const Handle& vsHandle)
     {
       if(vsHandle.type == VERTEX_SHADER)
+      {
         m_deviceContext->VSSetShader(m_vertexShaderRes[vsHandle.index].vShader, 0, 0);
+        
+      }
     }
 
     void RenderContext::BindPixelShader(const Handle& psHandle)
@@ -533,6 +694,8 @@ namespace DirectSheep
       {
         if(shaderType == VERTEX_SHADER)
           m_deviceContext->VSSetConstantBuffers(slot, 1, &m_constBufferRes[cbHandle.index]);
+        if(shaderType == PIXEL_SHADER)
+          m_deviceContext->PSSetConstantBuffers(slot, 1, &m_constBufferRes[cbHandle.index]);
       }
     }
 
@@ -614,21 +777,30 @@ namespace DirectSheep
       m_deviceContext->RSSetViewports(1, &tempVP);
     }
 
-    /*void RenderContext::SetDisplayMode(unsigned modeIndex)
-    {
-
-    }*/
-
-    /*void RenderContext::SetDisplayMode(const Dimension& resolution)
-    {
-
-    }*/
-
     void RenderContext::SetVSync(bool vsync)
     {
       m_vsync = vsync;
     }
 
+
+   void RenderContext::SetPosition(const float x, const float y)
+   {
+     m_spriteTrans.x = x;
+     m_spriteTrans.y = y;
+   }
+   void RenderContext::SetRotation(const float theta)
+   {
+     m_spriteTrans.theta = theta;
+   }
+   void RenderContext::SetDimensions(const float w, const float h)
+   {
+     m_spriteTrans.w = w;
+     m_spriteTrans.h = h;
+   }
+   void RenderContext::SetBlendCol(const float r, const float g, const float b, const float a)
+   {
+     m_spriteBlend = D3DXCOLOR(r,g,b,a);
+   }
     /////////////////////////////////////////////////////////////
     //                    GETTER FUNCTIONS                     //
     /////////////////////////////////////////////////////////////
@@ -692,11 +864,6 @@ namespace DirectSheep
     //                    UTILITY FUNCTIONS                    //
     /////////////////////////////////////////////////////////////
 
-    /*void RenderContext::CopyData(const Handle& handle, const void *data, size_t size)
-    {
-
-    }*/
-
     void RenderContext::ClearRenderTarget(const Handle& handle, float r, float g, float b, float a)
     {
       if(handle.type == RENDER_TARGET)
@@ -711,7 +878,12 @@ namespace DirectSheep
 
     void RenderContext::ClearBackBuffer(void)
     {
-      m_deviceContext->ClearRenderTargetView(m_backBuffer, D3DXCOLOR(m_clearColor.r,m_clearColor.g,m_clearColor.b,m_clearColor.a));
+      m_deviceContext->ClearRenderTargetView(m_backBuffer, D3DXCOLOR(m_clearColor.r,m_clearColor.g,m_clearColor.b,1.0f));
+    }
+
+    void RenderContext::ClearDepthBuffer(void)
+    {
+      m_deviceContext->ClearDepthStencilView(m_depthBuffer.m_depthBuffer, D3D11_CLEAR_DEPTH, 1.0f, 0);
     }
     /////////////////////////////////////////////////////////////
     //                 PUBLIC RELEASE FUCNTION                 //
@@ -805,13 +977,15 @@ namespace DirectSheep
     // Set arguments for swapchain creation
     swapDesc.BufferCount = 1;                                   // single back buffer
     swapDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;    // 32-bit color
-    swapDesc.BufferDesc.Width = m_viewport.dim.width;                    // back buffer width
-    swapDesc.BufferDesc.Height = m_viewport.dim.height;                  // back buffer height
+    swapDesc.BufferDesc.Width = m_viewport.dim.width;           // back buffer width
+    swapDesc.BufferDesc.Height = m_viewport.dim.height;         // back buffer height
     swapDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;     // use buffer as render target
     swapDesc.OutputWindow = m_hwnd;                             // attach to window
     swapDesc.SampleDesc.Count = 4;                              // # of multisamples
-    swapDesc.Windowed = m_fullscreen;                           // windowed/full-screen mode
+    swapDesc.Windowed = true;                           // windowed/full-screen mode
     swapDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;    // allow full-screen switching
+    //swapDesc.BufferDesc.RefreshRate.Numerator = 60;
+    //swapDesc.BufferDesc.RefreshRate.Denominator	= 1;
 
     // create DirectX device, it's context, and swapchain using swapDesc
 
@@ -869,6 +1043,8 @@ namespace DirectSheep
     // create render target using backbuffer address
     DXVerify(m_device->CreateRenderTargetView(pBackBuffer, NULL, &m_backBuffer));
     pBackBuffer->Release();
+
+    m_deviceContext->OMSetRenderTargets(1, &m_backBuffer, m_depthBuffer.m_depthBuffer);
   }
 
   void RenderContext::InitializeBlendModes(void)
@@ -948,10 +1124,16 @@ namespace DirectSheep
     if(texture.type == TEXTURE)
     {
       if(m_textureRes[texture.index].shaderResourceView)
+      {
         m_textureRes[texture.index].shaderResourceView->Release();
+        m_textureRes[texture.index].shaderResourceView = NULL;
+      }
 
       if(m_textureRes[texture.index].texture)
+      {
         m_textureRes[texture.index].texture->Release();
+        m_textureRes[texture.index].texture = NULL;
+      }
     }
   }
 
@@ -960,10 +1142,16 @@ namespace DirectSheep
     if(vertexShader.type == VERTEX_SHADER)
     {
       if(m_vertexShaderRes[vertexShader.index].vShader)
+      {
         m_vertexShaderRes[vertexShader.index].vShader->Release();
+        m_vertexShaderRes[vertexShader.index].vShader = NULL;
+      }
 
       if(m_vertexShaderRes[vertexShader.index].inputLayout)
+      {
         m_vertexShaderRes[vertexShader.index].inputLayout->Release();
+        m_vertexShaderRes[vertexShader.index].inputLayout = NULL;
+      }
     }
   }
 
@@ -972,7 +1160,10 @@ namespace DirectSheep
     if(pixelShader.type == PIXEL_SHADER)
     {
       if(m_pixelShaderRes[pixelShader.index])
+      {
         m_pixelShaderRes[pixelShader.index]->Release();
+        m_pixelShaderRes[pixelShader.index] = NULL;
+      }
     }
   }
 
@@ -981,7 +1172,10 @@ namespace DirectSheep
     if(vertexBuffer.type == VERTEX_BUFFER)
     {
       if(m_vertexBufferRes[vertexBuffer.index])
+      {
         m_vertexBufferRes[vertexBuffer.index]->Release();
+        m_vertexBufferRes[vertexBuffer.index] = NULL;
+      }
     }
   }
 
@@ -990,7 +1184,10 @@ namespace DirectSheep
     if(indexBuffer.type == INDEX_BUFFER)
     {
       if(m_indexBufferRes[indexBuffer.index])
+      {
         m_indexBufferRes[indexBuffer.index]->Release();
+        m_indexBufferRes[indexBuffer.index] = NULL;
+      }
     }
   }
 
@@ -999,7 +1196,10 @@ namespace DirectSheep
     if(constantBuffer.type == CONSTANT_BUFFER)
     {
       if(m_constBufferRes[constantBuffer.index])
+      {
         m_constBufferRes[constantBuffer.index]->Release();
+        m_constBufferRes[constantBuffer.index] = NULL;
+      }
     }
   }
 
@@ -1008,13 +1208,22 @@ namespace DirectSheep
     if(renderTarget.type == RENDER_TARGET)
     {
       if(m_renderTargetRes[renderTarget.index].renderTargetView)
+      {
         m_renderTargetRes[renderTarget.index].renderTargetView->Release();
+        m_renderTargetRes[renderTarget.index].renderTargetView = NULL;
+      }
 
       if(m_renderTargetRes[renderTarget.index].shaderResourceView)
+      {
         m_renderTargetRes[renderTarget.index].shaderResourceView->Release();
+        m_renderTargetRes[renderTarget.index].shaderResourceView = NULL;
+      }
 
       if(m_renderTargetRes[renderTarget.index].texture2D)
+      {
         m_renderTargetRes[renderTarget.index].texture2D->Release();
+        m_renderTargetRes[renderTarget.index].texture2D = NULL;
+      }
     }
   }
 

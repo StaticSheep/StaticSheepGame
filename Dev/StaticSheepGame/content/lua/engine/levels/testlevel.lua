@@ -7,7 +7,6 @@ function foo()
   local obj = gspace:CreateObject("drawtest")
   local tr = obj.Transform
   local vec2 = Vector2(100, 0)
-  tr:SetTranslation(vec2)
 
 end
 

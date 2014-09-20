@@ -1,5 +1,7 @@
 #include "CSprite.h"
 #include "SheepGraphics.h"
+#include "graphics\api.h"
+#include "graphics\Handle.h"
 
 namespace Framework
 {
@@ -18,12 +20,26 @@ namespace Framework
   {
     transform = this->GetOwner()->GetComponentHandle(eTransform);
 
-    if (this->SpriteName.length() == 0)
-      this->SpriteName = "content/bricks.png";
-
-    SetTexture(this->SpriteName);
+    if(m_texture.GetType() == DirectSheep::NONE)
+    {
+      SetTexture("content/maverick.jpg");
+      SpriteName = "content/maverick.jpg";
+    }
+    else
+      SetTexture(SpriteName);
+    
     //TODO not sure if we have a GetOwner()->has working
     space->hooks.Add("Draw", self, BUILD_FUNCTION(Sprite::Draw));
+  }
+
+  DirectSheep::Handle& Sprite::SetTexture(const std::string& Texture)
+  {
+   return m_texture = GRAPHICS->SetTexture(Texture);
+  }
+
+  DirectSheep::Handle& Sprite::GetTexture()
+  {
+    return m_texture;
   }
 
   void Sprite::Remove()
@@ -36,17 +52,11 @@ namespace Framework
     Transform* trans = space->GetHandles().GetAs<Transform>(transform);
 
     GRAPHICS->SetPosition(trans->Translation.X, trans->Translation.Y);
-
     GRAPHICS->SetRotation(trans->Rotation);
-    GRAPHICS->SetSize(Size.X, Size.Y);
-    GRAPHICS->SetTexture(SpriteID);
+    GRAPHICS->SetSize(trans->Scale.X, trans->Scale.Y);
     GRAPHICS->SetColor(Color);
-    GRAPHICS->DrawSprite();
-  }
 
-  void Sprite::SetTexture(std::string texture)
-  {
-    SpriteName = texture;
-    SpriteID = GRAPHICS->GetTextureID(texture);
+    GRAPHICS->DrawSprite(this);
+    
   }
 }

@@ -1,7 +1,8 @@
 /*****************************************************************
 Filename: Window.cpp
 Project: 
-Author(s): Zachary Nawar (Primary)
+Author(s): Scott Nelson (Primary)
+           Zachary Nawar
 
 All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 *****************************************************************/

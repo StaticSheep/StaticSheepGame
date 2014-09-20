@@ -27,6 +27,7 @@ class RenderContext
   public:
 
     GFX_API static RenderContext * Allocate(void);
+    GFX_API void SetupMatrices(void); 
 
     //Returns true if the RenderContext is Initialized, else false
    GFX_API bool IsInitialized(void) const;
@@ -34,6 +35,7 @@ class RenderContext
     //Returns true if successful, else false
    GFX_API bool Initialize(HWND hwnd, float height, float width);
     //Uninitializes the RenderContext
+   GFX_API void Uninitialize(RenderContext * rCon);
 
     /////////////////////////////////////////////////////////////
     //                     DRAW FUNCTIONS                      //
@@ -93,6 +95,11 @@ class RenderContext
    GFX_API void SetDisplayMode(const Dimension& resolution);
    GFX_API void SetVSync(bool vsync);
 
+   GFX_API void SetPosition(const float x, const float y);
+   GFX_API void SetRotation(const float theta);
+   GFX_API void SetDimensions(const float w, const float h);
+   GFX_API void SetBlendCol(const float r, const float g, const float b, const float a);
+
     /////////////////////////////////////////////////////////////
     //                    GETTER FUNCTIONS                     //
     /////////////////////////////////////////////////////////////
@@ -110,6 +117,7 @@ class RenderContext
    GFX_API void ClearRenderTarget(const Handle& handle, float r, float g, float b, float a);
    GFX_API void ClearRenderTarget(const Handle& handle, Color clearColor);
    GFX_API void ClearBackBuffer(void);
+   GFX_API void ClearDepthBuffer(void);
 
     /////////////////////////////////////////////////////////////
     //                 PUBLIC RELEASE FUCNTION                 //
@@ -172,6 +180,20 @@ class RenderContext
       IFW1FontWrapper *m_fontWrapper;
     };
 
+    struct Camera
+    {
+      Mat4         view;
+      Mat4         proj;
+      Mat4         viewProj;
+    };
+
+      float x;
+      float y;
+      float w;
+      float h;
+      float theta;
+    };
+
     //////////////
     //  System  //
     //////////////
@@ -203,6 +225,9 @@ class RenderContext
     Color                        m_clearColor;
     PrimitiveTopology            m_primative;
 
+    Transform                    m_spriteTrans;
+    D3DXCOLOR                    m_spriteBlend;
+
     /////////////////////////////////
     // Other render configurations //
     /////////////////////////////////
@@ -210,6 +235,7 @@ class RenderContext
     ID3D11RasterizerState                   *m_rastState;
     std::map<BlendMode, ID3D11BlendState *>  m_blendStateMap;
     DepthBuffer                              m_depthBuffer;
+    Camera                                   m_camera;
 
     ///////////////
     // Resources //

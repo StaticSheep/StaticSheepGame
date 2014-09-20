@@ -12,8 +12,6 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "graphics\api.h"
 #include "graphics\Handle.h"
 #include "graphics\Context.h"
-
-
 namespace Framework
 {
 	// Global pointer
@@ -37,7 +35,8 @@ namespace Framework
 	{
 		// Free anything that was allocated
     //DirectSheep::Release();
-    delete m_renderContext;
+    m_renderContext->Uninitialize(m_renderContext);
+    m_renderContext = NULL;
 	}
 
 	void SheepGraphics::Initialize()
@@ -54,68 +53,142 @@ namespace Framework
 
     m_renderContext->Initialize(_HWnd,_ScreenWidth,_ScreenHeight);
 
+    spritepShader = SetPShader("SheepGraphics/Shaders/Generic.hlsl");
+
+    spritevShader = SetVShader("SheepGraphics/Shaders/Generic.hlsl");
+
+    m_renderContext->CreateConstantBuffer(spriteContext, 144);
+
+    m_renderContext->CreateVertexBuffer(spriteQuad, 120);
+
 	}
 
 	void SheepGraphics::Update(float dt)
 	{
+    StartFrame();
     Draw();
+    FinishFrame();
 	}
 
 	void SheepGraphics::Draw()
 	{
-    m_renderContext->SetClearColor(1, 0, 1, 1);
-    m_renderContext->ClearBackBuffer();
-    m_renderContext->DrawSpriteText("Damnit!", 64);
-    m_renderContext->Present();
-    //// Draw Hooks
-    //GameSpace* space;
+    // Draw Hooks
+    GameSpace* space;
 
-    //// Regular Draw
-    //for (auto it = ENGINE->Spaces().begin(); it != ENGINE->Spaces().end(); ++it)
-    //{
-    //  space = *it;
-    //  if (!space->Hidden())
-    //    space->hooks.Call("Draw");
-    //}
-    //Lua::CallFunc(ENGINE->Lua(), "hook.Call", "Draw");
+    // Regular Draw
+    for (auto it = ENGINE->Spaces().begin(); it != ENGINE->Spaces().end(); ++it)
+    {
+      space = *it;
+      if (!space->Hidden())
+        space->hooks.Call("Draw");
+    }
+    Lua::CallFunc(ENGINE->Lua(), "hook.Call", "Draw");
 
-    //// Post Draw
-    //for (auto it = ENGINE->Spaces().begin(); it != ENGINE->Spaces().end(); ++it)
-    //{
-    //  space = *it;
-    //  if (!space->Hidden())
-    //    space->hooks.Call("PostDraw");
-    //}
-    //Lua::CallFunc(ENGINE->Lua(), "hook.Call", "PostDraw");
+    // Post Draw
+    for (auto it = ENGINE->Spaces().begin(); it != ENGINE->Spaces().end(); ++it)
+    {
+      space = *it;
+      if (!space->Hidden())
+        space->hooks.Call("PostDraw");
+    }
+    Lua::CallFunc(ENGINE->Lua(), "hook.Call", "PostDraw");
     
 	}
 
-  void SheepGraphics::SetPosition(float x, float y)
+  void SheepGraphics::StartFrame()
   {
-  }
-
-  void SheepGraphics::SetRotation(float theta)
-  {
-  }
-
-  void SheepGraphics::SetSize(float x, float y)
-  {
-  }
-
-  void SheepGraphics::SetTexture(int ID)
-  {
-  }
-
-  void SheepGraphics::SetColor(Vec4 Color)
-  {
-  }
-
-  void SheepGraphics::DrawSprite(void)
-  {
+    m_renderContext->ClearBackBuffer();
+    m_renderContext->ClearDepthBuffer();
   }
 
   void SheepGraphics::FinishFrame()
   {
+    m_renderContext->Present();
+  }
+
+  void SheepGraphics::SetPosition(float x, float y)
+  {
+    m_renderContext->SetPosition(x,y);
+  }
+
+  void SheepGraphics::SetRotation(float theta)
+  {
+    m_renderContext->SetRotation(theta);
+  }
+
+  void SheepGraphics::SetSize(float x, float y)
+  {
+    m_renderContext->SetDimensions(x,y);
+  }
+
+  DirectSheep::Handle SheepGraphics::SetTexture(const std::string& Texture)
+  {
+    for(auto it : m_textureMap)
+    {
+      if(it.first == Texture)
+        return it.second;
+    }
+
+    DirectSheep::Handle temp;
+    m_renderContext->CreateTexture(temp, Texture);
+    m_textureMap[Texture] = temp;
+    return m_textureMap[Texture];
+  }
+
+  DirectSheep::Handle SheepGraphics::SetPShader(const std::string& Shader)
+  {
+    for(auto it : m_pshaderMap)
+    {
+      if(it.first == Shader)
+        return it.second;
+    }
+      DirectSheep::Handle temp;
+
+      m_renderContext->CreatePixelShader(temp, Shader);
+
+      m_pshaderMap[Shader] = temp;
+
+      return m_pshaderMap[Shader];
+    }
+
+  DirectSheep::Handle SheepGraphics::SetVShader(const std::string& Shader)
+  {
+    for(auto it : m_vshaderMap)
+    {
+      if(it.first == Shader)
+        return it.second;
+    }
+
+    DirectSheep::InputLayout layout;
+    layout.push_back(DirectSheep::InputElement("POSITION",(DirectSheep::Format)DXGI_FORMAT_R32G32B32_FLOAT));
+    layout.push_back(DirectSheep::InputElement("TEXCOORD",(DirectSheep::Format)DXGI_FORMAT_R32G32_FLOAT));
+    DirectSheep::Handle temp;
+    m_renderContext->CreateVertexShader(temp, Shader, layout);
+    
+    m_vshaderMap[Shader] = temp;
+    return m_vshaderMap[Shader];
+  }
+
+  void SheepGraphics::SetColor(Vec4 Color)
+  {
+    m_renderContext->SetBlendCol(Color.R, Color.G, Color.B, Color.A);
+  }
+
+  void SheepGraphics::DrawSprite(Sprite *sprite)
+  {
+
+    m_renderContext->BindVertexShader(spritevShader);
+
+    m_renderContext->BindPixelShader(spritepShader);
+
+    m_renderContext->BindVertexBuffer(spriteQuad,20,0);
+
+    m_renderContext->BindTexture(0,sprite->GetTexture());
+
+    m_renderContext->BindConstantBuffer(0, spriteContext, DirectSheep::VERTEX_SHADER);
+    m_renderContext->BindConstantBuffer(0, spriteContext, DirectSheep::PIXEL_SHADER);
+
+    m_renderContext->Draw(6,0);
   }
 
   int SheepGraphics::GetTextureID(std::string& texture)
@@ -129,5 +202,6 @@ namespace Framework
 
   void SheepGraphics::DrawSpriteText(const char * text, float size, const char * font)
   {
+    m_renderContext->DrawSpriteText(text, size, font);
   }
 }

@@ -1,12 +1,12 @@
-///*****************************************************************************/
-///*!
+//*****************************************************************************/
+//*!
 //\file   System.cpp
 //\author Scott Nelson
 //\date   9/4/2014<BR>
 //\brief  
 //    Initializes DirectX graphics system, shaders, states, textures, and meshes
 //*/
-///*****************************************************************************/
+//*****************************************************************************/
 //#pragma comment (lib, "d3d11.lib")
 //#pragma comment (lib, "d3dx11.lib")
 //#pragma comment (lib, "d3dx10.lib")
@@ -30,8 +30,8 @@
 //  void SetupMatrices(void);        // Sets up Camera with view and projection matrices
 //  void CreateConstantBuffer(void); // Initializes constant buffer used to send vars to shader
 //
-///************************************************************************/
-///*!
+//************************************************************************/
+//*!
 //  \brief
 //    Initializes DirectX dev, devcontext, swapchain
 //  
@@ -44,7 +44,7 @@
 //  \param screenHeight
 //    Height of Window
 //*/
-///*************************************************************************/
+//*************************************************************************/
 //  GFX_API void Init(HWND hWnd, int screenWidth, int screenHeight)
 //  {
 //
@@ -306,7 +306,7 @@
 //  void InitGeometry(void)
 //  {
 //    // create a triangle using the VERTEX struct
-//    Vertex2D QuadVertices[] =
+//     QuadVertices[] =
 //    {
 //        {Vec3(-0.5f, -0.5f, 0.0f), 0.0f, 1.0f},
 //        {Vec3(-0.5f, 0.5f, 0.0f), 0.0f, 0.0f},

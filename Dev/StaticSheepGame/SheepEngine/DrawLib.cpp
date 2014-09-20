@@ -26,7 +26,6 @@ namespace Framework
   void Draw::SetTexture(UINT texID)
   {
     Draw::m_TextureID = texID;
-    GRAPHICS->SetTexture(texID);
   }
 
   int Draw::GetTextureID(const char* texName)
@@ -54,10 +53,8 @@ namespace Framework
   void Draw::DrawRect(float x, float y, float width, float height)
   {
     GRAPHICS->SetSize(width, height);
-    GRAPHICS->SetTexture(GRAPHICS->GetTextureID(std::string("content/White.png")));
     GRAPHICS->SetPosition(x, y);
 
-    GRAPHICS->DrawSprite();
   }
 
   void Draw::DrawTexturedRect(float x, float y, float width, float height)
@@ -66,7 +63,6 @@ namespace Framework
 
     GRAPHICS->SetPosition(x, y);
 
-    GRAPHICS->DrawSprite();
   }
 
   void Draw::DrawLine(float sX, float sY, float eX, float eY, float width/* =1 */)
@@ -79,7 +75,6 @@ namespace Framework
 
     GRAPHICS->SetRotation(-atan(diffY / diffX));
 
-    GRAPHICS->DrawSprite();
   }
 
   void Draw::DrawString(const char* text, float size, const char* font)

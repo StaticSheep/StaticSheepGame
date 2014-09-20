@@ -2,6 +2,8 @@
 #pragma once
 
 #include "CTransform.h"
+#include "graphics\Handle.h"
+
 namespace Framework
 {
   class Transform;
@@ -16,21 +18,22 @@ namespace Framework
     virtual void Initialize();
     virtual void Remove();
 
-    void SetTexture(std::string texture);
+    DirectSheep::Handle& SetTexture(const std::string& texture);
+    DirectSheep::Handle& GetTexture();
 
     Vec2 Size;
+
     Vec4 Color;
 
     Handle transform;
 
-    float time;
-
     std::string SpriteName;
-    int SpriteID;
 
     void Draw();
 
   private:
+
+    DirectSheep::Handle m_texture;
     
   };
 }

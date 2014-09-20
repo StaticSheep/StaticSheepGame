@@ -113,7 +113,6 @@ namespace Framework
     TYPE_ADD_MEMBER( Tester, testvalue2 );
 
     TYPE_REGISTER( Sprite );
-    TYPE_ADD_MEMBER( Sprite, SpriteName );
     TYPE_SET_FROM_LUA( Sprite, Lua::GenericObjectFromLua );
 
     TYPE_REGISTER( LuaComponent );

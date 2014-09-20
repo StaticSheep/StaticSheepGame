@@ -1,6 +1,7 @@
 #pragma once
 
 #include <dxgiformat.h>
+#include "api.h"
 
 namespace DirectSheep
 {
@@ -74,6 +75,7 @@ namespace DirectSheep
 
   struct InputElement
   {
+  GFX_API InputElement(const std::string& sem, Format form, bool inst = false) : semantic(sem), format(form), instance(inst) {}
 
     std::string semantic;
     Format format;
@@ -91,7 +93,7 @@ namespace DirectSheep
 
   struct Color
   {
-   GFX_API Color() : r(1), g(1), b(1), a(1) {}
+   GFX_API Color() : r(1.0f), g(1.0f), b(1.0f), a(1.0f) {}
    GFX_API Color(float r, float g, float b, float a=1) : r(r), g(g), b(b), a(a) {}
 
     float r;

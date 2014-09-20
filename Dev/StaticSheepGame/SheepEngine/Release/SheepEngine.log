@@ -1,13 +1,15 @@
-﻿Build started 7/30/2014 12:57:54 AM.
+﻿Build started 9/17/2014 1:11:14 PM.
      1>Project "C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\SheepEngine\SheepEngine.vcxproj" on node 2 (Build target(s)).
      1>Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\Release\SheepEngine.dll" /INCREMENTAL:NO /NOLOGO /LIBPATH:C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\includes /LIBPATH:C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\Release SheepGraphics.lib SheepPhysics.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\Release\SheepEngine.pdb" /SUBSYSTEM:WINDOWS /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\Release\SheepEngine.lib" /MACHINE:X86 /SAFESEH /DLL Release\Utilities.obj
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\Release\SheepEngine.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\includes\FMOD /LIBPATH:C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\includes /LIBPATH:C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\Release SheepGraphics.lib SheepPhysics.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\Release\SheepEngine.pdb" /SUBSYSTEM:WINDOWS /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\Release\SheepEngine.lib" /MACHINE:X86 /SAFESEH Release\Utilities.obj
          Release\Archetype.obj
          Release\Camera.obj
+         Release\CGamePad.obj
          Release\CLuaComponent.obj
          Release\Component.obj
          Release\CTester.obj
          Release\DefaultTypes.obj
+         Release\DrawLib.obj
          Release\Engine.obj
          Release\CTransform.obj
          Release\Enum.obj
@@ -16,12 +18,13 @@
          Release\FuncSignature.obj
          Release\Function.obj
          Release\GameLogic.obj
-         Release\Hash.obj
          Release\Hooks.obj
+         Release\Input.obj
          Release\IntrospectionManager.obj
          Release\LuaDefaultBinds.obj
          Release\LuaInterface.obj
          Release\LuaTransfer.obj
+         Release\main.obj
          Release\ObjectAllocator.obj
          Release\PhysicsObject.obj
          Release\PODSerialization.obj
@@ -33,18 +36,29 @@
          Release\Object.obj
          Release\precompiled.obj
          Release\SheepPhysics.obj
+         Release\SheepSoundEvent.obj
          Release\sheep_engine.obj
          Release\Space.obj
          Release\CSprite.obj
          Release\TypeInfo.obj
          Release\Variable.obj
+         Release\Vec2.obj
+         Release\Vec4.obj
          Release\Window.obj
             Creating library C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\Release\SheepEngine.lib and object C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\Release\SheepEngine.exp
          Generating code
+     1>c:\users\scott\documents\staticsheepgame\dev\staticsheepgame\sheepengine\sheepsoundevent.cpp(59): warning C4715: 'SoundUtility::SourcePath' : not all control paths return a value
          Finished generating code
-         SheepEngine.vcxproj -> C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\Release\SheepEngine.dll
+         SheepEngine.vcxproj -> C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\Release\SheepEngine.exe
+       PostBuildEvent:
+         xcopy C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\includes\FMOD\*.dll C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\Release\ /f /y 
+         :VCEnd
+         C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\includes\FMOD\fmodL.dll -> C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\Release\fmodL.dll
+         C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\includes\FMOD\fmodstudio.dll -> C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\Release\fmodstudio.dll
+         C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\includes\FMOD\fmodstudioL.dll -> C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\Release\fmodstudioL.dll
+         3 File(s) copied
      1>Done Building Project "C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\SheepEngine\SheepEngine.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:02.72
+Time Elapsed 00:00:03.07
