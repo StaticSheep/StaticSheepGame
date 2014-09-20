@@ -37,10 +37,18 @@ namespace Framework
 
     virtual void Shutdown() {};
 
+    // Function to return debug data from the systems
+    virtual void* GetDebugData(void);
+
 		// Virtual deconstructer
 		SHEEP_API virtual ~ISystem() {};
 
     SHEEP_API ISystem() {};
+
+  private:
+
+    // pointer to the debug data
+    void* DebugData;
 		
 	};
 }

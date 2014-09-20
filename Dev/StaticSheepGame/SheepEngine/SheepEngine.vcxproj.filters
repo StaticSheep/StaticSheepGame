@@ -169,6 +169,9 @@
     <ClInclude Include="SoundPlayer.h">
       <Filter>Components\Audio</Filter>
     </ClInclude>
+    <ClInclude Include="Debug.h">
+      <Filter>Systems\Debug</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="precompiled.cpp">
@@ -306,6 +309,9 @@
     </ClCompile>
     <ClCompile Include="SoundPlayer.cpp">
       <Filter>Components\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug.cpp">
+      <Filter>Systems\Debug</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -485,6 +491,9 @@
     </Filter>
     <Filter Include="Components\Audio">
       <UniqueIdentifier>{e02606f1-071e-4e97-bd45-3372fb9387f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\Debug">
+      <UniqueIdentifier>{83b8555e-3acd-4901-80d7-f3c93f19ffa7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

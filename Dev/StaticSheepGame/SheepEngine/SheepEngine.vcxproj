@@ -104,6 +104,7 @@
     <ClInclude Include="Component.h" />
     <ClInclude Include="ComponentCreator.h" />
     <ClInclude Include="CTester.h" />
+    <ClInclude Include="Debug.h" />
     <ClInclude Include="DefaultTypes.h" />
     <ClInclude Include="DrawLib.h" />
     <ClInclude Include="Engine.h" />
@@ -159,6 +160,7 @@
     <ClCompile Include="CLuaComponent.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="CTester.cpp" />
+    <ClCompile Include="Debug.cpp" />
     <ClCompile Include="DefaultTypes.cpp" />
     <ClCompile Include="DrawLib.cpp" />
     <ClCompile Include="Engine.cpp" />
