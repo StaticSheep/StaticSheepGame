@@ -57,25 +57,26 @@ function META.distance(a, b)
 end
 
 function META:clone()
-  return META.new(self.x, self.y)
+  return META.new(self.x, self.y, self.z)
 end
 
 function META:unpack()
-  return self.x, self.y
+  return self.x, self.y, self.z
 end
 
 function META:len()
-  return math.sqrt(self.x * self.x + self.y * self.y)
+  return math.sqrt(self.x * self.x + self.y * self.y + self.z * self.z)
 end
 
 function META:lenSq()
-  return self.x * self.x + self.y * self.y
+  return self.x * self.x + self.y * self.y + self.z * self.z
 end
 
 function META:Normalize()
   local len = self:len()
   self.x = self.x / len
   self.y = self.y / len
+  self.z = self.z / len
   return self
 end
 
@@ -97,7 +98,7 @@ function META:rotated(theta)
 end
 
 function META:perpendicular()
-  return META.new(-self.y, self.x)
+  return META.new(-self.y, self.x, self.z)
 end
 
 function META:projectOn(b)
@@ -115,6 +116,7 @@ end
 function META:__set(x, y)
   self.x = x
   self.y = y
+  self.z = z
 end
 
 Vector3 = setmetatable(META, META)
