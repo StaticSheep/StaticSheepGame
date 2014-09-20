@@ -1,53 +1,54 @@
-local META = GetMeta("Vector2")
+local META = GetMeta("Vector3")
 
 function META.__add(a, b)
   if type(a) == "number" then
-    return META.new(b.x + a, b.y + a)
+    return META.new(b.x + a, b.y + a, b.z + a)
   elseif type(b) == "number" then
-    return META.new(a.x + b, a.y + b)
+    return META.new(a.x + b, a.y + b, a.z + b)
   else
-    return Vector.new(a.x + b.x, a.y + b.y)
+    return Vector.new(a.x + b.x, a.y + b.y, a.z + b.z)
   end
 end
 
 function META.__sub(a, b)
   if type(b) == "number" then
-    return META.new(a.x - b, a.y - b)
+    return META.new(a.x - b, a.y - b, a.z - b)
   else
-    return Vector.new(a.x - b.x, a.y - b.y)
+    return Vector.new(a.x - b.x, a.y - b.y, a.z - b.z)
   end
 end
 
 function META.__mul(a, b)
   if type(a) == "number" then
-    return META.new(b.x * a, b.y * a)
+    return META.new(b.x * a, b.y * a, b.z * a)
   elseif type(b) == "number" then
-    return META.new(a.x * b, a.y * b)
+    return META.new(a.x * b, a.y * b, a.z * b)
   else
-    return Vector.new(a.x * b.x, a.y * b.y)
+    return Vector.new(a.x * b.x, a.y * b.y, a.z * b.z)
   end
 end
 
 function META.__div(a, b)
   if type(b) == "number" then
-    return META.new(a.x / b, a.y / b)
+    return META.new(a.x / b, a.y / b, a.z / b)
   else
-    return Vector.new(a.x / b.x, a.y / b.y)
+    return Vector.new(a.x / b.x, a.y / b.y, a.z / b.z)
   end
 end
 
 function META.__eq(a, b)
-  return a.x == b.x and a.y == b.y
+  return a.x == b.x and a.y == b.y and a.z == b.z
 end
 
 function META.__tostring(a)
-  return "(".. a.x ..", ".. a.y ..")"
+  return "(".. a.x ..", ".. a.y ..", ".. a.z ..")"
 end
 
 function META.new(x, y)
   local tab = setmetatable({}, META)
   tab.x = x
   tab.y = y
+  tab.z = z
   return tab
 end
 
@@ -73,16 +74,13 @@ end
 
 function META:Normalize()
   local len = self:len()
-  if len > 0 then
-    return 0
   self.x = self.x / len
   self.y = self.y / len
   return self
 end
 
 function META:normalized()
-  if self:len() > 0 then
-    return self / self:len()
+  return self / self:len()
 end
 
 function META:rotate(theta)
@@ -99,7 +97,7 @@ function META:rotated(theta)
 end
 
 function META:perpendicular()
-  return META.new(self.y, -self.x)
+  return META.new(-self.y, self.x)
 end
 
 function META:projectOn(b)
@@ -119,5 +117,5 @@ function META:__set(x, y)
   self.y = y
 end
 
-Vector2 = setmetatable(META, META)
-Vec2 = setmetatable(META, META)
+Vector3 = setmetatable(META, META)
+Vec3 = setmetatable(META, META)
