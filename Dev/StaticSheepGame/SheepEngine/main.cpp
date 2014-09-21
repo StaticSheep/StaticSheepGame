@@ -5,6 +5,7 @@
 
 //#include <wtypes.h>
 #include <Windows.h>
+#include <vld.h>
 
 #include "Input.h"
 #include "SheepGraphics.h"

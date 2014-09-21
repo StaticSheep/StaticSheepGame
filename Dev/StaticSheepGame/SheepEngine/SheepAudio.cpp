@@ -63,6 +63,7 @@ namespace Framework
 	{
 		// Release the FMOD system
     _system->release();
+    
 	}
 
 /*****************************************************************************/

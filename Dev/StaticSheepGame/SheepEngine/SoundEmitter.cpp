@@ -20,7 +20,7 @@ namespace Framework
     Name of the event to play
 */
 /*****************************************************************************/
-  void SoundEmitter::Play(const std::string name)
+  void SoundEmitter::Play(std::string name)
   {
     SOUND::EventInstance* instance = _soundSystem->Play(name, PLAY_ONCE);
     
@@ -43,7 +43,7 @@ namespace Framework
     What to set the volume to. Normalized values. 0 - 1
 */
 /*****************************************************************************/
-  void SoundEmitter::PlayEx(const std::string name, float volume)
+  void SoundEmitter::PlayEx(std::string name, float volume)
   {
     SOUND::EventInstance* instance = _soundSystem->Play(name, PLAY_ONCE);
     
