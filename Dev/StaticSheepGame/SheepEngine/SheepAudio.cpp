@@ -28,8 +28,6 @@ static void ParseEvents(SOUND::System *system, std::ifstream &file, EventMap &ev
 static void LoadBank(SOUND::System *system, std::string &name, BankVector &bank);
 static void LoadEvent(SOUND::System *system, std::string &name, EventMap &events);
 
-static float pitch = 1.0f;
-
 namespace Framework
 {
 	// Global pointer
@@ -79,7 +77,8 @@ namespace Framework
     ErrorCheck(SOUND::System::create(&_system));
 
     // initialize the sound system, with 512 channels... NEVER RUN OUT
-    ErrorCheck(_system->initialize(512, FMOD_STUDIO_INIT_SYNCHRONOUS_UPDATE, FMOD_STUDIO_INIT_SYNCHRONOUS_UPDATE, 0) );
+    ErrorCheck(_system->initialize(256, FMOD_STUDIO_INIT_SYNCHRONOUS_UPDATE, FMOD_STUDIO_INIT_SYNCHRONOUS_UPDATE, 0) );
+    ErrorCheck(_system->getLowLevelSystem(&_lowLevelSystem));
 
     // open the GUID file
     std::ifstream infile(SoundUtility::SourcePath(_GUID, SoundUtility::TYPE_GUIDs).c_str());
@@ -91,6 +90,8 @@ namespace Framework
     // parse through the GUID file and load the banks and events
     ParseBanks(_system, infile, _banks);
     ParseEvents(_system, infile, _events);
+
+    //_DebugData = new DebugAudio;
 	}
 
   void SheepAudio::RegisterComponents(void)
@@ -109,56 +110,7 @@ namespace Framework
 	{
     float temp = dt; // get rid of warning
 
-    /*
-    if(_events["Music/TopGun"].PlayState() == 0)
-      _events["Music/TopGun"].Play(PLAY_LOOP);
-
-    FMOD_STUDIO_LOADING_STATE state;
-
-    if(SHEEPINPUT->Mouse.ButtonPressed(LMB))
-    {
-      _events["Music/TopGun"].Play(PLAY_STREAM);
-    }
-
-    if(SHEEPINPUT->Mouse.ButtonPressed(RMB))
-    {
-      pitch -= 0.5f;
-
-      std::cout << pitch << std::endl;
-
-      FMOD_STUDIO_CPU_USAGE cpu;
-      FMOD::ChannelGroup* master;
-      FMOD::ChannelControl* controller;
-      FMOD::ChannelGroup* slave;
-      FMOD::System* lowlevel;
-      int groupCount;
-      int channels;
-
-      _system->getCPUUsage(&cpu);
-      _system->getLowLevelSystem(&lowlevel);
-
-      lowlevel->getMasterChannelGroup(&master);
-
-      SOUND::ID id;
-      SOUND::EventDescription* desc;
-      SOUND::MixerStrip* mixer;
-     
-      
-      master->getNumGroups(&groupCount);
-      master->getNumChannels(&channels);
-
-      master->setPitch(pitch);
-
-      //_events["Music/TopGun"].SetPitch(pitch);
-    }
-
-    if(SHEEPINPUT->Mouse.ButtonPressed(MMB))
-    {
-      pitch += 0.5f;
-      _events["Music/TopGun"].SetPitch(pitch);
-    }
-
-    // update all of the sounds*/
+    // update all of the sounds
     ErrorCheck(_system->update());
     return;
 	}
@@ -242,6 +194,10 @@ namespace Framework
   }
 
 } // end namespace
+
+
+
+
 
 
 /*****************************************************************************/
@@ -406,6 +362,10 @@ void LoadEvent(SOUND::System *system, std::string &name, EventMap &events)
   // example... Music/TopGun... or with the EventString defines... MUSIC_TOPGUN
 
   // then gtfo
+
+  
   return;
 }
+
+
 

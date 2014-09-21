@@ -44,6 +44,8 @@ namespace Framework
     const std::string _GUID;
     // pointer to the FMOD system
     SOUND::System* _system;
+
+    FMOD::System* _lowLevelSystem;
     // container for all sound events
     std::unordered_map<std::string, SoundEvent> _events;
     // vector for all sound banks

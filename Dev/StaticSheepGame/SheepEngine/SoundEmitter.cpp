@@ -1,3 +1,11 @@
+/******************************************************************************
+Filename: SoundEmitter.cpp
+Project: 
+Author(s): Zakary Wilson
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+******************************************************************************/
+
 #include "SoundEmitter.h"
 
 namespace Framework
