@@ -28,8 +28,6 @@ static void ParseEvents(SOUND::System *system, std::ifstream &file, EventMap &ev
 static void LoadBank(SOUND::System *system, std::string &name, BankVector &bank);
 static void LoadEvent(SOUND::System *system, std::string &name, EventMap &events);
 
-static float pitch = 1.0f;
-
 namespace Framework
 {
 	// Global pointer
@@ -65,6 +63,7 @@ namespace Framework
 	{
 		// Release the FMOD system
     _system->release();
+    
 	}
 
 /*****************************************************************************/
@@ -79,7 +78,7 @@ namespace Framework
     ErrorCheck(SOUND::System::create(&_system));
 
     // initialize the sound system, with 512 channels... NEVER RUN OUT
-    ErrorCheck(_system->initialize(512, FMOD_STUDIO_INIT_SYNCHRONOUS_UPDATE, FMOD_STUDIO_INIT_SYNCHRONOUS_UPDATE, 0) );
+    ErrorCheck(_system->initialize(256, FMOD_STUDIO_INIT_SYNCHRONOUS_UPDATE, FMOD_STUDIO_INIT_SYNCHRONOUS_UPDATE, 0) );
     ErrorCheck(_system->getLowLevelSystem(&_lowLevelSystem));
 
     // open the GUID file
@@ -93,7 +92,7 @@ namespace Framework
     ParseBanks(_system, infile, _banks);
     ParseEvents(_system, infile, _events);
 
-    _DebugData = new DebugAudio;
+    //_DebugData = new DebugAudio;
 	}
 
   void SheepAudio::RegisterComponents(void)
@@ -193,19 +192,6 @@ namespace Framework
       }
 
       return true;
-  }
-
-  void* SheepAudio::GetDebugData(void)
-  {
-    _system->getCPUUsage(&_DebugData->cpuLoad);
-    _system->getBankCount(&_DebugData->banks);
-    _lowLevelSystem->getSoftwareChannels(&_DebugData->channels);
-    _lowLevelSystem->getSoundRAM(&_DebugData->currentAllocatedRAM, 
-                                 &_DebugData->maxAllocatedRAM, 
-                                 &_DebugData->totalAllocatedRAM);
-
-
-    return _DebugData;
   }
 
 } // end namespace
@@ -377,6 +363,10 @@ void LoadEvent(SOUND::System *system, std::string &name, EventMap &events)
   // example... Music/TopGun... or with the EventString defines... MUSIC_TOPGUN
 
   // then gtfo
+
+  
   return;
 }
+
+
 

@@ -1,10 +1,10 @@
-/*****************************************************************
+/******************************************************************************
 Filename: SheepSoundEvent.cpp
 Project: 
 Author(s): Zakary Wilson
 
 All content © 2014 DigiPen (USA) Corporation, all rights reserved.
-*****************************************************************/
+******************************************************************************/
 
 #include "SheepSoundEvent.h"
 #include <iostream>
@@ -54,8 +54,10 @@ namespace SoundUtility
   {
     switch(type)
     {
-      case TYPE_AUDIO : return "content\\Audio\\FMOD_Banks\\" + file; // change these for the proper media paths
+      // change these for the proper media paths
+      case TYPE_AUDIO : return "content\\Audio\\FMOD_Banks\\" + file; 
       case TYPE_GUIDs : return "content\\Audio\\" + file;
+      default : return "content\\Audio\\FMOD_Banks\\" + file;
     }
   }
 }// end namespace
@@ -84,13 +86,15 @@ SoundEvent::SoundEvent() : _mode(PLAY_ONCE), _playing(false)
     Name of the sound file
 */
 /*****************************************************************************/
-SoundEvent::SoundEvent(SOUND::System *system, std::string &name) : _mode(PLAY_ONCE), _playing(false)
+SoundEvent::SoundEvent(SOUND::System *system, std::string &name) : 
+                                                              _mode(PLAY_ONCE), 
+                                                              _playing(false)
 {
   // get the ID and check it
   ErrorCheck(system->lookupID(name.c_str(), &_id) );
 
   // get the event description
-  ErrorCheck(system->getEvent( &_id, FMOD_STUDIO_LOAD_BEGIN_NOW, &_description) );
+  ErrorCheck(system->getEvent(name.c_str(), &_description) );
 
   _pitch = 1.0f;
 }
@@ -145,7 +149,8 @@ SOUND::EventInstance* SoundEvent::Play(PlayMode mode)
 void SoundEvent::Stop(FadeOut mode)
 {
   // using fmod fadeout currently... write different fade outs later
-  FMOD_STUDIO_STOP_MODE fadeout = mode ? FMOD_STUDIO_STOP_ALLOWFADEOUT : FMOD_STUDIO_STOP_IMMEDIATE;
+  FMOD_STUDIO_STOP_MODE fadeout = mode ? FMOD_STUDIO_STOP_ALLOWFADEOUT : 
+                                         FMOD_STUDIO_STOP_IMMEDIATE;
 
   // tell fmod to stop the instance with the fadeout mode
   ErrorCheck(_instance->stop(fadeout));

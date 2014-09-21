@@ -14,25 +14,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 namespace Framework
 {
-
-  struct DebugAudio
-  {
-    FMOD_STUDIO_CPU_USAGE cpuLoad;
-    int banks;
-    int channels;
-    int currentAllocatedRAM;
-    int maxAllocatedRAM;
-    int totalAllocatedRAM;
-    int currentlyPlaying;
-    float volume;
-    int instances;
-  };
-
 	class SheepAudio : public ISystem
 	{
-    
-
-
 	public:
 		// Sheep graphics interface constructor
 		SheepAudio();
@@ -55,14 +38,13 @@ namespace Framework
     void StopAll(FadeOut mode);
     bool GetLoadState() const;
 
-    void* GetDebugData(void);
-
 	private:
 
     // name of GUID file for FMOD
     const std::string _GUID;
     // pointer to the FMOD system
     SOUND::System* _system;
+
     FMOD::System* _lowLevelSystem;
     // container for all sound events
     std::unordered_map<std::string, SoundEvent> _events;
@@ -77,8 +59,6 @@ namespace Framework
     float _MusicVolume;
 
     void** _ninjaPointer; // just in case
-
-    DebugAudio* _DebugData;
 
 	};
 
