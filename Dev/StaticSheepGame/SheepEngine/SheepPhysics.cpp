@@ -49,12 +49,12 @@ namespace Framework
 		SheepFizz::Material Static(.0f,.2f,.5f,.3f);
 
 		//insert materials into the unordered map
-		m_materials->insert(std::pair<std::string, SheepFizz::Material>("Wood", Wood));
-		m_materials->insert(std::pair<std::string, SheepFizz::Material>("Iron", Iron));
-		m_materials->insert(std::pair<std::string, SheepFizz::Material>("Steel", Steel));
-		m_materials->insert(std::pair<std::string, SheepFizz::Material>("Fluff", Fluff));
-		m_materials->insert(std::pair<std::string, SheepFizz::Material>("Bounce", Bounce));
-		m_materials->insert(std::pair<std::string, SheepFizz::Material>("Static", Static));
+		m_materials.insert(std::pair<std::string, SheepFizz::Material>("Wood", Wood));
+		m_materials.insert(std::pair<std::string, SheepFizz::Material>("Iron", Iron));
+		m_materials.insert(std::pair<std::string, SheepFizz::Material>("Steel", Steel));
+		m_materials.insert(std::pair<std::string, SheepFizz::Material>("Fluff", Fluff));
+		m_materials.insert(std::pair<std::string, SheepFizz::Material>("Bounce", Bounce));
+		m_materials.insert(std::pair<std::string, SheepFizz::Material>("Static", Static));
 
 
 	}
@@ -78,7 +78,7 @@ namespace Framework
 	SheepFizz::Material* SheepPhysics::GetMaterial(std::string name)
 	{
 		//find the material and return it
-		SheepFizz::Material* material = &(*m_materials)[name];
+		SheepFizz::Material* material = &m_materials[name];
 		return material;
 	}
 

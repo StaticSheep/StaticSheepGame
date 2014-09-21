@@ -75,6 +75,7 @@ function META:Normalize()
   local len = self:len()
   if len > 0 then
     return 0
+  end
   self.x = self.x / len
   self.y = self.y / len
   return self
@@ -83,6 +84,7 @@ end
 function META:normalized()
   if self:len() > 0 then
     return self / self:len()
+  end
 end
 
 function META:rotate(theta)

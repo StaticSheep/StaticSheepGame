@@ -60,7 +60,7 @@ namespace Framework
 		private:
 			//void PhysicsStep(float dt);
 			SheepFizz::PhysicsSpace* m_space;
-			std::unordered_map<std::string, SheepFizz::Material>* m_materials;
+			std::unordered_map<std::string, SheepFizz::Material> m_materials;
 	};
 
 	extern SheepPhysics* PHYSICS;
