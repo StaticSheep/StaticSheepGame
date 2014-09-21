@@ -40,6 +40,7 @@ namespace Framework
   void GameLogic::Update(float dt)
   {
     GameSpace* space;
+    std::vector<GameSpace*> removeList;
 
     for (auto it = ENGINE->m_spaces.begin(); it != ENGINE->m_spaces.end(); ++it)
     {
@@ -57,7 +58,13 @@ namespace Framework
     {
       space = *it;
       space->Cleanup();
+
+      if (space->m_valid == false)
+        removeList.push_back(space);
     }
+
+    for (auto it = removeList.begin(); it != removeList.end(); ++it)
+      ENGINE->RemoveSpace(*it);
 
   }
 

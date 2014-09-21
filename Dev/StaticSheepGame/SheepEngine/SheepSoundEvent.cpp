@@ -1,12 +1,13 @@
-/*****************************************************************
+/******************************************************************************
 Filename: SheepSoundEvent.cpp
 Project: 
 Author(s): Zakary Wilson
 
 All content © 2014 DigiPen (USA) Corporation, all rights reserved.
-*****************************************************************/
+******************************************************************************/
 
 #include "SheepSoundEvent.h"
+#include <iostream>
 #include <unordered_map>
 
 /*****************************************************************************/
@@ -53,8 +54,10 @@ namespace SoundUtility
   {
     switch(type)
     {
-      case TYPE_AUDIO : return "content\\Audio\\FMOD_Banks\\" + file; // change these for the proper media paths
+      // change these for the proper media paths
+      case TYPE_AUDIO : return "content\\Audio\\FMOD_Banks\\" + file; 
       case TYPE_GUIDs : return "content\\Audio\\" + file;
+      default : return "content\\Audio\\FMOD_Banks\\" + file;
     }
   }
 }// end namespace
@@ -83,13 +86,17 @@ SoundEvent::SoundEvent() : _mode(PLAY_ONCE), _playing(false)
     Name of the sound file
 */
 /*****************************************************************************/
-SoundEvent::SoundEvent(SOUND::System *system, std::string &name) : _mode(PLAY_ONCE), _playing(false)
+SoundEvent::SoundEvent(SOUND::System *system, std::string &name) : 
+                                                              _mode(PLAY_ONCE), 
+                                                              _playing(false)
 {
   // get the ID and check it
   ErrorCheck(system->lookupID(name.c_str(), &_id) );
 
   // get the event description
-  ErrorCheck(system->getEvent( &_id, FMOD_STUDIO_LOAD_BEGIN_NOW, &_description) );
+  ErrorCheck(system->getEvent(name.c_str(), &_description) );
+
+  _pitch = 1.0f;
 }
 
 
@@ -102,7 +109,7 @@ SoundEvent::SoundEvent(SOUND::System *system, std::string &name) : _mode(PLAY_ON
     How the sound should be played. Once, looped, or streamed
 */
 /*****************************************************************************/
-void SoundEvent::Play(PlayMode mode)
+SOUND::EventInstance* SoundEvent::Play(PlayMode mode)
 {
   // set the mode 
   _mode = mode;
@@ -127,7 +134,7 @@ void SoundEvent::Play(PlayMode mode)
     break;
   }
 
-  return;
+  return _instance;
 }
 
 /*****************************************************************************/
@@ -142,10 +149,27 @@ void SoundEvent::Play(PlayMode mode)
 void SoundEvent::Stop(FadeOut mode)
 {
   // using fmod fadeout currently... write different fade outs later
-  FMOD_STUDIO_STOP_MODE fadeout = mode ? FMOD_STUDIO_STOP_ALLOWFADEOUT : FMOD_STUDIO_STOP_IMMEDIATE;
+  FMOD_STUDIO_STOP_MODE fadeout = mode ? FMOD_STUDIO_STOP_ALLOWFADEOUT : 
+                                         FMOD_STUDIO_STOP_IMMEDIATE;
 
   // tell fmod to stop the instance with the fadeout mode
   ErrorCheck(_instance->stop(fadeout));
+
+  _playing = 0;
+
+  return;
+}
+
+void SoundEvent::Pause(void)
+{
+  bool paused;
+
+  // check if we are paused...
+  ErrorCheck(_instance->getPaused(&paused));
+
+  // and set it to the opposite
+  ErrorCheck(_instance->setPaused(!paused));
+
 
   return;
 }
@@ -159,6 +183,16 @@ void SoundEvent::Stop(FadeOut mode)
 PlayMode SoundEvent::GetMode()
 {
   return _mode;
+}
+
+void SoundEvent::GetChannelGroup(FMOD::ChannelGroup* group)
+{
+  if(!ErrorCheck(_instance->getChannelGroup(&group)))
+  {
+    return;
+  }
+
+  return;
 }
 
 /*****************************************************************************/
@@ -178,7 +212,7 @@ bool SoundEvent::PlayState()
     Private method for playing the sound only once
 */
 /*****************************************************************************/
-void SoundEvent::_PlayOnce()
+SOUND::EventInstance* SoundEvent::_PlayOnce()
 {
   // create the sound event
   ErrorCheck( _description->createInstance(&_instance) );
@@ -187,12 +221,12 @@ void SoundEvent::_PlayOnce()
   ErrorCheck( _instance->start() );
 
   // then release it
-  ErrorCheck( _instance->release() );
+  //ErrorCheck( _instance->release() );
 
   // no longer playing
   _playing = false;
 
-  return;
+  return _instance;
 }
 
 /*****************************************************************************/
@@ -201,11 +235,11 @@ void SoundEvent::_PlayOnce()
     Private method for playing the sound in a loop
 */
 /*****************************************************************************/
-void SoundEvent::_PlayLoop()
+SOUND::EventInstance* SoundEvent::_PlayLoop()
 {
   // if we are already playing this, then just return
   if(_playing)
-    return;
+    return _instance;
 
   // create the sound event
   ErrorCheck( _description->createInstance(&_instance) );
@@ -216,7 +250,7 @@ void SoundEvent::_PlayLoop()
   // set playing to true
   _playing = true;
 
-  return;
+  return _instance;
 }
 
 /*****************************************************************************/
@@ -225,17 +259,25 @@ void SoundEvent::_PlayLoop()
     Private method for playing the sound in a stream
 */
 /*****************************************************************************/
-void SoundEvent::_PlayStream()
+SOUND::EventInstance* SoundEvent::_PlayStream()
 {
   // if we are not playing... then create the sound instance
   if(!_playing)
+  {
     ErrorCheck( _description->createInstance(&_instance) );
+    // start it
+    ErrorCheck( _instance->start() );
 
-  // start it
-  ErrorCheck( _instance->start() );
+  }
 
   // and set playing to true
   _playing = true;
 
-  return;
+  return _instance;
+}
+
+void SoundEvent::SetPitch(float newPitch)
+{
+  _pitch = newPitch;
+  _instance->setPitch(_pitch);
 }

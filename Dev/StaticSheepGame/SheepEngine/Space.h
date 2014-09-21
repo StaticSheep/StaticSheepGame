@@ -70,10 +70,7 @@ namespace Framework
 
     const std::string GetName() const;
 
-    
-
-
-    // =================================================
+    bool m_valid;
 
     GameObject* CreateObjectFromArchetype(const char* name);
 

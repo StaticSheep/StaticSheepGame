@@ -6,7 +6,8 @@ Author(s): Zachary Nawar (Primary)
 All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 *****************************************************************/
 
-
+#include "SoundEmitter.h"
+#include "SoundPlayer.h"
 
 namespace Framework
 {
@@ -105,6 +106,7 @@ namespace Framework
     TYPE_REGISTER( Transform );
     TYPE_ADD_MEMBER(Transform, Translation);
     TYPE_ADD_MEMBER(Transform, Scale);
+    TYPE_ADD_MEMBER(Transform, Rotation);
     TYPE_SET_FROM_LUA( Transform, Lua::GenericObjectFromLua );
 
     TYPE_REGISTER_PTR(Transform*);
@@ -114,7 +116,14 @@ namespace Framework
     TYPE_ADD_MEMBER( Tester, testvalue2 );
 
     TYPE_REGISTER( Sprite );
+    TYPE_ADD_MEMBER( Sprite, Size );
     TYPE_SET_FROM_LUA( Sprite, Lua::GenericObjectFromLua );
+
+    TYPE_REGISTER( SoundEmitter );
+    TYPE_SET_FROM_LUA(SoundEmitter, Lua::GenericObjectFromLua );
+
+    TYPE_REGISTER( SoundPlayer );
+    TYPE_SET_FROM_LUA(SoundPlayer, Lua::GenericObjectFromLua );
 
     TYPE_REGISTER( LuaComponent );
     TYPE_ADD_MEMBER( LuaComponent, name );

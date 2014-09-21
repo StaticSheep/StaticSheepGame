@@ -133,7 +133,7 @@ namespace Framework
     }
 
     space->m_shuttingDown = true;
-    //space->Cleanup();
+    space->Cleanup();
 
     Lua::CallFunc(ENGINE->Lua(), "RemoveGameSpace", space->m_name);
 
@@ -176,6 +176,15 @@ namespace Framework
     //Lua::LoadFile(L, path);
   }
 
+  void Engine::ClearSpaces()
+  {
+    for (unsigned int i = 0; i < m_spaces.size(); ++i)
+    {
+      GameSpace* space = m_spaces[i];
+      space->m_valid = false;
+    }
+  }
+
   bool Engine::Running() const
   {
     return m_running;
@@ -189,7 +198,14 @@ namespace Framework
       // Creates the space
       return ENGINE->CreateSpace(name);
     }
-    return space;
+    else
+    {
+      std::string realName = name;
+      realName += "[nametaken]";
+      // Creates the space
+      return ENGINE->LuaCreateSpace(realName.c_str());
+    }
+    //return space;
   }
 
   void Engine::Quit()
@@ -243,6 +259,16 @@ namespace Framework
     Variable value(member->Type(), (char*)obj + member->Offset());
 
     value.ToLua(ENGINE->Lua());
+  }
+
+  void Engine::LuaClearSpaces()
+  {
+    ENGINE->ClearSpaces();
+  }
+
+  void Engine::LuaRemoveSpace(const char* name)
+  {
+    ENGINE->GetSpace(name)->m_valid = false;
   }
 
 

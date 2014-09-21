@@ -121,3 +121,4 @@ function META:__set(x, y)
 end
 
 Vector2 = setmetatable(META, META)
+Vec2 = setmetatable(META, META)

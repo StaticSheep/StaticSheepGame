@@ -129,6 +129,7 @@ namespace Framework
         }
       }
 
+      GenerateComponentTable(L);
       //CreateNewGTable(L, "Components");
 
 
@@ -137,6 +138,21 @@ namespace Framework
       CallFunc(L, "filesystem.LoadLuaFiles", "content/lua/");
 
       return L;
+    }
+
+    void GenerateComponentTable(lua_State* L)
+    {
+      lua_newtable(L);
+      lua_setglobal(L, "ComponentDB");
+
+      lua_getglobal(L, "ComponentDB");
+      for (unsigned i = 0; i < ecountComponents; ++i)
+      {
+        lua_pushstring(L, EnumComponent.m_literals[i].c_str());
+        lua_pushnumber(L, i);
+        lua_settable(L, -3);
+      }
+      lua_pop(L, 1);
     }
 
     void CallMemberFunc(lua_State* L, Variable& var, const char* funcName)

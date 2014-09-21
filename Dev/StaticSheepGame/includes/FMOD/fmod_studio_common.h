@@ -39,30 +39,9 @@ typedef struct FMOD_STUDIO_EVENTDESCRIPTION FMOD_STUDIO_EVENTDESCRIPTION;
 typedef struct FMOD_STUDIO_EVENTINSTANCE FMOD_STUDIO_EVENTINSTANCE;
 typedef struct FMOD_STUDIO_CUEINSTANCE FMOD_STUDIO_CUEINSTANCE;
 typedef struct FMOD_STUDIO_PARAMETERINSTANCE FMOD_STUDIO_PARAMETERINSTANCE;
-typedef struct FMOD_STUDIO_MIXERSTRIP FMOD_STUDIO_MIXERSTRIP;
+typedef struct FMOD_STUDIO_BUS FMOD_STUDIO_BUS;
+typedef struct FMOD_STUDIO_VCA FMOD_STUDIO_VCA;
 typedef struct FMOD_STUDIO_BANK FMOD_STUDIO_BANK;
-
-/*
-[ENUM]
-[
-    [DESCRIPTION]
-    Intended to control on-demand bank loading.
-
-    [REMARKS]
-    Currently unsupported. Reserved for future functionality.
-
-    [SEE_ALSO]
-    Studio::System::getEvent
-    Studio::System::getMixerStrip
-]
-*/
-typedef enum
-{
-    FMOD_STUDIO_LOAD_BEGIN_NOW,                 /* Reserved. */
-    FMOD_STUDIO_LOAD_PROHIBITED,                /* Reserved. */
-
-    FMOD_STUDIO_LOAD_FORCEINT = 65536           /* Makes sure this enum is signed 32bit. */
-} FMOD_STUDIO_LOADING_MODE;
 
 /*
 [ENUM]
@@ -79,7 +58,6 @@ typedef enum
 
     [SEE_ALSO]
     Studio::EventDescription::getSampleLoadingState
-    Studio::MixerStrip::getLoadingState
     Studio::Bank::getLoadingState
     Studio::Bank::getSampleLoadingState
 ]
@@ -219,6 +197,31 @@ typedef enum
 } FMOD_STUDIO_USER_PROPERTY_TYPE;
 
 /*
+[ENUM]
+[
+    [DESCRIPTION]
+    These definitions describe built-in event properties.
+
+    [REMARKS]
+    For FMOD_STUDIO_EVENT_PROPERTY_CHANNELPRIORITY, a value of -1 uses the priority
+    set in FMOD Studio, while other values override it. This property uses the same
+    system as Channel::setPriority; this means lower values are higher priority
+    (i.e. 0 is the highest priority while 256 is the lowest).
+
+    [SEE_ALSO]
+    EventInstance::getProperty
+    EventInstance::setProperty
+]
+*/
+typedef enum
+{
+    FMOD_STUDIO_EVENT_PROPERTY_CHANNELPRIORITY,     /* Priority to set on low-level channels created by this event instance (-1 to 256). */
+    FMOD_STUDIO_EVENT_PROPERTY_MAX,                 /* Maximum number of event properties supported. */
+
+    FMOD_STUDIO_EVENT_PROPERTY_FORCEINT = 65536 /* Makes sure this enum is signed 32bit. */
+} FMOD_STUDIO_EVENT_PROPERTY;
+
+/*
 [STRUCTURE]
 [
     [DESCRIPTION]
@@ -238,11 +241,39 @@ typedef struct
     union
     {
         int intValue;                           /* Value of the user property. Only valid when type is FMOD_STUDIO_USER_PROPERTY_TYPE_INTEGER. */
-        bool boolValue;                         /* Value of the user property. Only valid when type is FMOD_STUDIO_USER_PROPERTY_TYPE_BOOLEAN. */
+        FMOD_BOOL boolValue;                    /* Value of the user property. Only valid when type is FMOD_STUDIO_USER_PROPERTY_TYPE_BOOLEAN. */
         float floatValue;                       /* Value of the user property. Only valid when type is FMOD_STUDIO_USER_PROPERTY_TYPE_FLOAT. */
         const char *stringValue;                /* Value of the user property. Only valid when type is FMOD_STUDIO_USER_PROPERTY_TYPE_STRING. */
     };
 } FMOD_STUDIO_USER_PROPERTY;
+
+typedef unsigned int               FMOD_STUDIO_SYSTEM_CALLBACK_TYPE;
+
+/*
+[DEFINE]
+[
+    [NAME]
+    FMOD_STUDIO_SYSTEM_CALLBACK_TYPE
+
+    [DESCRIPTION]
+    These callback types are used with Studio::System::setCallback.
+
+    [REMARKS]
+
+    [SEE_ALSO]
+    FMOD_STUDIO_SYSTEM_CALLBACK
+    Studio::System::setCallback
+]
+*/
+#define FMOD_STUDIO_SYSTEM_CALLBACK_PREUPDATE       0x00000001  /* Called at the start of the main Studio update.  For async mode this will be on its own thread. */
+#define FMOD_STUDIO_SYSTEM_CALLBACK_POSTUPDATE      0x00000002  /* Called at the end of the main Studio update.  For async mode this will be on its own thread. */
+/* [DEFINE_END] */
+
+
+/* 
+    FMOD Callbacks
+*/
+typedef FMOD_RESULT (F_CALLBACK *FMOD_STUDIO_SYSTEM_CALLBACK)          (FMOD_STUDIO_SYSTEM *system, FMOD_STUDIO_SYSTEM_CALLBACK_TYPE type, void *commanddata, void *userdata);
 
 /*
 [ENUM]
@@ -268,11 +299,6 @@ typedef struct
      * The event has stopped naturally by reaching the end of the timeline, and no further sounds can be triggered due to
        parameter changes.
 
-    FMOD_STUDIO_EVENT_CALLBACK_IDLE is called when:
-
-     * The event has reached the end of the timeline and all sounds have finished, but further sounds could be triggered due to
-       parameter changes.
-
     [SEE_ALSO]
     Studio::EventDescription::setCallback
     Studio::EventInstance::setCallback
@@ -281,12 +307,13 @@ typedef struct
 */
 typedef enum
 {
-    FMOD_STUDIO_EVENT_CALLBACK_STARTED,                     /* Called when an instance starts. Parameters = FMOD_STUDIO_EVENTINSTANCE, which can be cast to Studio::EventInstance* type. */
-    FMOD_STUDIO_EVENT_CALLBACK_STOPPED,                     /* Called when an instance stops. Parameters = FMOD_STUDIO_EVENTINSTANCE, which can be cast to Studio::EventInstance* type. */
-    FMOD_STUDIO_EVENT_CALLBACK_IDLE,                        /* Called when an instance enters the idle state. Parameters = FMOD_STUDIO_EVENTINSTANCE, which can be cast to Studio::EventInstance* type. */
+    FMOD_STUDIO_EVENT_CALLBACK_STARTED,                     /* Called when an instance starts. Parameters = unused. */
+    FMOD_STUDIO_EVENT_CALLBACK_STOPPED,                     /* Called when an instance stops. Parameters = unused. */
     FMOD_STUDIO_EVENT_CALLBACK_CREATE_PROGRAMMER_SOUND,     /* Called when a programmer sound needs to be created in order to play a programmer instrument. Parameters = FMOD_STUDIO_PROGRAMMER_SOUND_PROPERTIES. */
     FMOD_STUDIO_EVENT_CALLBACK_DESTROY_PROGRAMMER_SOUND,    /* Called when a programmer sound needs to be destroyed. Parameters = FMOD_STUDIO_PROGRAMMER_SOUND_PROPERTIES. */
-    FMOD_STUDIO_EVENT_CALLBACK_RESTARTED,                   /* Called when an instance is restarted. Parameters = FMOD_STUDIO_EVENTINSTANCE, which can be cast to Studio::EventInstance* type. */
+    FMOD_STUDIO_EVENT_CALLBACK_RESTARTED,                   /* Called when an instance is restarted. Parameters = unused. */
+    FMOD_STUDIO_EVENT_CALLBACK_PLUGIN_CREATED,              /* Called when a DSP plugin instance has just been created. Parameters = FMOD_STUDIO_PLUGIN_INSTANCE_PROPERTIES. */
+    FMOD_STUDIO_EVENT_CALLBACK_PLUGIN_DESTROYED,            /* Called when a DSP plugin instance is about to be destroyed. Parameters = FMOD_STUDIO_PLUGIN_INSTANCE_PROPERTIES. */
 
     FMOD_STUDIO_EVENT_CALLBACK_FORCEINT = 65536             /* Makes sure this enum is signed 32bit. */
 } FMOD_STUDIO_EVENT_CALLBACK_TYPE;
@@ -298,7 +325,12 @@ typedef enum
     This structure holds information about a programmer sound.
 
     [REMARKS]
-    This data is passed to the event callback function when type is FMOD_STUDIO_EVENT_CALLBACK_CREATE_PROGRAMMER_SOUND or FMOD_STUDIO_EVENT_CALLBACK_DESTROY_PROGRAMMER_SOUND.
+    This data is passed to the event callback function when type is FMOD_STUDIO_EVENT_CALLBACK_CREATE_PROGRAMMER_SOUND
+    or FMOD_STUDIO_EVENT_CALLBACK_DESTROY_PROGRAMMER_SOUND.
+
+    To support non-blocking loading of FSB subsounds, you can specify the subsound you want to use by setting the
+    subsoundIndex field. This will cause FMOD to wait until the provided sound is ready and then get the specified
+    subsound from it.
 
     [SEE_ALSO]
     FMOD_STUDIO_EVENT_CALLBACK
@@ -309,11 +341,33 @@ typedef enum
 typedef struct
 {
     const char *name;                           /* The name of the programmer instrument (set in FMOD Studio). */
-    FMOD_STUDIO_EVENTINSTANCE *event;           /* The event instance that needs to play the sound. Can be cast to Studio::EventInstance* type. */
     FMOD_SOUND *sound;                          /* The programmer-created sound. This should be filled in by the create callback, and cleaned up by the destroy callback. This can be cast to/from FMOD::Sound* type. */
+    int subsoundIndex;                          /* The index of the subsound to use, or -1 if the provided sound should be used directly. Defaults to -1. */
 } FMOD_STUDIO_PROGRAMMER_SOUND_PROPERTIES;
 
-typedef FMOD_RESULT (F_CALLBACK *FMOD_STUDIO_EVENT_CALLBACK)(FMOD_STUDIO_EVENT_CALLBACK_TYPE type, void *parameters);
+/*
+[STRUCTURE]
+[
+    [DESCRIPTION]
+    This structure holds information about a DSP plugin instance.
+
+    [REMARKS]
+    This data is passed to the event callback function when type is FMOD_STUDIO_EVENT_CALLBACK_PLUGIN_CREATED
+    or FMOD_STUDIO_EVENT_CALLBACK_PLUGIN_DESTROYED.
+
+    [SEE_ALSO]
+    FMOD_STUDIO_EVENT_CALLBACK
+    Studio::EventDescription::setCallback
+    Studio::EventInstance::setCallback
+]
+*/
+typedef struct
+{
+    const char *name;                           /* The name of the plugin effect or sound (set in FMOD Studio). */
+    FMOD_DSP *dsp;                              /* The DSP plugin instance. This can be cast to FMOD::DSP* type. */
+} FMOD_STUDIO_PLUGIN_INSTANCE_PROPERTIES;
+
+typedef FMOD_RESULT (F_CALLBACK *FMOD_STUDIO_EVENT_CALLBACK)(FMOD_STUDIO_EVENT_CALLBACK_TYPE type, FMOD_STUDIO_EVENTINSTANCE *event, void *parameters);
 
 /*
 [ENUM]
@@ -334,9 +388,10 @@ typedef FMOD_RESULT (F_CALLBACK *FMOD_STUDIO_EVENT_CALLBACK)(FMOD_STUDIO_EVENT_C
 typedef enum
 {
     FMOD_STUDIO_PLAYBACK_PLAYING,               /* Currently playing. */
-    FMOD_STUDIO_PLAYBACK_IDLE,                  /* The timeline cursor has reached the end, but parameter value changes may still trigger sounds. */
     FMOD_STUDIO_PLAYBACK_SUSTAINING,            /* The timeline cursor is paused on a sustain point. */
     FMOD_STUDIO_PLAYBACK_STOPPED,               /* Not playing. */
+    FMOD_STUDIO_PLAYBACK_STARTING,              /* Start has been called but the instance is not fully started yet. */
+    FMOD_STUDIO_PLAYBACK_STOPPING,              /* Stop has been called but the instance is not fully stopped yet. */
 
     FMOD_STUDIO_PLAYBACK_FORCEINT = 65536       /* Makes sure this enum is signed 32bit. */
 } FMOD_STUDIO_PLAYBACK_STATE;
@@ -351,7 +406,7 @@ typedef enum
 
     [SEE_ALSO]
     Studio::EventInstance::stop
-    Studio::MixerStrip::stopAllEvents
+    Studio::Bus::stopAllEvents
 ]
 */
 typedef enum
@@ -493,5 +548,31 @@ typedef struct FMOD_STUDIO_BUFFER_USAGE
     FMOD_STUDIO_BUFFER_INFO studioCommandQueue;             /* Information for the Studio Async Command buffer, controlled by FMOD_STUDIO_ADVANCEDSETTINGS commandQueueSize. */
     FMOD_STUDIO_BUFFER_INFO studioHandle;                   /* Information for the Studio handle table, controlled by FMOD_STUDIO_ADVANCEDSETTINGS handleInitialSize. */
 } FMOD_STUDIO_BUFFER_USAGE;
+
+/*
+[STRUCTURE] 
+[
+    [DESCRIPTION]
+    Information for loading a sound from a sound table.
+
+    [REMARKS]
+    The name_or_data member points into FMOD internal memory, which will become
+    invalid if the sound table bank is unloaded.
+
+    If mode flags such as FMOD_CREATESTREAM or FMOD_NONBLOCKING are required,
+    they should be ORed together with the mode member when calling System::createSound.
+
+    [SEE_ALSO]
+    Studio::System::getSoundInfo
+    System::createSound
+]
+*/
+typedef struct FMOD_STUDIO_SOUND_INFO
+{
+    const char* name_or_data;           /* The filename or memory buffer that contains the sound. */
+    FMOD_MODE mode;                     /* Mode flags required for loading the sound. */
+    FMOD_CREATESOUNDEXINFO exinfo;      /* Extra information required for loading the sound. */
+    int subsoundIndex;                  /* Subsound index for loading the sound. */
+} FMOD_STUDIO_SOUND_INFO;
 
 #endif // FMOD_STUDIO_COMMON_H

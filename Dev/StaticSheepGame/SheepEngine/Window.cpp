@@ -62,7 +62,6 @@ namespace Framework
     PAINTSTRUCT ps;                         // Data to redraw window if moved
     HDC hdc;                                // Hande to a Device Context
     MSG msg;
-    InputManager input;
 
     switch( message )                       // Check message
     {
@@ -100,7 +99,6 @@ namespace Framework
     case WM_MBUTTONDBLCLK:
 
       TranslateMessage(&msg);
-      input.Mouse.Update();
 
       break;
 
@@ -119,11 +117,11 @@ namespace Framework
   {
     MSG msg = {0}; // msg struct holds return of peek message
 
-    if(PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) // Query message queue
-    {
-      TranslateMessage(&msg);                  // Translate return
-      DispatchMessage(&msg);                   // Dispatch
-    }
+    //if(PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) // Query message queue
+    //{
+    //  TranslateMessage(&msg);                  // Translate return
+    //  DispatchMessage(&msg);                   // Dispatch
+    //}
   }
 
   HWND SheepWindow::GetHandle()

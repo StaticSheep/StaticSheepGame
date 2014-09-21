@@ -125,9 +125,19 @@ function SetupMetatable(key, meta)
       return meta.__base
     end
 
-    if key == "Transform" then
-      return self:GetComponent(0)
+    local compID = ComponentDB[key]
+    if compID ~= nil then
+      local comp = self:GetComponent(compID)
+      if comp ~= false then
+        return comp
+      else
+        print("ERROR : Component does not exist on object!")
+      end
     end
+
+    -- if key == "Transform" then
+    --   return self:GetComponent(0)
+    -- end
 
     if meta.__members ~= nil and meta.__members[key] ~= nil then
       return meta["Get"..key](self)

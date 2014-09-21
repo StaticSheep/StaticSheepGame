@@ -395,17 +395,43 @@ namespace Framework
   //}
 
 
+  /// <summary>
+  /// Function to get a component from lua.
+  /// We have to use this function because lua is very sensitive about the type of objects that it gets
+  /// It would make sense for this function to return a GameComponent* but lua doesn't know about
+  /// Inheritance in C++, so it would literally assume we are sending it a GameComponent. Because of this
+  /// We have to manually send it the component it wants properly typed. Therefore this function returns void.
+  /// Using our introspection system and our variable class we are capable of doing this.
+  /// </summary>
+  /// <param name="type">The type of component</param>
   void GameObject::LuaGetComponent(size_t type)
   {
+
+    // Quickly check to see if the component exists
     if (!HasComponent(EComponent(type)))
     {
+      // If the component does not exist we manually send a FALSE value to lua
+
+      bool b = false;
+      Variable var(GET_TYPE(bool), &b);
+      var.ToLua(ENGINE->Lua());
+
       return;
     }
+    // If the component exists then we create a Variable representing the component
     Variable var(GET_STR_TYPE(EnumComponent.m_literals[type].c_str()), space->GetHandles().Get(m_components[type]));
-
+    // And then manually pass it to lua
     Lua::GenericToLua(ENGINE->Lua(), var);
 
     return;
+  }
+
+  bool GameObject::LuaHasComponent(size_t type)
+  {
+    if (!HasComponent(EComponent(type)))
+      return false;
+    else
+      return true;
   }
 
 };
