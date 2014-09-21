@@ -104,6 +104,7 @@ namespace Framework
 
     TYPE_REGISTER( Transform );
     TYPE_ADD_MEMBER(Transform, Translation);
+    TYPE_ADD_MEMBER(Transform, Scale);
     TYPE_SET_FROM_LUA( Transform, Lua::GenericObjectFromLua );
 
     TYPE_REGISTER_PTR(Transform*);

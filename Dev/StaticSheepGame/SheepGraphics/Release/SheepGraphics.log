@@ -1,35 +1,6 @@
-﻿Build started 9/17/2014 1:11:13 PM.
+﻿Build started 9/20/2014 6:22:20 PM.
      1>Project "C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\SheepGraphics\SheepGraphics.vcxproj" on node 2 (Build target(s)).
-     1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /IC:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\includes /Zi /nologo /W4 /WX- /O2 /Oi /Oy- /GL /D WIN32 /D DLL_GFXEXPORT /D NDEBUG /D _WINDOWS /D _USRDLL /D SHEEPGRAPHICS_EXPORTS /D _WINDLL /D DLL_EXPORT /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Yu"precompiled.h" /Fp"Release\SheepGraphics.pch" /Fo"Release\\" /Fd"Release\vc110.pdb" /Gd /TP /FIprecompiled.h /analyze- /errorReport:prompt Context.cpp
-         Context.cpp
-     1>Context.cpp(159): warning C4100: 'vertexStart' : unreferenced formal parameter
-     1>Context.cpp(159): warning C4100: 'vertexCount' : unreferenced formal parameter
-     1>Context.cpp(206): warning C4244: 'argument' : conversion from 'unsigned int' to 'FLOAT', possible loss of data
-     1>Context.cpp(233): warning C4100: 'vertexStart' : unreferenced formal parameter
-     1>Context.cpp(233): warning C4100: 'indexStart' : unreferenced formal parameter
-     1>Context.cpp(233): warning C4100: 'indexCount' : unreferenced formal parameter
-     1>Context.cpp(238): warning C4100: 'instanceStart' : unreferenced formal parameter
-     1>Context.cpp(238): warning C4100: 'vertexStart' : unreferenced formal parameter
-     1>Context.cpp(238): warning C4100: 'instanceCount' : unreferenced formal parameter
-     1>Context.cpp(238): warning C4100: 'vertexCount' : unreferenced formal parameter
-     1>Context.cpp(243): warning C4100: 'instanceStart' : unreferenced formal parameter
-     1>Context.cpp(243): warning C4100: 'vertexStart' : unreferenced formal parameter
-     1>Context.cpp(243): warning C4100: 'indexStart' : unreferenced formal parameter
-     1>Context.cpp(243): warning C4100: 'instanceCount' : unreferenced formal parameter
-     1>Context.cpp(243): warning C4100: 'indexCountPerInstance' : unreferenced formal parameter
-       Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\Release\SheepGraphics.dll" /INCREMENTAL:NO /NOLOGO /LIBPATH:C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\includes /LIBPATH:C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\Release /LIBPATH:C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\SheepGraphics\FW1FontWrapper\x86 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\Release\SheepGraphics.pdb" /SUBSYSTEM:WINDOWS /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\Release\SheepGraphics.lib" /MACHINE:X86 /SAFESEH /DLL Release\Utilities.obj
-         Release\Camera.obj
-         Release\Context.obj
-         Release\Handle.obj
-         Release\Manager.obj
-         Release\precompiled.obj
-         Release\RenderMain.obj
-         Release\System.obj
-            Creating library C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\Release\SheepGraphics.lib and object C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\Release\SheepGraphics.exp
-         Generating code
-         Finished generating code
+     1>Link:
          SheepGraphics.vcxproj -> C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\Release\SheepGraphics.dll
        PostBuildEvent:
          C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\AutoHeaderVS.exe C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\SheepGraphics\ C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\includes\graphics\ GFX_API
@@ -42,4 +13,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:01.12
+Time Elapsed 00:00:00.82

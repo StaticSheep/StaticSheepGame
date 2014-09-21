@@ -54,7 +54,8 @@ namespace Framework
   {
     GRAPHICS->SetSize(width, height);
     GRAPHICS->SetPosition(x, y);
-
+    GRAPHICS->BindTexture(GRAPHICS->GetTextureID("content/White.png"));
+    GRAPHICS->RawDraw();
   }
 
   void Draw::DrawTexturedRect(float x, float y, float width, float height)
@@ -62,6 +63,10 @@ namespace Framework
     GRAPHICS->SetSize(width, height);
 
     GRAPHICS->SetPosition(x, y);
+
+    GRAPHICS->BindTexture(m_TextureID);
+
+    GRAPHICS->RawDraw();
 
   }
 

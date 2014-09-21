@@ -12,14 +12,6 @@
 #include "DirectXIncludes.h"
 #include "VertexTypes.h"
 #include "DataTypes.h"
-//#include "Camera.h"
-
-
-//#include "System.h"
-//#include "RenderMain.h"
-
-
-
 
 #if defined(_DEBUG)
 #define DXVerify(exp) if(FAILED(exp)){ErrorIf(true, "sheep_grahics", "DX Error %s", DXGetErrorDescription(exp));}

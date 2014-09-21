@@ -38,13 +38,19 @@ namespace Framework
     void SetPosition(float x, float y);
     void SetRotation(float theta);
     void SetSize(float x, float y);
+    void SetColor(Vec4 Color);
+
     DirectSheep::Handle SetTexture(const std::string& Texture);
     DirectSheep::Handle SetVShader(const std::string& Shader);
     DirectSheep::Handle SetPShader(const std::string& Shader);
-    void SetColor(Vec4 Color);
+
+    void RawDraw(void);
+
+    void BindTexture(int ID);
+
     void SetUseCamera(bool useCam);
     void DrawSprite(Sprite *sprite);
-    int GetTextureID(std::string& texture);
+    int GetTextureID(const std::string& texture);
     void DrawSpriteText(const char * text, float size, const char * font);
 
 	private:

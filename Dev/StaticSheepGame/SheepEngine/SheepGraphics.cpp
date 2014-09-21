@@ -130,9 +130,17 @@ namespace Framework
     }
 
     DirectSheep::Handle temp;
+
     m_renderContext->CreateTexture(temp, Texture);
+
     m_textureMap[Texture] = temp;
+
     return m_textureMap[Texture];
+  }
+
+  void SheepGraphics::BindTexture(int ID)
+  {
+    m_renderContext->BindTexture(0,DirectSheep::Handle(DirectSheep::TEXTURE, ID));
   }
 
   DirectSheep::Handle SheepGraphics::SetPShader(const std::string& Shader)
@@ -191,9 +199,27 @@ namespace Framework
     m_renderContext->Draw(6,0);
   }
 
-  int SheepGraphics::GetTextureID(std::string& texture)
+  void SheepGraphics::RawDraw(void)
   {
-    return 0;
+    m_renderContext->BindVertexShader(spritevShader);
+
+    m_renderContext->BindPixelShader(spritepShader);
+
+    m_renderContext->BindVertexBuffer(spriteQuad,20,0);
+
+    m_renderContext->BindConstantBuffer(0, spriteContext, DirectSheep::VERTEX_SHADER);
+    m_renderContext->BindConstantBuffer(0, spriteContext, DirectSheep::PIXEL_SHADER);
+
+    m_renderContext->Draw(6,0);
+  }
+  int SheepGraphics::GetTextureID(const std::string& texture)
+  {
+    for(auto it : m_textureMap)
+    {
+      if(it.first == texture)
+         return m_textureMap[texture].GetIndex();
+    }
+     return (SetTexture(texture)).GetIndex();
   }
 
   void SheepGraphics::SetUseCamera(bool useCam)

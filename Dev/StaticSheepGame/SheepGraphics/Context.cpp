@@ -23,7 +23,7 @@ namespace DirectSheep
   {
     float cameraX = 0.0f;
     float cameraY = 0.0f;
-    float cameraZ = -30.0f;
+    float cameraZ = -2.0f;
 
 
     Vec3 eyepoint(cameraX, cameraY, cameraZ);
@@ -38,7 +38,7 @@ namespace DirectSheep
     m_camera.view = matView;
 
     Mat4 matProj;
-    D3DXMatrixPerspectiveFovLH(&matProj, (FLOAT)D3DXToRadian(75), (float)m_viewport.dim.width / (float)m_viewport.dim.height, 1.0f, 1000.0f);
+    D3DXMatrixPerspectiveFovLH(&matProj, (FLOAT)D3DXToRadian(178.5985728), (float)m_viewport.dim.width / (float)m_viewport.dim.height, 1.0f, 1000.0f);
 
     m_camera.proj = matProj;
 
@@ -318,10 +318,10 @@ namespace DirectSheep
       D3DXMatrixIdentity(&rotMat);
       D3DXMatrixIdentity(&transMat);
       static float theta = 0;
-      theta +=.001;
-      D3DXMatrixRotationYawPitchRoll(&rotMat, 0.0f, -D3DX_PI, theta);
+      theta +=.001f;
+      D3DXMatrixRotationYawPitchRoll(&rotMat, 0.0f, (float)-D3DX_PI, theta);
 
-      D3DXMatrixTranslation(&transMat, floor(0), floor(0), floor(0.0f));
+      D3DXMatrixTranslation(&transMat, (float)floor(0), (float)floor(0), (float)floor(0.0f));
 
       D3DXMatrixMultiply(&rotMat, &rotMat, &transMat);
 
@@ -337,31 +337,17 @@ namespace DirectSheep
       std::string sfont(font);
       std::wstring WFont(sfont.begin(), sfont.end());
 
-    m_font.m_fontWrapper->DrawString(
-    m_deviceContext,
-    test.c_str(),// String
-    WFont.c_str(),
-    size,
-    &rect,
-    RGBTOBGR(D3DXCOLOR(DirectX::Colors::Red)),// Text color, 0xAaBbGgRr
-    NULL,
-    matFinal,
-    FW1_RESTORESTATE | FW1_CENTER | FW1_VCENTER | FW1_NOWORDWRAP
-    );// Flags (for example FW1_RESTORESTATE to keep context states 
-
-    }
-    void RenderContext::DrawIndexed(unsigned indexCount, unsigned indexStart, unsigned vertexStart)
-    {
-
-    }
-
-    void RenderContext::DrawInstanced(unsigned vertexCount, unsigned instanceCount, unsigned vertexStart, unsigned instanceStart)
-    {
-
-    }
-
-    void RenderContext::DrawIndexInstanced(unsigned indexCountPerInstance, unsigned instanceCount, unsigned indexStart, unsigned vertexStart, unsigned instanceStart)
-    {
+      m_font.m_fontWrapper->DrawString(
+      m_deviceContext,
+      test.c_str(),// String
+      WFont.c_str(),
+      size,
+      &rect,
+      RGBTOBGR(D3DXCOLOR(m_spriteBlend.r,m_spriteBlend.g,m_spriteBlend.b, m_spriteBlend.a)),// Text color, 0xAaBbGgRr
+      NULL,
+      matFinal,
+      FW1_RESTORESTATE | FW1_CENTER | FW1_VCENTER | FW1_NOWORDWRAP
+      );// Flags (for example FW1_RESTORESTATE to keep context states 
 
     }
 
@@ -471,30 +457,6 @@ namespace DirectSheep
 
       return true;
     }
-
-    /*bool RenderContext::CreateTexture(Handle& handle, const void *data, const Dimension& dim, const Format format)
-    {
-      D3D11_TEXTURE2D_DESC desc;
-
-      ZeroMemory(&desc, sizeof(ID3D11Texture2D));
-
-      desc.Width = dim.width;
-      desc.Height = dim.height;
-      desc.MipLevels = desc.ArraySize = 1;
-      desc.Format = (DXGI_FORMAT)format;
-      desc.SampleDesc.Count = 1;
-      desc.Usage = D3D11_USAGE_DYNAMIC;
-      desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
-      desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-      desc.MiscFlags = 0;
-
-      ID3D11Device *pd3dDevice; // Don't forget to initialize this
-      ID3D11Texture2D *pTexture = NULL;
-      pd3dDevice->CreateTexture2D( &desc, NULL, &pTexture );
-
-      return true;
-
-    }*/
 
     bool RenderContext::CreateVertexBuffer(Handle& handle, size_t size)
     {
@@ -621,17 +583,6 @@ namespace DirectSheep
 
       return true;
     }
-    /*bool RenderContext::CreateRenderTarget(Handle& handle, const RenderTargetMode mode, const Format format, const float downsamplePercentage, const Dimension& dim)
-    {
-      RenderTarget tempRT;
-
-      tempRT.mode = mode;
-      tempRT.format = format;
-      tempRT.downsamplePercentage = downsamplePercentage;
-      tempRT.size = dim;
-
-      return true;
-    }*/
 
     /////////////////////////////////////////////////////////////
     //                    BIND FUNCTIONS                       //
@@ -704,11 +655,6 @@ namespace DirectSheep
       if(rtHandle.type == RENDER_TARGET)
         m_deviceContext->OMSetRenderTargets(1, &m_backBuffer, m_depthBuffer.m_depthBuffer);
     }
-
-    /*void RenderContext::BindRenderTargets(unsigned count, const Handle rtHandle, ...)
-    {
-
-    }*/
 
     /////////////////////////////////////////////////////////////
     //                    SETTER FUNCTIONS                     //
@@ -1028,9 +974,6 @@ namespace DirectSheep
     rd.DepthBias = 0;
     rd.DepthBiasClamp = 0.0f;
     rd.SlopeScaledDepthBias = 0.0f;
-
-    //rd.FillMode = D3D11_FILL_WIREFRAME;
-    //rd.AntialiasedLineEnable = TRUE;
 
     DXVerify(m_device->CreateRasterizerState(&rd, &m_rastState));
   }

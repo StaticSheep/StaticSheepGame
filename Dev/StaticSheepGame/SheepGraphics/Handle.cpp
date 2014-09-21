@@ -8,6 +8,11 @@ namespace DirectSheep
     return type;
   }
 
+  int Handle::GetIndex(void) const
+  {
+    return index;
+  }
+
   bool Handle::operator==(const Handle& rhs) const
   {
     if(index == rhs.index && type == rhs.type)
