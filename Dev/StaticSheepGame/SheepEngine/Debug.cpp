@@ -1,7 +1,6 @@
 #include "Debug.h"
 #include "SheepAudio.h"
-
-class SheepAudio;
+#include "SheepGraphics.h"
 
 namespace Framework
 {
@@ -19,17 +18,14 @@ namespace Framework
 
   void Debug::Initialize()
   {
-
+    audio = (DebugAudio*)AUDIO->GetDebugData();
+    graphics = (DebugGraphics*)GRAPHICS->GetDebugData();
   }
 
   void Debug::Update(float dt)
   {
-    audio = (DebugAudio*)AUDIO->GetDebugData();
-  }
-  
-  void* Debug::GetDebugData(void)
-  {
-    return nullptr; 
+    
+    
   }
 
 }

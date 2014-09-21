@@ -1,10 +1,14 @@
 #include "System.h"
 #include <vector>
 
-struct DebugAudio;
+
+
 
 namespace Framework
 {
+  struct DebugAudio;
+  struct DebugGraphics;
+
   class Debug : public ISystem
   {
   public:
@@ -15,11 +19,12 @@ namespace Framework
     void Initialize(void);
     void Update(float dt);
 
-    void* GetDebugData(void);
+    //void* GetDebugData(void);
 
   private:
 
-    DebugAudio* audio;
+    DebugAudio*     audio;
+    DebugGraphics*  graphics;
 
   };
 }

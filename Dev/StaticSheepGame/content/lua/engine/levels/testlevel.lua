@@ -6,7 +6,7 @@ function foo()
   local gspace = engine.CreateSpace("space1")
   local obj = gspace:CreateObject("drawtest")
   
-  obj.SoundEmitter:Play("TopGun")
+  obj.SoundEmitter:Play("space_brawl")
   -- local tr = obj.Transform
   -- obj.Transform:SetScale(Vec2(25, 25))
 

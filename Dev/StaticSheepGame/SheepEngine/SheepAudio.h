@@ -14,6 +14,14 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 namespace Framework
 {
+
+  struct DebugAudio
+  {
+    FMOD_STUDIO_CPU_USAGE cpuLoad;
+    int channels;
+    int RAM;
+  };
+
 	class SheepAudio : public ISystem
 	{
 	public:
@@ -34,6 +42,9 @@ namespace Framework
 
     // Play the things! Stop the things!
     SOUND::EventInstance* Play(const std::string &event_name, PlayMode mode);
+
+    const void* GetDebugData() { return m_debugData; };
+
     void Stop(const std::string &event_name, FadeOut mode);
     void StopAll(FadeOut mode);
     bool GetLoadState() const;
