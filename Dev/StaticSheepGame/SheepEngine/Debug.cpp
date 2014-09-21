@@ -12,6 +12,11 @@ namespace Framework
 
   }
 
+  Debug::~Debug()
+  {
+
+  }
+
   void Debug::Initialize()
   {
 
@@ -21,10 +26,10 @@ namespace Framework
   {
     audio = (DebugAudio*)AUDIO->GetDebugData();
   }
-
+  
   void* Debug::GetDebugData(void)
   {
-    
+    return nullptr; 
   }
 
 }
