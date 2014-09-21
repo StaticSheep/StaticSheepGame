@@ -105,6 +105,7 @@
     <ClInclude Include="Component.h" />
     <ClInclude Include="ComponentCreator.h" />
     <ClInclude Include="CTester.h" />
+    <ClInclude Include="Debug.h" />
     <ClInclude Include="DefaultTypes.h" />
     <ClInclude Include="DrawLib.h" />
     <ClInclude Include="Engine.h" />
@@ -142,6 +143,8 @@
     <ClInclude Include="SheepSoundEvent.h" />
     <ClInclude Include="sheep_engine.h" />
     <ClInclude Include="SlotArray.h" />
+    <ClInclude Include="SoundEmitter.h" />
+    <ClInclude Include="SoundPlayer.h" />
     <ClInclude Include="Space.h" />
     <ClInclude Include="CSprite.h" />
     <ClInclude Include="System.h" />
@@ -160,6 +163,7 @@
     <ClCompile Include="CLuaComponent.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="CTester.cpp" />
+    <ClCompile Include="Debug.cpp" />
     <ClCompile Include="DefaultTypes.cpp" />
     <ClCompile Include="DrawLib.cpp" />
     <ClCompile Include="Engine.cpp" />
@@ -194,6 +198,8 @@
     <ClCompile Include="SheepPhysics.cpp" />
     <ClCompile Include="SheepSoundEvent.cpp" />
     <ClCompile Include="sheep_engine.cpp" />
+    <ClCompile Include="SoundEmitter.cpp" />
+    <ClCompile Include="SoundPlayer.cpp" />
     <ClCompile Include="Space.cpp" />
     <ClCompile Include="CSprite.cpp" />
     <ClCompile Include="TypeInfo.cpp" />

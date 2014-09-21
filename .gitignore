@@ -116,3 +116,8 @@ Dev/StaticSheepGame/luaSource/Release/vc110.pdb
 *.idb
 *.pdb
 *.fobj
+Dev/StaticSheepGame/SheepEngine/CSprite.cpp.BACKUP.10652.cpp
+Dev/StaticSheepGame/SheepEngine/CSprite.cpp.BASE.10652.cpp
+Dev/StaticSheepGame/SheepEngine/CSprite.cpp.LOCAL.10652.cpp
+Dev/StaticSheepGame/SheepEngine/CSprite.cpp.REMOTE.10652.cpp
+Dev/StaticSheepGame/SheepEngine/DefaultTypes.cpp.orig

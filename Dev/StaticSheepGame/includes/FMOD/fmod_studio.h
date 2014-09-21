@@ -28,15 +28,22 @@ FMOD_RESULT F_API FMOD_Studio_System_Create(FMOD_STUDIO_SYSTEM **system, unsigne
 /*
     System
 */
+FMOD_BOOL   F_API FMOD_Studio_System_IsValid(FMOD_STUDIO_SYSTEM *system);
 FMOD_RESULT F_API FMOD_Studio_System_SetAdvancedSettings(FMOD_STUDIO_SYSTEM *system, FMOD_STUDIO_ADVANCEDSETTINGS *settings);
 FMOD_RESULT F_API FMOD_Studio_System_GetAdvancedSettings(FMOD_STUDIO_SYSTEM *system, FMOD_STUDIO_ADVANCEDSETTINGS *settings);
 FMOD_RESULT F_API FMOD_Studio_System_Initialize(FMOD_STUDIO_SYSTEM *system, int maxchannels, FMOD_STUDIO_INITFLAGS studioflags, FMOD_INITFLAGS flags, void *extradriverdata);
 FMOD_RESULT F_API FMOD_Studio_System_Release(FMOD_STUDIO_SYSTEM *system);
 FMOD_RESULT F_API FMOD_Studio_System_Update(FMOD_STUDIO_SYSTEM *system);
 FMOD_RESULT F_API FMOD_Studio_System_GetLowLevelSystem(FMOD_STUDIO_SYSTEM *system, FMOD_SYSTEM **lowLevelSystem);
-FMOD_RESULT F_API FMOD_Studio_System_GetEvent(FMOD_STUDIO_SYSTEM *system, FMOD_GUID *id, FMOD_STUDIO_LOADING_MODE mode, FMOD_STUDIO_EVENTDESCRIPTION **event);
-FMOD_RESULT F_API FMOD_Studio_System_GetMixerStrip(FMOD_STUDIO_SYSTEM *system, const FMOD_GUID *id, FMOD_STUDIO_LOADING_MODE mode, FMOD_STUDIO_MIXERSTRIP **mixerStrip);
-FMOD_RESULT F_API FMOD_Studio_System_GetBank(FMOD_STUDIO_SYSTEM *system, const FMOD_GUID *id, FMOD_STUDIO_BANK **bank);
+FMOD_RESULT F_API FMOD_Studio_System_GetEvent(FMOD_STUDIO_SYSTEM *system, const char *pathOrID, FMOD_STUDIO_EVENTDESCRIPTION **event);
+FMOD_RESULT F_API FMOD_Studio_System_GetBus(FMOD_STUDIO_SYSTEM *system, const char *pathOrID, FMOD_STUDIO_BUS **bus);
+FMOD_RESULT F_API FMOD_Studio_System_GetVCA(FMOD_STUDIO_SYSTEM *system, const char *pathOrID, FMOD_STUDIO_VCA **vca);
+FMOD_RESULT F_API FMOD_Studio_System_GetBank(FMOD_STUDIO_SYSTEM *system, const char *pathOrID, FMOD_STUDIO_BANK **bank);
+FMOD_RESULT F_API FMOD_Studio_System_GetEventByID(FMOD_STUDIO_SYSTEM *system, const FMOD_GUID *id, FMOD_STUDIO_EVENTDESCRIPTION **event);
+FMOD_RESULT F_API FMOD_Studio_System_GetBusByID(FMOD_STUDIO_SYSTEM *system, const FMOD_GUID *id, FMOD_STUDIO_BUS **bus);
+FMOD_RESULT F_API FMOD_Studio_System_GetVCAByID(FMOD_STUDIO_SYSTEM *system, const FMOD_GUID *id, FMOD_STUDIO_VCA **vca);
+FMOD_RESULT F_API FMOD_Studio_System_GetBankByID(FMOD_STUDIO_SYSTEM *system, const FMOD_GUID *id, FMOD_STUDIO_BANK **bank);
+FMOD_RESULT F_API FMOD_Studio_System_GetSoundInfo(FMOD_STUDIO_SYSTEM *system, const char *key, FMOD_STUDIO_SOUND_INFO *info);
 FMOD_RESULT F_API FMOD_Studio_System_LookupID(FMOD_STUDIO_SYSTEM *system, const char *path, FMOD_GUID *id);
 FMOD_RESULT F_API FMOD_Studio_System_LookupPath(FMOD_STUDIO_SYSTEM *system, const FMOD_GUID *id, char *path, int size, int *retrieved);
 FMOD_RESULT F_API FMOD_Studio_System_GetListenerAttributes(FMOD_STUDIO_SYSTEM *system, FMOD_3D_ATTRIBUTES *attributes);
@@ -56,10 +63,14 @@ FMOD_RESULT F_API FMOD_Studio_System_GetBankList(FMOD_STUDIO_SYSTEM *system, FMO
 FMOD_RESULT F_API FMOD_Studio_System_GetCPUUsage(FMOD_STUDIO_SYSTEM *system, FMOD_STUDIO_CPU_USAGE *usage);
 FMOD_RESULT F_API FMOD_Studio_System_GetBufferUsage(FMOD_STUDIO_SYSTEM *system, FMOD_STUDIO_BUFFER_USAGE *usage);
 FMOD_RESULT F_API FMOD_Studio_System_ResetBufferUsage(FMOD_STUDIO_SYSTEM *system);
+FMOD_RESULT F_API FMOD_Studio_System_SetCallback(FMOD_STUDIO_SYSTEM *system, FMOD_STUDIO_SYSTEM_CALLBACK callback, FMOD_STUDIO_SYSTEM_CALLBACK_TYPE callbackmask);
+FMOD_RESULT F_API FMOD_Studio_System_SetUserData(FMOD_STUDIO_SYSTEM *system, void *userdata);
+FMOD_RESULT F_API FMOD_Studio_System_GetUserData(FMOD_STUDIO_SYSTEM *system, void **userdata);
 
 /*
     EventDescription
 */
+FMOD_BOOL   F_API FMOD_Studio_EventDescription_IsValid(FMOD_STUDIO_EVENTDESCRIPTION *eventdescription);
 FMOD_RESULT F_API FMOD_Studio_EventDescription_GetID(FMOD_STUDIO_EVENTDESCRIPTION *eventdescription, FMOD_GUID *id);
 FMOD_RESULT F_API FMOD_Studio_EventDescription_GetPath(FMOD_STUDIO_EVENTDESCRIPTION *eventdescription, char *path, int size, int *retrieved);
 FMOD_RESULT F_API FMOD_Studio_EventDescription_GetParameterCount(FMOD_STUDIO_EVENTDESCRIPTION *eventdescription, int *count);
@@ -88,6 +99,7 @@ FMOD_RESULT F_API FMOD_Studio_EventDescription_SetUserData(FMOD_STUDIO_EVENTDESC
 /*
     EventInstance
 */
+FMOD_BOOL   F_API FMOD_Studio_EventInstance_IsValid(FMOD_STUDIO_EVENTINSTANCE *eventinstance);
 FMOD_RESULT F_API FMOD_Studio_EventInstance_GetDescription(FMOD_STUDIO_EVENTINSTANCE *eventinstance, FMOD_STUDIO_EVENTDESCRIPTION **description);
 FMOD_RESULT F_API FMOD_Studio_EventInstance_GetVolume(FMOD_STUDIO_EVENTINSTANCE *eventinstance, float *volume);
 FMOD_RESULT F_API FMOD_Studio_EventInstance_SetVolume(FMOD_STUDIO_EVENTINSTANCE *eventinstance, float volume);
@@ -95,6 +107,8 @@ FMOD_RESULT F_API FMOD_Studio_EventInstance_GetPitch(FMOD_STUDIO_EVENTINSTANCE *
 FMOD_RESULT F_API FMOD_Studio_EventInstance_SetPitch(FMOD_STUDIO_EVENTINSTANCE *eventinstance, float pitch);
 FMOD_RESULT F_API FMOD_Studio_EventInstance_Get3DAttributes(FMOD_STUDIO_EVENTINSTANCE *eventinstance, FMOD_3D_ATTRIBUTES *attributes);
 FMOD_RESULT F_API FMOD_Studio_EventInstance_Set3DAttributes(FMOD_STUDIO_EVENTINSTANCE *eventinstance, FMOD_3D_ATTRIBUTES *attributes);
+FMOD_RESULT F_API FMOD_Studio_EventInstance_GetProperty(FMOD_STUDIO_EVENTINSTANCE *eventinstance, FMOD_STUDIO_EVENT_PROPERTY index, float *value);
+FMOD_RESULT F_API FMOD_Studio_EventInstance_SetProperty(FMOD_STUDIO_EVENTINSTANCE *eventinstance, FMOD_STUDIO_EVENT_PROPERTY index, float value);
 FMOD_RESULT F_API FMOD_Studio_EventInstance_GetPaused(FMOD_STUDIO_EVENTINSTANCE *eventinstance, FMOD_BOOL *paused);
 FMOD_RESULT F_API FMOD_Studio_EventInstance_SetPaused(FMOD_STUDIO_EVENTINSTANCE *eventinstance, FMOD_BOOL paused);
 FMOD_RESULT F_API FMOD_Studio_EventInstance_Start(FMOD_STUDIO_EVENTINSTANCE *eventinstance);
@@ -113,8 +127,6 @@ FMOD_RESULT F_API FMOD_Studio_EventInstance_SetParameterValueByIndex(FMOD_STUDIO
 FMOD_RESULT F_API FMOD_Studio_EventInstance_GetCue(FMOD_STUDIO_EVENTINSTANCE *eventinstance, const char *name, FMOD_STUDIO_CUEINSTANCE **cue);
 FMOD_RESULT F_API FMOD_Studio_EventInstance_GetCueByIndex(FMOD_STUDIO_EVENTINSTANCE *eventinstance, int index, FMOD_STUDIO_CUEINSTANCE **cue);
 FMOD_RESULT F_API FMOD_Studio_EventInstance_GetCueCount(FMOD_STUDIO_EVENTINSTANCE *eventinstance, int *count);
-FMOD_RESULT F_API FMOD_Studio_EventInstance_CreateSubEvent(FMOD_STUDIO_EVENTINSTANCE *eventinstance, const char *name, FMOD_STUDIO_EVENTINSTANCE **instance);
-FMOD_RESULT F_API FMOD_Studio_EventInstance_GetLoadingState(FMOD_STUDIO_EVENTINSTANCE *eventinstance, FMOD_STUDIO_LOADING_STATE *state);
 FMOD_RESULT F_API FMOD_Studio_EventInstance_SetCallback(FMOD_STUDIO_EVENTINSTANCE *eventinstance, FMOD_STUDIO_EVENT_CALLBACK callback);
 FMOD_RESULT F_API FMOD_Studio_EventInstance_GetUserData(FMOD_STUDIO_EVENTINSTANCE *eventinstance, void **userData);
 FMOD_RESULT F_API FMOD_Studio_EventInstance_SetUserData(FMOD_STUDIO_EVENTINSTANCE *eventinstance, void *userData);
@@ -122,34 +134,45 @@ FMOD_RESULT F_API FMOD_Studio_EventInstance_SetUserData(FMOD_STUDIO_EVENTINSTANC
 /*
     CueInstance
 */
+FMOD_BOOL   F_API FMOD_Studio_CueInstance_IsValid(FMOD_STUDIO_CUEINSTANCE *cueinstance);
 FMOD_RESULT F_API FMOD_Studio_CueInstance_Trigger(FMOD_STUDIO_CUEINSTANCE *cueinstance);
 
 /*
     ParameterInstance
 */
+FMOD_BOOL   F_API FMOD_Studio_ParameterInstance_IsValid(FMOD_STUDIO_PARAMETERINSTANCE *parameterinstance);
 FMOD_RESULT F_API FMOD_Studio_ParameterInstance_GetDescription(FMOD_STUDIO_PARAMETERINSTANCE *parameterinstance, FMOD_STUDIO_PARAMETER_DESCRIPTION *description);
 FMOD_RESULT F_API FMOD_Studio_ParameterInstance_GetValue(FMOD_STUDIO_PARAMETERINSTANCE *parameterinstance, float *value);
 FMOD_RESULT F_API FMOD_Studio_ParameterInstance_SetValue(FMOD_STUDIO_PARAMETERINSTANCE *parameterinstance, float value);
 
 /*
-    MixerStrip
+    Bus
 */
-FMOD_RESULT F_API FMOD_Studio_MixerStrip_GetID(FMOD_STUDIO_MIXERSTRIP *mixerstrip, FMOD_GUID *id);
-FMOD_RESULT F_API FMOD_Studio_MixerStrip_GetPath(FMOD_STUDIO_MIXERSTRIP *mixerstrip, char *path, int size, int *retrieved);
-FMOD_RESULT F_API FMOD_Studio_MixerStrip_GetFaderLevel(FMOD_STUDIO_MIXERSTRIP *mixerstrip, float *level);
-FMOD_RESULT F_API FMOD_Studio_MixerStrip_SetFaderLevel(FMOD_STUDIO_MIXERSTRIP *mixerstrip, float level);
-FMOD_RESULT F_API FMOD_Studio_MixerStrip_GetPaused(FMOD_STUDIO_MIXERSTRIP *mixerstrip, FMOD_BOOL *paused);
-FMOD_RESULT F_API FMOD_Studio_MixerStrip_SetPaused(FMOD_STUDIO_MIXERSTRIP *mixerstrip, FMOD_BOOL paused);
-FMOD_RESULT F_API FMOD_Studio_MixerStrip_GetMute(FMOD_STUDIO_MIXERSTRIP *mixerstrip, FMOD_BOOL *mute);
-FMOD_RESULT F_API FMOD_Studio_MixerStrip_SetMute(FMOD_STUDIO_MIXERSTRIP *mixerstrip, FMOD_BOOL mute);
-FMOD_RESULT F_API FMOD_Studio_MixerStrip_StopAllEvents(FMOD_STUDIO_MIXERSTRIP *mixerstrip, FMOD_STUDIO_STOP_MODE mode);
-FMOD_RESULT F_API FMOD_Studio_MixerStrip_GetChannelGroup(FMOD_STUDIO_MIXERSTRIP *mixerstrip, FMOD_CHANNELGROUP **group);
-FMOD_RESULT F_API FMOD_Studio_MixerStrip_GetLoadingState(FMOD_STUDIO_MIXERSTRIP *mixerstrip, FMOD_STUDIO_LOADING_STATE *state);
-FMOD_RESULT F_API FMOD_Studio_MixerStrip_Release(FMOD_STUDIO_MIXERSTRIP *mixerstrip);
+FMOD_BOOL   F_API FMOD_Studio_Bus_IsValid(FMOD_STUDIO_BUS *bus);
+FMOD_RESULT F_API FMOD_Studio_Bus_GetID(FMOD_STUDIO_BUS *bus, FMOD_GUID *id);
+FMOD_RESULT F_API FMOD_Studio_Bus_GetPath(FMOD_STUDIO_BUS *bus, char *path, int size, int *retrieved);
+FMOD_RESULT F_API FMOD_Studio_Bus_GetFaderLevel(FMOD_STUDIO_BUS *bus, float *level);
+FMOD_RESULT F_API FMOD_Studio_Bus_SetFaderLevel(FMOD_STUDIO_BUS *bus, float level);
+FMOD_RESULT F_API FMOD_Studio_Bus_GetPaused(FMOD_STUDIO_BUS *bus, FMOD_BOOL *paused);
+FMOD_RESULT F_API FMOD_Studio_Bus_SetPaused(FMOD_STUDIO_BUS *bus, FMOD_BOOL paused);
+FMOD_RESULT F_API FMOD_Studio_Bus_GetMute(FMOD_STUDIO_BUS *bus, FMOD_BOOL *mute);
+FMOD_RESULT F_API FMOD_Studio_Bus_SetMute(FMOD_STUDIO_BUS *bus, FMOD_BOOL mute);
+FMOD_RESULT F_API FMOD_Studio_Bus_StopAllEvents(FMOD_STUDIO_BUS *bus, FMOD_STUDIO_STOP_MODE mode);
+FMOD_RESULT F_API FMOD_Studio_Bus_GetChannelGroup(FMOD_STUDIO_BUS *bus, FMOD_CHANNELGROUP **group);
+
+/*
+    VCA
+*/
+FMOD_BOOL   F_API FMOD_Studio_VCA_IsValid(FMOD_STUDIO_VCA *vca);
+FMOD_RESULT F_API FMOD_Studio_VCA_GetID(FMOD_STUDIO_VCA *vca, FMOD_GUID *id);
+FMOD_RESULT F_API FMOD_Studio_VCA_GetPath(FMOD_STUDIO_VCA *vca, char *path, int size, int *retrieved);
+FMOD_RESULT F_API FMOD_Studio_VCA_GetFaderLevel(FMOD_STUDIO_VCA *vca, float *level);
+FMOD_RESULT F_API FMOD_Studio_VCA_SetFaderLevel(FMOD_STUDIO_VCA *vca, float level);
 
 /*
     Bank
 */
+FMOD_BOOL   F_API FMOD_Studio_Bank_IsValid(FMOD_STUDIO_BANK *bank);
 FMOD_RESULT F_API FMOD_Studio_Bank_GetID(FMOD_STUDIO_BANK *bank, FMOD_GUID *id);
 FMOD_RESULT F_API FMOD_Studio_Bank_GetPath(FMOD_STUDIO_BANK *bank, char *path, int size, int *retrieved);
 FMOD_RESULT F_API FMOD_Studio_Bank_Unload(FMOD_STUDIO_BANK *bank);
@@ -157,10 +180,14 @@ FMOD_RESULT F_API FMOD_Studio_Bank_LoadSampleData(FMOD_STUDIO_BANK *bank);
 FMOD_RESULT F_API FMOD_Studio_Bank_UnloadSampleData(FMOD_STUDIO_BANK *bank);
 FMOD_RESULT F_API FMOD_Studio_Bank_GetLoadingState(FMOD_STUDIO_BANK *bank, FMOD_STUDIO_LOADING_STATE *state);
 FMOD_RESULT F_API FMOD_Studio_Bank_GetSampleLoadingState(FMOD_STUDIO_BANK *bank, FMOD_STUDIO_LOADING_STATE *state);
+FMOD_RESULT F_API FMOD_Studio_Bank_GetStringCount(FMOD_STUDIO_BANK *bank, int *count);
+FMOD_RESULT F_API FMOD_Studio_Bank_GetStringInfo(FMOD_STUDIO_BANK *bank, int index, FMOD_GUID *id, char *path, int size, int *retrieved);
 FMOD_RESULT F_API FMOD_Studio_Bank_GetEventCount(FMOD_STUDIO_BANK *bank, int *count);
 FMOD_RESULT F_API FMOD_Studio_Bank_GetEventList(FMOD_STUDIO_BANK *bank, FMOD_STUDIO_EVENTDESCRIPTION **array, int capacity, int *count);
-FMOD_RESULT F_API FMOD_Studio_Bank_GetMixerStripCount(FMOD_STUDIO_BANK *bank, int *count);
-FMOD_RESULT F_API FMOD_Studio_Bank_GetMixerStripList(FMOD_STUDIO_BANK *bank, FMOD_STUDIO_MIXERSTRIP **array, int capacity, int *count);
+FMOD_RESULT F_API FMOD_Studio_Bank_GetBusCount(FMOD_STUDIO_BANK *bank, int *count);
+FMOD_RESULT F_API FMOD_Studio_Bank_GetBusList(FMOD_STUDIO_BANK *bank, FMOD_STUDIO_BUS **array, int capacity, int *count);
+FMOD_RESULT F_API FMOD_Studio_Bank_GetVCACount(FMOD_STUDIO_BANK *bank, int *count);
+FMOD_RESULT F_API FMOD_Studio_Bank_GetVCAList(FMOD_STUDIO_BANK *bank, FMOD_STUDIO_VCA **array, int capacity, int *count);
 
 /*$ preserve start $*/
 

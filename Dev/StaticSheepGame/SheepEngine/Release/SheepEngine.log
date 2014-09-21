@@ -1,13 +1,66 @@
-﻿Build started 7/30/2014 12:57:54 AM.
+﻿Build started 9/20/2014 5:36:34 PM.
      1>Project "C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\SheepEngine\SheepEngine.vcxproj" on node 2 (Build target(s)).
-     1>Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\Release\SheepEngine.dll" /INCREMENTAL:NO /NOLOGO /LIBPATH:C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\includes /LIBPATH:C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\Release SheepGraphics.lib SheepPhysics.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\Release\SheepEngine.pdb" /SUBSYSTEM:WINDOWS /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\Release\SheepEngine.lib" /MACHINE:X86 /SAFESEH /DLL Release\Utilities.obj
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /IC:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\includes /Zi /nologo /W3 /WX- /O2 /Oi /Oy- /GL /D WIN32 /D DLL_ENGINEEXPORT /D NDEBUG /D _WINDOWS /D _USRDLL /D SHEEPENGINE_EXPORTS /D DLL_EXPORT /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Yc"precompiled.h" /Fp"Release\SheepEngine.pch" /Fo"Release\\" /Fd"Release\vc110.pdb" /Gd /TP /FIprecompiled.h /analyze- /errorReport:prompt precompiled.cpp
+         precompiled.cpp
+         Compiling Precompiled Header File...
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /IC:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\includes /Zi /nologo /W3 /WX- /O2 /Oi /Oy- /GL /D WIN32 /D DLL_ENGINEEXPORT /D NDEBUG /D _WINDOWS /D _USRDLL /D SHEEPENGINE_EXPORTS /D DLL_EXPORT /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Yu"precompiled.h" /Fp"Release\SheepEngine.pch" /Fo"Release\\" /Fd"Release\vc110.pdb" /Gd /TP /FIprecompiled.h /analyze- /errorReport:prompt ..\Utilities\Utilities.cpp Archetype.cpp CGamePad.cpp CLuaComponent.cpp CSprite.cpp CTester.cpp CTransform.cpp Camera.cpp Component.cpp DefaultTypes.cpp DrawLib.cpp Engine.cpp Enum.cpp Factory.cpp File.cpp FuncSignature.cpp Function.cpp GameLogic.cpp Handle.cpp HandleManager.cpp Hooks.cpp Input.cpp IntrospectionManager.cpp LuaDefaultBinds.cpp LuaInterface.cpp LuaTransfer.cpp Object.cpp ObjectAllocator.cpp PODSerialization.cpp PhysicsObject.cpp Serialization.cpp SheepAudio.cpp SheepGraphics.cpp SheepPhysics.cpp SheepSoundEvent.cpp Space.cpp TypeInfo.cpp Variable.cpp Vec2.cpp Vec4.cpp Window.cpp main.cpp sheep_engine.cpp
+         Utilities.cpp
+         Archetype.cpp
+         CGamePad.cpp
+         CLuaComponent.cpp
+         CSprite.cpp
+         CTester.cpp
+         CTransform.cpp
+         Camera.cpp
+         Component.cpp
+         DefaultTypes.cpp
+         DrawLib.cpp
+         Engine.cpp
+         Enum.cpp
+         Factory.cpp
+         File.cpp
+         FuncSignature.cpp
+         Function.cpp
+         GameLogic.cpp
+         Handle.cpp
+         HandleManager.cpp
+         Compiling...
+         Hooks.cpp
+         Input.cpp
+         IntrospectionManager.cpp
+         LuaDefaultBinds.cpp
+         LuaInterface.cpp
+         LuaTransfer.cpp
+         Object.cpp
+         ObjectAllocator.cpp
+         PODSerialization.cpp
+         PhysicsObject.cpp
+         Serialization.cpp
+         SheepAudio.cpp
+         SheepGraphics.cpp
+     1>SheepGraphics.cpp(54): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+         SheepPhysics.cpp
+         SheepSoundEvent.cpp
+         Space.cpp
+         TypeInfo.cpp
+         Variable.cpp
+         Vec2.cpp
+         Vec4.cpp
+         Compiling...
+         Window.cpp
+         main.cpp
+         sheep_engine.cpp
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\Release\SheepEngine.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\includes\FMOD /LIBPATH:C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\includes /LIBPATH:C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\Release SheepGraphics.lib SheepPhysics.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\Release\SheepEngine.pdb" /SUBSYSTEM:WINDOWS /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\Release\SheepEngine.lib" /MACHINE:X86 /SAFESEH Release\Utilities.obj
          Release\Archetype.obj
          Release\Camera.obj
+         Release\CGamePad.obj
          Release\CLuaComponent.obj
          Release\Component.obj
          Release\CTester.obj
          Release\DefaultTypes.obj
+         Release\DrawLib.obj
          Release\Engine.obj
          Release\CTransform.obj
          Release\Enum.obj
@@ -16,12 +69,13 @@
          Release\FuncSignature.obj
          Release\Function.obj
          Release\GameLogic.obj
-         Release\Hash.obj
          Release\Hooks.obj
+         Release\Input.obj
          Release\IntrospectionManager.obj
          Release\LuaDefaultBinds.obj
          Release\LuaInterface.obj
          Release\LuaTransfer.obj
+         Release\main.obj
          Release\ObjectAllocator.obj
          Release\PhysicsObject.obj
          Release\PODSerialization.obj
@@ -33,18 +87,29 @@
          Release\Object.obj
          Release\precompiled.obj
          Release\SheepPhysics.obj
+         Release\SheepSoundEvent.obj
          Release\sheep_engine.obj
          Release\Space.obj
          Release\CSprite.obj
          Release\TypeInfo.obj
          Release\Variable.obj
+         Release\Vec2.obj
+         Release\Vec4.obj
          Release\Window.obj
             Creating library C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\Release\SheepEngine.lib and object C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\Release\SheepEngine.exp
          Generating code
+     1>c:\users\scott\documents\staticsheepgame\dev\staticsheepgame\sheepengine\sheepsoundevent.cpp(59): warning C4715: 'SoundUtility::SourcePath' : not all control paths return a value
          Finished generating code
-         SheepEngine.vcxproj -> C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\Release\SheepEngine.dll
+         SheepEngine.vcxproj -> C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\Release\SheepEngine.exe
+       PostBuildEvent:
+         xcopy C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\includes\FMOD\*.dll C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\Release\ /f /y 
+         :VCEnd
+         C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\includes\FMOD\fmodL.dll -> C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\Release\fmodL.dll
+         C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\includes\FMOD\fmodstudio.dll -> C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\Release\fmodstudio.dll
+         C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\includes\FMOD\fmodstudioL.dll -> C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\Release\fmodstudioL.dll
+         3 File(s) copied
      1>Done Building Project "C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\SheepEngine\SheepEngine.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:02.72
+Time Elapsed 00:00:07.70

@@ -6,6 +6,8 @@ Author(s): Zachary Nawar (Primary)
 All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 *****************************************************************/
 
+#include "SoundEmitter.h"
+
 namespace Framework
 {
   namespace Lua
@@ -28,6 +30,8 @@ namespace Framework
       BIND_FUNCTION_EX(ENGINE->Lua(), GameSpace::CreateObjectFromArchetype, CreateObject);
       BIND_FUNCTION_EX(ENGINE->Lua(), GameSpace::GetGameObject, GetObject);
       BIND_FUNCTION_EX(ENGINE->Lua(), GameSpace::Clear, Clear);
+        
+      BIND_FUNCTION_EX(ENGINE->Lua(), SoundEmitter::Play, Play);
 
 
 

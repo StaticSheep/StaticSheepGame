@@ -16,6 +16,7 @@ namespace Framework
   class SheepWindow
   {
   public:
+    SheepWindow() : Handle(NULL) {};
     void MakeWindow(HINSTANCE hInstance, int nCmdShow);
     void Update();
     HWND GetHandle();

@@ -95,7 +95,7 @@ namespace Framework
     {
       ErrorIf(!lua_isstring(L, index), "LuaTransfer", "Type mismatch! Wrong argument type lua->C++ ?");
       std::string temp(lua_tostring(L, index));
-      var->GetTypeInfo()->PlacementCopy(var->GetData(), &temp);
+      var->GetTypeInfo()->Copy(var->GetData(), &temp);
     }
 
 
