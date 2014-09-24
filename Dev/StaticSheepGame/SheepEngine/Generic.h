@@ -30,4 +30,10 @@ namespace Framework
     GameSpace* space;
   };
 
+  struct GenericLookup
+  {
+    Handle self;
+    GameSpace* space;
+  };
+
 }

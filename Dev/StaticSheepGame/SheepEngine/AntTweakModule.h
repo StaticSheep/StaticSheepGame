@@ -75,6 +75,7 @@ namespace Framework
       void SetMovable(bool canMove);
       // Sets whether the bar is re-sizable
       void SetResizable(bool canResize);
+      
 
       //============================================== Content ====================================================//
 
@@ -90,6 +91,9 @@ namespace Framework
       void AddSeparator(const char* name);
       // Adds a button to the bar
       void AddButton(const char* name, aTButtonCB callback, void* clientData);
+
+      // Resets a AntTweakBar
+      void Reset(void);
 
       std::string name;
       Handle self;
@@ -141,9 +145,9 @@ namespace Framework
     // Gets a TBar from a handle
     AntTweak::TBar* GetBar(Handle barHandle);
 
-    virtual std::string GetName() {return "AntTweakBar";};
+    void RemoveBar(AntTweak::TBar* bar);
 
-    
+    virtual std::string GetName() {return "AntTweakBar";};
 
   private:
 

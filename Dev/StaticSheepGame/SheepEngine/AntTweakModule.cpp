@@ -84,6 +84,20 @@ namespace Framework
 #endif
   }
 
+  void AntTweakModule::RemoveBar(AntTweak::TBar* bar)
+  {
+#if USE_ANTTWEAKBAR
+
+    TwDeleteBar((TwBar*)bar->antTweakBar);
+    bar->~TBar();
+
+    AntTweak::TBar* moved = (AntTweak::TBar*)m_bars.Free(bar);
+    if (moved)
+      m_handles.Update(moved, moved->self);
+    
+#endif
+  }
+
   AntTweak::TBar* AntTweakModule::GetBar(Handle barHandle)
   {
 #if USE_ANTTWEAKBAR
@@ -254,7 +268,221 @@ namespace Framework
   }
 
 
+  // Sets a bar label
+  void AntTweak::TBar::SetLabel(const char* name)
+  {
+#if USE_ANTTWEAKBAR
+    TwSetParam((TwBar*)antTweakBar, NULL, "label", TW_PARAM_CSTRING, 1, name);
+#endif
+  }
 
+  // Defines the help message associated with the bar
+  void AntTweak::TBar::SetHelpLabel(const char* name)
+  {
+#if USE_ANTTWEAKBAR
+    TwSetParam((TwBar*)antTweakBar, NULL, "help", TW_PARAM_CSTRING, 1, name);
+#endif
+  }
+
+  // Set Bar Color
+  void AntTweak::TBar::SetColor(int red, int green, int blue)
+  {
+#if USE_ANTTWEAKBAR
+    int color[3] = {red, green, blue};
+    TwSetParam((TwBar*)antTweakBar, NULL, "label", TW_PARAM_INT32, 3, &color);
+#endif
+  }
+
+  // Sets the alpha-value of the bar
+  void AntTweak::TBar::SetAlpha(int alpha)
+  {
+#if USE_ANTTWEAKBAR
+    TwSetParam((TwBar*)antTweakBar, NULL, "alpha", TW_PARAM_INT32, 1, &alpha);
+#endif
+  }
+
+  // Sets the position of the bar
+  void AntTweak::TBar::SetPos(int x, int y)
+  {
+#if USE_ANTTWEAKBAR
+    int pos[2] = {x, y};
+    TwSetParam((TwBar*)antTweakBar, NULL, "position", TW_PARAM_INT32, 2, &pos);
+#endif
+  }
+
+  // Sets the size of the bar
+  void AntTweak::TBar::SetSize(int x, int y)
+  {
+#if USE_ANTTWEAKBAR
+    int pos[2] = {x, y};
+    TwSetParam((TwBar*)antTweakBar, NULL, "size", TW_PARAM_INT32, 2, &pos);
+#endif
+  }
+
+  // Sets the bar refresh rate
+  void AntTweak::TBar::SetRefreshRate(float rate)
+  {
+#if USE_ANTTWEAKBAR
+    TwSetParam((TwBar*)antTweakBar, NULL, "refresh", TW_PARAM_FLOAT, 1, &rate);
+#endif
+  }
+
+  // Sets whether the bar is iconified or not
+  void AntTweak::TBar::SetIconify(bool icon)
+  {
+#if USE_ANTTWEAKBAR
+    TwSetParam((TwBar*)antTweakBar, NULL, "iconifiable", TW_PARAM_INT32, 1, &icon);
+#endif
+  }
+
+  // Sets whether the bar is movable or not
+  void AntTweak::TBar::SetMovable(bool canMove)
+  {
+#if USE_ANTTWEAKBAR
+    TwSetParam((TwBar*)antTweakBar, NULL, "movable", TW_PARAM_INT32, 1, &canMove);
+#endif
+  }
+
+  // Sets whether the bar is re-sizable
+  void AntTweak::TBar::SetResizable(bool canResize)
+  {
+#if USE_ANTTWEAKBAR
+    TwSetParam((TwBar*)antTweakBar, NULL, "resizable", TW_PARAM_INT32, 1, &canResize);
+#endif
+  }
+
+  /*-----------------------------------------------------------------------------------
+  
+  Generic Callbacks:
+  Callback functions for setting/getting variables from generic objects
+
+  ------------------------------------------------------------------------------------*/
+
+  static void TW_CALL GenericSetCB(const void* value, void* rawData)
+  {
+    AntTweak::TweakGenericVar* clientData = (AntTweak::TweakGenericVar*)rawData;
+
+    // Get the type of the member we are changing
+    const TypeInfo* memberType = clientData->genericMember->Type();
+    // Get a pointer to the generic object
+    void* genericObject = clientData->genericSpace->GetHandles().Get(clientData->genericHandle);
+
+    ErrorIf(genericObject == nullptr, "AntTweakBar GenericObject Variable Set", "Attempted to set a variable on an object which couldn't be found! Member: %s",
+      clientData->genericMember->Name());
+
+    void* data = (char*)genericObject + clientData->genericMember->Offset();
+
+    if (clientData->setCB)
+    {
+      clientData->setCB(data, clientData);
+    }
+    else
+    {
+      // Use the types copy/assignment operation to set the member to the value
+      memberType->Copy(data, value);
+    }
+  }
+
+  static void TW_CALL GenericGetCB(void* value, void* rawData)
+  {
+    AntTweak::TweakGenericVar* clientData = (AntTweak::TweakGenericVar*)rawData;
+
+    // Get the type of the member we are changing
+    const TypeInfo* memberType = clientData->genericMember->Type();
+    // Get a pointer to the generic object
+    void* genericObject = clientData->genericSpace->GetHandles().Get(clientData->genericHandle);
+
+    ErrorIf(genericObject == nullptr, "AntTweakBar GenericObject Variable Set", "Attempted to set a variable on an object which couldn't be found! Member: %s",
+      clientData->genericMember->Name());
+
+    void* data = (char*)genericObject + clientData->genericMember->Offset();
+
+    if (clientData->getCB)
+    {
+      clientData->getCB(clientData, clientData);
+    }
+    else
+    {
+      // Use the types copy/assignment operation to set the value
+      memberType->Copy(value, (char*)genericObject + clientData->genericMember->Offset());
+    }
+
+  }
+
+  static void TW_CALL GenericGetStringCB(void* value, void* rawData)
+  {
+    AntTweak::TweakGenericVar* clientData = (AntTweak::TweakGenericVar*)rawData;
+
+    // Get the type of the member we are changing
+    const TypeInfo* memberType = clientData->genericMember->Type();
+    // Get a pointer to the generic object
+    void* genericObject = clientData->genericSpace->GetHandles().Get(clientData->genericHandle);
+
+    ErrorIf(genericObject == nullptr, "AntTweakBar GenericObject Variable Set", "Attempted to set a variable on an object which couldn't be found! Member: %s",
+      clientData->genericMember->Name());
+
+    void* data = (char*)genericObject + clientData->genericMember->Offset();
+
+    if (clientData->getCB)
+    {
+      clientData->getCB(clientData, clientData);
+    }
+    else
+    {
+      // Use the types copy/assignment operation to set the value
+      *(std::string**)value = (std::string*)((char*)genericObject + clientData->genericMember->Offset());
+    }
+
+  }
+
+
+  // Adds a Read/Write variable from a generic object
+  void AntTweak::TBar::AddGenericVarRW(const char* name, AntTweak::engineTwType type, const Member* member, Generic* obj)
+  {
+#if USE_ANTTWEAKBAR
+    AddGenericVarCB(name, type, member, obj);
+#endif
+  }
+
+  // Adds a Read/Write callback variable from a generic object
+  void AntTweak::TBar::AddGenericVarCB(const char* name, AntTweak::engineTwType type, const Member* member, Generic* obj, aTSetCB setCB, aTGetCB getCB)
+  {
+#if USE_ANTTWEAKBAR
+
+    // Establish the definition list
+    std::string defList;
+    for (size_t i=0; i < m_definitions.size(); ++i)
+    {
+      defList += m_definitions[i];
+    }
+    for (size_t i=0; i < m_pDefinitions.size(); ++i)
+    {
+      defList += m_pDefinitions[i];
+    }
+
+    m_definitions.clear();
+
+    // Establish the real type
+    TwType realType = (TwType)TranslateType(type);
+
+    // Create a clientData struct to store the client data for this variable
+    TweakGenericVar* clientData = DBG_NEW TweakGenericVar(member);
+    clientData->genericHandle = obj->self; // Set the handle to use
+    clientData->genericSpace = obj->space; // Set the space to use (Thank god spaces are pretty static or i would flip shit)
+    clientData->self = m_tweakVars.Insert(clientData);
+    clientData->setCB = setCB;
+    clientData->getCB = getCB;
+
+    if (type == TW_TYPE_STDSTRING)
+    {
+      TwAddVarCB((TwBar*)antTweakBar, name, realType, GenericSetCB, GenericGetStringCB, clientData, defList.c_str());
+    }
+    else
+    {
+      TwAddVarCB((TwBar*)antTweakBar, name, realType, GenericSetCB, GenericGetCB, clientData, defList.c_str());
+    }
+#endif
+  }
 
   void AntTweak::TBar::AddVarCB(const char* name, AntTweak::engineTwType type, AntTweak::aTSetCB setCB, AntTweak::aTGetCB getCB, void* clientData)
   {
@@ -336,213 +564,10 @@ namespace Framework
 #endif
   }
 
-  // Sets a bar label
-  void AntTweak::TBar::SetLabel(const char* name)
+  void AntTweak::TBar::Reset()
   {
 #if USE_ANTTWEAKBAR
-    TwSetParam((TwBar*)antTweakBar, NULL, "label", TW_PARAM_CSTRING, 1, name);
-#endif
-  }
-
-  // Defines the help message associated with the bar
-  void AntTweak::TBar::SetHelpLabel(const char* name)
-  {
-#if USE_ANTTWEAKBAR
-    TwSetParam((TwBar*)antTweakBar, NULL, "help", TW_PARAM_CSTRING, 1, name);
-#endif
-  }
-
-  // Set Bar Color
-  void AntTweak::TBar::SetColor(int red, int green, int blue)
-  {
-#if USE_ANTTWEAKBAR
-    int color[3] = {red, green, blue};
-    TwSetParam((TwBar*)antTweakBar, NULL, "label", TW_PARAM_INT32, 3, &color);
-#endif
-  }
-
-  // Sets the alpha-value of the bar
-  void AntTweak::TBar::SetAlpha(int alpha)
-  {
-#if USE_ANTTWEAKBAR
-    TwSetParam((TwBar*)antTweakBar, NULL, "alpha", TW_PARAM_INT32, 1, &alpha);
-#endif
-  }
-
-  // Sets the position of the bar
-  void AntTweak::TBar::SetPos(int x, int y)
-  {
-#if USE_ANTTWEAKBAR
-    int pos[2] = {x, y};
-    TwSetParam((TwBar*)antTweakBar, NULL, "position", TW_PARAM_INT32, 2, &pos);
-#endif
-  }
-
-  // Sets the size of the bar
-  void AntTweak::TBar::SetSize(int x, int y)
-  {
-#if USE_ANTTWEAKBAR
-    int pos[2] = {x, y};
-    TwSetParam((TwBar*)antTweakBar, NULL, "size", TW_PARAM_INT32, 2, &pos);
-#endif
-  }
-
-  // Sets the bar refresh rate
-  void AntTweak::TBar::SetRefreshRate(float rate)
-  {
-#if USE_ANTTWEAKBAR
-    TwSetParam((TwBar*)antTweakBar, NULL, "refresh", TW_PARAM_FLOAT, 1, &rate);
-#endif
-  }
-
-  // Sets whether the bar is iconified or not
-  void AntTweak::TBar::SetIconify(bool icon)
-  {
-#if USE_ANTTWEAKBAR
-    TwSetParam((TwBar*)antTweakBar, NULL, "visible", TW_PARAM_INT32, 1, &icon);
-#endif
-  }
-
-  // Sets whether the bar is movable or not
-  void AntTweak::TBar::SetMovable(bool canMove)
-  {
-#if USE_ANTTWEAKBAR
-    TwSetParam((TwBar*)antTweakBar, NULL, "movable", TW_PARAM_INT32, 1, &canMove);
-#endif
-  }
-
-  // Sets whether the bar is re-sizable
-  void AntTweak::TBar::SetResizable(bool canResize)
-  {
-#if USE_ANTTWEAKBAR
-    TwSetParam((TwBar*)antTweakBar, NULL, "resizable", TW_PARAM_INT32, 1, &canResize);
-#endif
-  }
-
-  static void TW_CALL GenericSetCB(const void* value, void* rawData)
-  {
-    AntTweak::TweakGenericVar* clientData = (AntTweak::TweakGenericVar*)rawData;
-
-    // Get the type of the member we are changing
-    const TypeInfo* memberType = clientData->genericMember->Type();
-    // Get a pointer to the generic object
-    void* genericObject = clientData->genericSpace->GetHandles().Get(clientData->genericHandle);
-
-    ErrorIf(genericObject == nullptr, "AntTweakBar GenericObject Variable Set", "Attempted to set a variable on an object which couldn't be found! Member: %s",
-      clientData->genericMember->Name());
-
-    void* data = (char*)genericObject + clientData->genericMember->Offset();
-
-    if (clientData->setCB)
-    {
-      clientData->setCB(clientData, clientData);
-    }
-    else
-    {
-      // Use the types copy/assignment operation to set the member to the value
-      memberType->Copy(data, value);
-    }
-  }
-
-  static void TW_CALL GenericGetCB(void* value, void* rawData)
-  {
-    AntTweak::TweakGenericVar* clientData = (AntTweak::TweakGenericVar*)rawData;
-
-    // Get the type of the member we are changing
-    const TypeInfo* memberType = clientData->genericMember->Type();
-    // Get a pointer to the generic object
-    void* genericObject = clientData->genericSpace->GetHandles().Get(clientData->genericHandle);
-
-    ErrorIf(genericObject == nullptr, "AntTweakBar GenericObject Variable Set", "Attempted to set a variable on an object which couldn't be found! Member: %s",
-      clientData->genericMember->Name());
-
-    void* data = (char*)genericObject + clientData->genericMember->Offset();
-
-    if (clientData->getCB)
-    {
-      clientData->getCB(clientData, clientData);
-    }
-    else
-    {
-      // Use the types copy/assignment operation to set the value
-      memberType->Copy(value, (char*)genericObject + clientData->genericMember->Offset());
-    }
-
-  }
-
-  static void TW_CALL GenericGetStringCB(void* value, void* rawData)
-  {
-    AntTweak::TweakGenericVar* clientData = (AntTweak::TweakGenericVar*)rawData;
-
-    // Get the type of the member we are changing
-    const TypeInfo* memberType = clientData->genericMember->Type();
-    // Get a pointer to the generic object
-    void* genericObject = clientData->genericSpace->GetHandles().Get(clientData->genericHandle);
-
-    ErrorIf(genericObject == nullptr, "AntTweakBar GenericObject Variable Set", "Attempted to set a variable on an object which couldn't be found! Member: %s",
-      clientData->genericMember->Name());
-
-    void* data = (char*)genericObject + clientData->genericMember->Offset();
-
-    if (clientData->getCB)
-    {
-      clientData->getCB(clientData, clientData);
-    }
-    else
-    {
-      // Use the types copy/assignment operation to set the value
-      *(std::string**)value = (std::string*)((char*)genericObject + clientData->genericMember->Offset());
-    }
-
-  }
-
-  // Adds a Read/Write variable from a generic object
-  void AntTweak::TBar::AddGenericVarRW(const char* name, AntTweak::engineTwType type, const Member* member, Generic* obj)
-  {
-#if USE_ANTTWEAKBAR
-    AddGenericVarCB(name, type, member, obj);
-#endif
-  }
-
-  // Adds a Read/Write callback variable from a generic object
-  void AntTweak::TBar::AddGenericVarCB(const char* name, AntTweak::engineTwType type, const Member* member, Generic* obj, aTSetCB setCB, aTGetCB getCB)
-  {
-#if USE_ANTTWEAKBAR
-
-    // Establish the definition list
-    std::string defList;
-    for (size_t i=0; i < m_definitions.size(); ++i)
-    {
-      defList += m_definitions[i];
-    }
-    for (size_t i=0; i < m_pDefinitions.size(); ++i)
-    {
-      defList += m_definitions[i];
-    }
-
-    m_definitions.clear();
-
-    // Establish the real type
-    TwType realType = (TwType)TranslateType(type);
-
-    // Create a clientData struct to store the client data for this variable
-    TweakGenericVar* clientData = DBG_NEW TweakGenericVar(member);
-    clientData->genericHandle = obj->self; // Set the handle to use
-    clientData->genericSpace = obj->space; // Set the space to use (Thank god spaces are pretty static or i would flip shit)
-    clientData->self = m_tweakVars.Insert(clientData);
-    clientData->setCB = setCB;
-    clientData->getCB = getCB;
-
-    if (type == TW_TYPE_STDSTRING)
-    {
-      TwAddVarCB((TwBar*)antTweakBar, name, realType, GenericSetCB, GenericGetStringCB, clientData, defList.c_str());
-    }
-    else
-    {
-      TwAddVarCB((TwBar*)antTweakBar, name, realType, GenericSetCB, GenericGetCB, clientData, defList.c_str());
-    }
-
-
+    TwRemoveAllVars((TwBar*)antTweakBar);
 #endif
   }
 

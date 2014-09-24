@@ -59,7 +59,7 @@ namespace Framework
     TYPE_SET_DESERIALIZER( std::string, DeserializeString );
     TYPE_SET_TO_LUA( std::string, Lua::StringToLua );
     TYPE_SET_FROM_LUA( std::string, Lua::StringFromLua );
-    TYPE_SET_TWEAK( std::string, AntTweak::TweakString );
+    TYPE_SET_TWEAK( std::string, AntTweak::Tweaker::TweakString );
     TYPE_SET_TWEAK_TYPE( std::string, AntTweak::TW_TYPE_STDSTRING );
     
 
@@ -90,12 +90,12 @@ namespace Framework
     //TYPE_SET_TO_LUA( GameComponent*, Lua::GameComponentToLua);
 
     TYPE_REGISTER( GameObject );
-    TYPE_ADD_MEMBER( GameObject, name, true);
-    TYPE_ADD_MEMBER( GameObject, archetype, true);
+    TYPE_ADD_MEMBER( GameObject, name, true, true, "Name");
+    TYPE_ADD_MEMBER( GameObject, archetype, true, true, "Archetype");
     TYPE_SET_SERIALIZER( GameObject, GameObject::Serialize );
     TYPE_SET_DESERIALIZER( GameObject, GameObject::Deserialize );
     TYPE_SET_FROM_LUA( GameObject, Lua::GenericObjectFromLua );
-    TYPE_SET_TWEAK( GameObject, GameObject::Tweak );
+    TYPE_SET_TWEAK( GameObject, GameObject::CustomTweak );
     TYPE_SET_TWEAK_TYPE( GameObject, AntTweak::TW_TYPE_OBJECT );
     TYPE_REGISTER_PTR( GameObject* );
     //TYPE_SET_TO_LUA( GameObject*, Lua::GameObjectToLua );
@@ -110,6 +110,7 @@ namespace Framework
     TYPE_SET_SERIALIZER( GameSpace, GameSpace::Serialize );
     TYPE_SET_DESERIALIZER( GameSpace, GameSpace::Deserialize );
     TYPE_SET_TWEAK_TYPE( GameSpace, AntTweak::TW_TYPE_GAMESPACE );
+    TYPE_SET_TWEAK( GameSpace, GameSpace::CustomTweak );
     TYPE_REGISTER_PTR( GameSpace* );
     //TYPE_SET_TO_LUA( GameSpace*, Lua::GameSpaceToLua);
 
@@ -122,8 +123,8 @@ namespace Framework
     TYPE_REGISTER_PTR(Transform*);
 
     TYPE_REGISTER( Tester );
-    TYPE_ADD_MEMBER( Tester, testvalue1 );
-    TYPE_ADD_MEMBER( Tester, testvalue2 );
+    TYPE_ADD_MEMBER( Tester, testvalue1, false, true, "Test Value 1");
+    TYPE_ADD_MEMBER( Tester, testvalue2, false, true, "Test Value 2");
 
     TYPE_REGISTER( Sprite );
     TYPE_ADD_MEMBER( Sprite, SpriteName, false, true);

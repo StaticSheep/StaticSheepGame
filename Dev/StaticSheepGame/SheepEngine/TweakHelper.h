@@ -5,9 +5,17 @@ namespace Framework
 {
   namespace AntTweak
   {
-    void DefaultTweak(AntTweak::TBar* bar, Variable& var, const char* tempLabel, const char* label);
+    class Tweaker
+    {
+    public:
+      static void DefaultTweak(AntTweak::TBar* bar, Variable& var, const char* tempLabel, const char* label);
+      static void TweakString(AntTweak::TBar* bar, Variable& var, const char* tempLabel, const char* label);
+
+      static bool isTweakGeneric;
+      static const Member* tweakMember;
+      static Generic* tweakGeneric;
+    };
     
-    void TweakString(AntTweak::TBar* bar, Variable& var, const char* tempLabel, const char* label);
 
     typedef void(*SetCallback)(const void* value, void* clientData);
     typedef void(*GetCallback)(void* value, void* clientData);

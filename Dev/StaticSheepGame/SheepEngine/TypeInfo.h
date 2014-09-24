@@ -37,17 +37,12 @@ namespace Framework
       TW_TYPE_COLOR3F,    // 3 floats color. Order is RGB.
       TW_TYPE_COLOR4F,    // 4 floats color. Order is RGBA.
       TW_TYPE_CDSTRING,   // Null-terminated C Dynamic String (pointer to an array of char dynamically allocated with malloc/realloc/strdup)
-#ifdef __cplusplus
-# if defined(_MSC_VER) && (_MSC_VER == 1600)
-      TW_TYPE_STDSTRING = (0x2ffe0000+sizeof(std::string)),  // VS2010 C++ STL string (std::string)
-# else
       TW_TYPE_STDSTRING = (0x2fff0000+sizeof(std::string)),  // C++ STL string (std::string)
-# endif
-#endif // __cplusplus
       TW_TYPE_QUAT4F = TW_TYPE_CDSTRING+2, // 4 floats encoding a quaternion {qx,qy,qz,qs}
       TW_TYPE_QUAT4D,     // 4 doubles encoding a quaternion {qx,qy,qz,qs}
       TW_TYPE_DIR3F,      // direction vector represented by 3 floats
       TW_TYPE_DIR3D,       // direction vector represented by 3 doubles
+
       TW_TYPE_STDVECTOR,
       TW_TYPE_HANDLE,
       TW_TYPE_COMPONENT,
@@ -55,7 +50,13 @@ namespace Framework
       TW_TYPE_OBJECT,
       TW_TYPE_GAMESPACE
     } engineTwType;
+
+
+    typedef void(*SetCallback)(const void* value, void* clientData);
+    typedef void(*GetCallback)(void* value, void* clientData);
   }
+
+  // Forward declaration of the typeinfo class
   class TypeInfo;
 
   class Member
@@ -73,6 +74,9 @@ namespace Framework
     const char* TweakLabel(void) const;
     // Whether or not to auto-create a lua setter/getter
     bool AutoLua(void) const;
+    // Custom Callbacks for AntTweak Setters/Getters
+    AntTweak::SetCallback TweakSetCB(void) const;
+    AntTweak::GetCallback TweakGetCB(void) const;
 
   private:
     const char *m_name;
@@ -83,7 +87,10 @@ namespace Framework
 
     // Uses AntTweakBar
     bool m_tweak;
+    AntTweak::GetCallback m_tweakGetCB;
+    AntTweak::SetCallback m_tweakSetCB;
 
+    // AUtomatic lua setter/getter
     bool m_autoLua;
 
     friend class TypeInfo;
@@ -107,7 +114,8 @@ namespace Framework
     // Initilization routine
     void Init( const char *name, unsigned size );
     // Adds a member to the type
-    void AddMember( const TypeInfo *typeInfo, const char *name, unsigned offset, bool autoLua=true, bool tweak=false, const char* tweakLabel=nullptr );
+    void AddMember( const TypeInfo *typeInfo, const char *name, unsigned offset, bool autoLua=true, bool tweak=false,
+      const char* tweakLabel=nullptr, AntTweak::SetCallback setCB=nullptr, AntTweak::GetCallback getCB=nullptr);
     // Gets a member from the type
     const Member *GetMember( const char *memberName ) const;
 

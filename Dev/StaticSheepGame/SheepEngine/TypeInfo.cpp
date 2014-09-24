@@ -36,6 +36,21 @@ namespace Framework
     return m_tweakLabel;
   }
 
+  bool Member::AutoLua(void) const
+  {
+    return m_autoLua;
+  }
+
+  AntTweak::GetCallback Member::TweakGetCB(void) const
+  {
+    return m_tweakGetCB;
+  }
+
+  AntTweak::SetCallback Member::TweakSetCB(void) const
+  {
+    return m_tweakSetCB;
+  }
+
   TypeInfo::TypeInfo()
     : m_serialize(nullptr), m_deserialize(nullptr), m_metatable(nullptr), m_fromLua(nullptr), m_toLua(nullptr), m_toTweak(nullptr) {}
 
@@ -52,7 +67,8 @@ namespace Framework
     m_size = size;
   }
 
-  void TypeInfo::AddMember(const TypeInfo* typeInfo, const char* name, unsigned int offset, bool autoLua, bool tweak, const char* tweakLabel)
+  void TypeInfo::AddMember(const TypeInfo* typeInfo, const char* name, unsigned int offset,
+    bool autoLua, bool tweak, const char* tweakLabel, AntTweak::SetCallback setCB, AntTweak::GetCallback getCB)
   {
     Member mem;
     mem.m_name = name;
@@ -60,6 +76,8 @@ namespace Framework
     mem.m_typeInfo = typeInfo;
     mem.m_tweak = tweak;
     mem.m_tweakLabel = tweakLabel;
+    mem.m_tweakSetCB = setCB;
+    mem.m_tweakGetCB = getCB;
     mem.m_autoLua = autoLua;
     m_members.push_back(mem);
   }
@@ -106,7 +124,7 @@ namespace Framework
     if (m_toTweak)
       m_toTweak(bar, var, tempLabel, label);
     else
-      AntTweak::DefaultTweak(bar, var, tempLabel, label);
+      AntTweak::Tweaker::DefaultTweak(bar, var, tempLabel, label);
   }
 
   unsigned TypeInfo::Size(void) const

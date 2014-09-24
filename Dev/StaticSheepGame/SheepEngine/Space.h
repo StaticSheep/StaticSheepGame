@@ -52,11 +52,17 @@ namespace Framework
     // Called at the end of the GameLogic update
     void Cleanup();
 
+    // Used for updating the tweak bar
+    void UpdateTweakBar(void);
+
     // Serialization routine
     static void Serialize(File& file, Variable var);
 
     // Deserialization routine, var must be an empty object
     static void Deserialize(File& file, Variable var);
+
+    // AntTweak bar creator
+    static void CustomTweak(AntTweak::TBar* bar, Variable& var, const char* tempLabel, const char* label);
 
     // Gets the object allocator for a type of components
     ObjectAllocator* GetComponents(EComponent type);
@@ -76,6 +82,7 @@ namespace Framework
 
     GameSpace* CopyGameSpace(const char* new_name);
     
+    Handle tweakHandle;
     
   private:
     // The collection of all game objects in this game space

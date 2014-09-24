@@ -20,6 +20,14 @@ namespace AntTweak
 namespace Framework
 {
 
+  class TweakObjComp
+  {
+  public:
+    GenericLookup gl;
+    EComponent compType;
+    std::string luaCompName;
+  };
+
   // Forward Declaration
   class GameObject;
   class LuaComponent;
@@ -77,7 +85,15 @@ namespace Framework
       static void Deserialize(File& file, Variable var);
 
       // AntTweak bar creator
-      static void Tweak(AntTweak::TBar* bar, Variable& var, const char* tempLabel, const char* label);
+      static void CustomTweak(AntTweak::TBar* bar, Variable& var, const char* tempLabel, const char* label);
+
+      // AntTweak custom callback for changing the anttweak bar window's name
+      //static void TweakUpdate
+
+      // Opens a bar to tweak the object
+      void TweakObject(void);
+      // Updates the teak bar for the object
+      void UpdateTweakBar(void);
 
       // Gets a component properly typed
       template <typename T>
@@ -109,6 +125,16 @@ namespace Framework
       virtual void Initialize();
 
       //GameObject& operator=(const GameObject& rhs);
+
+      // Handle to the AntTweakbar for tweaking this object
+      Handle tweakHandle;
+      // Pointer to the GenericLookup struct used for spaces finding this object
+      GenericLookup* tweakLookup;
+      // Are we choosing a component to add?
+      bool tweakListComponents;
+      // Pointer to a vector full of clientdata pointers for adding a component through tweakbar
+      std::vector<TweakObjComp*>* tweakCCompCallbacks;
+      std::vector<TweakObjComp*>* tweakLuaCompCallbacks;
 
     private:
 

@@ -44,8 +44,8 @@ int WINAPI WinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
 
   GameSpace* space = Core->CreateSpace("TestSpace");
   GameObject* obj = FACTORY->LoadObjectFromArchetype(space, "drawtest");
-  GET_TYPE(GameObject)->Tweak(nullptr, obj, "obj", "GameObject");
-
+  //GET_TYPE(GameObject)->Tweak(nullptr, obj, "obj", "GameObject");
+  GET_TYPE(GameSpace)->Tweak(nullptr, space, nullptr, nullptr);
   //Core->LoadLuaLevel("content/lua/engine/levels/testlevel.lua");
 
   while (Core->Running())
