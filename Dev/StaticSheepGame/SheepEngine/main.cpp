@@ -42,11 +42,13 @@ int WINAPI WinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
 
   //Framework::AntTweak::TBar* bar = ATWEAK->CreateBar("TestBar");
 
-  GameSpace* space = Core->CreateSpace("TestSpace");
-  GameObject* obj = FACTORY->LoadObjectFromArchetype(space, "drawtest");
-  //GET_TYPE(GameObject)->Tweak(nullptr, obj, "obj", "GameObject");
-  GET_TYPE(GameSpace)->Tweak(nullptr, space, nullptr, nullptr);
+  //GameSpace* space = Core->CreateSpace("TestSpace");
+  //GameObject* obj = FACTORY->LoadObjectFromArchetype(space, "drawtest");
+  ////GET_TYPE(GameObject)->Tweak(nullptr, obj, "obj", "GameObject");
+  //GET_TYPE(GameSpace)->Tweak(nullptr, space, nullptr, nullptr);
   //Core->LoadLuaLevel("content/lua/engine/levels/testlevel.lua");
+
+  Core->OpenEditor();
 
   while (Core->Running())
   {

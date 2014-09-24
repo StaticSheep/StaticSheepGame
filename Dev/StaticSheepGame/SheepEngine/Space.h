@@ -42,6 +42,7 @@ namespace Framework
 
     void Clear();
     
+    void Tweak(void);
 
     void RemoveComponent(GameComponent* comp);
     void RemoveComponent(Handle handle);

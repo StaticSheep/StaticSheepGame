@@ -175,6 +175,8 @@ namespace Framework
 
     GameSpace* space = (GameSpace*)var.GetData();
 
+    file.Write("%s\n", space->GetName().c_str());
+
     for (auto it = space->m_objects.begin<GameObject>(); it != space->m_objects.end<GameObject>(); ++it)
     {
 
@@ -374,7 +376,7 @@ namespace Framework
   GameSpace* GameSpace::CopyGameSpace(const char* new_name)
   { 
     // Make the new space
-    GameSpace* space = ENGINE->CreateSpace(new_name);
+    //GameSpace* space = ENGINE->CreateSpace(new_name);
 
     //for (GameObject* it = m_objects.begin<GameObject>(); it != m_objects.end<GameObject>(); ++it)
     //{
@@ -388,12 +390,15 @@ namespace Framework
 
     FACTORY->SaveSpaceToLevel(this, "temp_space", true);
 
-    FACTORY->LoadLevelToSpace(space, "temp_space");
+    GameSpace* space = FACTORY->LoadSpace("temp_space");
 
     return space;
   }
 
   
-
+  void GameSpace::Tweak()
+  {
+    GET_TYPE(GameSpace)->Tweak(nullptr, this, nullptr, nullptr);
+  }
 
 }

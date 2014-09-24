@@ -344,19 +344,24 @@ namespace Framework
   /// </summary>
   /// <param name="space">The space.</param>
   /// <param name="name">The name.</param>
-  void Factory::LoadLevelToSpace(GameSpace* space, const char* name)
+  GameSpace* Factory::LoadSpace(const char* filepath)
   {
     File file; // File to save the space to
-    std::string filepath = name + LevelFileExtension;
 
-    file.Open(filepath.c_str(), FileAccess::Read); // Open the file
+    file.Open(filepath, FileAccess::Read); // Open the file
 
-    ErrorIf(!file.Validate(), "Factory - Load Level", "Invalid level: %s", filepath.c_str());
+    ErrorIf(!file.Validate(), "Factory - Load Level", "Invalid level: %s", filepath);
+
+    std::string spaceName = file.GetLine('\n');
+
+    GameSpace* space = ENGINE->CreateSpace(spaceName.c_str());
 
     Variable(*space).Deserialize(file);
 
     file.Close();
 
+
+    return space;
   }
 
   const Archetype& Factory::GetArchetype(std::string name)

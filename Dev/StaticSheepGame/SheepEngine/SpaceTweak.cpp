@@ -63,6 +63,12 @@ namespace Framework
     std::cout << "Saved Space " << space->GetName().c_str() << " to file.\n";
   }
 
+  static void DeleteSpaceCB(void* clientData)
+  {
+    GameSpace* space = (GameSpace*)clientData;
+    space->m_valid = false;
+  }
+
   // Updates the anttweak bar
   void GameSpace::UpdateTweakBar()
   {
@@ -81,6 +87,10 @@ namespace Framework
     spaceBar->DefineLabel("New Object");
     spaceBar->AddButton("NewObject", CreateObjectCB, this);
 
+    spaceBar->DefineGroup("Delete");
+    spaceBar->DefineLabel("Delete Space");
+    spaceBar->AddButton("DeleteSpace", DeleteSpaceCB, this);
+    spaceBar->SetGroupOpened("Delete", false);
 
     spaceBar->AddSeparator("ObjectSeperator");
 

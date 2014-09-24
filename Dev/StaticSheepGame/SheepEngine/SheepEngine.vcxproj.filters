@@ -313,6 +313,9 @@
     <ClCompile Include="SpaceTweak.cpp">
       <Filter>BaseTypes\Space</Filter>
     </ClCompile>
+    <ClCompile Include="EngineTweak.cpp">
+      <Filter>Engine\EngineCore</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Precompiled">

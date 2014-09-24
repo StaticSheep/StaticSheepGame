@@ -38,7 +38,7 @@ namespace Framework
 
     void SaveSpaceToLevel(GameSpace* space, const char* name, std::vector<std::string>* objInstanceData = NULL, bool includeGeneric = false, bool allData = false);
     void SaveSpaceToLevel(GameSpace* space, const char* name, bool standalone);
-    void LoadLevelToSpace(GameSpace* space, const char* name);
+    GameSpace* LoadSpace(const char* name);
 
     static const std::string ArchetypeFileExtension;
     static const std::string ArchetypePrefix;

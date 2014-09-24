@@ -177,9 +177,7 @@ namespace Framework
 
   void Engine::LoadLevel(const char* name)
   {
-    GameSpace* space = CreateSpace(name);
-
-    FACTORY->LoadLevelToSpace(space, name);
+    FACTORY->LoadSpace(name);
   }
 
   void Engine::LoadLuaLevel(const char* path)
