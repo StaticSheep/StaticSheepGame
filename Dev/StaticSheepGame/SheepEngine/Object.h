@@ -44,6 +44,9 @@ namespace Framework
       // Adds a component to an object
       void AddComponent(GameComponent* component);
 
+      // Removes a component on the object
+      void RemoveComponent(EComponent type);
+
       // Marks the object to be destroyed at the end of the frame
       void Destroy();
 
@@ -77,6 +80,8 @@ namespace Framework
 
       // Checks to see if the object owns a specific component type
       bool HasComponent(size_t type) const;
+
+      
 
       // Serialization routine
       static void Serialize(File& file, Variable var);
@@ -132,6 +137,10 @@ namespace Framework
       GenericLookup* tweakLookup;
       // Are we choosing a component to add?
       bool tweakListComponents;
+      // Are we deleting a component?
+      bool tweakDeleteComponent;
+      // Are we really deleting the object
+      bool tweakDeleteObject;
       // Pointer to a vector full of clientdata pointers for adding a component through tweakbar
       std::vector<TweakObjComp*>* tweakCCompCallbacks;
       std::vector<TweakObjComp*>* tweakLuaCompCallbacks;

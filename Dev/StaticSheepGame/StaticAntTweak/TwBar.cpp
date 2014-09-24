@@ -6656,10 +6656,13 @@ bool CTwBar::KeyPressed(int _Key, int _Modifiers)
             {
                 if( !Atom->m_ReadOnly )
                 {
+                    int barCount = g_TwMgr->m_Bars.size();
                     Atom->Increment( DoIncr ? +1 : -1 );
                     if( g_TwMgr==NULL ) // Mgr might have been destroyed by the client inside a callback call
                         return 1;
                     m_HighlightClickBtnAuto = g_TwMgr->m_Timer.GetTime();
+                    if (barCount != g_TwMgr->m_Bars.size())
+                      return true;
                 }
                 NotUpToDate();
                 Show(Atom);

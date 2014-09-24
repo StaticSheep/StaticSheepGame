@@ -91,6 +91,7 @@
     <IntDir>debug32\</IntDir>
     <LinkIncremental>true</LinkIncremental>
     <TargetName>$(ProjectName)Static</TargetName>
+    <PreBuildEventUseInBuild>false</PreBuildEventUseInBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>../lib/debug\</OutDir>

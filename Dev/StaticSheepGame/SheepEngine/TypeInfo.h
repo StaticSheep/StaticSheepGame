@@ -180,7 +180,6 @@ namespace Framework
     // DOes a placement New copy-constructor for this type on the given data location, using the given source
     void (*PlacementCopy)( void *data, const void *src );
 
-
   private:
     // Actual size of the type
     unsigned m_size;
@@ -319,6 +318,13 @@ namespace Framework
   inline void PODDelete( void* data )
   {
     free( data );
+  }
+
+  // Equality Comparison
+  template <typename T>
+  inline bool MetaCompare(const T* a, const T* b)
+  {
+    return true;
   }
 
   // Placement delete (deconstructor) on data

@@ -66,6 +66,8 @@ namespace Framework
   /// </summary>
   GameObject::~GameObject()
   {
+
+
     // If the object is not active, time to destroy it
     for (unsigned int j = 0; j < ecountComponents; ++j)
     {
@@ -75,20 +77,7 @@ namespace Framework
       // Check to see if the Object has that type of component
       if (HasComponent(type) && type != eLuaComponent)
       {
-        // Get the component
-        GameComponent* comp = GetComponent(type);
-        comp->Remove(); // Remove the component
-
-        // Remove the handle from the space
-        space->GetHandles().Remove(comp->self);
-
-        // Deconstruct the game component
-        comp->~GameComponent();
-
-        // Free the component and update any handles
-        GameComponent* moved = (GameComponent*)space->GetComponents(type)->Free(comp);
-        if (moved)
-          space->GetHandles().Update(moved, moved->self);
+        RemoveComponent(type);
       }
     } // End component loop
 
@@ -112,6 +101,7 @@ namespace Framework
     {
       AntTweak::TBar* objBar = ATWEAK->GetBar(tweakHandle);
       ATWEAK->RemoveBar(objBar);
+      tweakHandle = Handle::null;
     }
 
     if (tweakLookup)
@@ -178,6 +168,30 @@ namespace Framework
       m_luaComponents.push_back(component->self);
     else
       m_components[component->typeID] = component->self;
+  }
+
+  /// <summary>
+  /// Removes a component.
+  /// </summary>
+  /// <param name="type">The type of component.</param>
+  void GameObject::RemoveComponent(EComponent type)
+  {
+    // Get the component
+    GameComponent* comp = GetComponent(type);
+    comp->Remove(); // Remove the component
+
+    // Remove the handle from the space
+    space->GetHandles().Remove(comp->self);
+
+    // Deconstruct the game component
+    comp->~GameComponent();
+
+    // Free the component and update any handles
+    GameComponent* moved = (GameComponent*)space->GetComponents(type)->Free(comp);
+    if (moved)
+      space->GetHandles().Update(moved, moved->self);
+
+    m_components[type] = Handle::null;
   }
 
   /// <summary>
@@ -468,254 +482,6 @@ namespace Framework
       file.GetLine("}");
     }
   }
-
-  /*--------------------------------------------------------------------------
-
-  Tweaking
-
-  --------------------------------------------------------------------------*/
-
-  /// <summary>
-  /// Custom tweaking routine for objects. Instead of the object being tweaked on the specified bar,
-  /// a new bar is created for the object to be tweaked upon. The bar will be filled out with the
-  /// properties of the object itself, as well as the tweakable variables from the components which
-  /// the object owns.
-  /// </summary>
-  /// <param name="bar">The bar. [UN-USED}</param>
-  /// <param name="var">Variable delegate for the object</param>
-  /// <param name="tempLabel">The temporary label.</param>
-  /// <param name="label">The actual label.</param>
-  void GameObject::CustomTweak(AntTweak::TBar* bar, Variable& var, const char* tempLabel, const char* label)
-  {
-    // Figure out what to call the bar for tweaking game object
-    GameObject& obj = var.GetValue<GameObject>();
-
-    // If the object already has a tweak handle then we can just update the tweak bar
-    if (obj.tweakHandle != Handle::null)
-    {
-      obj.UpdateTweakBar();
-      return;
-    }
-
-    // Decide a name
-    std::string objName(obj.name);
-    objName += " [GUID: ";
-    objName += std::to_string(obj.guid) + "]";
-
-    // Create a new bar for this object
-    AntTweak::TBar* objectBar = ATWEAK->CreateBar(objName.c_str());
-    obj.tweakHandle = objectBar->self;
-    obj.tweakListComponents = false;
-    objectBar->SetIconify(false);
-
-    obj.UpdateTweakBar();
-  }
-
-
-  /// <summary>
-  /// Updates the archetype.
-  /// </summary>
-  /// <param name="clientData">The client data.</param>
-  static void UpdateArchetype(void* clientData)
-  {
-    GenericLookup* gl = (GenericLookup*)clientData;
-    GameObject* obj = gl->space->GetGameObject(gl->self);
-
-    if (obj->archetype.length() > 0)
-      FACTORY->SaveObjectToArchetype(obj, obj->archetype.c_str());
-  }
-
-
-  /// <summary>
-  /// Button callback for adding a component list
-  /// </summary>
-  /// <param name="clientData">The client data.</param>
-  static void ShowAddComponentList(void* clientData)
-  {
-    GenericLookup* gl = (GenericLookup*)clientData;
-    GameObject* obj = gl->space->GetGameObject(gl->self);
-
-    obj->tweakListComponents = !obj->tweakListComponents;
-
-    if (obj->tweakCCompCallbacks == nullptr)
-    {
-      obj->tweakCCompCallbacks = DBG_NEW std::vector<TweakObjComp*>();
-
-      // Load up the C++ Component callback tables
-      for(size_t i=0; i < ecountComponents - 1; ++i)
-      {
-        TweakObjComp* userdata = DBG_NEW TweakObjComp();
-        userdata->gl.self = obj->self;
-        userdata->gl.space = obj->space;
-        userdata->compType = (EComponent)i;
-
-        obj->tweakCCompCallbacks->push_back(userdata);
-      }
-
-      // Load up the Lua component callback tables
-      //TODO
-    }
-
-    obj->UpdateTweakBar();
-    
-  }
-
-  /// <summary>
-  /// Callback for AntTweak bar adding a component on an object
-  /// </summary>
-  /// <param name="clientData">The client data.</param>
-  static void TweakAddComponent(void* clientData)
-  {
-    TweakObjComp* oc = (TweakObjComp*)clientData;
-    GameObject* obj = oc->gl.space->GetGameObject(oc->gl.self);
-    EComponent cType = oc->compType;
-    std::string luaType = oc->luaCompName;
-
-
-    if (cType < eLuaComponent)
-    {
-      // Create the component and initialize it
-      GameComponent* nComp = oc->gl.space->CreateComponent(cType);
-      obj->AddComponent(nComp);
-      nComp->Initialize();
-    }
-    else
-    {
-
-    }
-
-    obj->tweakListComponents = false;
-    obj->UpdateTweakBar();
-  }
-
-
-  /// <summary>
-  /// Closes the object tweak bar.
-  /// </summary>
-  /// <param name="clientData">The client data.</param>
-  static void CloseObjectTweak(void* clientData)
-  {
-    GenericLookup* gl = (GenericLookup*)clientData;
-    GameObject* obj = gl->space->GetGameObject(gl->self);
-    ATWEAK->RemoveBar(ATWEAK->GetBar(obj->tweakHandle));
-    obj->tweakHandle = Handle::null;
-  }
-
-  /// <summary>
-  /// Updates the tweak bar.
-  /// </summary>
-  void GameObject::UpdateTweakBar()
-  {
-    if (tweakHandle == Handle::null)
-      return;
-
-    AntTweak::TBar* objectBar = ATWEAK->GetBar(tweakHandle);
-
-    ErrorIf(objectBar == nullptr, "Object Tweaking", "Object tweak handle was invalid! ObjectName: '%s'", name.c_str());
-
-    // Clear the bar of everything on it
-    objectBar->Reset();
-
-    // Get the object name
-    std::string objName(name);
-    objName += " [GUID: ";
-    objName += std::to_string(guid) + "]";
-
-    objectBar->SetLabel(objName.c_str());
-
-    // Get a const reference to the object members for speed
-    const std::vector<Member>& objMembers = GET_TYPE(GameObject)->GetMembers();
-
-    for (size_t i=0; i < objMembers.size(); ++i)
-    {
-      // Create a variable of the object member and then tweak it
-      //objectBar->DefineGroup("Properties");
-
-      const Member* member = &objMembers[i];
-
-      if (member->CanTweak())
-      {
-        if (member->TweakLabel())
-          objectBar->DefineLabel(member->TweakLabel());
-
-        // Since this is an object member variable we are tweaking we have to use the generic tweak
-        objectBar->AddGenericVarRW(member->Name(), member->Type()->GetAType(), member, this);
-      }
-    }
-
-    objectBar->DefineLabel("Update Archetype");
-    objectBar->DefineHelpMessage("Saves this object as an archetype to a file.");
-    objectBar->AddButton("ArchetypeUpdate", UpdateArchetype, this->tweakLookup);
-
-    if (tweakListComponents)
-      objectBar->DefineLabel("Hide List");
-    else
-      objectBar->DefineLabel("Add Component");
-    objectBar->DefineHelpMessage("Displays a list of components to add.");
-    objectBar->AddButton("AddComponent", ShowAddComponentList, this->tweakLookup);
-
-    objectBar->AddSeparator("PropertySeperator");
-
-    if (tweakListComponents)
-    {
-      objectBar->DefineLabel("Choose a Component");
-      objectBar->AddButton("ChooseComponent", nullptr, nullptr);
-
-      std::string bName;
-
-      for (size_t i = 0; i < ecountComponents - 1; ++i)
-      {
-        if (!HasComponent(i))
-        {
-          bName = "Add";
-          bName += EnumComponent.m_literals[i];
-
-          objectBar->DefineLabel(EnumComponent.m_literals[i].c_str());
-          objectBar->AddButton(bName.c_str(), TweakAddComponent,(*tweakCCompCallbacks)[i]);
-        }
-      }
-
-      objectBar->AddSeparator("NewComponentSeperator");
-    }
-
-    objectBar->AddButton("Components", nullptr, nullptr);
-
-    // Iterate through components
-    // Tweak Each component
-    for (size_t i=0; i < ecountComponents - 1; ++i)
-    {
-      if (HasComponent(i))
-      {
-        // Establish which component we are tweaking
-        std::string compType = EnumComponent.m_literals[i];
-        Variable var(GET_STR_TYPE(compType), GetComponent(i));
-
-        // Prepare the AntTweak bar definition for groups
-        compType = std::string(" group=") + compType;
-
-        // Set the define and tweak the component
-        objectBar->AddDefinition(compType.c_str(), true);
-        var.Tweak(objectBar, nullptr, nullptr);
-        objectBar->ClearDefinitions();
-      }
-    }
-
-    objectBar->AddButton("Close", CloseObjectTweak, tweakLookup);
-
-  }
-
-
-  /// <summary>
-  /// Tweaks the object.
-  /// </summary>
-  void GameObject::TweakObject()
-  {
-    if (tweakHandle == Handle::null)
-      CustomTweak(nullptr, Variable(this), nullptr, nullptr);
-    else
-      UpdateTweakBar();
-  }
-
 
 
   /// <summary>

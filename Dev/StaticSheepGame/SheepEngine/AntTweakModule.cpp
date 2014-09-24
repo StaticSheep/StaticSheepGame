@@ -46,6 +46,7 @@ namespace Framework
 #if USE_ANTTWEAKBAR
     if (msg.MessageId == Message::PostDraw)
     {
+      RemoveBars();
       TwDraw();
       return;
     }
@@ -74,6 +75,7 @@ namespace Framework
     // Registers the container to the handle manager
     newBar->self = m_handles.Insert(newBar);
 
+    newBar->toRemove = false;
 
     // Sync any handles needed
     m_handles.SyncHandles<AntTweak::TBar>(m_bars);
@@ -88,13 +90,10 @@ namespace Framework
   {
 #if USE_ANTTWEAKBAR
 
-    TwDeleteBar((TwBar*)bar->antTweakBar);
-    bar->~TBar();
+    if (bar == nullptr)
+      return;
 
-    AntTweak::TBar* moved = (AntTweak::TBar*)m_bars.Free(bar);
-    if (moved)
-      m_handles.Update(moved, moved->self);
-    
+    bar->toRemove = true;
 #endif
   }
 
@@ -111,8 +110,29 @@ namespace Framework
   void AntTweakModule::Update(float dt)
   {
 #if USE_ANTTWEAKBAR
-
+    
 #endif
+  }
+
+  void AntTweakModule::RemoveBars()
+  {
+    AntTweak::TBar* bar;
+
+    for (size_t i=0; i < m_bars.Size(); ++i)
+    {
+      bar = (AntTweak::TBar*)m_bars[i];
+
+      if (!bar->toRemove)
+        continue;
+
+      TwDeleteBar((TwBar*)bar->antTweakBar);
+      bar->~TBar();
+
+      AntTweak::TBar* moved = (AntTweak::TBar*)m_bars.Free(bar);
+      if (moved)
+        m_handles.Update(moved, moved->self);
+    }
+    
   }
 
   void AntTweakModule::Shutdown()

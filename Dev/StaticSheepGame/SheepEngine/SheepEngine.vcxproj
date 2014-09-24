@@ -182,6 +182,7 @@
     <ClCompile Include="LuaTransfer.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ObjectAllocator.cpp" />
+    <ClCompile Include="ObjectTweak.cpp" />
     <ClCompile Include="PhysicsObject.cpp" />
     <ClCompile Include="PODSerialization.cpp" />
     <ClCompile Include="Serialization.cpp" />
@@ -199,6 +200,7 @@
     <ClCompile Include="sheep_engine.cpp" />
     <ClCompile Include="Space.cpp" />
     <ClCompile Include="CSprite.cpp" />
+    <ClCompile Include="SpaceTweak.cpp" />
     <ClCompile Include="TweakHelper.cpp" />
     <ClCompile Include="TypeInfo.cpp" />
     <ClCompile Include="Variable.cpp" />

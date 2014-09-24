@@ -307,6 +307,12 @@
     <ClCompile Include="TweakHelper.cpp">
       <Filter>Systems\AntTweak\Tweaking</Filter>
     </ClCompile>
+    <ClCompile Include="ObjectTweak.cpp">
+      <Filter>BaseTypes\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="SpaceTweak.cpp">
+      <Filter>BaseTypes\Space</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Precompiled">

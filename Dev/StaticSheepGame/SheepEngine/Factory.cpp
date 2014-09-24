@@ -6,6 +6,9 @@ Author(s): Zachary Nawar (Primary)
 All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 *****************************************************************/
 
+#include <time.h>
+#include <fstream>
+
 namespace Framework
 {
   Factory *FACTORY = NULL;
@@ -245,6 +248,26 @@ namespace Framework
     return archetype.CreateObject(space);
   }
 
+  static void StoreBackup(const char* filepath)
+  {
+    if (File::FileExists(filepath))
+    {
+      time_t t = time(0);
+      struct tm * now = localtime(&t);
+
+      std::string backUpFile = "backup\\";
+      backUpFile += filepath;
+      backUpFile += "." + std::to_string(now->tm_mon) + "_" + std::to_string(now->tm_mday) + "_" +
+        std::to_string(now->tm_hour) + "_" + std::to_string(now->tm_min) + "_" + std::to_string(now->tm_sec) + ".backup";
+
+      std::ifstream src;
+      src.open(filepath);
+      std::ofstream dest;
+      dest.open(backUpFile.c_str());
+      dest << src.rdbuf();
+    }
+  }
+
   /// <summary>
   /// Saves the space to level file.
   /// If you wish to save as a standalone level file, the third paramater should be a boolean marked as true.
@@ -269,6 +292,8 @@ namespace Framework
     extraData.saveAllData = allData;
     extraData.standalone = false;
 
+
+    StoreBackup(filepath.c_str());
     file.Open(filepath.c_str(), FileAccess::Write); // Open the file
 
     Serializer::Get()->SetUserData(&extraData);

@@ -5705,12 +5705,17 @@ static int KeyPressed(int _Key, int _Modifiers, bool _TestOnly)
 
             if( Bar!=NULL && Bar->m_Visible && !Bar->IsMinimized() )
             {
+                int barCount = g_TwMgr->m_Bars.size();
+
                 if( _TestOnly )
                     Handled = Bar->KeyTest(_Key, _Modifiers);
                 else
                     Handled = Bar->KeyPressed(_Key, _Modifiers);
                 if( g_TwMgr==NULL ) // Mgr might have been destroyed by the client inside a callback call
                     return 1;
+
+                if (barCount != g_TwMgr->m_Bars.size())
+                  return 1;
             }
         }
 

@@ -70,17 +70,32 @@ namespace Framework
   };
 
   template <typename T>
-  struct HasCopyCtor
+  struct HasEqualOp
   {
     static T MakeT( void );
 
     template <typename U>
-    static int32 SFINAE( decltype( U( MakeT( ) ) ) * );
+    static int32 SFINAE( decltype(U.operator==(MakeT()))* );
     template <typename U>
     static int8 SFINAE( ... );
 
     static const bool value = sizeof( SFINAE<T>( NULL ) ) == sizeof( int32 );
   };
+
+  template <typename T>
+  struct HasCopyCtor
+  {
+    static T MakeT( void );
+
+    template <typename U>
+    static bool SFINAE( decltype( U( MakeT( ) ) ) * );
+    template <typename U>
+    static int8 SFINAE( ... );
+
+    static const bool value = sizeof( SFINAE<T>( NULL ) ) == sizeof( bool );
+  };
+
+  
 
   template <bool B, typename T = void>
   struct disable_if {

@@ -117,6 +117,8 @@ namespace Framework
       std::vector<std::string> m_pDefinitions;
       // Handles of tweakvars
       HandleManager m_tweakVars;
+      // Remove on next update?
+      bool toRemove;
 
       friend class AntTweakModule;
     };
@@ -151,6 +153,7 @@ namespace Framework
 
   private:
 
+    void RemoveBars(void);
     
     // Handle manager for AntTweak TBars
     HandleManager m_handles;
