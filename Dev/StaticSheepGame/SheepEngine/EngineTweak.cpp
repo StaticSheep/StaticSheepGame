@@ -38,7 +38,7 @@ namespace Framework
     ofn.lpstrFile = szFile ;
     ofn.lpstrFile[0] = '\0';
     ofn.nMaxFile = sizeof( szFile );
-    ofn.lpstrFilter = "Sheep Spaces\0*.space\0All\0*.*\0Text\0*.TXT\0";
+    ofn.lpstrFilter = "Sheep Spaces\0*.space\0";
     ofn.nFilterIndex =1;
     ofn.lpstrFileTitle = NULL ;
     ofn.nMaxFileTitle = 0 ;
