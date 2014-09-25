@@ -1,7 +1,8 @@
 /*****************************************************************
 Filename: Window.cpp
 Project: 
-Author(s): Zachary Nawar (Primary)
+Author(s): Scott Nelson (Primary)
+           Zachary Nawar
 
 All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 *****************************************************************/
@@ -64,7 +65,6 @@ namespace Framework
     PAINTSTRUCT ps;                         // Data to redraw window if moved
     HDC hdc;                                // Hande to a Device Context
     MSG msg;
-    InputManager input;
 
 #if USE_ANTTWEAKBAR
     if (TwEventWin(hWnd, message, wParam, lParam))
@@ -107,7 +107,6 @@ namespace Framework
     case WM_MBUTTONDBLCLK:
 
       TranslateMessage(&msg);
-      input.Mouse.Update();
 
       break;
 
@@ -126,11 +125,11 @@ namespace Framework
   {
     MSG msg = {0}; // msg struct holds return of peek message
 
-    if(PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) // Query message queue
-    {
-      TranslateMessage(&msg);                  // Translate return
-      DispatchMessage(&msg);                   // Dispatch
-    }
+    //if(PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) // Query message queue
+    //{
+    //  TranslateMessage(&msg);                  // Translate return
+    //  DispatchMessage(&msg);                   // Dispatch
+    //}
   }
 
   HWND SheepWindow::GetHandle()

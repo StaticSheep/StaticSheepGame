@@ -79,7 +79,7 @@ local function Draw()
 texID = surface.GetTextureID("content/maverick.jpg")
   surface.SetRotation(dt)
   surface.SetTexture(texID)
-  surface.SetColorEx(1,1,1,1)
+  surface.SetColorEx(1,0,1,.5)
   surface.DrawTexturedRect(i, 0, 225, 225)
   
   surface.SetRotation(-dt * 5)

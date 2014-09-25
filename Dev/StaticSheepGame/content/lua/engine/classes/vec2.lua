@@ -11,9 +11,7 @@ function META.__add(a, b)
 end
 
 function META.__sub(a, b)
-  if type(a) == "number" then
-    return META.new(b.x - a, b.y - a)
-  elseif type(b) == "number" then
+  if type(b) == "number" then
     return META.new(a.x - b, a.y - b)
   else
     return Vector2.new(a.x - b.x, a.y - b.y)
@@ -31,9 +29,7 @@ function META.__mul(a, b)
 end
 
 function META.__div(a, b)
-  if type(a) == "number" then
-    return META.new(b.x / a, b.y / a)
-  elseif type(b) == "number" then
+  if type(b) == "number" then
     return META.new(a.x / b, a.y / b)
   else
     return Vector2.new(a.x / b.x, a.y / b.y)
@@ -45,7 +41,7 @@ function META.__eq(a, b)
 end
 
 function META.__tostring(a)
-  return "(".. a.x .. ", " .. a.y ..")"
+  return "(".. a.x ..", ".. a.y ..")"
 end
 
 function META.new(x, y)
@@ -77,13 +73,18 @@ end
 
 function META:Normalize()
   local len = self:len()
+  if len > 0 then
+    return 0
+  end
   self.x = self.x / len
   self.y = self.y / len
   return self
 end
 
 function META:normalized()
-  return self / self:len()
+  if self:len() > 0 then
+    return self / self:len()
+  end
 end
 
 function META:rotate(theta)
@@ -100,7 +101,7 @@ function META:rotated(theta)
 end
 
 function META:perpendicular()
-  return META.new(-self.y, self.x)
+  return META.new(self.y, -self.x)
 end
 
 function META:projectOn(b)

@@ -24,7 +24,8 @@ namespace Studio
 
     class Bank;
 
-    class MixerStrip;
+    class Bus;
+    class VCA;
     class EventDescription;
 
     class EventInstance;
@@ -56,9 +57,15 @@ namespace Studio
 
         // Asset retrieval
         // These functions load data from registered banks if necessary, unless mode is set to FMOD_STUDIO_LOAD_PROHIBITED.
-        FMOD_RESULT F_API getEvent(const ID *id, FMOD_STUDIO_LOADING_MODE mode, EventDescription **event) const;
-        FMOD_RESULT F_API getMixerStrip(const ID *id, FMOD_STUDIO_LOADING_MODE mode, MixerStrip **mixerStrip) const;
-        FMOD_RESULT F_API getBank(const ID *id, Bank **bank) const;
+        FMOD_RESULT F_API getEvent(const char *path, EventDescription **event) const;
+        FMOD_RESULT F_API getBus(const char *path, Bus **bus) const;
+        FMOD_RESULT F_API getVCA(const char *path, VCA **vca) const;
+        FMOD_RESULT F_API getBank(const char *path, Bank **bank) const;
+        FMOD_RESULT F_API getEventByID(const ID *id, EventDescription **event) const;
+        FMOD_RESULT F_API getBusByID(const ID *id, Bus **bus) const;
+        FMOD_RESULT F_API getVCAByID(const ID *id, VCA **vca) const;
+        FMOD_RESULT F_API getBankByID(const ID *id, Bank **bank) const;
+        FMOD_RESULT F_API getSoundInfo(const char *key, FMOD_STUDIO_SOUND_INFO *info) const;
 
         // Path lookup
         FMOD_RESULT F_API lookupID(const char *path, ID *id) const;
@@ -90,6 +97,12 @@ namespace Studio
         FMOD_RESULT F_API startRecordCommands(const char *filename, FMOD_STUDIO_RECORD_COMMANDS_FLAGS flags);
         FMOD_RESULT F_API stopRecordCommands();
         FMOD_RESULT F_API playbackCommands(const char *filename);
+
+        // Callbacks
+        FMOD_RESULT F_API setCallback(FMOD_STUDIO_SYSTEM_CALLBACK callback, FMOD_STUDIO_SYSTEM_CALLBACK_TYPE callbackmask = 0xFFFFFFFF);
+        FMOD_RESULT F_API getUserData(void **userData) const;
+        FMOD_RESULT F_API setUserData(void *userData);
+
     };
 
     class EventDescription
@@ -159,6 +172,9 @@ namespace Studio
         FMOD_RESULT F_API get3DAttributes(FMOD_3D_ATTRIBUTES *attributes) const;
         FMOD_RESULT F_API set3DAttributes(const FMOD_3D_ATTRIBUTES *attributes);
 
+        FMOD_RESULT F_API getProperty(FMOD_STUDIO_EVENT_PROPERTY index, float* value) const;
+        FMOD_RESULT F_API setProperty(FMOD_STUDIO_EVENT_PROPERTY index, float value);
+
         FMOD_RESULT F_API getPaused(bool *paused) const;
         FMOD_RESULT F_API setPaused(bool paused);
 
@@ -186,11 +202,6 @@ namespace Studio
         FMOD_RESULT F_API getCue(const char *name, CueInstance **cue) const;
         FMOD_RESULT F_API getCueByIndex(int index, CueInstance **cue) const;
         FMOD_RESULT F_API getCueCount(int *count) const;
-
-        FMOD_RESULT F_API createSubEvent(const char *name, EventInstance **instance) const;
-
-        // Loading control
-        FMOD_RESULT F_API getLoadingState(FMOD_STUDIO_LOADING_STATE *state) const;
 
         // Callbacks
         FMOD_RESULT F_API setCallback(FMOD_STUDIO_EVENT_CALLBACK callback);
@@ -228,10 +239,10 @@ namespace Studio
         FMOD_RESULT F_API setValue(float value);
     };
 
-    class MixerStrip
+    class Bus
     {
     private:
-        MixerStrip();   // Constructor made private so user cannot statically instance the class.
+        Bus();   // Constructor made private so user cannot statically instance the class.
 
     public:
         // Handle validity
@@ -247,18 +258,32 @@ namespace Studio
 
         FMOD_RESULT F_API getPaused(bool *paused) const;
         FMOD_RESULT F_API setPaused(bool paused);
-        
+
         FMOD_RESULT F_API getMute(bool *paused) const;
         FMOD_RESULT F_API setMute(bool paused);
 
         FMOD_RESULT F_API stopAllEvents(FMOD_STUDIO_STOP_MODE mode);
-        
+
         // Low-level API access
         FMOD_RESULT F_API getChannelGroup(FMOD::ChannelGroup **channelgroup) const;
+    };
 
-        // Loading control
-        FMOD_RESULT F_API getLoadingState(FMOD_STUDIO_LOADING_STATE *state) const;
-        FMOD_RESULT F_API release();
+    class VCA
+    {
+    private:
+        VCA();   // Constructor made private so user cannot statically instance the class.
+
+    public:
+        // Handle validity
+        bool F_API isValid() const;
+
+        // Property access
+        FMOD_RESULT F_API getID(ID *id) const;
+        FMOD_RESULT F_API getPath(char *path, int size, int *retrieved) const;
+
+        // Playback control
+        FMOD_RESULT F_API getFaderLevel(float *level) const;
+        FMOD_RESULT F_API setFaderLevel(float level);
     };
 
     class Bank
@@ -283,10 +308,14 @@ namespace Studio
         FMOD_RESULT F_API getSampleLoadingState(FMOD_STUDIO_LOADING_STATE *state) const;
 
         // Enumeration
+        FMOD_RESULT F_API getStringCount(int *count) const;
+        FMOD_RESULT F_API getStringInfo(int index, ID *id, char *path, int size, int *retrieved) const;
         FMOD_RESULT F_API getEventCount(int *count) const;
         FMOD_RESULT F_API getEventList(EventDescription **array, int capacity, int *count) const;
-        FMOD_RESULT F_API getMixerStripCount(int *count) const;
-        FMOD_RESULT F_API getMixerStripList(MixerStrip **array, int capacity, int *count) const;
+        FMOD_RESULT F_API getBusCount(int *count) const;
+        FMOD_RESULT F_API getBusList(Bus **array, int capacity, int *count) const;
+        FMOD_RESULT F_API getVCACount(int *count) const;
+        FMOD_RESULT F_API getVCAList(VCA **array, int capacity, int *count) const;
     };
 
 } // namespace Studio

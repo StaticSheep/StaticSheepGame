@@ -163,11 +163,20 @@
     <ClInclude Include="Input.h">
       <Filter>Systems\Input</Filter>
     </ClInclude>
-    <ClInclude Include="AntTweakModule.h">
-      <Filter>Systems\AntTweak</Filter>
+    <ClInclude Include="..\includes\Vec3.h">
+      <Filter>BaseTypes\Vectors\Vec3</Filter>
     </ClInclude>
-    <ClInclude Include="TweakHelper.h">
-      <Filter>Systems\AntTweak\Tweaking</Filter>
+    <ClInclude Include="CRigidBody.h">
+      <Filter>Components\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundEmitter.h">
+      <Filter>Components\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundPlayer.h">
+      <Filter>Components\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="Debug.h">
+      <Filter>Systems\Debug</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -301,20 +310,20 @@
     <ClCompile Include="Input.cpp">
       <Filter>Systems\Input</Filter>
     </ClCompile>
-    <ClCompile Include="AntTweakModule.cpp">
-      <Filter>Systems\AntTweak</Filter>
+    <ClCompile Include="..\Utilities\Vec3.cpp">
+      <Filter>BaseTypes\Vectors\Vec3</Filter>
     </ClCompile>
-    <ClCompile Include="TweakHelper.cpp">
-      <Filter>Systems\AntTweak\Tweaking</Filter>
+    <ClCompile Include="CRigidBody.cpp">
+      <Filter>Components\Physics</Filter>
     </ClCompile>
-    <ClCompile Include="ObjectTweak.cpp">
-      <Filter>BaseTypes\Object</Filter>
+    <ClCompile Include="SoundEmitter.cpp">
+      <Filter>Components\Audio</Filter>
     </ClCompile>
-    <ClCompile Include="SpaceTweak.cpp">
-      <Filter>BaseTypes\Space</Filter>
+    <ClCompile Include="SoundPlayer.cpp">
+      <Filter>Components\Audio</Filter>
     </ClCompile>
-    <ClCompile Include="EngineTweak.cpp">
-      <Filter>Engine\EngineCore</Filter>
+    <ClCompile Include="Debug.cpp">
+      <Filter>Systems\Debug</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -492,11 +501,17 @@
     <Filter Include="Systems\Input">
       <UniqueIdentifier>{cf08f41f-fac7-4646-86a7-142228b605a6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Systems\AntTweak">
-      <UniqueIdentifier>{532970db-613b-494b-8710-cdb5b9fb1c1c}</UniqueIdentifier>
+    <Filter Include="BaseTypes\Vectors\Vec3">
+      <UniqueIdentifier>{c28b6611-4245-4f4c-80e1-4c57dcd29318}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Systems\AntTweak\Tweaking">
-      <UniqueIdentifier>{c08bfb1b-6056-499d-ac47-ca1ebb71025e}</UniqueIdentifier>
+    <Filter Include="Components\Physics">
+      <UniqueIdentifier>{4479f1bd-bcfd-4f6a-897b-ac4ed0686e92}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\Audio">
+      <UniqueIdentifier>{e02606f1-071e-4e97-bd45-3372fb9387f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\Debug">
+      <UniqueIdentifier>{83b8555e-3acd-4901-80d7-f3c93f19ffa7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

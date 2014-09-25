@@ -101,6 +101,7 @@
     <ClInclude Include="..\includes\EnumData.h" />
     <ClInclude Include="..\includes\Utilities.h" />
     <ClInclude Include="AntTweakModule.h" />
+    <ClInclude Include="..\includes\Vec3.h" />
     <ClInclude Include="Api.h" />
     <ClInclude Include="Archetype.h" />
     <ClInclude Include="Camera.h" />
@@ -109,6 +110,7 @@
     <ClInclude Include="Component.h" />
     <ClInclude Include="ComponentCreator.h" />
     <ClInclude Include="CTester.h" />
+    <ClInclude Include="Debug.h" />
     <ClInclude Include="DefaultTypes.h" />
     <ClInclude Include="DrawLib.h" />
     <ClInclude Include="Engine.h" />
@@ -132,6 +134,7 @@
     <ClInclude Include="PhysicsObject.h" />
     <ClInclude Include="PODSerialization.h" />
     <ClInclude Include="Qualifiers.h" />
+    <ClInclude Include="CRigidBody.h" />
     <ClInclude Include="Serialization.h" />
     <ClInclude Include="SheepAudio.h" />
     <ClInclude Include="SheepFMOD.h" />
@@ -145,6 +148,8 @@
     <ClInclude Include="SheepSoundEvent.h" />
     <ClInclude Include="sheep_engine.h" />
     <ClInclude Include="SlotArray.h" />
+    <ClInclude Include="SoundEmitter.h" />
+    <ClInclude Include="SoundPlayer.h" />
     <ClInclude Include="Space.h" />
     <ClInclude Include="CSprite.h" />
     <ClInclude Include="System.h" />
@@ -158,12 +163,14 @@
   <ItemGroup>
     <ClCompile Include="..\Utilities\Utilities.cpp" />
     <ClCompile Include="AntTweakModule.cpp" />
+    <ClCompile Include="..\Utilities\Vec3.cpp" />
     <ClCompile Include="Archetype.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CGamePad.cpp" />
     <ClCompile Include="CLuaComponent.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="CTester.cpp" />
+    <ClCompile Include="Debug.cpp" />
     <ClCompile Include="DefaultTypes.cpp" />
     <ClCompile Include="DrawLib.cpp" />
     <ClCompile Include="Engine.cpp" />
@@ -186,6 +193,7 @@
     <ClCompile Include="ObjectTweak.cpp" />
     <ClCompile Include="PhysicsObject.cpp" />
     <ClCompile Include="PODSerialization.cpp" />
+    <ClCompile Include="CRigidBody.cpp" />
     <ClCompile Include="Serialization.cpp" />
     <ClCompile Include="SheepAudio.cpp" />
     <ClCompile Include="SheepGraphics.cpp" />
@@ -199,6 +207,8 @@
     <ClCompile Include="SheepPhysics.cpp" />
     <ClCompile Include="SheepSoundEvent.cpp" />
     <ClCompile Include="sheep_engine.cpp" />
+    <ClCompile Include="SoundEmitter.cpp" />
+    <ClCompile Include="SoundPlayer.cpp" />
     <ClCompile Include="Space.cpp" />
     <ClCompile Include="CSprite.cpp" />
     <ClCompile Include="SpaceTweak.cpp" />

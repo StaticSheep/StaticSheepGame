@@ -16,11 +16,9 @@ namespace Framework
     static void SetUseCamera(bool useCam);
     static void SetTexture(unsigned texID);
     static int  GetTextureID(const char* texName);
-    //static void SetColor(Vec4& color);
     static void SetRotation(float theta);
     static void SetPosition(float x, float y);
     static void SetColor(float r, float g, float b, float a);
-    //static void SetTextPos(Vec2& pos);
 
     static void DrawRect(float x, float y, float width, float height);
     static void DrawTexturedRect(float x, float y, float width, float height);

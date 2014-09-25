@@ -1,5 +1,5 @@
-{d4a07af7-50bc-4df9-bb07-e2f7fb1784b0} event:/Music/TopGun
-{b90f6e03-fbe8-4858-90aa-63e4b3ee4f4d} bus:/
-{e3302424-32db-4dd9-82ec-94ebbbe02a2c} bus:/Reverb
-{0d4d063f-7f13-4d5c-87b2-75de70ca7f6a} bank:/Music
-{f1a8128c-5c1b-4d99-aa6b-3527f78153bf} bank:/Master Bank
+{d3b5e7e0-ea8b-4e70-a67e-a913b1faf701} event:/TopGun
+{346e587c-cb9b-497c-b1e5-76fb0fa79102} bus:/
+{792fb1f0-9f99-4f78-866b-36286402b645} bus:/Reverb
+{dcdd28ba-dc43-4e3f-b929-cc0bbd1291f0} bank:/Master Bank
+{472f7aa7-65d2-44bd-bff2-a6090ba18a7e} bank:/Music
