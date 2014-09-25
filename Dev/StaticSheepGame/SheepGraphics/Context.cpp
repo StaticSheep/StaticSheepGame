@@ -94,7 +94,7 @@ namespace DirectSheep
 
   //Initializes the RenderContext
   //Returns true if successful, else false
-  bool RenderContext::Initialize(HWND hwnd, float height, float width)
+  bool RenderContext::Initialize(HWND hwnd, float width, float height)
   {
     m_viewport.dim = Dimension((unsigned)width, (unsigned)height);
     m_hwnd = hwnd;
@@ -759,6 +759,11 @@ namespace DirectSheep
     bool RenderContext::GetFullscreen(void) const
     {
       return m_fullscreen;
+    }
+
+    void* RenderContext::ExternalGetDevice(void) const
+    {
+      return m_device;
     }
 
     ID3D11Device* RenderContext::GetDevice(void) const

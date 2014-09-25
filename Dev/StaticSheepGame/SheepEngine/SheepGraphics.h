@@ -53,6 +53,9 @@ namespace Framework
     int GetTextureID(const std::string& texture);
     void DrawSpriteText(const char * text, float size, const char * font);
 
+
+    void* GetDevice(void);
+
 	private:
 
     // Initialization call

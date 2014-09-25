@@ -108,6 +108,7 @@ class RenderContext
 
    GFX_API Handle GetBackBuffer(void) const;
    GFX_API bool GetFullscreen(void) const;
+   GFX_API void* ExternalGetDevice(void) const;
     ID3D11Device* GetDevice(void) const;
     ID3D11DeviceContext* GetDeviceContext(void) const;
    GFX_API const Dimension& GetNativeResolution(void) const;

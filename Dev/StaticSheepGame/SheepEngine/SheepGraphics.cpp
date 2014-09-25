@@ -12,6 +12,10 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "graphics\api.h"
 #include "graphics\Handle.h"
 #include "graphics\Context.h"
+
+#include "Window.h"
+
+
 namespace Framework
 {
 	// Global pointer
@@ -45,13 +49,15 @@ namespace Framework
 		// Create DirectX object
 		// Initialize graphics system
 
-    _HWnd = ENGINE->Window.GetHandle();
-    _ScreenWidth = ENGINE->Window.width;
-    _ScreenHeight = ENGINE->Window.height;
+    _ScreenWidth = ENGINE->Window->GetWidth();
+    _ScreenHeight = ENGINE->Window->GetHeight();
 
     m_renderContext = DirectSheep::RenderContext::Allocate();
 
-    m_renderContext->Initialize(_HWnd,_ScreenWidth,_ScreenHeight);
+    m_renderContext->Initialize(ENGINE->Window->GetHandle(), (float)_ScreenWidth, (float)_ScreenHeight);
+
+    Message m(Message::GFXDeviceInit);
+    ENGINE->SystemMessage(m);
 
     spritepShader = SetPShader("SheepGraphics/Shaders/Generic.hlsl");
 
@@ -61,6 +67,7 @@ namespace Framework
 
     m_renderContext->CreateVertexBuffer(spriteQuad, 120);
 
+    
 	}
 
 	void SheepGraphics::Update(float dt)
@@ -92,6 +99,9 @@ namespace Framework
         space->hooks.Call("PostDraw");
     }
     Lua::CallFunc(ENGINE->Lua(), "hook.Call", "PostDraw");
+
+    Message m(Message::PostDraw);
+    ENGINE->SystemMessage(m);
     
 	}
 
@@ -229,5 +239,10 @@ namespace Framework
   void SheepGraphics::DrawSpriteText(const char * text, float size, const char * font)
   {
     m_renderContext->DrawSpriteText(text, size, font);
+  }
+
+  void* SheepGraphics::GetDevice()
+  {
+    return m_renderContext->ExternalGetDevice();
   }
 }
