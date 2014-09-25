@@ -6,17 +6,16 @@ Author(s): Zachary Nawar (Primary)
 All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 *****************************************************************/
 
+#include <windows.h>
+#include <commdlg.h>
+#include <iostream>
+
 #include "Space.h"
 #include "Object.h"
 #include "File.h"
 #include "Variable.h"
 
-
-#include <iostream>
 #include "AntTweakModule.h"
-#include <windows.h>
-#include <commdlg.h>
-#include <iostream>
 
 namespace Framework
 {
@@ -32,6 +31,12 @@ namespace Framework
     // Creates a bar for the space
     AntTweak::TBar* spaceBar = ATWEAK->CreateBar(space.GetName().c_str());
     space.tweakHandle = spaceBar->self;
+
+    
+    int r = rand() % (4 - 1);
+    int r2 = rand() % (8 - 1);
+
+    spaceBar->SetPos(225 + 255 * r, 16 + 10 * r2);
 
     space.UpdateTweakBar();
 #endif
@@ -79,6 +84,11 @@ namespace Framework
     OPENFILENAME ofn;
     char szFile[100];
 
+    TCHAR Buffer[128];
+    DWORD dwRet;
+
+    dwRet = GetCurrentDirectory(128, Buffer);
+
     ZeroMemory( &ofn , sizeof( ofn));
     ofn.lStructSize = sizeof ( ofn );
     ofn.hwndOwner = NULL  ;
@@ -89,12 +99,14 @@ namespace Framework
     ofn.nFilterIndex =1;
     ofn.lpstrFileTitle = NULL ;
     ofn.nMaxFileTitle = 0 ;
-    ofn.lpstrInitialDir=NULL ;
+    ofn.lpstrInitialDir="content\\data\\archetypes";
     ofn.Flags = OFN_PATHMUSTEXIST|OFN_FILEMUSTEXIST ;
     GetOpenFileName( &ofn );
 
     if (szFile[0] == 0)
       return;
+
+    SetCurrentDirectory(Buffer);
 
     GameObject* obj = FACTORY->LoadObjectFromArchetype(space, szFile);
 

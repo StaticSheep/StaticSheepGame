@@ -18,6 +18,10 @@ namespace Framework
   const std::string Factory::ArchetypeFileExtension = ".arche";
   const std::string Factory::ArchetypePrefix = "ach_";
 
+  const std::string Factory::ArchetypeFilePath = "content\\data\\archetypes\\";
+  const std::string Factory::LevelFilePath = "content\\data\\levels\\";
+  const std::string Factory::SpaceFilePath = "content\\data\\spaces\\";
+
   Factory::Factory()
   {
     for (unsigned int i = 0; i < ecountComponents; ++i)
@@ -193,12 +197,7 @@ namespace Framework
     File file; // File to save to
     std::string filepath = name;
 
-    if (filepath.substr(0, ArchetypePrefix.length()) != ArchetypePrefix)
-    {
-      filepath = ArchetypePrefix + name;
-    }
-
-    filepath += ArchetypeFileExtension;
+    filepath = ArchetypeFilePath + filepath + ArchetypeFileExtension;
 
     file.Open(filepath.c_str(), FileAccess::Write); // Open the file
 
@@ -346,17 +345,7 @@ namespace Framework
     std::string filepath = name;
     std::string archetype = name;
 
-    //Check if we need to do any trimming
-    if (filepath.substr(0, ArchetypePrefix.length()) != ArchetypePrefix)
-    {
-      // Add the prefix on if it's not there
-      filepath = ArchetypePrefix + name;
-    }
-    else
-    {
-      // Remove the prefix if it is there from the actual archetype name
-      archetype = archetype.substr(ArchetypePrefix.length(), archetype.length() - ArchetypePrefix.length());
-    }
+    filepath = ArchetypeFilePath + filepath + ArchetypeFileExtension;
 
     // Quickly grab the archetype from our map if it exists
     const Archetype& aType = GetArchetype(archetype);
@@ -367,8 +356,6 @@ namespace Framework
       // Make the object!
       return true;
     }
-
-    filepath += ArchetypeFileExtension;
 
     if (!File::FileExists(filepath.c_str()))
     {
@@ -431,7 +418,7 @@ namespace Framework
   void Factory::SaveSpaceToFile(GameSpace* space, const char* name, std::vector<std::string>* objInstanceData, bool includeGeneric, bool allData)
   {
     File file; // File to save the space to
-    std::string filepath = name + SpaceFileExtension;
+    std::string filepath = LevelFileExtension + name + SpaceFileExtension;
     GameSpace::SerializerData extraData;
 
     extraData.instanceData = objInstanceData;
@@ -466,7 +453,7 @@ namespace Framework
   void Factory::SaveSpaceToFile(GameSpace* space, const char* name, bool standalone)
   {
     File file; // File to save the space to
-    std::string filepath = name + SpaceFileExtension;
+    std::string filepath = LevelFileExtension + name + SpaceFileExtension;
     GameSpace::SerializerData extraData;
     
     extraData.instanceData = NULL;
@@ -520,11 +507,11 @@ namespace Framework
   }
 
 
-  void Factory::SaveLevel(const char* name)
+  void Factory::SaveLevel(const char* filePath)
   {
     File file;
 
-    std::string levelPath = name;
+    std::string levelPath = filePath;
     levelPath += LevelFileExtension;
 
     file.Open(levelPath.c_str(), FileAccess::Write);
@@ -556,7 +543,7 @@ namespace Framework
       spaceName = file.GetLine('\n');
       if (spaceName.length() > 0)
       {
-        spaceName += SpaceFileExtension;
+        spaceName = SpaceFilePath + spaceName + SpaceFileExtension;
         GameSpace* sp;
         sp = LoadSpace(spaceName.c_str());
         if (cb)

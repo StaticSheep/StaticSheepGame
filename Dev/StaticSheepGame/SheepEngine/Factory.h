@@ -43,14 +43,18 @@ namespace Framework
     GameSpace* LoadSpace(const char* name);
 
     // Saves all of the spaces into a level file
-    void SaveLevel(const char* name);
+    void SaveLevel(const char* filePath);
     // Loads a level file, which loads multiple spaces
-    void LoadLevel(const char* name, void(*cb)(GameSpace* space));
+    void LoadLevel(const char* filePath, void(*cb)(GameSpace* space));
 
     static const std::string ArchetypeFileExtension;
     static const std::string ArchetypePrefix;
     static const std::string SpaceFileExtension;
     static const std::string LevelFileExtension;
+
+    static const std::string SpaceFilePath;
+    static const std::string LevelFilePath;
+    static const std::string ArchetypeFilePath;
 
     static GameObject* LuaLoadObjectFromArchetype(GameSpace* space, const char* name);
 

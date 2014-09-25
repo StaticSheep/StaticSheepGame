@@ -57,6 +57,11 @@ namespace Framework
     obj.tweakDeleteObject = false;
     objectBar->SetIconify(false);
 
+    int r = rand() % (5 - 1);
+    int r2 = rand() % (8 - 1);
+
+    objectBar->SetPos(255 * r, 300 + 10 * r2);
+
     obj.UpdateTweakBar();
   }
 

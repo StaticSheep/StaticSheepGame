@@ -12,6 +12,7 @@
 #include "GameLogic.h"
 #include "SheepPhysics.h"
 #include "AntTweakModule.h"
+#include <iostream>
 
 #pragma comment (lib, "SheepGraphics.lib")
 #pragma comment (lib, "SheepPhysics.lib")
@@ -24,6 +25,7 @@ int WINAPI WinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
 {
   _CrtSetDbgFlag ( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
   //_CrtSetBreakAlloc(6295);
+
 
   OpenConsole();
 

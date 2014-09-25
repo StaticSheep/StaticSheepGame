@@ -65,22 +65,29 @@ namespace Framework
     OPENFILENAME ofn;
     char szFile[100];
 
+    TCHAR Buffer[128];
+    DWORD dwRet;
+
+    dwRet = GetCurrentDirectory(128, Buffer);
+
     ZeroMemory( &ofn , sizeof( ofn));
     ofn.lStructSize = sizeof ( ofn );
     ofn.hwndOwner = NULL  ;
     ofn.lpstrFile = szFile ;
     ofn.lpstrFile[0] = '\0';
     ofn.nMaxFile = sizeof( szFile );
-    ofn.lpstrFilter = "Sheep Levels\0*.level\0All\0*.*\0Text\0*.TXT\0";
+    ofn.lpstrFilter = "Sheep Levels\0*.level\0";
     ofn.nFilterIndex =1;
-    ofn.lpstrFileTitle = NULL ;
+    ofn.lpstrFileTitle = NULL;
     ofn.nMaxFileTitle = 0 ;
-    ofn.lpstrInitialDir=NULL ;
+    ofn.lpstrInitialDir="content\\data\\levels";
     ofn.Flags = OFN_PATHMUSTEXIST|OFN_FILEMUSTEXIST;
     GetOpenFileName( &ofn );
 
     if (szFile[0] == 0)
       return;
+
+    SetCurrentDirectory(Buffer);
 
     FACTORY->LoadLevel(szFile, TweakSpaceCB);
   }
@@ -90,22 +97,29 @@ namespace Framework
     OPENFILENAME ofn;
     char szFile[100];
 
+    TCHAR Buffer[128];
+    DWORD dwRet;
+
+    dwRet = GetCurrentDirectory(128, Buffer);
+
     ZeroMemory( &ofn , sizeof( ofn));
     ofn.lStructSize = sizeof ( ofn );
     ofn.hwndOwner = NULL  ;
     ofn.lpstrFile = szFile ;
     ofn.lpstrFile[0] = '\0';
     ofn.nMaxFile = sizeof( szFile );
-    ofn.lpstrFilter = "Sheep Level\0*.level\0All\0*.*\0Text\0*.TXT\0";
+    ofn.lpstrFilter = "Sheep Level\0*.level\0";
     ofn.nFilterIndex =1;
     ofn.lpstrFileTitle = NULL ;
     ofn.nMaxFileTitle = 0 ;
-    ofn.lpstrInitialDir=NULL ;
+    ofn.lpstrInitialDir="content\\data\\spaces";
     ofn.Flags = OFN_PATHMUSTEXIST;
     GetSaveFileName(&ofn);
 
     if (szFile[0] == 0)
       return;
+
+    SetCurrentDirectory(Buffer);
 
     FACTORY->SaveLevel(szFile);
   }
