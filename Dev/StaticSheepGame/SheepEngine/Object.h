@@ -72,6 +72,8 @@ namespace Framework
       bool fastChildSearch;
 
       GameObject();
+      
+      
 
       ~GameObject();
 
@@ -81,6 +83,9 @@ namespace Framework
       // Checks to see if the object owns a specific component type
       bool HasComponent(size_t type) const;
 
+
+      // Copies one object into this object
+      void Copy(GameObject& rhs);
       
 
       // Serialization routine

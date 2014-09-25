@@ -225,6 +225,24 @@ namespace Framework
     }
   }
 
+  static void DuplicateObject(void* clientData)
+  {
+    GenericLookup* gl = (GenericLookup*)clientData;
+    GameObject* obj = gl->space->GetGameObject(gl->self);
+    
+    GameObject* newObj = gl->space->CreateEmptyObject();
+
+    newObj->Copy(*obj);
+
+    newObj->Initialize();
+
+    gl->space->UpdateTweakBar();
+
+    newObj->TweakObject();
+
+    
+  }
+
   /// <summary>
   /// Updates the tweak bar.
   /// </summary>
@@ -272,6 +290,9 @@ namespace Framework
     objectBar->DefineHelpMessage("Saves this object as an archetype to a file.");
     objectBar->AddButton("ArchetypeUpdate", UpdateArchetype, this->tweakLookup);
 
+    objectBar->DefineLabel("Duplicate Object");
+    objectBar->AddButton("Duplicate", DuplicateObject, this->tweakLookup);
+
     objectBar->AddSeparator("ComponentAddRemove");
 
     if (tweakListComponents)
@@ -312,7 +333,7 @@ namespace Framework
 
         for (size_t i = 0; i < ecountComponents - 1; ++i)
         {
-          if (HasComponent(i))
+          if (HasComponent(i) && i != eTransform)
           {
             bName = "Remove";
             bName += EnumComponent.m_literals[i];

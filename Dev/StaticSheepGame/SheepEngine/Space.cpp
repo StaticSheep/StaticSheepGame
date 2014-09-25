@@ -388,7 +388,7 @@ namespace Framework
     //  obj->Initialize();
     //}
 
-    FACTORY->SaveSpaceToLevel(this, "temp_space", true);
+    FACTORY->SaveSpaceToFile(this, "temp_space", true);
 
     GameSpace* space = FACTORY->LoadSpace("temp_space");
 

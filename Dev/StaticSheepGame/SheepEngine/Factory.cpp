@@ -13,6 +13,7 @@ namespace Framework
 {
   Factory *FACTORY = NULL;
 
+  const std::string Factory::SpaceFileExtension = ".space";
   const std::string Factory::LevelFileExtension = ".level";
   const std::string Factory::ArchetypeFileExtension = ".arche";
   const std::string Factory::ArchetypePrefix = "ach_";
@@ -32,18 +33,34 @@ namespace Framework
     FACTORY = nullptr;
   }
 
+  /// <summary>
+  /// Registers a component creator.
+  /// </summary>
+  /// <param name="creator">The creator.</param>
+  /// <param name="type">The type.</param>
   void Factory::RegisterComponentCreator(ComponentCreator& creator, const TypeInfo* type)
   {
     m_componentCreators[creator.typeID] = &creator;
     m_componentTypes[creator.typeID] = type;
   }
 
+  /// <summary>
+  /// Gets the type of a component.
+  /// </summary>
+  /// <param name="type">The type.</param>
+  /// <returns></returns>
   const TypeInfo* Factory::GetComponentType(EComponent type)
   {
     return m_componentTypes[type];
   }
 
   DISABLE_WARNING(4996)
+    /// <summary>
+    /// Gets the component member.
+    /// </summary>
+    /// <param name="instring">The instring.</param>
+    /// <param name="out">The out.</param>
+    /// <returns></returns>
   const Member* Factory::GetComponentMember(const char *instring, Variable& out)
   {
     char data[256];
@@ -74,6 +91,12 @@ namespace Framework
     return GetComponentMemberRecursive(member, out);
   }
 
+  /// <summary>
+  /// Gets the component member. recursive.
+  /// </summary>
+  /// <param name="member">The member.</param>
+  /// <param name="val">The value.</param>
+  /// <returns></returns>
   const Member* Factory::GetComponentMemberRecursive(const Member *member, Variable &val)
   {
     
@@ -102,7 +125,13 @@ namespace Framework
 
   END_DISABLE()
 
-  GameComponent* Factory::DeserializeComponent(File& file, GameSpace* space)
+    /// <summary>
+    /// Deserializes a component.
+    /// </summary>
+    /// <param name="file">The file.</param>
+    /// <param name="space">The space.</param>
+    /// <returns></returns>
+    GameComponent* Factory::DeserializeComponent(File& file, GameSpace* space)
   {
     // Get the generic serializer
     Serializer* s = Serializer::Get( );
@@ -154,6 +183,11 @@ namespace Framework
     return c;
   }
 
+  /// <summary>
+  /// Saves the object to archetype.
+  /// </summary>
+  /// <param name="obj">The object.</param>
+  /// <param name="name">The name.</param>
   void Factory::SaveObjectToArchetype(GameObject* obj, const char* name)
   {
     File file; // File to save to
@@ -178,28 +212,30 @@ namespace Framework
     
   }
 
+  /// <summary>
+  /// load object from archetype.
+  /// </summary>
+  /// <param name="space">The space.</param>
+  /// <param name="name">The name.</param>
+  /// <returns></returns>
   GameObject* Factory::LuaLoadObjectFromArchetype(GameSpace* space, const char* name)
   {
     return FACTORY->LoadObjectFromArchetype(space, name);
   }
 
-  GameObject* Factory::LoadObjectFromArchetype(GameSpace* space, const char* name)
+  /// <summary>
+  /// Loads an object from a archetype.
+  /// </summary>
+  /// <param name="space">The space.</param>
+  /// <param name="name">The name.</param>
+  /// <returns>The object</returns>
+  GameObject* Factory::LoadObjectFromArchetype(GameSpace* space, const char* filepath)
   {
     File file; // File to load from
-    std::string filepath = name;
-    std::string archetype = name;
+    std::string archetype = filepath;
 
-    //Check if we need to do any trimming
-    if (filepath.substr(0, ArchetypePrefix.length()) != ArchetypePrefix)
-    {
-      // Add the prefix on if it's not there
-      filepath = ArchetypePrefix + name;
-    }
-    else
-    {
-      // Remove the prefix if it is there from the actual archetype name
-      archetype = archetype.substr(ArchetypePrefix.length(), archetype.length() - ArchetypePrefix.length());
-    }
+    archetype = archetype.substr(archetype.find_last_of('\\') + 1, archetype.length() - archetype.find_last_of('\\') - 1);
+    archetype = archetype.substr(0, archetype.find_first_of('.'));
 
     // Quickly grab the archetype from our map if it exists
     const Archetype& aType = GetArchetype(archetype);
@@ -213,14 +249,13 @@ namespace Framework
       return obj;
     }
 
-    filepath += ArchetypeFileExtension;
 
-    if (!File::FileExists(filepath.c_str()))
+    if (!File::FileExists(filepath))
     {
       return nullptr;
     }
 
-    file.Open(filepath.c_str(), FileAccess::Read);
+    file.Open(filepath, FileAccess::Read);
 
     ErrorIf(!file.Validate(), "Factory", "Invalid file!");
 
@@ -242,128 +277,16 @@ namespace Framework
     return obj;
   }
 
-
   GameObject* Factory::LoadObjectFromArchetype(GameSpace* space, const Archetype& archetype)
   {
     return archetype.CreateObject(space);
   }
 
-  static void StoreBackup(const char* filepath)
-  {
-    if (File::FileExists(filepath))
-    {
-      time_t t = time(0);
-      struct tm * now = localtime(&t);
-
-      std::string backUpFile = "backup\\";
-      backUpFile += filepath;
-      backUpFile += "." + std::to_string(now->tm_mon) + "_" + std::to_string(now->tm_mday) + "_" +
-        std::to_string(now->tm_hour) + "_" + std::to_string(now->tm_min) + "_" + std::to_string(now->tm_sec) + ".backup";
-
-      std::ifstream src;
-      src.open(filepath);
-      std::ofstream dest;
-      dest.open(backUpFile.c_str());
-      dest << src.rdbuf();
-    }
-  }
-
   /// <summary>
-  /// Saves the space to level file.
-  /// If you wish to save as a standalone level file, the third paramater should be a boolean marked as true.
+  /// Gets an archetype.
   /// </summary>
-  /// <param name="space">The space to save.</param>
-  /// <param name="name">The name of the level.</param>
-  /// <param name="objInstanceData">Game object instance data list. This is a vector of strings which contain instance parameters defined as such:
-  /// {COMPONENT}:{DATA} You can use additional :'s for structs.
-  /// Example: Transform:value1</param>
-  /// By default data which has been modified on an archetype is not saved. By adding instance data parameters to this you can tell the serialized
-  /// to save specific parameters of the object.
-  /// <param name="includeGeneric">If this is true, then objects which are not from an archetype will be serialized inside of the level file</param>
-  /// <param name="allData">If this is true, then every modified value of an archetype will be saved</param>
-  void Factory::SaveSpaceToLevel(GameSpace* space, const char* name, std::vector<std::string>* objInstanceData, bool includeGeneric, bool allData)
-  {
-    File file; // File to save the space to
-    std::string filepath = name + LevelFileExtension;
-    GameSpace::SerializerData extraData;
-
-    extraData.instanceData = objInstanceData;
-    extraData.includeGeneric = includeGeneric;
-    extraData.saveAllData = allData;
-    extraData.standalone = false;
-
-
-    StoreBackup(filepath.c_str());
-    file.Open(filepath.c_str(), FileAccess::Write); // Open the file
-
-    Serializer::Get()->SetUserData(&extraData);
-
-    Variable(*space).Serialize(file);
-
-    Serializer::Get()->SetUserData(NULL);
-
-    file.Close();
-  }
-
-  /// <summary>
-  /// Saves the space to level file.
-  /// This version allows you to save the space as a stand alone level file.
-  /// Stand alone level files do not rely upon archetypes, instead it saves every single object
-  /// individually with all data intact. The actual archetype names are saved inside of the object
-  /// so in case you ever want to revert back to a non-standalone version, that is still possible.
-  /// WARNING: This can result in a very large file
-  /// </summary>
-  /// <param name="space">The space.</param>
   /// <param name="name">The name.</param>
-  /// <param name="standalone">Stand alone mode?</param>
-  void Factory::SaveSpaceToLevel(GameSpace* space, const char* name, bool standalone)
-  {
-    File file; // File to save the space to
-    std::string filepath = name + LevelFileExtension;
-    GameSpace::SerializerData extraData;
-    
-    extraData.instanceData = NULL;
-    extraData.includeGeneric = false;
-    extraData.saveAllData = false;
-    extraData.standalone = standalone;
-
-    file.Open(filepath.c_str(), FileAccess::Write); // Open the file
-
-    Serializer::Get()->SetUserData(&extraData);
-
-    Variable(*space).Serialize(file);
-
-    Serializer::Get()->SetUserData(NULL);
-
-    file.Close();
-  }
-
-
-  /// <summary>
-  /// Loads the level file to space.
-  /// </summary>
-  /// <param name="space">The space.</param>
-  /// <param name="name">The name.</param>
-  GameSpace* Factory::LoadSpace(const char* filepath)
-  {
-    File file; // File to save the space to
-
-    file.Open(filepath, FileAccess::Read); // Open the file
-
-    ErrorIf(!file.Validate(), "Factory - Load Level", "Invalid level: %s", filepath);
-
-    std::string spaceName = file.GetLine('\n');
-
-    GameSpace* space = ENGINE->CreateSpace(spaceName.c_str());
-
-    Variable(*space).Deserialize(file);
-
-    file.Close();
-
-
-    return space;
-  }
-
+  /// <returns>Const Archetype reference</returns>
   const Archetype& Factory::GetArchetype(std::string name)
   {
     if (ArchetypeMap.find(name) != ArchetypeMap.end())
@@ -372,6 +295,10 @@ namespace Framework
     return Archetype::null;
   }
 
+  /// <summary>
+  /// Saves the archetype to file.
+  /// </summary>
+  /// <param name="archetype">The archetype.</param>
   void Factory::SaveArchetypeToFile(const Archetype& archetype)
   {
     File file; // File to load from
@@ -396,6 +323,10 @@ namespace Framework
     file.Close();
   }
 
+  /// <summary>
+  /// Saves the archetype to file.
+  /// </summary>
+  /// <param name="name">The name.</param>
   void Factory::SaveArchetypeToFile(std::string name)
   {
     const Archetype& archetype = GetArchetype(name);
@@ -404,6 +335,11 @@ namespace Framework
       SaveArchetypeToFile(archetype);
   }
 
+  /// <summary>
+  /// Loads the archetype from a file.
+  /// </summary>
+  /// <param name="name">The name.</param>
+  /// <returns>Archetype was loaded</returns>
   bool Factory::LoadArchetypeFromFile(const char* name)
   {
     File file; // File to load from
@@ -452,5 +388,191 @@ namespace Framework
 
     return true;
   }
+
+
+
+
+
+
+  // Backups a file into the backup folder
+  static void StoreBackup(const char* filepath)
+  {
+    if (File::FileExists(filepath))
+    {
+      time_t t = time(0);
+      struct tm * now = localtime(&t);
+
+      std::string backUpFile = "backup\\";
+      backUpFile += filepath;
+      backUpFile += "." + std::to_string(now->tm_mon) + "_" + std::to_string(now->tm_mday) + "_" +
+        std::to_string(now->tm_hour) + "_" + std::to_string(now->tm_min) + "_" + std::to_string(now->tm_sec) + ".backup";
+
+      std::ifstream src;
+      src.open(filepath);
+      std::ofstream dest;
+      dest.open(backUpFile.c_str());
+      dest << src.rdbuf();
+    }
+  }
+
+  /// <summary>
+  /// Saves the space to a space file.
+  /// If you wish to save as a standalone level file, the third paramater should be a boolean marked as true.
+  /// </summary>
+  /// <param name="space">The space to save.</param>
+  /// <param name="name">The name of the level.</param>
+  /// <param name="objInstanceData">Game object instance data list. This is a vector of strings which contain instance parameters defined as such:
+  /// {COMPONENT}:{DATA} You can use additional :'s for structs.
+  /// Example: Transform:value1</param>
+  /// By default data which has been modified on an archetype is not saved. By adding instance data parameters to this you can tell the serialized
+  /// to save specific parameters of the object.
+  /// <param name="includeGeneric">If this is true, then objects which are not from an archetype will be serialized inside of the level file</param>
+  /// <param name="allData">If this is true, then every modified value of an archetype will be saved</param>
+  void Factory::SaveSpaceToFile(GameSpace* space, const char* name, std::vector<std::string>* objInstanceData, bool includeGeneric, bool allData)
+  {
+    File file; // File to save the space to
+    std::string filepath = name + SpaceFileExtension;
+    GameSpace::SerializerData extraData;
+
+    extraData.instanceData = objInstanceData;
+    extraData.includeGeneric = includeGeneric;
+    extraData.saveAllData = allData;
+    extraData.standalone = false;
+
+
+    StoreBackup(filepath.c_str());
+    file.Open(filepath.c_str(), FileAccess::Write); // Open the file
+
+    Serializer::Get()->SetUserData(&extraData);
+
+    Variable(*space).Serialize(file);
+
+    Serializer::Get()->SetUserData(NULL);
+
+    file.Close();
+  }
+
+  /// <summary>
+  /// Saves the space to a space file.
+  /// This version allows you to save the space as a stand alone level file.
+  /// Stand alone level files do not rely upon archetypes, instead it saves every single object
+  /// individually with all data intact. The actual archetype names are saved inside of the object
+  /// so in case you ever want to revert back to a non-standalone version, that is still possible.
+  /// WARNING: This can result in a very large file
+  /// </summary>
+  /// <param name="space">The space.</param>
+  /// <param name="name">The name.</param>
+  /// <param name="standalone">Stand alone mode?</param>
+  void Factory::SaveSpaceToFile(GameSpace* space, const char* name, bool standalone)
+  {
+    File file; // File to save the space to
+    std::string filepath = name + SpaceFileExtension;
+    GameSpace::SerializerData extraData;
+    
+    extraData.instanceData = NULL;
+    extraData.includeGeneric = false;
+    extraData.saveAllData = false;
+    extraData.standalone = standalone;
+
+    StoreBackup(filepath.c_str());
+
+    file.Open(filepath.c_str(), FileAccess::Write); // Open the file
+
+    Serializer::Get()->SetUserData(&extraData);
+
+    Variable(*space).Serialize(file);
+
+    Serializer::Get()->SetUserData(NULL);
+
+    file.Close();
+  }
+
+
+  /// <summary>
+  /// Loads a space file.
+  /// </summary>
+  /// <param name="space">The space.</param>
+  /// <param name="name">The name.</param>
+  GameSpace* Factory::LoadSpace(const char* filepath)
+  {
+    File file; // File to save the space to
+
+    file.Open(filepath, FileAccess::Read); // Open the file
+
+    ErrorIf(!file.Validate(), "Factory - Load Level", "Invalid level: %s", filepath);
+
+    std::string spaceName = file.GetLine('\n');
+
+    if (ENGINE->GetSpace(spaceName.c_str()) != nullptr)
+    {
+      file.Close();
+      return nullptr;
+    }
+
+    GameSpace* space = ENGINE->CreateSpace(spaceName.c_str());
+
+    Variable(*space).Deserialize(file);
+
+    file.Close();
+
+
+    return space;
+  }
+
+
+  void Factory::SaveLevel(const char* name)
+  {
+    File file;
+
+    std::string levelPath = name;
+    levelPath += LevelFileExtension;
+
+    file.Open(levelPath.c_str(), FileAccess::Write);
+
+    ErrorIf(!file.Validate(), "Level Factory", "Failed to save a level? %s", levelPath.c_str());
+
+    for (size_t i=0; i < ENGINE->Spaces().size(); ++i)
+    {
+      GameSpace* sp = ENGINE->Spaces()[i];
+      file.Write("%s\n", sp->GetName().c_str());
+      SaveSpaceToFile(sp, sp->GetName().c_str(), nullptr, true, true);
+    }
+
+    file.Close();
+  }
+
+  void Factory::LoadLevel(const char* filePath, void(*cb)(GameSpace* space))
+  {
+    File file;
+
+    file.Open(filePath, FileAccess::Read);
+
+    ErrorIf(!file.Validate(), "Level Factory", "Greg's a nerd");
+
+    std::string spaceName;
+
+    while (file.Validate())
+    {
+      spaceName = file.GetLine('\n');
+      if (spaceName.length() > 0)
+      {
+        spaceName += SpaceFileExtension;
+        GameSpace* sp;
+        sp = LoadSpace(spaceName.c_str());
+        if (cb)
+          cb(sp);
+      }
+    }
+
+    file.Close();
+
+  }
+
+
+
+
+
+
+  
 
 }

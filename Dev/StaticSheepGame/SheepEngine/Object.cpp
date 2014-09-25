@@ -60,6 +60,8 @@ namespace Framework
     fastChildSearch = false;
   }
 
+  
+
 
   /// <summary>
   /// Removes all components from the game object
@@ -123,6 +125,67 @@ namespace Framework
 
     name.~basic_string();
     archetype.~basic_string();
+  }
+
+  void GameObject::Copy(GameObject& rhs)
+  {
+    archetype = rhs.archetype;
+    name = rhs.name;
+
+    for (unsigned int i = 0; i < ecountComponents; ++i)
+      m_components[i] = Handle::null;
+    fastChildSearch = false;
+
+    for (unsigned int i = 0; i < ecountComponents; ++i)
+    {
+      if (rhs.HasComponent(EComponent(i)) && i != eLuaComponent)
+      {
+        // Create the component that is needed
+        GameComponent* comp = space->CreateComponent(EComponent(i));
+
+        // Add the component to the object
+        AddComponent(comp);
+
+        // Get the type info relating to this component
+        const TypeInfo *typeInfo = FACTORY->GetComponentType( EComponent(i) );
+
+        // Iterate through all members in the component that are registered to be serialized
+        for (unsigned int m = 0; m < typeInfo->GetMembers().size(); ++m)
+        {
+          // Get the actual member
+          const Member member = typeInfo->GetMembers()[m];
+          // Copy over the member data from the archetype into the object
+          Variable LVar = Variable(member.Type(), (char*)comp + member.Offset());
+          Variable RVar = Variable(member.Type(), (char*)GetComponent(i) + member.Offset());
+          member.Type()->Copy(LVar.GetData(), RVar.GetData());
+        }
+
+      }
+    } // End component iteration
+
+    const TypeInfo* typeInfo = GET_TYPE(LuaComponent);
+
+    for (unsigned int i = 0; i < rhs.m_luaComponents.size(); ++i)
+    {
+      LuaComponent* comp = (LuaComponent*)space->CreateComponent(eLuaComponent);
+      AddComponent(comp);
+
+      // Iterate through all members in the component that are registered to be serialized
+      for (unsigned int m = 0; m < typeInfo->GetMembers().size(); ++m)
+      {
+        // Get the actual member
+        const Member member = typeInfo->GetMembers()[m];
+        // Copy over the member data from the archetype into the object
+        Variable LVar = Variable(member.Type(), (char*)comp + member.Offset());
+        Variable RVar = Variable(member.Type(), (char*)(rhs.GetLuaComponent(i)) + member.Offset());
+
+        member.Type()->PlacementDelete(LVar.GetData());
+        member.Type()->PlacementCopy(LVar.GetData(), RVar.GetData());
+      }
+
+    }
+
+
   }
 
   

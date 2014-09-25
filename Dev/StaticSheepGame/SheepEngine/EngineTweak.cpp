@@ -17,10 +17,13 @@ namespace Framework
 {
 
   static Handle EngineBar;
+  static int spaceNum = 0;
 
   static void EditorCreateSpace(void* clientData)
   {
-    GameSpace* space = ENGINE->CreateSpace("NewSpace");
+    std::string spaceName("NewSpace");
+    spaceName += std::to_string(spaceNum++);
+    GameSpace* space = ENGINE->CreateSpace(spaceName.c_str());
     space->Tweak();
   }
 
@@ -35,7 +38,7 @@ namespace Framework
     ofn.lpstrFile = szFile ;
     ofn.lpstrFile[0] = '\0';
     ofn.nMaxFile = sizeof( szFile );
-    ofn.lpstrFilter = "Sheep Spaces\0*.level\0All\0*.*\0Text\0*.TXT\0";
+    ofn.lpstrFilter = "Sheep Spaces\0*.space\0All\0*.*\0Text\0*.TXT\0";
     ofn.nFilterIndex =1;
     ofn.lpstrFileTitle = NULL ;
     ofn.nMaxFileTitle = 0 ;
@@ -47,12 +50,64 @@ namespace Framework
       return;
 
     GameSpace* sp = FACTORY->LoadSpace(szFile);
-    sp->Tweak();
+
+    if (sp != nullptr)
+      sp->Tweak();
+  }
+
+  static void TweakSpaceCB(GameSpace* space)
+  {
+    space->Tweak();
   }
 
   static void EditorLoadLevel(void* clienData)
   {
+    OPENFILENAME ofn;
+    char szFile[100];
 
+    ZeroMemory( &ofn , sizeof( ofn));
+    ofn.lStructSize = sizeof ( ofn );
+    ofn.hwndOwner = NULL  ;
+    ofn.lpstrFile = szFile ;
+    ofn.lpstrFile[0] = '\0';
+    ofn.nMaxFile = sizeof( szFile );
+    ofn.lpstrFilter = "Sheep Levels\0*.level\0All\0*.*\0Text\0*.TXT\0";
+    ofn.nFilterIndex =1;
+    ofn.lpstrFileTitle = NULL ;
+    ofn.nMaxFileTitle = 0 ;
+    ofn.lpstrInitialDir=NULL ;
+    ofn.Flags = OFN_PATHMUSTEXIST|OFN_FILEMUSTEXIST;
+    GetOpenFileName( &ofn );
+
+    if (szFile[0] == 0)
+      return;
+
+    FACTORY->LoadLevel(szFile, TweakSpaceCB);
+  }
+
+  static void EditorSaveLevel(void* clienData)
+  {
+    OPENFILENAME ofn;
+    char szFile[100];
+
+    ZeroMemory( &ofn , sizeof( ofn));
+    ofn.lStructSize = sizeof ( ofn );
+    ofn.hwndOwner = NULL  ;
+    ofn.lpstrFile = szFile ;
+    ofn.lpstrFile[0] = '\0';
+    ofn.nMaxFile = sizeof( szFile );
+    ofn.lpstrFilter = "Sheep Level\0*.level\0All\0*.*\0Text\0*.TXT\0";
+    ofn.nFilterIndex =1;
+    ofn.lpstrFileTitle = NULL ;
+    ofn.nMaxFileTitle = 0 ;
+    ofn.lpstrInitialDir=NULL ;
+    ofn.Flags = OFN_PATHMUSTEXIST;
+    GetSaveFileName(&ofn);
+
+    if (szFile[0] == 0)
+      return;
+
+    FACTORY->SaveLevel(szFile);
   }
 
   static void EditorPlayLevel(void* clientData)
@@ -65,6 +120,14 @@ namespace Framework
     // Create the main bar and get a handle to it
     AntTweak::TBar* mainBar = ATWEAK->CreateBar("Editor");
     EngineBar = mainBar->self;
+
+    mainBar->DefineLabel("Load Level");
+    mainBar->AddButton("LoadLevel", EditorLoadLevel, nullptr);
+
+    mainBar->DefineLabel("Save Level");
+    mainBar->AddButton("SaveLevel", EditorSaveLevel, nullptr);
+
+    mainBar->AddSeparator("Spaceshit");
 
     mainBar->DefineLabel("Create New Space");
     mainBar->DefineHelpMessage("Creates a blank space from scratch");

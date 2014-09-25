@@ -36,8 +36,8 @@ namespace Framework
     ErrorIf(!RegisterClassEx(&wcex), "Window", "Window class failed to register!");
 
     // Create Window
-    width = 800;
-    height = 600;
+    width = 1024;
+    height = 768;
     RECT rc = {0, 0, width, height};                     // Defines rectangle dimensions for window
     AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE); // Takes borders into considerations for window size
 

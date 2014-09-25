@@ -14,6 +14,9 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 #include <iostream>
 #include "AntTweakModule.h"
+#include <windows.h>
+#include <commdlg.h>
+#include <iostream>
 
 namespace Framework
 {
@@ -27,7 +30,7 @@ namespace Framework
     std::string spaceName = "GameSpace";
 
     // Creates a bar for the space
-    AntTweak::TBar* spaceBar = ATWEAK->CreateBar(spaceName.c_str());
+    AntTweak::TBar* spaceBar = ATWEAK->CreateBar(space.GetName().c_str());
     space.tweakHandle = spaceBar->self;
 
     space.UpdateTweakBar();
@@ -58,7 +61,7 @@ namespace Framework
   {
     GameSpace* space = (GameSpace*)clientData;
     
-    FACTORY->SaveSpaceToLevel(space, space->GetName().c_str(), nullptr, true, true);
+    FACTORY->SaveSpaceToFile(space, space->GetName().c_str(), nullptr, true, true);
 
     std::cout << "Saved Space " << space->GetName().c_str() << " to file.\n";
   }
@@ -67,6 +70,37 @@ namespace Framework
   {
     GameSpace* space = (GameSpace*)clientData;
     space->m_valid = false;
+  }
+
+  static void LoadArchetypeFile(void* clientData)
+  {
+    GameSpace* space = (GameSpace*)clientData;
+
+    OPENFILENAME ofn;
+    char szFile[100];
+
+    ZeroMemory( &ofn , sizeof( ofn));
+    ofn.lStructSize = sizeof ( ofn );
+    ofn.hwndOwner = NULL  ;
+    ofn.lpstrFile = szFile ;
+    ofn.lpstrFile[0] = '\0';
+    ofn.nMaxFile = sizeof( szFile );
+    ofn.lpstrFilter = "Archetype\0*.arche\0";
+    ofn.nFilterIndex =1;
+    ofn.lpstrFileTitle = NULL ;
+    ofn.nMaxFileTitle = 0 ;
+    ofn.lpstrInitialDir=NULL ;
+    ofn.Flags = OFN_PATHMUSTEXIST|OFN_FILEMUSTEXIST ;
+    GetOpenFileName( &ofn );
+
+    if (szFile[0] == 0)
+      return;
+
+    GameObject* obj = FACTORY->LoadObjectFromArchetype(space, szFile);
+
+    space->UpdateTweakBar();
+
+    obj->TweakObject();
   }
 
   // Updates the anttweak bar
@@ -78,6 +112,8 @@ namespace Framework
     AntTweak::TBar* spaceBar = ATWEAK->GetBar(tweakHandle);
     spaceBar->Reset();
 
+    spaceBar->SetLabel(m_name.c_str());
+
     spaceBar->AddVarRW("Name", AntTweak::TW_TYPE_STDSTRING, &m_name);
 
     spaceBar->DefineLabel("Save Space to File");
@@ -86,6 +122,9 @@ namespace Framework
 
     spaceBar->DefineLabel("New Object");
     spaceBar->AddButton("NewObject", CreateObjectCB, this);
+
+    spaceBar->DefineLabel("Load Archetype");
+    spaceBar->AddButton("LoadArchetype", LoadArchetypeFile, this);
 
     spaceBar->DefineGroup("Delete");
     spaceBar->DefineLabel("Delete Space");
