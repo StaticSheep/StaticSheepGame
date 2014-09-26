@@ -29,7 +29,7 @@ class RenderContext
     ~RenderContext(void);
 
     GFX_API static RenderContext * Allocate(void);
-    GFX_API void SetupMatrices(void); 
+    GFX_API void UpdateCamera(float x, float y, float fov);
 
     //Returns true if the RenderContext is Initialized, else false
    GFX_API bool IsInitialized(void) const;
