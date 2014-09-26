@@ -17,10 +17,23 @@ namespace Framework
   public:
     Transform();
     ~Transform();
-    virtual void Initialize(){};
+    virtual void Initialize();
 
-    Vec2 Translation;
-    Vec2 Scale;
-    float Rotation;
+    Vec3D GetTranslation();
+    Vec2 GetScale();
+    float GetRotation();
+
+    void SetTranslation(Vec3D newTr);
+    void SetScale(Vec2 newSc);
+    void SetRotation(float rot);
+
+  private:
+
+    bool m_hasPhysics;
+    unsigned m_pBody;
+
+    Vec3D m_translation;
+    Vec2 m_scale;
+    float m_rotation;
   };
 }
