@@ -18,6 +18,7 @@ namespace Framework
   struct DebugAudio
   {
     FMOD_STUDIO_CPU_USAGE cpuLoad;
+    FMOD_STUDIO_BUFFER_USAGE bufferInfo;
     int RAM;
     int channels;
     

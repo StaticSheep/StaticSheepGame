@@ -200,6 +200,7 @@ namespace Framework
     ErrorCheck(_system->getCPUUsage(&debug->cpuLoad));
     ErrorCheck(_lowLevelSystem->getChannelsPlaying(&debug->channels));
     ErrorCheck(FMOD::Memory_GetStats(NULL, &debug->RAM, false));
+    ErrorCheck(_system->getBufferUsage(&debug->bufferInfo));
 
 
     return (void*)debug;

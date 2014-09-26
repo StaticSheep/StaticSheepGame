@@ -32,9 +32,9 @@ namespace Framework
     
   }
 
-  void Debug::ReceiveMessage(Message msg)
+  void Debug::ReceiveMessage(Message hamster)
   {
-    if (msg.MessageId == Message::PostDraw)
+    if (hamster.MessageId == Message::PostDraw)
     {
 
       if(GetState())
@@ -52,7 +52,7 @@ namespace Framework
           sprintf(buffers[2], "Update Load %% \t: %f%%\n", audio->cpuLoad.updateUsage);*/
           
 
-          string = "DSP Load : " + std::to_string(audio->cpuLoad.dspUsage) + "%\n" +
+          string = "Buffer Usage : " + std::to_string(audio->bufferInfo.studioHandle.currentUsage) + "%\n" +
                    "Stream Load : " +  std::to_string(audio->cpuLoad.streamUsage) + "%\n" +
                    "Update Load : " + std::to_string(audio->cpuLoad.updateUsage) + "%\n" +
                    "Studio Load : " + std::to_string(audio->cpuLoad.studioUsage) + "%\n" +
@@ -64,7 +64,8 @@ namespace Framework
           sprintf(buffers[4], "Channels Playing: %i\n", audio->channels);
           sprintf(buffers[5], "RAM Allocated: %i\n", audio->RAM);*/
 
-          GRAPHICS->DrawSpriteText(string.c_str(), 10.0f, "Helvetica");
+          GRAPHICS->SetPosition(-100.0f, 200.0f);
+          GRAPHICS->DrawSpriteText(string.c_str(), 20.0f, "Helvetica");
           break;
 
         case DEBUG_GRAPHICS:
