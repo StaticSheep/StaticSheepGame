@@ -44,9 +44,5 @@ namespace Framework
 		SHEEP_API virtual ~ISystem() {};
 
     SHEEP_API ISystem() {};
-
-  protected:
-
-    void* m_debugData;
 	};
 }

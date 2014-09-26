@@ -8,6 +8,7 @@
 //#include <vld.h>
 
 #include "Input.h"
+#include "Debug.h"
 #include "SheepGraphics.h"
 #include "SheepAudio.h"
 #include "GameLogic.h"
@@ -38,6 +39,7 @@ int WINAPI WinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
   Core->AddSystem(new SheepAudio());
   Core->AddSystem(new SheepGraphics());
   Core->AddSystem(new AntTweakModule());
+  Core->AddSystem(new Debug());
 
   Core->MakeWindow(&hInstance, nShowCmd);
 

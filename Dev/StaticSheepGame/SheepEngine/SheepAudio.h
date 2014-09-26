@@ -18,8 +18,9 @@ namespace Framework
   struct DebugAudio
   {
     FMOD_STUDIO_CPU_USAGE cpuLoad;
-    int channels;
     int RAM;
+    int channels;
+    
   };
 
 	class SheepAudio : public ISystem
@@ -43,7 +44,7 @@ namespace Framework
     // Play the things! Stop the things!
     SOUND::EventInstance* Play(const std::string &event_name, PlayMode mode);
 
-    const void* GetDebugData() { return m_debugData; };
+    const void* GetDebugData();
 
     void Stop(const std::string &event_name, FadeOut mode);
     void StopAll(FadeOut mode);
@@ -68,6 +69,8 @@ namespace Framework
     float _MasterVolume;
     float _SFXVolume;
     float _MusicVolume;
+
+    DebugAudio* debug;
 
     void** _ninjaPointer; // just in case
 

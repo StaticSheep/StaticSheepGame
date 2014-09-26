@@ -63,7 +63,6 @@ namespace Framework
 	{
 		// Release the FMOD system
     _system->release();
-    delete m_debugData;
 
 	}
 
@@ -94,7 +93,7 @@ namespace Framework
     ParseBanks(_system, infile, _banks);
     ParseEvents(_system, infile, _events);
 
-    m_debugData = new DebugAudio;
+    debug = new DebugAudio;
 	}
 
   void SheepAudio::RegisterComponents(void)
@@ -194,6 +193,16 @@ namespace Framework
       }
 
       return true;
+  }
+
+  const void* SheepAudio::GetDebugData()
+  {
+    ErrorCheck(_system->getCPUUsage(&debug->cpuLoad));
+    ErrorCheck(_lowLevelSystem->getChannelsPlaying(&debug->channels));
+    ErrorCheck(FMOD::Memory_GetStats(NULL, &debug->RAM, false));
+
+
+    return (void*)debug;
   }
 
 } // end namespace
