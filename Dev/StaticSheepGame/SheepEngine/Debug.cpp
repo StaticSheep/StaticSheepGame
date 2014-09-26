@@ -40,32 +40,37 @@ namespace Framework
       if(GetState())
       {
         std::string string;
+        std::string format;
 
         switch(currentState)
         {
         case DEBUG_AUDIO:
           AUDIO->GetDebugData();
-          // print that shit after this...
-          /*
-          sprintf(buffers[0], "DSP    Load %% \t: %f%%\n", audio->cpuLoad.dspUsage);
-          sprintf(buffers[1], "Stream Load %% \t: %f%%\n", audio->cpuLoad.streamUsage);
-          sprintf(buffers[2], "Update Load %% \t: %f%%\n", audio->cpuLoad.updateUsage);*/
-          
+          string = "Buffer Capacity:\t" + std::to_string(audio->bufferInfo.studioHandle.capacity) + "\n";
+          string += "Buffer Usage:\t" + std::to_string(audio->bufferInfo.studioHandle.currentUsage) + "\n";
+          format = std::to_string(audio->cpuLoad.streamUsage);
+          format.erase(4, std::string::npos );
 
-          string = "Buffer Usage : " + std::to_string(audio->bufferInfo.studioHandle.currentUsage) + "%\n" +
-                   "Stream Load : " +  std::to_string(audio->cpuLoad.streamUsage) + "%\n" +
-                   "Update Load : " + std::to_string(audio->cpuLoad.updateUsage) + "%\n" +
-                   "Studio Load : " + std::to_string(audio->cpuLoad.studioUsage) + "%\n" +
-                   "RAM Allocated : " + std::to_string(audio->RAM) + " bytes\n" +
-                   "Channels Playing : " + std::to_string(audio->channels);
+          string += "Stream Load:\t" + format + "%\n";
 
-          //sprintf(buffer, "Studio Load %% \t: %f%%\n", audio->cpuLoad.studioUsage);
-          /*
-          sprintf(buffers[4], "Channels Playing: %i\n", audio->channels);
-          sprintf(buffers[5], "RAM Allocated: %i\n", audio->RAM);*/
+          format = std::to_string(audio->cpuLoad.updateUsage);
+          format.erase(4, std::string::npos);
+
+          string += "Update Load:\t" + format + "%\n";
+
+          format = std::to_string(audio->cpuLoad.studioUsage);
+          format.erase(4, std::string::npos);
+
+          string += "Studio Load:\t" + format + "%\n";
+
+          string += "RAM Allocated:\t" + std::to_string(audio->RAM / 1000000) + "." + std::to_string((audio->RAM / 100000) % 10) + " mb\n";
+          string += "Channels Playing:\t" + std::to_string(audio->channels);
+
+
 
           GRAPHICS->SetPosition(-100.0f, 200.0f);
-          GRAPHICS->DrawSpriteText(string.c_str(), 20.0f, "Helvetica");
+          GRAPHICS->DrawSpriteText(string.c_str(), 15.0f, "Helvetica");
+
           break;
 
         case DEBUG_GRAPHICS:

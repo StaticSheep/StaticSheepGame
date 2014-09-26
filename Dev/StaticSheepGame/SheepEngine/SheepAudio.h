@@ -21,7 +21,6 @@ namespace Framework
     FMOD_STUDIO_BUFFER_USAGE bufferInfo;
     int RAM;
     int channels;
-    
   };
 
 	class SheepAudio : public ISystem
