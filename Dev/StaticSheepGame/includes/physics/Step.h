@@ -13,6 +13,7 @@
 
 namespace SheepFizz
 {
+	//collision callback function pointer
 
 	#define GRAVITY 10.0f
 
@@ -20,7 +21,6 @@ namespace SheepFizz
 	{
 		public:
 		PHY_API static PhysicsSpace* Allocate(float dt);
-
 		PHY_API static void Delete(PhysicsSpace* space);
 
 
@@ -56,6 +56,11 @@ namespace SheepFizz
 			float orientation = 0,		//the orientation
 			void* userData = NULL);		
 
+		//change a specific body's attributes
+		PHY_API void ChangeBodies(Handle handle, float xradius, float y = 0);
+		PHY_API void ChangeMaterials(Handle handle, Material& material);
+
+
 		//remove bodies and their shapes from the vector
 		PHY_API void RemoveBody(Handle handle);
 	
@@ -67,8 +72,8 @@ namespace SheepFizz
 		//application of forces and velocities to each body
 		//applied in physics update
 
+		//engine functions for messaging
 		PHY_API void SetCollisionCallback(void(*cb)(void*, void*, void*));
-
 		PHY_API void SetUserData(void* userData);
 
 		#ifdef DLL_PHYEXPORT
@@ -77,9 +82,9 @@ namespace SheepFizz
 			//timestep value
 			float dt_;
 
-			CollisionCB cb_;
-
-			void* userData_;
+			//values tied to engine messaging
+			CollisionCB cb_;	//callback function pointer
+			void* userData_;	//pointer to engine space
 
 			//vector of bodies in engine
 			ObjectAllocator bodies_;

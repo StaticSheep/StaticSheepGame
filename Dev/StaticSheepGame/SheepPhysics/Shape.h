@@ -36,11 +36,14 @@ class Shape
 	virtual float GetArea(void);
 	virtual float GetMomentOfInertia(void);
 
+	//sets area
+	virtual void SetArea(float area);
+
+	//change the shape
+	virtual void Shape::ChangeShape(float x, float y);
+
 	//primary functions - sets up shape - calculates area
 	virtual void Initialize(void);
-
-	//set the area after calculation
-	virtual void SetArea(float area);
 
 	//set the moment of inertia after calculation
 	virtual void SetMomentOfInertia(float moment);
@@ -71,6 +74,9 @@ class Rectangle: public Shape
 		float GetHeight(void);
 		Shapes GetType(void);
 
+		//set the shape after creation
+		void ChangeShape(float x, float y);
+
 		//initializes area and vertices/normals used in manifold functions
 		void Initialize(void);
 
@@ -95,6 +101,9 @@ class Circle: public Shape
 		Circle(float radius);
 
 		void Initialize(void);
+
+		//set the shape after creation
+		void ChangeShape(float r, float y = 0);
 
 		//gettors
 		float GetRadius(void);

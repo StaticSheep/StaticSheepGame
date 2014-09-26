@@ -164,7 +164,7 @@ Vec3D Vec3D::CalculateNormal(void)
 {
 	//take base vector (this) and rotate it by 90 degrees
 	//clockwise, then normalize it
-	return Vec3D(Rotate(-PI / 2)).Normalize();
+	return Vec3D(Rotate(-PI / 2.0f)).Normalize();
 }
 
 //other non-member vector functions

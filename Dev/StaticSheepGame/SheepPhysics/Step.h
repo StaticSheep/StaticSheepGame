@@ -70,6 +70,11 @@ namespace SheepFizz
 			float orientation = 0,		//the orientation
 			void* userData = NULL);		
 
+		//change a specific body's attributes
+		PHY_API void ChangeBodies(Handle handle, float xradius, float y = 0);
+		PHY_API void ChangeMaterials(Handle handle, Material& material);
+
+
 		//remove bodies and their shapes from the vector
 		PHY_API void RemoveBody(Handle handle);
 	

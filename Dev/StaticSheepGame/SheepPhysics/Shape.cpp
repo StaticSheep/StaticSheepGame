@@ -15,11 +15,13 @@ namespace SheepFizz
 	float Shape::GetArea(void) {return area_;}
 	float Shape::GetMomentOfInertia(void) {return momentOfInertia_;}
 
+	//settors
+	void Shape::SetArea(float area) {area_ = area;}
+
+	void Shape::ChangeShape(float x, float y) {}
+
 	//primary functions - sets up shape - calculates area
 	void Shape::Initialize(void) {}
-
-	//set the area after calculation
-	void Shape::SetArea(float area) {area_ = area;}
 
 	//set the moment of inertia after calculation
 	void Shape::SetMomentOfInertia(float moment) {momentOfInertia_ = moment;}
@@ -63,6 +65,14 @@ namespace SheepFizz
 		}
 	}
 
+	//set the shape after creation
+	void Rectangle::ChangeShape(float x, float y)
+	{
+		width_ = x;
+		height_ = y;
+		Initialize();
+	}
+
 
 	Circle::Circle(float radius): radius_(radius) {};
 
@@ -74,6 +84,13 @@ namespace SheepFizz
 		SetMomentOfInertia(PI * radius_ * radius_
 			* radius_ * 1/3);
 		SetShape(Cir);
+	}
+
+	//set the shape after creation
+	void Circle::ChangeShape(float r, float y)
+	{
+		radius_ = r;
+		Initialize();
 	}
 
 	//gettors

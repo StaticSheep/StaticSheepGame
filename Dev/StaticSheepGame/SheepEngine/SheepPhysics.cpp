@@ -103,6 +103,18 @@ namespace Framework
 		return handle;
 	}
 
+	//change bodies
+	//********************
+	void SheepPhysics::ChangePhysBodies(GameSpace* space, SheepFizz::Handle handle, float xradius, float y)
+	{
+		((SheepFizz::PhysicsSpace*)(space->m_pSpace))->ChangeBodies(handle, xradius, y);
+	}
+
+	void SheepPhysics::ChangePhysMaterials(GameSpace* space, SheepFizz::Handle handle, SheepFizz::Material& material)
+	{
+		((SheepFizz::PhysicsSpace*)(space->m_pSpace))->ChangeMaterials(handle, material);
+	}
+
 	void SheepPhysics::RemoveBodies(GameSpace* space, SheepFizz::Handle handle)
 	{
 		((SheepFizz::PhysicsSpace*)(space->m_pSpace))->RemoveBody(handle);
@@ -114,6 +126,7 @@ namespace Framework
 		SheepFizz::Material* material = &m_materials[name];
 		return material;
 	}
+	//********************
 
 	void SheepPhysics::Update(float dt)
 	{

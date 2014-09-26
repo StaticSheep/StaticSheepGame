@@ -37,7 +37,7 @@ class Body
 	public:
 		//body requires a shape* to be passed - all others default to base constructors
 		Body(Shape* shape, //a pointer to the shape created
-			Material material, 
+			Material& material, 
 			Vec3D position = Vec3D(), 
 			Vec3D velocity = Vec3D(), 
 			Vec3D force = Vec3D(), 
@@ -48,7 +48,7 @@ class Body
 			CollisionGroup collisionGroup = CollGroup1, //used for determining collision gorups
 			BodyGroup bodyGroup = BodyGroup1,			//used for certain collisions/resolutions 
 			float gravityScale = 1,						//used to modify gravity
-			float gravityOn = 1);						//used to turn gravity on and off
+			unsigned int gravityOn = 1);						//used to turn gravity on and off
 
 		//used in initialization of body - computes mass
 		void ComputeMass(void);
@@ -56,6 +56,11 @@ class Body
 		//apply forces directly to the body - an impulse is an
 		//instantaneous force application, so no dt is applied
 		void ApplyImpulse(Vec3D& impulse, Vec3D& contactvector);
+
+		//scale and change the body
+		void ChangeBody(float x, float y = 0);
+
+		void ChangeMaterial(Material& material);
 
 		//shape and material used to calculate MassData;
 		//shape and materail are defined by the gameobject
