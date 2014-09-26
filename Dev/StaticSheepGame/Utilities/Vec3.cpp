@@ -1,7 +1,7 @@
 
 #include "Vec3.h"
 
-namespace SheepMath
+namespace Framework
 {
 
 Vec3D& Vec3D::operator+=(Vec3D& rhs)
@@ -113,14 +113,14 @@ Vec3D Vec3D::operator/(float scalar)
 	return divide;
 }
 
-Vec3D& Vec3D::operator=(Vec3D& rhs)
-{
-	x_ = rhs.x_;
-	y_ = rhs.y_;
-	z_ = rhs.z_;
-
-	return *this;
-}
+//Vec3D& Vec3D::operator=(Vec3D& rhs)
+//{
+//	x_ = rhs.x_;
+//	y_ = rhs.y_;
+//	z_ = rhs.z_;
+//
+//	return *this;
+//}
 
 float Vec3D::SquareLength(void)
 {
@@ -195,5 +195,60 @@ float Maximum(float a, float b)
 	return b;
 }
 //**************
+
+
+#if DLL_ENGINEEXPORT
+void Vec3D::ToLua(lua_State* L, Variable& var)
+{
+  // Establish a reference to a new set of userdata
+  //Variable* ref = (Variable*)lua_newuserdata(L, sizeof(Variable));
+  //new (ref) Variable(var); // copies stuff
+
+  //Lua::StackDump(L);
+
+  lua_pushcfunction(L, Lua::ErrorFunc); // Index 1
+
+  //Lua::StackDump(L);
+
+  // Create a new table
+  lua_createtable(L, 2, 0); // Index 2
+
+  // Get the meta table
+  lua_getglobal(L, "_R"); // index 3
+  lua_getfield(L, -1, "__Vector3_MT"); // index 4
+
+  lua_getfield(L, -1, "new"); // Index 5
+
+  // Push arguments
+  lua_pushnumber(L, var.GetValue<Vec3D>().x_); // Index 6
+  lua_pushnumber(L, var.GetValue<Vec3D>().y_); // Index 7
+  lua_pushnumber(L, var.GetValue<Vec3D>().z_); // Index 8
+
+  //Lua::StackDump(L);
+
+  lua_pcall(L, 2, 1, -8);
+
+  //Lua::StackDump(L);
+
+}
+
+void Vec3D::FromLua(lua_State* L, int index, Variable* var)
+{
+  //Lua::StackDump(L);
+
+  lua_getfield(L, -1, "x");
+  var->GetValue<Vec3D>().x_ = (float)lua_tonumber(L, -1);
+  lua_pop(L, 1);
+
+  lua_getfield(L, -1, "y");
+  var->GetValue<Vec3D>().y_ = (float)lua_tonumber(L, -1);
+  lua_pop(L, 1);
+
+  lua_getfield(L, -1, "z");
+  var->GetValue<Vec3D>().z_ = (float)lua_tonumber(L, -1);
+  lua_pop(L, 1);
+}
+
+#endif
 
 }

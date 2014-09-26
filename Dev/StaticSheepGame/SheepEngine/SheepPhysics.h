@@ -8,10 +8,6 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 #pragma once
 
-namespace SheepFizz
-{
-	using namespace SheepMath;
-}
 
 #include "physics\api.h"
 #include "physics\handle.h"

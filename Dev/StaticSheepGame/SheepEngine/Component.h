@@ -52,6 +52,8 @@ namespace Framework
 
       const TypeInfo* typeinfo;
 
+      friend class TypeInfo;
+
   };
 
   

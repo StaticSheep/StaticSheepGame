@@ -93,10 +93,6 @@ extern "C"
 #include "DefaultTypes.h"
 #include "LuaDefaultBinds.h"
 
-namespace Framework
-{
-	using namespace SheepMath;
-}
 
 
 

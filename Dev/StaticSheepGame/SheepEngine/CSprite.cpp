@@ -51,9 +51,12 @@ namespace Framework
   {
     Transform* trans = space->GetHandles().GetAs<Transform>(transform);
 
-    GRAPHICS->SetPosition(trans->Translation.X, trans->Translation.Y);
-    GRAPHICS->SetRotation(trans->Rotation);
-    GRAPHICS->SetSize(trans->Scale.X, trans->Scale.Y);
+    Vec3D position = trans->GetTranslation();
+    Vec2 scale = trans->GetScale();
+
+    GRAPHICS->SetPosition(position.x_, position.y_);
+    GRAPHICS->SetRotation(trans->GetRotation());
+    GRAPHICS->SetSize(scale.X, scale.Y);
     GRAPHICS->SetColor(Color);
 
     GRAPHICS->DrawSprite(this);

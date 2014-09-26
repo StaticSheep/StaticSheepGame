@@ -20,10 +20,15 @@ namespace Framework
   {
   }
 
-  void Transform::Initialize()
+  Transform& Transform::operator=(const Transform& rhs)
   {
+    m_translation = rhs.GetTranslation();
+    m_rotation = rhs.GetRotation();
+    m_scale = rhs.GetScale();
 
+    return *this;
   }
+
 
   // ==================== SETTERS ============================
 
@@ -31,7 +36,7 @@ namespace Framework
   {
     if (m_hasPhysics)
     {
-      
+      reinterpret_cast<SheepFizz::PhysicsSpace*>(space->m_pSpace)->SetBodyPos(m_pBody, newTr);
     }
     else
     {
@@ -41,53 +46,59 @@ namespace Framework
 
   void Transform::SetScale(Vec2 newSc)
   {
+    m_scale = newSc;
+
     if (m_hasPhysics)
     {
 
     }
-    else
-      m_scale = newSc;
   }
 
   void Transform::SetRotation(float rot)
   {
     if (m_hasPhysics)
     {
-
+      reinterpret_cast<SheepFizz::PhysicsSpace*>(space->m_pSpace)->SetBodyRot(m_pBody, rot);
     }
     else
       m_rotation = rot;
+  }
+
+  void Transform::SetPhysicsBody(unsigned body)
+  {
+    m_pBody = body;
+    m_hasPhysics = true;
   }
 
 
   // ==================== GETTERS ============================
 
 
-  Vec3D Transform::GetTranslation()
+  Vec3D Transform::GetTranslation() const
   {
     if (m_hasPhysics)
     {
-
+      return reinterpret_cast<SheepFizz::PhysicsSpace*>(space->m_pSpace)->GetBodyPos(m_pBody);
     }
     else
       return m_translation;
   }
 
-  Vec2 Transform::GetScale()
+  Vec2 Transform::GetScale() const
   {
     if (m_hasPhysics)
     {
-
+      return m_scale;
     }
     else
       return m_scale;
   }
 
-  float Transform::GetRotation()
+  float Transform::GetRotation() const
   {
     if (m_hasPhysics)
     {
-
+      return reinterpret_cast<SheepFizz::PhysicsSpace*>(space->m_pSpace)->GetBodyRot(m_pBody);
     }
     else
       return m_rotation;

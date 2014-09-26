@@ -3,7 +3,7 @@
 
 namespace SheepFizz
 {
-	using namespace SheepMath;
+	using namespace Framework;
 
 	class Matrix2D
 	{

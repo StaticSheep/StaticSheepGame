@@ -10,22 +10,26 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 namespace Framework
 {
-  
 
   class Transform : public GameComponent
   {
   public:
     Transform();
     ~Transform();
-    virtual void Initialize();
 
-    Vec3D GetTranslation();
-    Vec2 GetScale();
-    float GetRotation();
+    Vec3D GetTranslation(void) const;
+    Vec2 GetScale(void) const;
+    float GetRotation(void) const;
 
     void SetTranslation(Vec3D newTr);
     void SetScale(Vec2 newSc);
     void SetRotation(float rot);
+
+    void SetPhysicsBody(unsigned body);
+
+    Transform& operator=(const Transform& rhs);
+
+    float test;
 
   private:
 

@@ -64,7 +64,7 @@ namespace SheepFizz
 		PHY_API Handle AddBody(
 			Shapes shape,				//shape of the object
 			Material& material,			//the material ref
-			SheepMath::Vec3D position,	//the position of the transform
+			Framework::Vec3D position,	//the position of the transform
 			float xradius,				//the radius of circle or width
 			float yval = 0,				//the height - if a rec
 			float orientation = 0,		//the orientation

@@ -167,7 +167,7 @@
       <Filter>BaseTypes\Vectors\Vec3</Filter>
     </ClInclude>
     <ClInclude Include="CRigidBody.h">
-      <Filter>Components\Physics</Filter>
+      <Filter>Components\RigidBody</Filter>
     </ClInclude>
     <ClInclude Include="SoundEmitter.h">
       <Filter>Components\Audio</Filter>
@@ -178,6 +178,8 @@
     <ClInclude Include="Debug.h">
       <Filter>Systems\Debug</Filter>
     </ClInclude>
+    <ClInclude Include="AntTweakModule.h" />
+    <ClInclude Include="TweakHelper.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="precompiled.cpp">
@@ -314,7 +316,7 @@
       <Filter>BaseTypes\Vectors\Vec3</Filter>
     </ClCompile>
     <ClCompile Include="CRigidBody.cpp">
-      <Filter>Components\Physics</Filter>
+      <Filter>Components\RigidBody</Filter>
     </ClCompile>
     <ClCompile Include="SoundEmitter.cpp">
       <Filter>Components\Audio</Filter>
@@ -325,6 +327,11 @@
     <ClCompile Include="Debug.cpp">
       <Filter>Systems\Debug</Filter>
     </ClCompile>
+    <ClCompile Include="AntTweakModule.cpp" />
+    <ClCompile Include="EngineTweak.cpp" />
+    <ClCompile Include="ObjectTweak.cpp" />
+    <ClCompile Include="SpaceTweak.cpp" />
+    <ClCompile Include="TweakHelper.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Precompiled">
@@ -504,14 +511,14 @@
     <Filter Include="BaseTypes\Vectors\Vec3">
       <UniqueIdentifier>{c28b6611-4245-4f4c-80e1-4c57dcd29318}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Components\Physics">
-      <UniqueIdentifier>{4479f1bd-bcfd-4f6a-897b-ac4ed0686e92}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Components\Audio">
       <UniqueIdentifier>{e02606f1-071e-4e97-bd45-3372fb9387f0}</UniqueIdentifier>
     </Filter>
     <Filter Include="Systems\Debug">
       <UniqueIdentifier>{83b8555e-3acd-4901-80d7-f3c93f19ffa7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\RigidBody">
+      <UniqueIdentifier>{4479f1bd-bcfd-4f6a-897b-ac4ed0686e92}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

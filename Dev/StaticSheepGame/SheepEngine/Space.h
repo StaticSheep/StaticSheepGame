@@ -85,7 +85,7 @@ namespace Framework
     
     Handle tweakHandle;
 
-	void* m_pSpace;
+	  void* m_pSpace;
     
   private:
     // The collection of all game objects in this game space

@@ -120,7 +120,8 @@ namespace Framework
 		std::vector<GameSpace*>& gSpaces = ENGINE->Spaces();
 		for(size_t i = 0; i < gSpaces.size(); ++i)
 		{
-			((SheepFizz::PhysicsSpace*)(gSpaces[i]->m_pSpace))->Step();
+      if (gSpaces[i]->m_pSpace)
+			  ((SheepFizz::PhysicsSpace*)(gSpaces[i]->m_pSpace))->Step();
 		}
 	}
 
