@@ -15,7 +15,7 @@ namespace Framework
   bool Draw::m_useCamera = true;
   Vec4 Draw::m_Color;
   Vec2 Draw::m_TextPos;
-  UINT Draw::m_TextureID;
+  unsigned Draw::m_TextureID;
 
   void Draw::SetUseCamera(bool useCam)
   {
@@ -23,10 +23,9 @@ namespace Framework
     GRAPHICS->SetUseCamera(useCam);
   }
 
-  void Draw::SetTexture(UINT texID)
+  void Draw::SetTexture(unsigned texID)
   {
     Draw::m_TextureID = texID;
-    GRAPHICS->SetTexture(texID);
   }
 
   int Draw::GetTextureID(const char* texName)
@@ -54,10 +53,9 @@ namespace Framework
   void Draw::DrawRect(float x, float y, float width, float height)
   {
     GRAPHICS->SetSize(width, height);
-    GRAPHICS->SetTexture(GRAPHICS->GetTextureID(std::string("content/White.png")));
     GRAPHICS->SetPosition(x, y);
-
-    GRAPHICS->DrawSprite();
+    GRAPHICS->BindTexture(GRAPHICS->GetTextureID("content/White.png"));
+    GRAPHICS->RawDraw();
   }
 
   void Draw::DrawTexturedRect(float x, float y, float width, float height)
@@ -66,7 +64,10 @@ namespace Framework
 
     GRAPHICS->SetPosition(x, y);
 
-    GRAPHICS->DrawSprite();
+    GRAPHICS->BindTexture(m_TextureID);
+
+    GRAPHICS->RawDraw();
+
   }
 
   void Draw::DrawLine(float sX, float sY, float eX, float eY, float width/* =1 */)
@@ -79,7 +80,6 @@ namespace Framework
 
     GRAPHICS->SetRotation(-atan(diffY / diffX));
 
-    GRAPHICS->DrawSprite();
   }
 
   void Draw::DrawString(const char* text, float size, const char* font)

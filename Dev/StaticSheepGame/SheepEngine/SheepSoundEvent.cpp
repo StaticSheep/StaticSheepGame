@@ -59,6 +59,7 @@ namespace SoundUtility
       case TYPE_GUIDs : return "content\\Audio\\" + file;
       default : return "content\\Audio\\FMOD_Banks\\" + file;
     }
+    return "";
   }
 }// end namespace
 

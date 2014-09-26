@@ -13,13 +13,10 @@ function foo()
 
 end
 
-for i=1,10 do
-  print("A")
-end
 
 function Draw()
   surface.SetColorEx(1,1,1,1)
-  surface.DrawRect(0, 0, 128, 128)
+  surface.DrawRect(0, 0, 12, 128)
 end
 
 hook.Add("Draw", "TestLevelDraw", Draw)

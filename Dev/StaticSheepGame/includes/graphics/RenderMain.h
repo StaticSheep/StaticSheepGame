@@ -1,6 +1,6 @@
 #pragma once
 
-namespace DirectSheep
+/*namespace DirectSheep
 {
   GFX_API void StartFrame(float dt);
   GFX_API void FinishFrame();
@@ -18,4 +18,4 @@ namespace DirectSheep
 
   GFX_API void DrawSpriteText(const char * text, float size, const char * font);
 
-}
+}*/

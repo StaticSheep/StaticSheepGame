@@ -13,6 +13,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 
 #include <iostream>
+#include "AntTweakModule.h"
 
 namespace Framework
 {
@@ -22,7 +23,8 @@ namespace Framework
     m_shuttingDown(false),
     m_paused(false),
     m_hidden(false),
-    m_valid(true)
+    m_valid(true),
+    m_guid(0)
   {
     for(unsigned i = 0; i < ecountComponents; ++i)
     {
@@ -42,6 +44,13 @@ namespace Framework
       if (FACTORY->m_componentCreators[i])
         m_components[i].Clear();
     }
+
+    if (tweakHandle != Handle::null)
+    {
+      AntTweak::TBar* objBar = ATWEAK->GetBar(tweakHandle);
+      ATWEAK->RemoveBar(objBar);
+    }
+
     // Should probably clean stuff up
   }
 
@@ -91,7 +100,7 @@ namespace Framework
     object->m_active = true;
 
     // Check to see if we need to sync the GameObject handles
-    SyncHandles<GameObject>(m_objects);
+    m_handles.SyncHandles<GameObject>(m_objects);
 
     return object;
   }
@@ -122,6 +131,10 @@ namespace Framework
     // to point at the right place in memory
     if (moved)
       GetHandles().Update(moved, moved->self);
+
+#if USE_ANTTWEAKBAR
+    UpdateTweakBar();
+#endif
   }
 
   HandleManager& GameSpace::GetHandles()
@@ -161,6 +174,8 @@ namespace Framework
     bool standalone = sd->standalone;
 
     GameSpace* space = (GameSpace*)var.GetData();
+
+    file.Write("%s\n", space->GetName().c_str());
 
     for (auto it = space->m_objects.begin<GameObject>(); it != space->m_objects.end<GameObject>(); ++it)
     {
@@ -361,7 +376,7 @@ namespace Framework
   GameSpace* GameSpace::CopyGameSpace(const char* new_name)
   { 
     // Make the new space
-    GameSpace* space = ENGINE->CreateSpace(new_name);
+    //GameSpace* space = ENGINE->CreateSpace(new_name);
 
     //for (GameObject* it = m_objects.begin<GameObject>(); it != m_objects.end<GameObject>(); ++it)
     //{
@@ -373,12 +388,17 @@ namespace Framework
     //  obj->Initialize();
     //}
 
-    FACTORY->SaveSpaceToLevel(this, "temp_space", true);
+    FACTORY->SaveSpaceToFile(this, "temp_space", true);
 
-    FACTORY->LoadLevelToSpace(space, "temp_space");
+    GameSpace* space = FACTORY->LoadSpace("temp_space");
 
     return space;
   }
 
+  
+  void GameSpace::Tweak()
+  {
+    GET_TYPE(GameSpace)->Tweak(nullptr, this, nullptr, nullptr);
+  }
 
 }

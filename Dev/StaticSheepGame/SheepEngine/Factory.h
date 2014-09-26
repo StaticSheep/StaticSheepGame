@@ -31,18 +31,30 @@ namespace Framework
     void SaveObjectToArchetype(GameObject* obj, const char* name);
     GameObject* LoadObjectFromArchetype(GameSpace* space, const char* name);
     GameObject* LoadObjectFromArchetype(GameSpace* space, const Archetype& archetype);
+    //GameObject* Factory::LoadObjectFromArchetypeFP(GameSpace* space, const char* filepath);
 
     bool LoadArchetypeFromFile(const char* name);
+    //bool LoadArchetypeFromFileFP(const char* filepath);
     void SaveArchetypeToFile(std::string);
     void SaveArchetypeToFile(const Archetype& archetype);
 
-    void SaveSpaceToLevel(GameSpace* space, const char* name, std::vector<std::string>* objInstanceData = NULL, bool includeGeneric = false, bool allData = false);
-    void SaveSpaceToLevel(GameSpace* space, const char* name, bool standalone);
-    void LoadLevelToSpace(GameSpace* space, const char* name);
+    void SaveSpaceToFile(GameSpace* space, const char* name, std::vector<std::string>* objInstanceData = NULL, bool includeGeneric = false, bool allData = false);
+    void SaveSpaceToFile(GameSpace* space, const char* name, bool standalone);
+    GameSpace* LoadSpace(const char* name);
+
+    // Saves all of the spaces into a level file
+    void SaveLevel(const char* filePath);
+    // Loads a level file, which loads multiple spaces
+    void LoadLevel(const char* filePath, void(*cb)(GameSpace* space));
 
     static const std::string ArchetypeFileExtension;
     static const std::string ArchetypePrefix;
+    static const std::string SpaceFileExtension;
     static const std::string LevelFileExtension;
+
+    static const std::string SpaceFilePath;
+    static const std::string LevelFilePath;
+    static const std::string ArchetypeFilePath;
 
     static GameObject* LuaLoadObjectFromArchetype(GameSpace* space, const char* name);
 

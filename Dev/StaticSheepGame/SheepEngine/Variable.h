@@ -10,19 +10,31 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 namespace Framework
 {
+  namespace AntTweak
+  {
+    class TBar;
+  }
+
   class TypeInfo;
 
   class Variable
   {
   public:
+    // Default Variable constructor
     Variable();
+    // Creates a variable, from a Type, and data pointer
     Variable(const TypeInfo* typeInfo, void* data);
+    // Creates a variable from a Type, and const data pointer
     Variable(const TypeInfo* typeInfo, const void* data);
+    // Creates a variable from another variable
     Variable(const Variable& rhs);
+    // Creates a variable from a reference of a type
     template <typename T>
     Variable(const T& rhs);
+    // Creates a variable from a const-pointer to a type
     template <typename T>
     Variable(const T* rhs);
+    // Creates a variable from a pointer to a type
     template <typename T>
     Variable(T* rhs);
 
@@ -40,6 +52,8 @@ namespace Framework
 
     void ToLua(lua_State* L) const;
     void FromLua(lua_State* L, int index);
+    
+    void Tweak(AntTweak::TBar* bar, const char* tempLabel, const char* label);
 
     void PlacementNew(void);
     void PlacementDelete(void);

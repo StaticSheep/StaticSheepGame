@@ -163,6 +163,12 @@
     <ClInclude Include="Input.h">
       <Filter>Systems\Input</Filter>
     </ClInclude>
+    <ClInclude Include="..\includes\Vec3.h">
+      <Filter>BaseTypes\Vectors\Vec3</Filter>
+    </ClInclude>
+    <ClInclude Include="CRigidBody.h">
+      <Filter>Components\Physics</Filter>
+    </ClInclude>
     <ClInclude Include="SoundEmitter.h">
       <Filter>Components\Audio</Filter>
     </ClInclude>
@@ -303,6 +309,12 @@
     </ClCompile>
     <ClCompile Include="Input.cpp">
       <Filter>Systems\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utilities\Vec3.cpp">
+      <Filter>BaseTypes\Vectors\Vec3</Filter>
+    </ClCompile>
+    <ClCompile Include="CRigidBody.cpp">
+      <Filter>Components\Physics</Filter>
     </ClCompile>
     <ClCompile Include="SoundEmitter.cpp">
       <Filter>Components\Audio</Filter>
@@ -488,6 +500,12 @@
     </Filter>
     <Filter Include="Systems\Input">
       <UniqueIdentifier>{cf08f41f-fac7-4646-86a7-142228b605a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BaseTypes\Vectors\Vec3">
+      <UniqueIdentifier>{c28b6611-4245-4f4c-80e1-4c57dcd29318}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\Physics">
+      <UniqueIdentifier>{4479f1bd-bcfd-4f6a-897b-ac4ed0686e92}</UniqueIdentifier>
     </Filter>
     <Filter Include="Components\Audio">
       <UniqueIdentifier>{e02606f1-071e-4e97-bd45-3372fb9387f0}</UniqueIdentifier>

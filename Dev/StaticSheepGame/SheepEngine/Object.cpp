@@ -11,6 +11,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include <functional>
 #include <iterator>
 
+#include "AntTweakModule.h"
+
 namespace Framework
 {
 
@@ -48,12 +50,17 @@ namespace Framework
   GameObject::GameObject()
     : Generic(eGameObject),
     archetype(),
-    name()
+    name(),
+    tweakLookup(nullptr),
+    tweakCCompCallbacks(nullptr),
+    tweakLuaCompCallbacks(nullptr)
   {
     for (unsigned int i = 0; i < ecountComponents; ++i)
       m_components[i] = Handle::null;
     fastChildSearch = false;
   }
+
+  
 
 
   /// <summary>
@@ -61,6 +68,8 @@ namespace Framework
   /// </summary>
   GameObject::~GameObject()
   {
+
+
     // If the object is not active, time to destroy it
     for (unsigned int j = 0; j < ecountComponents; ++j)
     {
@@ -70,20 +79,7 @@ namespace Framework
       // Check to see if the Object has that type of component
       if (HasComponent(type) && type != eLuaComponent)
       {
-        // Get the component
-        GameComponent* comp = GetComponent(type);
-        comp->Remove(); // Remove the component
-
-        // Remove the handle from the space
-        space->GetHandles().Remove(comp->self);
-
-        // Deconstruct the game component
-        comp->~GameComponent();
-
-        // Free the component and update any handles
-        GameComponent* moved = (GameComponent*)space->GetComponents(type)->Free(comp);
-        if (moved)
-          space->GetHandles().Update(moved, moved->self);
+        RemoveComponent(type);
       }
     } // End component loop
 
@@ -103,8 +99,93 @@ namespace Framework
 
     } // End component loop
 
+    if (tweakHandle != Handle::null)
+    {
+      AntTweak::TBar* objBar = ATWEAK->GetBar(tweakHandle);
+      ATWEAK->RemoveBar(objBar);
+      tweakHandle = Handle::null;
+    }
+
+    if (tweakLookup)
+    {
+      delete tweakLookup;
+      tweakLookup = nullptr;
+    }
+
+    if (tweakCCompCallbacks)
+    {
+      for (size_t i=0; i < tweakCCompCallbacks->size(); ++i)
+      {
+        delete (*tweakCCompCallbacks)[i];
+      }
+      delete tweakCCompCallbacks;
+      tweakCCompCallbacks = nullptr;
+    }
+    
+
     name.~basic_string();
     archetype.~basic_string();
+  }
+
+  void GameObject::Copy(GameObject& rhs)
+  {
+    archetype = rhs.archetype;
+    name = rhs.name;
+
+    for (unsigned int i = 0; i < ecountComponents; ++i)
+      m_components[i] = Handle::null;
+    fastChildSearch = false;
+
+    for (unsigned int i = 0; i < ecountComponents; ++i)
+    {
+      if (rhs.HasComponent(EComponent(i)) && i != eLuaComponent)
+      {
+        // Create the component that is needed
+        GameComponent* comp = space->CreateComponent(EComponent(i));
+
+        // Add the component to the object
+        AddComponent(comp);
+
+        // Get the type info relating to this component
+        const TypeInfo *typeInfo = FACTORY->GetComponentType( EComponent(i) );
+
+        // Iterate through all members in the component that are registered to be serialized
+        for (unsigned int m = 0; m < typeInfo->GetMembers().size(); ++m)
+        {
+          // Get the actual member
+          const Member member = typeInfo->GetMembers()[m];
+          // Copy over the member data from the archetype into the object
+          Variable LVar = Variable(member.Type(), (char*)comp + member.Offset());
+          Variable RVar = Variable(member.Type(), (char*)GetComponent(i) + member.Offset());
+          member.Type()->Copy(LVar.GetData(), RVar.GetData());
+        }
+
+      }
+    } // End component iteration
+
+    const TypeInfo* typeInfo = GET_TYPE(LuaComponent);
+
+    for (unsigned int i = 0; i < rhs.m_luaComponents.size(); ++i)
+    {
+      LuaComponent* comp = (LuaComponent*)space->CreateComponent(eLuaComponent);
+      AddComponent(comp);
+
+      // Iterate through all members in the component that are registered to be serialized
+      for (unsigned int m = 0; m < typeInfo->GetMembers().size(); ++m)
+      {
+        // Get the actual member
+        const Member member = typeInfo->GetMembers()[m];
+        // Copy over the member data from the archetype into the object
+        Variable LVar = Variable(member.Type(), (char*)comp + member.Offset());
+        Variable RVar = Variable(member.Type(), (char*)(rhs.GetLuaComponent(i)) + member.Offset());
+
+        member.Type()->PlacementDelete(LVar.GetData());
+        member.Type()->PlacementCopy(LVar.GetData(), RVar.GetData());
+      }
+
+    }
+
+
   }
 
   
@@ -153,6 +234,30 @@ namespace Framework
   }
 
   /// <summary>
+  /// Removes a component.
+  /// </summary>
+  /// <param name="type">The type of component.</param>
+  void GameObject::RemoveComponent(EComponent type)
+  {
+    // Get the component
+    GameComponent* comp = GetComponent(type);
+    comp->Remove(); // Remove the component
+
+    // Remove the handle from the space
+    space->GetHandles().Remove(comp->self);
+
+    // Deconstruct the game component
+    comp->~GameComponent();
+
+    // Free the component and update any handles
+    GameComponent* moved = (GameComponent*)space->GetComponents(type)->Free(comp);
+    if (moved)
+      space->GetHandles().Update(moved, moved->self);
+
+    m_components[type] = Handle::null;
+  }
+
+  /// <summary>
   /// Gets the child.
   /// </summary>
   /// <param name="uid">The uid.</param>
@@ -192,16 +297,35 @@ namespace Framework
     space->GetHandles().GetAs<GameObject>(obj)->AddChild(self);
   }
 
+
+
+  /// <summary>
+  /// Determines whether the specified object has component.
+  /// </summary>
+  /// <param name="type">The type.</param>
+  /// <returns></returns>
   bool GameObject::HasComponent( EComponent type ) const
   {
     return m_components[type] != Handle::null;
   }
 
+
+  /// <summary>
+  /// Determines whether the specified object has component.
+  /// </summary>
+  /// <param name="type">The type.</param>
+  /// <returns></returns>
   bool GameObject::HasComponent( size_t type ) const
   {
     return m_components[type] != Handle::null;
   }
 
+
+  /// <summary>
+  /// Gets the component handle of a type from the object
+  /// </summary>
+  /// <param name="type">The type.</param>
+  /// <returns></returns>
   Handle GameObject::GetComponentHandle(const char* type)
   {
     if (GET_ENUM(Component)->IsAnEntry(type))
@@ -213,11 +337,22 @@ namespace Framework
     return Handle::null;
   }
 
+
+  /// <summary>
+  /// Gets the component handle of a type from the object
+  /// </summary>
+  /// <param name="type">The type.</param>
+  /// <returns></returns>
   Handle GameObject::GetComponentHandle(EComponent type)
   {
     return space->GetHandles().GetAs<GameComponent>(m_components[type])->self;
   }
 
+  /// <summary>
+  /// Gets a component
+  /// </summary>
+  /// <param name="type">The type.</param>
+  /// <returns></returns>
   GameComponent* GameObject::GetComponent(const char *type)
   {
     if (GET_ENUM(Component)->IsAnEntry(type))
@@ -229,16 +364,38 @@ namespace Framework
     return NULL;
   }
 
+  /// <summary>
+  /// Gets a component.
+  /// </summary>
+  /// <param name="type">The type.</param>
+  /// <returns></returns>
   GameComponent* GameObject::GetComponent(unsigned int type)
   {
     return space->GetHandles().GetAs<GameComponent>(m_components[type]);
   }
 
+  /// <summary>
+  /// Gets a component. [LUA BIND]
+  /// </summary>
+  /// <param name="index">The index.</param>
+  /// <returns></returns>
   LuaComponent* GameObject::GetLuaComponent(unsigned int index)
   {
     return space->GetHandles().GetAs<LuaComponent>(m_luaComponents[index]);
   }
 
+
+  /*--------------------------------------------------------------------------
+
+  Serialization
+
+  --------------------------------------------------------------------------*/
+
+  /// <summary>
+  /// Serializes the object
+  /// </summary>
+  /// <param name="file">The file.</param>
+  /// <param name="var">The variable.</param>
   void GameObject::Serialize(File& file, Variable var)
   {
     GameObject *o = &var.GetValue<GameObject>( );
@@ -324,6 +481,12 @@ namespace Framework
     file.Write( "}\n" );
   }
 
+
+  /// <summary>
+  /// Deserializes a file into an object
+  /// </summary>
+  /// <param name="file">The file.</param>
+  /// <param name="var">The variable.</param>
   void GameObject::Deserialize(File& file, Variable var)
   {
     Serializer* s = Serializer::Get();
@@ -382,17 +545,6 @@ namespace Framework
       file.GetLine("}");
     }
   }
-
-  //GameObject& GameObject::operator=(const GameObject& rhs)
-  //{
-  //  for (size_t i = 0; i < ecountComponents; ++i)
-  //  {
-  //    if (rhs.HasComponent(i) && i != eLuaComponent)
-  //    {
-
-  //    }
-  //  }
-  //}
 
 
   /// <summary>

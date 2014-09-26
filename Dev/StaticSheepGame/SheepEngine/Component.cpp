@@ -21,6 +21,19 @@ namespace Framework
     {
       curMem = lTypeData->GetMembers()[i];
       // I hate adding spaces between ( )
+      const TypeInfo* memberType = curMem.Type();
+
+      if (memberType == GET_TYPE(std::string))
+      {
+        std::string& lhss = Variable(memberType, (char*)this + curMem.Offset()).GetValue<std::string>();
+        std::string& rhss = Variable(memberType, (char*)&rhs + curMem.Offset()).GetValue<std::string>();
+
+        if (lhss == rhss)
+          continue;
+        else
+          return false;
+      }
+
       if ( memcmp( (char*)this + curMem.Offset(), (char*)&rhs + curMem.Offset(), curMem.Type()->Size() ) )
         return false;
     }

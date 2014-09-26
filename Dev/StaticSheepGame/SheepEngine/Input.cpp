@@ -10,6 +10,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include <iostream>
 #include <windows.h>
 
+#include "Window.h"
+
 namespace Framework
 {
 
@@ -66,8 +68,10 @@ namespace Framework
     Pointer the MSG struct that contains the data for the message.
 */
 /*****************************************************************************/
-  void MouseInput::GetMsg(MSG* msg)
+  void MouseInput::GetMsg(void* pmsg)
   {
+    MSG* msg = (MSG*)pmsg;
+
     switch(msg->message)
     {
       case WM_MOUSEMOVE:
@@ -205,12 +209,12 @@ namespace Framework
     Pointer to the message that contains positional data.
 */
 /*****************************************************************************/
-  void MouseInput::_UpdateMove(MSG* msg)
+  void MouseInput::_UpdateMove(void* msg)
   {
     POINT window;
     GetCursorPos(&window);
 
-    if(ScreenToClient(ENGINE->Window.GetHandle(), &window))
+    if(ScreenToClient(ENGINE->Window->GetHandle(), &window))
     {
       _screenPosition.X = (float)window.x;
       _screenPosition.Y = (float)window.y;
@@ -306,8 +310,10 @@ namespace Framework
     Pointer to the MSG struct that contains event data.
 */
 /*****************************************************************************/
-  void KeyboardInput::GetMsg(MSG* msg)
+  void KeyboardInput::GetMsg(void* pmsg)
   {
+    MSG* msg = (MSG*)pmsg;
+
     switch(msg->message)
     {
     case WM_KEYUP:

@@ -43,10 +43,10 @@ namespace Framework
     // positions
     Vec2 _screenPosition;
     Vec2 _worldPosition;
-    void GetMsg(MSG* msg);
+    void GetMsg(void* msg);
 
     void _UpdateButton(unsigned int, bool state);
-    void _UpdateMove(MSG* msg);
+    void _UpdateMove(void* msg);
 
     void _ScreenToWorld();
 
@@ -79,7 +79,7 @@ namespace Framework
 
   private:
 
-    void GetMsg(MSG*);
+    void GetMsg(void*);
 
     bool _active;
     bool _previousState[256];

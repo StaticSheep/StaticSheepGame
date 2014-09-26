@@ -68,7 +68,7 @@ namespace Framework
       component->typeinfo = GET_TYPE(T);
 
       // Sync the handles
-      space->SyncHandles<T>(*componentList);
+      space->GetHandles().SyncHandles<T>(*componentList);
       
       return component;
     }

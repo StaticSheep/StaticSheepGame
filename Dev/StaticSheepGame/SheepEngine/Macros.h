@@ -20,6 +20,12 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #define TYPE_REGISTER( T ) \
   Framework::IntrospectionManager::Get( )->RegisterType<Framework::RemoveQualifiers<T>::type>( sizeof( T ), #T, STRINGIZE(__##T##_MT), false )
 
+#define TYPE_SET_TWEAK_TYPE( T, TYPE) \
+  ((Framework::TypeInfo *)GET_TYPE( T ))->SetAType( TYPE )
+
+#define TYPE_SET_TWEAK(T, FUNCTION) \
+  ((Framework::TypeInfo *)GET_TYPE( T ))->SetToTweak( FUNCTION )
+
 // Plain old data types
 #define TYPE_REGISTER_POD( T ) \
   Framework::IntrospectionManager::Get( )->RegisterType<Framework::RemoveQualifiers<T>::type>( sizeof( T ), #T, STRINGIZE(__##T##_MT), true )
@@ -39,8 +45,9 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #define GET_STR_TYPE( STR ) \
   Framework::IntrospectionManager::Get( )->GetType( STR )
 
-#define TYPE_ADD_MEMBER( T, MEMBER ) \
-  ((Framework::TypeInfo *)GET_TYPE( T ))->AddMember( GET_TYPE( GET_TYPE_OF_MEMBER( T, MEMBER ) ), #MEMBER, GET_OFFSET_OF( T, MEMBER ) )
+// AddMember([TYPE], [MEMBER], [AutoLua Set/Get], [Use AntTweakBar], [Custom AntTweakBar Label], [CustomSet Callback], [CustomGet Callback]
+#define TYPE_ADD_MEMBER( T, MEMBER, ... ) \
+  ((Framework::TypeInfo *)GET_TYPE( T ))->AddMember( GET_TYPE( GET_TYPE_OF_MEMBER( T, MEMBER ) ), #MEMBER, GET_OFFSET_OF( T, MEMBER ), __VA_ARGS__ )
 
 #define TYPE_SET_SERIALIZER( T, SERIALIZER ) \
   ((Framework::TypeInfo *)GET_TYPE( T ))->SetSerializer( SERIALIZER )

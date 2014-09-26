@@ -29,6 +29,18 @@
     <ClInclude Include="VertexTypes.h">
       <Filter>Rendering</Filter>
     </ClInclude>
+    <ClInclude Include="Manager.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="Handle.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="Context.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Batcher.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="precompiled.cpp">
@@ -40,11 +52,20 @@
     <ClCompile Include="Camera.cpp">
       <Filter>Camera</Filter>
     </ClCompile>
-    <ClCompile Include="System.cpp">
-      <Filter>System</Filter>
-    </ClCompile>
     <ClCompile Include="RenderMain.cpp">
       <Filter>Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Manager.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="Context.cpp">
+      <Filter>Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Handle.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="System.cpp">
+      <Filter>System</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

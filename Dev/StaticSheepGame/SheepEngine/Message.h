@@ -14,23 +14,26 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 namespace Framework
 {
-	namespace Mid // Message ID's
-	{
-		enum MessageType
-		{
-			None,
-      Pause,
-			Quit,
-		};
-	}
 
 	// Base message class. You can make your own message types by deriving from this
 	// and then added an ID to the MessageIDType enum
 	class Message
 	{
-	public:
-		Message(Mid::MessageType id) : MessageId(id){};
-		Mid::MessageType MessageId;
+   public:
+    enum MessageType
+    {
+      None,
+      GFXDeviceInit,
+      PostDraw,
+      Pause,
+      Quit,
+    };
+
+
+		Message(MessageType id) : MessageId(id){};
+		MessageType MessageId;
 		virtual ~Message(){};
+
+    
 	};
 }

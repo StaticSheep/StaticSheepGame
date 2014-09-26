@@ -28,8 +28,8 @@ namespace Framework
     void SetHidden(bool hidden);
     bool Hidden();
 
-    template <typename T>
-    void SyncHandles(ObjectAllocator& m_allocator, bool force = false);
+    /*template <typename T>
+    void SyncHandles(ObjectAllocator& m_allocator, bool force = false);*/
 
     // Creates a component of a specific type
     GameComponent* CreateComponent(EComponent type);
@@ -42,6 +42,7 @@ namespace Framework
 
     void Clear();
     
+    void Tweak(void);
 
     void RemoveComponent(GameComponent* comp);
     void RemoveComponent(Handle handle);
@@ -52,11 +53,17 @@ namespace Framework
     // Called at the end of the GameLogic update
     void Cleanup();
 
+    // Used for updating the tweak bar
+    void UpdateTweakBar(void);
+
     // Serialization routine
     static void Serialize(File& file, Variable var);
 
     // Deserialization routine, var must be an empty object
     static void Deserialize(File& file, Variable var);
+
+    // AntTweak bar creator
+    static void CustomTweak(AntTweak::TBar* bar, Variable& var, const char* tempLabel, const char* label);
 
     // Gets the object allocator for a type of components
     ObjectAllocator* GetComponents(EComponent type);
@@ -76,6 +83,7 @@ namespace Framework
 
     GameSpace* CopyGameSpace(const char* new_name);
     
+    Handle tweakHandle;
     
   private:
     // The collection of all game objects in this game space
@@ -112,25 +120,4 @@ namespace Framework
     friend class Factory;
 	};
 
-  // Updates all handles to ensure that the HandleManager has accurate
-  // pointers to the data which the handle needs to point at
-  template <typename T>
-  void GameSpace::SyncHandles(ObjectAllocator& m_allocator, bool force)
-  {
-    if (m_allocator.Grew() || force)
-    {
-      // Keep in mind that allocators are essentially a giant vector of
-      // every single component of a certain type. In the case in which
-      // the allocator grows, the location of the data is now in a different
-      // area of RAM and therefore we must update the handle manager
-      // and tell it the new location of the components so the handles don't
-      // point into memory that we don't own!
-      for (auto i = m_allocator.begin<T>(); i != m_allocator.end<T>(); ++i)
-      {
-        m_handles.Update(&(*i), i->self);
-      }
-
-      m_allocator.ClearGrewFlag();
-    }
-  }
 }

@@ -7,8 +7,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 *****************************************************************/
 
 #include "GameLogic.h"
-#include "CGamePad.h"
 #include <iostream>
+#include "CGamePad.h"
 
 namespace Framework
 {

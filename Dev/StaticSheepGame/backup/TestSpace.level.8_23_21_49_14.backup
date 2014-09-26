@@ -1,0 +1,2 @@
+ach_drawtest
+  Sprite:SpriteName std::string "content/bricks.png"

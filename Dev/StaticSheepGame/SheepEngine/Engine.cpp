@@ -1,4 +1,3 @@
-#include <iostream>
 /*****************************************************************
 Filename: Engine.cpp
 Project: 
@@ -13,6 +12,9 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #pragma comment (lib, "SheepPhysics.lib")
 #pragma comment (lib, "luaSource.lib")
 
+#include <iostream>
+#include "Window.h"
+
 namespace Framework
 {
   Engine* ENGINE = NULL;
@@ -23,6 +25,8 @@ namespace Framework
     shittyFramerate = 0;
 
     EngineTypeRegistration();
+
+    Window = new SheepWindow();
 
     ENGINE = this;
   }
@@ -37,6 +41,8 @@ namespace Framework
     m_systems.clear();
     m_spaces.clear();
     m_spaceMap.clear();
+
+    delete Window;
   }
 
   void Engine::AddSystem(ISystem* system)
@@ -57,9 +63,9 @@ namespace Framework
       m_systems[i]->Initialize();
   }
 
-  void Engine::MakeWindow(HINSTANCE hInstance, int show)
+  void Engine::MakeWindow(void* hInstance, int show)
   {
-    Window.MakeWindow(hInstance, show);
+    Window->MakeWindow(hInstance, show);
   }
 
   void Engine::Shutdown()
@@ -86,13 +92,19 @@ namespace Framework
     L = nullptr;
   }
 
+  void Engine::SystemMessage(Message& msg)
+  {
+    for (unsigned int i = 0; i < m_systems.size(); ++i)
+      m_systems[i]->ReceiveMessage(msg);
+  }
+
   void Engine::MainLoop()
   {
     const float dt = 1.0f / 60.0f; // 60 frames per second
 
     if (shittyFramerate > 100)
     {
-      Window.Update();
+      Window->Update();
 
       for (unsigned int i = 0; i < m_systems.size(); ++i)
         m_systems[i]->Update(dt);
@@ -165,9 +177,7 @@ namespace Framework
 
   void Engine::LoadLevel(const char* name)
   {
-    GameSpace* space = CreateSpace(name);
-
-    FACTORY->LoadLevelToSpace(space, name);
+    FACTORY->LoadSpace(name);
   }
 
   void Engine::LoadLuaLevel(const char* path)

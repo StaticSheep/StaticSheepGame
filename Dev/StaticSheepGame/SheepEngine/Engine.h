@@ -8,38 +8,40 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 #pragma once
 
-#include "Window.h"
 
 namespace Framework
 {
   class Engine;
+  class SheepWindow;
 
-  SHEEP_API extern Engine* ENGINE;
+  extern Engine* ENGINE;
 
   class Engine
   {
   public:
-    SHEEP_API Engine();
-    SHEEP_API ~Engine();
+    Engine();
+    ~Engine();
 
-    SHEEP_API void AddSystem(ISystem* system);
-    SHEEP_API void MakeWindow(HINSTANCE hInstance, int show);
-    SHEEP_API void Initialize();
-    SHEEP_API void MainLoop();
-    SHEEP_API void Shutdown();
+    void AddSystem(ISystem* system);
+    void MakeWindow(void* hInstance, int show);
+    void Initialize();
+    void MainLoop();
+    void Shutdown();
 
-    SHEEP_API void Quit();
+    void Quit();
 
-    SHEEP_API bool Running() const;
+    bool Running() const;
 
-    SHEEP_API lua_State* Lua(void) const;
+    lua_State* Lua(void) const;
 
-    SHEEP_API static void LuaError(const char* msg);
+    static void LuaError(const char* msg);
 
-    SHEEP_API void LoadLevel(const char* name);
-    SHEEP_API void LoadLuaLevel(const char* path);
+    void LoadLevel(const char* name);
+    void LoadLuaLevel(const char* path);
 
-    SHEEP_API std::vector<GameSpace*>& Spaces();
+    std::vector<GameSpace*>& Spaces();
+
+    void SystemMessage(Message& msg);
 
     // Static Lua binds
     static GameSpace* LuaCreateSpace(const char* name);
@@ -52,6 +54,8 @@ namespace Framework
     static void LuaClearSpaces();
     static void LuaRemoveSpace(const char* name);
 
+    static void OpenEditor();
+
     void ClearSpaces();
 
     GameSpace* CreateSpace(const char* name);
@@ -63,7 +67,7 @@ namespace Framework
     int shittyFramerate;
 
     Factory ObjectFactory;
-    SheepWindow Window;
+    SheepWindow* Window;
   private:
     bool m_running;
     std::vector<ISystem*> m_systems;

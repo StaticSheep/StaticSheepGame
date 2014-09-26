@@ -1,7 +1,8 @@
 /*****************************************************************
 Filename: Window.cpp
 Project: 
-Author(s): Zachary Nawar (Primary)
+Author(s): Scott Nelson (Primary)
+           Zachary Nawar
 
 All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 *****************************************************************/
@@ -11,12 +12,15 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 #include <windows.h>
 #include <windowsx.h>
+#include "AntTweak\AntTweakBar.h"
 
 namespace Framework
 {
+  static bool localATValid = false;
+
   LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
-  void SheepWindow::MakeWindow(HINSTANCE hInstance, int nCmdShow)
+  void SheepWindow::MakeWindow(void* hInstance, int nCmdShow)
   {
     WNDCLASSEX wcex;                                // Struct containing Window class data
     ZeroMemory(&wcex, sizeof(WNDCLASSEX));          // Null out unused parameters
@@ -25,7 +29,7 @@ namespace Framework
     wcex.lpfnWndProc = WindowProc;                  // Function to be used for message processing
     wcex.cbClsExtra = 0;
     wcex.cbWndExtra = 0;
-    wcex.hInstance = hInstance;                     // Handle for the window instane being used by winmain
+    wcex.hInstance = *(HINSTANCE*)hInstance;                     // Handle for the window instane being used by winmain
     wcex.hCursor = LoadCursor(nullptr, IDC_ARROW);  // Cursor for window
     wcex.lpszMenuName = nullptr;                    // Menus are not being used
     wcex.lpszClassName = "SheepWindow";               // Name of class
@@ -33,8 +37,8 @@ namespace Framework
     ErrorIf(!RegisterClassEx(&wcex), "Window", "Window class failed to register!");
 
     // Create Window
-    width = 800;
-    height = 600;
+    width = 1024;
+    height = 768;
     RECT rc = {0, 0, width, height};                     // Defines rectangle dimensions for window
     AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE); // Takes borders into considerations for window size
 
@@ -48,7 +52,7 @@ namespace Framework
       rc.bottom - rc.top,  // Height of Window
       nullptr, 
       nullptr, 
-      hInstance,           // Instance of window to be configured
+      *(HINSTANCE*)hInstance,           // Instance of window to be configured
       nullptr);
 
     ErrorIf(!Handle, "Window", "Window failed to create!");
@@ -61,6 +65,11 @@ namespace Framework
     PAINTSTRUCT ps;                         // Data to redraw window if moved
     HDC hdc;                                // Hande to a Device Context
     MSG msg;
+
+#if USE_ANTTWEAKBAR
+    if (TwEventWin(hWnd, message, wParam, lParam))
+      return 0; // Event has been handled by AntTweakBar
+#endif
 
     switch( message )                       // Check message
     {
@@ -126,5 +135,15 @@ namespace Framework
   HWND SheepWindow::GetHandle()
   {
     return Handle;
+  }
+
+  int SheepWindow::GetWidth()
+  {
+    return width;
+  }
+
+  int SheepWindow::GetHeight()
+  {
+    return height;
   }
 }
