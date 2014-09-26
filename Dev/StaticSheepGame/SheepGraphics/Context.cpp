@@ -23,7 +23,7 @@ namespace DirectSheep
   {
     float cameraX = x;
     float cameraY = y;
-    float cameraZ = -2.0f;
+    float cameraZ = -400.0f;
 
 
     Vec3 eyepoint(cameraX, cameraY, cameraZ);
@@ -304,7 +304,6 @@ namespace DirectSheep
       m_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
       m_deviceContext->Draw(vertexCount,vertexStart);
-
     }
 
     void RenderContext::DrawSpriteText(const char * text, float size, const char * font)

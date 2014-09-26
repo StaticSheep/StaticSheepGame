@@ -23,7 +23,7 @@ namespace Framework
   void Camera::Initialize()
   {
     transform = new Transform;
-    FOV = 170;
+    FOV = 75;
     transform->Translation = Vec2(0,0);
     transform->Rotation = 0;
   }
