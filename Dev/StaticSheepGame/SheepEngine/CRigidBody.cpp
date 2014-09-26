@@ -17,8 +17,8 @@ namespace Framework
 	{
 
 	}
-		
-
+	
+	//initialize the rigidbody
 	void RigidBody::Initialize(void)
 	{
 		//get a pointer to the transform component
@@ -34,12 +34,13 @@ namespace Framework
 		//check if the shape is a circle or rectangle
 		//if so, add a body and return the pointer to the component
 		if(m_shape == SheepFizz::Cir || m_shape == SheepFizz::Rec)
-			m_handle = PHYSICS->AddBodies(m_shape, *m_material, position, 
+			m_handle = PHYSICS->AddBodies(space->GetHandles().GetAs<GameObject>(owner), m_shape, *m_material, position, 
 			m_xradius, m_yval, m_orientation);
 	}
 
+	//remove the body from the space
 	void RigidBody::Remove()
 	{
-		PHYSICS->RemoveBodies(m_handle);
+		PHYSICS->RemoveBodies(space, m_handle);
 	}
 }

@@ -21,6 +21,8 @@ namespace SheepFizz
 		public:
 		PHY_API static PhysicsSpace* Allocate(float dt);
 
+		PHY_API static void Delete(PhysicsSpace* space);
+
 
 		//body settors
 		PHY_API void SetBodyPos(Handle handle, Vec3D position);
@@ -51,7 +53,8 @@ namespace SheepFizz
 			SheepMath::Vec3D position,	//the position of the transform
 			float xradius,				//the radius of circle or width
 			float yval = 0,				//the height - if a rec
-			float orientation = 0);		//the orientation
+			float orientation = 0,		//the orientation
+			void* userData = NULL);		
 
 		//remove bodies and their shapes from the vector
 		PHY_API void RemoveBody(Handle handle);
@@ -64,11 +67,19 @@ namespace SheepFizz
 		//application of forces and velocities to each body
 		//applied in physics update
 
+		PHY_API void SetCollisionCallback(void(*cb)(void*, void*, void*));
+
+		PHY_API void SetUserData(void* userData);
+
 		#ifdef DLL_PHYEXPORT
 
 		private:
 			//timestep value
 			float dt_;
+
+			CollisionCB cb_;
+
+			void* userData_;
 
 			//vector of bodies in engine
 			ObjectAllocator bodies_;

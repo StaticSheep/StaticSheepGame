@@ -35,6 +35,7 @@ enum CollisionGroup{
 class Body
 {
 	public:
+			void* userData = NULL,
 			float orientation = PI, 
 			float angularVelocity = 0, 
 			float torque = 0,
@@ -78,6 +79,8 @@ class Body
 		float torque_;
 
 		Handle self;
+
+		void* userData;
 };
 
 }
