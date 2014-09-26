@@ -28,6 +28,8 @@ namespace Framework
 
     ErrorIf(GRAPHICS != NULL, "SheepGraphics", "Graphics already initialized");
 		GRAPHICS = this;
+
+    CurrentCamera = NULL;
 	}
 
   void SheepGraphics::RegisterComponents()
@@ -109,6 +111,7 @@ namespace Framework
   {
     m_renderContext->ClearBackBuffer();
     m_renderContext->ClearDepthBuffer();
+    UpdateCamera();
   }
 
   void SheepGraphics::FinishFrame()
@@ -241,6 +244,13 @@ namespace Framework
     m_renderContext->DrawSpriteText(text, size, font);
   }
 
+  void SheepGraphics::UpdateCamera(void)
+  {
+    if(CurrentCamera)
+      m_renderContext->UpdateCamera(CurrentCamera->transform->Translation.X, CurrentCamera->transform->Translation.Y, CurrentCamera->FOV);
+    else
+      m_renderContext->UpdateCamera(0, 0, 170);
+  }
   void* SheepGraphics::GetDevice()
   {
     return m_renderContext->ExternalGetDevice();

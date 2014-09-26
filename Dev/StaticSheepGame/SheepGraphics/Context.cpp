@@ -19,10 +19,10 @@ namespace DirectSheep
     return new RenderContext();
   }
 
-  void RenderContext::SetupMatrices(void)
+  void RenderContext::UpdateCamera(float x, float y, float fov)
   {
-    float cameraX = 0.0f;
-    float cameraY = 0.0f;
+    float cameraX = x;
+    float cameraY = y;
     float cameraZ = -2.0f;
 
 
@@ -38,7 +38,7 @@ namespace DirectSheep
     m_camera.view = matView;
 
     Mat4 matProj;
-    D3DXMatrixPerspectiveFovLH(&matProj, (FLOAT)D3DXToRadian(178.5985728), (float)m_viewport.dim.width / (float)m_viewport.dim.height, 1.0f, 1000.0f);
+    D3DXMatrixPerspectiveFovLH(&matProj, (FLOAT)D3DXToRadian(fov), (float)m_viewport.dim.width / (float)m_viewport.dim.height, 1.0f, 1000.0f);
 
     m_camera.proj = matProj;
 
@@ -112,7 +112,6 @@ namespace DirectSheep
     InitializeBlendModes();
     InitializeDepthState();
 
-    SetupMatrices();
     m_initialized = true;
     return true;
   }

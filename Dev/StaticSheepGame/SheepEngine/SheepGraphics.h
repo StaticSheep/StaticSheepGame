@@ -9,6 +9,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #pragma once
 
 #include "System.h"
+#include "Camera.h"
 #include <wtypes.h>
 #include <unordered_map>
 
@@ -19,7 +20,6 @@ namespace DirectSheep
 
 namespace Framework
 {
-  class Camera;
 	class SheepGraphics : public ISystem
 	{
 	public:
@@ -43,6 +43,8 @@ namespace Framework
     DirectSheep::Handle SetTexture(const std::string& Texture);
     DirectSheep::Handle SetVShader(const std::string& Shader);
     DirectSheep::Handle SetPShader(const std::string& Shader);
+
+    void UpdateCamera(void);
 
     void RawDraw(void);
 

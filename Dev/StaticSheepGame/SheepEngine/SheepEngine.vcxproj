@@ -105,6 +105,7 @@
     <ClInclude Include="Api.h" />
     <ClInclude Include="Archetype.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="CAniSprite.h" />
     <ClInclude Include="CGamePad.h" />
     <ClInclude Include="CLuaComponent.h" />
     <ClInclude Include="Component.h" />
@@ -166,6 +167,7 @@
     <ClCompile Include="..\Utilities\Vec3.cpp" />
     <ClCompile Include="Archetype.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CAniSprite.cpp" />
     <ClCompile Include="CGamePad.cpp" />
     <ClCompile Include="CLuaComponent.cpp" />
     <ClCompile Include="Component.cpp" />
