@@ -86,12 +86,12 @@ namespace Framework
     TYPE_SET_TO_LUA(Vec2, Vec2::ToLua);
     TYPE_SET_FROM_LUA(Vec2, Vec2::FromLua);
 
-    TYPE_REGISTER(Vec3D);
-    TYPE_ADD_MEMBER(Vec3D, x_);
-    TYPE_ADD_MEMBER(Vec3D, y_);
-    TYPE_ADD_MEMBER(Vec3D, z_);
-    TYPE_SET_TO_LUA(Vec3D, Vec3D::ToLua);
-    TYPE_SET_FROM_LUA(Vec3D, Vec3D::FromLua);
+    TYPE_REGISTER(Vec3);
+    TYPE_ADD_MEMBER(Vec3, x_);
+    TYPE_ADD_MEMBER(Vec3, y_);
+    TYPE_ADD_MEMBER(Vec3, z_);
+    TYPE_SET_TO_LUA(Vec3, Vec3::ToLua);
+    TYPE_SET_FROM_LUA(Vec3, Vec3::FromLua);
 
 
     TYPE_REGISTER( GameComponent );
@@ -128,6 +128,9 @@ namespace Framework
     TYPE_REGISTER( Transform );
     TYPE_SET_FROM_LUA( Transform, Lua::GenericObjectFromLua );
     TYPE_SET_TWEAK_TYPE( Transform, AntTweak::TW_TYPE_COMPONENT );
+    TYPE_SET_SERIALIZER( Transform, Transform::Serialize );
+    TYPE_SET_DESERIALIZER( Transform, Transform::Deserialize );
+    TYPE_SET_TWEAK( Transform, Transform::ToTweak );
     
 
     TYPE_REGISTER( Tester );

@@ -382,6 +382,12 @@ namespace Framework
   {
     AntTweak::TweakGenericVar* clientData = (AntTweak::TweakGenericVar*)rawData;
 
+    if (clientData->genericMember == nullptr)
+    {
+      clientData->setCB(value, clientData);
+      return;
+    }
+
     // Get the type of the member we are changing
     const TypeInfo* memberType = clientData->genericMember->Type();
     // Get a pointer to the generic object
@@ -407,6 +413,12 @@ namespace Framework
   {
     AntTweak::TweakGenericVar* clientData = (AntTweak::TweakGenericVar*)rawData;
 
+    if (clientData->genericMember == nullptr)
+    {
+      clientData->getCB(value, clientData);
+      return;
+    }
+
     // Get the type of the member we are changing
     const TypeInfo* memberType = clientData->genericMember->Type();
     // Get a pointer to the generic object
@@ -419,7 +431,7 @@ namespace Framework
 
     if (clientData->getCB)
     {
-      clientData->getCB(clientData, clientData);
+      clientData->getCB(value, clientData);
     }
     else
     {
@@ -433,6 +445,12 @@ namespace Framework
   {
     AntTweak::TweakGenericVar* clientData = (AntTweak::TweakGenericVar*)rawData;
 
+    if (clientData->genericMember == nullptr)
+    {
+      clientData->getCB(value, clientData);
+      return;
+    }
+
     // Get the type of the member we are changing
     const TypeInfo* memberType = clientData->genericMember->Type();
     // Get a pointer to the generic object
@@ -445,7 +463,7 @@ namespace Framework
 
     if (clientData->getCB)
     {
-      clientData->getCB(clientData, clientData);
+      clientData->getCB(value, clientData);
     }
     else
     {

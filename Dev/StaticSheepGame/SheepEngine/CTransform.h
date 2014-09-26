@@ -17,17 +17,21 @@ namespace Framework
     Transform();
     ~Transform();
 
-    Vec3D GetTranslation(void) const;
-    Vec2 GetScale(void) const;
-    float GetRotation(void) const;
+    Vec3 GetTranslation(bool world = true) const;
+    Vec3 GetScale(bool world = true) const;
+    float GetRotation(bool world = true) const;
 
-    void SetTranslation(Vec3D newTr);
-    void SetScale(Vec2 newSc);
+    void SetTranslation(Vec3 newTr);
+    void SetScale(Vec3 newSc);
     void SetRotation(float rot);
 
     void SetPhysicsBody(unsigned body);
 
     Transform& operator=(const Transform& rhs);
+
+    static void Serialize(File& file, Variable var);
+    static void Deserialize(File& file, Variable var);
+    static void ToTweak(AntTweak::TBar* bar, Variable& var, const char* tempLabel, const char* label);
 
     float test;
 
@@ -36,8 +40,8 @@ namespace Framework
     bool m_hasPhysics;
     unsigned m_pBody;
 
-    Vec3D m_translation;
-    Vec2 m_scale;
+    Vec3 m_translation;
+    Vec3 m_scale;
     float m_rotation;
   };
 }

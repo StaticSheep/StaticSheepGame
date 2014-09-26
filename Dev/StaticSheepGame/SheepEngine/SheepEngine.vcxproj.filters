@@ -163,9 +163,6 @@
     <ClInclude Include="Input.h">
       <Filter>Systems\Input</Filter>
     </ClInclude>
-    <ClInclude Include="..\includes\Vec3.h">
-      <Filter>BaseTypes\Vectors\Vec3</Filter>
-    </ClInclude>
     <ClInclude Include="CRigidBody.h">
       <Filter>Components\RigidBody</Filter>
     </ClInclude>
@@ -180,6 +177,12 @@
     </ClInclude>
     <ClInclude Include="AntTweakModule.h" />
     <ClInclude Include="TweakHelper.h" />
+    <ClInclude Include="..\includes\Vec3D.h">
+      <Filter>BaseTypes\Vectors\Vec3\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Vec3.h">
+      <Filter>BaseTypes\Vectors\Vec3</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="precompiled.cpp">
@@ -312,9 +315,6 @@
     <ClCompile Include="Input.cpp">
       <Filter>Systems\Input</Filter>
     </ClCompile>
-    <ClCompile Include="..\Utilities\Vec3.cpp">
-      <Filter>BaseTypes\Vectors\Vec3</Filter>
-    </ClCompile>
     <ClCompile Include="CRigidBody.cpp">
       <Filter>Components\RigidBody</Filter>
     </ClCompile>
@@ -332,6 +332,12 @@
     <ClCompile Include="ObjectTweak.cpp" />
     <ClCompile Include="SpaceTweak.cpp" />
     <ClCompile Include="TweakHelper.cpp" />
+    <ClCompile Include="..\Utilities\Vec3D.cpp">
+      <Filter>BaseTypes\Vectors\Vec3\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Vec3.cpp">
+      <Filter>BaseTypes\Vectors\Vec3</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Precompiled">
@@ -519,6 +525,9 @@
     </Filter>
     <Filter Include="Components\RigidBody">
       <UniqueIdentifier>{4479f1bd-bcfd-4f6a-897b-ac4ed0686e92}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BaseTypes\Vectors\Vec3\Base">
+      <UniqueIdentifier>{56635d4e-aaea-4371-a2c0-1bb9c5e1f5af}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -6,7 +6,7 @@
 
 #include "Material.h"
 #include "Shape.h"
-#include "Vec3.h"
+#include "Vec3D.h"
 #include <vector>
 
 

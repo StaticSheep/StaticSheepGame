@@ -52,7 +52,7 @@ namespace Framework
     Transform* trans = space->GetHandles().GetAs<Transform>(transform);
 
     Vec3D position = trans->GetTranslation();
-    Vec2 scale = trans->GetScale();
+    Vec3 scale = trans->GetScale();
 
     GRAPHICS->SetPosition(position.x_, position.y_);
     GRAPHICS->SetRotation(trans->GetRotation());

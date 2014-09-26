@@ -68,6 +68,7 @@ namespace Framework
 
     Factory ObjectFactory;
     SheepWindow* Window;
+
   private:
     bool m_running;
     std::vector<ISystem*> m_systems;

@@ -25,7 +25,7 @@ namespace Framework
 
     // Get the meta table
     lua_getglobal(L, "_R"); // index 3
-    lua_getfield(L, -1, "__Vector_MT"); // index 4
+    lua_getfield(L, -1, "__Vector2_MT"); // index 4
 
     lua_getfield(L, -1, "new"); // Index 5
 
