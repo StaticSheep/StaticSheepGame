@@ -150,6 +150,8 @@ namespace Framework
       std::vector<TweakObjComp*>* tweakCCompCallbacks;
       std::vector<TweakObjComp*>* tweakLuaCompCallbacks;
 
+	  HookManager m_hooks;
+
     private:
 
       // Active flag, if the object is inactive it will be removed

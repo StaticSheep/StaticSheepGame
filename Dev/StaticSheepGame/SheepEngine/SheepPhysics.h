@@ -36,11 +36,16 @@ namespace Framework
 
 			void RegisterComponents();
 
+			void* CreateSpace(GameSpace*);
+
+			void DeleteSpace(void*);
+
 			// Initialization call
 			void Initialize(void);
 
 			//Adds rectangles and circles to the physics engine
-			SheepFizz::Handle AddBodies(SheepFizz::Shapes shape, //the shape to add (cir or rec)
+			SheepFizz::Handle AddBodies(GameObject* obj, 
+				SheepFizz::Shapes shape,			//the shape to add (cir or rec)
 				SheepFizz::Material& material,		//the material
 				Vec3D position,						//the positon of the transform
 				float xradius,						//the radius or width
@@ -48,7 +53,7 @@ namespace Framework
 				float orientation = 0);				//orientation of object
 
 			//remove bodies from the bodies held in the physics engine
-			void RemoveBodies(SheepFizz::Handle handle);
+			void RemoveBodies(GameSpace* space, SheepFizz::Handle handle);
 
 			SheepFizz::Material* GetMaterial(std::string name);
 
@@ -59,7 +64,6 @@ namespace Framework
 
 		private:
 			//void PhysicsStep(float dt);
-			SheepFizz::PhysicsSpace* m_space;
 			std::unordered_map<std::string, SheepFizz::Material> m_materials;
 	};
 

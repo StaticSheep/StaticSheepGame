@@ -84,6 +84,8 @@ namespace Framework
     GameSpace* CopyGameSpace(const char* new_name);
     
     Handle tweakHandle;
+
+	void* m_pSpace;
     
   private:
     // The collection of all game objects in this game space

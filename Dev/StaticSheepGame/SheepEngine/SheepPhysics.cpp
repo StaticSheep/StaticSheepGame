@@ -36,9 +36,37 @@ namespace Framework
 
 	 }
 
+	static void CollisionCallback(void* A_userData, void* B_userData, void* Space_userData)
+	{
+		Handle A_object = (unsigned)A_userData;
+		Handle B_object = (unsigned)B_userData;
+		GameSpace* space = (GameSpace*)Space_userData;
+
+		GameObject* AObj = space->GetHandles().GetAs<GameObject>(A_object);
+		GameObject* BObj = space->GetHandles().GetAs<GameObject>(B_object);
+
+		AObj->m_hooks.Call("Collision",B_object);
+		BObj->m_hooks.Call("Collision",A_object);
+	}
+
+	void* SheepPhysics::CreateSpace(GameSpace* gameSpace)
+	{
+		SheepFizz::PhysicsSpace* newSpace = SheepFizz::PhysicsSpace::Allocate(0.0167f);
+		
+		newSpace->SetCollisionCallback(CollisionCallback);
+		newSpace->SetUserData(gameSpace);
+		gameSpace->m_pSpace = newSpace;
+
+		return newSpace;
+	}
+
+	void SheepPhysics::DeleteSpace(void* p_Space)
+	{
+		SheepFizz::PhysicsSpace::Delete((SheepFizz::PhysicsSpace*)p_Space);
+	}
+
 	void SheepPhysics::Initialize()
 	{
-		m_space = SheepFizz::PhysicsSpace::Allocate(0.0167f);
 		
 		//add materials
 		SheepFizz::Material Wood(.8f, .5f, .8f, .4f);
@@ -60,19 +88,24 @@ namespace Framework
 	}
 
 	//add circles or rectangles
-	SheepFizz::Handle SheepPhysics::AddBodies(SheepFizz::Shapes shape, 
+	SheepFizz::Handle SheepPhysics::AddBodies(GameObject* obj, SheepFizz::Shapes shape, 
 		SheepFizz::Material& material, Vec3D position,
 		float xradius, float yval, float orientation)
 	{
+		GameSpace* space = obj->space;
+
+		if(!space->m_pSpace)
+			CreateSpace(space);
+
 		//return a sheepfizz handle
-		SheepFizz::Handle handle = m_space->AddBody(shape, material, position, 
-			xradius, yval, orientation);
+		SheepFizz::Handle handle = ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->AddBody(shape, material, position, 
+			xradius, yval, orientation, (void*)((unsigned)obj->self));
 		return handle;
 	}
 
-	void SheepPhysics::RemoveBodies(SheepFizz::Handle handle)
+	void SheepPhysics::RemoveBodies(GameSpace* space, SheepFizz::Handle handle)
 	{
-		m_space->RemoveBody(handle);
+		((SheepFizz::PhysicsSpace*)(space->m_pSpace))->RemoveBody(handle);
 	}
 
 	SheepFizz::Material* SheepPhysics::GetMaterial(std::string name)
@@ -84,7 +117,11 @@ namespace Framework
 
 	void SheepPhysics::Update(float dt)
 	{
-		m_space->Step();
+		std::vector<GameSpace*>& gSpaces = ENGINE->Spaces();
+		for(size_t i = 0; i < gSpaces.size(); ++i)
+		{
+			((SheepFizz::PhysicsSpace*)(gSpaces[i]->m_pSpace))->Step();
+		}
 	}
 
 }

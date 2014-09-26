@@ -8,6 +8,11 @@ namespace SheepFizz
 		return new PhysicsSpace(dt);
 	}//end of Allocate
 
+	void PhysicsSpace::Delete(PhysicsSpace* space)
+	{
+		delete space;
+	}//end of Delete
+
 	//body settors//*************
 	void PhysicsSpace::SetBodyPos(Handle handle, Vec3D position)
 	{
@@ -96,7 +101,7 @@ namespace SheepFizz
 
 	//add bodies to the body vector
 	Handle PhysicsSpace::AddBody(Shapes shape, Material& material, Vec3D position, 
-		float xradius, float yval, float orientation)
+		float xradius, float yval, float orientation, void* userData)
 	{
 
 		switch(shape)
@@ -111,7 +116,7 @@ namespace SheepFizz
 			
 					//then add the body
 					Body* body = (Body*)bodies_.Allocate();
-					new (body) Body(rec, material, position, Vec3D(), Vec3D(), orientation);
+					new (body) Body(rec, material, position, Vec3D(), Vec3D(), userData, orientation);
 					body->self;
 					handles_.SyncHandles<Body>(bodies_);
 
@@ -130,7 +135,7 @@ namespace SheepFizz
 			
 					//then add the body
 					Body* body = (Body*)bodies_.Allocate();
-					new (body) Body(cir, material, position, Vec3D(), Vec3D(), orientation);
+					new (body) Body(cir, material, position, Vec3D(), Vec3D(), userData, orientation);
 					body->self;
 					handles_.SyncHandles<Body>(bodies_);
 
@@ -162,7 +167,9 @@ namespace SheepFizz
 		Body* bodyRemoved = (Body*)bodies_.Free(body);
 		if(bodyRemoved)
 			handles_.Update(bodyRemoved, bodyRemoved->self);
-	}
+	}//end of RemoveBody
+	//*************
+
 
 	//this function advances the game forward one dt
 	void PhysicsSpace::Step(void)
@@ -191,11 +198,7 @@ namespace SheepFizz
 		{
 			manifolds_[i].PositionalCorrection();
 			manifolds_[i].ApplyForces();
-		
 		}
-
-		//empty manifold list;
-		manifolds_.clear();
 
 		//apply forces and velocity to all bodies
 		for(int i = 0; i < bodies_.Size(); ++i)
@@ -209,6 +212,15 @@ namespace SheepFizz
 			((Body*)bodies_[i])->torque_ = 0.0f;
 			((Body*)bodies_[i])->torque_ = 0.0f;
 		}
+
+		//send manifold data back to engine for game logic
+		for(int i = 0; i < manifolds_.size(); ++i)
+		{
+			cb_(manifolds_[i].A->userData, manifolds_[i].B->userData, userData_);
+		}
+
+		//empty manifold list;
+		manifolds_.clear();
 
 	}//end of Step
 	//*************
@@ -233,4 +245,15 @@ namespace SheepFizz
 
 	}//end of SymplecticEuler
 	//*************
+
+	//Engine functionality
+	void PhysicsSpace::SetUserData(void* userData)
+	{
+		userData_ = userData;
+	}//end of SetUserData
+
+	void PhysicsSpace::SetCollisionCallback(CollisionCB cb)
+	{
+		cb_ = cb;
+	}//end of SetCollisionCallback
 }

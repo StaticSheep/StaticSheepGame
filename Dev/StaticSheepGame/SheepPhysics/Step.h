@@ -13,17 +13,22 @@
 
 namespace SheepFizz
 {
+	//collision callback function pointer
+	typedef void(*CollisionCB)(void*, void*, void*);
 
 	#define GRAVITY 10.0f
 
 	class PhysicsSpace
 	{
 		public:
+
+		//allocate and delete the physics space (step)
 		PHY_API static PhysicsSpace* Allocate(float dt);
+		PHY_API static void Delete(PhysicsSpace* space);
 
 		//constructor requires a time step to start
 		PhysicsSpace(float dt) : dt_(dt),
-			bodies_(sizeof(Body), 10)
+			bodies_(sizeof(Body), 10), cb_(NULL)
 		{
 			shapes_[Rec].Initialize(sizeof(Rectangle), 10);
 			shapes_[Cir].Initialize(sizeof(Circle), 10);
@@ -62,7 +67,8 @@ namespace SheepFizz
 			SheepMath::Vec3D position,	//the position of the transform
 			float xradius,				//the radius of circle or width
 			float yval = 0,				//the height - if a rec
-			float orientation = 0);		//the orientation
+			float orientation = 0,		//the orientation
+			void* userData = NULL);		
 
 		//remove bodies and their shapes from the vector
 		PHY_API void RemoveBody(Handle handle);
@@ -76,11 +82,19 @@ namespace SheepFizz
 		//applied in physics update
 		void SymplecticEuler(Body& body);
 
+		//engine functions for messaging
+		PHY_API void SetCollisionCallback(void(*cb)(void*, void*, void*));
+		PHY_API void SetUserData(void* userData);
+
 		#ifdef DLL_PHYEXPORT
 
 		private:
 			//timestep value
 			float dt_;
+
+			//values tied to engine messaging
+			CollisionCB cb_;	//callback function pointer
+			void* userData_;	//pointer to engine space
 
 			//vector of bodies in engine
 			ObjectAllocator bodies_;
