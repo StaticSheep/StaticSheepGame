@@ -248,9 +248,15 @@ namespace Framework
   void Transform::ToTweak(AntTweak::TBar* bar, Variable& var, const char* tempLabel, const char* label)
   {
     Transform* tr = var.GetValue<Transform*>();
-    bar->AddGenericVarCB("Translation", AntTweak::TW_TYPE_DIR3F, nullptr, tr, TweakTranslationSet, TweakTranslationGet);
-    bar->AddGenericVarCB("Scale", AntTweak::TW_TYPE_DIR3F, nullptr, tr, TweakScaleSet, TweakScaleGet);
-    bar->AddGenericVarCB("Rotation", AntTweak::TW_TYPE_FLOAT, nullptr, tr, TweakRotationSet, TweakRotationGet);
+
+    bar->DefineGroup("Transform");
+    bar->AddGenericVarCB("Translation", AntTweak::TW_TYPE_DIR3F, nullptr, 0, tr, TweakTranslationSet, TweakTranslationGet);
+
+    bar->DefineGroup("Transform");
+    bar->AddGenericVarCB("Scale", AntTweak::TW_TYPE_DIR3F, nullptr, 0, tr, TweakScaleSet, TweakScaleGet);
+
+    bar->DefineGroup("Transform");
+    bar->AddGenericVarCB("Rotation", AntTweak::TW_TYPE_FLOAT, nullptr, 0, tr, TweakRotationSet, TweakRotationGet);
   }
 
 }

@@ -287,6 +287,13 @@ namespace Framework
 #endif
   }
 
+  void AntTweak::TBar::SetGroupParent(const char* child, const char* parent)
+  {
+#if USE_ANTTWEAKBAR
+    TwSetParam((TwBar*)antTweakBar, child, "group", TW_PARAM_CSTRING, 1, parent);
+#endif
+  }
+
 
   // Sets a bar label
   void AntTweak::TBar::SetLabel(const char* name)
@@ -396,7 +403,7 @@ namespace Framework
     ErrorIf(genericObject == nullptr, "AntTweakBar GenericObject Variable Set", "Attempted to set a variable on an object which couldn't be found! Member: %s",
       clientData->genericMember->Name());
 
-    void* data = (char*)genericObject + clientData->genericMember->Offset();
+    void* data = (char*)genericObject + clientData->realOffset;
 
     if (clientData->setCB)
     {
@@ -427,7 +434,7 @@ namespace Framework
     ErrorIf(genericObject == nullptr, "AntTweakBar GenericObject Variable Set", "Attempted to set a variable on an object which couldn't be found! Member: %s",
       clientData->genericMember->Name());
 
-    void* data = (char*)genericObject + clientData->genericMember->Offset();
+    void* data = (char*)genericObject + clientData->realOffset;
 
     if (clientData->getCB)
     {
@@ -436,7 +443,7 @@ namespace Framework
     else
     {
       // Use the types copy/assignment operation to set the value
-      memberType->Copy(value, (char*)genericObject + clientData->genericMember->Offset());
+      memberType->Copy(value, data);
     }
 
   }
@@ -459,7 +466,7 @@ namespace Framework
     ErrorIf(genericObject == nullptr, "AntTweakBar GenericObject Variable Set", "Attempted to set a variable on an object which couldn't be found! Member: %s",
       clientData->genericMember->Name());
 
-    void* data = (char*)genericObject + clientData->genericMember->Offset();
+    void* data = (char*)genericObject + clientData->realOffset;
 
     if (clientData->getCB)
     {
@@ -468,22 +475,22 @@ namespace Framework
     else
     {
       // Use the types copy/assignment operation to set the value
-      *(std::string**)value = (std::string*)((char*)genericObject + clientData->genericMember->Offset());
+      *(std::string**)value = (std::string*)(data);
     }
 
   }
 
 
   // Adds a Read/Write variable from a generic object
-  void AntTweak::TBar::AddGenericVarRW(const char* name, AntTweak::engineTwType type, const Member* member, Generic* obj)
+  void AntTweak::TBar::AddGenericVarRW(const char* name, AntTweak::engineTwType type, const Member* member, unsigned extraOffset, Generic* obj)
   {
 #if USE_ANTTWEAKBAR
-    AddGenericVarCB(name, type, member, obj);
+    AddGenericVarCB(name, type, member, extraOffset, obj);
 #endif
   }
 
   // Adds a Read/Write callback variable from a generic object
-  void AntTweak::TBar::AddGenericVarCB(const char* name, AntTweak::engineTwType type, const Member* member, Generic* obj, aTSetCB setCB, aTGetCB getCB)
+  void AntTweak::TBar::AddGenericVarCB(const char* name, AntTweak::engineTwType type, const Member* member, unsigned extraOffset, Generic* obj, aTSetCB setCB, aTGetCB getCB)
   {
 #if USE_ANTTWEAKBAR
 
@@ -505,6 +512,12 @@ namespace Framework
 
     // Create a clientData struct to store the client data for this variable
     TweakGenericVar* clientData = DBG_NEW TweakGenericVar(member);
+    if (extraOffset)
+      clientData->realOffset = extraOffset;
+    else if(member)
+      clientData->realOffset = member->Offset();
+    else
+      clientData->realOffset = 0;
     clientData->genericHandle = obj->self; // Set the handle to use
     clientData->genericSpace = obj->space; // Set the space to use (Thank god spaces are pretty static or i would flip shit)
     clientData->self = m_tweakVars.Insert(clientData);

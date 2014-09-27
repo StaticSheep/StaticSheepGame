@@ -175,13 +175,17 @@
     <ClInclude Include="Debug.h">
       <Filter>Systems\Debug</Filter>
     </ClInclude>
-    <ClInclude Include="AntTweakModule.h" />
-    <ClInclude Include="TweakHelper.h" />
     <ClInclude Include="..\includes\Vec3D.h">
       <Filter>BaseTypes\Vectors\Vec3\Base</Filter>
     </ClInclude>
     <ClInclude Include="Vec3.h">
       <Filter>BaseTypes\Vectors\Vec3</Filter>
+    </ClInclude>
+    <ClInclude Include="AntTweakModule.h">
+      <Filter>Systems\AntTweak</Filter>
+    </ClInclude>
+    <ClInclude Include="TweakHelper.h">
+      <Filter>Systems\AntTweak</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -327,16 +331,26 @@
     <ClCompile Include="Debug.cpp">
       <Filter>Systems\Debug</Filter>
     </ClCompile>
-    <ClCompile Include="AntTweakModule.cpp" />
-    <ClCompile Include="EngineTweak.cpp" />
-    <ClCompile Include="ObjectTweak.cpp" />
-    <ClCompile Include="SpaceTweak.cpp" />
-    <ClCompile Include="TweakHelper.cpp" />
     <ClCompile Include="..\Utilities\Vec3D.cpp">
       <Filter>BaseTypes\Vectors\Vec3\Base</Filter>
     </ClCompile>
     <ClCompile Include="Vec3.cpp">
       <Filter>BaseTypes\Vectors\Vec3</Filter>
+    </ClCompile>
+    <ClCompile Include="AntTweakModule.cpp">
+      <Filter>Systems\AntTweak</Filter>
+    </ClCompile>
+    <ClCompile Include="TweakHelper.cpp">
+      <Filter>Systems\AntTweak</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineTweak.cpp">
+      <Filter>Engine\EngineCore</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectTweak.cpp">
+      <Filter>BaseTypes\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="SpaceTweak.cpp">
+      <Filter>BaseTypes\Space</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -528,6 +542,9 @@
     </Filter>
     <Filter Include="BaseTypes\Vectors\Vec3\Base">
       <UniqueIdentifier>{56635d4e-aaea-4371-a2c0-1bb9c5e1f5af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\AntTweak">
+      <UniqueIdentifier>{f2ad67f2-953d-4c9b-8ace-ee0c69c41343}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

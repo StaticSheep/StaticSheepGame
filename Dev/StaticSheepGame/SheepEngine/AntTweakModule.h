@@ -67,6 +67,8 @@ namespace Framework
       void SetPos(int x, int y);
       // Sets the size of the bar
       void SetSize(int x, int y);
+      // Sets group heirarchy
+      void SetGroupParent(const char* child, const char* parent);
       // Sets the bar refresh rate
       void SetRefreshRate(float rate);
       // Sets whether the bar is iconified or not
@@ -84,9 +86,9 @@ namespace Framework
       // Creates a Read/Write variable
       void AddVarRW(const char* name, AntTweak::engineTwType type, void* var);
       // Creates a Read/Write variable for a generic object
-      void AddGenericVarRW(const char* name, AntTweak::engineTwType type, const Member* member, Generic* obj);
+      void AddGenericVarRW(const char* name, AntTweak::engineTwType type, const Member* member, unsigned extraOffset, Generic* obj);
       // Creates a variable with a callback function for setting and getting for a Generic Object
-      void AddGenericVarCB(const char* name, AntTweak::engineTwType type, const Member* member, Generic* obj, aTSetCB setCB = nullptr, aTGetCB getCB = nullptr);
+      void AddGenericVarCB(const char* name, AntTweak::engineTwType type, const Member* member, unsigned extraOffset, Generic* obj, aTSetCB setCB = nullptr, aTGetCB getCB = nullptr);
       // Adds a seperator into the bar and names it something
       void AddSeparator(const char* name);
       // Adds a button to the bar

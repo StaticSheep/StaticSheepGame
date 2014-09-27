@@ -81,8 +81,8 @@ namespace Framework
     TYPE_REGISTER_PTR( Member* );
 
     TYPE_REGISTER(Vec2);
-    TYPE_ADD_MEMBER(Vec2, X);
-    TYPE_ADD_MEMBER(Vec2, Y);
+    TYPE_ADD_MEMBER(Vec2, X, false, true);
+    TYPE_ADD_MEMBER(Vec2, Y, false, true);
     TYPE_SET_TO_LUA(Vec2, Vec2::ToLua);
     TYPE_SET_FROM_LUA(Vec2, Vec2::FromLua);
 
@@ -90,8 +90,16 @@ namespace Framework
     TYPE_ADD_MEMBER(Vec3, x_);
     TYPE_ADD_MEMBER(Vec3, y_);
     TYPE_ADD_MEMBER(Vec3, z_);
+    TYPE_SET_TWEAK_TYPE(Vec3, AntTweak::TW_TYPE_DIR3F);
     TYPE_SET_TO_LUA(Vec3, Vec3::ToLua);
     TYPE_SET_FROM_LUA(Vec3, Vec3::FromLua);
+
+    TYPE_REGISTER(Vec4);
+    TYPE_ADD_MEMBER(Vec4, R);
+    TYPE_ADD_MEMBER(Vec4, G);
+    TYPE_ADD_MEMBER(Vec4, B);
+    TYPE_ADD_MEMBER(Vec4, A);
+    TYPE_SET_TWEAK_TYPE(Vec4, AntTweak::TW_TYPE_COLOR4F);
 
 
     TYPE_REGISTER( GameComponent );
@@ -138,7 +146,7 @@ namespace Framework
     TYPE_ADD_MEMBER( Tester, testvalue2, false, true, "Test Value 2");
 
     TYPE_REGISTER( Sprite );
-    TYPE_ADD_MEMBER( Sprite, Size );
+    TYPE_ADD_MEMBER( Sprite, Size, false, true );
     TYPE_SET_TWEAK_TYPE( Sprite, AntTweak::TW_TYPE_COMPONENT );
     TYPE_SET_FROM_LUA( Sprite, Lua::GenericObjectFromLua );
 
