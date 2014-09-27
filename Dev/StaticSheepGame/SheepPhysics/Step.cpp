@@ -145,11 +145,26 @@ namespace SheepFizz
 				}
 
 			default:
+				return NULL;
 				break;
 
 		}		
 	}//end of AddBody
 	//*************
+
+	//change bodies
+	void PhysicsSpace::ChangeBodies(Handle handle, float xradius, float y)
+	{
+		Body* body = (Body*)handles_.Get(handle);
+		body->ChangeBody(xradius, y);
+	}//end of ChangeBodies
+
+	//change materials
+	void PhysicsSpace::ChangeMaterials(Handle handle, Material& material)
+	{
+		Body* body = (Body*)handles_.Get(handle);
+		body->ChangeMaterial(material);
+	}//end of ChangeMaterials
 
 	//remove bodies
 	void PhysicsSpace::RemoveBody(Handle handle)
@@ -238,7 +253,7 @@ namespace SheepFizz
 
 		//Velocity can be calculated after adjusting force
 		body.velocity_ += ((body.force_ *= body.massData_.inverseMass) 
-			+ Vec3D(0,GRAVITY) * body.gravityScale_ * body.gravityOn_) * dt_;
+			+ Vec3D(0,GRAVITY) * (float)body.gravityScale_ * (float)body.gravityOn_) * dt_;
 
 		//Position changed last
 		body.position_ += body.velocity_ * dt_;

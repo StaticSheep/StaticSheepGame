@@ -48,6 +48,10 @@ namespace Framework
 				float yval = 0,						//the height (rec only)
 				float orientation = 0);				//orientation of object
 
+			//access to bodies for changing the bodies
+			void SheepPhysics::ChangePhysBodies(GameSpace* space, SheepFizz::Handle handle, float xradius, float y);
+			void SheepPhysics::ChangePhysMaterials(GameSpace* space, SheepFizz::Handle handle, SheepFizz::Material& material);
+
 			//remove bodies from the bodies held in the physics engine
 			void RemoveBodies(GameSpace* space, SheepFizz::Handle handle);
 

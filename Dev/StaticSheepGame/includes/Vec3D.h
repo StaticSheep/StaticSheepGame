@@ -6,7 +6,7 @@
 namespace Framework
 {
 
-#define PI 3.1415926539
+#define PI 3.1415926539f
 
 class Vec3D{
 	
