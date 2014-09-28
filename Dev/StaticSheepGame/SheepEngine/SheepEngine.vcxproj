@@ -106,6 +106,7 @@
     <ClInclude Include="Archetype.h" />
     <ClInclude Include="CBoxCollider.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="CAniSprite.h" />
     <ClInclude Include="CGamePad.h" />
     <ClInclude Include="CLuaComponent.h" />
     <ClInclude Include="Component.h" />
@@ -120,6 +121,7 @@
     <ClInclude Include="EventStrings.h" />
     <ClInclude Include="Factory.h" />
     <ClInclude Include="File.h" />
+    <ClInclude Include="FramerateController.h" />
     <ClInclude Include="FuncSignature.h" />
     <ClInclude Include="Function.h" />
     <ClInclude Include="GameLogic.h" />
@@ -169,6 +171,7 @@
     <ClCompile Include="Archetype.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CBoxCollider.cpp" />
+    <ClCompile Include="CAniSprite.cpp" />
     <ClCompile Include="CGamePad.cpp" />
     <ClCompile Include="CLuaComponent.cpp" />
     <ClCompile Include="Component.cpp" />
@@ -182,6 +185,7 @@
     <ClCompile Include="Enum.cpp" />
     <ClCompile Include="Factory.cpp" />
     <ClCompile Include="File.cpp" />
+    <ClCompile Include="FramerateController.cpp" />
     <ClCompile Include="FuncSignature.cpp" />
     <ClCompile Include="Function.cpp" />
     <ClCompile Include="GameLogic.cpp" />

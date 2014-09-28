@@ -8,7 +8,6 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 #pragma once
 
-
 namespace Framework
 {
   class Engine;
@@ -67,6 +66,7 @@ namespace Framework
     int shittyFramerate;
 
     Factory ObjectFactory;
+    FramerateController Framerate;
     SheepWindow* Window;
 
   private:

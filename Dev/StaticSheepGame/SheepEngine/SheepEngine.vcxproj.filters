@@ -190,6 +190,14 @@
     <ClInclude Include="CBoxCollider.h">
       <Filter>Components\RigidBody\BoxCollider</Filter>
     </ClInclude>
+    <ClInclude Include="AntTweakModule.h" />
+    <ClInclude Include="TweakHelper.h" />
+    <ClInclude Include="CAniSprite.h">
+      <Filter>Components\Graphics\AnimatedSprite</Filter>
+    </ClInclude>
+    <ClInclude Include="FramerateController.h">
+      <Filter>Systems\FramerateController</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="precompiled.cpp">
@@ -357,6 +365,17 @@
     </ClCompile>
     <ClCompile Include="CBoxCollider.cpp">
       <Filter>Components\RigidBody\BoxCollider</Filter>
+    </ClCompile>
+    <ClCompile Include="AntTweakModule.cpp" />
+    <ClCompile Include="EngineTweak.cpp" />
+    <ClCompile Include="ObjectTweak.cpp" />
+    <ClCompile Include="SpaceTweak.cpp" />
+    <ClCompile Include="TweakHelper.cpp" />
+    <ClCompile Include="CAniSprite.cpp">
+      <Filter>Components\Graphics\AnimatedSprite</Filter>
+    </ClCompile>
+    <ClCompile Include="FramerateController.cpp">
+      <Filter>Systems\FramerateController</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

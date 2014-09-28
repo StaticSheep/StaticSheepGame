@@ -15,6 +15,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include <iostream>
 #include "Window.h"
 
+static int flag;
+
 namespace Framework
 {
   Engine* ENGINE = NULL;
@@ -60,7 +62,11 @@ namespace Framework
     //Lua::CallFunc(L, "filesystem.UpdateOldFiles");
 
     for (unsigned int i = 0; i < m_systems.size(); ++i)
+    {
       m_systems[i]->Initialize();
+      Framerate.Initialize(i, m_systems[i]->GetName().c_str());
+    }
+
   }
 
   void Engine::MakeWindow(void* hInstance, int show)
@@ -100,14 +106,18 @@ namespace Framework
 
   void Engine::MainLoop()
   {
-    const float dt = 1.0f / 60.0f; // 60 frames per second
+    if(Framerate.FramerateCheck())
+    {
+      Window->Update();
 
-    Window->Update();
+      for (unsigned int i = 0; i < m_systems.size(); ++i)
+      {
+        Framerate.StartFrame();
+        m_systems[i]->Update(Framerate.GetDT());
+        Framerate.EndFrame(m_systems[i]->GetName().c_str());
+      }
 
-    for (unsigned int i = 0; i < m_systems.size(); ++i)
-      m_systems[i]->Update(dt);
-
-    
+    }
   }
 
   GameSpace* Engine::CreateSpace(const char* name)

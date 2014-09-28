@@ -1,6 +1,6 @@
 #pragma once
 
-/*namespace Framework
+namespace Framework
 {
   class Camera : public GameComponent
   {
@@ -9,7 +9,8 @@
     ~Camera();
     virtual void Initialize();
     virtual void Remove();
-    Transform * transform;
+    Transform* transform;
+    float FOV;
   };
 
-}*/
+}

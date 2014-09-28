@@ -19,11 +19,11 @@ namespace DirectSheep
     return new RenderContext();
   }
 
-  void RenderContext::SetupMatrices(void)
+  void RenderContext::UpdateCamera(float x, float y, float fov)
   {
-    float cameraX = 0.0f;
-    float cameraY = 0.0f;
-    float cameraZ = -50.0f;
+    float cameraX = x;
+    float cameraY = y;
+    float cameraZ = -400.0f;
 
 
     Vec3 eyepoint(cameraX, cameraY, cameraZ);
@@ -38,7 +38,7 @@ namespace DirectSheep
     m_camera.view = matView;
 
     Mat4 matProj;
-    D3DXMatrixPerspectiveFovLH(&matProj, (FLOAT)D3DXToRadian(75), (float)m_viewport.dim.width / (float)m_viewport.dim.height, 1.0f, 1000.0f);
+    D3DXMatrixPerspectiveFovLH(&matProj, (FLOAT)D3DXToRadian(fov), (float)m_viewport.dim.width / (float)m_viewport.dim.height, 1.0f, 1000.0f);
 
     m_camera.proj = matProj;
 
@@ -112,7 +112,6 @@ namespace DirectSheep
     InitializeBlendModes();
     InitializeDepthState();
 
-    SetupMatrices();
     m_initialized = true;
     return true;
   }
@@ -305,7 +304,6 @@ namespace DirectSheep
       m_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
       m_deviceContext->Draw(vertexCount,vertexStart);
-
     }
 
     void RenderContext::DrawSpriteText(const char * text, float size, const char * font)
@@ -317,11 +315,9 @@ namespace DirectSheep
       D3DXMatrixIdentity(&matFinal);
       D3DXMatrixIdentity(&rotMat);
       D3DXMatrixIdentity(&transMat);
-      static float theta = 0;
-      theta +=.001f;
-      D3DXMatrixRotationYawPitchRoll(&rotMat, 0.0f, (float)-D3DX_PI, theta);
+      D3DXMatrixRotationYawPitchRoll(&rotMat, 0.0f, (float)-D3DX_PI, m_spriteTrans.theta);
 
-      D3DXMatrixTranslation(&transMat, (float)floor(0), (float)floor(0), (float)floor(0.0f));
+      D3DXMatrixTranslation(&transMat, (float)floor(m_spriteTrans.x), (float)floor(m_spriteTrans.y), (float)floor(0.0f));
 
       D3DXMatrixMultiply(&rotMat, &rotMat, &transMat);
 
