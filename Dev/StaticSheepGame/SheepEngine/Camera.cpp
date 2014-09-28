@@ -24,8 +24,8 @@ namespace Framework
   {
     transform = new Transform;
     FOV = 75;
-    transform->Translation = Vec2(0,0);
-    transform->Rotation = 0;
+    transform->SetTranslation(Vec3(0,0,0));
+    transform->SetRotation(0);
   }
 
   void Camera::Remove()

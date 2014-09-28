@@ -247,7 +247,7 @@ namespace Framework
   void SheepGraphics::UpdateCamera(void)
   {
     if(CurrentCamera)
-      m_renderContext->UpdateCamera(CurrentCamera->transform->Translation.X, CurrentCamera->transform->Translation.Y, CurrentCamera->FOV);
+      m_renderContext->UpdateCamera(CurrentCamera->transform->GetTranslation().X, CurrentCamera->transform->GetTranslation().Y, CurrentCamera->FOV);
     else
       m_renderContext->UpdateCamera(0, 0, 75);
   }

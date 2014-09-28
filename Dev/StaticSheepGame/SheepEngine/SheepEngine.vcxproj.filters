@@ -193,10 +193,10 @@
     <ClInclude Include="AntTweakModule.h" />
     <ClInclude Include="TweakHelper.h" />
     <ClInclude Include="CAniSprite.h">
-      <Filter>Components\Graphics\AnimatedSprite</Filter>
+      <Filter>Components\AnimatedSprite</Filter>
     </ClInclude>
     <ClInclude Include="FramerateController.h">
-      <Filter>Systems\FramerateController</Filter>
+      <Filter>Engine\Framerate</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -372,10 +372,10 @@
     <ClCompile Include="SpaceTweak.cpp" />
     <ClCompile Include="TweakHelper.cpp" />
     <ClCompile Include="CAniSprite.cpp">
-      <Filter>Components\Graphics\AnimatedSprite</Filter>
+      <Filter>Components\AnimatedSprite</Filter>
     </ClCompile>
     <ClCompile Include="FramerateController.cpp">
-      <Filter>Systems\FramerateController</Filter>
+      <Filter>Engine\Framerate</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -576,6 +576,12 @@
     </Filter>
     <Filter Include="Components\Camera">
       <UniqueIdentifier>{b2ca9bbe-b924-410d-99e2-41e15ccf5869}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\AnimatedSprite">
+      <UniqueIdentifier>{01581b65-6715-4ad6-ab7d-e4b30d2fd5cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Framerate">
+      <UniqueIdentifier>{477d1aaf-0fde-4b30-82d2-80ab9c0671cd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

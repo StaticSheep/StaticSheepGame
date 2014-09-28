@@ -23,7 +23,7 @@ namespace DirectSheep
   {
     float cameraX = x;
     float cameraY = y;
-    float cameraZ = -400.0f;
+    float cameraZ = -100.0f;
 
 
     Vec3 eyepoint(cameraX, cameraY, cameraZ);
