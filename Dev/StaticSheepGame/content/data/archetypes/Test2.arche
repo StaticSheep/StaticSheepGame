@@ -1,20 +1,20 @@
 GameObject
 {
   name std::string "NewObj"
-  archetype std::string "Test"
+  archetype std::string "Test2"
   Transform
   {
     Translation Vec3
     {
       x_ float 0.000000
-      y_ float -100.000000
-      z_ float -2.220000
+      y_ float 0.000000
+      z_ float 0.000000
     }
     Rotation float 0.000000
     Scale Vec3
     {
-      x_ float 18.000000
-      y_ float 18.000000
+      x_ float 6.000000
+      y_ float 6.000000
       z_ float 0.000000
     }
   }
@@ -31,9 +31,9 @@ GameObject
 
   BoxCollider
   {
-    m_width float 9.000000
-    m_height float 32.000000
-    m_materialName std::string "Static"
+    m_width float 3.000000
+    m_height float 12.000000
+    m_materialName std::string "Wood"
   }
 
 

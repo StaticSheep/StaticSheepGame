@@ -131,10 +131,10 @@
       <Filter>Engine\Window</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
-      <Filter>Components\Graphics\Camera</Filter>
+      <Filter>Components\Camera</Filter>
     </ClInclude>
     <ClInclude Include="CSprite.h">
-      <Filter>Components\Graphics\Sprite</Filter>
+      <Filter>Components\Sprite</Filter>
     </ClInclude>
     <ClInclude Include="..\includes\EnumData.h">
       <Filter>Engine\EngineCore</Filter>
@@ -298,10 +298,10 @@
       <Filter>Engine\Window</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
-      <Filter>Components\Graphics\Camera</Filter>
+      <Filter>Components\Camera</Filter>
     </ClCompile>
     <ClCompile Include="CSprite.cpp">
-      <Filter>Components\Graphics\Sprite</Filter>
+      <Filter>Components\Sprite</Filter>
     </ClCompile>
     <ClCompile Include="Vec2.cpp">
       <Filter>BaseTypes\Vectors\Vec2</Filter>
@@ -498,15 +498,6 @@
     <Filter Include="Engine\Window">
       <UniqueIdentifier>{bc423fda-fda0-45de-8f60-f308931d39a1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Components\Graphics">
-      <UniqueIdentifier>{42b3dca6-312f-4781-a3da-20c5aba5ab04}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Components\Graphics\Camera">
-      <UniqueIdentifier>{b2ca9bbe-b924-410d-99e2-41e15ccf5869}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Components\Graphics\Sprite">
-      <UniqueIdentifier>{8710e3c5-0045-4790-9e60-5de0ee272902}</UniqueIdentifier>
-    </Filter>
     <Filter Include="BaseTypes\Vectors">
       <UniqueIdentifier>{1bc8c498-cfe0-4cd5-a8d7-a039eb21a4d2}</UniqueIdentifier>
     </Filter>
@@ -560,6 +551,12 @@
     </Filter>
     <Filter Include="Components\RigidBody\Base">
       <UniqueIdentifier>{862b7750-22d7-4d8a-83a7-5c766098fdf7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\Sprite">
+      <UniqueIdentifier>{8710e3c5-0045-4790-9e60-5de0ee272902}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\Camera">
+      <UniqueIdentifier>{b2ca9bbe-b924-410d-99e2-41e15ccf5869}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

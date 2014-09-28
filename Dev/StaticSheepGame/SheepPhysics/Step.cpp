@@ -229,10 +229,10 @@ namespace SheepFizz
 		}
 
 		//send manifold data back to engine for game logic
-		for(int i = 0; i < manifolds_.size(); ++i)
+		/*for(int i = 0; i < manifolds_.size(); ++i)
 		{
 			cb_(manifolds_[i].A->userData, manifolds_[i].B->userData, userData_);
-		}
+		}*/
 
 		//empty manifold list;
 		manifolds_.clear();
