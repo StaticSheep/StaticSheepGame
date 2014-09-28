@@ -117,7 +117,7 @@ namespace SheepFizz
 					//then add the body
 					Body* body = (Body*)bodies_.Allocate();
 					new (body) Body(rec, material, position, Vec3D(), Vec3D(), userData, orientation);
-					body->self;
+					body->self = handles_.Insert(body);
 					handles_.SyncHandles<Body>(bodies_);
 
 					return body->self;
@@ -136,7 +136,7 @@ namespace SheepFizz
 					//then add the body
 					Body* body = (Body*)bodies_.Allocate();
 					new (body) Body(cir, material, position, Vec3D(), Vec3D(), userData, orientation);
-					body->self;
+					body->self = handles_.Insert(body);
 					handles_.SyncHandles<Body>(bodies_);
 
 					return body->self;

@@ -22,11 +22,7 @@ namespace Framework
 			
       //RigidBody(); // Default Constructor
 
-			RigidBody(SheepFizz::Shapes shape = SheepFizz::Cir,	//shape - default is circle
-			  SheepFizz::Material* material = PHYSICS->GetMaterial("Wood"),	//material
-			  float radius = 1,							//default radius one
-			  float y = 0,								//no height because it is a circle
-			  float orientation = 0);						//orientation of 0
+			RigidBody(SheepFizz::Shapes shape);
 
 			//destructor
 			~RigidBody();
@@ -38,17 +34,24 @@ namespace Framework
 			virtual void Remove();
 
       // Properties
-      SheepFizz::Shapes m_shape; // Shape of the object
-      float m_xradius;
-      float m_yval;
-      float m_orientation;
+      union
+      {
+        float m_width;
+        float m_radius;
+      };
+      
+      float m_height; // For boxes
+
+      std::string m_materialName;
 
       protected:
 
 			//these values are all temp storage for initialization
 			SheepFizz::Material* m_material;
+      // Shape of the object
+      SheepFizz::Shapes m_shape; 
 			
-
+      // Handle to created physics
 			SheepFizz::Handle m_handle;
 	};
 	

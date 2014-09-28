@@ -7,7 +7,7 @@ GameObject
     Translation Vec3
     {
       x_ float 6.740000
-      y_ float 3.380000
+      y_ float 71.794449
       z_ float -2.220000
     }
     Rotation float 112.000000
@@ -29,6 +29,12 @@ GameObject
   }
 
 
+  BoxCollider
+  {
+    m_width float 12.000000
+    m_height float 12.000000
+    m_materialName std::string "Wood"
+  }
 
 
 

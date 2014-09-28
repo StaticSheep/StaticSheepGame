@@ -7,6 +7,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 *****************************************************************/
 
 #include "SheepPhysics.h"
+#include "CBoxCollider.h"
 
 namespace Framework
 {
@@ -32,7 +33,7 @@ namespace Framework
 	{
 		REGISTER_COMPONENT(Transform);
 		REGISTER_COMPONENT(Tester);
-		//REGISTER_COMPONENT(RigidBody);
+		REGISTER_COMPONENT(BoxCollider);
 
 	 }
 

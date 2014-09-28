@@ -3,6 +3,7 @@
 namespace Framework
 {
   BoxCollider::BoxCollider()
+    :RigidBody(SheepFizz::Rec)
   {
 
   }
@@ -14,12 +15,12 @@ namespace Framework
 
   void BoxCollider::Initialize()
   {
-
+    RigidBody::Initialize();
   }
 
   void BoxCollider::Remove()
   {
-
+    RigidBody::Remove();
   }
 
 

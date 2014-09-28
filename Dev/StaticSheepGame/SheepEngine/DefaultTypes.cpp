@@ -11,6 +11,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "TweakHelper.h"
 #include "SoundEmitter.h"
 #include "SoundPlayer.h"
+#include "CBoxCollider.h"
 
 namespace Framework
 {
@@ -140,6 +141,11 @@ namespace Framework
     TYPE_SET_DESERIALIZER( Transform, Transform::Deserialize );
     TYPE_SET_TWEAK( Transform, Transform::ToTweak );
     
+    TYPE_REGISTER( BoxCollider );
+    TYPE_ADD_MEMBER( BoxCollider, m_width, false, true, "Width");
+    TYPE_ADD_MEMBER( BoxCollider, m_height, false, true, "Height");
+    TYPE_ADD_MEMBER( BoxCollider, m_materialName, false, true, "Material");
+
 
     TYPE_REGISTER( Tester );
     TYPE_ADD_MEMBER( Tester, testvalue1, false, true, "Test Value 1");

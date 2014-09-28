@@ -5,13 +5,12 @@
 namespace Framework
 {
 	//constructor
-	RigidBody::RigidBody(
-		SheepFizz::Shapes shape,
-		SheepFizz::Material* material,
-		float radius,
-		float y,
-		float orientation ) :
-	m_shape(shape), m_material(material), m_xradius(radius), m_yval(y), m_orientation(orientation) {}
+	RigidBody::RigidBody(SheepFizz::Shapes shape) :
+	m_shape(shape), m_width(12), m_height(12), m_materialName("Wood"),
+  m_material(nullptr)
+  {
+
+  }
 
 	RigidBody::~RigidBody()
 	{
@@ -23,17 +22,20 @@ namespace Framework
 	{
 		//get a pointer to the transform component
 		Transform* trans = (this->space->GetHandles().GetAs<GameObject>(this->owner))->GetComponent<Transform>(eTransform);
+
+    m_material = PHYSICS->GetMaterial(m_materialName);
 		
 		//temp vec for holding position
-		Vec3D position = trans->GetTranslation();
+		Vec3 position = trans->GetTranslation();
+    float rotation = trans->GetRotation();
 
 		//check if the shape is a circle or rectangle
 		//if so, add a body and return the pointer to the component
-		if(m_shape == SheepFizz::Cir || m_shape == SheepFizz::Rec)
-			m_handle = PHYSICS->AddBodies(space->GetHandles().GetAs<GameObject>(owner), m_shape, *m_material, position, 
-			m_xradius, m_yval, m_orientation);
+    if(m_shape == SheepFizz::Cir || m_shape == SheepFizz::Rec)
+      m_handle = PHYSICS->AddBodies(space->GetHandles().GetAs<GameObject>(owner), m_shape, *m_material, position, 
+      m_radius, m_height, rotation);
 
-    trans->SetPhysicsBody(m_handle);
+     trans->SetPhysicsBody(m_handle);
 	}
 
 	//remove the body from the space
