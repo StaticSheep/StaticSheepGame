@@ -7,6 +7,9 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 *****************************************************************/
 
 #include "SoundEmitter.h"
+#include "Macros.h"
+#include "CRigidBody.h"
+#include "CBoxCollider.h"
 
 namespace Framework
 {
@@ -32,6 +35,8 @@ namespace Framework
       BIND_FUNCTION_EX(ENGINE->Lua(), GameSpace::Clear, Clear);
         
       BIND_FUNCTION_EX(ENGINE->Lua(), SoundEmitter::Play, Play);
+
+      BIND_FUNCTION_EX(ENGINE->Lua(), BoxCollider::SetVelocity, SetVelocity);
 
 
 
