@@ -16,6 +16,8 @@ namespace DirectSheep
     Mat4 World;
     Mat4 Final;
     D3DXCOLOR BlendColor;
+    Vec2 uvBegin;
+    Vec2 uvEnd;
   };
 
   struct Vertex2D

@@ -11,6 +11,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "TweakHelper.h"
 #include "SoundEmitter.h"
 #include "SoundPlayer.h"
+#include "CAniSprite.h"
 
 namespace Framework
 {
@@ -133,6 +134,11 @@ namespace Framework
     TYPE_ADD_MEMBER( Sprite, Size );
     TYPE_SET_TWEAK_TYPE( Sprite, AntTweak::TW_TYPE_COMPONENT );
     TYPE_SET_FROM_LUA( Sprite, Lua::GenericObjectFromLua );
+
+    TYPE_REGISTER( AniSprite );
+    //TYPE_ADD_MEMBER( AniSprite, Size );
+    TYPE_SET_TWEAK_TYPE( AniSprite, AntTweak::TW_TYPE_COMPONENT );
+    TYPE_SET_FROM_LUA( AniSprite, Lua::GenericObjectFromLua );
 
     TYPE_REGISTER( SoundEmitter );
     TYPE_SET_FROM_LUA(SoundEmitter, Lua::GenericObjectFromLua );

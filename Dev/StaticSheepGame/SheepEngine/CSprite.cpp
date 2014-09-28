@@ -1,13 +1,12 @@
 #include "CSprite.h"
 #include "SheepGraphics.h"
 #include "graphics\api.h"
-#include "graphics\Handle.h"
 
 namespace Framework
 {
 
   Sprite::Sprite()
-    :Color(1, 1, 1, 1), Size(32, 32)
+    :Color(1, 1, 1, 1), Size(1, 1)
   {
     transform = NULL;
   }
@@ -34,7 +33,9 @@ namespace Framework
 
   DirectSheep::Handle& Sprite::SetTexture(const std::string& Texture)
   {
-   return m_texture = GRAPHICS->SetTexture(Texture);
+    m_texture = GRAPHICS->SetTexture(Texture);
+    TextureSize = GRAPHICS->GetTextureDim(m_texture);
+    return m_texture;
   }
 
   DirectSheep::Handle& Sprite::GetTexture()
@@ -53,8 +54,9 @@ namespace Framework
 
     GRAPHICS->SetPosition(trans->Translation.X, trans->Translation.Y);
     GRAPHICS->SetRotation(trans->Rotation);
-    GRAPHICS->SetSize(trans->Scale.X, trans->Scale.Y);
+    GRAPHICS->SetSize(trans->Scale.X * Size.X * TextureSize.X, trans->Scale.Y * Size.Y * TextureSize.Y);
     GRAPHICS->SetColor(Color);
+    GRAPHICS->SetUV(Vec2(0,0), Vec2(1,1));
 
     GRAPHICS->DrawSprite(this);
     

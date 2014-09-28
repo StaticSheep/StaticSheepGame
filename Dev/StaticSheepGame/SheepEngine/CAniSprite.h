@@ -1,13 +1,13 @@
 #pragma once
 
 #include "CTransform.h"
-#include "graphics\Handle.h"
+#include "CSprite.h"
 
 namespace Framework
 {
   class Transform;
 
-  class AniSprite : public GameComponent
+  class AniSprite : public Sprite
   {
   public:
 
@@ -17,22 +17,18 @@ namespace Framework
     virtual void Initialize();
     virtual void Remove();
 
-    DirectSheep::Handle& SetTexture(const std::string& texture);
-    DirectSheep::Handle& GetTexture();
+    DirectSheep::Handle& SetTexture(const std::string& Texture);
+    void Draw(void);
+    void UpdateUV(void);
 
-    Vec2 Size;
-
-    Vec4 Color;
-
-    Handle transform;
-
-    std::string SpriteName;
-
-    void Draw();
 
   private:
 
-    DirectSheep::Handle m_texture;
+    Vec2 uvBegin;
+    Vec2 uvEnd;
+    Vec2 frames;
+    Vec2 currFrame;
+    bool dirty;
     
   };
 }

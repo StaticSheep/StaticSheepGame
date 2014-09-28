@@ -39,6 +39,7 @@ namespace Framework
     void SetRotation(float theta);
     void SetSize(float x, float y);
     void SetColor(Vec4 Color);
+    void SetUV(Vec2 uvBegin, Vec2 uvEnd);
 
     DirectSheep::Handle SetTexture(const std::string& Texture);
     DirectSheep::Handle SetVShader(const std::string& Shader);
@@ -53,6 +54,7 @@ namespace Framework
     void SetUseCamera(bool useCam);
     void DrawSprite(Sprite *sprite);
     int GetTextureID(const std::string& texture);
+    Vec2 GetTextureDim(DirectSheep::Handle texture);
     void DrawSpriteText(const char * text, float size, const char * font);
 
 

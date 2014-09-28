@@ -68,7 +68,6 @@ namespace DirectSheep
   struct Dimension
   {
    GFX_API Dimension(unsigned w = 0, unsigned h = 0) : width(w), height(h) {};
-
     unsigned width;
     unsigned height;
   };

@@ -3,6 +3,8 @@ cbuffer DefaultBuffer
   float4x4 cWorld;
   float4x4 cWorldViewProj;
   float4 cBlendColor;
+  float2 cuvBegin;
+  float2 cuvEnd;
 }
 
 Texture2D gTexture : register(t0);
@@ -25,7 +27,7 @@ PSInput VShader(VSInput input)
 {
   PSInput output;
   output.position = mul(cWorldViewProj, float4(input.position,1));
-  output.texCoord = input.texCoord;    // set the texture coordinates, unmodified
+  output.texCoord = lerp(cuvBegin, cuvEnd, input.texCoord);    // set the texture coordinates, unmodified
 
   return output;
 }
