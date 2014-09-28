@@ -49,8 +49,24 @@ namespace Framework
 				float orientation = 0);				//orientation of object
 
 			//access to bodies for changing the bodies
-			void SheepPhysics::ChangePhysBodies(GameSpace* space, SheepFizz::Handle handle, float xradius, float y);
-			void SheepPhysics::ChangePhysMaterials(GameSpace* space, SheepFizz::Handle handle, SheepFizz::Material& material);
+			void ChangePhysBodies(GameSpace* space, SheepFizz::Handle handle, float xradius, float y);
+			void ChangePhysMaterials(GameSpace* space, SheepFizz::Handle handle, SheepFizz::Material& material);
+
+			//gettors
+			void GetBodyPosition(Handle handle, Vec3D position);
+			void GetBodyVelocity(Handle handle, Vec3D position);
+			void GetBodyForce(Handle handle, Vec3D position);
+			void GetBodyRotation(Handle handle, Vec3D position);
+			void GetBodyAngVeloc(Handle handle, Vec3D position);
+			void GetBodyTorque(Handle handle, Vec3D position);
+
+			//settors
+			void SetBodyPosition(Handle handle, Vec3D position);
+			void SetBodyVelocity(Handle handle, Vec3D position);
+			void SetBodyForce(Handle handle, Vec3D position);
+			void SetBodyRotation(Handle handle, Vec3D position);
+			void SetBodyAngVeloc(Handle handle, Vec3D position);
+			void SetBodyTorque(Handle handle, Vec3D position);
 
 			//remove bodies from the bodies held in the physics engine
 			void RemoveBodies(GameSpace* space, SheepFizz::Handle handle);

@@ -17,17 +17,17 @@ namespace Framework
 	{
 		// Initialize physics object list
 		PHYSICS = this;
-	}
+	}//end of Constructor
 
 	SheepPhysics::~SheepPhysics()
 	{
 		PHYSICS = nullptr;
-	}
+	}//end of Destructor
 
 	void SheepPhysics::Shutdown()
 	{
 
-	}
+	}//end of Shutdown
 
 	void SheepPhysics::RegisterComponents()
 	{
@@ -35,7 +35,7 @@ namespace Framework
 		REGISTER_COMPONENT(Tester);
 		REGISTER_COMPONENT(BoxCollider);
 
-	 }
+	 }//end of RegisterComponents
 
 	static void CollisionCallback(void* A_userData, void* B_userData, void* Space_userData)
 	{
@@ -48,7 +48,7 @@ namespace Framework
 
 		AObj->m_hooks.Call("Collision",B_object);
 		BObj->m_hooks.Call("Collision",A_object);
-	}
+	}//end of CollisionCallback
 
 	void* SheepPhysics::CreateSpace(GameSpace* gameSpace)
 	{
@@ -59,13 +59,14 @@ namespace Framework
 		gameSpace->m_pSpace = newSpace;
 
 		return newSpace;
-	}
+	}//end of CreateSpace
 
 	void SheepPhysics::DeleteSpace(void* p_Space)
 	{
 		SheepFizz::PhysicsSpace::Delete((SheepFizz::PhysicsSpace*)p_Space);
-	}
+	}//end of DeleteSpace
 
+	//intialize materials
 	void SheepPhysics::Initialize()
 	{
 		
@@ -84,9 +85,7 @@ namespace Framework
 		m_materials.insert(std::pair<std::string, SheepFizz::Material>("Fluff", Fluff));
 		m_materials.insert(std::pair<std::string, SheepFizz::Material>("Bounce", Bounce));
 		m_materials.insert(std::pair<std::string, SheepFizz::Material>("Static", Static));
-
-
-	}
+	}//end of Initialize
 
 	//add circles or rectangles
 	SheepFizz::Handle SheepPhysics::AddBodies(GameObject* obj, SheepFizz::Shapes shape, 
@@ -102,7 +101,31 @@ namespace Framework
 		SheepFizz::Handle handle = ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->AddBody(shape, material, position, 
 			xradius, yval, orientation, (void*)((unsigned)obj->self));
 		return handle;
-	}
+	}//end of AddBodies
+
+	//get and set values
+	//********************
+	//gettors
+	void SheepPhysics::GetBodyPosition(Handle handle, Vec3D position)
+	{
+		
+	}//end of GetBodyPosition
+
+	void SheepPhysics::GetBodyVelocity(Handle handle, Vec3D position){}
+	void SheepPhysics::GetBodyForce(Handle handle, Vec3D position){}
+	void SheepPhysics::GetBodyRotation(Handle handle, Vec3D position){}
+	void SheepPhysics::GetBodyAngVeloc(Handle handle, Vec3D position){}
+	void SheepPhysics::GetBodyTorque(Handle handle, Vec3D position){}
+
+	//settors
+	void SheepPhysics::SetBodyPosition(Handle handle, Vec3D position){}
+	void SheepPhysics::SetBodyVelocity(Handle handle, Vec3D position){}
+	void SheepPhysics::SetBodyForce(Handle handle, Vec3D position){}
+	void SheepPhysics::SetBodyRotation(Handle handle, Vec3D position){}
+	void SheepPhysics::SetBodyAngVeloc(Handle handle, Vec3D position){}
+	void SheepPhysics::SetBodyTorque(Handle handle, Vec3D position){}
+
+	//********************
 
 	//change bodies
 	//********************
