@@ -1,3 +1,12 @@
+/******************************************************************************
+Filename: Debug.cpp
+Project: 
+Author(s): Zakary Wilson
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+******************************************************************************/
+
+// debug needs to know about all of the systems.... sigh...
 #include "Debug.h"
 #include "SheepAudio.h"
 #include "SheepGraphics.h"
@@ -11,17 +20,36 @@ static int systemCounter = 31;
 namespace Framework
 {
 
-
+/*****************************************************************************/
+/*!
+  \brief
+    Default constructor for the Debug class. Doesn't do anything yet...
+*/
+/*****************************************************************************/
   Debug::Debug()
   {
 
   }
 
+/*****************************************************************************/
+/*!
+  \brief
+    Destructor for the Debug class. Doesn't do anything yet...
+*/
+/*****************************************************************************/
   Debug::~Debug()
   {
 
   }
 
+/*****************************************************************************/
+/*!
+  \brief
+    Sets the pointers to the systems' debug data on initialize.
+    GetDebugData returns a void*, so we cast it correctly depending on the
+    system. That way custom structs can be passed to the Debug class.
+*/
+/*****************************************************************************/
   void Debug::Initialize()
   {
     audio = (DebugAudio*)AUDIO->GetDebugData();
@@ -29,23 +57,40 @@ namespace Framework
     framerate = (DebugFramerate*)ENGINE->Framerate.GetDebugData();
   }
 
+/*****************************************************************************/
+/*!
+  \brief
+    Placeholder for update. Otherwise the engine gets sad.
+*/
+/*****************************************************************************/
   void Debug::Update(float dt)
   {
     
     
   }
 
+/*****************************************************************************/
+/*!
+  \brief
+    Grabs messages from the engine. If PostDraw is passed, then we might need
+    to draw some things.
+
+  \param hamster
+    The message hamster!
+*/
+/*****************************************************************************/
   void Debug::ReceiveMessage(Message hamster)
   {
     if (hamster.MessageId == Message::PostDraw)
     {
       
-
+      // if F2 was pressed, lets display the FPS
       if(fpsFlag)
       {
         std::string fps_string;
         std::string format;
 
+        // but only update it every half a second
         if(counter > 30)
         {
           ENGINE->Framerate.GetDebugData();
@@ -63,6 +108,7 @@ namespace Framework
       }
 
 
+      // check which state we might need to print out.
       if(GetState())
       {
         switch(currentState)
@@ -95,10 +141,22 @@ namespace Framework
     }
   }
 
+/*****************************************************************************/
+/*!
+  \brief
+    Formats the string according to which type of debug data we need to print
+    out.
 
+  \param type
+    The type of debug info to print out. Passing in an enum.
+*/
+/*****************************************************************************/
   void Debug::FormatString(int type)
   {
+    // these are for formatting floats/doubles
     std::string format1, format2, format3;
+
+    // gets the time in ms that the system took to update
     double timetaken;
 
     switch(type)
@@ -108,7 +166,7 @@ namespace Framework
       format2 = std::to_string(audio->cpuLoad.updateUsage);
       format3 = std::to_string(audio->cpuLoad.studioUsage);
 
-      format1.erase(4, std::string::npos );
+      format1.erase(4, std::string::npos);
       format2.erase(4, std::string::npos);
       format3.erase(4, std::string::npos);
 
@@ -133,13 +191,21 @@ namespace Framework
   }
 
 
+/*****************************************************************************/
+/*!
+  \brief
+    Gets the current keyboard state for which debug info to print out.
+*/
+/*****************************************************************************/
   int Debug::GetState()
   {
+    // F2 for FPS printing
     if(SHEEPINPUT->Keyboard.KeyIsPressed(VK_F2))
     {
       fpsFlag = !fpsFlag;
     }
 
+    // F5 for audio debug
     if(SHEEPINPUT->Keyboard.KeyIsPressed(VK_F5))
     {
       if(currentState == DEBUG_AUDIO)
@@ -148,6 +214,7 @@ namespace Framework
         currentState = DEBUG_AUDIO;
     }
 
+    // F6 for graphics debug
     if(SHEEPINPUT->Keyboard.KeyIsPressed(VK_F6))
     {
       if(currentState == DEBUG_GRAPHICS)
@@ -156,9 +223,8 @@ namespace Framework
         currentState = DEBUG_GRAPHICS;
     }
 
+    // Add more states here.
+
     return currentState;
-
   }
-
-}
-
+} // end namespace

@@ -1,3 +1,11 @@
+/******************************************************************************
+Filename: FramerateController.h
+Project: 
+Author(s): Zakary Wilson
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+******************************************************************************/
+
 #include <vector>
 
 #pragma once
