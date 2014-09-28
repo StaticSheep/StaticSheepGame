@@ -103,7 +103,6 @@ namespace SheepFizz
 	Handle PhysicsSpace::AddBody(Shapes shape, Material& material, Vec3D position, 
 		float xradius, float yval, float orientation, void* userData)
 	{
-
 		switch(shape)
 		{
 			case Rec:

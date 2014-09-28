@@ -16,7 +16,7 @@ namespace SheepFizz
 	//collision callback function pointer
 	typedef void(*CollisionCB)(void*, void*, void*);
 
-	#define GRAVITY -10.0f
+	#define GRAVITY -1.0f
 
 	class PhysicsSpace
 	{

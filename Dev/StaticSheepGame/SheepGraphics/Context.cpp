@@ -23,7 +23,7 @@ namespace DirectSheep
   {
     float cameraX = 0.0f;
     float cameraY = 0.0f;
-    float cameraZ = -2.0f;
+    float cameraZ = -50.0f;
 
 
     Vec3 eyepoint(cameraX, cameraY, cameraZ);
@@ -38,7 +38,7 @@ namespace DirectSheep
     m_camera.view = matView;
 
     Mat4 matProj;
-    D3DXMatrixPerspectiveFovLH(&matProj, (FLOAT)D3DXToRadian(178.5985728), (float)m_viewport.dim.width / (float)m_viewport.dim.height, 1.0f, 1000.0f);
+    D3DXMatrixPerspectiveFovLH(&matProj, (FLOAT)D3DXToRadian(75), (float)m_viewport.dim.width / (float)m_viewport.dim.height, 1.0f, 1000.0f);
 
     m_camera.proj = matProj;
 

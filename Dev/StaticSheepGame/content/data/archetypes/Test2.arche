@@ -13,8 +13,8 @@ GameObject
     Rotation float 0.000000
     Scale Vec3
     {
-      x_ float 16.000000
-      y_ float 16.000000
+      x_ float 2.000000
+      y_ float 2.000000
       z_ float 0.000000
     }
   }
@@ -31,8 +31,8 @@ GameObject
 
   BoxCollider
   {
-    m_width float 8.000000
-    m_height float 12.000000
+    m_width float 1.000000
+    m_height float 0.000000
     m_materialName std::string "Wood"
   }
 

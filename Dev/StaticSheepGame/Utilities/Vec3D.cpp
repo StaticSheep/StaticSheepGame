@@ -174,7 +174,6 @@ Vec3D operator*(float scalar, Vec3D& rhs)
 {
 	return rhs * scalar;
 }
-
 //**************
 
 
