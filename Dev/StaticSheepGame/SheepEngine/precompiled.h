@@ -74,8 +74,10 @@ extern "C"
 #include "System.h" // Generic System/Interface type
 #include "GameLogic.h" // GameLogic system
 
+#include "FramerateController.h" // frames
 #include "Factory.h" // Object Factory
 #include "Engine.h" // Core Engine
+
 
 #include "Vec2.h" // Vector 2D
 #include "Vec3.h" // Vector 3D

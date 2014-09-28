@@ -132,6 +132,7 @@ namespace Framework
   void Engine::OpenEditor()
   {
     // Create the main bar and get a handle to it
+    
     AntTweak::TBar* mainBar = ATWEAK->CreateBar("Editor");
     EngineBar = mainBar->self;
 

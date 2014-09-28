@@ -5,6 +5,7 @@ namespace Framework
 {
   struct DebugAudio;
   struct DebugGraphics;
+  struct DebugFramerate;
 
   enum DebugState
   {
@@ -31,11 +32,14 @@ namespace Framework
   private:
 
     int GetState();
+    void FormatString(int);
+    std::string string;
 
     int currentState;
 
     DebugAudio*     audio;
     DebugGraphics*  graphics;
+    DebugFramerate* framerate;
 
   };
 }

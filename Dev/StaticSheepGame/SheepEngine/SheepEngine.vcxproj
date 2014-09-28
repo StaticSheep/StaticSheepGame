@@ -120,6 +120,7 @@
     <ClInclude Include="EventStrings.h" />
     <ClInclude Include="Factory.h" />
     <ClInclude Include="File.h" />
+    <ClInclude Include="FramerateController.h" />
     <ClInclude Include="FuncSignature.h" />
     <ClInclude Include="Function.h" />
     <ClInclude Include="GameLogic.h" />
@@ -181,6 +182,7 @@
     <ClCompile Include="Enum.cpp" />
     <ClCompile Include="Factory.cpp" />
     <ClCompile Include="File.cpp" />
+    <ClCompile Include="FramerateController.cpp" />
     <ClCompile Include="FuncSignature.cpp" />
     <ClCompile Include="Function.cpp" />
     <ClCompile Include="GameLogic.cpp" />

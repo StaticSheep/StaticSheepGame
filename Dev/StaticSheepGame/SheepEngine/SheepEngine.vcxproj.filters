@@ -183,6 +183,9 @@
     <ClInclude Include="CAniSprite.h">
       <Filter>Components\Graphics\AnimatedSprite</Filter>
     </ClInclude>
+    <ClInclude Include="FramerateController.h">
+      <Filter>Systems\FramerateController</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="precompiled.cpp">
@@ -337,6 +340,9 @@
     <ClCompile Include="TweakHelper.cpp" />
     <ClCompile Include="CAniSprite.cpp">
       <Filter>Components\Graphics\AnimatedSprite</Filter>
+    </ClCompile>
+    <ClCompile Include="FramerateController.cpp">
+      <Filter>Systems\FramerateController</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -528,6 +534,9 @@
     </Filter>
     <Filter Include="Components\Graphics\AnimatedSprite">
       <UniqueIdentifier>{62099980-efb9-4804-a277-488ea3c88afe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\FramerateController">
+      <UniqueIdentifier>{6b866a8e-647e-420d-ad61-bc91eaf8bd9d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
