@@ -163,9 +163,6 @@
     <ClInclude Include="Input.h">
       <Filter>Systems\Input</Filter>
     </ClInclude>
-    <ClInclude Include="CRigidBody.h">
-      <Filter>Components\RigidBody</Filter>
-    </ClInclude>
     <ClInclude Include="SoundEmitter.h">
       <Filter>Components\Audio</Filter>
     </ClInclude>
@@ -186,6 +183,12 @@
     </ClInclude>
     <ClInclude Include="TweakHelper.h">
       <Filter>Systems\AntTweak</Filter>
+    </ClInclude>
+    <ClInclude Include="CRigidBody.h">
+      <Filter>Components\RigidBody\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="CBoxCollider.h">
+      <Filter>Components\RigidBody\BoxCollider</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -319,9 +322,6 @@
     <ClCompile Include="Input.cpp">
       <Filter>Systems\Input</Filter>
     </ClCompile>
-    <ClCompile Include="CRigidBody.cpp">
-      <Filter>Components\RigidBody</Filter>
-    </ClCompile>
     <ClCompile Include="SoundEmitter.cpp">
       <Filter>Components\Audio</Filter>
     </ClCompile>
@@ -351,6 +351,12 @@
     </ClCompile>
     <ClCompile Include="SpaceTweak.cpp">
       <Filter>BaseTypes\Space</Filter>
+    </ClCompile>
+    <ClCompile Include="CRigidBody.cpp">
+      <Filter>Components\RigidBody\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="CBoxCollider.cpp">
+      <Filter>Components\RigidBody\BoxCollider</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -545,6 +551,15 @@
     </Filter>
     <Filter Include="Systems\AntTweak">
       <UniqueIdentifier>{f2ad67f2-953d-4c9b-8ace-ee0c69c41343}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\RigidBody\CircleCollider">
+      <UniqueIdentifier>{2499cc99-1eb0-4650-a265-1273c02591d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\RigidBody\BoxCollider">
+      <UniqueIdentifier>{4712a386-dfc2-4177-8c37-1b31433f510a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\RigidBody\Base">
+      <UniqueIdentifier>{862b7750-22d7-4d8a-83a7-5c766098fdf7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

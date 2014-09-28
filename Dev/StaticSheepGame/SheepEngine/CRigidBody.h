@@ -19,12 +19,14 @@ namespace Framework
 	{
 	
 		public:
-			//rigid body constructor
+			
+      //RigidBody(); // Default Constructor
+
 			RigidBody(SheepFizz::Shapes shape = SheepFizz::Cir,	//shape - default is circle
-			SheepFizz::Material* material = PHYSICS->GetMaterial("Wood"),	//material
-			float radius = 1,							//default radius one
-			float y = 0,								//no height because it is a circle
-			float orientation = 0);						//orientation of 0
+			  SheepFizz::Material* material = PHYSICS->GetMaterial("Wood"),	//material
+			  float radius = 1,							//default radius one
+			  float y = 0,								//no height because it is a circle
+			  float orientation = 0);						//orientation of 0
 
 			//destructor
 			~RigidBody();
@@ -35,14 +37,17 @@ namespace Framework
 			//removes the component
 			virtual void Remove();
 
-		private:
+      // Properties
+      SheepFizz::Shapes m_shape; // Shape of the object
+      float m_xradius;
+      float m_yval;
+      float m_orientation;
+
+      protected:
 
 			//these values are all temp storage for initialization
 			SheepFizz::Material* m_material;
-			SheepFizz::Shapes m_shape;
-			float m_xradius;
-			float m_yval;
-			float m_orientation;
+			
 
 			SheepFizz::Handle m_handle;
 	};

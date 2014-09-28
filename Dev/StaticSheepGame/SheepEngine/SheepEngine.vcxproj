@@ -104,6 +104,7 @@
     <ClInclude Include="..\includes\Vec3D.h" />
     <ClInclude Include="Api.h" />
     <ClInclude Include="Archetype.h" />
+    <ClInclude Include="CBoxCollider.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CGamePad.h" />
     <ClInclude Include="CLuaComponent.h" />
@@ -167,6 +168,7 @@
     <ClCompile Include="..\Utilities\Vec3D.cpp" />
     <ClCompile Include="Archetype.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CBoxCollider.cpp" />
     <ClCompile Include="CGamePad.cpp" />
     <ClCompile Include="CLuaComponent.cpp" />
     <ClCompile Include="Component.cpp" />
