@@ -275,8 +275,8 @@ namespace Framework
     obj->archetype = archetype;
 
     // The archetype was not found, so we will save the object into our map
-    /*if (ArchetypeMap.find(archetype) == ArchetypeMap.end())
-      ArchetypeMap[archetype].CopyObject(obj);*/
+    if (ArchetypeMap.find(archetype) == ArchetypeMap.end())
+      ArchetypeMap[archetype].CopyObject(obj);
 
     file.Close();
 

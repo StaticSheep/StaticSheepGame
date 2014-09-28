@@ -45,7 +45,7 @@ namespace Framework
       bool operator==(const GameComponent& rhs) const;
       bool operator!=(const GameComponent& rhs) const;
 
-      GameComponent& operator=(const GameComponent& rhs);
+      virtual GameComponent& operator=(const GameComponent& rhs);
 
       // Gets the owning game object
       GameObject* GetOwner();
