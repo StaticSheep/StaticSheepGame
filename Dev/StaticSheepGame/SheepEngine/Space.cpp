@@ -304,7 +304,10 @@ namespace Framework
       if (!GET_ENUM(Component)->IsAnEntry(line.c_str()) && line.substr(0, FACTORY->ArchetypePrefix.length()) == FACTORY->ArchetypePrefix)
       {
         // Oh we did, goodie
-        obj = FACTORY->LoadObjectFromArchetype(space, line.c_str());
+        std::string aName = line;
+        aName = FACTORY->ArchetypeFilePath + aName.substr(FACTORY->ArchetypePrefix.length(), line.length() - FACTORY->ArchetypePrefix.length());
+        aName += FACTORY->ArchetypeFileExtension;
+        obj = FACTORY->LoadObjectFromArchetype(space, aName.c_str());
         continue;
       }
 

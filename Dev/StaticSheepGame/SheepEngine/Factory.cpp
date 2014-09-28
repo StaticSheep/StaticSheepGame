@@ -425,7 +425,7 @@ namespace Framework
   void Factory::SaveSpaceToFile(GameSpace* space, const char* name, std::vector<std::string>* objInstanceData, bool includeGeneric, bool allData)
   {
     File file; // File to save the space to
-    std::string filepath = LevelFileExtension + name + SpaceFileExtension;
+    std::string filepath = SpaceFilePath + name + SpaceFileExtension;
     GameSpace::SerializerData extraData;
 
     extraData.instanceData = objInstanceData;
@@ -460,7 +460,7 @@ namespace Framework
   void Factory::SaveSpaceToFile(GameSpace* space, const char* name, bool standalone)
   {
     File file; // File to save the space to
-    std::string filepath = LevelFileExtension + name + SpaceFileExtension;
+    std::string filepath = SpaceFilePath + name + SpaceFileExtension;
     GameSpace::SerializerData extraData;
     
     extraData.instanceData = NULL;

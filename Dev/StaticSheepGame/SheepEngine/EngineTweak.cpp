@@ -32,6 +32,11 @@ namespace Framework
     OPENFILENAME ofn;
     char szFile[100];
 
+    TCHAR Buffer[128];
+    DWORD dwRet;
+
+    dwRet = GetCurrentDirectory(128, Buffer);
+
     ZeroMemory( &ofn , sizeof( ofn));
     ofn.lStructSize = sizeof ( ofn );
     ofn.hwndOwner = NULL  ;
@@ -45,6 +50,8 @@ namespace Framework
     ofn.lpstrInitialDir=NULL ;
     ofn.Flags = OFN_PATHMUSTEXIST|OFN_FILEMUSTEXIST ;
     GetOpenFileName( &ofn );
+
+    SetCurrentDirectory(Buffer);
 
     if (szFile[0] == 0)
       return;
