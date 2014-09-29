@@ -93,7 +93,7 @@ namespace Framework
 
   public:
 
-    Camera* CurrentCamera;
+    Handle CurrentCamera;
     HWND _HWnd;
     int _ScreenWidth;
     int _ScreenHeight;

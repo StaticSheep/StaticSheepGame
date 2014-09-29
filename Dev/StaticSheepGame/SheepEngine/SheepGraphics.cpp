@@ -37,7 +37,7 @@ namespace Framework
   void SheepGraphics::RegisterComponents()
   {
     REGISTER_COMPONENT(Sprite);
-    //REGISTER_COMPONENT(Camera);
+    REGISTER_COMPONENT(Camera);
     REGISTER_COMPONENT(AniSprite);
   }
 
@@ -256,7 +256,9 @@ namespace Framework
   void SheepGraphics::UpdateCamera(void)
   {
     if(CurrentCamera)
+    {
       m_renderContext->UpdateCamera(CurrentCamera->transform->Translation.X, CurrentCamera->transform->Translation.Y, CurrentCamera->FOV);
+    }
     else
       m_renderContext->UpdateCamera(0, 0, 75);
   }

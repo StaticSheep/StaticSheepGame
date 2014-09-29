@@ -9,7 +9,7 @@ namespace Framework
     ~Camera();
     virtual void Initialize();
     virtual void Remove();
-    Transform* transform;
+    Handle transform;
     float FOV;
   };
 
