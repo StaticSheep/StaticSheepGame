@@ -223,6 +223,7 @@ struct CTwMgr
     TwType              m_TypeColor4F;
     TwType              m_TypeQuat4F;
     TwType              m_TypeQuat4D;
+    TwType              m_TypePos3F;
     TwType              m_TypeDir3F;
     TwType              m_TypeDir3D;
 

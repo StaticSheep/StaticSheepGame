@@ -10,7 +10,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "Object.h"
 #include "File.h"
 #include "Variable.h"
-
+#include "SheepPhysics.h"
 
 #include <iostream>
 #include "AntTweakModule.h"
@@ -24,7 +24,8 @@ namespace Framework
     m_paused(false),
     m_hidden(false),
     m_valid(true),
-    m_guid(0)
+    m_guid(0),
+	m_pSpace(nullptr)
   {
     for(unsigned i = 0; i < ecountComponents; ++i)
     {
@@ -50,6 +51,11 @@ namespace Framework
       AntTweak::TBar* objBar = ATWEAK->GetBar(tweakHandle);
       ATWEAK->RemoveBar(objBar);
     }
+
+	if (m_pSpace)
+		PHYSICS->DeleteSpace(m_pSpace);
+
+	m_pSpace = nullptr;
 
     // Should probably clean stuff up
   }
@@ -298,7 +304,10 @@ namespace Framework
       if (!GET_ENUM(Component)->IsAnEntry(line.c_str()) && line.substr(0, FACTORY->ArchetypePrefix.length()) == FACTORY->ArchetypePrefix)
       {
         // Oh we did, goodie
-        obj = FACTORY->LoadObjectFromArchetype(space, line.c_str());
+        std::string aName = line;
+        aName = FACTORY->ArchetypeFilePath + aName.substr(FACTORY->ArchetypePrefix.length(), line.length() - FACTORY->ArchetypePrefix.length());
+        aName += FACTORY->ArchetypeFileExtension;
+        obj = FACTORY->LoadObjectFromArchetype(space, aName.c_str());
         continue;
       }
 

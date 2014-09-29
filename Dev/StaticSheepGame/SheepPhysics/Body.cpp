@@ -4,11 +4,11 @@ namespace SheepFizz
 {
 
 	//body requires a shape* to be passed - all others default to base constructors
-	Body::Body(Shape* shape, Material material, Vec3D position, Vec3D velocity, 
-		Vec3D force, float orientation, float angularVelocity, float torque,
+	Body::Body(Shape* shape, Material& material, Vec3D position, Vec3D velocity, 
+		Vec3D force, void* userData, float orientation, float angularVelocity, float torque,
 		CollisionGroup collisionGroup, BodyGroup bodyGroup, float gravityScale, 
-		float gravityOn): 
-		material_(material), shape_(shape), velocity_(velocity), position_(position), force_(force), 
+		unsigned int gravityOn): 
+		material_(material), shape_(shape), velocity_(velocity), position_(position), force_(force), userData(userData),
 		orientation_(orientation), angularVelocity_(angularVelocity), torque_(torque),
 		collisionGroup_(collisionGroup), bodyGroup_(bodyGroup), gravityScale_(gravityScale), gravityOn_(gravityOn)
 		{ 
@@ -33,6 +33,19 @@ namespace SheepFizz
 
 	}//end of ComputeMass
 
+	//change the body size and recompute the mass
+	void Body::ChangeBody(float x, float y)
+	{
+		shape_->ChangeShape(x, y);
+		ComputeMass();
+	}//end of ChangeBody
+
+	//change the material
+	void Body::ChangeMaterial(Material& material)
+	{ 
+		material_ = material;
+		ComputeMass();
+	}//end of ChangeMaterial
 
 	//apply forces directly to the body - an impulse is an
 	//instantaneous force application, so no dt is applied

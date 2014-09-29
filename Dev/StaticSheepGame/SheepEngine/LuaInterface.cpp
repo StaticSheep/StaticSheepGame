@@ -54,6 +54,82 @@ namespace Framework
       return 0;
     }
 
+    static void SetupTypeMembers(lua_State* L)
+    {
+      for (auto it = IntrospectionManager::Get()->GetTypeMap().begin(); it != IntrospectionManager::Get()->GetTypeMap().end(); ++it)
+      {
+        // First check if the metatable already exists in lua (It shouldn't! but just incase)
+        luaL_getmetatable(L, it->second->LuaMetaTable());
+        if (lua_isnil(L, 1))
+        {
+          // If we got a nil on the top of the stack then the meta table doesnt exist and we pop the nil
+          lua_pop(L, 1);
+
+          // We are done with everything so we clear the stack
+          lua_settop(L, 0);
+        }
+        else
+        {
+          // The meta table exists // 1
+          //StackDump(L);
+
+          // We want to make a table in the meta table for all the C++ members
+          // inside of this data type. We use this for auto setters/getters
+          // Create an entry in the metatable. Key="__members" Value={New Table}
+          lua_pushstring(L, "__members"); // 2
+          lua_createtable(L, 0, 0); // 3
+          //StackDump(L);
+          lua_settable(L, -3); // 1[2] = 3
+          //StackDump(L);
+
+          // If this type has a special lua callback then we are going to ignore
+          // automating the serialization of it's members because we virtualize
+          // the data type inside of lua to cut back on the number of back and forth
+          // calls to and from lua. An example of this is the Vector#D types. We have a
+          // C++ math library for C++ vectors, and a lua math library for lua vectors.
+          // Whenever we send a vector to/from lua we convert it into the matching type
+          // Example: C++ Vec2D -> Lua Vec2D
+          if (!it->second->HasToLuaCB())
+          {
+            // Get the value of the key "__members" on the metatable, which is a table
+            lua_getfield(L, -1, "__members"); // index 2
+            //StackDump(L);
+
+            // Iterate through each member, if it is a member we want to create a setter/getter
+            // for then we do some stuff
+            for (size_t i = 0; i < it->second->GetMembers().size(); ++i)
+            {
+              const Member* mem = &it->second->GetMembers()[i];
+
+              if (mem->AutoLua())
+              {
+                // This member needs to have an automatic setter/getter
+                // We want to create an entry in the __members table:
+                // First we push the name of the member onto the stack to be the key
+                // Then we push a constant member pointer onto the stack to be the value
+                lua_pushstring(L, mem->Name()); // index 3
+                it->second->ToLua(L, mem); // index 4
+                //StackDump(L);
+                lua_settable(L, -3); // 2[3] = 4
+              }
+
+            }
+            //StackDump(L);
+            // We are now done with dealing with automatic getters/setters
+            // pop the __members table off of the stack
+            lua_pop(L, 1);
+            //StackDump(L);
+          }
+
+
+          lua_settop(L, 0);
+          //StackDump(L);
+        }
+      }
+
+      
+    }
+
     lua_State* CreateEnvironment(void)
     {
       char cDirectory[512]; // buffer
@@ -102,56 +178,6 @@ namespace Framework
           lua_pushvalue(L, -2); // 4
           lua_settable(L, -3); // 2[3] = 4
 
-          // We want to make a table in the meta table for all the C++ members
-          // inside of this data type. We use this for auto setters/getters
-          // Create an entry in the metatable. Key="__members" Value={New Table}
-          lua_pushstring(L, "__members"); // 3
-          lua_createtable(L, 0, 0); // 4
-          lua_settable(L, -3); // 2[3] = 4
-
-          // If this type has a special lua callback then we are going to ignore
-          // automating the serialization of it's members because we virtualize
-          // the data type inside of lua to cut back on the number of back and forth
-          // calls to and from lua. An example of this is the Vector#D types. We have a
-          // C++ math library for C++ vectors, and a lua math library for lua vectors.
-          // Whenever we send a vector to/from lua we convert it into the matching type
-          // Example: C++ Vec2D -> Lua Vec2D
-          if (!it->second->HasToLuaCB())
-          {
-            // Get the value of the key "__members" on the metatable, which is a table
-            lua_getfield(L, -1, "__members"); // index 3
-
-            // Iterate through each member, if it is a member we want to create a setter/getter
-            // for then we do some stuff
-            for (size_t i = 0; i < it->second->GetMembers().size(); ++i)
-            {
-              const Member* mem = &it->second->GetMembers()[i];
-
-              if (mem->AutoLua())
-              {
-                // This member needs to have an automatic setter/getter
-                // We want to create an entry in the __members table:
-                // First we push the name of the member onto the stack to be the key
-                // Then we push a constant member pointer onto the stack to be the value
-                lua_pushstring(L, mem->Name()); // index 4
-                it->second->ToLua(L, mem); // index 5
-                lua_settable(L, -3); // 3[4] = 5
-              }
- 
-            }
-
-            // We are now done with dealing with automatic getters/setters
-            // pop the __members table off of the stack
-            lua_pop(L, 1);
-          }
-
-          // We now want to store a reference to the meta-table inside of the
-          // global table _R so we push the name of the metatable onto the stack to be the key
-          lua_pushstring(L, it->second->LuaMetaTable()); // 3
-          lua_pushvalue(L, -2); // 4
-          lua_settable(L, -4); // 1[3] = 4
-
-
           // We are done with everything so we clear the stack
           lua_settop(L, 0);
         }
@@ -164,6 +190,9 @@ namespace Framework
 
       // Generates a list of all components inside of lua
       GenerateComponentTable(L);
+
+      // Generate stuff
+      SetupTypeMembers(L);
 
       // Runs the lua function for setting up meta tables
       Lua::CallFunc(L, "SetupMetatables");

@@ -103,10 +103,12 @@ namespace Framework
     ofn.Flags = OFN_PATHMUSTEXIST|OFN_FILEMUSTEXIST ;
     GetOpenFileName( &ofn );
 
+    SetCurrentDirectory(Buffer);
+
     if (szFile[0] == 0)
       return;
 
-    SetCurrentDirectory(Buffer);
+    
 
     GameObject* obj = FACTORY->LoadObjectFromArchetype(space, szFile);
 

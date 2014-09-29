@@ -35,18 +35,22 @@ enum CollisionGroup{
 class Body
 {
 	public:
+			void* userData = NULL,
 			float orientation = PI, 
 			float angularVelocity = 0, 
 			float torque = 0,
 			CollisionGroup collisionGroup = CollGroup1, //used for determining collision gorups
 			BodyGroup bodyGroup = BodyGroup1,			//used for certain collisions/resolutions 
 			float gravityScale = 1,						//used to modify gravity
-			float gravityOn = 1);						//used to turn gravity on and off
+			unsigned int gravityOn = 1);						//used to turn gravity on and off
 
 		//used in initialization of body - computes mass
 
 		//apply forces directly to the body - an impulse is an
 		//instantaneous force application, so no dt is applied
+
+		//scale and change the body
+
 
 		//shape and material used to calculate MassData;
 		//shape and materail are defined by the gameobject
@@ -78,6 +82,8 @@ class Body
 		float torque_;
 
 		Handle self;
+
+		void* userData;
 };
 
 }

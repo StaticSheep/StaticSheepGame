@@ -56,11 +56,18 @@ namespace Framework
     if (lTypeData != rTypeData)
       return *this;
 
-    Member curMem;
+    //Member curMem;
     for (unsigned int i = 0; i < lTypeData->GetMembers().size(); ++i)
     {
-      curMem = lTypeData->GetMembers()[i];
-      memcpy((char*)this + curMem.Offset(), (char*)&rhs + curMem.Offset(), curMem.Type()->Size());
+      // Get the actual member
+      const Member member = lTypeData->GetMembers()[i];
+
+      // Copy over the member data from the object into the archetype
+      Variable LVar = Variable(member.Type(), (char*)this + member.Offset());
+      Variable RVar = Variable(member.Type(), (char*)this + member.Offset());
+
+      member.Type()->Copy(LVar.GetData(), RVar.GetData());
+      //memcpy((char*)this + curMem.Offset(), (char*)&rhs + curMem.Offset(), curMem.Type()->Size());
     }
 
     return *this;
@@ -71,4 +78,6 @@ namespace Framework
   {
     return space->GetHandles().GetAs<GameObject>(owner);
   }
+
+
 }

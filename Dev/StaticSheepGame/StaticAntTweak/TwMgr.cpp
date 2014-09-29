@@ -449,7 +449,7 @@ void ANT_CALL CQuaternionExt::InitDir3FCB(void *_ExtValue, void *_ClientData)
         ext->Dx = 1;
         ext->Dy = ext->Dz = 0;
         ext->m_AAMode = false; // Axis & angle mode hidden
-        ext->m_ShowVal = true;
+        ext->m_ShowVal = false;
         ext->m_IsFloat = true;
         ext->m_IsDir = true;
         ext->m_Dir[0] = ext->m_Dir[1] = ext->m_Dir[2] = 0;
@@ -458,16 +458,16 @@ void ANT_CALL CQuaternionExt::InitDir3FCB(void *_ExtValue, void *_ClientData)
         for(i=0; i<3; ++i)
             for(j=0; j<3; ++j)
                 ext->m_Permute[i][j] = (i==j) ? 1.0f : 0.0f;
-        ext->m_StructProxy = (CTwMgr::CStructProxy *)_ClientData;
-        ext->ConvertToAxisAngle();
+        //ext->m_StructProxy = (CTwMgr::CStructProxy *)_ClientData;
+        //ext->ConvertToAxisAngle();
         ext->m_Highlighted = false;
         ext->m_Rotating = false;
         if( ext->m_StructProxy!=NULL )
         {
-            ext->m_StructProxy->m_CustomDrawCallback = CQuaternionExt::DrawCB;
-            ext->m_StructProxy->m_CustomMouseButtonCallback = CQuaternionExt::MouseButtonCB;
-            ext->m_StructProxy->m_CustomMouseMotionCallback = CQuaternionExt::MouseMotionCB;
-            ext->m_StructProxy->m_CustomMouseLeaveCallback = CQuaternionExt::MouseLeaveCB;
+            //ext->m_StructProxy->m_CustomDrawCallback = CQuaternionExt::DrawCB;
+        //    ext->m_StructProxy->m_CustomMouseButtonCallback = CQuaternionExt::MouseButtonCB;
+        //    ext->m_StructProxy->m_CustomMouseMotionCallback = CQuaternionExt::MouseMotionCB;
+        //    ext->m_StructProxy->m_CustomMouseLeaveCallback = CQuaternionExt::MouseLeaveCB;
         }
     }
 }
@@ -781,10 +781,10 @@ void CQuaternionExt::CreateTypes()
         const char *quatSDef = (pass==0) ? quatSDefPass0 : quatSDefPass1;
         const char *dirDef = (pass==0) ? dirDefPass0 : dirDefPass1;
 
-        TwStructMember QuatExtMembers[] = { { "0", s_CustomType, 0, "" },
-                                            { "1", s_CustomType, 0, "" },
-                                            { "2", s_CustomType, 0, "" }, 
-                                            { "3", s_CustomType, 0, "" }, 
+        TwStructMember QuatExtMembers[] = { //{ "0", s_CustomType, 0, "" },
+                                            //{ "1", s_CustomType, 0, "" },
+                                            //{ "2", s_CustomType, 0, "" }, 
+                                            //{ "3", s_CustomType, 0, "" }, 
                                             { "Quat X", TW_TYPE_DOUBLE, offsetof(CQuaternionExt, Qx), quatDef }, // copy of the source quaternion
                                             { "Quat Y", TW_TYPE_DOUBLE, offsetof(CQuaternionExt, Qy), quatDef },
                                             { "Quat Z", TW_TYPE_DOUBLE, offsetof(CQuaternionExt, Qz), quatDef },
@@ -794,9 +794,9 @@ void CQuaternionExt::CreateTypes()
                                             { "Axis Z", TW_TYPE_DOUBLE, offsetof(CQuaternionExt, Vz), "step=0.01 hide" },
                                             { "Angle (degree)",  TW_TYPE_DOUBLE, offsetof(CQuaternionExt, Angle), "step=1 min=-360 max=360 hide" },
                                             { "Mode", TW_TYPE_BOOLCPP, offsetof(CQuaternionExt, m_AAMode), "true='Axis Angle' false='Quaternion' readwrite hide" },
-                                            { "Dir X", TW_TYPE_DOUBLE, offsetof(CQuaternionExt, Dx), dirDef },      // copy of the source direction
-                                            { "Dir Y", TW_TYPE_DOUBLE, offsetof(CQuaternionExt, Dy), dirDef },
-                                            { "Dir Z", TW_TYPE_DOUBLE, offsetof(CQuaternionExt, Dz), dirDef } };
+                                            { "X", TW_TYPE_DOUBLE, offsetof(CQuaternionExt, Dx), dirDef },      // copy of the source direction
+                                            { "Y", TW_TYPE_DOUBLE, offsetof(CQuaternionExt, Dy), dirDef },
+                                            { "Z", TW_TYPE_DOUBLE, offsetof(CQuaternionExt, Dz), dirDef } };
         if( pass==0 ) 
         {
             g_TwMgr->m_TypeQuat4F = TwDefineStructExt("QUAT4F", QuatExtMembers, sizeof(QuatExtMembers)/sizeof(QuatExtMembers[0]), 4*sizeof(float), sizeof(CQuaternionExt), CQuaternionExt::InitQuat4FCB, CQuaternionExt::CopyVarFromExtCB, CQuaternionExt::CopyVarToExtCB, CQuaternionExt::SummaryCB, CTwMgr::CStruct::s_PassProxyAsClientData, "A 4-floats-encoded quaternion");
@@ -4081,6 +4081,8 @@ static int AddVar(TwBar *_Bar, const char *_Name, ETwType _Type, void *_VarPtr, 
         _Type = g_TwMgr->m_TypeQuat4F;
     else if( _Type==TW_TYPE_QUAT4D )
         _Type = g_TwMgr->m_TypeQuat4D;
+    else if( _Type==TW_TYPE_POS3F)
+        _Type = g_TwMgr->m_TypePos3F;
     else if( _Type==TW_TYPE_DIR3F )
         _Type = g_TwMgr->m_TypeDir3F;
     else if( _Type==TW_TYPE_DIR3D )

@@ -286,7 +286,7 @@ namespace Framework
           objectBar->DefineLabel(member->TweakLabel());
 
         // Since this is an object member variable we are tweaking we have to use the generic tweak
-        objectBar->AddGenericVarRW(member->Name(), member->Type()->GetAType(), member, this);
+        objectBar->AddGenericVarRW(member->Name(), member->Type()->GetAType(), member, 0, this);
       }
     }
 
@@ -389,15 +389,16 @@ namespace Framework
       {
         // Establish which component we are tweaking
         std::string compType = EnumComponent.m_literals[i];
+        const char* compName = EnumComponent.m_literals[i].c_str();
         Variable var(GET_STR_TYPE(compType), GetComponent(i));
 
         // Prepare the AntTweak bar definition for groups
         compType = std::string(" group=") + compType;
 
         // Set the define and tweak the component
-        objectBar->AddDefinition(compType.c_str(), true);
-        var.Tweak(objectBar, nullptr, nullptr);
-        objectBar->ClearDefinitions();
+        //objectBar->AddDefinition(compType.c_str(), true);
+        var.Tweak(objectBar, compName, compName);
+        //objectBar->ClearDefinitions();
       }
     }
 

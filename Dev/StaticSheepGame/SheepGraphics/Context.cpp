@@ -23,7 +23,7 @@ namespace DirectSheep
   {
     float cameraX = x;
     float cameraY = y;
-    float cameraZ = -400.0f;
+    float cameraZ = -200.0f;
 
 
     Vec3 eyepoint(cameraX, cameraY, cameraZ);
@@ -71,9 +71,9 @@ namespace DirectSheep
     m_backBuffer = NULL;
     m_depthBuffer.m_depthBuffer = NULL;
     m_backBufferSize = Dimension(0,0);
-    m_clearColor = Color(0,0,0,1.0f);
+    m_clearColor = Color(.1f,.5f,.1f,1.0f);
     m_spriteBlend = D3DXCOLOR(1,1,1,.5f);
-    m_spriteTrans = Transform(0,0,10,10,0);
+    m_spriteTrans = Transform();
     m_primative = PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 
     /////////////////////////////////
@@ -281,7 +281,7 @@ namespace DirectSheep
       D3DXMatrixRotationZ(&rotMat, m_spriteTrans.theta);
       D3DXMatrixMultiply(&scaleMat, &scaleMat, &rotMat);
 
-      D3DXMatrixTranslation(&transMat, floor(m_spriteTrans.x), floor(m_spriteTrans.y), floor(0.0f));
+      D3DXMatrixTranslation(&transMat, m_spriteTrans.x, m_spriteTrans.y, 0.0f);
 
 
       D3DXMatrixMultiply(&scaleMat, &scaleMat, &transMat);
@@ -292,6 +292,8 @@ namespace DirectSheep
       buffer.Final = matFinal;
       buffer.World = scaleMat;
       buffer.BlendColor = m_spriteBlend;
+      buffer.uvBegin = m_spriteTrans.uvBegin;
+      buffer.uvEnd = m_spriteTrans.uvEnd;
 
       m_deviceContext->RSSetState(m_rastState);
 
@@ -743,6 +745,12 @@ namespace DirectSheep
    {
      m_spriteBlend = D3DXCOLOR(r,g,b,a);
    }
+
+   void RenderContext::SetUV(float x1, float y1, float x2, float y2)
+   {
+     m_spriteTrans.uvBegin = Vec2(x1, y1);
+     m_spriteTrans.uvEnd = Vec2(x2, y2);
+   }
     /////////////////////////////////////////////////////////////
     //                    GETTER FUNCTIONS                     //
     /////////////////////////////////////////////////////////////
@@ -1032,6 +1040,7 @@ namespace DirectSheep
   {
     D3D11_DEPTH_STENCIL_DESC dsDesc;
 
+    ZeroMemory(&dsDesc, sizeof(D3D11_DEPTH_STENCIL_DESC));
     // Paramaters for Depth test
     dsDesc.DepthEnable = true;
     dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;

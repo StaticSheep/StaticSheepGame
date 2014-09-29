@@ -1,7 +1,8 @@
 
-#include "Vec3.h"
+#include "Vec3D.h"
 
-namespace SheepMath
+
+namespace Framework
 {
 
 Vec3D& Vec3D::operator+=(Vec3D& rhs)
@@ -113,14 +114,14 @@ Vec3D Vec3D::operator/(float scalar)
 	return divide;
 }
 
-Vec3D& Vec3D::operator=(Vec3D& rhs)
-{
-	x_ = rhs.x_;
-	y_ = rhs.y_;
-	z_ = rhs.z_;
-
-	return *this;
-}
+//Vec3D& Vec3D::operator=(Vec3D& rhs)
+//{
+//	x_ = rhs.x_;
+//	y_ = rhs.y_;
+//	z_ = rhs.z_;
+//
+//	return *this;
+//}
 
 float Vec3D::SquareLength(void)
 {
@@ -164,7 +165,7 @@ Vec3D Vec3D::CalculateNormal(void)
 {
 	//take base vector (this) and rotate it by 90 degrees
 	//clockwise, then normalize it
-	return Vec3D(Rotate(-PI / 2)).Normalize();
+	return Vec3D(Rotate(-(float)PI / 2)).Normalize();
 }
 
 //other non-member vector functions
@@ -173,7 +174,6 @@ Vec3D operator*(float scalar, Vec3D& rhs)
 {
 	return rhs * scalar;
 }
-
 //**************
 
 
@@ -195,5 +195,8 @@ float Maximum(float a, float b)
 	return b;
 }
 //**************
+
+
+
 
 }

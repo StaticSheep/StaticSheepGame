@@ -22,16 +22,16 @@ namespace Framework
     DirectSheep::Handle& GetTexture();
 
     Vec2 Size;
+    Vec2 TextureSize;
 
     Vec4 Color;
 
     Handle transform;
 
+    // DO NOT WRITE DIRECTLY TO THIS SILLY
     std::string SpriteName;
 
     void Draw();
-
-  private:
 
     DirectSheep::Handle m_texture;
     

@@ -13,6 +13,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #define GET_ENUM( NAME ) \
   (&Framework::Enum##NAME)
 
+
 #define GET_OFFSET_OF( TYPE, MEMBER ) \
   ((unsigned)(&((((TYPE *)NULL))->MEMBER)))
 

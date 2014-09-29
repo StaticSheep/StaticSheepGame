@@ -97,7 +97,7 @@
   <ItemGroup>
     <ClInclude Include="..\includes\physics\api.h" />
     <ClInclude Include="..\includes\physics\sheep_physics.h" />
-    <ClInclude Include="..\includes\Vec3.h" />
+    <ClInclude Include="..\includes\Vec3D.h" />
     <ClInclude Include="Body.h" />
     <ClInclude Include="Handle.h" />
     <ClInclude Include="HandleManager.h" />
@@ -110,7 +110,7 @@
     <ClInclude Include="Step.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Utilities\Vec3.cpp" />
+    <ClCompile Include="..\Utilities\Vec3D.cpp" />
     <ClCompile Include="Body.cpp" />
     <ClCompile Include="Handle.cpp" />
     <ClCompile Include="HandleManager.cpp" />

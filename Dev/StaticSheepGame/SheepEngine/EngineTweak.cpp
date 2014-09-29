@@ -30,7 +30,12 @@ namespace Framework
   static void EditorOpenSpace(void* clientData)
   {
     OPENFILENAME ofn;
-    char szFile[100];
+    char szFile[200];
+
+    TCHAR Buffer[200];
+    DWORD dwRet;
+
+    dwRet = GetCurrentDirectory(200, Buffer);
 
     ZeroMemory( &ofn , sizeof( ofn));
     ofn.lStructSize = sizeof ( ofn );
@@ -42,9 +47,11 @@ namespace Framework
     ofn.nFilterIndex =1;
     ofn.lpstrFileTitle = NULL ;
     ofn.nMaxFileTitle = 0 ;
-    ofn.lpstrInitialDir=NULL ;
+    ofn.lpstrInitialDir="content\\data\\spaces";
     ofn.Flags = OFN_PATHMUSTEXIST|OFN_FILEMUSTEXIST ;
     GetOpenFileName( &ofn );
+
+    SetCurrentDirectory(Buffer);
 
     if (szFile[0] == 0)
       return;

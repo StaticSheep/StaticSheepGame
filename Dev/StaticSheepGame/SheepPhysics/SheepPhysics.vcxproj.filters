@@ -37,7 +37,7 @@
     <ClInclude Include="Matrix.h">
       <Filter>Physics\Math Functions</Filter>
     </ClInclude>
-    <ClInclude Include="..\includes\Vec3.h">
+    <ClInclude Include="..\includes\Vec3D.h">
       <Filter>Physics\Math Functions</Filter>
     </ClInclude>
   </ItemGroup>
@@ -72,11 +72,11 @@
     <ClCompile Include="Shape.cpp">
       <Filter>Physics\PhysicsFunctions</Filter>
     </ClCompile>
-    <ClCompile Include="..\Utilities\Vec3.cpp">
-      <Filter>Physics\Math Functions</Filter>
-    </ClCompile>
     <ClCompile Include="Material.cpp">
       <Filter>Physics\PhysicsFunctions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utilities\Vec3D.cpp">
+      <Filter>Physics\Math Functions</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

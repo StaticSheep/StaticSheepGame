@@ -170,19 +170,26 @@ namespace Framework
     // Set our start level
     int startLevel = s->m_paddingLevel;
 
-    // Iterate through all member variables until our padding is back to the start
-    do
+    if (var.GetTypeInfo()->m_deserialize == nullptr)
     {
-      // Peek to see the next possible member
-      const Member* mem = s->PeekMember(file, info->m_members, startLevel);
-      if (mem) // We have a member, great
+      // Iterate through all member variables until our padding is back to the start
+      do
       {
-        // Create a variable from the member
-        Variable member(mem->Type(), PTR_ADD(var.GetData(), mem->Offset()));
-        // Deserialize the variable
-        member.Deserialize(file);
-      }
-    } while(s->m_paddingLevel > startLevel);
+        // Peek to see the next possible member
+        const Member* mem = s->PeekMember(file, info->m_members, startLevel);
+        if (mem) // We have a member, great
+        {
+          // Create a variable from the member
+          Variable member(mem->Type(), PTR_ADD(var.GetData(), mem->Offset()));
+          // Deserialize the variable
+          member.Deserialize(file);
+        }
+      } while(s->m_paddingLevel > startLevel);
+    }
+    else
+    {
+      var.Deserialize(file);
+    }
 
     return c;
   }
@@ -418,7 +425,7 @@ namespace Framework
   void Factory::SaveSpaceToFile(GameSpace* space, const char* name, std::vector<std::string>* objInstanceData, bool includeGeneric, bool allData)
   {
     File file; // File to save the space to
-    std::string filepath = LevelFileExtension + name + SpaceFileExtension;
+    std::string filepath = SpaceFilePath + name + SpaceFileExtension;
     GameSpace::SerializerData extraData;
 
     extraData.instanceData = objInstanceData;
@@ -453,7 +460,7 @@ namespace Framework
   void Factory::SaveSpaceToFile(GameSpace* space, const char* name, bool standalone)
   {
     File file; // File to save the space to
-    std::string filepath = LevelFileExtension + name + SpaceFileExtension;
+    std::string filepath = SpaceFilePath + name + SpaceFileExtension;
     GameSpace::SerializerData extraData;
     
     extraData.instanceData = NULL;

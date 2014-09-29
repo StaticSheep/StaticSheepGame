@@ -22,7 +22,18 @@ namespace Framework
     static void ToLua(lua_State* L, Variable& var);
     static void FromLua(lua_State* L, int index, Variable* var);
 
-    float X;
-    float Y;
+
+    union
+    {
+      float x_;
+      float X;
+    };
+
+    union
+    {
+      float y_;
+      float Y;
+    };
+
   };
 }

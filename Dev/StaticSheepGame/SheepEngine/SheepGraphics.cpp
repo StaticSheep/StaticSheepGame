@@ -15,6 +15,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 #include "Window.h"
 
+#include "CAniSprite.h"
+
 
 namespace Framework
 {
@@ -35,6 +37,8 @@ namespace Framework
   void SheepGraphics::RegisterComponents()
   {
     REGISTER_COMPONENT(Sprite);
+    REGISTER_COMPONENT(Camera);
+    REGISTER_COMPONENT(AniSprite);
   }
 
 	SheepGraphics::~SheepGraphics()
@@ -65,7 +69,7 @@ namespace Framework
 
     spritevShader = SetVShader("SheepGraphics/Shaders/Generic.hlsl");
 
-    m_renderContext->CreateConstantBuffer(spriteContext, 144);
+    m_renderContext->CreateConstantBuffer(spriteContext, 160);
 
     m_renderContext->CreateVertexBuffer(spriteQuad, 120);
 
@@ -132,6 +136,11 @@ namespace Framework
   void SheepGraphics::SetSize(float x, float y)
   {
     m_renderContext->SetDimensions(x,y);
+  }
+
+  void SheepGraphics::SetUV(Vec2 uvBegin, Vec2 uvEnd)
+  {
+    m_renderContext->SetUV(uvBegin.X, uvBegin.Y, uvEnd.X, uvEnd.Y);
   }
 
   DirectSheep::Handle SheepGraphics::SetTexture(const std::string& Texture)
@@ -246,13 +255,16 @@ namespace Framework
 
   void SheepGraphics::UpdateCamera(void)
   {
-    if(CurrentCamera)
-      m_renderContext->UpdateCamera(CurrentCamera->transform->Translation.X, CurrentCamera->transform->Translation.Y, CurrentCamera->FOV);
-    else
       m_renderContext->UpdateCamera(0, 0, 75);
   }
   void* SheepGraphics::GetDevice()
   {
     return m_renderContext->ExternalGetDevice();
+  }
+
+  Vec2 SheepGraphics::GetTextureDim(DirectSheep::Handle texture)
+  {
+    DirectSheep::Dimension texSize = m_renderContext->GetTextureSize(texture);
+    return Vec2((float)texSize.width, (float)texSize.height);
   }
 }

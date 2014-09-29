@@ -97,6 +97,7 @@ class RenderContext
    GFX_API void SetDisplayMode(const Dimension& resolution);
    GFX_API void SetVSync(bool vsync);
 
+   GFX_API void SetUV(float x1, float y1, float x2, float y2);
    GFX_API void SetPosition(const float x, const float y);
    GFX_API void SetRotation(const float theta);
    GFX_API void SetDimensions(const float w, const float h);
@@ -215,12 +216,14 @@ class RenderContext
 
     struct Transform
     {
-      Transform() : x(0), y(0), w(64), h(64), theta(0) {}
+      Transform() : x(0), y(0), w(64), h(64), theta(0), uvBegin(0,0), uvEnd(1,1) {}
       Transform(float x, float y, float w, float h, float theta) : x(x), y(y), w(w), h(h), theta(theta) {}
       float x;
       float y;
       float w;
       float h;
+      Vec2 uvBegin;
+      Vec2 uvEnd;
       float theta;
     };
 

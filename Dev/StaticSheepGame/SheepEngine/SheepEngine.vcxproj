@@ -54,7 +54,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;WIN32_LEAN_AND_MEAN;DLL_ENGINEEXPORT;TW_STATIC;_DEBUG;_WINDOWS;_USRDLL;DLL_EXPORT;WIN32_LEAN_AND_MEAN;%(PreprocessorDefinitions);DLL_EXPORT</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;WIN32_LEAN_AND_MEAN;DLL_ENGINEEXPORT;SHEEPENGINE;TW_STATIC;_DEBUG;_WINDOWS;_USRDLL;DLL_EXPORT;WIN32_LEAN_AND_MEAN;%(PreprocessorDefinitions);DLL_EXPORT</PreprocessorDefinitions>
       <PrecompiledHeaderFile>precompiled.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(SolutionDir)includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ForcedIncludeFiles>precompiled.h</ForcedIncludeFiles>
@@ -80,7 +80,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;WIN32_LEAN_AND_MEAN;DLL_ENGINEEXPORT;TW_STATIC;NDEBUG;_WINDOWS;_USRDLL;SHEEPENGINE_EXPORTS;%(PreprocessorDefinitions);DLL_EXPORT</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;WIN32_LEAN_AND_MEAN;DLL_ENGINEEXPORT;SHEEPENGINE;TW_STATIC;NDEBUG;_WINDOWS;_USRDLL;SHEEPENGINE_EXPORTS;%(PreprocessorDefinitions);DLL_EXPORT</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir)includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>precompiled.h</PrecompiledHeaderFile>
       <ForcedIncludeFiles>precompiled.h</ForcedIncludeFiles>
@@ -101,9 +101,10 @@
     <ClInclude Include="..\includes\EnumData.h" />
     <ClInclude Include="..\includes\Utilities.h" />
     <ClInclude Include="AntTweakModule.h" />
-    <ClInclude Include="..\includes\Vec3.h" />
+    <ClInclude Include="..\includes\Vec3D.h" />
     <ClInclude Include="Api.h" />
     <ClInclude Include="Archetype.h" />
+    <ClInclude Include="CBoxCollider.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CAniSprite.h" />
     <ClInclude Include="CGamePad.h" />
@@ -159,15 +160,17 @@
     <ClInclude Include="TypeInfo.h" />
     <ClInclude Include="Variable.h" />
     <ClInclude Include="Vec2.h" />
+    <ClInclude Include="Vec3.h" />
     <ClInclude Include="Vec4.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Utilities\Utilities.cpp" />
     <ClCompile Include="AntTweakModule.cpp" />
-    <ClCompile Include="..\Utilities\Vec3.cpp" />
+    <ClCompile Include="..\Utilities\Vec3D.cpp" />
     <ClCompile Include="Archetype.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CBoxCollider.cpp" />
     <ClCompile Include="CAniSprite.cpp" />
     <ClCompile Include="CGamePad.cpp" />
     <ClCompile Include="CLuaComponent.cpp" />
@@ -220,6 +223,7 @@
     <ClCompile Include="TypeInfo.cpp" />
     <ClCompile Include="Variable.cpp" />
     <ClCompile Include="Vec2.cpp" />
+    <ClCompile Include="Vec3.cpp" />
     <ClCompile Include="Vec4.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
