@@ -23,7 +23,7 @@ namespace DirectSheep
   {
     float cameraX = x;
     float cameraY = y;
-    float cameraZ = -100.0f;
+    float cameraZ = -200.0f;
 
 
     Vec3 eyepoint(cameraX, cameraY, cameraZ);
@@ -281,7 +281,7 @@ namespace DirectSheep
       D3DXMatrixRotationZ(&rotMat, m_spriteTrans.theta);
       D3DXMatrixMultiply(&scaleMat, &scaleMat, &rotMat);
 
-      D3DXMatrixTranslation(&transMat, floor(m_spriteTrans.x), floor(m_spriteTrans.y), floor(0.0f));
+      D3DXMatrixTranslation(&transMat, m_spriteTrans.x, m_spriteTrans.y, 0.0f);
 
 
       D3DXMatrixMultiply(&scaleMat, &scaleMat, &transMat);
