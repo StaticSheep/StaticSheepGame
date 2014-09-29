@@ -49,7 +49,7 @@ namespace Framework
     uvBegin = Vec2(offsetX, offsetY);
     uvEnd = Vec2(offsetX + width, offsetY + height);
     if(currFrame.X <= frames.X) 
-      currFrame.X += .01;
+      currFrame.X += .01f;
     else
     {
       currFrame.Y++;
@@ -68,9 +68,9 @@ namespace Framework
     Transform* trans = space->GetHandles().GetAs<Transform>(transform);
 
     UpdateUV();
-    GRAPHICS->SetPosition(trans->Translation.X, trans->Translation.Y);
-    GRAPHICS->SetRotation(trans->Rotation);
-    GRAPHICS->SetSize(trans->Scale.X * Size.X * (TextureSize.X / frames.X), trans->Scale.Y * Size.Y * (TextureSize.Y / frames.Y));
+    GRAPHICS->SetPosition(trans->GetTranslation().X, trans->GetTranslation().Y);
+    GRAPHICS->SetRotation(trans->GetRotation());
+    GRAPHICS->SetSize(trans->GetScale().X * Size.X * (TextureSize.X / frames.X), trans->GetScale().Y * Size.Y * (TextureSize.Y / frames.Y));
     GRAPHICS->SetColor(Color);
     GRAPHICS->SetUV(uvBegin, uvEnd);
 

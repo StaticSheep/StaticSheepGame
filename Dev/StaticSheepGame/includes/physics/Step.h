@@ -6,20 +6,22 @@
 
 #include "Material.h"
 #include "Shape.h"
-#include "Vec3.h"
+#include "Vec3D.h"
 #include <vector>
 
 
 
 namespace SheepFizz
 {
+	//collision callback function pointer
 
-	#define GRAVITY 10.0f
+	#define GRAVITY -32.0f
 
 	class PhysicsSpace
 	{
 		public:
 		PHY_API static PhysicsSpace* Allocate(float dt);
+		PHY_API static void Delete(PhysicsSpace* space);
 
 
 		//body settors
@@ -48,10 +50,16 @@ namespace SheepFizz
 		PHY_API Handle AddBody(
 			Shapes shape,				//shape of the object
 			Material& material,			//the material ref
-			SheepMath::Vec3D position,	//the position of the transform
+			Framework::Vec3D position,	//the position of the transform
 			float xradius,				//the radius of circle or width
 			float yval = 0,				//the height - if a rec
-			float orientation = 0);		//the orientation
+			float orientation = 0,		//the orientation
+			void* userData = NULL);		
+
+		//change a specific body's attributes
+		PHY_API void ChangeBodies(Handle handle, float xradius, float y = 0);
+		PHY_API void ChangeMaterials(Handle handle, Material& material);
+
 
 		//remove bodies and their shapes from the vector
 		PHY_API void RemoveBody(Handle handle);
@@ -64,11 +72,19 @@ namespace SheepFizz
 		//application of forces and velocities to each body
 		//applied in physics update
 
+		//engine functions for messaging
+		PHY_API void SetCollisionCallback(void(*cb)(void*, void*, void*));
+		PHY_API void SetUserData(void* userData);
+
 		#ifdef DLL_PHYEXPORT
 
 		private:
 			//timestep value
 			float dt_;
+
+			//values tied to engine messaging
+			CollisionCB cb_;	//callback function pointer
+			void* userData_;	//pointer to engine space
 
 			//vector of bodies in engine
 			ObjectAllocator bodies_;

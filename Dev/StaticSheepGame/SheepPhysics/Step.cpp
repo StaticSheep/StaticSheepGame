@@ -8,6 +8,11 @@ namespace SheepFizz
 		return new PhysicsSpace(dt);
 	}//end of Allocate
 
+	void PhysicsSpace::Delete(PhysicsSpace* space)
+	{
+		delete space;
+	}//end of Delete
+
 	//body settors//*************
 	void PhysicsSpace::SetBodyPos(Handle handle, Vec3D position)
 	{
@@ -96,9 +101,8 @@ namespace SheepFizz
 
 	//add bodies to the body vector
 	Handle PhysicsSpace::AddBody(Shapes shape, Material& material, Vec3D position, 
-		float xradius, float yval, float orientation)
+		float xradius, float yval, float orientation, void* userData)
 	{
-
 		switch(shape)
 		{
 			case Rec:
@@ -111,8 +115,8 @@ namespace SheepFizz
 			
 					//then add the body
 					Body* body = (Body*)bodies_.Allocate();
-					new (body) Body(rec, material, position, Vec3D(), Vec3D(), orientation);
-					body->self;
+					new (body) Body(rec, material, position, Vec3D(), Vec3D(), userData, orientation);
+					body->self = handles_.Insert(body);
 					handles_.SyncHandles<Body>(bodies_);
 
 					return body->self;
@@ -130,8 +134,8 @@ namespace SheepFizz
 			
 					//then add the body
 					Body* body = (Body*)bodies_.Allocate();
-					new (body) Body(cir, material, position, Vec3D(), Vec3D(), orientation);
-					body->self;
+					new (body) Body(cir, material, position, Vec3D(), Vec3D(), userData, orientation);
+					body->self = handles_.Insert(body);
 					handles_.SyncHandles<Body>(bodies_);
 
 					return body->self;
@@ -140,11 +144,26 @@ namespace SheepFizz
 				}
 
 			default:
+				return NULL;
 				break;
 
 		}		
 	}//end of AddBody
 	//*************
+
+	//change bodies
+	void PhysicsSpace::ChangeBodies(Handle handle, float xradius, float y)
+	{
+		Body* body = (Body*)handles_.Get(handle);
+		body->ChangeBody(xradius, y);
+	}//end of ChangeBodies
+
+	//change materials
+	void PhysicsSpace::ChangeMaterials(Handle handle, Material& material)
+	{
+		Body* body = (Body*)handles_.Get(handle);
+		body->ChangeMaterial(material);
+	}//end of ChangeMaterials
 
 	//remove bodies
 	void PhysicsSpace::RemoveBody(Handle handle)
@@ -162,16 +181,18 @@ namespace SheepFizz
 		Body* bodyRemoved = (Body*)bodies_.Free(body);
 		if(bodyRemoved)
 			handles_.Update(bodyRemoved, bodyRemoved->self);
-	}
+	}//end of RemoveBody
+	//*************
+
 
 	//this function advances the game forward one dt
 	void PhysicsSpace::Step(void)
 	{
 		//iterate through list of bodies
-		for(int i = 0; i < bodies_.Size(); ++i)
+		for(unsigned i = 0; i < bodies_.Size(); ++i)
 		{
 			//move one body in vector forward to start
-			for(int j = i + 1; j < bodies_.Size(); ++j)
+			for(unsigned j = i + 1; j < bodies_.Size(); ++j)
 			{
 
 				//create a manifold and see if there is any interaction
@@ -187,28 +208,33 @@ namespace SheepFizz
 		}
 
 		//apply forces for all manifolds - positional correction first
-		for(int i = 0; i < manifolds_.size(); ++i)
+		for(unsigned i = 0; i < manifolds_.size(); ++i)
 		{
 			manifolds_[i].PositionalCorrection();
 			manifolds_[i].ApplyForces();
-		
 		}
 
-		//empty manifold list;
-		manifolds_.clear();
-
 		//apply forces and velocity to all bodies
-		for(int i = 0; i < bodies_.Size(); ++i)
+		for(unsigned i = 0; i < bodies_.Size(); ++i)
 			SymplecticEuler(*((Body*)bodies_[i]));
 
 		//clean up forces so no interference with next loop
-		for(int i = 0; i < bodies_.Size(); ++i)
+		for(unsigned i = 0; i < bodies_.Size(); ++i)
 		{
 			((Body*)bodies_[i])->force_.x_ = 0.0f;
 			((Body*)bodies_[i])->force_.y_ = 0.0f;
 			((Body*)bodies_[i])->torque_ = 0.0f;
 			((Body*)bodies_[i])->torque_ = 0.0f;
 		}
+
+		//send manifold data back to engine for game logic
+		/*for(int i = 0; i < manifolds_.size(); ++i)
+		{
+			cb_(manifolds_[i].A->userData, manifolds_[i].B->userData, userData_);
+		}*/
+
+		//empty manifold list;
+		manifolds_.clear();
 
 	}//end of Step
 	//*************
@@ -226,11 +252,22 @@ namespace SheepFizz
 
 		//Velocity can be calculated after adjusting force
 		body.velocity_ += ((body.force_ *= body.massData_.inverseMass) 
-			+ Vec3D(0,GRAVITY) * body.gravityScale_ * body.gravityOn_) * dt_;
+			+ Vec3D(0,GRAVITY) * (float)body.gravityScale_ * (float)body.gravityOn_) * dt_;
 
 		//Position changed last
 		body.position_ += body.velocity_ * dt_;
 
 	}//end of SymplecticEuler
 	//*************
+
+	//Engine functionality
+	void PhysicsSpace::SetUserData(void* userData)
+	{
+		userData_ = userData;
+	}//end of SetUserData
+
+	void PhysicsSpace::SetCollisionCallback(CollisionCB cb)
+	{
+		cb_ = cb;
+	}//end of SetCollisionCallback
 }

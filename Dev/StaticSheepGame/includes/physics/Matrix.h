@@ -1,9 +1,9 @@
 #pragma once
-#include "Vec3.h"
+#include "Vec3D.h"
 
 namespace SheepFizz
 {
-	using namespace SheepMath;
+	using namespace Framework;
 
 	class Matrix2D
 	{

@@ -29,7 +29,6 @@ namespace Framework
     virtual void RegisterComponents();
 
     virtual std::string GetName() {return "SheepGraphics";};
-
 		// Sheep graphics interface constructor
 		SheepGraphics();
 		// Sheep graphics interface deconstructor

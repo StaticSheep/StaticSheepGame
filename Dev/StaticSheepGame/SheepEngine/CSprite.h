@@ -28,6 +28,7 @@ namespace Framework
 
     Handle transform;
 
+    // DO NOT WRITE DIRECTLY TO THIS SILLY
     std::string SpriteName;
 
     void Draw();

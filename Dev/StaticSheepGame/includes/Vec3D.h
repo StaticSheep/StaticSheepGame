@@ -1,10 +1,12 @@
 #pragma once
 #include <cmath>
 
-namespace SheepMath
+
+
+namespace Framework
 {
 
-#define PI 3.1415926539
+#define PI 3.1415926539f
 
 class Vec3D{
 	
@@ -12,7 +14,7 @@ class Vec3D{
 		Vec3D(float x = 0, float y = 0, float z = 0): x_(x), y_(y), z_(z) { }
 
 		//common operators for vectors
-		Vec3D& operator=(Vec3D& rhs);	//equals
+		//Vec3D& operator=(Vec3D& rhs);	//equals
 		Vec3D& operator+=(Vec3D& rhs);	//plus-equals
 		Vec3D operator+(Vec3D& rhs);	//addition
 		Vec3D operator-(Vec3D& rhs);	//subtraction
@@ -49,11 +51,25 @@ class Vec3D{
 		Vec3D CalculateNormal(void);
 
 	//2D
-		float x_;
-		float y_;
+    union
+    {
+		  float x_;
+      float X;
+    };
+
+    union 
+    {
+      float y_;
+      float Y;
+    };
+		
 
 	//3D - can be used for homogeneous coordinates
-		float z_;
+    union
+    {
+      float z_;
+      float Z;
+    };
 
 };
 

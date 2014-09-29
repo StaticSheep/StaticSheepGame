@@ -255,11 +255,6 @@ namespace Framework
 
   void SheepGraphics::UpdateCamera(void)
   {
-    if(CurrentCamera)
-    {
-      m_renderContext->UpdateCamera(CurrentCamera->transform->Translation.X, CurrentCamera->transform->Translation.Y, CurrentCamera->FOV);
-    }
-    else
       m_renderContext->UpdateCamera(0, 0, 75);
   }
   void* SheepGraphics::GetDevice()
@@ -270,6 +265,6 @@ namespace Framework
   Vec2 SheepGraphics::GetTextureDim(DirectSheep::Handle texture)
   {
     DirectSheep::Dimension texSize = m_renderContext->GetTextureSize(texture);
-    return Vec2(texSize.width, texSize.height);
+    return Vec2((float)texSize.width, (float)texSize.height);
   }
 }

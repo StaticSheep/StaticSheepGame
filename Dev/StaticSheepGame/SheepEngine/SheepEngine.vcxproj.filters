@@ -131,10 +131,10 @@
       <Filter>Engine\Window</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
-      <Filter>Components\Graphics\Camera</Filter>
+      <Filter>Components\Camera</Filter>
     </ClInclude>
     <ClInclude Include="CSprite.h">
-      <Filter>Components\Graphics\Sprite</Filter>
+      <Filter>Components\Sprite</Filter>
     </ClInclude>
     <ClInclude Include="..\includes\EnumData.h">
       <Filter>Engine\EngineCore</Filter>
@@ -163,12 +163,6 @@
     <ClInclude Include="Input.h">
       <Filter>Systems\Input</Filter>
     </ClInclude>
-    <ClInclude Include="..\includes\Vec3.h">
-      <Filter>BaseTypes\Vectors\Vec3</Filter>
-    </ClInclude>
-    <ClInclude Include="CRigidBody.h">
-      <Filter>Components\Physics</Filter>
-    </ClInclude>
     <ClInclude Include="SoundEmitter.h">
       <Filter>Components\Audio</Filter>
     </ClInclude>
@@ -178,10 +172,31 @@
     <ClInclude Include="Debug.h">
       <Filter>Systems\Debug</Filter>
     </ClInclude>
+    <ClInclude Include="..\includes\Vec3D.h">
+      <Filter>BaseTypes\Vectors\Vec3\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Vec3.h">
+      <Filter>BaseTypes\Vectors\Vec3</Filter>
+    </ClInclude>
+    <ClInclude Include="AntTweakModule.h">
+      <Filter>Systems\AntTweak</Filter>
+    </ClInclude>
+    <ClInclude Include="TweakHelper.h">
+      <Filter>Systems\AntTweak</Filter>
+    </ClInclude>
+    <ClInclude Include="CRigidBody.h">
+      <Filter>Components\RigidBody\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="CBoxCollider.h">
+      <Filter>Components\RigidBody\BoxCollider</Filter>
+    </ClInclude>
     <ClInclude Include="AntTweakModule.h" />
     <ClInclude Include="TweakHelper.h" />
     <ClInclude Include="CAniSprite.h">
-      <Filter>Components\Graphics\AnimatedSprite</Filter>
+      <Filter>Components\AnimatedSprite</Filter>
+    </ClInclude>
+    <ClInclude Include="FramerateController.h">
+      <Filter>Engine\Framerate</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -291,10 +306,10 @@
       <Filter>Engine\Window</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
-      <Filter>Components\Graphics\Camera</Filter>
+      <Filter>Components\Camera</Filter>
     </ClCompile>
     <ClCompile Include="CSprite.cpp">
-      <Filter>Components\Graphics\Sprite</Filter>
+      <Filter>Components\Sprite</Filter>
     </ClCompile>
     <ClCompile Include="Vec2.cpp">
       <Filter>BaseTypes\Vectors\Vec2</Filter>
@@ -315,12 +330,6 @@
     <ClCompile Include="Input.cpp">
       <Filter>Systems\Input</Filter>
     </ClCompile>
-    <ClCompile Include="..\Utilities\Vec3.cpp">
-      <Filter>BaseTypes\Vectors\Vec3</Filter>
-    </ClCompile>
-    <ClCompile Include="CRigidBody.cpp">
-      <Filter>Components\Physics</Filter>
-    </ClCompile>
     <ClCompile Include="SoundEmitter.cpp">
       <Filter>Components\Audio</Filter>
     </ClCompile>
@@ -330,13 +339,43 @@
     <ClCompile Include="Debug.cpp">
       <Filter>Systems\Debug</Filter>
     </ClCompile>
+    <ClCompile Include="..\Utilities\Vec3D.cpp">
+      <Filter>BaseTypes\Vectors\Vec3\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Vec3.cpp">
+      <Filter>BaseTypes\Vectors\Vec3</Filter>
+    </ClCompile>
+    <ClCompile Include="AntTweakModule.cpp">
+      <Filter>Systems\AntTweak</Filter>
+    </ClCompile>
+    <ClCompile Include="TweakHelper.cpp">
+      <Filter>Systems\AntTweak</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineTweak.cpp">
+      <Filter>Engine\EngineCore</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectTweak.cpp">
+      <Filter>BaseTypes\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="SpaceTweak.cpp">
+      <Filter>BaseTypes\Space</Filter>
+    </ClCompile>
+    <ClCompile Include="CRigidBody.cpp">
+      <Filter>Components\RigidBody\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="CBoxCollider.cpp">
+      <Filter>Components\RigidBody\BoxCollider</Filter>
+    </ClCompile>
     <ClCompile Include="AntTweakModule.cpp" />
     <ClCompile Include="EngineTweak.cpp" />
     <ClCompile Include="ObjectTweak.cpp" />
     <ClCompile Include="SpaceTweak.cpp" />
     <ClCompile Include="TweakHelper.cpp" />
     <ClCompile Include="CAniSprite.cpp">
-      <Filter>Components\Graphics\AnimatedSprite</Filter>
+      <Filter>Components\AnimatedSprite</Filter>
+    </ClCompile>
+    <ClCompile Include="FramerateController.cpp">
+      <Filter>Engine\Framerate</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -478,15 +517,6 @@
     <Filter Include="Engine\Window">
       <UniqueIdentifier>{bc423fda-fda0-45de-8f60-f308931d39a1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Components\Graphics">
-      <UniqueIdentifier>{42b3dca6-312f-4781-a3da-20c5aba5ab04}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Components\Graphics\Camera">
-      <UniqueIdentifier>{b2ca9bbe-b924-410d-99e2-41e15ccf5869}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Components\Graphics\Sprite">
-      <UniqueIdentifier>{8710e3c5-0045-4790-9e60-5de0ee272902}</UniqueIdentifier>
-    </Filter>
     <Filter Include="BaseTypes\Vectors">
       <UniqueIdentifier>{1bc8c498-cfe0-4cd5-a8d7-a039eb21a4d2}</UniqueIdentifier>
     </Filter>
@@ -517,17 +547,41 @@
     <Filter Include="BaseTypes\Vectors\Vec3">
       <UniqueIdentifier>{c28b6611-4245-4f4c-80e1-4c57dcd29318}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Components\Physics">
-      <UniqueIdentifier>{4479f1bd-bcfd-4f6a-897b-ac4ed0686e92}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Components\Audio">
       <UniqueIdentifier>{e02606f1-071e-4e97-bd45-3372fb9387f0}</UniqueIdentifier>
     </Filter>
     <Filter Include="Systems\Debug">
       <UniqueIdentifier>{83b8555e-3acd-4901-80d7-f3c93f19ffa7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Components\Graphics\AnimatedSprite">
-      <UniqueIdentifier>{62099980-efb9-4804-a277-488ea3c88afe}</UniqueIdentifier>
+    <Filter Include="Components\RigidBody">
+      <UniqueIdentifier>{4479f1bd-bcfd-4f6a-897b-ac4ed0686e92}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BaseTypes\Vectors\Vec3\Base">
+      <UniqueIdentifier>{56635d4e-aaea-4371-a2c0-1bb9c5e1f5af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\AntTweak">
+      <UniqueIdentifier>{f2ad67f2-953d-4c9b-8ace-ee0c69c41343}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\RigidBody\CircleCollider">
+      <UniqueIdentifier>{2499cc99-1eb0-4650-a265-1273c02591d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\RigidBody\BoxCollider">
+      <UniqueIdentifier>{4712a386-dfc2-4177-8c37-1b31433f510a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\RigidBody\Base">
+      <UniqueIdentifier>{862b7750-22d7-4d8a-83a7-5c766098fdf7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\Sprite">
+      <UniqueIdentifier>{8710e3c5-0045-4790-9e60-5de0ee272902}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\Camera">
+      <UniqueIdentifier>{b2ca9bbe-b924-410d-99e2-41e15ccf5869}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\AnimatedSprite">
+      <UniqueIdentifier>{01581b65-6715-4ad6-ab7d-e4b30d2fd5cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Framerate">
+      <UniqueIdentifier>{477d1aaf-0fde-4b30-82d2-80ab9c0671cd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

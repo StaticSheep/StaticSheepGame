@@ -10,7 +10,10 @@ namespace Framework
     public:
       static void DefaultTweak(AntTweak::TBar* bar, Variable& var, const char* tempLabel, const char* label);
       static void TweakString(AntTweak::TBar* bar, Variable& var, const char* tempLabel, const char* label);
+      static void DoTweak(AntTweak::TBar* bar, Variable& var, const char* tempLabel, const char* label);
 
+
+      static unsigned tweakOffset;
       static bool isTweakGeneric;
       static const Member* tweakMember;
       static Generic* tweakGeneric;
@@ -32,6 +35,8 @@ namespace Framework
       // Which member of the generic object is this tweak for
       // Contains the location and type of member
       const Member* genericMember;
+      // Artificial memberOffset
+      unsigned realOffset;
       // What is the handle of the generic object we want to tweak?
       Handle genericHandle;
       // What space does the generic object belong inside of?

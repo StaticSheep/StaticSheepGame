@@ -40,6 +40,7 @@ namespace Framework
       TW_TYPE_STDSTRING = (0x2fff0000+sizeof(std::string)),  // C++ STL string (std::string)
       TW_TYPE_QUAT4F = TW_TYPE_CDSTRING+2, // 4 floats encoding a quaternion {qx,qy,qz,qs}
       TW_TYPE_QUAT4D,     // 4 doubles encoding a quaternion {qx,qy,qz,qs}
+      TW_TYPE_POS3F,
       TW_TYPE_DIR3F,      // direction vector represented by 3 floats
       TW_TYPE_DIR3D,       // direction vector represented by 3 doubles
 

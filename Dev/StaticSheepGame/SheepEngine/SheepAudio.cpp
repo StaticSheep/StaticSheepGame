@@ -63,7 +63,7 @@ namespace Framework
 	{
 		// Release the FMOD system
     _system->release();
-    
+
 	}
 
 /*****************************************************************************/
@@ -78,7 +78,8 @@ namespace Framework
     ErrorCheck(SOUND::System::create(&_system));
 
     // initialize the sound system, with 512 channels... NEVER RUN OUT
-    ErrorCheck(_system->initialize(256, FMOD_STUDIO_INIT_SYNCHRONOUS_UPDATE, FMOD_STUDIO_INIT_SYNCHRONOUS_UPDATE, 0) );
+    ErrorCheck(_system->initialize(256, FMOD_STUDIO_INIT_SYNCHRONOUS_UPDATE, 
+                                        FMOD_STUDIO_INIT_SYNCHRONOUS_UPDATE, 0));
     ErrorCheck(_system->getLowLevelSystem(&_lowLevelSystem));
 
     // open the GUID file
@@ -92,7 +93,7 @@ namespace Framework
     ParseBanks(_system, infile, _banks);
     ParseEvents(_system, infile, _events);
 
-    //_DebugData = new DebugAudio;
+    debug = new DebugAudio;
 	}
 
   void SheepAudio::RegisterComponents(void)
@@ -192,6 +193,17 @@ namespace Framework
       }
 
       return true;
+  }
+
+  const void* SheepAudio::GetDebugData()
+  {
+    ErrorCheck(_system->getCPUUsage(&debug->cpuLoad));
+    ErrorCheck(_lowLevelSystem->getChannelsPlaying(&debug->channels));
+    ErrorCheck(FMOD::Memory_GetStats(NULL, &debug->RAM, false));
+    ErrorCheck(_system->getBufferUsage(&debug->bufferInfo));
+
+
+    return (void*)debug;
   }
 
 } // end namespace

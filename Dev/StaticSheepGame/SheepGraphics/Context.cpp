@@ -23,7 +23,7 @@ namespace DirectSheep
   {
     float cameraX = x;
     float cameraY = y;
-    float cameraZ = -400.0f;
+    float cameraZ = -200.0f;
 
 
     Vec3 eyepoint(cameraX, cameraY, cameraZ);
@@ -71,7 +71,7 @@ namespace DirectSheep
     m_backBuffer = NULL;
     m_depthBuffer.m_depthBuffer = NULL;
     m_backBufferSize = Dimension(0,0);
-    m_clearColor = Color(.1,.5,.1,1.0f);
+    m_clearColor = Color(.1f,.5f,.1f,1.0f);
     m_spriteBlend = D3DXCOLOR(1,1,1,.5f);
     m_spriteTrans = Transform();
     m_primative = PRIMITIVE_TOPOLOGY_TRIANGLELIST;
@@ -281,7 +281,7 @@ namespace DirectSheep
       D3DXMatrixRotationZ(&rotMat, m_spriteTrans.theta);
       D3DXMatrixMultiply(&scaleMat, &scaleMat, &rotMat);
 
-      D3DXMatrixTranslation(&transMat, floor(m_spriteTrans.x), floor(m_spriteTrans.y), floor(0.0f));
+      D3DXMatrixTranslation(&transMat, m_spriteTrans.x, m_spriteTrans.y, 0.0f);
 
 
       D3DXMatrixMultiply(&scaleMat, &scaleMat, &transMat);

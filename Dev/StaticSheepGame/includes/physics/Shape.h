@@ -29,9 +29,11 @@ class Shape
 	//returns the type of the shape - the shape is not stored
 
 
-	//primary functions - sets up shape - calculates area
+	//sets area
 
-	//set the area after calculation
+	//change the shape
+
+	//primary functions - sets up shape - calculates area
 
 	//set the moment of inertia after calculation
 
@@ -56,6 +58,8 @@ class Rectangle: public Shape
 
 		//gettors
 
+		//set the shape after creation
+
 		//initializes area and vertices/normals used in manifold functions
 
 	private:
@@ -77,6 +81,8 @@ class Circle: public Shape
 {
 	public:
 
+
+		//set the shape after creation
 
 		//gettors
 		

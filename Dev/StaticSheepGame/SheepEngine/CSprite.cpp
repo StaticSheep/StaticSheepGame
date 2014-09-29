@@ -21,8 +21,8 @@ namespace Framework
 
     if(m_texture.GetType() == DirectSheep::NONE)
     {
-      SetTexture("content/maverick.jpg");
-      SpriteName = "content/maverick.jpg";
+      SetTexture("content/circle.png");
+      SpriteName = "content/circle.png";
     }
     else
       SetTexture(SpriteName);
@@ -52,9 +52,9 @@ namespace Framework
   {
     Transform* trans = space->GetHandles().GetAs<Transform>(transform);
 
-    GRAPHICS->SetPosition(trans->Translation.X, trans->Translation.Y);
-    GRAPHICS->SetRotation(trans->Rotation);
-    GRAPHICS->SetSize(trans->Scale.X * Size.X * TextureSize.X, trans->Scale.Y * Size.Y * TextureSize.Y);
+    GRAPHICS->SetPosition(trans->GetTranslation().X, trans->GetTranslation().Y);
+    GRAPHICS->SetRotation(trans->GetRotation());
+    GRAPHICS->SetSize(trans->GetScale().X * Size.X * TextureSize.X, trans->GetScale().Y * Size.Y * TextureSize.Y);
     GRAPHICS->SetColor(Color);
     GRAPHICS->SetUV(Vec2(0,0), Vec2(1,1));
 
