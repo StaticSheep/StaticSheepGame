@@ -12,6 +12,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "SheepGraphics.h"
 #include "Input.h"
 #include "FramerateController.h"
+#include "DrawLib.h"
 
 static bool fpsFlag;
 static int counter;
@@ -130,7 +131,8 @@ namespace Framework
 
         case DEBUG_GRAPHICS:
           GRAPHICS->GetDebugData();
-          // print that shit
+          Draw::SetColor(1.0,0.0,0.0,1.0);
+          Draw::DrawRect(-100.0f, 0.0f, 100.0f, 20.0f);
           break;
         }
       }

@@ -10,7 +10,8 @@ namespace Framework
   enum DebugState
   {
     DEBUG_AUDIO = 1,
-    DEBUG_GRAPHICS
+    DEBUG_GRAPHICS,
+    DEBUG_PERFORMANCE
   };
 
   class Debug : public ISystem
