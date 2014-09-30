@@ -13,13 +13,18 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "Input.h"
 #include "FramerateController.h"
 #include "DrawLib.h"
+#include "Window.h"
 
 static bool fpsFlag;
-static int counter;
+static bool performanceFlag;
+static int counter = 31;
 static int systemCounter = 31;
+static int performanceCounter = 61;
+static float previousTime;
 
 namespace Framework
 {
+  static PerformanceData performance;
 
 /*****************************************************************************/
 /*!
@@ -67,7 +72,6 @@ namespace Framework
   void Debug::Update(float dt)
   {
     
-    
   }
 
 /*****************************************************************************/
@@ -103,10 +107,14 @@ namespace Framework
         format.erase(4, std::string::npos);
         fps_string = "Current FPS: " + format + "\n";
 
+        Draw::SetRotation(0.0f);
         GRAPHICS->SetPosition(100.0f, 0.0f);
         GRAPHICS->SetColor(Vec4(1.0f,1.0f,1.0f,1.0f));
-        GRAPHICS->DrawSpriteText(fps_string.c_str(), 15.0f, "Helvetica");
+        GRAPHICS->DrawSpriteText(fps_string.c_str(), 10.0f, "Helvetica");
       }
+
+      if(performanceFlag)
+        DrawPerformance();
 
 
       // check which state we might need to print out.
@@ -115,29 +123,26 @@ namespace Framework
         switch(currentState)
         {
         case DEBUG_AUDIO:
-          if(systemCounter > 60)
+          if(systemCounter > 30)
           {
             AUDIO->GetDebugData();
             FormatString(currentState);
             systemCounter = 0;
           }
-          
-          ++systemCounter;
-
+          Draw::SetColor(1.0f,1.0f,1.0f,1.0f);
           GRAPHICS->SetPosition(-100.0f, 0.0f);
-          GRAPHICS->DrawSpriteText(string.c_str(), 15.0f, "Helvetica");
+          GRAPHICS->DrawSpriteText(string.c_str(), 10.0f, "Helvetica");
 
           break;
 
         case DEBUG_GRAPHICS:
           GRAPHICS->GetDebugData();
-          Draw::SetColor(1.0,0.0,0.0,1.0);
-          Draw::DrawRect(-100.0f, 0.0f, 100.0f, 20.0f);
+          
           break;
         }
       }
 
-      
+      ++systemCounter;
 
       return;
     }
@@ -192,6 +197,103 @@ namespace Framework
 
   }
 
+  void Debug::DrawPerformance()
+  {
+    double totalTime = 0.0;
+    float offsetX = 0.0f;
+    int color = 0;
+    int i = 0;
+
+
+    if(performanceCounter > 30)
+    {
+      for(auto it = framerate->systems.begin(); it != framerate->systems.end(); ++it)
+      {
+        totalTime += it->second->timeTaken;
+        ++i;
+      }
+
+      previousTime = totalTime * 1000.0f;
+
+      if(!performance.systemCount)
+      {
+        performance.systemCount = i;
+
+        for(i = 0; i < performance.systemCount; ++i)
+        {
+
+          switch(i)
+          {
+          case 0:
+            performance.color[i] = Vec4(1.0f, 0.0f, 0.0f, 1.0f);
+            break;
+
+          case 1:
+            performance.color[i] = Vec4(1.0f, 1.0f, 0.0f, 1.0f);
+            break;
+
+          case 2:
+            performance.color[i] = Vec4(1.0f, 0.0f, 1.0f, 1.0f);
+            break;
+
+          case 3:
+            performance.color[i] = Vec4(1.0f, 1.0f, 1.0f, 1.0f);
+            break;
+
+          case 4:
+            performance.color[i] = Vec4(1.0f, 0.0f, 0.0f, 1.0f);
+            break;
+
+          case 5:
+            performance.color[i] = Vec4(1.0f, 1.0f, 0.0f, 1.0f);
+            break;
+
+          case 6:
+            performance.color[i] = Vec4(1.0f, 0.0f, 1.0f, 1.0f);
+            break;
+
+          case 7:
+            performance.color[i] = Vec4(1.0f, 1.0f, 1.0f, 1.0f);
+            break;
+
+          default:
+            performance.color[i] = Vec4(0.0f, 1.0f, 1.0f, 1.0f);
+            break;
+          }
+        }
+
+      }
+      i = 0;
+
+      for(auto it = framerate->systems.begin(); it != framerate->systems.end(); ++it)
+      {
+        double percent = it->second->timeTaken / totalTime;
+        performance.width[i] = 100.0 * percent;
+
+        performance.pos[i] = (performance.width[i] / 2.0f) + offsetX;
+        offsetX += performance.width[i];
+        ++i;
+      }
+
+      performanceCounter = 0;
+    }
+
+    for(int i = 0; i < performance.systemCount; ++i)
+    {
+      Draw::SetColor(performance.color[i].R, performance.color[i].G, performance.color[i].B, 1.0f);
+      Draw::SetRotation(0.0f);
+      Draw::DrawRect(performance.pos[i], -150.0f, performance.width[i], 20.0f);
+    }
+    Draw::SetColor(1.0f,1.0f,1.0f,1.0f);
+    Draw::SetPosition(150.0f, -150.0f);
+
+    std::string stringTime = std::to_string(previousTime).erase(4,std::string::npos) + "ms";
+    Draw::DrawString(stringTime.c_str(), 15.0f, "Helvetica");
+
+    ++performanceCounter;
+
+  }
+
 
 /*****************************************************************************/
 /*!
@@ -205,6 +307,11 @@ namespace Framework
     if(SHEEPINPUT->Keyboard.KeyIsPressed(VK_F2))
     {
       fpsFlag = !fpsFlag;
+    }
+
+    if(SHEEPINPUT->Keyboard.KeyIsPressed(VK_F3))
+    {
+      performanceFlag = !performanceFlag;
     }
 
     // F5 for audio debug

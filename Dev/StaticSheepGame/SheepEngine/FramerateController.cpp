@@ -114,6 +114,7 @@ namespace Framework
       ((LARGE_INTEGER*)_previousTime)->QuadPart += currentTime.QuadPart - ((LARGE_INTEGER*)_previousTime)->QuadPart;
       _dt = (double)elapsedTime.QuadPart / (double)WILSONS_CONSTANT1;
       _currentfps = 1.0 / _dt;
+      debug.totalTime = 0.0;
       return true;
     }
 
@@ -148,6 +149,7 @@ namespace Framework
     elapsedTime.QuadPart /= ((LARGE_INTEGER*)_freq)->QuadPart;
 
     debug.systems[name]->timeTaken = (float)(elapsedTime.QuadPart / (double)WILSONS_CONSTANT1);
+    debug.totalTime += debug.systems[name]->timeTaken;
     
     return (double)elapsedTime.QuadPart / (double)WILSONS_CONSTANT1;
   }

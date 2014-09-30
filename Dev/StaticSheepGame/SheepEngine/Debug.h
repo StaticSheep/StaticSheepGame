@@ -14,6 +14,14 @@ namespace Framework
     DEBUG_PERFORMANCE
   };
 
+  struct PerformanceData
+  {
+    float pos[16];
+    float width[16];
+    Vec4 color[16];
+    int systemCount;
+  };
+
   class Debug : public ISystem
   {
   public:
@@ -34,6 +42,7 @@ namespace Framework
 
     int GetState();
     void FormatString(int);
+    void DrawPerformance();
     std::string string;
 
     int currentState;
