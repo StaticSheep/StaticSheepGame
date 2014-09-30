@@ -102,6 +102,7 @@ class RenderContext
    GFX_API void SetRotation(const float theta);
    GFX_API void SetDimensions(const float w, const float h);
    GFX_API void SetBlendCol(const float r, const float g, const float b, const float a);
+   GFX_API void SetUseCam(bool camUse);
 
     /////////////////////////////////////////////////////////////
     //                    GETTER FUNCTIONS                     //
@@ -212,6 +213,7 @@ class RenderContext
       Mat4         view;
       Mat4         proj;
       Mat4         viewProj;
+      bool         used;
     };
 
     struct Transform

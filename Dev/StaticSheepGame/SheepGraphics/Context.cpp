@@ -38,8 +38,10 @@ namespace DirectSheep
     m_camera.view = matView;
 
     Mat4 matProj;
-    D3DXMatrixPerspectiveFovLH(&matProj, (FLOAT)D3DXToRadian(fov), (float)m_viewport.dim.width / (float)m_viewport.dim.height, 1.0f, 1000.0f);
-
+    if(m_camera.used)
+      D3DXMatrixPerspectiveFovLH(&matProj, (FLOAT)D3DXToRadian(fov), (float)m_viewport.dim.width / (float)m_viewport.dim.height, 1.0f, 1000.0f);
+    else
+      D3DXMatrixOrthoLH(&matProj, (float)m_viewport.dim.width, (float)m_viewport.dim.height, 1.0f, 1000.0f);
     m_camera.proj = matProj;
 
     m_camera.viewProj = matView * matProj;
@@ -98,7 +100,7 @@ namespace DirectSheep
   {
     m_viewport.dim = Dimension((unsigned)width, (unsigned)height);
     m_hwnd = hwnd;
-
+    m_camera.used = true;
     InitializeDeviceAndSwapChain();
     CreateDepthBuffer();
     InitializeBackBuffer();
@@ -815,6 +817,10 @@ namespace DirectSheep
       return m_textureRes[texHandle.index].size;
     }
 
+    void RenderContext::SetUseCam(bool camUse)
+    {
+      m_camera.used = camUse;
+    }
     /////////////////////////////////////////////////////////////
     //                    UTILITY FUNCTIONS                    //
     /////////////////////////////////////////////////////////////

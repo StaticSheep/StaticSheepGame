@@ -73,6 +73,7 @@ namespace Framework
     GRAPHICS->SetSize(trans->GetScale().X * Size.X * (TextureSize.X / frames.X), trans->GetScale().Y * Size.Y * (TextureSize.Y / frames.Y));
     GRAPHICS->SetColor(Color);
     GRAPHICS->SetUV(uvBegin, uvEnd);
+    GRAPHICS->SetUseCamera(true);
 
     GRAPHICS->DrawSprite(this);
     
