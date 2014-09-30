@@ -18,7 +18,7 @@ namespace Framework
     virtual void Initialize();
     virtual void Remove();
 
-    DirectSheep::Handle& SetTexture(const std::string& texture);
+    void SetTexture(const char * Texture);
     DirectSheep::Handle& GetTexture();
 
     Vec2 Size;
@@ -28,8 +28,10 @@ namespace Framework
 
     Handle transform;
 
+    void TweakSetTexture(const void * Texture);
+
     // DO NOT WRITE DIRECTLY TO THIS SILLY
-    std::string SpriteName;
+    std::string m_spriteName;
 
     void Draw();
 
