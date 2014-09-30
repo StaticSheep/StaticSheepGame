@@ -110,7 +110,7 @@ namespace Framework
   void AntTweakModule::Update(float dt)
   {
 #if USE_ANTTWEAKBAR
-    
+    RemoveBars();
 #endif
   }
 
@@ -118,12 +118,21 @@ namespace Framework
   {
     AntTweak::TBar* bar;
 
+    std::vector<Handle> removeList;
+
     for (size_t i=0; i < m_bars.Size(); ++i)
     {
       bar = (AntTweak::TBar*)m_bars[i];
 
       if (!bar->toRemove)
         continue;
+
+      removeList.push_back(bar->self);
+    }
+
+    for (size_t i=0; i < removeList.size(); ++i)
+    {
+      bar = this->GetBar(removeList[i]);
 
       TwDeleteBar((TwBar*)bar->antTweakBar);
       bar->~TBar();
