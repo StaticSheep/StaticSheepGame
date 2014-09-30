@@ -22,20 +22,25 @@ namespace Framework
     if(m_texture.GetType() == DirectSheep::NONE)
     {
       SetTexture("content/circle.png");
-      SpriteName = "content/circle.png";
+      m_spriteName = "content/circle.png";
     }
     else
-      SetTexture(SpriteName);
+      SetTexture(m_spriteName.c_str());
     
     //TODO not sure if we have a GetOwner()->has working
     space->hooks.Add("Draw", self, BUILD_FUNCTION(Sprite::Draw));
   }
 
-  DirectSheep::Handle& Sprite::SetTexture(const std::string& Texture)
+  void Sprite::SetTexture(const char * Texture)
   {
+    m_spriteName = Texture;
     m_texture = GRAPHICS->SetTexture(Texture);
     TextureSize = GRAPHICS->GetTextureDim(m_texture);
-    return m_texture;
+  }
+
+  void Sprite::TweakSetTexture(const void * Texture)
+  {
+    SetTexture(((std::string *)Texture)->c_str());
   }
 
   DirectSheep::Handle& Sprite::GetTexture()
