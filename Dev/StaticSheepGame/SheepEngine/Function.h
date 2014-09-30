@@ -7,6 +7,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 *****************************************************************/
 
 #pragma once
+#include "FuncSignature.h"
 
 namespace Framework
 {
@@ -166,6 +167,22 @@ namespace Framework
     void Bind(C* c)
     {
       m_context = c;
+    }
+
+    void ExplicitBind(const TypeInfo* type, void* data)
+    {
+      m_context = Variable(type, data);
+    }
+
+    void ForceBind(void* data)
+    {
+      if (m_sig.GetContext())
+        m_context = Variable(m_sig.GetContext(), data);
+    }
+
+    operator bool()
+    {
+      return m_callHelper != nullptr;
     }
 
     

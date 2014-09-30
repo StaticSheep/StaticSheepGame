@@ -25,7 +25,7 @@ namespace Framework
       if (isTweakGeneric)
       {
         // If there is a tweaking get or set callback for this type then we need to use another function
-        if (tweakMember->TweakSetCB() != nullptr)
+        if (tweakMember->TweakSetCB().Signature() != nullptr)
           bar->AddGenericVarCB(tempLabel, varType, tweakMember, tweakOffset, tweakGeneric, tweakMember->TweakSetCB(), tweakMember->TweakGetCB());
         else
           bar->AddGenericVarRW(tempLabel, varType, tweakMember, tweakOffset, tweakGeneric);
@@ -136,7 +136,7 @@ namespace Framework
       if (isTweakGeneric)
       {
         // If there is a tweaking get or set callback for this type then we need to use another function
-        if (tweakMember->TweakSetCB() != nullptr)
+        if (tweakMember->TweakSetCB())
           bar->AddGenericVarCB(tempLabel, AntTweak::TW_TYPE_STDSTRING, tweakMember, tweakOffset, tweakGeneric, tweakMember->TweakSetCB(), tweakMember->TweakGetCB());
         else
           bar->AddGenericVarRW(tempLabel, AntTweak::TW_TYPE_STDSTRING, tweakMember, tweakOffset, tweakGeneric);

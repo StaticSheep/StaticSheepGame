@@ -398,62 +398,52 @@ namespace Framework
   {
     AntTweak::TweakGenericVar* clientData = (AntTweak::TweakGenericVar*)rawData;
 
-    if (clientData->genericMember == nullptr)
-    {
-      clientData->setCB(value, clientData);
-      return;
-    }
-
-    // Get the type of the member we are changing
-    const TypeInfo* memberType = clientData->genericMember->Type();
     // Get a pointer to the generic object
     void* genericObject = clientData->genericSpace->GetHandles().Get(clientData->genericHandle);
 
     ErrorIf(genericObject == nullptr, "AntTweakBar GenericObject Variable Set", "Attempted to set a variable on an object which couldn't be found! Member: %s",
       clientData->genericMember->Name());
 
+    if (clientData->genericMember == nullptr || clientData->setCB)
+    {
+      clientData->setCB.ForceBind(genericObject);
+      clientData->setCB(value);
+      return;
+    }
+
+    // Get the type of the member we are changing
+    const TypeInfo* memberType = clientData->genericMember->Type();
+
     void* data = (char*)genericObject + clientData->realOffset;
 
-    if (clientData->setCB)
-    {
-      clientData->setCB(data, clientData);
-    }
-    else
-    {
-      // Use the types copy/assignment operation to set the member to the value
-      memberType->Copy(data, value);
-    }
+    // Use the types copy/assignment operation to set the member to the value
+    memberType->Copy(data, value);
   }
 
   static void TW_CALL GenericGetCB(void* value, void* rawData)
   {
     AntTweak::TweakGenericVar* clientData = (AntTweak::TweakGenericVar*)rawData;
 
-    if (clientData->genericMember == nullptr)
-    {
-      clientData->getCB(value, clientData);
-      return;
-    }
-
-    // Get the type of the member we are changing
-    const TypeInfo* memberType = clientData->genericMember->Type();
     // Get a pointer to the generic object
     void* genericObject = clientData->genericSpace->GetHandles().Get(clientData->genericHandle);
 
     ErrorIf(genericObject == nullptr, "AntTweakBar GenericObject Variable Set", "Attempted to set a variable on an object which couldn't be found! Member: %s",
       clientData->genericMember->Name());
 
+    if (clientData->genericMember == nullptr || clientData->getCB)
+    {
+      clientData->getCB.ForceBind(genericObject);
+      clientData->getCB(value);
+      return;
+    }
+
+    // Get the type of the member we are changing
+    const TypeInfo* memberType = clientData->genericMember->Type();
+
     void* data = (char*)genericObject + clientData->realOffset;
 
-    if (clientData->getCB)
-    {
-      clientData->getCB(value, clientData);
-    }
-    else
-    {
-      // Use the types copy/assignment operation to set the value
-      memberType->Copy(value, data);
-    }
+    // Use the types copy/assignment operation to set the value
+    memberType->Copy(value, data);
 
   }
 
@@ -461,31 +451,26 @@ namespace Framework
   {
     AntTweak::TweakGenericVar* clientData = (AntTweak::TweakGenericVar*)rawData;
 
-    if (clientData->genericMember == nullptr)
-    {
-      clientData->getCB(value, clientData);
-      return;
-    }
-
-    // Get the type of the member we are changing
-    const TypeInfo* memberType = clientData->genericMember->Type();
     // Get a pointer to the generic object
     void* genericObject = clientData->genericSpace->GetHandles().Get(clientData->genericHandle);
 
     ErrorIf(genericObject == nullptr, "AntTweakBar GenericObject Variable Set", "Attempted to set a variable on an object which couldn't be found! Member: %s",
       clientData->genericMember->Name());
 
+    if (clientData->genericMember == nullptr || clientData->getCB)
+    {
+      clientData->getCB.ForceBind(genericObject);
+      clientData->getCB(value);
+      return;
+    }
+
+    // Get the type of the member we are changing
+    const TypeInfo* memberType = clientData->genericMember->Type();
+
     void* data = (char*)genericObject + clientData->realOffset;
 
-    if (clientData->getCB)
-    {
-      clientData->getCB(value, clientData);
-    }
-    else
-    {
-      // Use the types copy/assignment operation to set the value
-      *(std::string**)value = (std::string*)(data);
-    }
+    // Use the types copy/assignment operation to set the value
+    *(std::string**)value = (std::string*)(data);
 
   }
 
@@ -494,12 +479,12 @@ namespace Framework
   void AntTweak::TBar::AddGenericVarRW(const char* name, AntTweak::engineTwType type, const Member* member, unsigned extraOffset, Generic* obj)
   {
 #if USE_ANTTWEAKBAR
-    AddGenericVarCB(name, type, member, extraOffset, obj);
+    AddGenericVarCB(name, type, member, extraOffset, obj, Function(), Function());
 #endif
   }
 
   // Adds a Read/Write callback variable from a generic object
-  void AntTweak::TBar::AddGenericVarCB(const char* name, AntTweak::engineTwType type, const Member* member, unsigned extraOffset, Generic* obj, aTSetCB setCB, aTGetCB getCB)
+  void AntTweak::TBar::AddGenericVarCB(const char* name, AntTweak::engineTwType type, const Member* member, unsigned extraOffset, Generic* obj, Function setCB, Function getCB)
   {
 #if USE_ANTTWEAKBAR
 

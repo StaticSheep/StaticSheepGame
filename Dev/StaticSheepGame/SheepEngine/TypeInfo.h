@@ -8,6 +8,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 #pragma once
 #include <vector>
+#include "Function.h"
 
 namespace Framework
 {
@@ -76,8 +77,8 @@ namespace Framework
     // Whether or not to auto-create a lua setter/getter
     bool AutoLua(void) const;
     // Custom Callbacks for AntTweak Setters/Getters
-    AntTweak::SetCallback TweakSetCB(void) const;
-    AntTweak::GetCallback TweakGetCB(void) const;
+    Function TweakSetCB(void) const;
+    Function TweakGetCB(void) const;
 
   private:
     const char *m_name;
@@ -88,8 +89,8 @@ namespace Framework
 
     // Uses AntTweakBar
     bool m_tweak;
-    AntTweak::GetCallback m_tweakGetCB;
-    AntTweak::SetCallback m_tweakSetCB;
+    Function m_tweakGetCB;
+    Function m_tweakSetCB;
 
     // AUtomatic lua setter/getter
     bool m_autoLua;
@@ -116,7 +117,7 @@ namespace Framework
     void Init( const char *name, unsigned size );
     // Adds a member to the type
     void AddMember( const TypeInfo *typeInfo, const char *name, unsigned offset, bool autoLua=true, bool tweak=false,
-      const char* tweakLabel=nullptr, AntTweak::SetCallback setCB=nullptr, AntTweak::GetCallback getCB=nullptr);
+      const char* tweakLabel=nullptr, Function setCB = Function(), Function getCB = Function());
     // Gets a member from the type
     const Member *GetMember( const char *memberName ) const;
 
