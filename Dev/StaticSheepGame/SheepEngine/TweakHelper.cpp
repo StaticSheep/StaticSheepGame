@@ -84,7 +84,7 @@ namespace Framework
             tweakMember = m;
 
             // If the next member is POD we stick it in a group
-            if (m->Type()->IsPOD())
+            if (m->Type()->IsPOD() || m->Type() == GET_TYPE(std::string))
               if (label)
                 bar->DefineGroup(label);
               else
