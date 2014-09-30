@@ -233,9 +233,9 @@ namespace Framework
   static void DuplicateObject(void* clientData)
   {
     GenericLookup* gl = (GenericLookup*)clientData;
-    GameObject* obj = gl->space->GetGameObject(gl->self);
-    
+
     GameObject* newObj = gl->space->CreateEmptyObject();
+    GameObject* obj = gl->space->GetGameObject(gl->self);
 
     newObj->Copy(*obj);
 

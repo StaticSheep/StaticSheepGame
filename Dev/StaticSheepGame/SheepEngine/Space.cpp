@@ -150,20 +150,20 @@ namespace Framework
 
   void GameSpace::Cleanup()
   {
-    std::vector<GameObject*> removeList;
+    std::vector<Handle> removeList;
 
     for (unsigned int i = 0; i < m_objects.Size(); ++i)
     {
       GameObject* obj = (GameObject*)m_objects[i];
       if (!obj->m_active || m_shuttingDown)
       {
-        removeList.push_back(obj);   
+        removeList.push_back(obj->self);   
       } // End object not active loop
     }
 
     for (unsigned int i = 0; i < removeList.size(); ++i)
     {
-      RemoveGameObject(removeList[i]);
+      RemoveGameObject(this->GetGameObject(removeList[i]));
     }
 
     removeList.clear();

@@ -118,7 +118,8 @@ namespace Framework
     {
       it->second->~HookCollection();
     }
-    HookMap.clear();
+    if (HookMap.size() > 0)
+      HookMap.clear();
   }
 
   
