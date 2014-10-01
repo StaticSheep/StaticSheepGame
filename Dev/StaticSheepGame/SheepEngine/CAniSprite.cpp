@@ -6,7 +6,7 @@
 namespace Framework
 {
 
-  AniSprite::AniSprite() : uvBegin(0,0), uvEnd(1,1), frames(4,2), currFrame(0,0)
+  AniSprite::AniSprite() : uvBegin(0,0), uvEnd(1,1), frames(1,1), currFrame(0,0)
   {
     transform = NULL;
   }
@@ -48,13 +48,6 @@ namespace Framework
 
     uvBegin = Vec2(offsetX, offsetY);
     uvEnd = Vec2(offsetX + width, offsetY + height);
-    if(currFrame.X <= frames.X) 
-      currFrame.X += .01f;
-    else
-    {
-      currFrame.Y++;
-      currFrame.X = 0;
-    }
     
   }
 

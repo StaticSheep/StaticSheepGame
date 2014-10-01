@@ -90,10 +90,21 @@ namespace Framework
               else
                 bar->DefineGroup(tempLabel);
 
-            mVar.Tweak(bar, m->Name(), m->TweakLabel());
+            std::string uniqueName = tempLabel;
+            uniqueName += "-";
+            uniqueName += m->Name();
+
+            mVar.Tweak(bar, uniqueName.c_str(), m->TweakLabel());
 
             if (!m->Type()->IsPOD())
             {
+              std::string groupName;
+
+              if (label)
+                groupName = label;
+              else
+                groupName = tempLabel;
+              
               if (m->TweakLabel())
                 if (label)
                   bar->SetGroupParent(m->TweakLabel(), label);
@@ -116,8 +127,11 @@ namespace Framework
         //  tweakOffset -= lastOffset;
 
         // No longer tweaking a generic
-        if (isTweakGeneric)
+        if (typeData->GetAType() == TW_TYPE_COMPONENT)
+        {
           isTweakGeneric = false;
+        }
+
       }
       else // We are POD data that needs to be tweaked
       {

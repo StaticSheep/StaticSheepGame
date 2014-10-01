@@ -10,7 +10,7 @@ namespace Framework
 {
   void Tester::Initialize()
   {
-    space->hooks.Add("LogicUpdate", self, BUILD_FUNCTION(Tester::Update));
+    //space->hooks.Add("LogicUpdate", self, BUILD_FUNCTION(Tester::Update));
   }
 
   void Tester::Update(float dt)

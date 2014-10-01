@@ -21,8 +21,8 @@ namespace Framework
 
     if(m_texture.GetType() == DirectSheep::NONE)
     {
-      SetTexture("content/circle.png");
-      m_spriteName = "content/circle.png";
+      SetTexture("content/Default.png");
+      m_spriteName = "content/Default.png";
     }
     else
       SetTexture(m_spriteName.c_str());
