@@ -89,7 +89,6 @@ namespace Framework
     if (hamster.MessageId == Message::PostDraw)
     {
       int channels;
-      float temp[32][128];
       // if F2 was pressed, lets display the FPS
       if(fpsFlag)
       {
@@ -143,6 +142,7 @@ namespace Framework
             }
           }
           Draw::SetColor(1.0f,1.0f,1.0f,1.0f);
+          Draw::SetRotation(0.0f);
           GRAPHICS->SetPosition(-100.0f, 0.0f);
           GRAPHICS->DrawSpriteText(string.c_str(), 10.0f, "Helvetica");
 
@@ -228,7 +228,7 @@ namespace Framework
         ++i;
       }
 
-      previousTime = totalTime * 1000.0f;
+      previousTime = (float)(totalTime * 1000.0f);
 
       if(!performance.systemCount)
       {
@@ -283,7 +283,7 @@ namespace Framework
       for(auto it = framerate->systems.begin(); it != framerate->systems.end(); ++it)
       {
         double percent = it->second->timeTaken / totalTime;
-        performance.width[i] = 100.0 * percent;
+        performance.width[i] = (float)(100.0 * percent);
 
         performance.pos[i] = (performance.width[i] / 2.0f) + offsetX;
         offsetX += performance.width[i];

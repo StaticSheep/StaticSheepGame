@@ -205,9 +205,6 @@ namespace Framework
 
   const void* SheepAudio::GetDebugData()
   {
-    int index;
-    
-
     ErrorCheck(_system->getCPUUsage(&debug->cpuLoad));
     ErrorCheck(_lowLevelSystem->getChannelsPlaying(&debug->channels));
     ErrorCheck(FMOD::Memory_GetStats(NULL, &debug->RAM, false));
