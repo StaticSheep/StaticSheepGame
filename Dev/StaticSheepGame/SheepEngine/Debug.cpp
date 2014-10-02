@@ -138,7 +138,7 @@ namespace Framework
             {
               float height = ((*(FMOD_DSP_PARAMETER_FFT*)audio->data).spectrum[i][j]);
               Draw::SetColor(1.0f,0.0f,0.0f,1.0f);
-              Draw::DrawRect(-200.0f + j * 2.0f, -150.0f, 2.0f, height * 1000.0f);
+              Draw::DrawRect(-100.0f + j * 2.0f, -100.0f, 2.0f, height * 1000.0f);
             }
           }
           Draw::SetColor(1.0f,1.0f,1.0f,1.0f);
@@ -240,35 +240,44 @@ namespace Framework
           switch(i)
           {
           case 0:
-            performance.color[i] = Vec4(1.0f, 0.0f, 0.0f, 1.0f);
+            //246, 34, 23 red
+            performance.color[i] = Vec4(0.96f, 0.13f, 0.09f, 1.0f);
             break;
 
           case 1:
-            performance.color[i] = Vec4(1.0f, 1.0f, 0.0f, 1.0f);
+            //53, 126, 199 blue
+            performance.color[i] = Vec4(0.21f, 0.49f, 0.78f, 1.0f);
             break;
 
           case 2:
-            performance.color[i] = Vec4(1.0f, 0.0f, 1.0f, 1.0f);
+            // 125, 5, 82 purple
+            performance.color[i] = Vec4(0.49f, 0.02f, 0.32f, 1.0f);
             break;
 
           case 3:
-            performance.color[i] = Vec4(1.0f, 1.0f, 1.0f, 1.0f);
+            // 247, 120, 161 pink
+            performance.color[i] = Vec4(0.97f, 0.47f, 0.63f, 1.0f);
             break;
 
           case 4:
-            performance.color[i] = Vec4(1.0f, 0.0f, 0.0f, 1.0f);
+            //70, 199, 199 teal
+            performance.color[i] = Vec4(0.27f, 0.78f, 0.78f, 1.0f);
+            
             break;
 
           case 5:
-            performance.color[i] = Vec4(1.0f, 1.0f, 0.0f, 1.0f);
+            // 248, 114, 23 orange
+            performance.color[i] = Vec4(0.97f, 0.56f, 0.09f, 1.0f);
             break;
 
           case 6:
-            performance.color[i] = Vec4(1.0f, 0.0f, 1.0f, 1.0f);
+            // 255, 245, 238 cream
+            performance.color[i] = Vec4(1.0f, 0.96f, 0.93f, 1.0f);
             break;
 
           case 7:
-            performance.color[i] = Vec4(1.0f, 1.0f, 1.0f, 1.0f);
+            // 251, 177, 23 yellow
+            performance.color[i] = Vec4(0.98f, 0.69f, 0.09f, 1.0f);
             break;
 
           default:
@@ -282,11 +291,16 @@ namespace Framework
 
       for(auto it = framerate->systems.begin(); it != framerate->systems.end(); ++it)
       {
+        performance.times[i] = it->second->timeTaken;
         double percent = it->second->timeTaken / totalTime;
-        performance.width[i] = (float)(100.0 * percent);
+        performance.width[i] = (float)(300.0 * percent);
 
         performance.pos[i] = (performance.width[i] / 2.0f) + offsetX;
         offsetX += performance.width[i];
+        
+        //Draw::SetColor(performance.color[i].R, performance.color[i].G, performance.color[i].B, 1.0f);
+        
+        performance.names[i] = it->first.c_str();
         ++i;
       }
 
@@ -297,7 +311,14 @@ namespace Framework
     {
       Draw::SetColor(performance.color[i].R, performance.color[i].G, performance.color[i].B, 1.0f);
       Draw::SetRotation(0.0f);
-      Draw::DrawRect(performance.pos[i], -150.0f, performance.width[i], 20.0f);
+      Draw::DrawRect(performance.pos[i] - 100.0f, -150.0f, performance.width[i], 20.0f);
+      Draw::DrawRect( -100.0f, i * -15.0f, 15.0f, 15.0f);
+      Draw::SetPosition(10.0f, i * -15.0f);
+
+      std::string newString(performance.names[i]);
+      newString += "   " + std::to_string(performance.times[i] * 1000.0f).erase(4,std::string::npos) + "ms";
+
+      Draw::DrawString(newString.c_str(), 15.0f, "Helvetica");
     }
     Draw::SetColor(1.0f,1.0f,1.0f,1.0f);
     Draw::SetPosition(150.0f, -150.0f);

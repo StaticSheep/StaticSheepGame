@@ -346,7 +346,7 @@ namespace DirectSheep
       RGBTOBGR(D3DXCOLOR(m_spriteBlend.r,m_spriteBlend.g,m_spriteBlend.b, m_spriteBlend.a)),// Text color, 0xAaBbGgRr
       NULL,
       matFinal,
-      FW1_RESTORESTATE | FW1_CENTER | FW1_VCENTER | FW1_NOWORDWRAP
+      FW1_RESTORESTATE | FW1_LEFT | FW1_VCENTER | FW1_NOWORDWRAP
       );// Flags (for example FW1_RESTORESTATE to keep context states 
 
     }

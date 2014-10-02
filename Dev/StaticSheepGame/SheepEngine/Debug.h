@@ -20,6 +20,8 @@ namespace Framework
     float width[16];
     Vec4 color[16];
     int systemCount;
+    const char* names[16];
+    float times[16];
   };
 
   class Debug : public ISystem
