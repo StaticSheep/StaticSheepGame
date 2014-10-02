@@ -49,8 +49,10 @@ namespace Framework
     objName += " [GUID: ";
     objName += std::to_string(obj.guid) + "]";
 
+    std::string barID = std::to_string(obj.guid);
+
     // Create a new bar for this object
-    AntTweak::TBar* objectBar = ATWEAK->CreateBar(objName.c_str());
+    AntTweak::TBar* objectBar = ATWEAK->CreateBar(barID.c_str());
     obj.tweakHandle = objectBar->self;
     obj.tweakListComponents = false;
     obj.tweakDeleteComponent = false;

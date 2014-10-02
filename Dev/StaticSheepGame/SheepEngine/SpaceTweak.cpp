@@ -66,7 +66,7 @@ namespace Framework
   {
     GameSpace* space = (GameSpace*)clientData;
     
-    FACTORY->SaveSpaceToFile(space, space->GetName().c_str(), nullptr, true, true);
+    FACTORY->SaveSpaceToFile(space, space->GetName().c_str(), true);
 
     std::cout << "Saved Space " << space->GetName().c_str() << " to file.\n";
   }

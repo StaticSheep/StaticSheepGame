@@ -14,8 +14,8 @@ GameObject
     Rotation float 0.000000
     Scale Vec3
     {
-      x_ float 1.000000
-      y_ float 1.000000
+      x_ float 2.000000
+      y_ float 2.000000
       z_ float 0.000000
     }
   }
@@ -36,6 +36,154 @@ GameObject
   SoundEmitter
   {
   }
+
+
+}
+GameObject
+{
+  name std::string "ShadowX"
+  archetype std::string ""
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -200.000000
+      y_ float 0.000000
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+
+
+
+  AniSprite
+  {
+    Size Vec2
+    {
+      X float 1.000000
+      Y float 1.000000
+    }
+  }
+
+
+
+
+
+}
+GameObject
+{
+  name std::string "ShadowX"
+  archetype std::string ""
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 200.000000
+      y_ float 0.000000
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+
+
+
+  AniSprite
+  {
+    Size Vec2
+    {
+      X float 1.000000
+      Y float 1.000000
+    }
+  }
+
+
+
+
+
+}
+GameObject
+{
+  name std::string "ShadowX"
+  archetype std::string ""
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 350.000000
+      y_ float 0.000000
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+
+
+
+  AniSprite
+  {
+    Size Vec2
+    {
+      X float 1.000000
+      Y float 1.000000
+    }
+  }
+
+
+
+
+
+}
+GameObject
+{
+  name std::string "ShadowX"
+  archetype std::string ""
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -350.000000
+      y_ float 0.000000
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+
+
+
+  AniSprite
+  {
+    Size Vec2
+    {
+      X float 1.000000
+      Y float 1.000000
+    }
+  }
+
+
+
 
 
 }

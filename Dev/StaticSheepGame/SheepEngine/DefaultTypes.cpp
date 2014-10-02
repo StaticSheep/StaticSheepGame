@@ -136,6 +136,7 @@ namespace Framework
     //TYPE_SET_TO_LUA( GameSpace*, Lua::GameSpaceToLua);
 
     TYPE_REGISTER( Transform );
+    Transform::RegisterMembers();
     TYPE_SET_FROM_LUA( Transform, Lua::GenericObjectFromLua );
     TYPE_SET_TWEAK_TYPE( Transform, AntTweak::TW_TYPE_COMPONENT );
     TYPE_SET_SERIALIZER( Transform, Transform::Serialize );

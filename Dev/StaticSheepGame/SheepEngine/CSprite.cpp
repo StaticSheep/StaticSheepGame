@@ -19,10 +19,12 @@ namespace Framework
   {
     transform = this->GetOwner()->GetComponentHandle(eTransform);
 
+    if (m_spriteName.length() == 0)
+      m_spriteName = "content/Default.png";
+
     if(m_texture.GetType() == DirectSheep::NONE)
     {
-      SetTexture("content/Default.png");
-      m_spriteName = "content/Default.png";
+      SetTexture(m_spriteName.c_str());
     }
     else
       SetTexture(m_spriteName.c_str());

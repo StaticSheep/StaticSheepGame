@@ -1,0 +1,41 @@
+GameObject
+{
+  name std::string ""
+  archetype std::string "StaticC"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -120.000000
+      y_ float -170.000000
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+
+  Sprite
+  {
+    m_spriteName std::string "content/LCircle.png"
+    Size Vec2
+    {
+      X float 1.000000
+      Y float 1.000000
+    }
+  }
+  
+  BoxCollider
+  {
+    m_width float 64.000000
+    m_height float 12.000000
+    m_materialName std::string "Static"
+  }
+
+
+
+}

@@ -149,16 +149,20 @@ namespace Framework
         // Get the type info relating to this component
         const TypeInfo *typeInfo = FACTORY->GetComponentType( EComponent(i) );
 
+        Variable LVar = Variable(typeInfo, (char*)comp);
+        Variable RVar = Variable(typeInfo, (char*)rhs.GetComponent(i));
+        typeInfo->Copy(LVar.GetData(), RVar.GetData());
+
         // Iterate through all members in the component that are registered to be serialized
-        for (unsigned int m = 0; m < typeInfo->GetMembers().size(); ++m)
-        {
-          // Get the actual member
-          const Member member = typeInfo->GetMembers()[m];
-          // Copy over the member data from the archetype into the object
-          Variable LVar = Variable(member.Type(), (char*)comp + member.Offset());
-          Variable RVar = Variable(member.Type(), (char*)GetComponent(i) + member.Offset());
-          member.Type()->Copy(LVar.GetData(), RVar.GetData());
-        }
+        //for (unsigned int m = 0; m < typeInfo->GetMembers().size(); ++m)
+        //{
+        //  // Get the actual member
+        //  const Member member = typeInfo->GetMembers()[m];
+        //  // Copy over the member data from the archetype into the object
+        //  Variable LVar = Variable(member.Type(), (char*)comp + member.Offset());
+        //  Variable RVar = Variable(member.Type(), (char*)rhs.GetComponent(i) + member.Offset());
+        //  member.Type()->Copy(LVar.GetData(), RVar.GetData());
+        //}
 
       }
     } // End component iteration
