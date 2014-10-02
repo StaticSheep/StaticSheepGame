@@ -160,8 +160,7 @@ namespace Framework
 
     TYPE_REGISTER( AniSprite );
     TYPE_ADD_MEMBER( AniSprite, Size, false, true, "Size");
-    TYPE_ADD_MEMBER( AniSprite, frames, false, true, "Frames");
-    TYPE_ADD_MEMBER( AniSprite, currFrame, false, true, "CurrentFrame");
+    //TYPE_ADD_MEMBER( AniSprite, m_, false, true, "Frames");
     TYPE_SET_TWEAK_TYPE( AniSprite, AntTweak::TW_TYPE_COMPONENT );
     TYPE_SET_FROM_LUA( AniSprite, Lua::GenericObjectFromLua );
 

@@ -6,7 +6,11 @@
 namespace Framework
 {
 
-  AniSprite::AniSprite() : uvBegin(0,0), uvEnd(1,1), frames(1,1), currFrame(0,0)
+  AniSprite::AniSprite(): uvBegin(0,0), uvEnd(1,1), m_frames(12,1), m_currFrame(0),
+    m_endFrame(11),
+    m_startFrame(0),
+    m_startFramePos(0, 0),
+    m_frameRate(20)
   {
     transform = NULL;
   }
@@ -17,8 +21,7 @@ namespace Framework
 
     if(m_texture.GetType() == DirectSheep::NONE)
     {
-      SetTexture("content/pixel_sheep_sprite_sheet.png");
-      m_spriteName = "content/pixel_sheep_sprite_sheet.png";
+      SetTexture("content/spritesheet.png");
     }
     else
       SetTexture(m_spriteName.c_str());
@@ -29,31 +32,64 @@ namespace Framework
 
   DirectSheep::Handle& AniSprite::SetTexture(const std::string& Texture)
   {
+    m_spriteName = Texture;
     m_texture = GRAPHICS->SetTexture(Texture);
     TextureSize = GRAPHICS->GetTextureDim(m_texture);
+
+    m_frameWidth = 1 / m_frames.X;
+    m_frameHeight = 1 / m_frames.Y;
+
+    m_framePos = Vec2(0, 0);
+    
     return m_texture;
   }
 
   void AniSprite::UpdateUV(void)
   {
-    float width;
-    float height;
     float offsetX;
     float offsetY;
 
-    width = (1 / frames.X);
-    height = (1 / frames.Y);
-    offsetX = width * (int)currFrame.X;
-    offsetY = height * (int)currFrame.Y;
+
+    offsetX = m_frameWidth * m_framePos.X;
+    offsetY = m_frameHeight * m_framePos.Y;
 
     uvBegin = Vec2(offsetX, offsetY);
-    uvEnd = Vec2(offsetX + width, offsetY + height);
-    
+    uvEnd = Vec2(offsetX + m_frameWidth, offsetY + m_frameHeight);
   }
 
   void AniSprite::Remove(void)
   {
     space->hooks.Remove("Draw", self);
+  }
+
+  void AniSprite::CheckNextFrame()
+  {
+    float dt = ENGINE->Framerate.GetDT();
+
+    m_time += dt;
+
+    if (m_time > 1 / m_frameRate)
+    {
+      m_time -= 1 / m_frameRate;
+      m_currFrame += 1;
+
+      if (m_currFrame > m_endFrame)
+      {
+        m_currFrame = m_startFrame;
+        m_framePos = m_startFramePos;
+        return;
+      }
+
+      m_framePos.X += 1;
+
+      if (m_framePos.X > m_frames.X)
+      {
+        m_framePos.X = 0;
+        m_framePos.Y += 1;
+      }
+      
+    }
+    
   }
 
   void AniSprite::Draw()
@@ -63,12 +99,15 @@ namespace Framework
     UpdateUV();
     GRAPHICS->SetPosition(trans->GetTranslation().X, trans->GetTranslation().Y);
     GRAPHICS->SetRotation(trans->GetRotation());
-    GRAPHICS->SetSize(trans->GetScale().X * Size.X * (TextureSize.X / frames.X), trans->GetScale().Y * Size.Y * (TextureSize.Y / frames.Y));
+    GRAPHICS->SetSize(trans->GetScale().X * Size.X * (TextureSize.X / m_frames.X), trans->GetScale().Y * Size.Y * (TextureSize.Y / m_frames.Y));
     GRAPHICS->SetColor(Color);
     GRAPHICS->SetUV(uvBegin, uvEnd);
     GRAPHICS->SetUseCamera(true);
 
     GRAPHICS->DrawSprite(this);
+
+    CheckNextFrame();
+    
     
   }
 

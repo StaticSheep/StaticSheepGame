@@ -21,13 +21,30 @@ namespace Framework
     void Draw(void);
     void UpdateUV(void);
 
-    Vec2 frames;
-    Vec2 currFrame;
+    Vec2 m_frames;
+
+    float m_frameRate;
+
+    int m_currFrame;
+    int m_startFrame;
+    int m_endFrame;
 
   private:
     Vec2 uvBegin;
     Vec2 uvEnd;
 
+    float m_time;
+
+    int m_numFramesX;
+    int m_numFramesY;
+
+    float m_frameWidth;
+    float m_frameHeight;
+
+    Vec2 m_framePos;
+    Vec2 m_startFramePos;
+
+    void CheckNextFrame();
     
   };
 }
