@@ -197,52 +197,34 @@ namespace Framework
     file.GetLine('\n');
   }
 
-  static void TweakTranslationSet(const void* value, void* rawData)
+  void Transform::TweakTranslationSet(const void* value)
   {
-    AntTweak::TweakGenericVar* clientData = (AntTweak::TweakGenericVar*)rawData;
-    Transform* tr = clientData->genericSpace->GetHandles().GetAs<Transform>(clientData->genericHandle);
-
-    tr->SetTranslation(*(Vec3*)value);
+    SetTranslation(*(Vec3*)value);
   }
 
-  static void TweakTranslationGet(void* value, void* rawData)
+  void Transform::TweakTranslationGet(void* value)
   {
-    AntTweak::TweakGenericVar* clientData = (AntTweak::TweakGenericVar*)rawData;
-    Transform* tr = clientData->genericSpace->GetHandles().GetAs<Transform>(clientData->genericHandle);
-
-    *(Vec3*)value = tr->GetTranslation(false);
+    *(Vec3*)value = GetTranslation(false);
   }
 
-  static void TweakScaleSet(const void* value, void* rawData)
+  void Transform::TweakScaleSet(const void* value)
   {
-    AntTweak::TweakGenericVar* clientData = (AntTweak::TweakGenericVar*)rawData;
-    Transform* tr = clientData->genericSpace->GetHandles().GetAs<Transform>(clientData->genericHandle);
-
-    tr->SetScale(*(Vec3*)value);
+    SetScale(*(Vec3*)value);
   }
 
-  static void TweakScaleGet(void* value, void* rawData)
+  void Transform::TweakScaleGet(void* value)
   {
-    AntTweak::TweakGenericVar* clientData = (AntTweak::TweakGenericVar*)rawData;
-    Transform* tr = clientData->genericSpace->GetHandles().GetAs<Transform>(clientData->genericHandle);
-
-    *(Vec3*)value = tr->GetScale(false);
+    *(Vec3*)value = GetScale(false);
   }
 
-  static void TweakRotationSet(const void* value, void* rawData)
+  void Transform::TweakRotationSet(const void* value)
   {
-    AntTweak::TweakGenericVar* clientData = (AntTweak::TweakGenericVar*)rawData;
-    Transform* tr = clientData->genericSpace->GetHandles().GetAs<Transform>(clientData->genericHandle);
-
-    tr->SetRotation(*(float*)value);
+    SetRotation(*(float*)value);
   }
 
-  static void TweakRotationGet(void* value, void* rawData)
+  void Transform::TweakRotationGet(void* value)
   {
-    AntTweak::TweakGenericVar* clientData = (AntTweak::TweakGenericVar*)rawData;
-    Transform* tr = clientData->genericSpace->GetHandles().GetAs<Transform>(clientData->genericHandle);
-
-    *(float*)value = tr->GetRotation(false);
+    *(float*)value = GetRotation(false);
   }
 
   void Transform::ToTweak(AntTweak::TBar* bar, Variable& var, const char* tempLabel, const char* label)
@@ -250,13 +232,13 @@ namespace Framework
     Transform* tr = var.GetValue<Transform*>();
 
     bar->DefineGroup("Transform");
-    bar->AddGenericVarCB("Translation", AntTweak::TW_TYPE_DIR3F, nullptr, 0, tr, TweakTranslationSet, TweakTranslationGet);
+    bar->AddGenericVarCB("Translation", AntTweak::TW_TYPE_DIR3F, nullptr, 0, tr, BUILD_FUNCTION(Transform::TweakTranslationSet), BUILD_FUNCTION(Transform::TweakTranslationGet));
 
     bar->DefineGroup("Transform");
-    bar->AddGenericVarCB("Scale", AntTweak::TW_TYPE_DIR3F, nullptr, 0, tr, TweakScaleSet, TweakScaleGet);
+    bar->AddGenericVarCB("Scale", AntTweak::TW_TYPE_DIR3F, nullptr, 0, tr, BUILD_FUNCTION(Transform::TweakScaleSet), BUILD_FUNCTION(Transform::TweakScaleGet));
 
     bar->DefineGroup("Transform");
-    bar->AddGenericVarCB("Rotation", AntTweak::TW_TYPE_FLOAT, nullptr, 0, tr, TweakRotationSet, TweakRotationGet);
+    bar->AddGenericVarCB("Rotation", AntTweak::TW_TYPE_FLOAT, nullptr, 0, tr, BUILD_FUNCTION(Transform::TweakRotationSet), BUILD_FUNCTION(Transform::TweakRotationGet));
   }
 
 }

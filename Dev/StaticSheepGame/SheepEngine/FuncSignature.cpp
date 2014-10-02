@@ -20,6 +20,7 @@ namespace Framework
     m_ret = rhs.m_ret;
     m_args = rhs.m_args;
     m_argCount = rhs.m_argCount;
+    m_context = rhs.m_context;
 
     return *this;
   }

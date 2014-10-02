@@ -246,6 +246,7 @@ namespace Framework
 
   void SheepGraphics::SetUseCamera(bool useCam)
   {
+    m_renderContext->SetUseCam(useCam);
   }
 
   void SheepGraphics::DrawSpriteText(const char * text, float size, const char * font)

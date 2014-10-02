@@ -21,14 +21,13 @@ namespace Framework
     void Draw(void);
     void UpdateUV(void);
 
-
-  private:
-
-    Vec2 uvBegin;
-    Vec2 uvEnd;
     Vec2 frames;
     Vec2 currFrame;
-    bool dirty;
+
+  private:
+    Vec2 uvBegin;
+    Vec2 uvEnd;
+
     
   };
 }

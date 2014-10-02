@@ -159,13 +159,15 @@ namespace Framework
       // Create the component and initialize it
       GameComponent* nComp = oc->gl.space->CreateComponent(cType);
       obj->AddComponent(nComp);
+      nComp->owner = obj->self;
+      nComp->Initialize();
     }
     else
     {
 
     }
 
-    obj->Initialize();
+    
 
     obj->tweakListComponents = false;
     obj->UpdateTweakBar();

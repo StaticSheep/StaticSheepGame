@@ -44,9 +44,9 @@ namespace Framework
       // Handle of the TweakGenericVar struct
       Handle self;
       // Extra Setcallback
-      SetCallback setCB;
+      Function setCB;
       // Extra Getcallback
-      GetCallback getCB;
+      Function getCB;
     };
 
 

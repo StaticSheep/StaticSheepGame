@@ -6,7 +6,7 @@
 namespace Framework
 {
 
-  AniSprite::AniSprite() : uvBegin(0,0), uvEnd(1,1), frames(4,2), currFrame(0,0)
+  AniSprite::AniSprite() : uvBegin(0,0), uvEnd(1,1), frames(1,1), currFrame(0,0)
   {
     transform = NULL;
   }
@@ -18,10 +18,10 @@ namespace Framework
     if(m_texture.GetType() == DirectSheep::NONE)
     {
       SetTexture("content/pixel_sheep_sprite_sheet.png");
-      SpriteName = "content/pixel_sheep_sprite_sheet.png";
+      m_spriteName = "content/pixel_sheep_sprite_sheet.png";
     }
     else
-      SetTexture(SpriteName);
+      SetTexture(m_spriteName.c_str());
     
     //TODO not sure if we have a GetOwner()->has working
     space->hooks.Add("Draw", self, BUILD_FUNCTION(AniSprite::Draw));
@@ -48,13 +48,6 @@ namespace Framework
 
     uvBegin = Vec2(offsetX, offsetY);
     uvEnd = Vec2(offsetX + width, offsetY + height);
-    if(currFrame.X <= frames.X) 
-      currFrame.X += .01f;
-    else
-    {
-      currFrame.Y++;
-      currFrame.X = 0;
-    }
     
   }
 
@@ -73,6 +66,7 @@ namespace Framework
     GRAPHICS->SetSize(trans->GetScale().X * Size.X * (TextureSize.X / frames.X), trans->GetScale().Y * Size.Y * (TextureSize.Y / frames.Y));
     GRAPHICS->SetColor(Color);
     GRAPHICS->SetUV(uvBegin, uvEnd);
+    GRAPHICS->SetUseCamera(true);
 
     GRAPHICS->DrawSprite(this);
     

@@ -1,71 +1,93 @@
-﻿Build started 9/20/2014 5:36:34 PM.
-     1>Project "C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\SheepEngine\SheepEngine.vcxproj" on node 2 (Build target(s)).
+﻿Build started 9/30/2014 7:00:40 PM.
+     1>Project "C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\SheepEngine\SheepEngine.vcxproj" on node 2 (Rebuild target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /IC:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\includes /Zi /nologo /W3 /WX- /O2 /Oi /Oy- /GL /D WIN32 /D DLL_ENGINEEXPORT /D NDEBUG /D _WINDOWS /D _USRDLL /D SHEEPENGINE_EXPORTS /D DLL_EXPORT /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Yc"precompiled.h" /Fp"Release\SheepEngine.pch" /Fo"Release\\" /Fd"Release\vc110.pdb" /Gd /TP /FIprecompiled.h /analyze- /errorReport:prompt precompiled.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /IC:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\includes /Zi /nologo /W3 /WX- /O2 /Oi /Oy- /GL /D WIN32 /D WIN32_LEAN_AND_MEAN /D DLL_ENGINEEXPORT /D SHEEPENGINE /D TW_STATIC /D NDEBUG /D _WINDOWS /D _USRDLL /D SHEEPENGINE_EXPORTS /D DLL_EXPORT /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Yc"precompiled.h" /Fp"Release\SheepEngine.pch" /Fo"Release\\" /Fd"Release\vc110.pdb" /Gd /TP /FIprecompiled.h /analyze- /errorReport:prompt precompiled.cpp
          precompiled.cpp
          Compiling Precompiled Header File...
-         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /IC:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\includes /Zi /nologo /W3 /WX- /O2 /Oi /Oy- /GL /D WIN32 /D DLL_ENGINEEXPORT /D NDEBUG /D _WINDOWS /D _USRDLL /D SHEEPENGINE_EXPORTS /D DLL_EXPORT /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Yu"precompiled.h" /Fp"Release\SheepEngine.pch" /Fo"Release\\" /Fd"Release\vc110.pdb" /Gd /TP /FIprecompiled.h /analyze- /errorReport:prompt ..\Utilities\Utilities.cpp Archetype.cpp CGamePad.cpp CLuaComponent.cpp CSprite.cpp CTester.cpp CTransform.cpp Camera.cpp Component.cpp DefaultTypes.cpp DrawLib.cpp Engine.cpp Enum.cpp Factory.cpp File.cpp FuncSignature.cpp Function.cpp GameLogic.cpp Handle.cpp HandleManager.cpp Hooks.cpp Input.cpp IntrospectionManager.cpp LuaDefaultBinds.cpp LuaInterface.cpp LuaTransfer.cpp Object.cpp ObjectAllocator.cpp PODSerialization.cpp PhysicsObject.cpp Serialization.cpp SheepAudio.cpp SheepGraphics.cpp SheepPhysics.cpp SheepSoundEvent.cpp Space.cpp TypeInfo.cpp Variable.cpp Vec2.cpp Vec4.cpp Window.cpp main.cpp sheep_engine.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /IC:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\includes /Zi /nologo /W3 /WX- /O2 /Oi /Oy- /GL /D WIN32 /D WIN32_LEAN_AND_MEAN /D DLL_ENGINEEXPORT /D SHEEPENGINE /D TW_STATIC /D NDEBUG /D _WINDOWS /D _USRDLL /D SHEEPENGINE_EXPORTS /D DLL_EXPORT /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Yu"precompiled.h" /Fp"Release\SheepEngine.pch" /Fo"Release\\" /Fd"Release\vc110.pdb" /Gd /TP /FIprecompiled.h /analyze- /errorReport:prompt ..\Utilities\Utilities.cpp AntTweakModule.cpp ..\Utilities\Vec3D.cpp Archetype.cpp Camera.cpp CBoxCollider.cpp CAniSprite.cpp CGamePad.cpp CLuaComponent.cpp Component.cpp CTester.cpp Debug.cpp DefaultTypes.cpp DrawLib.cpp Engine.cpp CTransform.cpp EngineTweak.cpp Enum.cpp Factory.cpp File.cpp FramerateController.cpp FuncSignature.cpp Function.cpp GameLogic.cpp Hooks.cpp Input.cpp IntrospectionManager.cpp LuaDefaultBinds.cpp LuaInterface.cpp LuaTransfer.cpp main.cpp ObjectAllocator.cpp ObjectTweak.cpp PhysicsObject.cpp PODSerialization.cpp CRigidBody.cpp Serialization.cpp SheepAudio.cpp SheepGraphics.cpp Handle.cpp HandleManager.cpp Object.cpp SheepPhysics.cpp SheepSoundEvent.cpp sheep_engine.cpp SoundEmitter.cpp SoundPlayer.cpp Space.cpp CSprite.cpp SpaceTweak.cpp TweakHelper.cpp TypeInfo.cpp Variable.cpp Vec2.cpp Vec3.cpp Vec4.cpp Window.cpp
          Utilities.cpp
+         AntTweakModule.cpp
+         Vec3D.cpp
          Archetype.cpp
+         Camera.cpp
+         CBoxCollider.cpp
+         CAniSprite.cpp
          CGamePad.cpp
          CLuaComponent.cpp
-         CSprite.cpp
-         CTester.cpp
-         CTransform.cpp
-         Camera.cpp
          Component.cpp
+         CTester.cpp
+         Debug.cpp
          DefaultTypes.cpp
          DrawLib.cpp
          Engine.cpp
+         CTransform.cpp
+         EngineTweak.cpp
          Enum.cpp
          Factory.cpp
+     1>Factory.cpp(397): warning C4996: 'localtime': This function or variable may be unsafe. Consider using localtime_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\time.inl(112) : see declaration of 'localtime'
          File.cpp
+         Compiling...
+         FramerateController.cpp
          FuncSignature.cpp
          Function.cpp
          GameLogic.cpp
-         Handle.cpp
-         HandleManager.cpp
-         Compiling...
          Hooks.cpp
          Input.cpp
          IntrospectionManager.cpp
          LuaDefaultBinds.cpp
          LuaInterface.cpp
          LuaTransfer.cpp
-         Object.cpp
+         main.cpp
          ObjectAllocator.cpp
-         PODSerialization.cpp
+         ObjectTweak.cpp
          PhysicsObject.cpp
+         PODSerialization.cpp
+         CRigidBody.cpp
          Serialization.cpp
          SheepAudio.cpp
          SheepGraphics.cpp
-     1>SheepGraphics.cpp(54): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+         Handle.cpp
+         Compiling...
+         HandleManager.cpp
+         Object.cpp
          SheepPhysics.cpp
          SheepSoundEvent.cpp
+         sheep_engine.cpp
+         SoundEmitter.cpp
+         SoundPlayer.cpp
          Space.cpp
+         CSprite.cpp
+         SpaceTweak.cpp
+         TweakHelper.cpp
          TypeInfo.cpp
          Variable.cpp
          Vec2.cpp
+         Vec3.cpp
          Vec4.cpp
-         Compiling...
          Window.cpp
-         main.cpp
-         sheep_engine.cpp
        Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\Release\SheepEngine.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\includes\FMOD /LIBPATH:C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\includes /LIBPATH:C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\Release SheepGraphics.lib SheepPhysics.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\Release\SheepEngine.pdb" /SUBSYSTEM:WINDOWS /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\Release\SheepEngine.lib" /MACHINE:X86 /SAFESEH Release\Utilities.obj
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\Release\SheepEngine.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\includes\AntTweak /LIBPATH:C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\includes\FMOD /LIBPATH:C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\includes /LIBPATH:C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\Release SheepGraphics.lib SheepPhysics.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\Release\SheepEngine.pdb" /SUBSYSTEM:WINDOWS /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\Release\SheepEngine.lib" /MACHINE:X86 /SAFESEH Release\Utilities.obj
+         Release\AntTweakModule.obj
+         Release\Vec3D.obj
          Release\Archetype.obj
          Release\Camera.obj
+         Release\CBoxCollider.obj
+         Release\CAniSprite.obj
          Release\CGamePad.obj
          Release\CLuaComponent.obj
          Release\Component.obj
          Release\CTester.obj
+         Release\Debug.obj
          Release\DefaultTypes.obj
          Release\DrawLib.obj
          Release\Engine.obj
          Release\CTransform.obj
+         Release\EngineTweak.obj
          Release\Enum.obj
          Release\Factory.obj
          Release\File.obj
+         Release\FramerateController.obj
          Release\FuncSignature.obj
          Release\Function.obj
          Release\GameLogic.obj
@@ -77,8 +99,10 @@
          Release\LuaTransfer.obj
          Release\main.obj
          Release\ObjectAllocator.obj
+         Release\ObjectTweak.obj
          Release\PhysicsObject.obj
          Release\PODSerialization.obj
+         Release\CRigidBody.obj
          Release\Serialization.obj
          Release\SheepAudio.obj
          Release\SheepGraphics.obj
@@ -89,27 +113,114 @@
          Release\SheepPhysics.obj
          Release\SheepSoundEvent.obj
          Release\sheep_engine.obj
+         Release\SoundEmitter.obj
+         Release\SoundPlayer.obj
          Release\Space.obj
          Release\CSprite.obj
+         Release\SpaceTweak.obj
+         Release\TweakHelper.obj
          Release\TypeInfo.obj
          Release\Variable.obj
          Release\Vec2.obj
+         Release\Vec3.obj
          Release\Vec4.obj
          Release\Window.obj
+     1>AntTweakBarStatic.lib(TwMgr.obj) : error LNK2038: mismatch detected for 'RuntimeLibrary': value 'MT_StaticRelease' doesn't match value 'MD_DynamicRelease' in Utilities.obj
+     1>AntTweakBarStatic.lib(TwMgr.obj) : error LNK2005: "public: void __thiscall std::basic_ios<char,struct std::char_traits<char> >::clear(int,bool)" (?clear@?$basic_ios@DU?$char_traits@D@std@@@std@@QAEXH_N@Z) already defined in msvcprt.lib(MSVCP110.dll)
+     1>AntTweakBarStatic.lib(TwMgr.obj) : error LNK2005: "public: virtual __thiscall std::basic_ios<char,struct std::char_traits<char> >::~basic_ios<char,struct std::char_traits<char> >(void)" (??1?$basic_ios@DU?$char_traits@D@std@@@std@@UAE@XZ) already defined in msvcprt.lib(MSVCP110.dll)
+     1>AntTweakBarStatic.lib(TwMgr.obj) : error LNK2005: "public: virtual void __thiscall std::basic_ios<char,struct std::char_traits<char> >::_Add_vtordisp2(void)" (?_Add_vtordisp2@?$basic_ios@DU?$char_traits@D@std@@@std@@UAEXXZ) already defined in msvcprt.lib(MSVCP110.dll)
+     1>AntTweakBarStatic.lib(TwMgr.obj) : error LNK2005: "public: virtual void __thiscall std::basic_ios<char,struct std::char_traits<char> >::_Add_vtordisp1(void)" (?_Add_vtordisp1@?$basic_ios@DU?$char_traits@D@std@@@std@@UAEXXZ) already defined in msvcprt.lib(MSVCP110.dll)
+     1>AntTweakBarStatic.lib(TwMgr.obj) : error LNK2005: "public: __thiscall std::ios_base::operator void *(void)const " (??Bios_base@std@@QBEPAXXZ) already defined in msvcprt.lib(MSVCP110.dll)
+     1>AntTweakBarStatic.lib(TwMgr.obj) : error LNK2005: "public: bool __thiscall std::ios_base::fail(void)const " (?fail@ios_base@std@@QBE_NXZ) already defined in msvcprt.lib(MSVCP110.dll)
+     1>AntTweakBarStatic.lib(TwMgr.obj) : error LNK2005: "public: int __thiscall std::ios_base::rdstate(void)const " (?rdstate@ios_base@std@@QBEHXZ) already defined in msvcprt.lib(MSVCP110.dll)
+     1>AntTweakBarStatic.lib(TwMgr.obj) : error LNK2005: "public: bool __thiscall std::ios_base::good(void)const " (?good@ios_base@std@@QBE_NXZ) already defined in msvcprt.lib(MSVCP110.dll)
+     1>AntTweakBarStatic.lib(TwMgr.obj) : error LNK2005: "public: class std::basic_ostream<char,struct std::char_traits<char> > * __thiscall std::basic_ios<char,struct std::char_traits<char> >::tie(void)const " (?tie@?$basic_ios@DU?$char_traits@D@std@@@std@@QBEPAV?$basic_ostream@DU?$char_traits@D@std@@@2@XZ) already defined in msvcprt.lib(MSVCP110.dll)
+     1>AntTweakBarStatic.lib(TwMgr.obj) : error LNK2005: "public: class std::basic_ostream<char,struct std::char_traits<char> > & __thiscall std::basic_ostream<char,struct std::char_traits<char> >::flush(void)" (?flush@?$basic_ostream@DU?$char_traits@D@std@@@std@@QAEAAV12@XZ) already defined in msvcprt.lib(MSVCP110.dll)
+     1>AntTweakBarStatic.lib(TwMgr.obj) : error LNK2005: "public: void __thiscall std::basic_ios<char,struct std::char_traits<char> >::setstate(int,bool)" (?setstate@?$basic_ios@DU?$char_traits@D@std@@@std@@QAEXH_N@Z) already defined in msvcprt.lib(MSVCP110.dll)
+     1>AntTweakBarStatic.lib(TwMgr.obj) : error LNK2005: "public: class std::basic_streambuf<char,struct std::char_traits<char> > * __thiscall std::basic_ios<char,struct std::char_traits<char> >::rdbuf(void)const " (?rdbuf@?$basic_ios@DU?$char_traits@D@std@@@std@@QBEPAV?$basic_streambuf@DU?$char_traits@D@std@@@2@XZ) already defined in msvcprt.lib(MSVCP110.dll)
+     1>AntTweakBarStatic.lib(TwMgr.obj) : error LNK2005: "public: void __thiscall std::basic_ostream<char,struct std::char_traits<char> >::_Osfx(void)" (?_Osfx@?$basic_ostream@DU?$char_traits@D@std@@@std@@QAEXXZ) already defined in msvcprt.lib(MSVCP110.dll)
+     1>AntTweakBarStatic.lib(TwMgr.obj) : error LNK2005: "public: int __thiscall std::ios_base::flags(void)const " (?flags@ios_base@std@@QBEHXZ) already defined in msvcprt.lib(MSVCP110.dll)
+     1>AntTweakBarStatic.lib(TwMgr.obj) : error LNK2005: "public: class std::locale __thiscall std::ios_base::getloc(void)const " (?getloc@ios_base@std@@QBE?AVlocale@2@XZ) already defined in msvcprt.lib(MSVCP110.dll)
+     1>AntTweakBarStatic.lib(TwMgr.obj) : error LNK2005: "public: virtual __thiscall std::_Facet_base::~_Facet_base(void)" (??1_Facet_base@std@@UAE@XZ) already defined in msvcprt.lib(MSVCP110.dll)
+     1>AntTweakBarStatic.lib(TwMgr.obj) : error LNK2005: "public: virtual class std::_Facet_base * __thiscall std::locale::facet::_Decref(void)" (?_Decref@facet@locale@std@@UAEPAV_Facet_base@3@XZ) already defined in msvcprt.lib(MSVCP110.dll)
+     1>AntTweakBarStatic.lib(TwMgr.obj) : error LNK2005: "public: virtual void __thiscall std::locale::facet::_Incref(void)" (?_Incref@facet@locale@std@@UAEXXZ) already defined in msvcprt.lib(MSVCP110.dll)
+     1>AntTweakBarStatic.lib(TwMgr.obj) : error LNK2005: "public: void __thiscall std::_Container_base0::_Orphan_all(void)" (?_Orphan_all@_Container_base0@std@@QAEXXZ) already defined in msvcprt.lib(MSVCP110.dll)
+     1>AntTweakBarStatic.lib(TwMgr.obj) : error LNK2005: "protected: __thiscall std::basic_ios<char,struct std::char_traits<char> >::basic_ios<char,struct std::char_traits<char> >(void)" (??0?$basic_ios@DU?$char_traits@D@std@@@std@@IAE@XZ) already defined in msvcprt.lib(MSVCP110.dll)
+     1>AntTweakBarStatic.lib(TwMgr.obj) : error LNK2005: "public: __thiscall std::basic_ostream<char,struct std::char_traits<char> >::basic_ostream<char,struct std::char_traits<char> >(class std::basic_streambuf<char,struct std::char_traits<char> > *,bool)" (??0?$basic_ostream@DU?$char_traits@D@std@@@std@@QAE@PAV?$basic_streambuf@DU?$char_traits@D@std@@@1@_N@Z) already defined in msvcprt.lib(MSVCP110.dll)
+     1>AntTweakBarStatic.lib(TwMgr.obj) : error LNK2005: "public: char __thiscall std::basic_ios<char,struct std::char_traits<char> >::widen(char)const " (?widen@?$basic_ios@DU?$char_traits@D@std@@@std@@QBEDD@Z) already defined in msvcprt.lib(MSVCP110.dll)
+     1>AntTweakBarStatic.lib(TwMgr.obj) : error LNK2005: "public: char __thiscall std::ctype<char>::widen(char)const " (?widen@?$ctype@D@std@@QBEDD@Z) already defined in msvcprt.lib(MSVCP110.dll)
+     1>AntTweakBarStatic.lib(TwMgr.obj) : error LNK2005: "public: static unsigned int __cdecl std::ctype<char>::_Getcat(class std::locale::facet const * *,class std::locale const *)" (?_Getcat@?$ctype@D@std@@SAIPAPBVfacet@locale@2@PBV42@@Z) already defined in msvcprt.lib(MSVCP110.dll)
+     1>AntTweakBarStatic.lib(TwMgr.obj) : error LNK2005: "public: __thiscall std::_Locinfo::~_Locinfo(void)" (??1_Locinfo@std@@QAE@XZ) already defined in msvcprt.lib(MSVCP110.dll)
+     1>AntTweakBarStatic.lib(TwMgr.obj) : error LNK2005: "public: char const * __thiscall std::_Yarn<char>::c_str(void)const " (?c_str@?$_Yarn@D@std@@QBEPBDXZ) already defined in msvcprt.lib(MSVCP110.dll)
+     1>AntTweakBarStatic.lib(TwMgr.obj) : error LNK2005: "public: __thiscall std::_Locinfo::_Locinfo(char const *)" (??0_Locinfo@std@@QAE@PBD@Z) already defined in msvcprt.lib(MSVCP110.dll)
+     1>AntTweakBarStatic.lib(TwMgr.obj) : error LNK2005: "protected: virtual __thiscall std::locale::facet::~facet(void)" (??1facet@locale@std@@MAE@XZ) already defined in msvcprt.lib(MSVCP110.dll)
+     1>AntTweakBarStatic.lib(TwMgr.obj) : error LNK2005: "protected: __thiscall std::locale::facet::facet(unsigned int)" (??0facet@locale@std@@IAE@I@Z) already defined in msvcprt.lib(MSVCP110.dll)
+     1>AntTweakBarStatic.lib(TwMgr.obj) : error LNK2005: "public: __thiscall std::locale::id::operator unsigned int(void)" (??Bid@locale@std@@QAEIXZ) already defined in msvcprt.lib(MSVCP110.dll)
+     1>AntTweakBarStatic.lib(TwMgr.obj) : error LNK2005: "public: virtual void __thiscall std::basic_ostream<char,struct std::char_traits<char> >::_Add_vtordisp2(void)" (?_Add_vtordisp2@?$basic_ostream@DU?$char_traits@D@std@@@std@@UAEXXZ) already defined in msvcprt.lib(MSVCP110.dll)
+     1>AntTweakBarStatic.lib(TwMgr.obj) : error LNK2005: "public: void __thiscall std::basic_ostream<char,struct std::char_traits<char> >::`vbase destructor'(void)" (??_D?$basic_ostream@DU?$char_traits@D@std@@@std@@QAEXXZ) already defined in msvcprt.lib(MSVCP110.dll)
+     1>AntTweakBarStatic.lib(TwMgr.obj) : error LNK2005: "public: virtual __thiscall std::basic_ostream<char,struct std::char_traits<char> >::~basic_ostream<char,struct std::char_traits<char> >(void)" (??1?$basic_ostream@DU?$char_traits@D@std@@@std@@UAE@XZ) already defined in msvcprt.lib(MSVCP110.dll)
+     1>AntTweakBarStatic.lib(TwMgr.obj) : error LNK2005: "public: virtual __thiscall std::basic_streambuf<char,struct std::char_traits<char> >::~basic_streambuf<char,struct std::char_traits<char> >(void)" (??1?$basic_streambuf@DU?$char_traits@D@std@@@std@@UAE@XZ) already defined in msvcprt.lib(MSVCP110.dll)
+     1>AntTweakBarStatic.lib(TwMgr.obj) : error LNK2005: "protected: virtual __int64 __thiscall std::basic_streambuf<char,struct std::char_traits<char> >::xsputn(char const *,__int64)" (?xsputn@?$basic_streambuf@DU?$char_traits@D@std@@@std@@MAE_JPBD_J@Z) already defined in msvcprt.lib(MSVCP110.dll)
+     1>AntTweakBarStatic.lib(TwMgr.obj) : error LNK2005: "protected: char * __thiscall std::basic_streambuf<char,struct std::char_traits<char> >::pptr(void)const " (?pptr@?$basic_streambuf@DU?$char_traits@D@std@@@std@@IBEPADXZ) already defined in msvcprt.lib(MSVCP110.dll)
+     1>AntTweakBarStatic.lib(TwMgr.obj) : error LNK2005: "protected: virtual __int64 __thiscall std::basic_streambuf<char,struct std::char_traits<char> >::xsgetn(char *,__int64)" (?xsgetn@?$basic_streambuf@DU?$char_traits@D@std@@@std@@MAE_JPAD_J@Z) already defined in msvcprt.lib(MSVCP110.dll)
+     1>AntTweakBarStatic.lib(TwMgr.obj) : error LNK2005: "protected: char * __thiscall std::basic_streambuf<char,struct std::char_traits<char> >::_Gninc(void)" (?_Gninc@?$basic_streambuf@DU?$char_traits@D@std@@@std@@IAEPADXZ) already defined in msvcprt.lib(MSVCP110.dll)
+     1>AntTweakBarStatic.lib(TwMgr.obj) : error LNK2005: "protected: char * __thiscall std::basic_streambuf<char,struct std::char_traits<char> >::gptr(void)const " (?gptr@?$basic_streambuf@DU?$char_traits@D@std@@@std@@IBEPADXZ) already defined in msvcprt.lib(MSVCP110.dll)
+     1>AntTweakBarStatic.lib(TwMgr.obj) : error LNK2005: "protected: virtual __int64 __thiscall std::basic_streambuf<char,struct std::char_traits<char> >::showmanyc(void)" (?showmanyc@?$basic_streambuf@DU?$char_traits@D@std@@@std@@MAE_JXZ) already defined in msvcprt.lib(MSVCP110.dll)
+     1>AntTweakBarStatic.lib(TwMgr.obj) : error LNK2005: "protected: char * __thiscall std::basic_streambuf<char,struct std::char_traits<char> >::_Pninc(void)" (?_Pninc@?$basic_streambuf@DU?$char_traits@D@std@@@std@@IAEPADXZ) already defined in msvcprt.lib(MSVCP110.dll)
+     1>AntTweakBarStatic.lib(TwMgr.obj) : error LNK2005: "public: virtual __thiscall std::basic_istream<char,struct std::char_traits<char> >::~basic_istream<char,struct std::char_traits<char> >(void)" (??1?$basic_istream@DU?$char_traits@D@std@@@std@@UAE@XZ) already defined in msvcprt.lib(MSVCP110.dll)
+     1>AntTweakBarStatic.lib(TwMgr.obj) : error LNK2005: "public: virtual void __thiscall std::basic_istream<char,struct std::char_traits<char> >::_Add_vtordisp1(void)" (?_Add_vtordisp1@?$basic_istream@DU?$char_traits@D@std@@@std@@UAEXXZ) already defined in msvcprt.lib(MSVCP110.dll)
+     1>AntTweakBarStatic.lib(TwMgr.obj) : error LNK2005: "public: char const * __thiscall std::_Locinfo::_Gettrue(void)const " (?_Gettrue@_Locinfo@std@@QBEPBDXZ) already defined in msvcprt.lib(MSVCP110.dll)
+     1>AntTweakBarStatic.lib(TwMgr.obj) : error LNK2005: "public: char const * __thiscall std::_Locinfo::_Getfalse(void)const " (?_Getfalse@_Locinfo@std@@QBEPBDXZ) already defined in msvcprt.lib(MSVCP110.dll)
+     1>AntTweakBarStatic.lib(TwMgr.obj) : error LNK2005: "public: struct _Cvtvec __thiscall std::_Locinfo::_Getcvt(void)const " (?_Getcvt@_Locinfo@std@@QBE?AU_Cvtvec@@XZ) already defined in msvcprt.lib(MSVCP110.dll)
+     1>AntTweakBarStatic.lib(TwMgr.obj) : error LNK2005: "public: struct lconv const * __thiscall std::_Locinfo::_Getlconv(void)const " (?_Getlconv@_Locinfo@std@@QBEPBUlconv@@XZ) already defined in msvcprt.lib(MSVCP110.dll)
+     1>AntTweakBarStatic.lib(TwMgr.obj) : error LNK2005: "public: __thiscall std::locale::id::id(unsigned int)" (??0id@locale@std@@QAE@I@Z) already defined in msvcprt.lib(MSVCP110.dll)
+     1>AntTweakBarStatic.lib(TwMgr.obj) : error LNK2005: "public: __int64 __thiscall std::ios_base::width(void)const " (?width@ios_base@std@@QBE_JXZ) already defined in msvcprt.lib(MSVCP110.dll)
+     1>AntTweakBarStatic.lib(TwMgr.obj) : error LNK2005: "public: __int64 __thiscall std::ios_base::width(__int64)" (?width@ios_base@std@@QAE_J_J@Z) already defined in msvcprt.lib(MSVCP110.dll)
+     1>AntTweakBarStatic.lib(TwMgr.obj) : error LNK2005: "public: __int64 __thiscall std::ios_base::precision(void)const " (?precision@ios_base@std@@QBE_JXZ) already defined in msvcprt.lib(MSVCP110.dll)
+     1>AntTweakBarStatic.lib(TwMgr.obj) : error LNK2005: "public: char const * __thiscall std::ctype<char>::widen(char const *,char const *,char *)const " (?widen@?$ctype@D@std@@QBEPBDPBD0PAD@Z) already defined in msvcprt.lib(MSVCP110.dll)
+     1>AntTweakBarStatic.lib(TwMgr.obj) : error LNK2005: "public: int __thiscall std::basic_streambuf<char,struct std::char_traits<char> >::sputc(char)" (?sputc@?$basic_streambuf@DU?$char_traits@D@std@@@std@@QAEHD@Z) already defined in msvcprt.lib(MSVCP110.dll)
+     1>AntTweakBarStatic.lib(TwMgr.obj) : error LNK2005: "public: bool __thiscall std::basic_istream<char,struct std::char_traits<char> >::_Ipfx(bool)" (?_Ipfx@?$basic_istream@DU?$char_traits@D@std@@@std@@QAE_N_N@Z) already defined in msvcprt.lib(MSVCP110.dll)
+     1>AntTweakBarStatic.lib(TwMgr.obj) : error LNK2005: "public: int __thiscall std::basic_streambuf<char,struct std::char_traits<char> >::snextc(void)" (?snextc@?$basic_streambuf@DU?$char_traits@D@std@@@std@@QAEHXZ) already defined in msvcprt.lib(MSVCP110.dll)
+     1>AntTweakBarStatic.lib(TwMgr.obj) : error LNK2005: "public: int __thiscall std::basic_streambuf<char,struct std::char_traits<char> >::sgetc(void)" (?sgetc@?$basic_streambuf@DU?$char_traits@D@std@@@std@@QAEHXZ) already defined in msvcprt.lib(MSVCP110.dll)
+     1>AntTweakBarStatic.lib(TwMgr.obj) : error LNK2005: "public: int __thiscall std::basic_streambuf<char,struct std::char_traits<char> >::sbumpc(void)" (?sbumpc@?$basic_streambuf@DU?$char_traits@D@std@@@std@@QAEHXZ) already defined in msvcprt.lib(MSVCP110.dll)
+     1>AntTweakBarStatic.lib(TwMgr.obj) : error LNK2005: "public: __int64 __thiscall std::basic_streambuf<char,struct std::char_traits<char> >::sputn(char const *,__int64)" (?sputn@?$basic_streambuf@DU?$char_traits@D@std@@@std@@QAE_JPBD_J@Z) already defined in msvcprt.lib(MSVCP110.dll)
+     1>AntTweakBarStatic.lib(TwMgr.obj) : error LNK2005: "protected: void __thiscall std::basic_streambuf<char,struct std::char_traits<char> >::_Init(void)" (?_Init@?$basic_streambuf@DU?$char_traits@D@std@@@std@@IAEXXZ) already defined in msvcprt.lib(MSVCP110.dll)
+     1>AntTweakBarStatic.lib(TwMgr.obj) : error LNK2005: "protected: __thiscall std::basic_streambuf<char,struct std::char_traits<char> >::basic_streambuf<char,struct std::char_traits<char> >(void)" (??0?$basic_streambuf@DU?$char_traits@D@std@@@std@@IAE@XZ) already defined in msvcprt.lib(MSVCP110.dll)
+     1>AntTweakBarStatic.lib(TwMgr.obj) : error LNK2005: "public: __thiscall std::basic_istream<char,struct std::char_traits<char> >::basic_istream<char,struct std::char_traits<char> >(class std::basic_streambuf<char,struct std::char_traits<char> > *,bool)" (??0?$basic_istream@DU?$char_traits@D@std@@@std@@QAE@PAV?$basic_streambuf@DU?$char_traits@D@std@@@1@_N@Z) already defined in msvcprt.lib(MSVCP110.dll)
+     1>AntTweakBarStatic.lib(TwMgr.obj) : error LNK2005: "protected: void __thiscall std::basic_streambuf<char,struct std::char_traits<char> >::setp(char *,char *)" (?setp@?$basic_streambuf@DU?$char_traits@D@std@@@std@@IAEXPAD0@Z) already defined in msvcprt.lib(MSVCP110.dll)
+     1>AntTweakBarStatic.lib(TwMgr.obj) : error LNK2005: "protected: char * __thiscall std::basic_streambuf<char,struct std::char_traits<char> >::epptr(void)const " (?epptr@?$basic_streambuf@DU?$char_traits@D@std@@@std@@IBEPADXZ) already defined in msvcprt.lib(MSVCP110.dll)
+     1>AntTweakBarStatic.lib(TwMgr.obj) : error LNK2005: "protected: void __thiscall std::basic_streambuf<char,struct std::char_traits<char> >::setg(char *,char *,char *)" (?setg@?$basic_streambuf@DU?$char_traits@D@std@@@std@@IAEXPAD00@Z) already defined in msvcprt.lib(MSVCP110.dll)
+     1>AntTweakBarStatic.lib(TwMgr.obj) : error LNK2005: "protected: char * __thiscall std::basic_streambuf<char,struct std::char_traits<char> >::egptr(void)const " (?egptr@?$basic_streambuf@DU?$char_traits@D@std@@@std@@IBEPADXZ) already defined in msvcprt.lib(MSVCP110.dll)
+     1>AntTweakBarStatic.lib(TwMgr.obj) : error LNK2005: "protected: char * __thiscall std::basic_streambuf<char,struct std::char_traits<char> >::eback(void)const " (?eback@?$basic_streambuf@DU?$char_traits@D@std@@@std@@IBEPADXZ) already defined in msvcprt.lib(MSVCP110.dll)
+     1>AntTweakBarStatic.lib(TwMgr.obj) : error LNK2005: "public: char __thiscall std::basic_ios<char,struct std::char_traits<char> >::fill(void)const " (?fill@?$basic_ios@DU?$char_traits@D@std@@@std@@QBEDXZ) already defined in msvcprt.lib(MSVCP110.dll)
+     1>AntTweakBarStatic.lib(TwMgr.obj) : error LNK2005: "public: class std::basic_ostream<char,struct std::char_traits<char> > & __thiscall std::basic_ostream<char,struct std::char_traits<char> >::operator<<(double)" (??6?$basic_ostream@DU?$char_traits@D@std@@@std@@QAEAAV01@N@Z) already defined in msvcprt.lib(MSVCP110.dll)
+     1>AntTweakBarStatic.lib(TwMgr.obj) : error LNK2005: "public: class std::basic_ostream<char,struct std::char_traits<char> > & __thiscall std::basic_ostream<char,struct std::char_traits<char> >::operator<<(int)" (??6?$basic_ostream@DU?$char_traits@D@std@@@std@@QAEAAV01@H@Z) already defined in msvcprt.lib(MSVCP110.dll)
+     1>AntTweakBarStatic.lib(TwPrecomp.obj) : error LNK2038: mismatch detected for 'RuntimeLibrary': value 'MT_StaticRelease' doesn't match value 'MD_DynamicRelease' in Utilities.obj
+     1>AntTweakBarStatic.lib(TwBar.obj) : error LNK2038: mismatch detected for 'RuntimeLibrary': value 'MT_StaticRelease' doesn't match value 'MD_DynamicRelease' in Utilities.obj
+     1>AntTweakBarStatic.lib(TwOpenGL.obj) : error LNK2038: mismatch detected for 'RuntimeLibrary': value 'MT_StaticRelease' doesn't match value 'MD_DynamicRelease' in Utilities.obj
+     1>AntTweakBarStatic.lib(TwOpenGLCore.obj) : error LNK2038: mismatch detected for 'RuntimeLibrary': value 'MT_StaticRelease' doesn't match value 'MD_DynamicRelease' in Utilities.obj
+     1>AntTweakBarStatic.lib(TwDirect3D9.obj) : error LNK2038: mismatch detected for 'RuntimeLibrary': value 'MT_StaticRelease' doesn't match value 'MD_DynamicRelease' in Utilities.obj
+     1>AntTweakBarStatic.lib(TwDirect3D10.obj) : error LNK2038: mismatch detected for 'RuntimeLibrary': value 'MT_StaticRelease' doesn't match value 'MD_DynamicRelease' in Utilities.obj
+     1>AntTweakBarStatic.lib(TwDirect3D11.obj) : error LNK2038: mismatch detected for 'RuntimeLibrary': value 'MT_StaticRelease' doesn't match value 'MD_DynamicRelease' in Utilities.obj
+     1>AntTweakBarStatic.lib(TwColors.obj) : error LNK2038: mismatch detected for 'RuntimeLibrary': value 'MT_StaticRelease' doesn't match value 'MD_DynamicRelease' in Utilities.obj
+     1>AntTweakBarStatic.lib(TwFonts.obj) : error LNK2038: mismatch detected for 'RuntimeLibrary': value 'MT_StaticRelease' doesn't match value 'MD_DynamicRelease' in Utilities.obj
+     1>AntTweakBarStatic.lib(LoadOGL.obj) : error LNK2038: mismatch detected for 'RuntimeLibrary': value 'MT_StaticRelease' doesn't match value 'MD_DynamicRelease' in Utilities.obj
+     1>AntTweakBarStatic.lib(LoadOGLCore.obj) : error LNK2038: mismatch detected for 'RuntimeLibrary': value 'MT_StaticRelease' doesn't match value 'MD_DynamicRelease' in Utilities.obj
+     1>libcpmt.lib(ios.obj) : error LNK2038: mismatch detected for 'RuntimeLibrary': value 'MT_StaticRelease' doesn't match value 'MD_DynamicRelease' in Utilities.obj
+     1>libcpmt.lib(locale0.obj) : error LNK2038: mismatch detected for 'RuntimeLibrary': value 'MT_StaticRelease' doesn't match value 'MD_DynamicRelease' in Utilities.obj
+     1>libcpmt.lib(iosptrs.obj) : error LNK2038: mismatch detected for 'RuntimeLibrary': value 'MT_StaticRelease' doesn't match value 'MD_DynamicRelease' in Utilities.obj
+     1>libcpmt.lib(locale.obj) : error LNK2038: mismatch detected for 'RuntimeLibrary': value 'MT_StaticRelease' doesn't match value 'MD_DynamicRelease' in Utilities.obj
+     1>libcpmt.lib(xlock.obj) : error LNK2038: mismatch detected for 'RuntimeLibrary': value 'MT_StaticRelease' doesn't match value 'MD_DynamicRelease' in Utilities.obj
+     1>libcpmt.lib(xthrow.obj) : error LNK2038: mismatch detected for 'RuntimeLibrary': value 'MT_StaticRelease' doesn't match value 'MD_DynamicRelease' in Utilities.obj
+     1>libcpmt.lib(wlocale.obj) : error LNK2038: mismatch detected for 'RuntimeLibrary': value 'MT_StaticRelease' doesn't match value 'MD_DynamicRelease' in Utilities.obj
+     1>libcpmt.lib(xlocale.obj) : error LNK2038: mismatch detected for 'RuntimeLibrary': value 'MT_StaticRelease' doesn't match value 'MD_DynamicRelease' in Utilities.obj
+     1>libcpmt.lib(xdateord.obj) : error LNK2038: mismatch detected for 'RuntimeLibrary': value 'MT_StaticRelease' doesn't match value 'MD_DynamicRelease' in Utilities.obj
             Creating library C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\Release\SheepEngine.lib and object C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\Release\SheepEngine.exp
-         Generating code
-     1>c:\users\scott\documents\staticsheepgame\dev\staticsheepgame\sheepengine\sheepsoundevent.cpp(59): warning C4715: 'SoundUtility::SourcePath' : not all control paths return a value
-         Finished generating code
-         SheepEngine.vcxproj -> C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\Release\SheepEngine.exe
-       PostBuildEvent:
-         xcopy C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\includes\FMOD\*.dll C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\Release\ /f /y 
-         :VCEnd
-         C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\includes\FMOD\fmodL.dll -> C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\Release\fmodL.dll
-         C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\includes\FMOD\fmodstudio.dll -> C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\Release\fmodstudio.dll
-         C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\includes\FMOD\fmodstudioL.dll -> C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\Release\fmodstudioL.dll
-         3 File(s) copied
-     1>Done Building Project "C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\SheepEngine\SheepEngine.vcxproj" (Build target(s)).
+     1>LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
+     1>MSVCRT.lib(cinitexe.obj) : warning LNK4098: defaultlib 'libcmt.lib' conflicts with use of other libs; use /NODEFAULTLIB:library
+     1>C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\Release\SheepEngine.exe : fatal error LNK1169: one or more multiply defined symbols found
+     1>Done Building Project "C:\Users\Scott\Documents\StaticSheepGame\Dev\StaticSheepGame\SheepEngine\SheepEngine.vcxproj" (Rebuild target(s)) -- FAILED.
 
-Build succeeded.
+Build FAILED.
 
-Time Elapsed 00:00:07.70
+Time Elapsed 00:00:12.05

@@ -83,8 +83,8 @@ namespace Framework
     TYPE_REGISTER_PTR( Member* );
 
     TYPE_REGISTER(Vec2);
-    TYPE_ADD_MEMBER(Vec2, X, false, true);
-    TYPE_ADD_MEMBER(Vec2, Y, false, true);
+    TYPE_ADD_MEMBER(Vec2, X, false, true, "X");
+    TYPE_ADD_MEMBER(Vec2, Y, false, true, "Y");
     TYPE_SET_TO_LUA(Vec2, Vec2::ToLua);
     TYPE_SET_FROM_LUA(Vec2, Vec2::FromLua);
 
@@ -153,12 +153,15 @@ namespace Framework
     TYPE_ADD_MEMBER( Tester, testvalue2, false, true, "Test Value 2");
 
     TYPE_REGISTER( Sprite );
+    TYPE_ADD_MEMBER(Sprite, m_spriteName, false, true, "Texture", BUILD_FUNCTION(Sprite::TweakSetTexture));
     TYPE_ADD_MEMBER( Sprite, Size, false, true );
     TYPE_SET_TWEAK_TYPE( Sprite, AntTweak::TW_TYPE_COMPONENT );
     TYPE_SET_FROM_LUA( Sprite, Lua::GenericObjectFromLua );
 
     TYPE_REGISTER( AniSprite );
-    //TYPE_ADD_MEMBER( AniSprite, Size );
+    TYPE_ADD_MEMBER( AniSprite, Size, false, true, "Size");
+    TYPE_ADD_MEMBER( AniSprite, frames, false, true, "Frames");
+    TYPE_ADD_MEMBER( AniSprite, currFrame, false, true, "CurrentFrame");
     TYPE_SET_TWEAK_TYPE( AniSprite, AntTweak::TW_TYPE_COMPONENT );
     TYPE_SET_FROM_LUA( AniSprite, Lua::GenericObjectFromLua );
 

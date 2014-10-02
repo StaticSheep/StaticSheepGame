@@ -38,8 +38,10 @@ namespace DirectSheep
     m_camera.view = matView;
 
     Mat4 matProj;
-    D3DXMatrixPerspectiveFovLH(&matProj, (FLOAT)D3DXToRadian(fov), (float)m_viewport.dim.width / (float)m_viewport.dim.height, 1.0f, 1000.0f);
-
+    if(m_camera.used)
+      D3DXMatrixPerspectiveFovLH(&matProj, (FLOAT)D3DXToRadian(fov), (float)m_viewport.dim.width / (float)m_viewport.dim.height, 1.0f, 1000.0f);
+    else
+      D3DXMatrixOrthoLH(&matProj, (float)m_viewport.dim.width, (float)m_viewport.dim.height, 1.0f, 1000.0f);
     m_camera.proj = matProj;
 
     m_camera.viewProj = matView * matProj;
@@ -71,8 +73,8 @@ namespace DirectSheep
     m_backBuffer = NULL;
     m_depthBuffer.m_depthBuffer = NULL;
     m_backBufferSize = Dimension(0,0);
-    m_clearColor = Color(.1f,.5f,.1f,1.0f);
-    m_spriteBlend = D3DXCOLOR(1,1,1,.5f);
+    m_clearColor = Color(Colors::DarkSlateGray);
+    m_spriteBlend = D3DXCOLOR(1.0f,1.0f,1.0f,1.0f);
     m_spriteTrans = Transform();
     m_primative = PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 
@@ -98,7 +100,7 @@ namespace DirectSheep
   {
     m_viewport.dim = Dimension((unsigned)width, (unsigned)height);
     m_hwnd = hwnd;
-
+    m_camera.used = true;
     InitializeDeviceAndSwapChain();
     CreateDepthBuffer();
     InitializeBackBuffer();
@@ -437,13 +439,22 @@ namespace DirectSheep
     {
       Texture tempTex = {0};
       D3D11_TEXTURE2D_DESC desc;
-      DXVerify(D3DX11CreateShaderResourceViewFromFile(m_device,                                       // the Direct3D device
+      static bool attempt = false;
+      HRESULT hr = D3DX11CreateShaderResourceViewFromFile(m_device,                                       // the Direct3D device
                                                       filename.c_str(),                               // load texture at path
                                                       NULL,                                           // no additional information
                                                       NULL,                                           // no multithreading
                                                       &tempTex.shaderResourceView, // address of the shader-resource-view
-                                                      NULL));                                         // no multithreading
+                                                      NULL);                                         // no multithreading
 
+      if(hr == D3D11_ERROR_FILE_NOT_FOUND)
+      {
+        if(attempt)
+          DXVerify(hr);
+        attempt = true;
+        return CreateTexture(handle, "content/Default.png");
+      }
+      attempt = false;
       tempTex.shaderResourceView->GetResource((ID3D11Resource **)&tempTex.texture);
       tempTex.texture->GetDesc(&desc);
 
@@ -815,6 +826,10 @@ namespace DirectSheep
       return m_textureRes[texHandle.index].size;
     }
 
+    void RenderContext::SetUseCam(bool camUse)
+    {
+      m_camera.used = camUse;
+    }
     /////////////////////////////////////////////////////////////
     //                    UTILITY FUNCTIONS                    //
     /////////////////////////////////////////////////////////////

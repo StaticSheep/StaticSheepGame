@@ -41,12 +41,12 @@ namespace Framework
     return m_autoLua;
   }
 
-  AntTweak::GetCallback Member::TweakGetCB(void) const
+  Function Member::TweakGetCB(void) const
   {
     return m_tweakGetCB;
   }
 
-  AntTweak::SetCallback Member::TweakSetCB(void) const
+  Function Member::TweakSetCB(void) const
   {
     return m_tweakSetCB;
   }
@@ -68,7 +68,7 @@ namespace Framework
   }
 
   void TypeInfo::AddMember(const TypeInfo* typeInfo, const char* name, unsigned int offset,
-    bool autoLua, bool tweak, const char* tweakLabel, AntTweak::SetCallback setCB, AntTweak::GetCallback getCB)
+    bool autoLua, bool tweak, const char* tweakLabel, Function setCB, Function getCB)
   {
     Member mem;
     mem.m_name = name;

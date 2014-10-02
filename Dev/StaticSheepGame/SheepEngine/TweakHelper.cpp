@@ -25,7 +25,7 @@ namespace Framework
       if (isTweakGeneric)
       {
         // If there is a tweaking get or set callback for this type then we need to use another function
-        if (tweakMember->TweakSetCB() != nullptr)
+        if (tweakMember->TweakSetCB().Signature() != nullptr)
           bar->AddGenericVarCB(tempLabel, varType, tweakMember, tweakOffset, tweakGeneric, tweakMember->TweakSetCB(), tweakMember->TweakGetCB());
         else
           bar->AddGenericVarRW(tempLabel, varType, tweakMember, tweakOffset, tweakGeneric);
@@ -84,16 +84,27 @@ namespace Framework
             tweakMember = m;
 
             // If the next member is POD we stick it in a group
-            if (m->Type()->IsPOD())
+            if (m->Type()->IsPOD() || m->Type() == GET_TYPE(std::string))
               if (label)
                 bar->DefineGroup(label);
               else
                 bar->DefineGroup(tempLabel);
 
-            mVar.Tweak(bar, m->Name(), m->TweakLabel());
+            std::string uniqueName = tempLabel;
+            uniqueName += "-";
+            uniqueName += m->Name();
+
+            mVar.Tweak(bar, uniqueName.c_str(), m->TweakLabel());
 
             if (!m->Type()->IsPOD())
             {
+              std::string groupName;
+
+              if (label)
+                groupName = label;
+              else
+                groupName = tempLabel;
+              
               if (m->TweakLabel())
                 if (label)
                   bar->SetGroupParent(m->TweakLabel(), label);
@@ -116,8 +127,11 @@ namespace Framework
         //  tweakOffset -= lastOffset;
 
         // No longer tweaking a generic
-        if (isTweakGeneric)
+        if (typeData->GetAType() == TW_TYPE_COMPONENT)
+        {
           isTweakGeneric = false;
+        }
+
       }
       else // We are POD data that needs to be tweaked
       {
@@ -136,7 +150,7 @@ namespace Framework
       if (isTweakGeneric)
       {
         // If there is a tweaking get or set callback for this type then we need to use another function
-        if (tweakMember->TweakSetCB() != nullptr)
+        if (tweakMember->TweakSetCB())
           bar->AddGenericVarCB(tempLabel, AntTweak::TW_TYPE_STDSTRING, tweakMember, tweakOffset, tweakGeneric, tweakMember->TweakSetCB(), tweakMember->TweakGetCB());
         else
           bar->AddGenericVarRW(tempLabel, AntTweak::TW_TYPE_STDSTRING, tweakMember, tweakOffset, tweakGeneric);

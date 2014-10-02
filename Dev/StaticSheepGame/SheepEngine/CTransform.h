@@ -35,6 +35,15 @@ namespace Framework
 
     float test;
 
+
+    void TweakTranslationSet(const void* value);
+    void TweakRotationSet(const void* value);
+    void TweakScaleSet(const void* value);
+
+    void TweakTranslationGet(void* value);
+    void TweakRotationGet(void* value);
+    void TweakScaleGet(void* value);
+
   private:
 
     bool m_hasPhysics;
