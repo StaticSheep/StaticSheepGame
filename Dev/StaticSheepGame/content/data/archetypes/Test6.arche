@@ -1,0 +1,41 @@
+GameObject
+{
+  name std::string "NewObj"
+  archetype std::string "Test"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -45.000000
+      y_ float 13.000000
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+
+  Sprite
+  {
+    Size Vec2
+    {
+      X float 0.5000000
+      Y float 0.5000000
+    }
+  }
+
+
+  BoxCollider
+  {
+    m_width float 8.000000
+    m_height float 0.000000
+    m_materialName std::string "Static"
+  }
+
+
+
+}

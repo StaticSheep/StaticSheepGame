@@ -6,6 +6,7 @@ namespace SheepFizz
 
 #define POSCORRECT	0.4f	//the percent for positional correction
 #define POSSLACK	0.05f	//the penetration needed to start positional correction
+#define MAXVALUE	3.402823466e+38F  //the max value of a float, used in rec collision
 
 //manifold struct is used for collisions
 //it gives the collision normal and depth of penetration for

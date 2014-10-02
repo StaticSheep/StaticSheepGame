@@ -35,6 +35,9 @@ namespace SheepFizz
 	//gettors
 	float Rectangle::GetWidth(void) {return width_;}
 	float Rectangle::GetHeight(void) {return height_;}
+	Vec3D Rectangle::GetVertex(unsigned int i) {return vertices_[i];}
+	Vec3D Rectangle::GetNormal(unsigned int i) {return normals_[i];}
+	
 	Shapes Rectangle::GetType(void) {return Rec;}
 
 	//initializes area and vertices/normals used in manifold functions
@@ -51,7 +54,7 @@ namespace SheepFizz
 		vertices_[0] = Vec3D(width_ / 2, height_ / 2);
 		vertices_[1] = Vec3D(-width_ / 2, height_ / 2);
 		vertices_[2] = Vec3D(-width_ / 2, -height_ / 2);
-		vertices_[3] = Vec3D(-width_ / 2, -height_ / 2);
+		vertices_[3] = Vec3D(width_ / 2, -height_ / 2);
 
 		//calculate side normals - starting with vertice 0 and 1
 		for(int i = 0; i < 4; i++)
