@@ -88,7 +88,8 @@ namespace Framework
   {
     if (hamster.MessageId == Message::PostDraw)
     {
-      
+      int channels;
+      float temp[32][128];
       // if F2 was pressed, lets display the FPS
       if(fpsFlag)
       {
@@ -129,9 +130,23 @@ namespace Framework
             FormatString(currentState);
             systemCounter = 0;
           }
+
+          channels = (*(FMOD_DSP_PARAMETER_FFT*)audio->data).numchannels;
+
+          for(int i = 0; i < 1; ++i)
+          {
+            for(int j = 0; j < 128; ++j)
+            {
+              float height = ((*(FMOD_DSP_PARAMETER_FFT*)audio->data).spectrum[i][j]);
+              Draw::SetColor(1.0f,0.0f,0.0f,1.0f);
+              Draw::DrawRect(-200.0f + j * 2.0f, -150.0f, 2.0f, height * 1000.0f);
+            }
+          }
           Draw::SetColor(1.0f,1.0f,1.0f,1.0f);
           GRAPHICS->SetPosition(-100.0f, 0.0f);
           GRAPHICS->DrawSpriteText(string.c_str(), 10.0f, "Helvetica");
+
+          
 
           break;
 
