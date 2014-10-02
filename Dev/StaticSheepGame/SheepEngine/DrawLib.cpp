@@ -52,6 +52,7 @@ namespace Framework
 
   void Draw::DrawRect(float x, float y, float width, float height)
   {
+    GRAPHICS->UpdateCamera();
     GRAPHICS->SetSize(width, height);
     GRAPHICS->SetPosition(x, y);
     GRAPHICS->BindTexture(GRAPHICS->GetTextureID("content/White.png"));
@@ -60,6 +61,7 @@ namespace Framework
 
   void Draw::DrawTexturedRect(float x, float y, float width, float height)
   {
+    GRAPHICS->UpdateCamera();
     GRAPHICS->SetSize(width, height);
 
     GRAPHICS->SetPosition(x, y);
@@ -74,7 +76,7 @@ namespace Framework
   {
     float diffX = eX - sX;
     float diffY = eY - sY;
-
+    GRAPHICS->UpdateCamera();
     GRAPHICS->SetPosition(sX + diffX / 2, sY + diffY / 2);
     GRAPHICS->SetSize(sqrt(diffX * diffX + diffY * diffY), width);
 
@@ -84,6 +86,7 @@ namespace Framework
 
   void Draw::DrawString(const char* text, float size, const char* font)
   {
+    GRAPHICS->UpdateCamera();
     GRAPHICS->DrawSpriteText(text, size, font);
   }
 }
