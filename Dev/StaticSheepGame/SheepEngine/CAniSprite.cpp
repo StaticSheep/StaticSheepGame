@@ -10,7 +10,8 @@ namespace Framework
     m_endFrame(11),
     m_startFrame(0),
     m_startFramePos(0, 0),
-    m_frameRate(20)
+    m_frameRate(20),
+    m_time(0)
   {
     transform = NULL;
   }
@@ -39,6 +40,8 @@ namespace Framework
     m_frameWidth = 1 / m_frames.X;
     m_frameHeight = 1 / m_frames.Y;
 
+    m_time = 0;
+
     m_framePos = Vec2(0, 0);
     
     return m_texture;
@@ -64,7 +67,7 @@ namespace Framework
 
   void AniSprite::CheckNextFrame()
   {
-    float dt = ENGINE->Framerate.GetDT();
+    float dt = 0.0167;
 
     m_time += dt;
 
