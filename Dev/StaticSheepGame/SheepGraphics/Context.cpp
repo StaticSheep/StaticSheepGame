@@ -73,7 +73,7 @@ namespace DirectSheep
     m_backBuffer = NULL;
     m_depthBuffer.m_depthBuffer = NULL;
     m_backBufferSize = Dimension(0,0);
-    m_clearColor = Color(Colors::DarkSlateGray);
+    m_clearColor = Color(Colors::Black);
     m_spriteBlend = D3DXCOLOR(1.0f,1.0f,1.0f,1.0f);
     m_spriteTrans = Transform();
     m_primative = PRIMITIVE_TOPOLOGY_TRIANGLELIST;
