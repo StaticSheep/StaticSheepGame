@@ -72,6 +72,9 @@ class Rectangle: public Shape
 		//gettors
 		float GetWidth(void);
 		float GetHeight(void);
+		Vec3D GetVertex(unsigned int i);
+		Vec3D GetNormal(unsigned int i);
+
 		Shapes GetType(void);
 
 		//set the shape after creation

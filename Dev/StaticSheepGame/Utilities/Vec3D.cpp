@@ -155,8 +155,8 @@ Vec3D& Vec3D::Normalize(void)
 
 Vec3D& Vec3D::Rotate(float radians)
 {
-	x_ *= cosf(radians);
-	y_ *= sinf(radians);
+	x_ = x_ * cos(radians) - y_ * sin(radians);
+	y_ = x_ * sin(radians) + y_ * cos(radians);
 
 	return *this;
 }
@@ -165,7 +165,7 @@ Vec3D Vec3D::CalculateNormal(void)
 {
 	//take base vector (this) and rotate it by 90 degrees
 	//clockwise, then normalize it
-	return Vec3D(Rotate(-(float)PI / 2)).Normalize();
+	return Vec3D(y_, -x_).Normalize();
 }
 
 //other non-member vector functions
