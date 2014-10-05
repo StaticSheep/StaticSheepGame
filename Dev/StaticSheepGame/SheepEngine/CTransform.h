@@ -27,6 +27,7 @@ namespace Framework
 
     void SetPhysicsBody(unsigned body);
 
+    bool operator==(const Transform& rhs);
     Transform& operator=(const Transform& rhs);
 
     static void Serialize(File& file, Variable var);
@@ -43,6 +44,13 @@ namespace Framework
     void TweakTranslationGet(void* value);
     void TweakRotationGet(void* value);
     void TweakScaleGet(void* value);
+
+    static void RegisterMembers()
+    {
+      TYPE_ADD_MEMBER( Transform, m_translation );
+      TYPE_ADD_MEMBER( Transform, m_scale );
+      TYPE_ADD_MEMBER( Transform, m_rotation );
+    }
 
   private:
 

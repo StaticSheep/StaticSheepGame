@@ -32,6 +32,11 @@ namespace Framework
     return *this;
   }
 
+  bool Transform::operator==(const Transform& rhs)
+  {
+    return false;
+  }
+
 
   // ==================== SETTERS ============================
 

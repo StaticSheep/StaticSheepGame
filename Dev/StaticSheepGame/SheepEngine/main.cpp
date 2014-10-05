@@ -56,6 +56,8 @@ int WINAPI WinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
 
   Core->OpenEditor();
 
+  //Core->LoadLevel("content/data/spaces/AnimationSound.space");
+
   while (Core->Running())
   {
     Core->MainLoop();

@@ -28,6 +28,9 @@ static void ParseEvents(SOUND::System *system, std::ifstream &file, EventMap &ev
 static void LoadBank(SOUND::System *system, std::string &name, BankVector &bank);
 static void LoadEvent(SOUND::System *system, std::string &name, EventMap &events);
 
+static FMOD::ChannelGroup* masterGroup;
+static FMOD::DSP* dsp;
+
 namespace Framework
 {
 	// Global pointer
@@ -92,6 +95,11 @@ namespace Framework
     // parse through the GUID file and load the banks and events
     ParseBanks(_system, infile, _banks);
     ParseEvents(_system, infile, _events);
+
+    ErrorCheck(_lowLevelSystem->getMasterChannelGroup(&masterGroup));
+    ErrorCheck(_lowLevelSystem->createDSPByType(FMOD_DSP_TYPE_FFT, &dsp));
+
+    ErrorCheck(masterGroup->addDSP(0, dsp));
 
     debug = new DebugAudio;
 	}
@@ -202,6 +210,7 @@ namespace Framework
     ErrorCheck(FMOD::Memory_GetStats(NULL, &debug->RAM, false));
     ErrorCheck(_system->getBufferUsage(&debug->bufferInfo));
 
+    ErrorCheck(dsp->getParameterData(2, &debug->data, &debug->block, NULL, 0));
 
     return (void*)debug;
   }

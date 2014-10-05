@@ -75,7 +75,7 @@ namespace Framework
 		SheepFizz::Material Iron(1.5f, .8f, .6f, .3f);
 		SheepFizz::Material Steel(1.3f, .8f, .3f, .15f);
 		SheepFizz::Material Fluff(.3f, .2f, .4f, .1f);
-		SheepFizz::Material Bounce(.8f, 2.0f, .3f, .15f);
+		SheepFizz::Material Bounce(.3f, 4.0f, .3f, .15f);
 		SheepFizz::Material Static(.0f,.2f,.5f,.3f);
 
 		//insert materials into the unordered map

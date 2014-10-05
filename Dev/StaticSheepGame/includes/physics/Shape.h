@@ -58,6 +58,7 @@ class Rectangle: public Shape
 
 		//gettors
 
+
 		//set the shape after creation
 
 		//initializes area and vertices/normals used in manifold functions

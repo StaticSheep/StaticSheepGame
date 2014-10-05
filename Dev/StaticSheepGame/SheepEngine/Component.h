@@ -42,7 +42,7 @@ namespace Framework
 
       
       
-      bool operator==(const GameComponent& rhs) const;
+      virtual bool operator==(const GameComponent& rhs) const;
       bool operator!=(const GameComponent& rhs) const;
 
       virtual GameComponent& operator=(const GameComponent& rhs);

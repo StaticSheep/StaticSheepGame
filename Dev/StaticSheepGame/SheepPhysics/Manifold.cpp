@@ -143,9 +143,14 @@ namespace SheepFizz
 	//object into another
 	void Manifold::PositionalCorrection(void)
 	{
+    //if both objects have infinite mass, skip calculations
+    if(A->massData_.mass == 0 && B->massData_.mass == 0)
+      return;
+
 		Vec3D correction = (Maximum(penetration - POSSLACK, 0.0f) /
 			(A->massData_.inverseMass + B->massData_.inverseMass)) * POSCORRECT
 			* normal;
+
 		A->position_ -= A->massData_.inverseMass * correction;
 		B->position_ += B->massData_.inverseMass * correction;
 
@@ -167,32 +172,144 @@ namespace SheepFizz
 
 	}//end of RectangleRectangleManifold
 
+	//simply calls the circle rectangle manifold
 	void RectangleCircleManifold(Manifold& m)
 	{
-		m.contactCount = 0;
+		//create a temp manifold
+		Manifold check(m.B, m.A);
 
-		Shape* a = m.A->shape_;
-		Shape* b = m.B->shape_;
+		//use other manifold collision function
+		CircleRectangleManifold(check);
+		m.contactCount = check.contactCount;
+	
+		if(m.contactCount)
+		{
+			//switch the normal
+			m.normal = -check.normal;
 
-		Vec3D aCenter = m.A->position_;
-		Vec3D bCenter = m.B->position_;
+			m.penetration = check.penetration;
 
-
-
+			//put in first contact
+			m.contacts[0] = check.contacts[0];
+		
+			//check for second contact
+			if(m.contactCount == 2)
+				m.contacts[1] = check.contacts[1];
+		}
 
 	}//end of RectangleCircleManifold
 
+	//this function calculates collision and collision points
+	//between a circle and a rectangle
 	void CircleRectangleManifold(Manifold& m)
 	{
+		//set contacts to zero
+		m.contactCount = 0;
 
-		Manifold temp(m.B, m.A);
-		RectangleCircleManifold(temp);
-		m.normal = -temp.normal;
-		m.penetration = temp.penetration;
-		m.contactCount = temp.contactCount;
-		m.contacts[0] = temp.contacts[0];
-		m.contacts[1] = temp.contacts[1];
-	
+		//create a pointer for ease of access
+		Rectangle* b = (Rectangle*)(m.B->shape_);
+
+		//create rotation matrix for rectangle(B)
+		Matrix2D bRotation(m.B->orientation_);
+
+		//put the center of circle(A) in rectangle's(B) ref frame
+		Vec3D circleCenter = m.A->position_;
+		circleCenter -= m.B->position_;
+		circleCenter = bRotation * circleCenter;
+
+		float maxSeparation = -MAXVALUE;
+
+		//used for marking which side of the rectangle is the
+		//incident side
+		unsigned int rectangleSide;
+
+		for(unsigned int i = 0; i < MAXVERTICES; ++i)
+		{
+			//find the seperation between circle and rec
+			float separation = (b->GetNormal(i)).DotProduct(circleCenter - b->GetVertex(i));
+
+			//if separation exceeds radius, the shapes are not colliding
+			if(separation > m.A->shape_->GetRadius())
+				return;
+
+			//otherwise, see if the separation is bigger
+			//if so, it means that is the axis of furthest distance between the two
+			//not incident sides will be less positive or negative
+			if(separation > maxSeparation)
+			{
+				maxSeparation = separation;
+				rectangleSide = i;
+			}
+		}
+
+		//get two vertices of rectangle
+		Vec3D rectangleVertex1 = b->GetVertex(rectangleSide);
+		unsigned int rectangleSide2 = ((rectangleSide + 1) < MAXVERTICES) ? (rectangleSide + 1) : 0;
+		Vec3D rectangleVertex2 = b->GetVertex(rectangleSide2);
+
+		//create a side for dotproducts
+		Vec3D side = rectangleVertex2 - rectangleVertex1;
+
+		//determine if circle is within bounds of a side
+		//if circleRecMagnitude1 is pos, and 2 is negative, it is within bounds
+		//pos, pos implies that it is past vertex2's side
+		//neg, neg implies it is past vertex1's side
+		float circleRecMagnitude1 = side.DotProduct(circleCenter - rectangleVertex1);
+		float circleRecMagnitude2 = side.DotProduct(circleCenter - rectangleVertex2);
+
+		if(circleRecMagnitude1 < 0 && circleRecMagnitude2 < 0)
+		{
+			//if the circle center is at corner 1 - verify penetration is positive
+			if((circleCenter - rectangleVertex1).SquareLength() > (m.A->shape_->GetRadius() * m.A->shape_->GetRadius()))
+				return;
+			m.penetration = m.A->shape_->GetRadius() - (circleCenter - rectangleVertex1).Length();
+		
+			//determine the normal
+			m.normal = rectangleVertex1 - circleCenter;
+			m.normal = bRotation * m.normal;
+			m.normal.Normalize();
+
+			//create contact point - take the vertex and put it into world space
+			m.contacts[0] = m.B->position_ + bRotation * rectangleVertex1;
+			m.contactCount = 1;
+		}
+
+		else if(circleRecMagnitude1 > 0 && circleRecMagnitude2 > 0)
+		{
+			//if the circle center is at corner 2 - verify penetration is positive
+			if((circleCenter - rectangleVertex2).SquareLength() > (m.A->shape_->GetRadius() * m.A->shape_->GetRadius()))
+				return;
+			m.penetration = m.A->shape_->GetRadius() - (circleCenter - rectangleVertex2).Length();
+
+			//determine the normal
+			m.normal = rectangleVertex2 - circleCenter;
+			m.normal = bRotation * m.normal;
+			m.normal.Normalize();
+
+			//create contact point - take the vertex and put it into world space
+			m.contacts[0] = m.B->position_ + bRotation * rectangleVertex2;
+			m.contactCount = 1;
+
+		}
+
+		else
+		{
+			//if the circle center is within the bounds of a side
+			m.penetration = m.A->shape_->GetRadius() - maxSeparation;
+
+			//determine the normal - negative because normal goes from A
+			//to B (circle to rectangle)
+			m.normal = -(b->GetNormal(rectangleSide));
+			m.normal = bRotation * m.normal;
+
+			//create contact point - take the vertex and put it into world space
+			//contact point in this case will be the negative face normal added
+			//to the position of the circleCenter
+			m.contacts[0] = -((b->GetNormal(rectangleSide)) * m.A->shape_->GetRadius()) + circleCenter;
+			m.contacts[0] = m.B->position_ + bRotation * m.contacts[0];
+			m.contactCount = 1;
+		}
+
 	}//end of CircleRectangleManifold
 
 

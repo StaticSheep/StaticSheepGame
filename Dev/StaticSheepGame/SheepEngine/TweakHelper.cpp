@@ -96,7 +96,7 @@ namespace Framework
 
             mVar.Tweak(bar, uniqueName.c_str(), m->TweakLabel());
 
-            if (!m->Type()->IsPOD())
+            if (!m->Type()->IsPOD() && m->Type() != GET_TYPE(std::string))
             {
               std::string groupName;
 
