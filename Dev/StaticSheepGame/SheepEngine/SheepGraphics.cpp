@@ -251,6 +251,7 @@ namespace Framework
 
   void SheepGraphics::DrawSpriteText(const char * text, float size, const char * font)
   {
+    UpdateCamera();
     m_renderContext->DrawSpriteText(text, size, font);
   }
 

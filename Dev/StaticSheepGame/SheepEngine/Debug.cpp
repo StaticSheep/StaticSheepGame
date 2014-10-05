@@ -103,9 +103,11 @@ namespace Framework
         format.erase(4, std::string::npos);
         fps_string = "Current FPS: " + format + "\n";
 
+        GRAPHICS->SetUseCamera(false);
         GRAPHICS->SetPosition(100.0f, 0.0f);
         GRAPHICS->SetColor(Vec4(1.0f,1.0f,1.0f,1.0f));
-        GRAPHICS->DrawSpriteText(fps_string.c_str(), 15.0f, "Helvetica");
+        GRAPHICS->DrawSpriteText(fps_string.c_str(), 8.0f, "Helvetica");
+        GRAPHICS->SetUseCamera(true);
       }
 
 

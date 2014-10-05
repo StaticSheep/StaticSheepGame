@@ -6,7 +6,7 @@
 namespace Framework
 {
 
-  AniSprite::AniSprite() : uvBegin(0,0), uvEnd(1,1), frames(1,1), currFrame(0,0)
+  AniSprite::AniSprite() : uvBegin(0,0), uvEnd(1,1), frames(4,3), currFrame(0,0)
   {
     transform = NULL;
   }
@@ -17,8 +17,8 @@ namespace Framework
 
     if(m_texture.GetType() == DirectSheep::NONE)
     {
-      SetTexture("content/pixel_sheep_sprite_sheet.png");
-      m_spriteName = "content/pixel_sheep_sprite_sheet.png";
+      SetTexture("content/thiefRun.png");
+      m_spriteName = "content/thiefRun.png";
     }
     else
       SetTexture(m_spriteName.c_str());
@@ -46,6 +46,13 @@ namespace Framework
     offsetX = width * (int)currFrame.X;
     offsetY = height * (int)currFrame.Y;
 
+    if(currFrame.x_ < 4)
+      currFrame.x_ += .1f;
+    else
+    {
+      currFrame.y_++;
+      currFrame.x_ = 0;
+    }
     uvBegin = Vec2(offsetX, offsetY);
     uvEnd = Vec2(offsetX + width, offsetY + height);
     

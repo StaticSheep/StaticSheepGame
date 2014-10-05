@@ -84,6 +84,7 @@ namespace Framework
 
   void Draw::DrawString(const char* text, float size, const char* font)
   {
+    GRAPHICS->UpdateCamera();
     GRAPHICS->DrawSpriteText(text, size, font);
   }
 }

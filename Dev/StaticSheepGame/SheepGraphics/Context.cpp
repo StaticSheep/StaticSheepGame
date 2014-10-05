@@ -23,7 +23,12 @@ namespace DirectSheep
   {
     float cameraX = x;
     float cameraY = y;
-    float cameraZ = -200.0f;
+    float cameraZ;
+
+    if(m_camera.used)
+      cameraZ = -200;
+    else
+      cameraZ = -10;
 
 
     Vec3 eyepoint(cameraX, cameraY, cameraZ);
@@ -346,8 +351,8 @@ namespace DirectSheep
       RGBTOBGR(D3DXCOLOR(m_spriteBlend.r,m_spriteBlend.g,m_spriteBlend.b, m_spriteBlend.a)),// Text color, 0xAaBbGgRr
       NULL,
       matFinal,
-      FW1_RESTORESTATE | FW1_CENTER | FW1_VCENTER | FW1_NOWORDWRAP
-      );// Flags (for example FW1_RESTORESTATE to keep context states 
+      FW1_RESTORESTATE | FW1_LEFT | FW1_VCENTER | FW1_NOWORDWRAP
+      );
 
     }
 
