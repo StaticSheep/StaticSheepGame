@@ -65,6 +65,12 @@ namespace Framework
     delete _freq;
     delete _previousSystemTime;
     delete _previousTime;
+
+    for(auto it = debug.systems.begin(); it != debug.systems.end(); ++it)
+    {
+      delete it->second;
+    }
+
   }
 
 /*****************************************************************************/

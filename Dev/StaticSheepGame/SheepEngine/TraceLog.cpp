@@ -5,12 +5,30 @@ namespace Framework
 {
   Trace* LOG = NULL;
 
+
+/*****************************************************************************/
+/*!
+  \brief
+    Default constructor for the TraceLog. Only writes errors to the console.
+*/
+/*****************************************************************************/
   Trace::Trace()
   {
     file = NULL;
     LOG = this;
+    _level = ERR;
+
+    TraceLog(INFO, "TraceLog Started\n");
   }
 
+/*****************************************************************************/
+/*!
+  \brief
+    Nondefault constructor for TraceLog. Sets the level to print out to, and
+    opens the file name passed in. If it was invalid, it will default to 
+    writing to the console.
+*/
+/*****************************************************************************/
   Trace::Trace(TRACELOG_LEVEL level, const char* filename)
   {
     LOG = this;
@@ -19,77 +37,131 @@ namespace Framework
       file = fopen(filename, "wt");
     else
       file = NULL;
+
+    TraceLog(INFO, "TraceLog Started\n");
   }
 
+/*****************************************************************************/
+/*!
+  \brief
+    Destructor for the TraceLog. Just closes the file when everything is done
+    if one was opened.
+*/
+/*****************************************************************************/
   Trace::~Trace()
   {
+    TraceLog(INFO, "TraceLog Ending\n");
+
     if(file != NULL)
       fclose(file);
   }
 
+/*****************************************************************************/
+/*!
+  \brief
+    Variadic function for printing out to the console or a file. 
+
+  \param level
+    The level of the passed in string. ERR, WARNING, DEBUG, INFO are the 
+    possible types.
+
+  \param format
+    A pointer to the beginning of the string created.
+*/
+/*****************************************************************************/
   bool Trace::TraceLog(TRACELOG_LEVEL level, const char* format, ...)
   {
+    // if the level is too high, don't do anything
     if(level > _level)
       return false;
 
+    // otherwise we are going to do some things
     int check;
+
+    // declare a variadic list of arguments...
     va_list args;
+
+    // initialize it with what was passed in
     va_start (args, format);
 
+    // do some formatting and printing. Puts the current time and the type
+    // of level of the string
     Format(level);
 
+    // check to see if we have a file
     if(file != NULL)
     {
-      check = vfprintf (file, format, args);
+      // in which case, print into it
+      check = vfprintf(file, format, args);
     }
-    else
+    else // otherwise
     {
-      check = vprintf (format, args);
+      // print to the console
+      check = vprintf(format, args);
     }
 
+    // remove the args
     va_end (args);
 
+    // if something was printed correctly
     if(check > 0)
-      return true;
+      return true; // return true...
     else
       return false;
   }
 
   void Trace::Format(TRACELOG_LEVEL level)
   {
+    // get the current time in seconds since 1970
     time_t currentTime;
     time(&currentTime);
 
     struct tm* dateTime;
 
+    // convert it into local time
     dateTime = localtime(&currentTime);
+
+    // convert that into ascii
     char* theTime = asctime(dateTime);
+
+    // then get some char* to alter the output
     char* reader = theTime;
     char* begin;
     char* last;
+
+    // keeps track of the amount of spaces
     int count = 0;
 
+    // iterate through theTime 
     while(reader++)
     {
+      // we are looking for the \n because we want to get rid of it
       if(*reader == '\n')
       {
         *reader = '\0';
         break;
       }
 
+      // also if we find a space...
       if(*reader == ' ')
       {
         ++count;
+
+        // keep track of the last space
         last = reader;
+
+        // to get rid of the month and day
         if(count == 3)
           begin = reader + 1;
       }
     }
-
+    // to get rid of the year
     *last = '\0';
 
+    // if we have a file...
     if(file != NULL)
     {
+      // print specific things depending on the level
       switch(level)
       {
       case ERR:
@@ -108,7 +180,7 @@ namespace Framework
         break;
       }
     }
-    else
+    else // else, do it to the console
     {
       switch(level)
       {
@@ -128,6 +200,6 @@ namespace Framework
         break;
       }
     }
-  }
+  }// end function
 
-}
+}// end namespace

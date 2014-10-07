@@ -7,6 +7,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 ******************************************************************************/
 
 #include "SheepSoundEvent.h"
+#include "TraceLog.h"
 #include <iostream>
 #include <unordered_map>
 
@@ -25,7 +26,8 @@ bool ErrorCheck(FMOD_RESULT result)
   if (result != FMOD_OK)
   {
     // need to replace with exception handling from the engine
-    printf("FMOD error! (%d)  %s\n", result, FMOD_ErrorString(result));
+    Framework::LOG->TraceLog(Framework::ERR, "FMOD Error! (%d)  %s\n", 
+                             result, FMOD_ErrorString(result));
     return 1;
   }
   else

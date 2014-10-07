@@ -124,9 +124,10 @@ namespace Framework
     LOG->TraceLog(INFO, "Adding DSP to master\n");
     ErrorCheck(masterGroup->addDSP(0, dsp));
 
+    infile.close();
+
     
     debug = new DebugAudio;
-    LOG->TraceLog(DEBUG, "Creating debug data at address %#010x \t size %i\n", debug, sizeof(*debug));
 	}
 
   void SheepAudio::RegisterComponents(void)
