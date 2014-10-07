@@ -198,6 +198,9 @@
     <ClInclude Include="FramerateController.h">
       <Filter>Engine\Framerate</Filter>
     </ClInclude>
+    <ClInclude Include="TraceLog.h">
+      <Filter>Systems\Debug</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="precompiled.cpp">
@@ -376,6 +379,9 @@
     </ClCompile>
     <ClCompile Include="FramerateController.cpp">
       <Filter>Engine\Framerate</Filter>
+    </ClCompile>
+    <ClCompile Include="TraceLog.cpp">
+      <Filter>Systems\Debug</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
