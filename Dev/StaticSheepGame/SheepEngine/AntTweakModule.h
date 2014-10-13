@@ -108,11 +108,12 @@ namespace Framework
       // Translates a AntTweak::TwType (Extended Enum) into a TwType enum
       static AntTweak::engineTwType TranslateType(AntTweak::engineTwType type);
 
+      void* antTweakBar;
 
     private:
       
       // Pointer to the actual bar
-      void* antTweakBar;
+      
       // List of AntTweakBar definitions
       std::vector<std::string> m_definitions;
       // List of persistent AntTweakBar definitions

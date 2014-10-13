@@ -86,6 +86,9 @@ namespace Framework
     Handle tweakHandle;
 
 	  void* m_pSpace;
+
+    // Global Unique ID counter
+    unsigned int m_guid;
     
   private:
     // The collection of all game objects in this game space
@@ -100,8 +103,7 @@ namespace Framework
     // Name of the space
     std::string m_name;
 
-    // Global Unique ID counter
-    unsigned int m_guid;
+    
 
     bool m_shuttingDown;
 

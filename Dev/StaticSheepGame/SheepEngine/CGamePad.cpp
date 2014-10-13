@@ -67,7 +67,7 @@ namespace Framework
   //////////////////////////////////////////////////////////////////////
 
   //update gamepad state
-  void GamePad::Update()
+  void GamePad::Update(float dt)
   {
     RefreshState(); //store old button presses
 

@@ -68,6 +68,7 @@ namespace Framework
     Factory ObjectFactory;
     FramerateController Framerate;
     SheepWindow* Window;
+    int SpaceGuid;
 
   private:
     bool m_running;
