@@ -53,20 +53,20 @@ namespace Framework
 			void ChangePhysMaterials(GameSpace* space, SheepFizz::Handle handle, SheepFizz::Material& material);
 
 			//gettors
-			void GetBodyPosition(Handle handle, Vec3D position);
-			void GetBodyVelocity(Handle handle, Vec3D position);
-			void GetBodyForce(Handle handle, Vec3D position);
-			void GetBodyRotation(Handle handle, Vec3D position);
-			void GetBodyAngVeloc(Handle handle, Vec3D position);
-			void GetBodyTorque(Handle handle, Vec3D position);
+			Vec3D GetBodyPosition(GameSpace* space, SheepFizz::Handle handle);
+			Vec3D GetBodyVelocity(GameSpace* space, SheepFizz::Handle handle);
+			Vec3D GetBodyForce(GameSpace* space, SheepFizz::Handle handle);
+			Vec3D GetBodyRotation(GameSpace* space, SheepFizz::Handle handle);
+			Vec3D GetBodyAngVelocity(GameSpace* space, SheepFizz::Handle handle);
+			Vec3D GetBodyTorques(GameSpace* space, SheepFizz::Handle handle);
 
 			//settors
-			void SetBodyPosition(Handle handle, Vec3D position);
-			void SetBodyVelocity(Handle handle, Vec3D position);
-			void SetBodyForce(Handle handle, Vec3D position);
-			void SetBodyRotation(Handle handle, Vec3D position);
-			void SetBodyAngVeloc(Handle handle, Vec3D position);
-			void SetBodyTorque(Handle handle, Vec3D position);
+			void SetBodyPosition(GameSpace* space, SheepFizz::Handle handle, Vec3D position);
+			void SetBodyVelocity(GameSpace* space, SheepFizz::Handle handle, Vec3D velocity);
+			void SetBodyForce(GameSpace* space, SheepFizz::Handle handle, Vec3D force);
+			void SetBodyRotation(GameSpace* space, SheepFizz::Handle handle, float rotation);
+			void SetBodyAngVelocity(GameSpace* space, SheepFizz::Handle handle, float angveloc);
+			void SetBodyTorques(GameSpace* space, SheepFizz::Handle handle, float torque);
 
 			//remove bodies from the bodies held in the physics engine
 			void RemoveBodies(GameSpace* space, SheepFizz::Handle handle);

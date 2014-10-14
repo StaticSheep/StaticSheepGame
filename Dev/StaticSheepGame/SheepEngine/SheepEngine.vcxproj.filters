@@ -198,6 +198,9 @@
     <ClInclude Include="FramerateController.h">
       <Filter>Engine\Framerate</Filter>
     </ClInclude>
+    <ClInclude Include="CCircleCollider.h">
+      <Filter>Components\RigidBody\CircleCollider</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="precompiled.cpp">
@@ -376,6 +379,9 @@
     </ClCompile>
     <ClCompile Include="FramerateController.cpp">
       <Filter>Engine\Framerate</Filter>
+    </ClCompile>
+    <ClCompile Include="CCircleCollider.cpp">
+      <Filter>Components\RigidBody\CircleCollider</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

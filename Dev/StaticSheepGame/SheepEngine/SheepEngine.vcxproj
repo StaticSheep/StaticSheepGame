@@ -107,6 +107,7 @@
     <ClInclude Include="CBoxCollider.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CAniSprite.h" />
+    <ClInclude Include="CCircleCollider.h" />
     <ClInclude Include="CGamePad.h" />
     <ClInclude Include="CLuaComponent.h" />
     <ClInclude Include="Component.h" />
@@ -172,6 +173,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CBoxCollider.cpp" />
     <ClCompile Include="CAniSprite.cpp" />
+    <ClCompile Include="CCircleCollider.cpp" />
     <ClCompile Include="CGamePad.cpp" />
     <ClCompile Include="CLuaComponent.cpp" />
     <ClCompile Include="Component.cpp" />

@@ -13,6 +13,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "SoundPlayer.h"
 #include "CAniSprite.h"
 #include "CBoxCollider.h"
+#include "CCircleCollider.h"
 #include "CGamePad.h"
 
 namespace Framework
@@ -149,6 +150,9 @@ namespace Framework
     TYPE_ADD_MEMBER( BoxCollider, m_height, false, true, "Height");
     TYPE_ADD_MEMBER( BoxCollider, m_materialName, false, true, "Material");
 
+	TYPE_REGISTER( CircleCollider );
+    TYPE_ADD_MEMBER( CircleCollider, m_width, false, true, "Radius");
+    TYPE_ADD_MEMBER( CircleCollider, m_materialName, false, true, "Material");
 
     TYPE_REGISTER( Tester );
     TYPE_ADD_MEMBER( Tester, testvalue1, false, true, "Test Value 1");

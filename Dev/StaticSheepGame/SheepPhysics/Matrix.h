@@ -40,14 +40,14 @@ namespace SheepFizz
 			Vec3D operator*(Vec3D& rhs);
 
 			//transpose
-			Matrix2D Transpose(Matrix2D& rhs)
+			Matrix2D Transpose(void)
 			{
 
 				Matrix2D transpose;
-				transpose.x0_ = rhs.x0_;
-				transpose.x1_ = rhs.y0_;
-				transpose.y0_ = rhs.x1_;
-				transpose.y1_ = rhs.y1_;
+				transpose.x0_ = x0_;
+				transpose.x1_ = y0_;
+				transpose.y0_ = x1_;
+				transpose.y1_ = y1_;
 
 				return transpose;
 

@@ -15,7 +15,7 @@ namespace SheepFizz
 {
 	//collision callback function pointer
 
-	#define GRAVITY -32.0f
+	#define GRAVITY -37.0f
 
 	class PhysicsSpace
 	{

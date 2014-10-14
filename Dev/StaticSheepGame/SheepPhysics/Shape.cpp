@@ -46,8 +46,9 @@ namespace SheepFizz
 		SetArea(width_ * height_);
 		
 		//calculate partial moment - no density
-		SetMomentOfInertia(1/2 * width_ * width_ * height_);
-		
+		float moment = .5f * width_ * width_ * height_;
+		SetMomentOfInertia(moment);
+
 		SetShape(Rec);
 		
 		//vertices oriented counterclockwise
