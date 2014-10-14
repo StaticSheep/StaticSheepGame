@@ -23,6 +23,7 @@ namespace Framework
   {
     std::string spaceName("NewSpace");
     spaceName += std::to_string(spaceNum++);
+
     GameSpace* space = ENGINE->CreateSpace(spaceName.c_str());
     space->Tweak();
   }

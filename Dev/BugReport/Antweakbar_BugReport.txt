@@ -1,0 +1,36 @@
+Editor Bug Report
+By:    Zakary Wilson
+Date:  10/07/2014
+
+[Crash Bugs]
+
+  Adding gamepad component immediately breaks.
+  
+  Camera component breaks everything.
+  
+  Loading a space named NewSpace0, then creating a new space = crash.
+  
+  If a box collider is removed from an object, then the object is deleted that engine crashes.
+
+[Unhandled Bugs]
+
+  SoundEmitter continues playing after space is destroyed. (Sound emitter shouldn't be playing music anyway though...)
+  
+  Object's names in the object list of space is not updated until after loading an archetype
+
+  Cannot tell which GUID belongs to which object. (Not updating the space when something is renamed)
+  
+  Archetype transforms are saved, should be set to (0, 0, 0)
+    
+  When saving a level, it will no matter what append .level to the end...
+    i.e. If user types in HUD.level, it'll save it as HUD.level.level
+    
+  When a space is saved, the serializer adds a few extra new lines before boxcollider???
+  
+[General To-Dos]
+
+  Set the physics time step to 0 when the editor is up.
+  
+  Seperate the editor from actually playing the game.
+  
+  Can we have a button to open up a Lua script from the editor?
