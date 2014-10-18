@@ -1,0 +1,5 @@
+{aecdcf90-de3e-4446-9aea-f9142d4d088a} event:/space_brawl
+{ecf24d27-ff56-492f-bfb5-85063aa91c78} bus:/
+{5c3919f9-0ab5-444f-9679-758f3fe82712} bus:/Reverb
+{1e0bff68-0b7c-4df0-a5b1-7f5a32a5aac8} bank:/Master Bank
+{7099392c-7cfc-4701-8807-660109a4c831} bank:/Music
