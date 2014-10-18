@@ -13,7 +13,6 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "SoundPlayer.h"
 #include "CAniSprite.h"
 #include "CBoxCollider.h"
-#include "CGamePad.h"
 
 namespace Framework
 {
@@ -171,9 +170,6 @@ namespace Framework
 
     TYPE_REGISTER( SoundPlayer );
     TYPE_SET_FROM_LUA(SoundPlayer, Lua::GenericObjectFromLua );
-
-    TYPE_REGISTER( GamePad );
-    TYPE_SET_FROM_LUA(GamePad, Lua::GenericObjectFromLua );
 
     TYPE_REGISTER( LuaComponent );
     TYPE_ADD_MEMBER( LuaComponent, name );

@@ -29,7 +29,7 @@ namespace Framework
     EngineTypeRegistration();
 
     Window = new SheepWindow();
-    SpaceGuid = 0;
+
     ENGINE = this;
   }
 
@@ -126,7 +126,7 @@ namespace Framework
     GameSpace* space = DBG_NEW GameSpace();
 
     space->m_name = name;
-    space->m_guid = SpaceGuid++;
+
     m_spaceMap[space->m_name] = space;
     m_spaces.push_back(space);
 
