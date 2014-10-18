@@ -61,7 +61,7 @@ namespace Framework
 
     virtual void Initialize();
 
-    void Update(); //update gamepad state
+    void Update(float dt); //update gamepad state
     void RefreshState(); //update button states for next frame
 
     //thumbstick functions

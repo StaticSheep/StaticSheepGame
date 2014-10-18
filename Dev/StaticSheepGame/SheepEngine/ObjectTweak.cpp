@@ -49,7 +49,7 @@ namespace Framework
     objName += " [GUID: ";
     objName += std::to_string(obj.guid) + "]";
 
-    std::string barID = std::to_string(obj.guid);
+    std::string barID = std::to_string(obj.space->m_guid) + '/' +  std::to_string(obj.guid);
 
     // Create a new bar for this object
     AntTweak::TBar* objectBar = ATWEAK->CreateBar(barID.c_str());
@@ -262,10 +262,16 @@ namespace Framework
 
     AntTweak::TBar* objectBar = ATWEAK->GetBar(tweakHandle);
 
+
     ErrorIf(objectBar == nullptr, "Object Tweaking", "Object tweak handle was invalid! ObjectName: '%s'", name.c_str());
+
+    if(objectBar->antTweakBar == nullptr)
+      return;
 
     // Clear the bar of everything on it
     objectBar->Reset();
+
+
 
     // Get the object name
     std::string objName(name);

@@ -157,6 +157,8 @@ int CheckProtection(std::string& string)
   id = string.find("private:", 0);
   if(id != std::string::npos)
     return 2;
+
+  return -1;
 }
 
 
