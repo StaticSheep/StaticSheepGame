@@ -36,7 +36,7 @@ int main(int argc, char* argv[])
 
   wPath[strlen(wPath) - strlen(argv[0])] = 0;
 
-  //std::cout << "Working Path: " << wPath << "\n";
+  std::cout << "Working Path: " << wPath << "\n";
 
   //check if enough arguments were given.
   
@@ -50,11 +50,15 @@ int main(int argc, char* argv[])
   //example command line
   //a C:\Users\Zakary\Desktop\SandBox\AutoHeader\ C:\Users\Zakary\Desktop\SandBox\AutoHeader\output\ SHEEP_API
   
-  std::string sourcePath = wPath;
+  std::string sourcePath;// = wPath;
   sourcePath += argv[1];
 
-  std::string destPath = wPath;
+  std::cout << "SourcePath: " << sourcePath << "\n";
+
+  std::string destPath;// = wPath;
   destPath += argv[2];
+
+  std::cout << "DestPath: " << destPath << "\n";
 
   std::string keepPattern = argv[3];
   
