@@ -1,0 +1,265 @@
+Platforms
+GameObject
+{
+  name std::string "platformSmall1"
+  archetype std::string "platform_small"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 395.000000
+      y_ float -270.000000
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 0.500000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+
+  Sprite
+  {
+    m_spriteName std::string "content/Platform.png"
+    Size Vec2
+    {
+      X float 0.500000
+      Y float 1.000000
+    }
+  }
+
+
+
+
+  BoxCollider
+  {
+    m_width float 36.000000
+    m_height float 36.000000
+    m_materialName std::string "Static"
+  }
+
+
+
+}
+GameObject
+{
+  name std::string "platform2"
+  archetype std::string "platform"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -450.000000
+      y_ float 0.000000
+      z_ float 0.000000
+    }
+    Rotation float 1.575050
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+
+  Sprite
+  {
+    m_spriteName std::string "content/Platform.png"
+    Size Vec2
+    {
+      X float 1.000000
+      Y float 1.000000
+    }
+  }
+
+
+
+
+  BoxCollider
+  {
+    m_width float 512.000000
+    m_height float 36.000000
+    m_materialName std::string "Static"
+  }
+
+
+
+}
+GameObject
+{
+  name std::string "platform3"
+  archetype std::string "platform"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 450.000000
+      y_ float 0.000000
+      z_ float 0.000000
+    }
+    Rotation float 1.570500
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+
+  Sprite
+  {
+    m_spriteName std::string "content/Platform.png"
+    Size Vec2
+    {
+      X float 1.000000
+      Y float 1.000000
+    }
+  }
+
+
+
+
+  BoxCollider
+  {
+    m_width float 512.000000
+    m_height float 36.000000
+    m_materialName std::string "Static"
+  }
+
+
+
+}
+GameObject
+{
+  name std::string "platformSmall2"
+  archetype std::string "platform_small"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 395.000000
+      y_ float 270.000000
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 0.500000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+
+  Sprite
+  {
+    m_spriteName std::string "content/Platform.png"
+    Size Vec2
+    {
+      X float 0.500000
+      Y float 1.000000
+    }
+  }
+
+
+
+
+  BoxCollider
+  {
+    m_width float 36.000000
+    m_height float 36.000000
+    m_materialName std::string "Static"
+  }
+
+
+
+}
+GameObject
+{
+  name std::string "platformSmall2"
+  archetype std::string "platform_small"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 265.000000
+      y_ float 270.000000
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 0.500000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+
+  Sprite
+  {
+    m_spriteName std::string "content/Platform.png"
+    Size Vec2
+    {
+      X float 0.500000
+      Y float 1.000000
+    }
+  }
+
+
+
+
+  BoxCollider
+  {
+    m_width float 12.000000
+    m_height float 12.000000
+    m_materialName std::string "Static"
+  }
+
+
+
+}
+GameObject
+{
+  name std::string "platformSmall2"
+  archetype std::string "platform_small"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 135.000000
+      y_ float 270.000000
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 0.500000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+
+  Sprite
+  {
+    m_spriteName std::string "content/Platform.png"
+    Size Vec2
+    {
+      X float 0.500000
+      Y float 1.000000
+    }
+  }
+
+
+
+
+  BoxCollider
+  {
+    m_width float 12.000000
+    m_height float 12.000000
+    m_materialName std::string "Static"
+  }
+
+
+
+}
