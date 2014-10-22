@@ -7,8 +7,8 @@ project "SheepEngine"
 
 	SetupNativeProjects()
 
-	pchheader "precompiled.h"
-	pchsource "precompiled.cpp"
+	pchheader "pch/precompiled.h"
+	pchsource "pch/precompiled.cpp"
 
 	files
 	{

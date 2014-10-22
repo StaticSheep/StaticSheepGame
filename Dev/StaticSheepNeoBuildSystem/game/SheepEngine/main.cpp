@@ -1,4 +1,4 @@
-#include "precompiled.h"
+#include "pch/precompiled.h"
 
 #define _CRTDBG_MAP_ALLOC
 #include <stdlib.h>
@@ -9,18 +9,18 @@
 #include <Windows.h>
 //#include <vld.h>
 
-#include "Input.h"
-#include "Debug.h"
-#include "SheepGraphics.h"
+#include "systems/input/Input.h"
+#include "systems/debug/Debug.h"
+#include "systems/graphics/SheepGraphics.h"
 //#include "FramerateController.h"
-#include "SheepAudio.h"
-#include "GameLogic.h"
-#include "SheepPhysics.h"
-#include "AntTweakModule.h"
+#include "systems/audio/SheepAudio.h"
+#include "systems/gamelogic/GameLogic.h"
+#include "systems/physics/SheepPhysics.h"
+#include "systems/anttweak/AntTweakModule.h"
 #include <iostream>
 
 
-#include "App.h"
+#include "editor/App.h"
 #include "wx\app.h"
 
 #pragma comment (lib, "SheepGraphics.lib")
