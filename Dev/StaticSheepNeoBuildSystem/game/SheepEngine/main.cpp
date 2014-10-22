@@ -7,6 +7,7 @@
 
 //#include <wtypes.h>
 #include <Windows.h>
+
 //#include <vld.h>
 
 #include "systems/input/Input.h"
@@ -44,10 +45,15 @@ namespace boost {
   }
 }
 
+
+#if USE_EDITOR
+
 using dit::App;
 IMPLEMENT_APP_CONSOLE(App)
 
-int mainb(int argc, char** argv)
+#else
+
+int main(int argc, char** argv)
 {
   _CrtSetDbgFlag ( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
   //_CrtSetBreakAlloc(6295);
@@ -94,3 +100,4 @@ int mainb(int argc, char** argv)
   return 0;
 }
 
+#endif

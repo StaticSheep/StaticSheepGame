@@ -1,8 +1,7 @@
 
 //#include "../../src/API.h"
-#define USE_ANTTWEAKBAR 1
 
-
+#include "engine/config/Config.h"
 
 #ifdef _DEBUG
 #define DBG_NEW new ( _NORMAL_BLOCK , __FILE__ , __LINE__ )

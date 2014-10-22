@@ -21,7 +21,6 @@
 
 //-----------------------------------//
 // External systems
-#include "MathExt.h"
 #include "StringExt.h"
 
 #endif

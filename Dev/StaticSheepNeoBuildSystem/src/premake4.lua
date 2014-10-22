@@ -33,9 +33,9 @@ project "ditfw"
 		"platform/wxw/*"
 
 		-- exclude glfw
-		, "gfx/glfw/*"
-		, "input/glfw/*"
-		, "platform/glfw/*"
+		-- , "gfx/glfw/*"
+		-- , "input/glfw/*"
+		-- , "platform/glfw/*"
 	}
 
 	Core.includedirs = 
@@ -55,12 +55,12 @@ project "ditfw"
 		-- deps folders
 		, depsdir .. "/filewatcher/include"
 		, depsdir .. "/boost_1_55"
-		, depsdir .. "/glew/glew/include"
-		, depsdir .. "/glsdk/glfw/include"
-		, depsdir .. "/glsdk/glload/include"
-		, depsdir .. "/glsdk/glmesh/include"
-		, depsdir .. "/glsdk/glutil/include"
-		, depsdir .. "/glsdk/glm"
+		-- , depsdir .. "/glew/glew/include"
+		-- , depsdir .. "/glsdk/glfw/include"
+		-- , depsdir .. "/glsdk/glload/include"
+		-- , depsdir .. "/glsdk/glmesh/include"
+		-- , depsdir .. "/glsdk/glutil/include"
+		-- , depsdir .. "/glsdk/glm"
 		, depsdir .. "/wxwidgets/include"
 		, depsdir .. "/miniformat"
 		, srcdir .. "/../game/SheepGraphics/include"
@@ -69,11 +69,11 @@ project "ditfw"
 	Core.deps = 
 	{
 		"filewatcher"
-		, "glew"
-		, "glfw"
-		, "glload"
-		, "glmesh"
-		, "glutil"
+		-- , "glew"
+		-- , "glfw"
+		-- , "glload"
+		-- , "glmesh"
+		-- , "glutil"
 		, "wxWidgets"
 		, "zlib"
 		, "SheepGraphics"
@@ -96,8 +96,8 @@ project "ditfw"
 		, "wxUSE_GLCANVAS=1"
 
 		-- glew defines
-		, "GLEW_STATIC"
-		, "GLEW_MX"
+		--, "GLEW_STATIC"
+		--, "GLEW_MX"
 
 		-- boost defines
 		--, "BOOST_LIB_DIAGNOSTIC"

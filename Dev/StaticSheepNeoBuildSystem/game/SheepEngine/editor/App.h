@@ -112,8 +112,6 @@ namespace dit {
 
     private:
         std::unordered_set<uint64> watchEvents;
-
-        float2 lastMousePos{ 0.f, 0.f };
     };
 
     //-----------------------------------//

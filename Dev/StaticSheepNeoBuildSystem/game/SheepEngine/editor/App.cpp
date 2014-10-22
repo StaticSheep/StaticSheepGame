@@ -184,7 +184,6 @@ namespace dit {
 
         // get the mouse pos
         auto& ms = input->mouse.state;
-        lastMousePos = float2{ ms.x, ms.y };
 
         // show it
         window->Show(true);

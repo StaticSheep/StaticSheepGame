@@ -7,8 +7,6 @@
 
 #include "API.h"
 #include "WxWindow.h"
-#include "gl/WxGLContext.h"
-#include "gl/WxGLCanvas.h"
 #include "WxInputBackend.h"
 #include "d3d/WxD3DContext.h"
 

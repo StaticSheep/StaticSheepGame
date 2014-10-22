@@ -4,7 +4,7 @@
 #include "pch/precompiled.h"
 
 #include "systems/graphics/SheepGraphics.h"
-#include "Camera.h"
+#include "CCamera.h"
 
 namespace Framework
 {
