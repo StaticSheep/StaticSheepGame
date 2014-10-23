@@ -1198,6 +1198,32 @@ cfg = configuration { "windows" }
         "src/msw/timectrl.cpp",
     }
 
+    -- AUI stuff
+    files
+    {
+        "src/aui/auibar.cpp",
+        "src/aui/auibook.cpp",
+        "src/aui/dockart.cpp",
+        "src/aui/floatpane.cpp",
+        "src/aui/framemanager.cpp",
+        "src/aui/tabart.cpp",
+        --"src/aui/tabartgtk.cpp",
+        "src/aui/tabmdi.cpp",
+    }
+
+    files
+    {
+        "include/wx/aui/aui.h",
+        "include/wx/aui/auibar.h",
+        "include/wx/aui/auibook.h",
+        "include/wx/aui/dockart.h",
+        "include/wx/aui/floatpane.h",
+        "include/wx/aui/framemanager.h",
+        "include/wx/aui/tabart.h",
+        --"include/wx/aui/tabartgtk.h",
+        "include/wx/aui/tabmdi.h",
+    }
+
     -- ADVANCED_MSW_NATIVE_HDR
     files
     {

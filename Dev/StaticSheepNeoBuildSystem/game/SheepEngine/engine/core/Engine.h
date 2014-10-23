@@ -25,6 +25,7 @@ namespace Framework
     void MakeWindow(void* hInstance, int show);
     void Initialize();
     void MainLoop();
+    void Step();
     void Shutdown();
 
     void Quit();

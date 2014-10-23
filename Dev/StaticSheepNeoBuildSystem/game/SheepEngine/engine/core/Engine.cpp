@@ -106,19 +106,23 @@ namespace Framework
       m_systems[i]->ReceiveMessage(msg);
   }
 
+  void Engine::Step()
+  {
+    Window->Update();
+
+    for (unsigned int i = 0; i < m_systems.size(); ++i)
+    {
+      Framerate.StartFrame();
+      m_systems[i]->Update(Framerate.GetDT());
+      Framerate.EndFrame(m_systems[i]->GetName().c_str());
+    }
+  }
+
   void Engine::MainLoop()
   {
     if(Framerate.FramerateCheck())
     {
-      Window->Update();
-
-      for (unsigned int i = 0; i < m_systems.size(); ++i)
-      {
-        Framerate.StartFrame();
-        m_systems[i]->Update(Framerate.GetDT());
-        Framerate.EndFrame(m_systems[i]->GetName().c_str());
-      }
-
+      Step();
     }
   }
 

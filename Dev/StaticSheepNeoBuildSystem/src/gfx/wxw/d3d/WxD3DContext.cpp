@@ -85,10 +85,15 @@ namespace dit {
             log("DirectX failed to initialize!");
           }
         }
+        else
+        {
+          DirectSheep::RenderContext* d3d = D3DGetContext();
+          d3d->SetViewport(0, 0, DirectSheep::Dimension(canvas->GetSize().GetX(), canvas->GetSize().GetY()));
+        }
 #endif
     }
 
-    DirectSheep::RenderContext* WxD3DContext::GetRenderer()
+    void* WxD3DContext::GetRenderContext()
     {
       return D3DGetContext();
     }

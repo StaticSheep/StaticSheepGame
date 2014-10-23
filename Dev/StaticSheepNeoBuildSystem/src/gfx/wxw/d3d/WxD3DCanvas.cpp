@@ -91,4 +91,20 @@ namespace dit {
 
     //-----------------------------------//
 
+    WXLRESULT WxD3DCanvas::MSWWindowProc(WXUINT message, WXWPARAM wParam, WXLPARAM lParam)
+    {
+
+      if (customWinProc)
+      {
+        std::function<WXLRESULT()> fn = [&]() {
+          return wxWindow::MSWWindowProc(message, wParam, lParam);
+        };
+
+        return customWinProc(message, wParam, lParam, &fn);
+      }
+        
+
+      return wxWindow::MSWWindowProc(message, wParam, lParam);
+    }
+
 }

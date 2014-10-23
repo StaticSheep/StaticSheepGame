@@ -2807,9 +2807,12 @@ void wxAuiToolBar::OnMotion(wxMouseEvent& evt)
         // event sent sometime in the future (see OnLeftUp())
         wxAuiToolBarEvent e(wxEVT_AUITOOLBAR_BEGIN_DRAG, GetId());
         e.SetEventObject(this);
-        e.SetToolId(m_actionItem->m_toolId);
-        m_dragging = GetEventHandler()->ProcessEvent(e) && !e.GetSkipped();
-
+        if (m_actionItem)
+        {
+          e.SetToolId(m_actionItem->m_toolId);
+          m_dragging = GetEventHandler()->ProcessEvent(e) && !e.GetSkipped();
+        }
+        
         DoIdleUpdate();
     }
 

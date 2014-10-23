@@ -16,6 +16,8 @@
 
 namespace dit {
 
+  typedef WXLRESULT(*wxWinProc)(WXUINT message, WXWPARAM wParam, WXLPARAM lParam);
+  typedef WXLRESULT(*wxWinCustomProc)(WXUINT message, WXWPARAM wParam, WXLPARAM lParam, std::function<WXLRESULT()>* fn);
     //-----------------------------------//
 
     class WxWindow;
@@ -47,10 +49,14 @@ namespace dit {
         void OnRender(wxTimerEvent& event);
         void OnPaint(wxPaintEvent& event);
 
+        virtual WXLRESULT MSWWindowProc(WXUINT message, WXWPARAM wParam, WXLPARAM lParam);
+
     public:
         WxWindow* window = nullptr;
         wxTimer updateTimer;
         wxTimer renderTimer;
+
+        wxWinCustomProc customWinProc = nullptr;
 
         WxD3DContext* context = nullptr;
 

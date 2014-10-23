@@ -40,7 +40,7 @@ namespace dit {
 
         WxD3DContext(WxD3DCanvas* canvas, WxWindow* window);
 
-        DirectSheep::RenderContext* GetRenderer();
+        void* GetRenderContext();
 
         virtual ~WxD3DContext();
 

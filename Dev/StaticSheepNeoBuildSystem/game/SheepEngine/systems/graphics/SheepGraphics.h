@@ -39,7 +39,7 @@ namespace Framework
 
     virtual std::string GetName() {return "SheepGraphics";};
 		// Sheep graphics interface constructor
-		SheepGraphics();
+    SheepGraphics(void* rc = nullptr);
 		// Sheep graphics interface deconstructor
 		~SheepGraphics();
 
@@ -83,7 +83,7 @@ namespace Framework
 
 		void Draw(void);
 
-    DirectSheep::RenderContext *m_renderContext;
+    
 
     std::unordered_map<std::string, DirectSheep::Handle> m_textureMap;
 
@@ -106,6 +106,8 @@ namespace Framework
     int _ScreenWidth;
     int _ScreenHeight;
 
+
+    DirectSheep::RenderContext *m_renderContext;
 
 	};
 

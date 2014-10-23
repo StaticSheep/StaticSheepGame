@@ -21,6 +21,8 @@ namespace dit {
         virtual ~GfxContext() {}
 
         virtual void MakeCurrent() = 0;
+        virtual void* GetRenderContext() { return nullptr; }
+
 
     public:
         void* userData = nullptr;

@@ -54,7 +54,7 @@ namespace Framework
     if (msg.MessageId == Message::GFXDeviceInit)
     {
       TwInit(TW_DIRECT3D11, GRAPHICS->GetDevice());
-      TwWindowSize(ENGINE->Window->GetWidth(), ENGINE->Window->GetHeight());
+      TwWindowSize(GRAPHICS->_ScreenWidth, GRAPHICS->_ScreenHeight);
       TwCopyStdStringToClientFunc(CopyStdStringToClient); // must be called once (just after TwInit for instance)
       
       return;

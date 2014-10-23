@@ -13,6 +13,12 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 #include "engine/window/Window32.h"
 
+
+#include "editor/App.h"
+#include "input/InputBackend.h"
+#include "input/Keyboard.h"
+#include "input/Mouse.h"
+
 namespace Framework
 {
 
@@ -354,6 +360,10 @@ namespace Framework
 /*****************************************************************************/
   bool KeyboardInput::KeyIsPressed(unsigned int key) const
   {
+#if USE_EDITOR
+    return false;
+#endif
+
     if(_previousState[key] == 0 && _currentState[key] == 1)
       return true;
     else
@@ -368,6 +378,10 @@ namespace Framework
 /*****************************************************************************/
   bool KeyboardInput::KeyIsDown(unsigned int key) const
   {
+#if USE_EDITOR
+    return dit::EDITOR_INPUT->GetKeyboard()->IsKeyDown((dit::Keys)key);
+#endif
+
     if(_previousState[key] == 1 && _currentState[key] == 1)
       return true;
     else
@@ -382,6 +396,10 @@ namespace Framework
 /*****************************************************************************/
   bool KeyboardInput::KeyIsReleased(unsigned int key) const
   {
+#if USE_EDITOR
+    return false;
+#endif
+
     if(_previousState[key] == 1 && _currentState[key] == 0)
       return true;
     else
@@ -466,6 +484,11 @@ namespace Framework
     Mouse.Update();
     Keyboard.Update();
 
+#if USE_EDITOR
+
+
+#else
+
     while(PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) // Query message queue
     {
       Mouse.GetMsg(&msg);
@@ -474,6 +497,8 @@ namespace Framework
       // dispatch the msg for anything that was not handled.
       DispatchMessage(&msg);
     }
+
+#endif
 
     return;
   }

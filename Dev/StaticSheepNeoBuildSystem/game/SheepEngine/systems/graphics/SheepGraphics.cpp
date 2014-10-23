@@ -24,13 +24,15 @@ namespace Framework
 	// Global pointer
 	SheepGraphics* GRAPHICS = NULL;
 
-	SheepGraphics::SheepGraphics()
+	SheepGraphics::SheepGraphics(void* rc)
 	{
 		// This should load any required materials, set constants
 		// Pre-initialization logic
 
     ErrorIf(GRAPHICS != NULL, "SheepGraphics", "Graphics already initialized");
 		GRAPHICS = this;
+
+    m_renderContext = (DirectSheep::RenderContext*)rc;
 
     CurrentCamera = NULL;
 	}
@@ -56,13 +58,18 @@ namespace Framework
 		// Create DirectX object
 		// Initialize graphics system
 
+#if USE_EDITOR
+#else
     _ScreenWidth = ENGINE->Window->GetWidth();
     _ScreenHeight = ENGINE->Window->GetHeight();
+#endif
 
-    m_renderContext = DirectSheep::RenderContext::Allocate();
-
-    m_renderContext->Initialize(ENGINE->Window->GetHandle(), (float)_ScreenWidth, (float)_ScreenHeight);
-
+    if (m_renderContext == nullptr)
+    {
+      m_renderContext = DirectSheep::RenderContext::Allocate();
+      m_renderContext->Initialize(ENGINE->Window->GetHandle(), (float)_ScreenWidth, (float)_ScreenHeight);
+    }
+    
     Message m(Message::GFXDeviceInit);
     ENGINE->SystemMessage(m);
 
