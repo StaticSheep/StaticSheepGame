@@ -10,6 +10,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "Macros.h"
 #include "CRigidBody.h"
 #include "CBoxCollider.h"
+#include "CCircleCollider.h"
 
 namespace Framework
 {
@@ -38,6 +39,7 @@ namespace Framework
 
       BIND_FUNCTION_EX(ENGINE->Lua(), BoxCollider::SetVelocity, SetVelocity);
 
+	  //BIND_FUNCTION_EX(ENGINE->Lua(), CircleCollider::SetVelocity, SetVelocity);
 
 
       CREATE_TABLE(ENGINE->Lua(), engine);
