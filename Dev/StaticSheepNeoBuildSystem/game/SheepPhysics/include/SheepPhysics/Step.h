@@ -1,6 +1,8 @@
 #pragma once
 
+#ifdef SHEEPPHYSICS
 #include "Manifold.h"
+#endif
 
 #include "Material.h"
 #include "Shape.h"
@@ -12,9 +14,8 @@
 namespace SheepFizz
 {
 	//collision callback function pointer
-	PHY_API typedef void(*CollisionCB)(void*, void*, void*);
 
-	#define GRAVITY -32.0f
+	#define GRAVITY -37.0f
 
 	class PhysicsSpace
 	{
@@ -75,8 +76,10 @@ namespace SheepFizz
 		PHY_API void SetCollisionCallback(void(*cb)(void*, void*, void*));
 		PHY_API void SetUserData(void* userData);
 
+		#ifdef SHEEPPHYSICS
+
 		private:
-			//time step value
+			//timestep value
 			float dt_;
 
 			//values tied to engine messaging
@@ -89,6 +92,8 @@ namespace SheepFizz
 			HandleManager handles_;
 
 			std::vector<Manifold> manifolds_;
+
+		#endif
 
 	};
 

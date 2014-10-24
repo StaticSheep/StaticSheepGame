@@ -1,5 +1,9 @@
 
 #include "precompiled.h"
+
+#include "Manifold.h"
+#include "Handle.h"
+#include "Body.h"
 #include "Step.h"
 
 namespace SheepFizz
