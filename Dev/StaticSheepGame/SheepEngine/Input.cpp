@@ -9,6 +9,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "Input.h"
 #include <iostream>
 #include <windows.h>
+#include "TraceLog.h"
 
 #include "Window.h"
 
@@ -445,6 +446,7 @@ namespace Framework
 /*****************************************************************************/
   void InputManager::Initialize()
   {
+    LOG->TraceLog(INFO, "Initializing Input Manager\n");
     Mouse.Initialize();
     Keyboard.Initialize();
 

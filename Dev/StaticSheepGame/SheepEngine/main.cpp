@@ -5,7 +5,7 @@
 
 //#include <wtypes.h>
 #include <Windows.h>
-//#include <vld.h>
+#include <vld.h>
 
 #include "Input.h"
 #include "Debug.h"
@@ -16,6 +16,7 @@
 #include "SheepPhysics.h"
 #include "AntTweakModule.h"
 #include <iostream>
+#include "TraceLog.h"
 
 #pragma comment (lib, "SheepGraphics.lib")
 #pragma comment (lib, "SheepPhysics.lib")
@@ -31,6 +32,7 @@ int WINAPI WinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
 
 
   OpenConsole();
+  Trace log(INFO);
 
   Engine* Core = new Engine();
 

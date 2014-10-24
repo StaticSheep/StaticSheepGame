@@ -157,6 +157,7 @@
     <ClInclude Include="Space.h" />
     <ClInclude Include="CSprite.h" />
     <ClInclude Include="System.h" />
+    <ClInclude Include="TraceLog.h" />
     <ClInclude Include="TweakHelper.h" />
     <ClInclude Include="TypeInfo.h" />
     <ClInclude Include="Variable.h" />
@@ -221,6 +222,7 @@
     <ClCompile Include="Space.cpp" />
     <ClCompile Include="CSprite.cpp" />
     <ClCompile Include="SpaceTweak.cpp" />
+    <ClCompile Include="TraceLog.cpp" />
     <ClCompile Include="TweakHelper.cpp" />
     <ClCompile Include="TypeInfo.cpp" />
     <ClCompile Include="Variable.cpp" />

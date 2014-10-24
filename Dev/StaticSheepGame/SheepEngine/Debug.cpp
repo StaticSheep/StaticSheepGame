@@ -13,6 +13,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "Input.h"
 #include "FramerateController.h"
 #include "DrawLib.h"
+#include "TraceLog.h"
 #include "Window.h"
 #include <Windows.h>
 
@@ -60,9 +61,21 @@ namespace Framework
 /*****************************************************************************/
   void Debug::Initialize()
   {
-    audio = (DebugAudio*)AUDIO->GetDebugData();
-    //graphics = (DebugGraphics*)GRAPHICS->GetDebugData();
+    if(AUDIO)
+    {
+      audio = (DebugAudio*)AUDIO->GetDebugData();
+      LOG->TraceLog(DEBUG, "Linked to Audio system\n");
+    }
+
+    if(GRAPHICS)
+    {
+      graphics = (DebugGraphics*)GRAPHICS->GetDebugData();
+      LOG->TraceLog(DEBUG, "Linked to Graphics system\n");
+    }
+
+    
     framerate = (DebugFramerate*)ENGINE->Framerate.GetDebugData();
+    LOG->TraceLog(DEBUG, "Linked to Framerate Controller\n");
   }
 
 /*****************************************************************************/

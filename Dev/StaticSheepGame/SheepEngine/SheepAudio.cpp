@@ -15,6 +15,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "Input.h"
 #include <fstream>
 #include <iostream>
+#include "TraceLog.h"
 
 // lets just call this an event map...
 typedef std::unordered_map<std::string, SoundEvent> EventMap;
@@ -23,8 +24,8 @@ typedef std::unordered_map<std::string, SoundEvent> EventMap;
 typedef std::vector<SOUND::Bank *> BankVector;
 
 // static prototypes
-static void ParseBanks(SOUND::System *system, std::ifstream &file, BankVector &bank);
-static void ParseEvents(SOUND::System *system, std::ifstream &file, EventMap &eventMap);
+static int ParseBanks(SOUND::System *system, std::ifstream &file, BankVector &bank);
+static int ParseEvents(SOUND::System *system, std::ifstream &file, EventMap &eventMap);
 static void LoadBank(SOUND::System *system, std::string &name, BankVector &bank);
 static void LoadEvent(SOUND::System *system, std::string &name, EventMap &events);
 
@@ -64,8 +65,12 @@ namespace Framework
 /*****************************************************************************/
 	SheepAudio::~SheepAudio()
 	{
+    LOG->TraceLog(DEBUG, "Releasing FMOD System\n");
 		// Release the FMOD system
     _system->release();
+
+    LOG->TraceLog(DEBUG, "Deleting debug data\n");
+    delete debug;
 
 	}
 
@@ -77,14 +82,24 @@ namespace Framework
 /*****************************************************************************/
 	void SheepAudio::Initialize()
 	{
+    int count = 0;
+    LOG->TraceLog(INFO, "FMOD Initialization\n");
+    LOG->TraceLog(INFO, "Creating FMOD Studio System\n");
       // create the sound system
-    ErrorCheck(SOUND::System::create(&_system));
+    if(!ErrorCheck(SOUND::System::create(&_system)))
+      LOG->TraceLog(INFO, "System created successfully\n");
+    else
+      LOG->TraceLog(ERR,"FMOD system was not created successfully\n");
 
+    LOG->TraceLog(INFO, "Initializing Sound System\n");
     // initialize the sound system, with 512 channels... NEVER RUN OUT
     ErrorCheck(_system->initialize(256, FMOD_STUDIO_INIT_SYNCHRONOUS_UPDATE, 
                                         FMOD_STUDIO_INIT_SYNCHRONOUS_UPDATE, 0));
+
+    LOG->TraceLog(INFO, "Getting Low Level System\n");
     ErrorCheck(_system->getLowLevelSystem(&_lowLevelSystem));
 
+    LOG->TraceLog(INFO, "Opening GUID file\n");
     // open the GUID file
     std::ifstream infile(SoundUtility::SourcePath(_GUID, SoundUtility::TYPE_GUIDs).c_str());
 
@@ -92,15 +107,26 @@ namespace Framework
     if(!infile.is_open())
       throw std::invalid_argument("Invalid File"); // replace with event handling system
 
+    LOG->TraceLog(INFO, "Parsing banks\n");
     // parse through the GUID file and load the banks and events
-    ParseBanks(_system, infile, _banks);
-    ParseEvents(_system, infile, _events);
+    count = ParseBanks(_system, infile, _banks);
 
+    LOG->TraceLog(DEBUG, "%i Banks found and loaded\n", count);
+
+    LOG->TraceLog(INFO, "Parsing events\n");
+    count = ParseEvents(_system, infile, _events);
+    LOG->TraceLog(DEBUG, "%i Events found and loaded\n", count);
+
+    LOG->TraceLog(INFO, "Setting up debug channel in master group\n");
     ErrorCheck(_lowLevelSystem->getMasterChannelGroup(&masterGroup));
     ErrorCheck(_lowLevelSystem->createDSPByType(FMOD_DSP_TYPE_FFT, &dsp));
 
+    LOG->TraceLog(INFO, "Adding DSP to master\n");
     ErrorCheck(masterGroup->addDSP(0, dsp));
 
+    infile.close();
+
+    
     debug = new DebugAudio;
 	}
 
@@ -243,17 +269,15 @@ namespace Framework
     Reference to the vector of bank files. (All of the sound files)
 */
 /*****************************************************************************/
-void ParseBanks(SOUND::System *system, std::ifstream &file, BankVector &bank)
+int ParseBanks(SOUND::System *system, std::ifstream &file, BankVector &bank)
 {
   // string for extraction
   std::string str;
+  int count = 0;
 
   // must start at the beginning of the file
   file.clear();
   file.seekg(0, file.beg);
-
-  
-  
 
   // using getline to retain whitespaces
   while (std::getline(file, str))
@@ -270,11 +294,13 @@ void ParseBanks(SOUND::System *system, std::ifstream &file, BankVector &bank)
 
       // loading the bank (substring)
       LoadBank(system, str.substr(startPos, endPos).append(".bank"), bank);
+      ++count;
     }
   }
 
   // must load the unlisted master string bank
   LoadBank(system, str = "Master Bank.strings.bank", bank);
+  return count;
 }
 
 /*****************************************************************************/
@@ -293,10 +319,11 @@ void ParseBanks(SOUND::System *system, std::ifstream &file, BankVector &bank)
     into.
 */
 /*****************************************************************************/
-void ParseEvents(SOUND::System *system, std::ifstream &file, EventMap &eventMap)
+int ParseEvents(SOUND::System *system, std::ifstream &file, EventMap &eventMap)
 {
   // string for extraction
   std::string str;
+  int count = 0;
 
   // must start at the beginning of the file
   file.clear();
@@ -314,8 +341,11 @@ void ParseEvents(SOUND::System *system, std::ifstream &file, EventMap &eventMap)
 
       // loading the event (substring)
       LoadEvent(system, str.substr(position, endPos), eventMap);
+      ++count;
     }
   }
+
+  return count;
 }
 
 /*****************************************************************************/
