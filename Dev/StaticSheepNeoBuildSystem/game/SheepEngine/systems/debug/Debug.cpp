@@ -64,9 +64,21 @@ namespace Framework
 /*****************************************************************************/
   void Debug::Initialize()
   {
-    audio = (DebugAudio*)AUDIO->GetDebugData();
-    //graphics = (DebugGraphics*)GRAPHICS->GetDebugData();
+    if(AUDIO)
+    {
+      audio = (DebugAudio*)AUDIO->GetDebugData();
+      LOG->TraceLog(DEBUG, "Linked to Audio system\n");
+    }
+
+    if(GRAPHICS)
+    {
+      graphics = (DebugGraphics*)GRAPHICS->GetDebugData();
+      LOG->TraceLog(DEBUG, "Linked to Graphics system\n");
+    }
+
+    
     framerate = (DebugFramerate*)ENGINE->Framerate.GetDebugData();
+    LOG->TraceLog(DEBUG, "Linked to Framerate Controller\n");
   }
 
 /*****************************************************************************/
@@ -395,3 +407,4 @@ namespace Framework
     return currentState;
   }
 } // end namespace
+ 
