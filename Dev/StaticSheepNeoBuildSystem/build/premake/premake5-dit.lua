@@ -30,7 +30,7 @@ solution "StaticSheep"
 	-- Build configuration options
 
 	configuration "Debug"
-		defines { "DEBUG" }
+		defines { "__DEBUG" }
 		
 	configuration {}
 

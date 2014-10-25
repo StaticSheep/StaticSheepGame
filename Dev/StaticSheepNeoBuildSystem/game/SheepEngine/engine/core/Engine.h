@@ -8,6 +8,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 #pragma once
 
+#include "systems/debug/tracelog/TraceLog.h"
+
 namespace Framework
 {
   class Engine;
@@ -78,6 +80,8 @@ namespace Framework
 
     std::hash_map<std::string, GameSpace*> m_spaceMap;
     std::vector<GameSpace*> m_spaces;
+
+	Trace m_traceLog;
 
     friend class GameLogic;
   };

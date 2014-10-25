@@ -8,6 +8,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 #include "pch/precompiled.h"
 #include "SheepPhysics.h"
+
+#include "components/transform/CTransform.h"
 #include "components/colliders/CBoxCollider.h"
 #include "components/colliders/CCircleCollider.h"
 
@@ -34,7 +36,6 @@ namespace Framework
 	void SheepPhysics::RegisterComponents()
 	{
 		REGISTER_COMPONENT(Transform);
-		REGISTER_COMPONENT(Tester);
 		REGISTER_COMPONENT(BoxCollider);
 		REGISTER_COMPONENT(CircleCollider);
 

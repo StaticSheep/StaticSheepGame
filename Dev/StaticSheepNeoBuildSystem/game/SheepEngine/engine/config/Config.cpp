@@ -42,13 +42,18 @@ namespace Framework
 #if USE_EDITOR
 
 #else
-    Core->MakeWindow(&hInst, 1);
+	Core->MakeWindow(GetModuleHandle(NULL), 1);
 #endif
     return Core;
   }
 
   void InitEngine(void)
   {
+
+#if USE_EDITOR
+#else
+	  ENGINE->OpenEditor();
+#endif
     ENGINE->Initialize();
   }
 
