@@ -73,7 +73,7 @@ namespace Framework
   class HookManager
   {
   public:
-    HookManager() : HookCollections(sizeof(HookCollection), 2) {};
+    HookManager() : HookCollections(sizeof(HookCollection), 10) {};
     ~HookManager();
 
     void Add(std::string eventName, Handle owner, const Function& func);
