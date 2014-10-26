@@ -66,6 +66,9 @@ namespace Framework
 			void SetBodyRotation(GameSpace* space, SheepFizz::Handle handle, float rotation);
 			void SetBodyAngVelocity(GameSpace* space, SheepFizz::Handle handle, float angveloc);
 			void SetBodyTorques(GameSpace* space, SheepFizz::Handle handle, float torque);
+      
+
+      void SetDT(GameSpace* space, float dt);
 
 			//remove bodies from the bodies held in the physics engine
 			void RemoveBodies(GameSpace* space, SheepFizz::Handle handle);

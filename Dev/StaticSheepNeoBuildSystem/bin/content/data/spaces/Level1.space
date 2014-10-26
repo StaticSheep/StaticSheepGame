@@ -8,10 +8,10 @@ GameObject
     Translation Vec3
     {
       x_ float 0.000000
-      y_ float -252.949356
+      y_ float 0.000000
       z_ float 0.000000
     }
-    Rotation float -0.031926
+    Rotation float 0.000000
     Scale Vec3
     {
       x_ float 1.000000
@@ -19,7 +19,6 @@ GameObject
       z_ float 0.000000
     }
   }
-
   Sprite
   {
     m_spriteName std::string "content/Default.png"
@@ -29,21 +28,12 @@ GameObject
       Y float 1.000000
     }
   }
-
-
-
-
   BoxCollider
   {
     m_width float 12.000000
     m_height float 12.000000
     m_materialName std::string "Wood"
   }
-
-
-
-
-
 }
 GameObject
 {
@@ -65,7 +55,6 @@ GameObject
       z_ float 0.000000
     }
   }
-
   Sprite
   {
     m_spriteName std::string "content/Platform.png"
@@ -75,21 +64,12 @@ GameObject
       Y float 1.000000
     }
   }
-
-
-
-
   BoxCollider
   {
     m_width float 512.000000
     m_height float 32.000000
     m_materialName std::string "Static"
   }
-
-
-
-
-
 }
 GameObject
 {
@@ -111,7 +91,6 @@ GameObject
       z_ float 0.000000
     }
   }
-
   Sprite
   {
     m_spriteName std::string "content/Platform.png"
@@ -121,21 +100,12 @@ GameObject
       Y float 1.000000
     }
   }
-
-
-
-
   BoxCollider
   {
     m_width float 512.000000
     m_height float 32.000000
     m_materialName std::string "Static"
   }
-
-
-
-
-
 }
 GameObject
 {
@@ -157,7 +127,6 @@ GameObject
       z_ float 0.000000
     }
   }
-
   Sprite
   {
     m_spriteName std::string "content/Platform.png"
@@ -167,21 +136,12 @@ GameObject
       Y float 1.000000
     }
   }
-
-
-
-
   BoxCollider
   {
     m_width float 512.000000
     m_height float 32.000000
     m_materialName std::string "Static"
   }
-
-
-
-
-
 }
 GameObject
 {
@@ -203,7 +163,6 @@ GameObject
       z_ float 0.000000
     }
   }
-
   Sprite
   {
     m_spriteName std::string "content/Platform.png"
@@ -213,21 +172,12 @@ GameObject
       Y float 1.000000
     }
   }
-
-
-
-
   BoxCollider
   {
     m_width float 512.000000
     m_height float 32.000000
     m_materialName std::string "Static"
   }
-
-
-
-
-
 }
 GameObject
 {
@@ -249,7 +199,6 @@ GameObject
       z_ float 0.000000
     }
   }
-
   Sprite
   {
     m_spriteName std::string "content/platform.png"
@@ -259,21 +208,12 @@ GameObject
       Y float 1.000000
     }
   }
-
-
-
-
   BoxCollider
   {
     m_width float 12.000000
     m_height float 12.000000
     m_materialName std::string "Static"
   }
-
-
-
-
-
 }
 GameObject
 {
@@ -295,7 +235,6 @@ GameObject
       z_ float 0.000000
     }
   }
-
   Sprite
   {
     m_spriteName std::string "content/platform.png"
@@ -305,19 +244,10 @@ GameObject
       Y float 1.000000
     }
   }
-
-
-
-
   BoxCollider
   {
     m_width float 12.000000
     m_height float 12.000000
     m_materialName std::string "Static"
   }
-
-
-
-
-
 }

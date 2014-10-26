@@ -349,6 +349,11 @@ namespace Framework
   {
     m_paused = paused;
 
+    if (paused)
+      PHYSICS->SetDT(this, 0.0f);
+    else
+      PHYSICS->SetDT(this, 0.0167f);
+
     Lua::CallFunc(ENGINE->Lua(), "PauseGameSpace", m_name, paused);
   }
 
