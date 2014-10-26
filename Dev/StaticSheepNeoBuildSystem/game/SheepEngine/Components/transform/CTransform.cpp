@@ -77,8 +77,17 @@ namespace Framework
 
   void Transform::SetPhysicsBody(unsigned body)
   {
-    m_pBody = body;
-    m_hasPhysics = true;
+    if (body == Handle::null)
+    {
+      m_pBody = Handle::null;
+      m_hasPhysics = false;
+    }
+    else
+    {
+      m_pBody = body;
+      m_hasPhysics = true;
+    }
+    
   }
 
 

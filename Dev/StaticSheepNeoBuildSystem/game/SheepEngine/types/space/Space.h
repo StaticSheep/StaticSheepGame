@@ -83,10 +83,15 @@ namespace Framework
 
     GameSpace* CopyGameSpace(const char* new_name);
     
+    // Handle used by AntTweak bar for keeping track of the game space tweak bar
     Handle tweakHandle;
 
+    // Physics Space to simulate this game space's physics
 	  void* m_pSpace;
     
+    // The game space is being edited
+    bool m_edit;
+
   private:
     // The collection of all game objects in this game space
     ObjectAllocator m_objects;
@@ -105,6 +110,7 @@ namespace Framework
 
     bool m_shuttingDown;
 
+    
     bool m_paused;
     bool m_hidden;
 

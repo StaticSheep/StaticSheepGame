@@ -46,6 +46,18 @@ namespace Framework
 	//remove the body from the space
 	void RigidBody::Remove()
 	{
+    if (space->m_edit || space->Paused())
+    {
+      Transform* trans = (this->space->GetHandles().GetAs<GameObject>(this->owner))->GetComponent<Transform>(eTransform);
+      Vec3 position = trans->GetTranslation();
+      float rotation = trans->GetRotation();
+
+      trans->SetPhysicsBody(Handle::null);
+
+      trans->SetTranslation(position);
+      trans->SetRotation(rotation);
+    }
+
 		PHYSICS->RemoveBodies(space, m_handle);
 	}
 
