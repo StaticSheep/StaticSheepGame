@@ -20,10 +20,7 @@ namespace Framework
     SoundEmitter() { _soundSystem = AUDIO; _pitch = 1.0f; _volume = 1.0f;};
     ~SoundEmitter() {};
 
-    void Initialize()
-    {
-      Play("space_brawl");
-    };
+    void Initialize();
     
     void Play(std::string name);
     void PlayEx(std::string name, float volume);

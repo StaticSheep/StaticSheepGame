@@ -30,6 +30,11 @@ namespace Framework
     
     instance->release();
   }
+
+  void SoundEmitter::Initialize()
+  {
+
+  }
   
 /*****************************************************************************/
 /*!
@@ -54,15 +59,11 @@ namespace Framework
     instance->release();
   }
 
-/*****************************************************************************/
-/*!
-  \brief
-    Sets the pitch of the emitter. Doesn't affect currently playing instances.
 
-  \param pitch
-    What to set the pitch to
+/*!
+\brief  Sets the pitch of the emitter. Doesn't affect currently playing instances.
+\param  pitch What to set the pitch to
 */
-/*****************************************************************************/
   void SoundEmitter::SetPitch(float pitch)
   {
     _pitch = pitch;
