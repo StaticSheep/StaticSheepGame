@@ -1,7 +1,4 @@
 #pragma once
-
-
-
 #include "Matrix.h"
 #include "ObjectAllocator.h"
 #include "Handle.h"

@@ -20,7 +20,7 @@ namespace Framework
 	
 		public:
 			
-      //RigidBody(); // Default Constructor
+			//RigidBody(); // Default Constructor
 
 			RigidBody(SheepFizz::Shapes shape);
 
@@ -33,28 +33,30 @@ namespace Framework
 			//removes the component
 			virtual void Remove();
 
-      virtual void SetVelocity() {};
+			virtual void SetVelocity(Vec3D& velocity);
 
-      // Properties
-      union
-      {
-        float m_width;
-        float m_radius;
-      };
+		// Properties
+		union
+		{
+		float m_width;
+		float m_radius;
+		};
       
-      float m_height; // For boxes
+		float m_height; // For boxes
 
-      std::string m_materialName;
+		std::string m_materialName;
 
-      protected:
+		protected:
 
 			//these values are all temp storage for initialization
 			SheepFizz::Material* m_material;
-      // Shape of the object
-      SheepFizz::Shapes m_shape; 
+      
+			// Shape of the object
+			SheepFizz::Shapes m_shape; 
 			
-      // Handle to created physics
+			// Handle to created physics
 			SheepFizz::Handle m_handle;
+
 	};
 	
 }
