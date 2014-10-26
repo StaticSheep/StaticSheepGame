@@ -8,7 +8,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 // debug needs to know about all of the systems.... sigh...
 #include "pch/precompiled.h"
-
+#include <Windows.h>
 #include "systems/debug/Debug.h"
 #include "systems/debug/tracelog/TraceLog.h"
 
@@ -19,7 +19,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "systems/graphics/DrawLib.h"
 #include "engine/window/Window32.h"
 
-#include <Windows.h>
+
 
 static bool fpsFlag;
 static bool performanceFlag;
@@ -75,6 +75,11 @@ namespace Framework
     {
       graphics = (DebugGraphics*)GRAPHICS->GetDebugData();
       TRACELOG->Log(DEBUG, "Linked to Graphics system\n");
+    }
+    
+    if (SHEEPINPUT)
+    {
+      input = (DebugInput*)SHEEPINPUT->GetDebugData();
     }
 
     
@@ -180,6 +185,17 @@ namespace Framework
 
           break;
 
+        case DEBUG_INPUT:
+          SHEEPINPUT->GetDebugData();
+          FormatString(currentState);
+          Draw::SetUseCamera(false);
+          Draw::SetColor(1.0f, 1.0f, 1.0f, 1.0f);
+          Draw::SetRotation(3.14159f);
+          Draw::SetPosition(ENGINE->Window->GetWidth() / -4.0f, ENGINE->Window->GetHeight() / 2.0f - 100.0f);
+          Draw::DrawString(string.c_str(), 15.0f, "Helvetica");
+          Draw::SetUseCamera(true);
+          break;
+
         case DEBUG_GRAPHICS:
           GRAPHICS->GetDebugData();
           
@@ -233,6 +249,13 @@ namespace Framework
                "RAM Allocated: " + std::to_string(audio->RAM / 1000000) + "." + std::to_string((audio->RAM / 100000) % 10) + " mb\n"
                "Channels Playing: " + std::to_string(audio->channels) + "\n"
                "Total Time Taken : " + std::to_string(timetaken).erase(4,std::string::npos) + "ms\n";
+      break;
+
+    case DEBUG_INPUT:
+      format1 = std::to_string(input->pads[0].State.Gamepad.sThumbLX);
+      format2 = std::to_string(input->pads[0].State.Gamepad.sThumbLY);
+
+      string = "Input Pad 1 X: " + format1 + " Y: " + format2;
       break;
 
     default:
@@ -401,6 +424,14 @@ namespace Framework
         currentState = 0;
       else
         currentState = DEBUG_GRAPHICS;
+    }
+
+    if (SHEEPINPUT->Keyboard.KeyIsPressed(VK_F7))
+    {
+      if (currentState == DEBUG_INPUT)
+        currentState = 0;
+      else
+        currentState = DEBUG_INPUT;
     }
 
     // Add more states here.

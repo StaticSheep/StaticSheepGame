@@ -12,7 +12,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 #include "components/sound/CSoundEmitter.h"
 #include "components/sound/CSoundPlayer.h"
-#include "systems/input/Input.h"
+
 
 #include <fstream>
 #include <iostream>

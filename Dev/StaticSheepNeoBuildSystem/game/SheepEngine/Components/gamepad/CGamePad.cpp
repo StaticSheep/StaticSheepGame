@@ -1,5 +1,6 @@
 #include "pch/precompiled.h"
 #include "CGamePad.h"
+#include "systems/input/Input.h"
 #pragma comment(lib, "Xinput9_1_0.lib")
 
 namespace Framework
@@ -246,7 +247,7 @@ namespace Framework
     ZeroMemory(&GamePadState, sizeof(XINPUT_STATE));
 
     //Get the state of the gamepad
-    XInputGetState(GamepadIndex, &GamePadState);
+    SHEEPINPUT->GetGamePadState(GamepadIndex, &GamePadState);
 
     //return the gampad state
     return GamePadState;

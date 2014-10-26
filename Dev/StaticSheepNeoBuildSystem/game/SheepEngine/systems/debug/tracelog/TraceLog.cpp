@@ -44,6 +44,18 @@ namespace Framework
     Log(INFO, "TraceLog Started\n");
   }
 
+  void Tracelog::Initialize(TRACELOG_LEVEL level, const char* filename)
+  {
+    TRACELOG = this;
+    _level = level;
+    if (filename != NULL)
+      file = fopen(filename, "wt");
+    else
+      file = NULL;
+
+    Log(INFO, "TraceLog Initialized\n");
+  }
+
 /*****************************************************************************/
 /*!
   \brief
