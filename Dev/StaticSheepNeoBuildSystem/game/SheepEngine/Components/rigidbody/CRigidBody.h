@@ -33,7 +33,7 @@ namespace Framework
 			//removes the component
 			virtual void Remove();
 
-			virtual void SetVelocity(Vec3& velocity);
+			virtual void SetVelocity(Vec3D& velocity);
 
 		// Properties
 		union

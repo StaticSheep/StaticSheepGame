@@ -51,7 +51,7 @@ namespace SheepFizz
 			return;
 
 		//the force must be applied across all contact points
-		for(int i = 0; i < contactCount; ++i)
+		for(unsigned int i = 0; i < contactCount; ++i)
 		{
 			//this is broken into two primary sections, a seperation
 			//force calculation (impulse) and a friction calculation
@@ -337,10 +337,10 @@ namespace SheepFizz
 	//set ref and inc bodies***********
 	//create holding values for reference and incident faces
 	Body* referenceBody;
-	float referenceBodyVertex;
+	unsigned int referenceBodyVertex;
 
 	Body* incidentBody;
-	float incidentBodySupport;
+	unsigned int incidentBodySupport;
 
 	//add a flag for the case where the B body becomes the
 	//reference face

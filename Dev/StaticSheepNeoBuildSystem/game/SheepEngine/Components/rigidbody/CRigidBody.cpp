@@ -49,7 +49,7 @@ namespace Framework
 		PHYSICS->RemoveBodies(space, m_handle);
 	}
 
-	void RigidBody::SetVelocity(Vec3& velocity)
+	void RigidBody::SetVelocity(Vec3D& velocity)
 	{
 		PHYSICS->SetBodyVelocity(space, m_handle, velocity);
 	}
