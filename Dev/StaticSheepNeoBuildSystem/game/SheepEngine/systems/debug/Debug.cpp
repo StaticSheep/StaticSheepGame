@@ -68,18 +68,18 @@ namespace Framework
     if(AUDIO)
     {
       audio = (DebugAudio*)AUDIO->GetDebugData();
-      LOG->TraceLog(DEBUG, "Linked to Audio system\n");
+      TRACELOG->Log(DEBUG, "Linked to Audio system\n");
     }
 
     if(GRAPHICS)
     {
       graphics = (DebugGraphics*)GRAPHICS->GetDebugData();
-      LOG->TraceLog(DEBUG, "Linked to Graphics system\n");
+      TRACELOG->Log(DEBUG, "Linked to Graphics system\n");
     }
 
     
     framerate = (DebugFramerate*)ENGINE->Framerate.GetDebugData();
-    LOG->TraceLog(DEBUG, "Linked to Framerate Controller\n");
+    TRACELOG->Log(DEBUG, "Linked to Framerate Controller\n");
   }
 
 /*****************************************************************************/
