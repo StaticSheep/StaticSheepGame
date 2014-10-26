@@ -42,7 +42,7 @@ namespace Framework
         
       BIND_FUNCTION_EX(ENGINE->Lua(), SoundEmitter::Play, Play);
 
-      BIND_FUNCTION_EX(ENGINE->Lua(), BoxCollider::SetVelocity, SetVelocity);
+      //BIND_FUNCTION_EX(ENGINE->Lua(), BoxCollider::SetVelocity, SetVelocity);
 
 
 

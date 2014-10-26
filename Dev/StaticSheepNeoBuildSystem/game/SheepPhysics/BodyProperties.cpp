@@ -1,4 +1,5 @@
 #pragma once
+#include "precompiled.h"
 #include "BodyProperties.h"
 
 namespace SheepFizz
