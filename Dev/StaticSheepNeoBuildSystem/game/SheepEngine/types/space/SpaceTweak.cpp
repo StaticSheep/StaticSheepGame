@@ -82,12 +82,12 @@ namespace Framework
     GameSpace* space = (GameSpace*)clientData;
 
     OPENFILENAME ofn;
-    char szFile[256];
+    char szFile[512];
 
-    TCHAR Buffer[256];
+    TCHAR Buffer[512];
     DWORD dwRet;
 
-    dwRet = GetCurrentDirectory(256, Buffer);
+    dwRet = GetCurrentDirectory(512, Buffer);
 
     ZeroMemory( &ofn , sizeof( ofn));
     ofn.lStructSize = sizeof ( ofn );

@@ -34,12 +34,12 @@ namespace Framework
   static void EditorOpenSpace(void* clientData)
   {
     OPENFILENAME ofn;
-    char szFile[200];
+    char szFile[512];
 
-    TCHAR Buffer[200];
+    TCHAR Buffer[512];
     DWORD dwRet;
 
-    dwRet = GetCurrentDirectory(200, Buffer);
+    dwRet = GetCurrentDirectory(512, Buffer);
 
     ZeroMemory( &ofn , sizeof( ofn));
     ofn.lStructSize = sizeof ( ofn );
@@ -75,12 +75,12 @@ namespace Framework
   static void EditorLoadLevel(void* clienData)
   {
     OPENFILENAME ofn;
-    char szFile[100];
+    char szFile[512];
 
-    TCHAR Buffer[128];
+    TCHAR Buffer[512];
     DWORD dwRet;
 
-    dwRet = GetCurrentDirectory(128, Buffer);
+    dwRet = GetCurrentDirectory(512, Buffer);
 
     ZeroMemory( &ofn , sizeof( ofn));
     ofn.lStructSize = sizeof ( ofn );
