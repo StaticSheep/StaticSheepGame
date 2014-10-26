@@ -9,11 +9,10 @@ namespace SheepFizz
 	Body::Body(Shape* shape, Material& material, Vec3D position, Vec3D velocity, 
 		Vec3D force, void* userData, float orientation, float angularVelocity, float torque,
 		CollisionGroup collisionGroup, unsigned int bodyGroup, float gravityScale, 
-		unsigned int gravityOn, bool staticObject) :
+		unsigned int gravityOn) :
 		material_(material), shape_(shape), velocity_(velocity), position_(position), force_(force), userData(userData),
 		orientation_(orientation), angularVelocity_(angularVelocity), torque_(torque),
-		collisionGroup_(collisionGroup), bodyGroup_(bodyGroup), gravityScale_(gravityScale), gravityOn_(gravityOn),
-		staticObject_(staticObject)
+		collisionGroup_(collisionGroup), bodyGroup_(bodyGroup), gravityScale_(gravityScale), gravityOn_(gravityOn)
 		{ 
 			shape_->Initialize();
 			ComputeMass();

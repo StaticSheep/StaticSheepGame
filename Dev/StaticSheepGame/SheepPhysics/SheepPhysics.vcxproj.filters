@@ -40,6 +40,9 @@
     <ClInclude Include="..\includes\Vec3D.h">
       <Filter>Physics\Math Functions</Filter>
     </ClInclude>
+    <ClInclude Include="BodyProperties.h">
+      <Filter>Physics\PhysicsHeaders</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="precompiled.cpp">
@@ -77,6 +80,9 @@
     </ClCompile>
     <ClCompile Include="..\Utilities\Vec3D.cpp">
       <Filter>Physics\Math Functions</Filter>
+    </ClCompile>
+    <ClCompile Include="BodyProperties.cpp">
+      <Filter>Physics\PhysicsFunctions</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
