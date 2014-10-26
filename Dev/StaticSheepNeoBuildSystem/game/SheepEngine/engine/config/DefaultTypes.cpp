@@ -154,9 +154,11 @@ namespace Framework
     TYPE_ADD_MEMBER( BoxCollider, m_width, false, true, "Width");
     TYPE_ADD_MEMBER( BoxCollider, m_height, false, true, "Height");
     TYPE_ADD_MEMBER( BoxCollider, m_materialName, false, true, "Material");
+    TYPE_SET_TWEAK_TYPE(BoxCollider, AntTweak::TW_TYPE_COMPONENT);
 
     TYPE_REGISTER(GamePad);
     TYPE_ADD_MEMBER(GamePad, GamepadIndex, false, true, "PadNumber", BUILD_FUNCTION(GamePad::EditorSetPad));
+    TYPE_SET_TWEAK_TYPE(GamePad, AntTweak::TW_TYPE_COMPONENT);
 
 
     TYPE_REGISTER( Sprite );

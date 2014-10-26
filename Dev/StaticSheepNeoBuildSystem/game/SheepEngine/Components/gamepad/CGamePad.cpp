@@ -33,7 +33,7 @@ namespace Framework
     RThumbstick = 11;
   }
   //default constructor
-  GamePad::GamePad() {GamepadIndex = 1;}
+  GamePad::GamePad() {GamepadIndex = 0;}
   
   //remove the component
   void GamePad::Remove()
@@ -175,7 +175,7 @@ namespace Framework
   //return the Y axis of the right stick
   float GamePad::RightStick_Y()
   {
-    //Obtain the Y axis of th eright stick
+    //Obtain the Y axis of the right stick
     short sY = State.Gamepad.sThumbRY;
 
     //convert the value to a float
