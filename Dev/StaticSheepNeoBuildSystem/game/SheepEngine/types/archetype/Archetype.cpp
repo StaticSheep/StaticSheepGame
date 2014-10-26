@@ -12,6 +12,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "TypeInfo.h"
 
 #include "components/lua/CLuaComponent.h"
+#include "components/transform/CTransform.h"
 
 namespace Framework
 {
@@ -141,6 +142,9 @@ namespace Framework
     } // End component iteration
 
 
+    // Reset Transform component to zero
+    if (m_components[eTransform])
+      ((Transform*)m_components[eTransform])->SetTranslation(Vec3(0, 0, 0));
 
     // Copy over the name and archetype of the object
     name = obj->name;

@@ -4,17 +4,17 @@ Date:  10/07/2014
 
 [Crash Bugs]
 
-  Adding gamepad component immediately breaks.
+  FIXED Adding gamepad component immediately breaks.
   
-  Camera component breaks everything.
+  DEAL WITH IT Camera component breaks everything.
   
-  Loading a space named NewSpace0, then creating a new space = crash.
+  DEAL WITH IT Loading a space named NewSpace0, then creating a new space = crash.
   
-  If a box collider is removed from an object, then the object is deleted that engine crashes.
+  CANT REPLICATE If a box collider is removed from an object, then the object is deleted that engine crashes.
 
 [Unhandled Bugs]
 
-  SoundEmitter continues playing after space is destroyed. (Sound emitter shouldn't be playing music anyway though...)
+  FIXED SoundEmitter continues playing after space is destroyed. (Sound emitter shouldn't be playing music anyway though...)
   
   Object's names in the object list of space is not updated until after loading an archetype
 

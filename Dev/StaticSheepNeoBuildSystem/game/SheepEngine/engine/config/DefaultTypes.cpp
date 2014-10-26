@@ -119,7 +119,7 @@ namespace Framework
     //TYPE_SET_TO_LUA( GameComponent*, Lua::GameComponentToLua);
 
     TYPE_REGISTER( GameObject );
-    TYPE_ADD_MEMBER( GameObject, name, true, true, "Name");
+    TYPE_ADD_MEMBER( GameObject, name, true, true, "Name", BUILD_FUNCTION(GameObject::TweakSetName));
     TYPE_ADD_MEMBER( GameObject, archetype, true, true, "Archetype");
     TYPE_SET_SERIALIZER( GameObject, GameObject::Serialize );
     TYPE_SET_DESERIALIZER( GameObject, GameObject::Deserialize );

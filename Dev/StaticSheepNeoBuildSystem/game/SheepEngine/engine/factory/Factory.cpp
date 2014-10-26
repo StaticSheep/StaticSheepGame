@@ -10,6 +10,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "pch/precompiled.h"
 #include <time.h>
 #include <fstream>
+#include "components/transform/CTransform.h"
 
 namespace Framework
 {
@@ -273,6 +274,9 @@ namespace Framework
 
     // Deserialize the file into the object
     GET_TYPE(GameObject)->Deserialize(file, var);
+
+    // Reset the Translation to 0,0,0
+    obj->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(0, 0, 0));
 
     obj->archetype = archetype;
 
