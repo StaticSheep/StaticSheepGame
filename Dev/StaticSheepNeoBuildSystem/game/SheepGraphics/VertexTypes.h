@@ -43,6 +43,5 @@ namespace DirectSheep
 
     float tu, tv;  // u, v
   };
-      //D3DXCOLOR Color;
 }
 
