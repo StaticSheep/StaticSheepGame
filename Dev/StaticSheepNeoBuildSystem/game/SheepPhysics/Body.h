@@ -48,7 +48,7 @@ class Body
 			unsigned int bodyGroup = 0,					//used for certain collisions/resolutions 
 			float gravityScale = 1,						//used to modify gravity
 			unsigned int gravityOn = 1,					//used to turn gravity on and off
-			bool staticObjecct);
+			bool staticObject = false);
 
 		//used in initialization of body - computes mass
 		void ComputeMass(void);

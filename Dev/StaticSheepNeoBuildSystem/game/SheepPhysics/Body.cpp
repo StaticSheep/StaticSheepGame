@@ -62,4 +62,7 @@ namespace SheepFizz
 			angularVelocity_ += (contactvector * impulse).z_ * massData_.inverseInertia;
 		}	
 
+	void Body::ActivateGravity(void) { gravityOn_ = 1; }
+
+	void Body::DeactivateGravity(void) { gravityOn_ = 0; }
 }

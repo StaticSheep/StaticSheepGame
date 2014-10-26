@@ -26,8 +26,8 @@ namespace SheepFizz
 			virtual void PropertyResolution();
 
 		private:
-			unsigned int stickyOn;		//whether to stick
-			unsigned int stickySide;
+			unsigned int stickOn;		//whether to stick
+			unsigned int stickySide;    //what side to stick with
 	};
 
 }
