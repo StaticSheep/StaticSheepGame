@@ -16,13 +16,13 @@ Date:  10/07/2014
 
   FIXED SoundEmitter continues playing after space is destroyed. (Sound emitter shouldn't be playing music anyway though...)
   
-  Object's names in the object list of space is not updated until after loading an archetype
+  FIXED Object's names in the object list of space is not updated until after loading an archetype
 
-  Cannot tell which GUID belongs to which object. (Not updating the space when something is renamed)
+  FIXED? Cannot tell which GUID belongs to which object. (Not updating the space when something is renamed)
   
-  Archetype transforms are saved, should be set to (0, 0, 0)
+  FIXED Archetype transforms are saved, should be set to (0, 0, 0)
     
-  When saving a level, it will no matter what append .level to the end...
+  FIXED When saving a level, it will no matter what append .level to the end...
     i.e. If user types in HUD.level, it'll save it as HUD.level.level
     
   When a space is saved, the serializer adds a few extra new lines before boxcollider???

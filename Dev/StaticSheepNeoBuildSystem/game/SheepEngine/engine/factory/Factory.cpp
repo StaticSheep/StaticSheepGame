@@ -506,7 +506,22 @@ namespace Framework
     File file;
 
     std::string levelPath = filePath;
-    levelPath += LevelFileExtension;
+    if (levelPath.find_last_of('.') != std::string::npos)
+    {
+      std::string extension = levelPath.substr(levelPath.find_last_of('.'), levelPath.length() - levelPath.find_last_of('.'));
+      if (extension == ".level")
+      {
+
+      }
+      else
+      {
+        levelPath += LevelFileExtension;
+      }
+    }
+    else
+    {
+      levelPath += LevelFileExtension;
+    }
 
     file.Open(levelPath.c_str(), FileAccess::Write);
 
