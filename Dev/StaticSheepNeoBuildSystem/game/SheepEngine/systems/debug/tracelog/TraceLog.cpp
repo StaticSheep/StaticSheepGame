@@ -6,7 +6,7 @@
 
 namespace Framework
 {
-  Trace* LOG = NULL;
+  Tracelog* TRACELOG = NULL;
 
 
 /*****************************************************************************/
@@ -15,13 +15,13 @@ namespace Framework
     Default constructor for the TraceLog. Only writes errors to the console.
 */
 /*****************************************************************************/
-  Trace::Trace()
+  Tracelog::Tracelog()
   {
     file = NULL;
-    LOG = this;
+    TRACELOG = this;
     _level = ERR;
 
-    TraceLog(INFO, "TraceLog Started\n");
+    Log(INFO, "TraceLog Started\n");
   }
 
 /*****************************************************************************/
@@ -32,16 +32,16 @@ namespace Framework
     writing to the console.
 */
 /*****************************************************************************/
-  Trace::Trace(TRACELOG_LEVEL level, const char* filename)
+  Tracelog::Tracelog(TRACELOG_LEVEL level, const char* filename)
   {
-    LOG = this;
+    TRACELOG = this;
     _level = level;
     if(filename != NULL)
       file = fopen(filename, "wt");
     else
       file = NULL;
 
-    TraceLog(INFO, "TraceLog Started\n");
+    Log(INFO, "TraceLog Started\n");
   }
 
 /*****************************************************************************/
@@ -51,9 +51,9 @@ namespace Framework
     if one was opened.
 */
 /*****************************************************************************/
-  Trace::~Trace()
+  Tracelog::~Tracelog()
   {
-    TraceLog(INFO, "TraceLog Ending\n");
+    Log(INFO, "TraceLog Ending\n");
 
     if(file != NULL)
       fclose(file);
@@ -72,7 +72,7 @@ namespace Framework
     A pointer to the beginning of the string created.
 */
 /*****************************************************************************/
-  bool Trace::TraceLog(TRACELOG_LEVEL level, const char* format, ...)
+  bool Tracelog::Log(TRACELOG_LEVEL level, const char* format, ...)
   {
     // if the level is too high, don't do anything
     if(level > _level)
@@ -113,7 +113,7 @@ namespace Framework
       return false;
   }
 
-  void Trace::Format(TRACELOG_LEVEL level)
+  void Tracelog::Format(TRACELOG_LEVEL level)
   {
     // get the current time in seconds since 1970
     time_t currentTime;

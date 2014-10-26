@@ -1,20 +1,20 @@
 /*****************************************************************************/
 /*!
-\file   Vec3D.cpp
+\file   Vec2D.cpp
 \author Zakary Wilson
 \par    Course: GAM200
 \par    Giga Gravity Games
 \date   10/20/2014<BR>
 \brief  
-    This file contains functions to for 2D homogenous vector math.<BR>
+    This file contains functions to for 2D vector math.<BR>
 
 \par    All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 */
 /*****************************************************************************/
 
 #include "src/precompiled.h"
-#include "Vec3D.h"
-#include "SheepMath.h"
+#include "Vec2D.h"
+#include "Math.h"
 
 namespace Framework
 {
@@ -22,11 +22,46 @@ namespace Framework
 /*****************************************************************************/
 /*!
     \brief
-      Normalizes the vector and returns a reference to it. 2D homogenous
-      coordinate system. Doesn't do anything with z.
+      Gets the length of the vector in 2D space.
 */
 /*****************************************************************************/
-  Vec3D& Vec3D::Normalize()
+  float Vec2D::Length()
+  {
+    return sqrtf( x * x + y * y );
+  }
+  
+/*****************************************************************************/
+/*!
+    \brief
+      Gets the square length of the vector in 2D space.
+*/
+/*****************************************************************************/
+  float Vec2D::SquareLength()
+  {
+    return (x * x + y * y );
+  }
+  
+/*****************************************************************************/
+/*!
+    \brief
+      Calculates the normal of this vector and returns it. Non-modifying.
+*/
+/*****************************************************************************/
+  Vec2D Vec2D::CalculateNormal()
+  {
+    Vec2D normal(*this);
+    normal.Normalize();
+    
+    return normal;
+  }
+  
+/*****************************************************************************/
+/*!
+    \brief
+      Normalizes the vector in 2D space.
+*/
+/*****************************************************************************/
+  Vec2D& Vec2D::Normalize()
   {
     float length = Length();
     
@@ -39,191 +74,130 @@ namespace Framework
 /*****************************************************************************/
 /*!
     \brief
-      Rotates the vector by radians. 2D homogenous coordinate system. Doesn't
-      change z.
+      Rotates the vector by radians.
 */
 /*****************************************************************************/
-  Vec3D& Vec3D::Rotate(float radians)
+  Vec2D& Vec2D::Rotate(float radians)
   {
     x = x * cos(radians) - y * sin(radians);
     y = x * sin(radians) + y * cos(radians);
     return *this;
   }
-  
+
 /*****************************************************************************/
 /*!
     \brief
-      Computes the dotproduct between two vectors.
+      Operator overload for adding 2D vectors together.
 */
 /*****************************************************************************/
-  float Vec3D::DotProduct(const Vec3D& rhs)
+  Vec2D Vec2D::operator+(const Vec2D& rhs) const
   {
-    return (rhs.x * x + rhs.y * y + rhs.z * z);
+    return Vec2D(rhs.x + x, rhs.y + y);
   }
   
 /*****************************************************************************/
 /*!
     \brief
-      Computes the cross product between two vectors.
+      Operator overload for adding 2D vectors together.
 */
 /*****************************************************************************/
-  Vec3D Vec3D::CrossProduct(Vec3D& rhs)
+  Vec2D& Vec2D::operator+=(const Vec2D& rhs)
   {
-    return Vec3D(y * rhs.z - z * rhs.y, 
-                 z * rhs.x - x * rhs.z, 
-                 x * rhs.y - y * rhs.x);
-  }
-  
-/*****************************************************************************/
-/*!
-    \brief
-      Operator overload for adding two 3D vectors.
-*/
-/*****************************************************************************/
-  Vec3D Vec3D::operator+(const Vec3D& rhs) const
-  {
-    return Vec3D(rhs.x + x, rhs.y + y, rhs.z + z);
-  }
-  
-/*****************************************************************************/
-/*!
-    \brief
-      Operator overload for adding two 3D vectors.
-*/
-/*****************************************************************************/
-  Vec3D& Vec3D::operator+=(const Vec3D& rhs)
-  {
-    *this = Vec3D(x + rhs.x, y + rhs.y, z + rhs.z);
+    *this = Vec2D(x + rhs.x, y + rhs.y);
     return *this;
   }
   
 /*****************************************************************************/
 /*!
     \brief
-      Operator overload for subtracting two 3D vectors.
+      Operator overload for subtracting 2D vectors together.
 */
 /*****************************************************************************/
-  Vec3D Vec3D::operator-(const Vec3D& rhs) const
+  Vec2D Vec2D::operator-(const Vec2D& rhs) const
   {
-    return Vec3D(x - rhs.x, y - rhs.y, z - rhs.z);
+    return Vec2D(x - rhs.x, y - rhs.y);
   }
   
 /*****************************************************************************/
 /*!
     \brief
-      Operator overload for subtracting two 3D vectors.
+      Operator overload for subtracting 2D vectors together.
 */
 /*****************************************************************************/
-  Vec3D& Vec3D::operator-=(const Vec3D& rhs)
+  Vec2D& Vec2D::operator-=(const Vec2D& rhs)
   {
-    *this = Vec3D(x - rhs.x, y - rhs.y, z - rhs.z);
+    x -= rhs.x;
+    y -= rhs.y;
+    
     return *this;
   }
   
 /*****************************************************************************/
 /*!
     \brief
-      Operator overload for negating 3D vectors.
+      Operator overload for negating a 2D vector.
 */
 /*****************************************************************************/
-  Vec3D Vec3D::operator-() const
+  Vec2D Vec2D::operator-() const
   {
-    return Vec3D(-x,-y, -z);
+    return Vec2D(-x,-y);
   }
   
 /*****************************************************************************/
 /*!
     \brief
-      Operator overload for the dotproduct between two 3D vectors.
+      Operator overload for getting a dot product between two vectors.
 */
 /*****************************************************************************/
-  float Vec3D::operator*(const Vec3D& rhs) const
+  float Vec2D::operator*(const Vec2D& rhs) const
   {
-    return (rhs.x * x + rhs.y * y + rhs.z * z);
+    return (rhs.x * x + rhs.y * y);
   }
   
 /*****************************************************************************/
 /*!
     \brief
-      Operator overload for scaling a 3D vector.
+      Operator overload for scaling a 2D vector.
 */
 /*****************************************************************************/
-  Vec3D Vec3D::operator/(float scalar) const
+  Vec2D Vec2D::operator*(float scale) const
   {
-    return Vec3D(x / scalar, y / scalar, z);
+    return Vec2D(x * scale, y * scale);
   }
   
 /*****************************************************************************/
 /*!
     \brief
-      Operator overload for scaling a 3D vector.
+      Operator overload for finding the 2D cross product.
 */
 /*****************************************************************************/
-  Vec3D& Vec3D::operator/=(float scalar)
+  float Vec2D::operator^(const Vec2D& rhs) const
   {
-    *this = Vec3D(x / scalar, y / scalar, z);
-    return *this;
+    return (x * rhs.y - y * rhs.x);
   }
   
 /*****************************************************************************/
 /*!
     \brief
-      Operator overload for scaling a 3D vector.
+      Assignment operator overload.
 */
 /*****************************************************************************/
-  Vec3D Vec3D::operator*(float scalar) const
-  {
-    return Vec3D(x * scalar, y * scalar, z);
-  }
-  
-/*****************************************************************************/
-/*!
-    \brief
-      Operator overload for scaling a 3D vector.
-*/
-/*****************************************************************************/
-  Vec3D& Vec3D::operator*=(float scalar)
-  {
-    *this = Vec3D(x * scalar, y * scalar, z);
-    return *this;
-  }
-  
-/*****************************************************************************/
-/*!
-    \brief
-      Operator overload for the cross product.
-*/
-/*****************************************************************************/
-  Vec3D Vec3D::operator^(const Vec3D& rhs) const
-  {
-    return Vec3D(y * rhs.z - z * rhs.y, 
-                 z * rhs.x - x * rhs.z, 
-                 x * rhs.y - y * rhs.x);
-  }
-  
-/*****************************************************************************/
-/*!
-    \brief
-      Operator overload for assignment.
-*/
-/*****************************************************************************/
-  Vec3D& Vec3D::operator=(const Vec3D& rhs)
+  Vec2D& Vec2D::operator=(const Vec2D& rhs)
   {
     x = rhs.x;
     y = rhs.y;
-    z = rhs.z;
+    
     return *this;
   }
   
 /*****************************************************************************/
 /*!
     \brief
-      Operator overload multiplying floats with a 3D vector.
+      Non-member operator overload multiplying floats with a 2D vector.
 */
 /*****************************************************************************/
-  Vec3D operator*(float scalar, const Vec3D& rhs)
+  Vec2D operator*(float scalar, const Vec2D& rhs)
   {
-    return Vec3D(rhs.x * scalar, rhs.y * scalar, rhs.z);
+    return Vec2D(rhs.x * scalar, rhs.y * scalar);
   }
-
-}
+} // end namespace

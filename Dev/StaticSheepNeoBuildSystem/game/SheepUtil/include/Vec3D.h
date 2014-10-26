@@ -1,83 +1,60 @@
+/******************************************************************************
+filename    Vec3D.h
+project     Giga Gravity Games
+author      Zakary Wilson
+date        10/20/2014
+
+Brief Description:
+This header contains the 2D homogenous vector struct.
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+******************************************************************************/
+
 #pragma once
-#include <cmath>
 
-
+#include "Vec2D.h"
 
 namespace Framework
 {
-
-#define PI 3.1415926539f
-
-class Vec3D{
-	
-	public:
-		Vec3D(float x = 0, float y = 0, float z = 0): x_(x), y_(y), z_(z) { }
-
-		//common operators for vectors
-		//Vec3D& operator=(Vec3D& rhs);	//equals
-		Vec3D& operator+=(Vec3D& rhs);	//plus-equals
-		Vec3D operator+(Vec3D& rhs);	//addition
-		Vec3D operator-(Vec3D& rhs);	//subtraction
-		Vec3D operator-(void);			//negation
-		Vec3D& operator-=(Vec3D& rhs);	//minus-equals
-
-		//multiply a vector by a scalar value
-		Vec3D operator*(float scalar);
-		Vec3D& operator*=(float scalar);
-
-		//divide by scalars
-		Vec3D Vec3D::operator/(float scalar);
-		Vec3D& Vec3D::operator/=(float scalar);
-	
-		//Dot Product
-		float DotProduct(Vec3D& rhs);
-		
-		//both of the following are the crossproducts of two vectors
-		Vec3D CrossProduct(Vec3D& rhs);
-		Vec3D operator*(Vec3D& rhs);
-
-		//distance calculations for length
-		//these equations can be used for any distance between two vecs
-		float Length(void);
-		float SquareLength(void);
-
-		//Normalize vector
-		Vec3D& Normalize(void);
-
-		//Rotate vector by a set number of radians
-		Vec3D& Rotate(float radians);
-
-		//Calculate normal to vector
-		Vec3D CalculateNormal(void);
-
-	//2D
+  struct Vec3D : public Vec2D
+  {
+    // constructor, defaults to 0 vector
+    Vec3D(float _x = 0.0f, float _y = 0.0f, float _z = 0.0f) : Vec2D( _x, _y)
+    {z = _z; };
+    
+    // conversion constructor, assume vector
+    Vec3D(const Vec2D& copy) { x = copy.x; y = copy.y; z = 0.0f;};
+    
+    // setters
+    Vec3D& Normalize();
+    Vec3D& Rotate(float);
+    
+    float DotProduct(const Vec3D& rhs);
+    Vec3D CrossProduct(Vec3D& rhs);
+    
+    
+    // overloads
+    Vec3D operator+(const Vec3D&) const;          // add
+    Vec3D& operator+=(const Vec3D&);              // add equals
+    Vec3D operator-(const Vec3D&) const;          // subtract
+    Vec3D& operator-=(const Vec3D&);              // minus equals
+    Vec3D operator-() const;                      // negate
+    float operator*(const Vec3D&) const;          // dot product
+    Vec3D Vec3D::operator/(float scalar) const;   // scalar
+    Vec3D& Vec3D::operator/=(float scalar);       // scalar
+    Vec3D Vec3D::operator*(float scalar) const;   // scalar
+    Vec3D& Vec3D::operator*=(float scalar);       // scalar
+    Vec3D operator^(const Vec3D&) const;          // cross product
+    Vec3D& operator=(const Vec3D&);               // assignment
+    
+    // data
     union
     {
-		  float x_;
-      float X;
-    };
-
-    union 
-    {
-      float y_;
-      float Y;
-    };
-		
-
-	//3D - can be used for homogeneous coordinates
-    union
-    {
+      float z;
       float z_;
       float Z;
     };
-
-};
-
-//additional vector functions
-Vec3D operator*(float scalar, Vec3D& rhs);
-
-//other functions
-float Minimum(float a, float b);
-float Maximum(float a, float b);
-
+  };
+  
+  Vec3D operator*(float scalar, const Vec3D& rhs);
 }

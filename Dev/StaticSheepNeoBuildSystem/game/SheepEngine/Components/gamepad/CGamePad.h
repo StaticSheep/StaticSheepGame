@@ -56,12 +56,15 @@ namespace Framework
     GamePad();
     ~GamePad() {};
     virtual void Remove();
+
     //Human based numbering system (i.e. player one is one, player two is two)
     void SetPad(int padNum);
 
+    void EditorSetPad(void* padNum);
+
     virtual void Initialize();
 
-    void Update(); //update gamepad state
+    void FrameUpdate(float dt); //update gamepad state
     void RefreshState(); //update button states for next frame
 
     //thumbstick functions
@@ -89,9 +92,12 @@ namespace Framework
 
     //vibrate the gamepad
     void Rumble(float a_fLeftMotor = 0.0f, float a_fRightMotor = 0.0f);
+
+
+    int GamepadIndex;   //Gamepad index (eg. 1, 2, 3, 4)
   private:
     XINPUT_STATE State; //current gamepad state
-    int GamepadIndex;   //Gamepad index (eg. 1, 2, 3, 4)
+    
 
     static const int ButtonCount = 14; //total gamepad buttons
     bool bPrev_ButtonStates[ButtonCount]; //previous frame button states
