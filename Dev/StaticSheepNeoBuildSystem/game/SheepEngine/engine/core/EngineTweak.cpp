@@ -27,6 +27,7 @@ namespace Framework
     std::string spaceName("NewSpace");
     spaceName += std::to_string(spaceNum++);
     GameSpace* space = ENGINE->CreateSpace(spaceName.c_str());
+    space->SetPaused(true);
     space->Tweak();
   }
 
@@ -60,6 +61,7 @@ namespace Framework
       return;
 
     GameSpace* sp = FACTORY->LoadSpace(szFile);
+    sp->SetPaused(true);
 
     if (sp != nullptr)
       sp->Tweak();

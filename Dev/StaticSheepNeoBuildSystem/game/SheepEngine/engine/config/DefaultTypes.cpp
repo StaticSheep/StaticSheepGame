@@ -20,6 +20,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/colliders/CBoxCollider.h"
 #include "components/lua/CLuaComponent.h"
 #include "components/gamepad/CGamePad.h"
+#include "components/colliders/CCircleCollider.h"
 
 namespace Framework
 {
@@ -155,6 +156,11 @@ namespace Framework
     TYPE_ADD_MEMBER( BoxCollider, m_height, false, true, "Height");
     TYPE_ADD_MEMBER( BoxCollider, m_materialName, false, true, "Material");
     TYPE_SET_TWEAK_TYPE(BoxCollider, AntTweak::TW_TYPE_COMPONENT);
+
+    TYPE_REGISTER(CircleCollider);
+    TYPE_ADD_MEMBER(CircleCollider, m_radius, false, true, "Radius");
+    TYPE_ADD_MEMBER(CircleCollider, m_materialName, false, true, "Material");
+    TYPE_SET_TWEAK_TYPE(CircleCollider, AntTweak::TW_TYPE_COMPONENT);
 
     TYPE_REGISTER(GamePad);
     TYPE_ADD_MEMBER(GamePad, GamepadIndex, false, true, "PadNumber", BUILD_FUNCTION(GamePad::EditorSetPad));
