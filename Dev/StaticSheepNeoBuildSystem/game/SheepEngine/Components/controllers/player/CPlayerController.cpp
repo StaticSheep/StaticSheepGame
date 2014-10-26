@@ -51,17 +51,17 @@ namespace Framework
 		//left stick move
 		if (gp->LeftStick_X() > 0)
 		{
-			//bc->SetVelocity(Vec3(1.0f, 0.0f, 0.0f));
+			bc->SetVelocity(Vec3(1.0f, 0.0f, 0.0f));
 		}
 		else if (gp->LeftStick_X() < 0)
 		{
-			//bc->SetVelocity(Vec3(-1.0f, 0.0f, 0.0f));
+			bc->SetVelocity(Vec3(-1.0f, 0.0f, 0.0f));
 		}
 
 		//jump
 		if (gp->ButtonPressed(XButtons.A))
 		{
-			//bc->SetVelocity(Vec3(0.0f, 1.0f, 0.0f));
+			bc->SetVelocity(Vec3(0.0f, 1.0f, 0.0f));
 		}
 		//melee
 		if (gp->ButtonPressed(XButtons.B))
