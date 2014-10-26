@@ -197,6 +197,11 @@ namespace SheepFizz
 		//iterate through list of bodies
 		for(unsigned i = 0; i < bodies_.Size(); ++i)
 		{
+			//if the body is static, don't put it as object A in
+			//a manifold
+			if (((Body*)bodies_[i])->staticObject_ == true)
+				continue;
+
 			//move one body in vector forward to start
 			for(unsigned j = i + 1; j < bodies_.Size(); ++j)
 			{

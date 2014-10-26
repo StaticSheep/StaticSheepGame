@@ -144,6 +144,7 @@ namespace Framework
 	{
 		((SheepFizz::PhysicsSpace*)(space->m_pSpace))->SetBodyPos(handle, position);
 	}//end of SetBodyPosition
+	
 	void SheepPhysics::SetBodyVelocity(GameSpace* space, SheepFizz::Handle handle, Vec3D velocity)
 	{
 		((SheepFizz::PhysicsSpace*)(space->m_pSpace))->SetBodyVeloc(handle, velocity);
