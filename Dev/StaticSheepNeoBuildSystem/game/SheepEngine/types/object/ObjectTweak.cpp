@@ -290,8 +290,16 @@ namespace Framework
         if (member->TweakLabel())
           objectBar->DefineLabel(member->TweakLabel());
 
-        // Since this is an object member variable we are tweaking we have to use the generic tweak
-        objectBar->AddGenericVarRW(member->Name(), member->Type()->GetAType(), member, 0, this);
+        if (member->TweakSetCB())
+        {
+          objectBar->AddGenericVarCB(member->Name(), member->Type()->GetAType(), member, 0, this, member->TweakSetCB(), Function());
+        }
+        else
+        {
+          // Since this is an object member variable we are tweaking we have to use the generic tweak
+          objectBar->AddGenericVarRW(member->Name(), member->Type()->GetAType(), member, 0, this);
+        }
+        
       }
     }
 
@@ -436,6 +444,12 @@ namespace Framework
       CustomTweak(nullptr, Variable(this), nullptr, nullptr);
     else
       UpdateTweakBar();
+  }
+
+  void GameObject::TweakSetName(void* inname)
+  {
+    name = *(std::string*)inname;
+    space->UpdateTweakBar();
   }
 
 }

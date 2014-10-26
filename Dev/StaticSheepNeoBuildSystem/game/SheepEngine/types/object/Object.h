@@ -117,6 +117,7 @@ namespace Framework
       Handle GetComponentHandle(EComponent type);
       Handle GetComponentHandle(const char* type);
 
+      void TweakSetName(void* name);
 
       // Used from lua
       void LuaGetComponent(size_t type);

@@ -20,6 +20,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/colliders/CBoxCollider.h"
 #include "components/lua/CLuaComponent.h"
 #include "components/gamepad/CGamePad.h"
+#include "components/colliders/CCircleCollider.h"
+#include "components/controllers/player/CPlayerController.h"
 
 namespace Framework
 {
@@ -118,7 +120,7 @@ namespace Framework
     //TYPE_SET_TO_LUA( GameComponent*, Lua::GameComponentToLua);
 
     TYPE_REGISTER( GameObject );
-    TYPE_ADD_MEMBER( GameObject, name, true, true, "Name");
+    TYPE_ADD_MEMBER( GameObject, name, true, true, "Name", BUILD_FUNCTION(GameObject::TweakSetName));
     TYPE_ADD_MEMBER( GameObject, archetype, true, true, "Archetype");
     TYPE_SET_SERIALIZER( GameObject, GameObject::Serialize );
     TYPE_SET_DESERIALIZER( GameObject, GameObject::Deserialize );
@@ -150,11 +152,20 @@ namespace Framework
     TYPE_SET_DESERIALIZER( Transform, Transform::Deserialize );
     TYPE_SET_TWEAK( Transform, Transform::ToTweak );
     
+	TYPE_REGISTER(PlayerController);
+	TYPE_SET_TWEAK_TYPE(PlayerController, AntTweak::TW_TYPE_COMPONENT);
+	TYPE_ADD_MEMBER(PlayerController, playerNum, false, true, "Player Number");
+
     TYPE_REGISTER( BoxCollider );
     TYPE_ADD_MEMBER( BoxCollider, m_width, false, true, "Width");
     TYPE_ADD_MEMBER( BoxCollider, m_height, false, true, "Height");
     TYPE_ADD_MEMBER( BoxCollider, m_materialName, false, true, "Material");
     TYPE_SET_TWEAK_TYPE(BoxCollider, AntTweak::TW_TYPE_COMPONENT);
+
+    TYPE_REGISTER(CircleCollider);
+    TYPE_ADD_MEMBER(CircleCollider, m_radius, false, true, "Radius");
+    TYPE_ADD_MEMBER(CircleCollider, m_materialName, false, true, "Material");
+    TYPE_SET_TWEAK_TYPE(CircleCollider, AntTweak::TW_TYPE_COMPONENT);
 
     TYPE_REGISTER(GamePad);
     TYPE_ADD_MEMBER(GamePad, GamepadIndex, false, true, "PadNumber", BUILD_FUNCTION(GamePad::EditorSetPad));

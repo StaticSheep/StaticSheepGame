@@ -479,7 +479,7 @@ namespace DirectSheep
 
       HRESULT hr = DirectX::CreateWICTextureFromFile(m_device, test.c_str(), (ID3D11Resource **)&tempTex.texture, &tempTex.shaderResourceView, 0);
 
-      if(hr == D3D11_ERROR_FILE_NOT_FOUND)
+      if(FAILED(hr))
       {
         if(attempt)
           DXVerify(hr);

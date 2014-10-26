@@ -170,6 +170,11 @@ namespace Framework
 		((SheepFizz::PhysicsSpace*)(space->m_pSpace))->SetBodyTorque(handle, torque);
 	}//end of SetBodyTorques
 
+  void SheepPhysics::SetDT(GameSpace* space, float dt)
+  {
+    ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->SetTime(dt);
+  }
+
 	//end of gettors and settors
 	//********************
 
@@ -206,7 +211,7 @@ namespace Framework
 		std::vector<GameSpace*>& gSpaces = ENGINE->Spaces();
 		for(size_t i = 0; i < gSpaces.size(); ++i)
 		{
-			if (gSpaces[i]->m_pSpace)
+			if (gSpaces[i]->m_pSpace && !gSpaces[i]->Paused())
 				((SheepFizz::PhysicsSpace*)(gSpaces[i]->m_pSpace))->Step();
 		}
 	}//end of Update

@@ -1,0 +1,31 @@
+GameObject
+{
+  name std::string "Character"
+  archetype std::string "Character"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 0.000000
+      y_ float 0.000000
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+}

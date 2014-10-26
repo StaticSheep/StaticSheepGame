@@ -10,6 +10,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "pch/precompiled.h"
 #include <time.h>
 #include <fstream>
+#include "components/transform/CTransform.h"
 
 namespace Framework
 {
@@ -203,21 +204,42 @@ namespace Framework
   /// <param name="name">The name.</param>
   void Factory::SaveObjectToArchetype(GameObject* obj, const char* name)
   {
-    File file; // File to save to
-    std::string filepath = name;
+    ArchetypeMap[obj->archetype].CopyObject(obj);
 
-    filepath = ArchetypeFilePath + filepath + ArchetypeFileExtension;
+    SaveArchetypeToFile(ArchetypeMap[obj->archetype]);
+  }
 
-    file.Open(filepath.c_str(), FileAccess::Write); // Open the file
+  /// <summary>
+  /// Saves the archetype to file.
+  /// </summary>
+  /// <param name="archetype">The archetype.</param>
+  void Factory::SaveArchetypeToFile(const Archetype& archetype)
+  {
+    File file; // File to load from
+    std::string filepath;
 
-    // Serialize the object
-    GET_TYPE(GameObject)->Serialize(file, *obj);
+    filepath = ArchetypeFilePath + archetype.archetype + ArchetypeFileExtension;
 
-    file.Close(); // Force close, will save now
+    file.Open(filepath.c_str(), FileAccess::Write);
 
-    if (ArchetypeMap.find(obj->archetype) == ArchetypeMap.end())
-      ArchetypeMap[obj->archetype].CopyObject(obj);
-    
+    ErrorIf(!file.Validate(), "Factory", "Invalid file!");
+
+    Variable var = archetype;
+    var.Serialize(file);
+
+    file.Close();
+  }
+
+  /// <summary>
+  /// Saves the archetype to file.
+  /// </summary>
+  /// <param name="name">The name.</param>
+  void Factory::SaveArchetypeToFile(std::string name)
+  {
+    const Archetype& archetype = GetArchetype(name);
+
+    if (&archetype != &Archetype::null)
+      SaveArchetypeToFile(archetype);
   }
 
   /// <summary>
@@ -274,6 +296,9 @@ namespace Framework
     // Deserialize the file into the object
     GET_TYPE(GameObject)->Deserialize(file, var);
 
+    // Reset the Translation to 0,0,0
+    obj->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(0, 0, 0));
+
     obj->archetype = archetype;
 
     // The archetype was not found, so we will save the object into our map
@@ -301,46 +326,6 @@ namespace Framework
       return ArchetypeMap[name];
 
     return Archetype::null;
-  }
-
-  /// <summary>
-  /// Saves the archetype to file.
-  /// </summary>
-  /// <param name="archetype">The archetype.</param>
-  void Factory::SaveArchetypeToFile(const Archetype& archetype)
-  {
-    File file; // File to load from
-    std::string filepath = archetype.archetype;
-
-    //Check if we need to do any trimming
-    if (filepath.substr(0, ArchetypePrefix.length()) != ArchetypePrefix)
-    {
-      // Add the prefix on if it's not there
-      filepath = ArchetypePrefix + archetype.archetype;
-    }
-
-    filepath += ArchetypeFileExtension;
-
-    file.Open(filepath.c_str(), FileAccess::Write);
-
-    ErrorIf(!file.Validate(), "Factory", "Invalid file!");
-
-    Variable var = archetype;
-    var.Serialize(file);
-
-    file.Close();
-  }
-
-  /// <summary>
-  /// Saves the archetype to file.
-  /// </summary>
-  /// <param name="name">The name.</param>
-  void Factory::SaveArchetypeToFile(std::string name)
-  {
-    const Archetype& archetype = GetArchetype(name);
-
-    if (&archetype != &Archetype::null)
-      SaveArchetypeToFile(archetype);
   }
 
   /// <summary>
@@ -521,7 +506,22 @@ namespace Framework
     File file;
 
     std::string levelPath = filePath;
-    levelPath += LevelFileExtension;
+    if (levelPath.find_last_of('.') != std::string::npos)
+    {
+      std::string extension = levelPath.substr(levelPath.find_last_of('.'), levelPath.length() - levelPath.find_last_of('.'));
+      if (extension == ".level")
+      {
+
+      }
+      else
+      {
+        levelPath += LevelFileExtension;
+      }
+    }
+    else
+    {
+      levelPath += LevelFileExtension;
+    }
 
     file.Open(levelPath.c_str(), FileAccess::Write);
 

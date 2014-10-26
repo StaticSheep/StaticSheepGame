@@ -165,7 +165,7 @@ namespace Framework
     // Decrease padding level
     s->Padding(file, --s->GetPadLevel());
     // Write a bracket
-    file.Write("}");
+    file.Write("}\n");
   }
 
   void Transform::Deserialize(File& file, Variable var)
