@@ -25,7 +25,7 @@ Date:  10/07/2014
   FIXED When saving a level, it will no matter what append .level to the end...
     i.e. If user types in HUD.level, it'll save it as HUD.level.level
     
-  When a space is saved, the serializer adds a few extra new lines before boxcollider???
+  FIXED When a space is saved, the serializer adds a few extra new lines before boxcollider???
   
 [General To-Dos]
 

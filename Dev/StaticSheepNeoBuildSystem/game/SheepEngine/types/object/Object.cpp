@@ -447,19 +447,14 @@ namespace Framework
     // Now we are going to iterate through every component and serialize them
     for ( unsigned int i = 0; i < ecountComponents; ++i)
     {
-
-      
       if (o->HasComponent(EComponent(i)) && i != eLuaComponent)
       {
         s->Padding( file, pad );
 
         Variable v = o->m_components[i];
         v.Serialize(file);
-      }
 
-      if(i != ecountComponents - 1)
-      {
-        file.Write( "\n" );
+        //file.Write("\n");
       }
     }
 

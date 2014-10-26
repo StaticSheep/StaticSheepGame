@@ -328,14 +328,6 @@ namespace Framework
         const Variable v( typeInfo, o->GetComponent( type ) );
         // Serialize the component into the file
         v.Serialize( file );
-
-        // If we aren't quite yet at the end of all the components, make a new line
-        // And pad it for any future components
-        if(i != ecountComponents - 1)
-        {
-          file.Write( "\n" );
-          
-        }
       }
     }
 
