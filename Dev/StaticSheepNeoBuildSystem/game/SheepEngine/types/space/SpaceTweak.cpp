@@ -82,12 +82,12 @@ namespace Framework
     GameSpace* space = (GameSpace*)clientData;
 
     OPENFILENAME ofn;
-    char szFile[100];
+    char szFile[256];
 
-    TCHAR Buffer[128];
+    TCHAR Buffer[256];
     DWORD dwRet;
 
-    dwRet = GetCurrentDirectory(128, Buffer);
+    dwRet = GetCurrentDirectory(256, Buffer);
 
     ZeroMemory( &ofn , sizeof( ofn));
     ofn.lStructSize = sizeof ( ofn );
@@ -113,6 +113,8 @@ namespace Framework
     GameObject* obj = FACTORY->LoadObjectFromArchetype(space, szFile);
 
     space->UpdateTweakBar();
+
+	ErrorIf(!obj, "SpaceTweaker", "Failed to load object from archetype! Filepath: %s", szFile);
 
     obj->TweakObject();
   }
