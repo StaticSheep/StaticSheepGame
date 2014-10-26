@@ -21,6 +21,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/lua/CLuaComponent.h"
 #include "components/gamepad/CGamePad.h"
 #include "components/colliders/CCircleCollider.h"
+#include "components/controllers/player/CPlayerController.h"
 
 namespace Framework
 {
@@ -151,6 +152,10 @@ namespace Framework
     TYPE_SET_DESERIALIZER( Transform, Transform::Deserialize );
     TYPE_SET_TWEAK( Transform, Transform::ToTweak );
     
+	TYPE_REGISTER(PlayerController);
+	TYPE_SET_TWEAK_TYPE(PlayerController, AntTweak::TW_TYPE_COMPONENT);
+	TYPE_ADD_MEMBER(PlayerController, playerNum, false, true, "Player Number");
+
     TYPE_REGISTER( BoxCollider );
     TYPE_ADD_MEMBER( BoxCollider, m_width, false, true, "Width");
     TYPE_ADD_MEMBER( BoxCollider, m_height, false, true, "Height");
