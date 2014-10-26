@@ -49,12 +49,13 @@ namespace Framework
 
   void InitEngine(void)
   {
+    ENGINE->Initialize();
 
 #if USE_EDITOR
 #else
 	  ENGINE->OpenEditor();
 #endif
-    ENGINE->Initialize();
+    
   }
 
 
