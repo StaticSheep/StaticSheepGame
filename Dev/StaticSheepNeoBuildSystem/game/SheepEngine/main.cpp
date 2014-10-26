@@ -8,7 +8,7 @@
 //#include <wtypes.h>
 #include <Windows.h>
 
-//#include <vld.h>
+#include <vld.h>
 
 #include "systems/input/Input.h"
 #include "systems/debug/Debug.h"

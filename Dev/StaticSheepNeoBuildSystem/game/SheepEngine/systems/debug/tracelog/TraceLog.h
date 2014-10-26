@@ -21,16 +21,16 @@ namespace Framework
   };
 
 
-  class Trace
+  class Tracelog
   {
   public:
 
-    Trace();
-    Trace(TRACELOG_LEVEL, const char* = NULL);
-    ~Trace();
+    Tracelog();
+    Tracelog(TRACELOG_LEVEL, const char* = NULL);
+    ~Tracelog();
 
     // method for printing out to the tracelog
-    bool TraceLog(TRACELOG_LEVEL, const char* format, ...);
+    bool Log(TRACELOG_LEVEL, const char* format, ...);
 
   private:
     // private method for printing a specific string
@@ -45,6 +45,6 @@ namespace Framework
   };
 
   // global pointer
-  extern Trace* LOG;
+  extern Tracelog* TRACELOG;
 
 }

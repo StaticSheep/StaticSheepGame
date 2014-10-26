@@ -58,7 +58,7 @@ namespace SheepFizz
 			//takes the contact vector - which is the distance from center of mass to contact point
 			//and crosses it with the actual impulse, creating angular rotation.  The further out
 			//the contact point, the greater the rotation applied
-			angularVelocity_ += (contactvector * impulse).z_ * massData_.inverseInertia;
+			angularVelocity_ += (contactvector ^ impulse).z_ * massData_.inverseInertia;
 		}	
 
 	void Body::ActivateGravity(void) { gravityOn_ = 1; }

@@ -19,6 +19,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/transform/CTransform.h"
 #include "components/colliders/CBoxCollider.h"
 #include "components/lua/CLuaComponent.h"
+#include "components/gamepad/CGamePad.h"
 
 namespace Framework
 {
@@ -153,6 +154,12 @@ namespace Framework
     TYPE_ADD_MEMBER( BoxCollider, m_width, false, true, "Width");
     TYPE_ADD_MEMBER( BoxCollider, m_height, false, true, "Height");
     TYPE_ADD_MEMBER( BoxCollider, m_materialName, false, true, "Material");
+    TYPE_SET_TWEAK_TYPE(BoxCollider, AntTweak::TW_TYPE_COMPONENT);
+
+    TYPE_REGISTER(GamePad);
+    TYPE_ADD_MEMBER(GamePad, GamepadIndex, false, true, "PadNumber", BUILD_FUNCTION(GamePad::EditorSetPad));
+    TYPE_SET_TWEAK_TYPE(GamePad, AntTweak::TW_TYPE_COMPONENT);
+
 
     TYPE_REGISTER( Sprite );
     TYPE_ADD_MEMBER(Sprite, m_spriteName, false, true, "Texture", BUILD_FUNCTION(Sprite::TweakSetTexture));

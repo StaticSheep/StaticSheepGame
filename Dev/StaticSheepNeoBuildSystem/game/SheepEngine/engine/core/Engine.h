@@ -81,7 +81,7 @@ namespace Framework
     std::hash_map<std::string, GameSpace*> m_spaceMap;
     std::vector<GameSpace*> m_spaces;
 
-	Trace m_traceLog;
+	  Tracelog m_traceLog;
 
     friend class GameLogic;
   };
