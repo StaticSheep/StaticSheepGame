@@ -204,21 +204,42 @@ namespace Framework
   /// <param name="name">The name.</param>
   void Factory::SaveObjectToArchetype(GameObject* obj, const char* name)
   {
-    File file; // File to save to
-    std::string filepath = name;
+    ArchetypeMap[obj->archetype].CopyObject(obj);
 
-    filepath = ArchetypeFilePath + filepath + ArchetypeFileExtension;
+    SaveArchetypeToFile(ArchetypeMap[obj->archetype]);
+  }
 
-    file.Open(filepath.c_str(), FileAccess::Write); // Open the file
+  /// <summary>
+  /// Saves the archetype to file.
+  /// </summary>
+  /// <param name="archetype">The archetype.</param>
+  void Factory::SaveArchetypeToFile(const Archetype& archetype)
+  {
+    File file; // File to load from
+    std::string filepath;
 
-    // Serialize the object
-    GET_TYPE(GameObject)->Serialize(file, *obj);
+    filepath = ArchetypeFilePath + archetype.archetype + ArchetypeFileExtension;
 
-    file.Close(); // Force close, will save now
+    file.Open(filepath.c_str(), FileAccess::Write);
 
-    if (ArchetypeMap.find(obj->archetype) == ArchetypeMap.end())
-      ArchetypeMap[obj->archetype].CopyObject(obj);
-    
+    ErrorIf(!file.Validate(), "Factory", "Invalid file!");
+
+    Variable var = archetype;
+    var.Serialize(file);
+
+    file.Close();
+  }
+
+  /// <summary>
+  /// Saves the archetype to file.
+  /// </summary>
+  /// <param name="name">The name.</param>
+  void Factory::SaveArchetypeToFile(std::string name)
+  {
+    const Archetype& archetype = GetArchetype(name);
+
+    if (&archetype != &Archetype::null)
+      SaveArchetypeToFile(archetype);
   }
 
   /// <summary>
@@ -305,46 +326,6 @@ namespace Framework
       return ArchetypeMap[name];
 
     return Archetype::null;
-  }
-
-  /// <summary>
-  /// Saves the archetype to file.
-  /// </summary>
-  /// <param name="archetype">The archetype.</param>
-  void Factory::SaveArchetypeToFile(const Archetype& archetype)
-  {
-    File file; // File to load from
-    std::string filepath = archetype.archetype;
-
-    //Check if we need to do any trimming
-    if (filepath.substr(0, ArchetypePrefix.length()) != ArchetypePrefix)
-    {
-      // Add the prefix on if it's not there
-      filepath = ArchetypePrefix + archetype.archetype;
-    }
-
-    filepath += ArchetypeFileExtension;
-
-    file.Open(filepath.c_str(), FileAccess::Write);
-
-    ErrorIf(!file.Validate(), "Factory", "Invalid file!");
-
-    Variable var = archetype;
-    var.Serialize(file);
-
-    file.Close();
-  }
-
-  /// <summary>
-  /// Saves the archetype to file.
-  /// </summary>
-  /// <param name="name">The name.</param>
-  void Factory::SaveArchetypeToFile(std::string name)
-  {
-    const Archetype& archetype = GetArchetype(name);
-
-    if (&archetype != &Archetype::null)
-      SaveArchetypeToFile(archetype);
   }
 
   /// <summary>

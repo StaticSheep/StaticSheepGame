@@ -114,7 +114,7 @@ namespace Framework
 
     space->UpdateTweakBar();
 
-	ErrorIf(!obj, "SpaceTweaker", "Failed to load object from archetype! Filepath: %s", szFile);
+	  ErrorIf(!obj, "SpaceTweaker", "Failed to load object from archetype! Filepath: %s", szFile);
 
     obj->TweakObject();
   }

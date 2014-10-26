@@ -146,6 +146,7 @@ namespace Framework
     if (m_components[eTransform])
       ((Transform*)m_components[eTransform])->SetTranslation(Vec3(0, 0, 0));
 
+
     // Copy over the name and archetype of the object
     name = obj->name;
     archetype = obj->archetype;
