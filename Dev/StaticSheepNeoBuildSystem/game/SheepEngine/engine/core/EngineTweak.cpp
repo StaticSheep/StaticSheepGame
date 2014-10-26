@@ -138,7 +138,11 @@ namespace Framework
 
   static void EditorPlayLevel(void* clientData)
   {
-
+    std::vector<GameSpace*>& gameSpaces = ENGINE->Spaces();
+    for (int i = 0; i < gameSpaces.size(); ++i)
+    {
+      //FACTORY->SaveSpaceToFile(gameSpaces[i], "test", true);
+    }
   }
 
   void Engine::OpenEditor()
