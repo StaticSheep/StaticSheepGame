@@ -65,4 +65,24 @@ namespace Framework
 	{
 		PHYSICS->SetBodyVelocity(space, m_handle, velocity);
 	}
+
+	void AddToVelocity(Vec3D& velocity)
+	{
+		PHYSICS->AddToBodyVelocity(space, m_handle, velocity);
+	}
+
+	void AddToForce(Vec3D& force)
+	{
+		PHYSICS->AddToBodyVelocity(space, m_handle, force);
+	}
+
+	void AddToAngVelocity(float angularvelocity)
+	{
+		PHYSICS->AddToBodyVelocity(space, m_handle, angularvelocity);
+	}
+
+	void AddToTorque(float torque)
+	{
+		PHYSICS->AddToBodyVelocity(space, m_handle, torque);
+	}
 }

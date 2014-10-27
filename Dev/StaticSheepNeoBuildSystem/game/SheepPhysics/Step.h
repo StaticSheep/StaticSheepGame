@@ -46,6 +46,12 @@ namespace SheepFizz
 		PHY_API void SetBodyAngVeloc(Handle handle, float angveloc);
 		PHY_API void SetBodyTorque(Handle handle, float torque);
 
+		//adders
+		PHY_API void AddToBodyVeloc(Handle handle, Vec3D velocity);
+		PHY_API void AddToBodyForce(Handle handle, Vec3D force);
+		PHY_API void AddToBodyAngVeloc(Handle handle, float angveloc);
+		PHY_API void AddToBodyTorque(Handle handle, float torque);
+
 		//change the dt
 		PHY_API void SetTime(float dt);
 

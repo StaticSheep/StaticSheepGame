@@ -66,7 +66,12 @@ namespace Framework
 			void SetBodyRotation(GameSpace* space, SheepFizz::Handle handle, float rotation);
 			void SetBodyAngVelocity(GameSpace* space, SheepFizz::Handle handle, float angveloc);
 			void SetBodyTorques(GameSpace* space, SheepFizz::Handle handle, float torque);
-      
+			
+			//adders
+			void AddToBodyVelocity(GameSpace* space, SheepFizz::Handle handle, Vec3D velocity);
+			void AddToBodyForce(GameSpace* space, SheepFizz::Handle handle, Vec3D force);
+			void AddToBodyAngVelocity(GameSpace* space, SheepFizz::Handle handle, float angveloc);
+			void AddToBodyTorques(GameSpace* space, SheepFizz::Handle handle, float torque);
 
       void SetDT(GameSpace* space, float dt);
 
