@@ -110,8 +110,8 @@ GameObject
   }
   BoxCollider
   {
-    m_width float 1024.000000
-    m_height float 46.000000
+    m_width float 512.000000
+    m_height float 32.000000
     m_materialName std::string "Static"
   }
 }
@@ -292,49 +292,5 @@ GameObject
   {
     m_radius float 4.000000
     m_materialName std::string "Wood"
-  }
-}
-GameObject
-{
-  name std::string "Character2"
-  archetype std::string "Character"
-  Transform
-  {
-    Translation Vec3
-    {
-      x_ float 0.000000
-      y_ float 100.000000
-      z_ float 0.000000
-    }
-    Rotation float 0.000000
-    Scale Vec3
-    {
-      x_ float 1.000000
-      y_ float 1.000000
-      z_ float 0.000000
-    }
-  }
-  Sprite
-  {
-    m_spriteName std::string "content/circle.png"
-    Size Vec2
-    {
-      X float 1.000000
-      Y float 1.000000
-    }
-  }
-  GamePad
-  {
-    GamepadIndex int 1
-  }
-  BoxCollider
-  {
-    m_width float 12.000000
-    m_height float 12.000000
-    m_materialName std::string "Wood"
-  }
-  PlayerController
-  {
-    playerNum int 1
   }
 }

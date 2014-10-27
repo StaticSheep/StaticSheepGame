@@ -6,6 +6,7 @@
 #include "components/colliders/CBoxCollider.h"
 #include "types/vectors/Vec3.h"
 #include "components/transform/CTransform.h"
+#include "../../colliders/CCircleCollider.h"
 
 namespace Framework
 {
@@ -14,11 +15,14 @@ namespace Framework
 		//set defaults
 		playerNum = 0;
 		playerGamePad = Handle::null;
+		isSnapped = false;
+		hasFired = false;
+		snappedTo = NULL;
 	}
 
 	PlayerController::~PlayerController() //4
 	{
-		//release dynamic mem
+		//release dynamic memory
 	}
 
 
@@ -30,6 +34,7 @@ namespace Framework
 
 		playerGamePad = space->GetGameObject(owner)->GetComponentHandle(eGamePad); //gets the handle to the gamepad
 		playerCollider = space->GetGameObject(owner)->GetComponentHandle(eBoxCollider);
+		playerTransform = space->GetGameObject(owner)->GetComponentHandle(eTransform);
 
 		GamePad *gp = space->GetHandles().GetAs<GamePad>(playerGamePad); //actually gets the gamepad
 		gp->SetPad(playerNum); //setting pad number
@@ -39,34 +44,43 @@ namespace Framework
 
 	void PlayerController::LogicUpdate(float dt)
 	{
+		//get the game pad
 		GamePad *gp = space->GetHandles().GetAs<GamePad>(playerGamePad);
+		//get the box collider of player
 		BoxCollider *bc = space->GetHandles().GetAs<BoxCollider>(playerCollider);
 
-		//fire
+		//fire on trigger pull
 		if (gp->RightTrigger() && hasFired == false)
 		{
 			hasFired = true;
 			onFire();
 		}
+		//if the trigger is released, reset the bool
 		if (!gp->RightTrigger())
-		{
 			hasFired = false;
-		}
 
 		//left stick move
 		if (gp->LeftStick_X() > 0.2)
 		{
-			bc->AddToVelocity(Vec3(100.0f, 0.0f, 0.0f));
+			bc->SetVelocity(Vec3(0.0f, 0.0f, 0.0f));
+			bc->AddToVelocity(Vec3(150.0f, 0.0f, 0.0f));
+			
 		}
 		else if (gp->LeftStick_X() < -0.2)
 		{
-			bc->AddToVelocity(Vec3(-100.0f, 0.0f, 0.0f));
+			bc->SetVelocity(Vec3(0.0f, 0.0f, 0.0f));
+			bc->AddToVelocity(Vec3(-150.0f, 0.0f, 0.0f));
 		}
 
 		//jump
-		if (gp->ButtonPressed(XButtons.A))
+		if (gp->ButtonPressed(XButtons.A) && isSnapped)
 		{
 			bc->AddToVelocity(Vec3(0.0f, 100.0f, 0.0f));
+			isSnapped = false;
+		}
+		else if (!gp->ButtonPressed(XButtons.A))
+		{
+			isSnapped = true;
 		}
 		//melee
 		if (gp->ButtonPressed(XButtons.B))
@@ -80,7 +94,25 @@ namespace Framework
 
 	void PlayerController::OnCollision(Handle otherObject)
 	{
+		//get the thing we are colliding with
 		GameObject *OtherObject = space->GetHandles().GetAs<GameObject>(otherObject);
+		//get the transform of the thing we are colliding with
+		Transform *OOT = OtherObject->GetComponent<Transform>(eTransform);
+		//if that thing we collided with's transform is missing, get the fuck otta here, i mean what are you even doing?
+		if (!OOT)
+			return;
+
+		if (OtherObject->HasComponent(eBoxCollider))
+		{
+			BoxCollider *OOBc = space->GetHandles().GetAs<BoxCollider>(otherObject);
+
+		}
+		else if (OtherObject->HasComponent(eBoxCollider))
+		{
+			CircleCollider *OOCc = space->GetHandles().GetAs<CircleCollider>(otherObject);
+
+		}
+		
 
 	}
 
@@ -94,6 +126,9 @@ namespace Framework
 	{
 		GameObject *bullet = (FACTORY->LoadObjectFromArchetype(space, "Bullet"));
 		Transform *BT = bullet->GetComponent<Transform>(eTransform);
-		BT->SetTranslation(Vec3(1.0, 0.0, 0.0));
+		CircleCollider *bulletC = bullet->GetComponent <CircleCollider>(eCircleCollider);
+		Transform *playerTrans = space->GetHandles().GetAs<Transform>(playerTransform);
+		BT->SetTranslation(playerTrans->GetTranslation() + Vec3(5.0, 5.0, 0.0));
+		bulletC->AddToVelocity(Vec3(2000.0, 0.0, 0.0));
 	}
 }

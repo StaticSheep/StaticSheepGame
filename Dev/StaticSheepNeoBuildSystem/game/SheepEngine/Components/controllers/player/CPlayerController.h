@@ -17,8 +17,10 @@ namespace Framework
 
 		//member variables
 		int playerNum;
-		bool hasFired;
+		bool hasFired, isSnapped;
 		Handle playerGamePad;
 		Handle playerCollider;
+		Handle playerTransform;
+		Handle snappedTo; //the thing we are currently "snapped" to
 	};
 }
