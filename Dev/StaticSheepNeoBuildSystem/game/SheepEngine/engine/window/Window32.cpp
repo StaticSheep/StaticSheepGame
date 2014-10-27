@@ -67,6 +67,9 @@ namespace Framework
     PAINTSTRUCT ps;                         // Data to redraw window if moved
     HDC hdc;                                // Hande to a Device Context
     MSG msg;
+    DWORD windowSize;
+    WORD width;
+    WORD height;
 
 #if USE_ANTTWEAKBAR
     if (TwEventWin(hWnd, message, wParam, lParam))
@@ -78,6 +81,13 @@ namespace Framework
     case WM_PAINT:                      // Window has moved
       hdc = BeginPaint( hWnd, &ps );
       EndPaint( hWnd, &ps );
+      break;
+
+    case WM_SIZE:
+      windowSize = lParam;
+      width = LOWORD(windowSize);
+      height = HIWORD(windowSize);
+      ENGINE->SystemMessage(ResizeMessage(width, height));
       break;
 
     case WM_DESTROY:                    // Window has been requested to close

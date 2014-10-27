@@ -42,7 +42,7 @@ namespace Framework
     
   }
 
-  void AntTweakModule::ReceiveMessage(Message msg)
+  void AntTweakModule::ReceiveMessage(Message& msg)
   {
 #if USE_ANTTWEAKBAR
     if (msg.MessageId == Message::PostDraw)
@@ -58,6 +58,11 @@ namespace Framework
       TwCopyStdStringToClientFunc(CopyStdStringToClient); // must be called once (just after TwInit for instance)
       
       return;
+    }
+    if (msg.MessageId == Message::WindowResize)
+    {
+      ResizeMessage* rMsg = (ResizeMessage*)&msg;
+      TwWindowSize((int)rMsg->width, (int)rMsg->height);
     }
 #endif
   }

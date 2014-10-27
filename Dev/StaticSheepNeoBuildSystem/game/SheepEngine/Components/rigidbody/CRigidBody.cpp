@@ -22,7 +22,7 @@ namespace Framework
 
 	}
 	
-	//initialize the rigidbody
+	//initialize the rigid body
 	void RigidBody::Initialize(void)
 	{
 		//get a pointer to the transform component

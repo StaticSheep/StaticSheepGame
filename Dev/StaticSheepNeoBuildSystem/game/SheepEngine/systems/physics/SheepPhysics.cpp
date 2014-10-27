@@ -50,8 +50,8 @@ namespace Framework
 		GameObject* AObj = space->GetHandles().GetAs<GameObject>(A_object);
 		GameObject* BObj = space->GetHandles().GetAs<GameObject>(B_object);
 
-		AObj->m_hooks.Call("Collision",B_object);
-		BObj->m_hooks.Call("Collision",A_object);
+		AObj->m_hooks.Call("OnCollision", B_object);
+		BObj->m_hooks.Call("OnCollision", A_object);
 	}//end of CollisionCallback
 
 	void* SheepPhysics::CreateSpace(GameSpace* gameSpace)

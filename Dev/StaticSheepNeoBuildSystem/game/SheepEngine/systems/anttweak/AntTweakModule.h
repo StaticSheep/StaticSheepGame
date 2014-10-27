@@ -140,7 +140,7 @@ namespace Framework
     // Update per frame
     void Update(float dt);
 
-    void ReceiveMessage(Message msg);
+    void ReceiveMessage(Message& msg);
 
     void Shutdown();
 
