@@ -173,32 +173,32 @@ namespace Framework
 		((SheepFizz::PhysicsSpace*)(space->m_pSpace))->SetBodyTorque(handle, torque);
 	}//end of SetBodyTorques
 
-  void SheepPhysics::SetDT(GameSpace* space, float dt)
-  {
-    if (space->m_pSpace)
-      ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->SetTime(dt);
-  }
+	void SheepPhysics::SetDT(GameSpace* space, float dt)
+	{
+	if (space->m_pSpace)
+		((SheepFizz::PhysicsSpace*)(space->m_pSpace))->SetTime(dt);
+	}
 
-  //additive functions
-  void SheepPhysics::AddToBodyVelocity(GameSpace* space, SheepFizz::Handle handle, Vec3D velocity)
-  {
-	  ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->AddToBodyVeloc(handle, velocity);
-  }//end of AddToBodyVeloc
+	//additive functions
+	void SheepPhysics::AddToBodyVelocity(GameSpace* space, SheepFizz::Handle handle, Vec3D velocity)
+	{
+		((SheepFizz::PhysicsSpace*)(space->m_pSpace))->AddToBodyVeloc(handle, velocity);
+	}//end of AddToBodyVeloc
 
-  void SheepPhysics::AddToBodyForce(GameSpace* space, SheepFizz::Handle handle, Vec3D force)
-  {
-	  ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->AddToBodyForce(handle, force);
-  }//end of AddToBodyForce
+	void SheepPhysics::AddToBodyForce(GameSpace* space, SheepFizz::Handle handle, Vec3D force)
+	{
+		((SheepFizz::PhysicsSpace*)(space->m_pSpace))->AddToBodyForce(handle, force);
+	}//end of AddToBodyForce
 
-  void SheepPhysics::AddToBodyAngVelocity(GameSpace* space, SheepFizz::Handle handle, float angveloc)
-  {
-	  ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->AddToBodyAngVeloc(handle, angveloc);
-  }//end of AddToBodyAngVelocity
+	void SheepPhysics::AddToBodyAngVelocity(GameSpace* space, SheepFizz::Handle handle, float angveloc)
+	{
+		((SheepFizz::PhysicsSpace*)(space->m_pSpace))->AddToBodyAngVeloc(handle, angveloc);
+	}//end of AddToBodyAngVelocity
 
-  void SheepPhysics::AddToBodyTorques(GameSpace* space, SheepFizz::Handle handle, float torque)
-  {
-	  ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->AddToBodyTorque(handle, torque);
-  }//end of AddToBodyTorques
+	void SheepPhysics::AddToBodyTorques(GameSpace* space, SheepFizz::Handle handle, float torque)
+	{
+		((SheepFizz::PhysicsSpace*)(space->m_pSpace))->AddToBodyTorque(handle, torque);
+	}//end of AddToBodyTorques
 
 	//end of gettors and settors
 	//********************
