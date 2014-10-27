@@ -231,7 +231,7 @@ namespace SheepFizz
 			for(unsigned j = i + 1; j < bodies_.Size(); ++j)
 			{
 				//if the bodies are static, don't put it in a manifold
-				if (((Body*)bodies_[i])->massData_.mass == 0 && ((Body*)bodies_[i])->massData_.mass == 0)
+				if (((Body*)bodies_[i])->massData_.mass == 0 && ((Body*)bodies_[j])->massData_.mass == 0)
 					continue;
 				
 				//check collision groups

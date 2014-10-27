@@ -49,10 +49,10 @@ namespace Framework
 /*****************************************************************************/
   Vec2D Vec2D::CalculateNormal()
   {
-	  Vec2D normal(this->y, -this->x);
-    normal.Normalize();
+	Vec2D normal(this->y, -this->x);
+	normal.Normalize();
     
-    return normal;
+	return normal;
   }
   
 /*****************************************************************************/
