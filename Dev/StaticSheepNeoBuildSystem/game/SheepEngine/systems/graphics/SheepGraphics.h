@@ -65,6 +65,7 @@ namespace Framework
     Vec2 GetTextureDim(DirectSheep::Handle texture);
     void DrawSpriteText(const char * text, float size, const char * font);
 
+    void ReceiveMessage(Message& msg);
 
     void* GetDevice(void);
 
