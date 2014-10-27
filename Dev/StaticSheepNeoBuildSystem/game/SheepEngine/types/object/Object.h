@@ -44,8 +44,16 @@ namespace Framework
       // Adds a component to an object
       void AddComponent(GameComponent* component);
 
-      // Removes a component on the object
+      // Runs the remove function on a component attached to the object
+      // This is mainly for internal usage.
       void RemoveComponent(EComponent type);
+
+      // Runs the remove function on a component attached to the object
+      // This is mainly for internal usage.
+      void RemoveComponent(GameComponent* comp);
+
+      // Properly detaches a component from the object
+      void DetatchComponent(EComponent type);
 
       // Marks the object to be destroyed at the end of the frame
       void Destroy();
@@ -73,8 +81,6 @@ namespace Framework
 
       GameObject();
       
-      
-
       ~GameObject();
 
       // Checks to see if the object owns a specific component type
@@ -83,10 +89,8 @@ namespace Framework
       // Checks to see if the object owns a specific component type
       bool HasComponent(size_t type) const;
 
-
       // Copies one object into this object
       void Copy(GameObject& rhs);
-      
 
       // Serialization routine
       static void Serialize(File& file, Variable var);
@@ -137,6 +141,8 @@ namespace Framework
 
       //GameObject& operator=(const GameObject& rhs);
 
+      /*========================== EDITOR =========================*/
+
       // Handle to the AntTweakbar for tweaking this object
       Handle tweakHandle;
       // Pointer to the GenericLookup struct used for spaces finding this object
@@ -147,9 +153,11 @@ namespace Framework
       bool tweakDeleteComponent;
       // Are we really deleting the object
       bool tweakDeleteObject;
-      // Pointer to a vector full of clientdata pointers for adding a component through tweakbar
+      // Pointer to a vector full of client data pointers for adding a component through tweakbar
       std::vector<TweakObjComp*>* tweakCCompCallbacks;
       std::vector<TweakObjComp*>* tweakLuaCompCallbacks;
+
+      /*========================== END EDITOR =========================*/
 
 	    HookManager hooks;
 
