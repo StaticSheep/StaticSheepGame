@@ -50,7 +50,7 @@ namespace Framework
     objName += " [GUID: ";
     objName += std::to_string(obj.guid) + "]";
 
-    std::string barID = std::to_string(obj.guid);
+    std::string barID = std::to_string(obj.space->GUID()) + std::string("_") + std::to_string(obj.guid);
 
     // Create a new bar for this object
     AntTweak::TBar* objectBar = ATWEAK->CreateBar(barID.c_str());
@@ -192,14 +192,14 @@ namespace Framework
     {
       // Don't remove the Transform component you idiot!
       if (obj->HasComponent(cType) && cType != eTransform)
-        obj->RemoveComponent(cType);
+        obj->DetatchComponent(cType);
     }
     else
     {
 
     }
 
-    obj->Initialize();
+    //obj->Initialize(); //This may or may not be needed?
 
     obj->tweakDeleteComponent = false;
     obj->tweakListComponents = false;

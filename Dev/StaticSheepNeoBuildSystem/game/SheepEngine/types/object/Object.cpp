@@ -72,8 +72,6 @@ namespace Framework
   /// </summary>
   GameObject::~GameObject()
   {
-
-
     // If the object is not active, time to destroy it
     for (unsigned int j = 0; j < ecountComponents; ++j)
     {
@@ -84,6 +82,19 @@ namespace Framework
       if (HasComponent(type) && type != eLuaComponent)
       {
         RemoveComponent(type);
+      }
+    } // End component loop
+
+    // If the object is not active, time to destroy it
+    for (unsigned int j = 0; j < ecountComponents; ++j)
+    {
+      // Get the enum type of the component
+      EComponent type = (EComponent)j;
+
+      // Check to see if the Object has that type of component
+      if (HasComponent(type) && type != eLuaComponent)
+      {
+        DetatchComponent(type);
       }
     } // End component loop
 
@@ -242,14 +253,17 @@ namespace Framework
   }
 
   /// <summary>
-  /// Removes a component.
+  /// Properly detaches a component from an object
+  /// If the component is not yet ready for removal it runs the remove logic
   /// </summary>
   /// <param name="type">The type of component.</param>
-  void GameObject::RemoveComponent(EComponent type)
+  void GameObject::DetatchComponent(EComponent type)
   {
     // Get the component
     GameComponent* comp = GetComponent(type);
-    comp->Remove(); // Remove the component
+
+    if (!comp->m_toDelete)
+      RemoveComponent(comp);
 
     // Remove the handle from the space
     space->GetHandles().Remove(comp->self);
@@ -263,6 +277,28 @@ namespace Framework
       space->GetHandles().Update(moved, moved->self);
 
     m_components[type] = Handle::null;
+  }
+
+  /// <summary>
+  /// Runs the remove routine for a component.
+  /// </summary>
+  /// <param name="type">The type of component.</param>
+  void GameObject::RemoveComponent(EComponent type)
+  {
+    // Get the component
+    GameComponent* comp = GetComponent(type);
+    comp->Remove();
+    comp->m_toDelete = true;
+  }
+
+  /// <summary>
+  /// Prepares a component to be detached.
+  /// </summary>
+  /// <param name="comp">The component.</param>
+  void GameObject::RemoveComponent(GameComponent* comp)
+  {
+    comp->Remove();
+    comp->m_toDelete = true;
   }
 
   /// <summary>
