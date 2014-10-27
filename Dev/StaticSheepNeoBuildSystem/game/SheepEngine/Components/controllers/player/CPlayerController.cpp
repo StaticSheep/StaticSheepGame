@@ -1,5 +1,4 @@
 
-
 #include "pch/precompiled.h"
 #include "CPlayerController.h"
 #include "types/space/Space.h"
@@ -49,11 +48,11 @@ namespace Framework
 		}
 
 		//left stick move
-		if (gp->LeftStick_X() > 0.5)
+		if (gp->LeftStick_X() > 0.2)
 		{
 			bc->SetVelocity(Vec3(100.0f, 0.0f, 0.0f));
 		}
-		else if (gp->LeftStick_X() < 0)
+		else if (gp->LeftStick_X() < -0.2)
 		{
 			bc->SetVelocity(Vec3(-100.0f, 0.0f, 0.0f));
 		}
@@ -69,6 +68,8 @@ namespace Framework
 
 		}
 
+
+		
 	}
 
 	void PlayerController::Remove() //3

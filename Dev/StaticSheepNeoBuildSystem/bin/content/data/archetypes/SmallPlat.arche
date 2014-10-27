@@ -1,13 +1,13 @@
 GameObject
 {
-  name std::string "Small Platform"
+  name std::string "Small Platform Right"
   archetype std::string "SmallPlat"
   Transform
   {
     Translation Vec3
     {
-      x_ float -100.000000
-      y_ float -14557.186523
+      x_ float 0.000000
+      y_ float 0.000000
       z_ float 0.000000
     }
     Rotation float 0.000000
@@ -18,7 +18,6 @@ GameObject
       z_ float 0.000000
     }
   }
-
   Sprite
   {
     m_spriteName std::string "content/platform.png"
@@ -28,19 +27,10 @@ GameObject
       Y float 1.000000
     }
   }
-
-
-
-
   BoxCollider
   {
-    m_width float 12.000000
-    m_height float 12.000000
+    m_width float 132.000000
+    m_height float 46.000000
     m_materialName std::string "Static"
   }
-
-
-
-
-
 }

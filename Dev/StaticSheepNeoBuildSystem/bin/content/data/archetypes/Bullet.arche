@@ -18,22 +18,18 @@ GameObject
       z_ float 0.000000
     }
   }
-
   Sprite
   {
-    m_spriteName std::string "content/Default.png"
+    m_spriteName std::string "content/circle.png"
     Size Vec2
     {
-      X float 0.500000
-      Y float 0.500000
+      X float 0.250000
+      Y float 0.250000
     }
   }
-
-
-
-
-
-
-
-
+  CircleCollider
+  {
+    m_radius float 4.000000
+    m_materialName std::string "Wood"
+  }
 }
