@@ -34,6 +34,10 @@ namespace Framework
 			virtual void Remove();
 
 			virtual void SetVelocity(Vec3D& velocity);
+			virtual void AddToVelocity(Vec3D& velocity);
+			virtual void AddToForce(Vec3D& force);
+			virtual void AddToAngVelocity(float angularvelocity);
+			virtual void AddToTorque(float torque);
 
 		// Properties
 		union

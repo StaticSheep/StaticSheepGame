@@ -19,7 +19,8 @@ namespace SheepFizz
 		delete space;
 	}//end of Delete
 
-	//body settors//*************
+	//body settors
+	//*************
 	void PhysicsSpace::SetBodyPos(Handle handle, Vec3D position)
 	{
 		Body* body = handles_.GetAs<Body>(handle);
@@ -59,8 +60,38 @@ namespace SheepFizz
 	//change the dt
 	void PhysicsSpace::SetTime(float dt) {dt_ = dt;}
 	//end of SetTime
-	//*************end of settors
+	//end of settors
+	//*************
 
+
+	//adders
+	//*************
+	void PhysicsSpace::AddToBodyVeloc(Handle handle, Vec3D velocity)
+	{
+		Body* body = handles_.GetAs<Body>(handle);
+		body->velocity_ += velocity;
+	}//end of AddToBodyVeloc
+
+	void PhysicsSpace::AddToBodyForce(Handle handle, Vec3D force)
+	{
+		Body* body = handles_.GetAs<Body>(handle);
+		body->force_ += force;
+	}//end of AddToBodyForce
+
+	void PhysicsSpace::AddToBodyAngVeloc(Handle handle, float angveloc)
+	{
+		Body* body = handles_.GetAs<Body>(handle);
+		body->angularVelocity_ += angveloc;
+	}//end of AddToBodyAngVeloc
+
+	void PhysicsSpace::AddToBodyTorque(Handle handle, float torque)
+	{
+		Body* body = handles_.GetAs<Body>(handle);
+		body->torque_ += torque;
+	}//end of AddToBodyTorque
+
+	//end of adders
+	//*************
 
 	//get values for engine
 	Vec3D PhysicsSpace::GetBodyPos(Handle handle)
