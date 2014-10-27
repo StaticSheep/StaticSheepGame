@@ -92,6 +92,8 @@ namespace Framework
     // The game space is being edited
     bool m_edit;
 
+    unsigned int GUID() { return m_spaceGUID; }
+
   private:
     // The collection of all game objects in this game space
     ObjectAllocator m_objects;
@@ -106,7 +108,10 @@ namespace Framework
     std::string m_name;
 
     // Global Unique ID counter
-    unsigned int m_guid;
+    unsigned int m_guid = 0;
+
+    unsigned int m_spaceGUID;
+    static unsigned int maxGuid;
 
     bool m_shuttingDown;
 

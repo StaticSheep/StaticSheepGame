@@ -19,13 +19,15 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 namespace Framework
 {
 
+  unsigned int GameSpace::maxGuid = 0;
+
   GameSpace::GameSpace() :
     m_objects(sizeof(GameObject), 50),
     m_shuttingDown(false),
     m_paused(false),
     m_hidden(false),
     m_valid(true),
-    m_guid(0),
+    m_spaceGUID(GameSpace::maxGuid++),
     m_pSpace(nullptr),
     m_edit(false)
   {
