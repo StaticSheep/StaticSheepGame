@@ -151,7 +151,7 @@ namespace Framework
       std::vector<TweakObjComp*>* tweakCCompCallbacks;
       std::vector<TweakObjComp*>* tweakLuaCompCallbacks;
 
-	  HookManager m_hooks;
+	    HookManager hooks;
 
     private:
 
