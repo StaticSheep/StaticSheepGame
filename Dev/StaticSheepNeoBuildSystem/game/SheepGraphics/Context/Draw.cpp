@@ -65,7 +65,7 @@ namespace DirectSheep
     transMat = XMMatrixIdentity();
 
 
-    rotMat = XMMatrixRotationRollPitchYaw(0.0f, (float)-XM_PI, m_spriteTrans.theta);
+    rotMat = XMMatrixRotationRollPitchYaw((float)XM_PI, 0.0f, m_spriteTrans.theta);
 
 
     transMat = XMMatrixTranslation(m_spriteTrans.x, m_spriteTrans.y, 0.0f);
@@ -99,27 +99,42 @@ namespace DirectSheep
 
   }
 
-  void RenderContext::DrawBatched(DirectSheep::Handle texture)
+  void RenderContext::DrawBatched(DirectSheep::Handle texture, float frameX, float frameY, float frameW, float frameH)
   {
     RECT sourcePos;
 
     sourcePos.left = 0;
-    sourcePos.right = GetTextureSize(texture).width / 2;
+    sourcePos.right = GetTextureSize(texture).width;
     sourcePos.top = 0;
-    sourcePos.bottom = GetTextureSize(texture).height / 2;
-    m_batcher->Draw(m_textureRes[texture.index].shaderResourceView, Vec2(m_spriteTrans.x, m_spriteTrans.y), &sourcePos, FXMVECTOR(Colors::White), m_spriteTrans.theta, Vec2(0, 0), Vec2(m_spriteTrans.w, m_spriteTrans.h));
+    sourcePos.bottom = GetTextureSize(texture).height;
+    m_batcher->Draw(m_textureRes[texture.index].shaderResourceView,
+               Vec2(m_spriteTrans.x, m_spriteTrans.y),
+               &sourcePos,
+               XMLoadFloat4(&m_spriteBlend),
+               m_spriteTrans.theta,
+               Vec2(sourcePos.right / 2.0f, sourcePos.bottom / 2.0f), 
+               Vec2(m_spriteTrans.w, -m_spriteTrans.h));
   }
+
 
   void RenderContext::frameStart(void)
   {
     ClearBackBuffer();
     ClearDepthBuffer();
-    m_batcher->Begin(SpriteSortMode_Deferred, nullptr,nullptr,m_depthBuffer.m_depthState,nullptr,nullptr,m_camera.viewProj);
+  }
+
+  void RenderContext::StartBatch()
+  {
+    m_batcher->Begin(SpriteSortMode_Texture, m_blendStateMap[BLEND_MODE_ALPHA], m_sampleStates[0], m_depthBuffer.m_depthState, m_rastState, nullptr, m_camera.viewProj);
+  }
+
+  void RenderContext::EndBatch()
+  {
+    m_batcher->End();
   }
 
   void RenderContext::frameEnd(void)
   {
-    m_batcher->End();
     Present();
   }
 

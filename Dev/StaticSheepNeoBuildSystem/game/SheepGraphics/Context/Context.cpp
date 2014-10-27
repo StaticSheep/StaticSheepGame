@@ -24,12 +24,12 @@ namespace DirectSheep
   {
     float cameraX = x;
     float cameraY = y;
-    float cameraZ;// = -400.0f;
+    float cameraZ;
 
     if(m_camera.used)
-      cameraZ = 400.0f;
+      cameraZ = -400.0f;
     else
-      cameraZ = 10.0f;
+      cameraZ = -10.0f;
 
     Vec4 eyepoint(cameraX, cameraY, cameraZ, 0);
 

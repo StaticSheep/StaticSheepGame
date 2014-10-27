@@ -44,7 +44,9 @@ class RenderContext
    GFX_API void DrawIndexed(unsigned indexCount, unsigned indexStart = 0, unsigned vertexStart = 0);
    GFX_API void DrawInstanced(unsigned vertexCount, unsigned instanceCount, unsigned vertexStart = 0, unsigned instanceStart = 0);
    GFX_API void DrawIndexInstanced(unsigned indexCountPerInstance, unsigned instanceCount, unsigned indexStart = 0, unsigned vertexStart = 0, unsigned instanceStart = 0);
-   GFX_API void DrawBatched(DirectSheep::Handle texture);
+   GFX_API void DrawBatched(DirectSheep::Handle texture, float frameX, float frameY, float frameW, float frameH);
+   GFX_API void StartBatch();
+   GFX_API void EndBatch();
    GFX_API void frameStart();
    GFX_API void frameEnd();
    GFX_API void Present(void);

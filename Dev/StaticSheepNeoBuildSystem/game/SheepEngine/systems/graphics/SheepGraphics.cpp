@@ -109,7 +109,8 @@ namespace Framework
         space->hooks.Call("Draw");
     }
     Lua::CallFunc(ENGINE->Lua(), "hook.Call", "Draw");
-
+    m_renderContext->EndBatch();
+    m_renderContext->StartBatch();
     // Post Draw
     for (auto it = ENGINE->Spaces().begin(); it != ENGINE->Spaces().end(); ++it)
     {
@@ -118,7 +119,7 @@ namespace Framework
         space->hooks.Call("PostDraw");
     }
     Lua::CallFunc(ENGINE->Lua(), "hook.Call", "PostDraw");
-
+    m_renderContext->EndBatch();
     Message m(Message::PostDraw);
     ENGINE->SystemMessage(m);
     
@@ -128,6 +129,7 @@ namespace Framework
   {
     UpdateCamera();
     m_renderContext->frameStart();
+    m_renderContext->StartBatch();
   }
 
   void SheepGraphics::FinishFrame()
@@ -218,7 +220,7 @@ namespace Framework
 
   void SheepGraphics::DrawSprite(Sprite *sprite)
   {
-    m_renderContext->DrawBatched(sprite->GetTexture());
+    m_renderContext->DrawBatched(sprite->GetTexture(),0,0,1,1);
   }
 
   void SheepGraphics::RawDraw(void)

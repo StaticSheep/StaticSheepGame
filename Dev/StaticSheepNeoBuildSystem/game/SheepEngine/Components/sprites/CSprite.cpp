@@ -65,7 +65,7 @@ namespace Framework
 
     GRAPHICS->SetPosition(trans->GetTranslation().X, trans->GetTranslation().Y);
     GRAPHICS->SetRotation(trans->GetRotation());
-    GRAPHICS->SetSize(trans->GetScale().X * Size.X * TextureSize.X, trans->GetScale().Y * Size.Y * TextureSize.Y);
+    GRAPHICS->SetSize(trans->GetScale().X * Size.X, trans->GetScale().Y * Size.Y);
     GRAPHICS->SetColor(Color);
     GRAPHICS->SetUV(Vec2(0,0), Vec2(1,1));
     GRAPHICS->SetUseCamera(true);
