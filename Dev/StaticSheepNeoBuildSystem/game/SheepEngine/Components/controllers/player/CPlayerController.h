@@ -10,11 +10,14 @@ namespace Framework
 		PlayerController();
 		~PlayerController();
 		void LogicUpdate(float dt);
+		void OnCollision(Handle otherObject);
 		void Initialize();
 		void Remove();
 		void onFire();
 
+		//member variables
 		int playerNum;
+		bool hasFired;
 		Handle playerGamePad;
 		Handle playerCollider;
 	};
