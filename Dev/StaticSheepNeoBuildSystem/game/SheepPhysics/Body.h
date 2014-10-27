@@ -1,6 +1,7 @@
 #pragma once
 #include "Material.h"
 #include "Shape.h"
+#include "BodyProperties.h"
 
 namespace SheepFizz
 {
@@ -13,13 +14,6 @@ class MassData
 
 		float inertia;			//used for angular calculations
 		float inverseInertia;
-};
-
-enum BodyProperties{
-
-	Sticky,
-	GravityWell,
-	BodyGroupLength
 };
 
 enum CollisionGroup{
@@ -47,8 +41,8 @@ class Body
 			CollisionGroup collisionGroup = CollGroup1, //used for determining collision gorups
 			unsigned int bodyGroup = 0,					//used for certain collisions/resolutions 
 			float gravityScale = 1,						//used to modify gravity
-			unsigned int gravityOn = 1,					//used to turn gravity on and off
-			bool staticObject = false);
+			unsigned int gravityOn = 1					//used to turn gravity on and off
+			);					
 
 		//used in initialization of body - computes mass
 		void ComputeMass(void);
@@ -94,9 +88,6 @@ class Body
 
 		//collisiongroup - used to ignore collision for various types of objects;
 		CollisionGroup collisionGroup_;
-
-		//if true, do not use as a starting component (A) of a manifold
-		bool staticObject_;
 
 		//key forces and values for body
 		Vec3D velocity_;

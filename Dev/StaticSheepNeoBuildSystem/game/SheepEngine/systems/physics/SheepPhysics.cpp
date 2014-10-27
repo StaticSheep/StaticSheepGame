@@ -62,6 +62,9 @@ namespace Framework
 		newSpace->SetUserData(gameSpace);
 		gameSpace->m_pSpace = newSpace;
 
+    if (gameSpace->Paused())
+      SetDT(gameSpace, 0.0f);
+
 		return newSpace;
 	}//end of CreateSpace
 
@@ -172,7 +175,8 @@ namespace Framework
 
   void SheepPhysics::SetDT(GameSpace* space, float dt)
   {
-    ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->SetTime(dt);
+    if (space->m_pSpace)
+      ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->SetTime(dt);
   }
 
 	//end of gettors and settors

@@ -40,6 +40,7 @@ namespace Framework
 
     void SaveSpaceToFile(GameSpace* space, const char* name, std::vector<std::string>* objInstanceData = NULL, bool includeGeneric = false, bool allData = false);
     void SaveSpaceToFile(GameSpace* space, const char* name, bool standalone);
+    void SaveSpaceToFileEx(GameSpace* space, const char* filepath, bool standalone);
     GameSpace* LoadSpace(const char* name);
 
     // Saves all of the spaces into a level file

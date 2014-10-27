@@ -190,21 +190,22 @@ namespace SheepFizz
 	}//end of RemoveBody
 	//*************
 
-
 	//this function advances the game forward one dt
 	void PhysicsSpace::Step(void)
 	{
 		//iterate through list of bodies
 		for(unsigned i = 0; i < bodies_.Size(); ++i)
 		{
-			//if the body is static, don't put it as object A in
-			//a manifold
-			if (((Body*)bodies_[i])->staticObject_ == true)
-				continue;
-
 			//move one body in vector forward to start
 			for(unsigned j = i + 1; j < bodies_.Size(); ++j)
 			{
+				//if the bodies are static, don't put it in a manifold
+				if (((Body*)bodies_[i])->massData_.mass == 0 && ((Body*)bodies_[i])->massData_.mass == 0)
+					continue;
+				
+				//check collision groups
+				if (((Body*)bodies_[i])->collisionGroup_ != ((Body*)bodies_[i])->collisionGroup_)
+					continue;
 
 				//create a manifold and see if there is any interaction
 				Manifold m((Body*)bodies_[i], (Body*)bodies_[j]);

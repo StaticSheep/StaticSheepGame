@@ -26,7 +26,8 @@ namespace Framework
     m_hidden(false),
     m_valid(true),
     m_guid(0),
-	m_pSpace(nullptr)
+    m_pSpace(nullptr),
+    m_edit(false)
   {
     for(unsigned i = 0; i < ecountComponents; ++i)
     {
@@ -413,6 +414,7 @@ namespace Framework
   
   void GameSpace::Tweak()
   {
+    m_edit = true;
     GET_TYPE(GameSpace)->Tweak(nullptr, this, nullptr, nullptr);
   }
 
