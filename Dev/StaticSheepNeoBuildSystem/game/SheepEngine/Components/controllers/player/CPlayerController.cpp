@@ -74,11 +74,7 @@ namespace Framework
 	void PlayerController::Remove() //3
 	{
 		//opposite of init
-<<<<<<< HEAD
 		space->hooks.Remove("LogicUpdate", self);
-=======
-    space->hooks.Remove("LogicUpdate", self);
->>>>>>> origin/EditorFixes
 	}
 
 	void PlayerController::onFire()
