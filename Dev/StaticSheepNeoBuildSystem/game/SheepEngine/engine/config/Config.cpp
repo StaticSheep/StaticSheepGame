@@ -53,7 +53,8 @@ namespace Framework
 
 #if USE_EDITOR
 #else
-	  ENGINE->OpenEditor();
+	  //ENGINE->OpenEditor();
+	  ENGINE->LoadLevel("content/data/spaces/Level1.space");
 #endif
     
   }
