@@ -139,8 +139,13 @@ namespace Framework
   static void EditorPlayLevel(void* clientData)
   {
     std::vector<GameSpace*>& gameSpaces = ENGINE->Spaces();
+
+    std::string cacheLocation = "cache\\spaces\\";
+    std::string filepath;
     for (size_t i = 0; i < gameSpaces.size(); ++i)
     {
+      filepath = cacheLocation + gameSpaces[i]->GetName() + FACTORY->LevelFileExtension;
+      //FACTORY->SaveSpaceToFileEx(gameSpaces[i], "", true);
       //FACTORY->SaveSpaceToFile(gameSpaces[i], "test", true);
     }
   }
