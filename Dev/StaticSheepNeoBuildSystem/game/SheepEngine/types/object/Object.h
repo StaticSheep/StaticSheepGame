@@ -56,7 +56,7 @@ namespace Framework
       void DetatchComponent(EComponent type);
 
       // Marks the object to be destroyed at the end of the frame
-      void Destroy();
+      void Destroy(); //THIS ONE
 
       // Gets the archetype of the object
       const std::string& GetArchetype() const {return archetype;}

@@ -513,7 +513,7 @@ namespace SheepFizz
 
 		for(unsigned int i = 0; i < MAXVERTICES; ++i)
 		{
-			//find the seperation between circle and rec
+			//find the separation between circle and rec
 			float separation = (b->GetNormal(i)).DotProduct(circleCenter - b->GetVertex(i));
 
 			//if separation exceeds radius, the shapes are not colliding
@@ -535,7 +535,7 @@ namespace SheepFizz
 		unsigned int rectangleSide2 = ((rectangleSide + 1) < MAXVERTICES) ? (rectangleSide + 1) : 0;
 		Vec3D rectangleVertex2 = b->GetVertex(rectangleSide2);
 
-		//create a side for dotproducts
+		//create a side for dot products
 		Vec3D side = rectangleVertex2 - rectangleVertex1;
 
 		//determine if circle is within bounds of a side

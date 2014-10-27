@@ -2,7 +2,6 @@
 #include "pch/precompiled.h"
 #include "CPlayerController.h"
 #include "types/space/Space.h"
-#include "components/gamepad/CGamePad.h"
 #include "components/colliders/CBoxCollider.h"
 #include "types/vectors/Vec3.h"
 #include "components/transform/CTransform.h"
@@ -39,7 +38,8 @@ namespace Framework
 		GamePad *gp = space->GetHandles().GetAs<GamePad>(playerGamePad); //actually gets the gamepad
 		gp->SetPad(playerNum); //setting pad number
 
-		
+		aimDir.x = 1;
+		aimDir.y = 0;
 	}
 
 	void PlayerController::LogicUpdate(float dt)
@@ -48,6 +48,9 @@ namespace Framework
 		GamePad *gp = space->GetHandles().GetAs<GamePad>(playerGamePad);
 		//get the box collider of player
 		BoxCollider *bc = space->GetHandles().GetAs<BoxCollider>(playerCollider);
+
+		if (gp->RStick_InDeadZone() == false)       //if the right stick is NOT inside of its dead zone
+			aimDir = aimingDirection(gp); //get the direction the player is currently aiming;
 
 		//fire on trigger pull
 		if (gp->RightTrigger() && hasFired == false)
@@ -128,7 +131,17 @@ namespace Framework
 		Transform *BT = bullet->GetComponent<Transform>(eTransform);
 		CircleCollider *bulletC = bullet->GetComponent <CircleCollider>(eCircleCollider);
 		Transform *playerTrans = space->GetHandles().GetAs<Transform>(playerTransform);
-		BT->SetTranslation(playerTrans->GetTranslation() + Vec3(5.0, 5.0, 0.0));
-		bulletC->AddToVelocity(Vec3(2000.0, 0.0, 0.0));
+		BT->SetTranslation(playerTrans->GetTranslation() + aimDir * 20);
+		bulletC->AddToVelocity(aimDir * 1000);
+	}
+
+	Vec3 PlayerController::aimingDirection(GamePad *gp)
+	{
+		Vec3 returnVec;
+		returnVec.x = gp->RightStick_X();
+		returnVec.y = gp->RightStick_Y();
+
+		return returnVec;
+
 	}
 }
