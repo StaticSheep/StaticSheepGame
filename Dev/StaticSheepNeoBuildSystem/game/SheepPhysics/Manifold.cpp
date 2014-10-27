@@ -528,10 +528,6 @@ namespace SheepFizz
 				maxSeparation = separation;
 				rectangleSide = i;
 			}
-			else
-			{
-				float a = 2;
-			}
 		}
 
 		//get two vertices of rectangle

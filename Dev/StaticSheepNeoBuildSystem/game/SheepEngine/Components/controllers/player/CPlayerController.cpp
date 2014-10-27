@@ -43,25 +43,30 @@ namespace Framework
 		BoxCollider *bc = space->GetHandles().GetAs<BoxCollider>(playerCollider);
 
 		//fire
-		if (gp->RightTrigger())
+		if (gp->RightTrigger() && hasFired == false)
 		{
+			hasFired = true;
 			onFire();
+		}
+		if (!gp->RightTrigger())
+		{
+			hasFired = false;
 		}
 
 		//left stick move
 		if (gp->LeftStick_X() > 0.2)
 		{
-			bc->SetVelocity(Vec3(100.0f, 0.0f, 0.0f));
+			bc->AddToVelocity(Vec3(100.0f, 0.0f, 0.0f));
 		}
 		else if (gp->LeftStick_X() < -0.2)
 		{
-			bc->SetVelocity(Vec3(-100.0f, 0.0f, 0.0f));
+			bc->AddToVelocity(Vec3(-100.0f, 0.0f, 0.0f));
 		}
 
 		//jump
 		if (gp->ButtonPressed(XButtons.A))
 		{
-			bc->SetVelocity(Vec3(0.0f, 100.0f, 0.0f));
+			bc->AddToVelocity(Vec3(0.0f, 100.0f, 0.0f));
 		}
 		//melee
 		if (gp->ButtonPressed(XButtons.B))
@@ -76,6 +81,7 @@ namespace Framework
 	void PlayerController::OnCollision(Handle otherObject)
 	{
 		GameObject *OtherObject = space->GetHandles().GetAs<GameObject>(otherObject);
+
 	}
 
 	void PlayerController::Remove() //3
