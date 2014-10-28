@@ -257,7 +257,7 @@ namespace Framework
   /// Loads an object from a archetype.
   /// </summary>
   /// <param name="space">The space.</param>
-  /// <param name="name">The name.</param>
+  /// <param name="filepath">The file path, or alternatively the name of the archetype.</param>
   /// <returns>The object</returns>
   GameObject* Factory::LoadObjectFromArchetype(GameSpace* space, const char* filepath)
   {
@@ -279,6 +279,7 @@ namespace Framework
       return obj;
     }
 
+	
 
     if (!File::FileExists(filepath))
     {

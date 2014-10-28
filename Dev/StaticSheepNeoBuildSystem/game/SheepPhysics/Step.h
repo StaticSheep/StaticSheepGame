@@ -28,10 +28,10 @@ namespace SheepFizz
 
 		//constructor requires a time step to start
 		PhysicsSpace(float dt) : dt_(dt),
-			bodies_(sizeof(Body), 50), cb_(NULL)
+			bodies_(sizeof(Body), 1000), cb_(NULL)
 		{
-			shapes_[Rec].Initialize(sizeof(Rectangle), 50);
-			shapes_[Cir].Initialize(sizeof(Circle), 50);
+			shapes_[Rec].Initialize(sizeof(Rectangle), 1000);
+			shapes_[Cir].Initialize(sizeof(Circle), 1000);
 			//shapes_[Poly].Initialize(sizeof(Polygon), 10);
 		}
 
