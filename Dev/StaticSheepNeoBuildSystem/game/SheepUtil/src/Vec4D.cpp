@@ -50,7 +50,10 @@ namespace Framework
   Vec4D& Vec4D::Normalize()
   {
     float length = Length();
-    
+    //check to see if length is zero
+    if (length == 0)
+      return *this;
+
     x /= length;
     y /= length;
     z /= length;
