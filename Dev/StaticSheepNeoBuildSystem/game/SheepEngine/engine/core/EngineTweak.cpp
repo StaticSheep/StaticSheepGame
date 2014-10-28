@@ -14,6 +14,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include <commdlg.h>
 #include <iostream>
 
+#include <boost/filesystem.hpp>
+#include <boost/foreach.hpp>
 
 
 namespace Framework
@@ -138,16 +140,9 @@ namespace Framework
 
   static void EditorPlayLevel(void* clientData)
   {
-    std::vector<GameSpace*>& gameSpaces = ENGINE->Spaces();
+    ATWEAK->RemoveAllBars();
 
-    std::string cacheLocation = "cache\\spaces\\";
-    std::string filepath;
-    for (size_t i = 0; i < gameSpaces.size(); ++i)
-    {
-      filepath = cacheLocation + gameSpaces[i]->GetName() + FACTORY->LevelFileExtension;
-      //FACTORY->SaveSpaceToFileEx(gameSpaces[i], "", true);
-      //FACTORY->SaveSpaceToFile(gameSpaces[i], "test", true);
-    }
+    ENGINE->PlayInEditor(true);
   }
 
   void Engine::OpenEditor()

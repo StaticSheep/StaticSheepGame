@@ -12,6 +12,9 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include <fstream>
 #include "components/transform/CTransform.h"
 
+
+#include <boost/filesystem.hpp>
+
 namespace Framework
 {
   Factory *FACTORY = NULL;
@@ -388,6 +391,15 @@ namespace Framework
       backUpFile += "." + std::to_string(now->tm_mon) + "_" + std::to_string(now->tm_mday) + "_" +
         std::to_string(now->tm_hour) + "_" + std::to_string(now->tm_min) + "_" + std::to_string(now->tm_sec) + ".backup";
 
+      
+      std::string backUpPath;
+      
+      int lastBackslash = backUpFile.find_last_of('\\');
+      if (lastBackslash != std::string::npos)
+        backUpPath = backUpFile.substr(0, lastBackslash);
+
+      boost::filesystem::create_directories(backUpPath);
+
       std::ifstream src;
       src.open(filepath);
       std::ofstream dest;
@@ -466,6 +478,32 @@ namespace Framework
     Serializer::Get()->SetUserData(NULL);
 
     file.Close();
+
+    space->m_fileName = name;
+  }
+
+  void Factory::SaveSpaceToFilePath(GameSpace* space, const char* path)
+  {
+    File file; // File to save the space to
+    std::string filepath = path;
+    GameSpace::SerializerData extraData;
+
+    extraData.instanceData = NULL;
+    extraData.includeGeneric = false;
+    extraData.saveAllData = false;
+    extraData.standalone = true;
+
+    StoreBackup(filepath.c_str());
+
+    file.Open(filepath.c_str(), FileAccess::Write); // Open the file
+
+    Serializer::Get()->SetUserData(&extraData);
+
+    Variable(*space).Serialize(file);
+
+    Serializer::Get()->SetUserData(NULL);
+
+    file.Close();
   }
 
 
@@ -496,6 +534,12 @@ namespace Framework
 
     file.Close();
 
+    std::string fileName(filepath);
+    int lastSlash = fileName.find_last_of('\\');
+    if (lastSlash != std::string::npos)
+      fileName = fileName.substr(lastSlash - 1, fileName.length() - lastSlash);
+
+    space->m_fileName = fileName;
 
     return space;
   }

@@ -103,6 +103,16 @@ namespace Framework
 #endif
   }
 
+  void AntTweakModule::RemoveAllBars(void)
+  {
+#if USE_ANTTWEAKBAR
+    for (size_t i = 0; i < m_bars.Size(); ++i)
+    {
+      reinterpret_cast<AntTweak::TBar*>(m_bars[i])->toRemove = true;
+    }
+#endif
+  }
+
   AntTweak::TBar* AntTweakModule::GetBar(Handle barHandle)
   {
 #if USE_ANTTWEAKBAR

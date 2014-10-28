@@ -94,6 +94,10 @@ namespace Framework
 
     unsigned int GUID() { return m_spaceGUID; }
 
+    // Filename of the space [DO NOT WRITE TO]
+    std::string m_fileName;
+
+
   private:
     // The collection of all game objects in this game space
     ObjectAllocator m_objects;
@@ -106,6 +110,8 @@ namespace Framework
 
     // Name of the space
     std::string m_name;
+
+    
 
     // Global Unique ID counter
     unsigned int m_guid = 0;
