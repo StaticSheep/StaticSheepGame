@@ -255,6 +255,12 @@ class RenderContext
     
     std::unique_ptr<DirectX::SpriteBatch> m_batcher;
 
+
+    ///////////
+    //cleanup//
+    ///////////
+
+    std::vector<DirectSheep::Handle>         m_handles;
 #endif
 };
 

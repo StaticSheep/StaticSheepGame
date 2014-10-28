@@ -14,14 +14,16 @@ namespace DirectSheep
     if (vsHandle.type == VERTEX_SHADER)
     {
       m_deviceContext->VSSetShader(m_vertexShaderRes[vsHandle.index].vShader, 0, 0);
-      
+      m_deviceContext->IASetInputLayout(m_vertexShaderRes[vsHandle.index].inputLayout);
     }
   }
 
   void RenderContext::BindPixelShader(const Handle& psHandle)
   {
     if (psHandle.type == PIXEL_SHADER)
+    {
       m_deviceContext->PSSetShader(m_pixelShaderRes[psHandle.index], 0, 0);
+    }
   }
 
   void RenderContext::BindTexture(unsigned slot, const Handle& texHandle)

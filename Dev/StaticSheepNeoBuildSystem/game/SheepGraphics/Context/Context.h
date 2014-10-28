@@ -173,6 +173,7 @@ class RenderContext
     struct Texture
     {
       Texture() : shaderResourceView(NULL), texture(NULL) {}
+      void Release() { SafeRelease(texture); SafeRelease(shaderResourceView); }
       ID3D11ShaderResourceView *shaderResourceView;
       ID3D11Texture2D          *texture;
       Dimension                 size;
@@ -181,6 +182,7 @@ class RenderContext
     struct DepthBuffer
     {
       DepthBuffer() : m_depthBuffer(NULL), m_depthState(NULL), texture2D(NULL) {}
+      void Release() { SafeRelease(texture2D); SafeRelease(m_depthState); SafeRelease(m_depthBuffer); }
       ID3D11DepthStencilView      *m_depthBuffer;
       ID3D11DepthStencilState     *m_depthState;
       ID3D11Texture2D             *texture2D;
@@ -189,6 +191,7 @@ class RenderContext
     struct VertexShader
     {
       VertexShader() : vShader(NULL), inputLayout(NULL) {}
+      void Release() { SafeRelease(inputLayout); SafeRelease(vShader); }
       ID3D11VertexShader *vShader;
       ID3D11InputLayout  *inputLayout;
     };
@@ -196,6 +199,7 @@ class RenderContext
     struct RenderTarget
     {
       RenderTarget() : renderTargetView(NULL), shaderResourceView(NULL), texture2D(NULL) {}
+      void Release() { SafeRelease(texture2D); SafeRelease(shaderResourceView); SafeRelease(renderTargetView); }
       ID3D11RenderTargetView   *renderTargetView;
       ID3D11ShaderResourceView *shaderResourceView;
       ID3D11Texture2D          *texture2D;
@@ -209,6 +213,7 @@ class RenderContext
     struct Font
     {
       Font() : m_fontFactory(NULL), m_fontWrapper(NULL) {}
+      void Release() { SafeRelease(m_fontWrapper); SafeRelease(m_fontFactory); }
       IFW1Factory     *m_fontFactory;
       IFW1FontWrapper *m_fontWrapper;
     };
@@ -294,6 +299,12 @@ class RenderContext
     
     std::unique_ptr<DirectX::SpriteBatch> m_batcher;
 
+
+    ///////////
+    //cleanup//
+    ///////////
+
+    std::vector<DirectSheep::Handle>         m_handles;
 #endif
 };
 

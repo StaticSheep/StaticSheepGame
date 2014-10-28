@@ -53,8 +53,6 @@ namespace DirectSheep
   RenderContext::RenderContext(void) :
     m_initialized(false),
     m_hwnd(NULL),
-    m_resolution(Dimension(0, 0)),
-    m_nativeResolution(Dimension(0, 0)),
     m_fullscreen(false),
     m_vsync(false),
     m_swapChain(NULL),
@@ -65,7 +63,6 @@ namespace DirectSheep
     m_output(NULL),
     m_displayModeIndex(0),
     m_backBuffer(NULL),
-    m_backBufferSize(Dimension(0,0)),
     m_clearColor(Color(Colors::Black)),
     m_spriteBlend(Vec4(1, 1, 1, 1)),
     m_primative(PRIMITIVE_TOPOLOGY_TRIANGLELIST),
@@ -118,148 +115,34 @@ namespace DirectSheep
 
     m_swapChain->SetFullscreenState(FALSE, NULL);
 
-    if(m_device)
+    for (int i = 0; i < m_handles.size(); ++i)
     {
-      m_device->Release();
-      m_device = NULL;
+      Release(m_handles[i]);
     }
 
-    if(m_deviceContext)
-    {
-      m_deviceContext->Release();
-      m_deviceContext = NULL;
-    }
+    SafeRelease(m_device);
 
-    if (m_batcher)
-    {
-      m_batcher.release();
-      m_backBuffer = NULL;
-    }
-    if(m_swapChain)
-    {
-      m_swapChain->Release();
-      m_swapChain = NULL;
-    }
+    SafeRelease(m_deviceContext);
 
-    if(m_font.m_fontWrapper)
+    SafeRelease(m_swapChain);
+
+    m_font.Release();
+
+    SafeRelease(m_backBuffer);
+
+    m_depthBuffer.Release();
+
+    SafeRelease(m_rastState);
+
+    for (int i = 0; i < (sizeof(m_sampleStates) / sizeof(ID3D11SamplerState*)); ++i)
     {
-      m_font.m_fontWrapper->Release();
-      m_font.m_fontWrapper = NULL;
+      SafeRelease(m_sampleStates[i]);
     }
-
-    if(m_backBuffer)
-    {
-      m_backBuffer->Release();
-      m_backBuffer = NULL;
-    }
-
-    if(m_font.m_fontFactory)
-    {
-      m_font.m_fontFactory->Release();
-      m_font.m_fontFactory = NULL;
-    }
-
-    if(m_depthBuffer.m_depthBuffer)
-    {
-      m_depthBuffer.m_depthBuffer->Release();
-      m_depthBuffer.m_depthBuffer = NULL;
-    }
-
-    if(m_depthBuffer.m_depthState)
-    {
-      m_depthBuffer.m_depthState->Release();
-      m_depthBuffer.m_depthState = NULL;
-    }
-
-    if(m_depthBuffer.texture2D)
-    {
-      m_depthBuffer.texture2D->Release();
-      m_depthBuffer.texture2D = NULL;
-    }
-
-    if(m_rastState)
-    {
-      m_rastState->Release();
-      m_rastState = NULL;
-    }
-
-    if(m_sampleStates[0])
-    {
-      m_sampleStates[0]->Release();
-      m_sampleStates[0] = NULL;
-    }
-
-    if(m_sampleStates[1])
-    {
-      m_sampleStates[1]->Release();
-      m_sampleStates[1] = NULL;
-    }
-
-
 
     for(auto it : m_blendStateMap)
     {
-      if(it.second)
-      {
-        it.second->Release();
-        it.second = NULL;
-      }
+      SafeRelease(it.second);
     }
-
-    for(unsigned i = 0; i < m_vertexShaderRes.size(); ++i)
-    {
-      Release(toRelease);
-      toRelease.index++;
-    }
-
-    toRelease.type = PIXEL_SHADER;
-    toRelease.index = 0;
-    for(unsigned i = 0; i < m_pixelShaderRes.size(); ++i)
-    {
-      Release(toRelease);
-      toRelease.index++;
-    }
-
-    toRelease.type = TEXTURE;
-    toRelease.index = 0;
-    for(unsigned i = 0; i < m_textureRes.size(); ++i)
-    {
-      Release(toRelease);
-      toRelease.index++;
-    }
-
-    toRelease.type = INDEX_BUFFER;
-    toRelease.index = 0;
-    for(unsigned i = 0; i < m_indexBufferRes.size(); ++i)
-    {
-      Release(toRelease);
-      toRelease.index++;
-    }
-
-    toRelease.type = VERTEX_BUFFER;
-    toRelease.index = 0;
-    for(unsigned i = 0; i < m_vertexBufferRes.size(); ++i)
-    {
-      Release(toRelease);
-      toRelease.index++;
-    }
-
-    toRelease.type = CONSTANT_BUFFER;
-    toRelease.index = 0;
-    for(unsigned i = 0; i < m_constBufferRes.size(); ++i)
-    {
-      Release(toRelease);
-      toRelease.index++;
-    }
-
-    toRelease.type = RENDER_TARGET;
-    toRelease.index = 0;
-    for(unsigned i = 0; i < m_renderTargetRes.size(); ++i)
-    {
-      Release(toRelease);
-      toRelease.index++;
-    }
-
 
     rCon->~RenderContext();
     _aligned_free(rCon);
@@ -336,7 +219,6 @@ namespace DirectSheep
     {
       m_vsync = vsync;
     }
-
 
    void RenderContext::SetPosition(const float x, const float y)
    {
@@ -455,6 +337,7 @@ namespace DirectSheep
     {
       m_deviceContext->ClearDepthStencilView(m_depthBuffer.m_depthBuffer, D3D11_CLEAR_DEPTH, 1.0f, 0);
     }
+
     /////////////////////////////////////////////////////////////
     //                 PUBLIC RELEASE FUCNTION                 //
     /////////////////////////////////////////////////////////////
@@ -463,7 +346,7 @@ namespace DirectSheep
     {
       switch (handle.type)
       {
-      case VERTEX_SHADER    : ReleaseVertexShaderIntern(handle); 
+      case VERTEX_SHADER    : ReleaseVertexShaderIntern(handle);
         break;
 
       case PIXEL_SHADER     : ReleasePixelShaderIntern(handle);
@@ -478,10 +361,10 @@ namespace DirectSheep
       case INDEX_BUFFER     : ReleaseIndexBufferIntern(handle);
         break;
 
-      case  CONSTANT_BUFFER : ReleaseConstantBufferIntern(handle);
+      case CONSTANT_BUFFER  : ReleaseConstantBufferIntern(handle);
         break;
 
-      case    RENDER_TARGET : ReleaseRenderTargetIntern(handle);
+      case RENDER_TARGET    : ReleaseRenderTargetIntern(handle);
         break;
 
       default:
@@ -497,17 +380,7 @@ namespace DirectSheep
   {
     if(texture.type == TEXTURE)
     {
-      if(m_textureRes[texture.index].shaderResourceView)
-      {
-        m_textureRes[texture.index].shaderResourceView->Release();
-        m_textureRes[texture.index].shaderResourceView = NULL;
-      }
-
-      if(m_textureRes[texture.index].texture)
-      {
-        m_textureRes[texture.index].texture->Release();
-        m_textureRes[texture.index].texture = NULL;
-      }
+      m_textureRes[texture.index].Release();
     }
   }
 
@@ -515,17 +388,7 @@ namespace DirectSheep
   {
     if(vertexShader.type == VERTEX_SHADER)
     {
-      if(m_vertexShaderRes[vertexShader.index].vShader)
-      {
-        m_vertexShaderRes[vertexShader.index].vShader->Release();
-        m_vertexShaderRes[vertexShader.index].vShader = NULL;
-      }
-
-      if(m_vertexShaderRes[vertexShader.index].inputLayout)
-      {
-        m_vertexShaderRes[vertexShader.index].inputLayout->Release();
-        m_vertexShaderRes[vertexShader.index].inputLayout = NULL;
-      }
+      m_vertexShaderRes[vertexShader.index].Release();
     }
   }
 
@@ -533,11 +396,7 @@ namespace DirectSheep
   {
     if(pixelShader.type == PIXEL_SHADER)
     {
-      if(m_pixelShaderRes[pixelShader.index])
-      {
-        m_pixelShaderRes[pixelShader.index]->Release();
-        m_pixelShaderRes[pixelShader.index] = NULL;
-      }
+      SafeRelease(m_pixelShaderRes[pixelShader.index]);
     }
   }
 
@@ -545,11 +404,7 @@ namespace DirectSheep
   {
     if(vertexBuffer.type == VERTEX_BUFFER)
     {
-      if(m_vertexBufferRes[vertexBuffer.index])
-      {
-        m_vertexBufferRes[vertexBuffer.index]->Release();
-        m_vertexBufferRes[vertexBuffer.index] = NULL;
-      }
+      SafeRelease(m_vertexBufferRes[vertexBuffer.index]);
     }
   }
 
@@ -557,11 +412,7 @@ namespace DirectSheep
   {
     if(indexBuffer.type == INDEX_BUFFER)
     {
-      if(m_indexBufferRes[indexBuffer.index])
-      {
-        m_indexBufferRes[indexBuffer.index]->Release();
-        m_indexBufferRes[indexBuffer.index] = NULL;
-      }
+      SafeRelease(m_indexBufferRes[indexBuffer.index]);
     }
   }
 
@@ -569,11 +420,7 @@ namespace DirectSheep
   {
     if(constantBuffer.type == CONSTANT_BUFFER)
     {
-      if(m_constBufferRes[constantBuffer.index])
-      {
-        m_constBufferRes[constantBuffer.index]->Release();
-        m_constBufferRes[constantBuffer.index] = NULL;
-      }
+      SafeRelease(m_constBufferRes[constantBuffer.index]);
     }
   }
 
@@ -581,23 +428,7 @@ namespace DirectSheep
   {
     if(renderTarget.type == RENDER_TARGET)
     {
-      if(m_renderTargetRes[renderTarget.index].renderTargetView)
-      {
-        m_renderTargetRes[renderTarget.index].renderTargetView->Release();
-        m_renderTargetRes[renderTarget.index].renderTargetView = NULL;
-      }
-
-      if(m_renderTargetRes[renderTarget.index].shaderResourceView)
-      {
-        m_renderTargetRes[renderTarget.index].shaderResourceView->Release();
-        m_renderTargetRes[renderTarget.index].shaderResourceView = NULL;
-      }
-
-      if(m_renderTargetRes[renderTarget.index].texture2D)
-      {
-        m_renderTargetRes[renderTarget.index].texture2D->Release();
-        m_renderTargetRes[renderTarget.index].texture2D = NULL;
-      }
+      m_renderTargetRes[renderTarget.index].Release();
     }
   }
 

@@ -65,6 +65,7 @@ namespace DirectSheep
     m_vertexShaderRes.push_back(tempVS);
     handle.type = VERTEX_SHADER;
     handle.index = m_vertexShaderRes.size() - 1;
+    m_handles.push_back(handle);
 
     return true;
   }
@@ -102,6 +103,7 @@ namespace DirectSheep
     m_pixelShaderRes.push_back(tempPS);
     handle.type = PIXEL_SHADER;
     handle.index = m_pixelShaderRes.size() - 1;
+    m_handles.push_back(handle);
 
     return true;
   }
@@ -134,6 +136,7 @@ namespace DirectSheep
     m_textureRes.push_back(tempTex);
     handle.type = TEXTURE;
     handle.index = m_textureRes.size() - 1;
+    m_handles.push_back(handle);
 
     return true;
   }
@@ -153,14 +156,15 @@ namespace DirectSheep
 
     Vertex2D QuadVertices[] =
     {
-      { Vec3(-0.5f, -0.5f, 0.0f), 0.0f, 1.0f },
+      { Vec3(-0.5f, -0.5f, 0.0f),0.0f, 1.0f },
       { Vec3(-0.5f, 0.5f, 0.0f), 0.0f, 0.0f },
       { Vec3(0.5f, -0.5f, 0.0f), 1.0f, 1.0f },
 
       { Vec3(-0.5f, 0.5f, 0.0f), 0.0f, 0.0f },
-      { Vec3(0.5f, 0.5f, 0.0f), 1.0f, 0.0f },
+      { Vec3(0.5f, 0.5f, 0.0f),  1.0f, 0.0f },
       { Vec3(0.5f, -0.5f, 0.0f), 1.0f, 1.0f },
     };
+
     D3D11_MAPPED_SUBRESOURCE ms;
     m_deviceContext->Map(tempBuffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);    // map the buffer
     memcpy(ms.pData, QuadVertices, sizeof(QuadVertices));                               // copy the data
@@ -169,6 +173,8 @@ namespace DirectSheep
 
     handle.type = VERTEX_BUFFER;
     handle.index = m_vertexBufferRes.size() - 1;
+
+    m_handles.push_back(handle);
     return true;
   }
 
@@ -190,6 +196,7 @@ namespace DirectSheep
 
     handle.type = INDEX_BUFFER;
     handle.index = m_indexBufferRes.size() - 1;
+    m_handles.push_back(handle);
 
     return true;
   }
@@ -210,7 +217,7 @@ namespace DirectSheep
     m_constBufferRes.push_back(tempCB);
     handle.type = CONSTANT_BUFFER;
     handle.index = m_constBufferRes.size() - 1;
-
+    m_handles.push_back(handle);
     return true;
   }
 
