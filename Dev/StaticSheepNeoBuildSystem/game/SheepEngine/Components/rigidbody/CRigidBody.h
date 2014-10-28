@@ -34,6 +34,7 @@ namespace Framework
 			virtual void Remove();
 
 			virtual void SetVelocity(Vec3D& velocity);
+      virtual void SetAngVelocity(float angularvelocity);
 			virtual void AddToVelocity(Vec3D& velocity);
 			virtual void AddToForce(Vec3D& force);
 			virtual void AddToAngVelocity(float angularvelocity);

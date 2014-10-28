@@ -29,6 +29,10 @@ namespace Framework
   Vec3D& Vec3D::Normalize()
   {
     float length = Length();
+
+	//check to see if length is zero
+	if (length == 0)
+		return *this;
     
     x /= length;
     y /= length;

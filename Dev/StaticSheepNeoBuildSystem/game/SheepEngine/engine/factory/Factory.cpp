@@ -207,6 +207,9 @@ namespace Framework
   /// <param name="name">The name.</param>
   void Factory::SaveObjectToArchetype(GameObject* obj, const char* name)
   {
+    if (obj->archetype.length() == 0)
+      obj->archetype = name;
+
     ArchetypeMap[obj->archetype].CopyObject(obj);
 
     SaveArchetypeToFile(ArchetypeMap[obj->archetype]);
@@ -260,15 +263,11 @@ namespace Framework
   /// Loads an object from a archetype.
   /// </summary>
   /// <param name="space">The space.</param>
-  /// <param name="name">The name.</param>
+  /// <param name="name">The name of the archetype.</param>
   /// <returns>The object</returns>
-  GameObject* Factory::LoadObjectFromArchetype(GameSpace* space, const char* filepath)
+  GameObject* Factory::LoadObjectFromArchetype(GameSpace* space, const char* name)
   {
-    File file; // File to load from
-    std::string archetype = filepath;
-
-    archetype = archetype.substr(archetype.find_last_of('\\') + 1, archetype.length() - archetype.find_last_of('\\') - 1);
-    archetype = archetype.substr(0, archetype.find_first_of('.'));
+    std::string archetype = name;
 
     // Quickly grab the archetype from our map if it exists
     const Archetype& aType = GetArchetype(archetype);
@@ -278,17 +277,16 @@ namespace Framework
     {
       // Make the object!
       GameObject* obj = aType.CreateObject(space);
-      
       return obj;
     }
 
+    File file; // File to load from
+    std::string filePath = ArchetypeFilePath + std::string(name) + ArchetypeFileExtension;
 
-    if (!File::FileExists(filepath))
-    {
+    if (!File::FileExists(filePath.c_str()))
       return nullptr;
-    }
 
-    file.Open(filepath, FileAccess::Read);
+    file.Open(filePath.c_str(), FileAccess::Read);
 
     ErrorIf(!file.Validate(), "Factory", "Invalid file!");
 

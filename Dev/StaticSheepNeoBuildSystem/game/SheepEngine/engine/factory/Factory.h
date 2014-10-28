@@ -29,12 +29,15 @@ namespace Framework
     void RegisterComponentCreator(ComponentCreator& creator, const TypeInfo* type);
 
     void SaveObjectToArchetype(GameObject* obj, const char* name);
-    GameObject* LoadObjectFromArchetype(GameSpace* space, const char* name);
-    GameObject* LoadObjectFromArchetype(GameSpace* space, const Archetype& archetype);
-    //GameObject* Factory::LoadObjectFromArchetypeFP(GameSpace* space, const char* filepath);
 
+
+    // Creates an object of from an archetype. [Loads the archetype if required]
+    GameObject* LoadObjectFromArchetype(GameSpace* space, const char* name);
+    // Creates an object from a virtual archetype.
+    GameObject* LoadObjectFromArchetype(GameSpace* space, const Archetype& archetype);
+    // Preloads an archetype of a specified name
     bool LoadArchetypeFromFile(const char* name);
-    //bool LoadArchetypeFromFileFP(const char* filepath);
+
     void SaveArchetypeToFile(std::string);
     void SaveArchetypeToFile(const Archetype& archetype);
 

@@ -262,198 +262,198 @@ namespace SheepFizz
 	//determines if two polygons are colliding
 	void RectangleRectangleManifold(Manifold& m)
 	{
-	//preset the contact count to 0;
-	m.contactCount = 0;
+	  //preset the contact count to 0;
+	  m.contactCount = 0;
 
-	//create shortcut pointers to each shape
-	Rectangle* a = (Rectangle*)(m.A->shape_);
-	Rectangle* b = (Rectangle*)(m.B->shape_);
+	  //create shortcut pointers to each shape
+	  Rectangle* a = (Rectangle*)(m.A->shape_);
+	  Rectangle* b = (Rectangle*)(m.B->shape_);
 
-	//arrays to hold the support points of each object
-	//support point is the point on other object that
-	//is 'closest' to first object
-	unsigned int supportA;
-	unsigned int supportB;
+	  //arrays to hold the support points of each object
+	  //support point is the point on other object that
+	  //is 'closest' to first object
+	  unsigned int supportA;
+	  unsigned int supportB;
 
-	//used to hold the support point in the support point
-	//function
-	unsigned int tempSupport;
+	  //used to hold the support point in the support point
+	  //function
+	  unsigned int tempSupport;
 
-	//hold the smallest penetration for each shape
-	//used for collision detection and resolution of contact points
-	float leastPenetrationA = -MAXVALUE;
-	float leastPenetrationB = -MAXVALUE;
-	float tempPenetration;
+	  //hold the smallest penetration for each shape
+	  //used for collision detection and resolution of contact points
+	  float leastPenetrationA = -MAXVALUE;
+	  float leastPenetrationB = -MAXVALUE;
+	  float tempPenetration;
 
-	//record the contact vertex/normal
-	unsigned int vertexA;
-	unsigned int vertexB;
+	  //record the contact vertex/normal
+	  unsigned int vertexA;
+	  unsigned int vertexB;
 
-	//determine if rectangles/polys are colliding*****************
-	//test body A
-	for(unsigned int i = 0; i < MAXVERTICES; ++i)
-	{
-	tempPenetration = SupportPoint(*(m.A), *(m.B), a->GetVertex(i), 
-	a->GetNormal(i), tempSupport);
+	  //determine if rectangles/polys are colliding*****************
+	  //test body A
+	  for(unsigned int i = 0; i < MAXVERTICES; ++i)
+	  {
+	    tempPenetration = SupportPoint(*(m.A), *(m.B), a->GetVertex(i), 
+	    a->GetNormal(i), tempSupport);
 
-	//if the penetration is greater than zero, axis of seperation found
-	if(tempPenetration > 0.0f)
-	return;
+	    //if the penetration is greater than zero, axis of seperation found
+	    if(tempPenetration > 0.0f)
+	    return;
 
-	//find the least penetration - it should be negative, but the
-	//least negative
-	if(tempPenetration > leastPenetrationA)
-	{
-	//set penetration and support point
-	leastPenetrationA = tempPenetration;
-	supportA = tempSupport;
-	vertexA = i;
-	}
-	}
+	    //find the least penetration - it should be negative, but the
+	    //least negative
+	    if(tempPenetration > leastPenetrationA)
+	    {
+	      //set penetration and support point
+	      leastPenetrationA = tempPenetration;
+	      supportA = tempSupport;
+	      vertexA = i;
+	    }
+	  }
 
-	//test body B
-	for(unsigned int i = 0; i < MAXVERTICES; ++i)
-	{
-	tempPenetration = SupportPoint(*(m.B), *(m.A), b->GetVertex(i), 
-	b->GetNormal(i), tempSupport);
+	  //test body B
+	  for(unsigned int i = 0; i < MAXVERTICES; ++i)
+	  {
+	    tempPenetration = SupportPoint(*(m.B), *(m.A), b->GetVertex(i), 
+	    b->GetNormal(i), tempSupport);
 
-	//if the penetration is greater than zero, axis of seperation found
-	if(tempPenetration > 0.0f)
-	return;
+	    //if the penetration is greater than zero, axis of seperation found
+	    if(tempPenetration > 0.0f)
+	    return;
 
-	//find the least penetration - it should be negative, but the
-	//least negative
-	if(tempPenetration > leastPenetrationB)
-	{
-	//set penetration and support point
-	leastPenetrationB = tempPenetration;
-	supportB = tempSupport;
-	vertexB = i;
-	}
-	}
-	//if this point is reached, the two objects are colliding
-	//end of supportpoint testing and SAT***********
+	    //find the least penetration - it should be negative, but the
+	    //least negative
+	    if(tempPenetration > leastPenetrationB)
+	    {
+	      //set penetration and support point
+	      leastPenetrationB = tempPenetration;
+	      supportB = tempSupport;
+	      vertexB = i;
+	    }
+	  }
+	  //if this point is reached, the two objects are colliding
+	  //end of supportpoint testing and SAT***********
 
-	//set ref and inc bodies***********
-	//create holding values for reference and incident faces
-	Body* referenceBody;
-	unsigned int referenceBodyVertex;
+	  //set ref and inc bodies***********
+	  //create holding values for reference and incident faces
+	  Body* referenceBody;
+	  unsigned int referenceBodyVertex;
 
-	Body* incidentBody;
-	unsigned int incidentBodySupport;
+	  Body* incidentBody;
+	  unsigned int incidentBodySupport;
 
-	//add a flag for the case where the B body becomes the
-	//reference face
-	bool flip = false;
+	  //add a flag for the case where the B body becomes the
+	  //reference face
+	  bool flip = false;
 
-	//determine which object had the least penetration upon it
-	//and set the appropriate values
-	if(leastPenetrationA > leastPenetrationB)
-	{
-	referenceBody = m.A;
-	referenceBodyVertex = vertexA;
+	  //determine which object had the least penetration upon it
+	  //and set the appropriate values
+	  if(leastPenetrationA > leastPenetrationB)
+	  {
+	    referenceBody = m.A;
+	    referenceBodyVertex = vertexA;
 
-	incidentBody = m.B;
-	incidentBodySupport = supportA;
-	}
+	    incidentBody = m.B;
+	    incidentBodySupport = supportA;
+	  }
 
-	else
-	{
-	referenceBody = m.B;
-	referenceBodyVertex = vertexB;
+	  else
+	  {
+	  referenceBody = m.B;
+	  referenceBodyVertex = vertexB;
 
-	incidentBody = m.A;
-	incidentBodySupport = supportB;
+	  incidentBody = m.A;
+	  incidentBodySupport = supportB;
 
-	flip = true;
-	}
-	//end of setting ref and inc bodies***********
+	  flip = true;
+	  }
+	  //end of setting ref and inc bodies***********
 
-	//determine incident face
-	Vec3D incidentFaceVertices[2];
-	IncidentFace(incidentFaceVertices, referenceBody, incidentBody, referenceBodyVertex, incidentBodySupport);
+	  //determine incident face
+	  Vec3D incidentFaceVertices[2];
+	  IncidentFace(incidentFaceVertices, referenceBody, incidentBody, referenceBodyVertex, incidentBodySupport);
 
-	//clipping***********
-	//find direction vector for reference face
-	Vec3D refVertex1 = ((Rectangle*)referenceBody->shape_)->GetVertex(referenceBodyVertex);
-	unsigned int refVertexNext = (referenceBodyVertex + 1 < MAXVERTICES) ? referenceBodyVertex + 1 : 0;
-	Vec3D refVertex2 = ((Rectangle*)referenceBody->shape_)->GetVertex(refVertexNext);
-	Vec3D refDirection = refVertex2 - refVertex1;
+	  //clipping***********
+	  //find direction vector for reference face
+	  Vec3D refVertex1 = ((Rectangle*)referenceBody->shape_)->GetVertex(referenceBodyVertex);
+	  unsigned int refVertexNext = (referenceBodyVertex + 1 < MAXVERTICES) ? referenceBodyVertex + 1 : 0;
+	  Vec3D refVertex2 = ((Rectangle*)referenceBody->shape_)->GetVertex(refVertexNext);
+	  Vec3D refDirection = refVertex2 - refVertex1;
 
-	refDirection.Normalize();
+	  refDirection.Normalize();
 
-	//find the incident face direction
-	Vec3D incDirection = incidentFaceVertices[1] - incidentFaceVertices[0];
+	  //find the incident face direction
+	  Vec3D incDirection = incidentFaceVertices[1] - incidentFaceVertices[0];
 
-	//determine if the two incident faces are outside the bounds of the side
-	//keep track of the amount that needs to be clipped by determining the distance
-	//of each vertex from the side being tested
-	//the ref face with the face vertex
-	float incidentDirection1 = refDirection.DotProduct(incidentFaceVertices[0]);
-	//the other face vertex with ref face (opposite direction)
-	float opDirection1 = refDirection.DotProduct(incidentFaceVertices[1]);
-	//the edge of the face with the ref face
-	float sideDirection1 = refDirection.DotProduct(refVertex2);
-	//the magnitude of the face vert with the edge of ref face
-	float incMagnitude1 = incidentDirection1 - sideDirection1;
-	//the other face with the edge of the ref face
-	float opMagnitude1 = sideDirection1 - opDirection1;
+	  //determine if the two incident faces are outside the bounds of the side
+	  //keep track of the amount that needs to be clipped by determining the distance
+	  //of each vertex from the side being tested
+	  //the ref face with the face vertex
+	  float incidentDirection1 = refDirection.DotProduct(incidentFaceVertices[0]);
+	  //the other face vertex with ref face (opposite direction)
+	  float opDirection1 = refDirection.DotProduct(incidentFaceVertices[1]);
+	  //the edge of the face with the ref face
+	  float sideDirection1 = refDirection.DotProduct(refVertex2);
+	  //the magnitude of the face vert with the edge of ref face
+	  float incMagnitude1 = incidentDirection1 - sideDirection1;
+	  //the other face with the edge of the ref face
+	  float opMagnitude1 = sideDirection1 - opDirection1;
 
-	//clip other side
-	float incidentDirection2 = (-refDirection).DotProduct(incidentFaceVertices[1]);
-	float opDirection2 = (-refDirection).DotProduct(incidentFaceVertices[0]);
-	float sideDirection2 = (-refDirection).DotProduct(refVertex1);
-	float incMagnitude2 = incidentDirection2 - sideDirection2;
-	float opMagnitude2 = sideDirection2 - opDirection2;
+	  //clip other side
+	  float incidentDirection2 = (-refDirection).DotProduct(incidentFaceVertices[1]);
+	  float opDirection2 = (-refDirection).DotProduct(incidentFaceVertices[0]);
+	  float sideDirection2 = (-refDirection).DotProduct(refVertex1);
+	  float incMagnitude2 = incidentDirection2 - sideDirection2;
+	  float opMagnitude2 = sideDirection2 - opDirection2;
 
-	//the ratio for moving along the incDirection
-	float incidentRatio;
+	  //the ratio for moving along the incDirection
+	  float incidentRatio;
 
-	//clip sides
-	if(incMagnitude1 > 0)
-	{
-	incidentRatio = incMagnitude1 / (incMagnitude1 + opMagnitude1);
-	incidentFaceVertices[0] = incidentRatio * incDirection + incidentFaceVertices[0];
-	}
+	  //clip sides
+	  if(incMagnitude1 > 0)
+	  {
+	  incidentRatio = incMagnitude1 / (incMagnitude1 + opMagnitude1);
+	  incidentFaceVertices[0] = incidentRatio * incDirection + incidentFaceVertices[0];
+	  }
 
-	if(incMagnitude2 > 0)
-	{
-	incidentRatio = incMagnitude2 / (incMagnitude2 + opMagnitude2);
-	incidentFaceVertices[1] = -incidentRatio * incDirection + incidentFaceVertices[1];
-	}
+	  if(incMagnitude2 > 0)
+	  {
+	  incidentRatio = incMagnitude2 / (incMagnitude2 + opMagnitude2);
+	  incidentFaceVertices[1] = -incidentRatio * incDirection + incidentFaceVertices[1];
+	  }
 
-	//set the normal for the manifold
-	m.normal = ((Rectangle*)referenceBody->shape_)->GetNormal(referenceBodyVertex);
+	  //set the normal for the manifold
+	  m.normal = ((Rectangle*)referenceBody->shape_)->GetNormal(referenceBodyVertex);
 
-	//get the rotation matrix for the orientation
-	Matrix2D refRotation(referenceBody->orientation_);
+	  //get the rotation matrix for the orientation
+	  Matrix2D refRotation(referenceBody->orientation_);
 
-	//test if the incident vertices are behind the reference face - set the contact points
-	//back into world space
-	if(incidentFaceVertices[0].DotProduct(m.normal) - (refVertex1.DotProduct(m.normal)) < 0)
-	{
-	m.penetration = -(incidentFaceVertices[0].DotProduct(m.normal) - (refVertex1.DotProduct(m.normal)));
-	m.contacts[m.contactCount++] = referenceBody->position_ + refRotation * incidentFaceVertices[0];
-	}
+	  //test if the incident vertices are behind the reference face - set the contact points
+	  //back into world space
+	  if(incidentFaceVertices[0].DotProduct(m.normal) - (refVertex1.DotProduct(m.normal)) < 0)
+	  {
+	  m.penetration = -(incidentFaceVertices[0].DotProduct(m.normal) - (refVertex1.DotProduct(m.normal)));
+	  m.contacts[m.contactCount++] = referenceBody->position_ + refRotation * incidentFaceVertices[0];
+	  }
 
-	if(incidentFaceVertices[1].DotProduct(m.normal) - (refVertex1.DotProduct(m.normal)) < 0)
-	{
-	m.penetration -= (incidentFaceVertices[1].DotProduct(m.normal) - (refVertex1.DotProduct(m.normal)));
-	m.contacts[m.contactCount++] = referenceBody->position_ + refRotation * incidentFaceVertices[1];
-	}
-	//end of clipping***********
+	  if(incidentFaceVertices[1].DotProduct(m.normal) - (refVertex1.DotProduct(m.normal)) < 0)
+	  {
+	  m.penetration -= (incidentFaceVertices[1].DotProduct(m.normal) - (refVertex1.DotProduct(m.normal)));
+	  m.contacts[m.contactCount++] = referenceBody->position_ + refRotation * incidentFaceVertices[1];
+	  }
+	  //end of clipping***********
 
-	//shift the reference normal back into world space
-	m.normal = refRotation * m.normal;
+	  //shift the reference normal back into world space
+	  m.normal = refRotation * m.normal;
 
-	//flip the normal if B is the reference face and average the penetration
-	if(flip)
-	m.normal = -(m.normal);
+	  //flip the normal if B is the reference face and average the penetration
+	  if(flip)
+	  m.normal = -(m.normal);
 
-	if(m.penetration > 20)
-	m.contactCount = 0;
+	  if(m.penetration > 20)
+	  m.contactCount = 0;
 
-	m.penetration /= m.contactCount;
+	  m.penetration /= m.contactCount;
 
 	}//end of RectangleRectangleManifold
 
