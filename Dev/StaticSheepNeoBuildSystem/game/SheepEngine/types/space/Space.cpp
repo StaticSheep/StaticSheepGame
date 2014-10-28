@@ -143,7 +143,8 @@ namespace Framework
       GetHandles().Update(moved, moved->self);
 
 #if USE_ANTTWEAKBAR
-    UpdateTweakBar();
+    if (!m_shuttingDown)
+      UpdateTweakBar();
 #endif
   }
 

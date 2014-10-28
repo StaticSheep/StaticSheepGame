@@ -166,6 +166,10 @@ namespace Framework
 
     mainBar->DefineLabel("Load Space");
     mainBar->AddButton("LoadSpace", EditorOpenSpace, ENGINE);
+
+    mainBar->AddSeparator("PIESTUFF");
+    mainBar->DefineLabel("Play In Editor");
+    mainBar->AddButton("PIE", EditorPlayLevel, ENGINE);
   }
 
 }

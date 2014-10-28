@@ -16,9 +16,11 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include <iostream>
 #include "engine/window/Window32.h"
 #include "components/transform/CTransform.h"
+#include "systems/input/Input.h"
 
 #include <boost/filesystem.hpp>
 #include <boost/foreach.hpp>
+
 
 static int flag;
 
@@ -109,6 +111,15 @@ namespace Framework
       m_systems[i]->ReceiveMessage(msg);
   }
 
+  void Engine::CheckReturnFromPIE()
+  {
+    if (SHEEPINPUT->Keyboard.KeyIsPressed(VK_F5))
+    {
+      PlayInEditor(false);
+    }
+      
+  }
+
   void Engine::Step(void)
   {
     Window->Update();
@@ -122,6 +133,9 @@ namespace Framework
 
     if (m_returnFromPIE)
       ReloadEditor();
+
+    if (m_PIE)
+      CheckReturnFromPIE();
   }
 
   void Engine::MainLoop()
@@ -228,16 +242,24 @@ namespace Framework
 
     TRACELOG->Log(INFO, "Reloading the editor.");
 
-    boost::filesystem::directory_iterator it("cache\\spaces\\"), eod;
+    std::string filePath = "cache\\spaces\\";
+
+    boost::filesystem::directory_iterator it(filePath), eod;
+
+    m_returnFromPIE = false;
+
+    OpenEditor();
 
     BOOST_FOREACH(boost::filesystem::path const &p, std::make_pair(it, eod))
     {
       if (is_regular(p))
       {
-        FACTORY->LoadSpaceFilePath((const char*)p.c_str());
+        GameSpace* sp = FACTORY->LoadSpaceFilePath(p.string().c_str());
+        sp->Tweak();
+        sp->SetPaused(true);
       }
     }
-    
+
   }
 
 
@@ -258,7 +280,7 @@ namespace Framework
       boost::filesystem::create_directories(cacheLocation);
 
       // We want to clear out the cache
-      boost::filesystem::remove_all(cacheLocation);
+      boost::filesystem::remove_all(cacheLocation + std::string("*"));
 
       // We want to cache all of our current spaces into our cache so we can pull them up later
       for (size_t i = 0; i < gameSpaces.size(); ++i)

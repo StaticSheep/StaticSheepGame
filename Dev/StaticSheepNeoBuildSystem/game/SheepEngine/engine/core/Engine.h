@@ -113,6 +113,7 @@ namespace Framework
     bool m_PIE = false;
     bool m_returnFromPIE = false;
     void ReloadEditor(void);
+    void CheckReturnFromPIE(void);
 
     friend class GameLogic;
   };
