@@ -42,6 +42,8 @@ namespace Framework
     void SaveSpaceToFile(GameSpace* space, const char* name, bool standalone);
     // Saves a space to an explicit filepath. This should be used with caution.
     void SaveSpaceToFilePath(GameSpace* space, const char* filepath);
+
+    GameSpace* LoadSpaceFilePath(const char* filepath);
     GameSpace* LoadSpace(const char* name);
 
     // Saves all of the spaces into a level file

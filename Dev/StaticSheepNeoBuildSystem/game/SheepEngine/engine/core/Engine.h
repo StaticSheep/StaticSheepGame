@@ -108,7 +108,11 @@ namespace Framework
     std::hash_map<std::string, GameSpace*> m_spaceMap;
     std::vector<GameSpace*> m_spaces;
 
+
+    // Play in editor fun stuff
     bool m_PIE = false;
+    bool m_returnFromPIE = false;
+    void ReloadEditor(void);
 
     friend class GameLogic;
   };

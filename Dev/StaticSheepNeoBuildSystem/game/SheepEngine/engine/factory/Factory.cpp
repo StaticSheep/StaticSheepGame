@@ -507,12 +507,7 @@ namespace Framework
   }
 
 
-  /// <summary>
-  /// Loads a space file.
-  /// </summary>
-  /// <param name="space">The space.</param>
-  /// <param name="name">The name.</param>
-  GameSpace* Factory::LoadSpace(const char* filepath)
+  GameSpace* Factory::LoadSpaceFilePath(const char* filepath)
   {
     File file; // File to save the space to
 
@@ -542,6 +537,12 @@ namespace Framework
     space->m_fileName = fileName;
 
     return space;
+  }
+
+  GameSpace* Factory::LoadSpace(const char* name)
+  {
+    std::string filepath = SpaceFilePath + std::string(name) + SpaceFileExtension;
+    return LoadSpaceFilePath(filepath.c_str());
   }
 
 

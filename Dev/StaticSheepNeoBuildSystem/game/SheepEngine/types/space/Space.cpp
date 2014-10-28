@@ -377,6 +377,11 @@ namespace Framework
     return m_hidden;
   }
 
+  void GameSpace::Destroy()
+  {
+    m_valid = false;
+  }
+
   void GameSpace::Clear()
   {
     for (unsigned int i = 0; i < m_objects.Size(); ++i)

@@ -119,6 +119,9 @@ namespace Framework
       m_systems[i]->Update(Framerate.GetDT());
       Framerate.EndFrame(m_systems[i]->GetName().c_str());
     }
+
+    if (m_returnFromPIE)
+      ReloadEditor();
   }
 
   void Engine::MainLoop()
@@ -189,7 +192,7 @@ namespace Framework
 
   void Engine::LoadLevel(const char* name)
   {
-    FACTORY->LoadSpace(name);
+    FACTORY->LoadSpaceFilePath(name);
   }
 
   void Engine::LoadLuaLevel(const char* path)
@@ -217,12 +220,36 @@ namespace Framework
     m_running = false;
   }
 
+  void Engine::ReloadEditor()
+  {
+    // Wait until all of our game spaces have been deleted
+    if (m_spaces.size() > 0)
+      return;
+
+    TRACELOG->Log(INFO, "Reloading the editor.");
+
+    boost::filesystem::directory_iterator it("cache\\spaces\\"), eod;
+
+    BOOST_FOREACH(boost::filesystem::path const &p, std::make_pair(it, eod))
+    {
+      if (is_regular(p))
+      {
+        FACTORY->LoadSpaceFilePath((const char*)p.c_str());
+      }
+    }
+    
+  }
+
+
+  // This is a static function!
   void Engine::PlayInEditor(bool play)
   {
     ENGINE->m_PIE = play;
 
     if (play)
     {
+      TRACELOG->Log(INFO, "Entering PIE mode.");
+
       std::vector<GameSpace*>& gameSpaces = ENGINE->Spaces();
 
       std::string cacheLocation = "cache\\spaces\\";
@@ -251,10 +278,17 @@ namespace Framework
     }
     else
     {
-      std::vector<GameSpace*>& gameSpaces = ENGINE->Spaces();
-    }
+      TRACELOG->Log(INFO, "PIE mode ended.");
 
-    
+      std::vector<GameSpace*>& gameSpaces = ENGINE->Spaces();
+
+      // Mark all current gamespaces for deletion
+      for (size_t i = 0; i < gameSpaces.size(); ++i)
+        gameSpaces[i]->Destroy();
+      
+      ENGINE->m_PIE = false;
+      ENGINE->m_returnFromPIE = true;
+    }
   }
   
 

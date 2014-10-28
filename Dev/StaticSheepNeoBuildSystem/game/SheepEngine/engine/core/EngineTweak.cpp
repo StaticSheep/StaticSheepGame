@@ -62,7 +62,7 @@ namespace Framework
     if (szFile[0] == 0)
       return;
 
-    GameSpace* sp = FACTORY->LoadSpace(szFile);
+    GameSpace* sp = FACTORY->LoadSpaceFilePath(szFile);
     sp->SetPaused(true);
 
     if (sp != nullptr)
