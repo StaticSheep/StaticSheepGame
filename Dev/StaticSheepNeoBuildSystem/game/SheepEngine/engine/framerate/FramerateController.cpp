@@ -7,6 +7,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 ******************************************************************************/
 
 #include "pch/precompiled.h"
+
+#include "engine/core/Engine.h"
 #include <Windows.h>
 
 #define WILSONS_CONSTANT1 1000000000
@@ -66,6 +68,7 @@ namespace Framework
     delete _freq;
     delete _previousSystemTime;
     delete _previousTime;
+
   }
 
 /*****************************************************************************/
@@ -75,9 +78,12 @@ namespace Framework
     engine. This is later used to test how long each system takes to update.
 */
 /*****************************************************************************/
-  void FramerateController::Initialize(int index, const char* name)
+  void FramerateController::Initialize(void)
   {
-    debug.systems[name] = (new DebugSystem);
+    for (int i = 0; i < ENGINE->m_systems.size(); ++i)
+    {
+      debug.systems[ENGINE->m_systems[i]->GetName()] = (new DebugSystem);
+    }
   }
 
 /*****************************************************************************/

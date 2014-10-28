@@ -13,8 +13,6 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 namespace Framework
 {
 
-  class FramerateController;
-
   struct DebugSystem
   {
     float timeTaken;
@@ -37,7 +35,7 @@ namespace Framework
     FramerateController(double);
     ~FramerateController();
 		// Initialization call for the system
-		void Initialize(int index, const char* name);
+		void Initialize();
 
     void* GetDebugData();
 

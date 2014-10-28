@@ -19,6 +19,8 @@
 
 #include "src/precompiled.h"
 #include "SheepMath.h" /* math functions */
+#include "boost/random.hpp"
+#include <cstdlib>
 
 /******************************************************************************
     Defines
@@ -244,6 +246,15 @@ Private Functions
     return (float)(((c4 * x + c3) * x + c2) * x + c1);
   }
   
+  
+
+  int GetRandom(int min, int max)
+  {
+    static boost::random::mt19937 rng;
+    boost::random::uniform_int_distribution<> range(min, max);
+    return range(rng);
+  }
+
   float Minimum(float a, float b)
   {
     return ((a < b) ? a : b);

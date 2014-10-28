@@ -84,6 +84,7 @@ namespace Framework
 	  Tracelog m_traceLog;
 
     friend class GameLogic;
+    friend class FramerateController;
   };
 
 

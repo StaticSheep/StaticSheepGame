@@ -36,12 +36,13 @@ project "SheepUtil"
 		-- collapse header dir structure
 		--"platform",
 
-		--Core.includedirs
+		Core.includedirs
 	}
 
 	deps
 	{
 		--Core.deps
+
 	}
 
 	defines

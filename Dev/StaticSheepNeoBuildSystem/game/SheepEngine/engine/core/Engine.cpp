@@ -66,9 +66,9 @@ namespace Framework
     for (unsigned int i = 0; i < m_systems.size(); ++i)
     {
       m_systems[i]->Initialize();
-      Framerate.Initialize(i, m_systems[i]->GetName().c_str());
+      //
     }
-
+    Framerate.Initialize();
   }
 
   void Engine::MakeWindow(void* hInstance, int show)
