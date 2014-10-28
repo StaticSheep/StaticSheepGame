@@ -78,7 +78,7 @@ namespace Framework
 
 	void RigidBody::AddToForce(Vec3D& force)
 	{
-		PHYSICS->AddToBodyVelocity(space, m_handle, force);
+		PHYSICS->AddToBodyForce(space, m_handle, force);
 	}
 
 	void RigidBody::AddToAngVelocity(float angularvelocity)
@@ -88,6 +88,6 @@ namespace Framework
 
 	void RigidBody::AddToTorque(float torque)
 	{
-		PHYSICS->AddToBodyVelocity(space, m_handle, torque);
+		PHYSICS->AddToBodyTorques(space, m_handle, torque);
 	}
 }
