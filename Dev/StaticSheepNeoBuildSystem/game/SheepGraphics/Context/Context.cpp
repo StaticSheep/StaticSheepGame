@@ -63,14 +63,17 @@ namespace DirectSheep
     m_factory(NULL),
     m_adapter(NULL),
     m_output(NULL),
-    m_sampleStates(),
     m_displayModeIndex(0),
     m_backBuffer(NULL),
     m_backBufferSize(Dimension(0,0)),
     m_clearColor(Color(Colors::Black)),
     m_spriteBlend(Vec4(1, 1, 1, 1)),
     m_primative(PRIMITIVE_TOPOLOGY_TRIANGLELIST),
-    m_rastState(NULL){}
+    m_rastState(NULL)
+  {
+    m_sampleStates[0] = NULL;
+    m_sampleStates[1] = NULL;
+  }
 
   RenderContext::~RenderContext(void)
   {
@@ -127,6 +130,11 @@ namespace DirectSheep
       m_deviceContext = NULL;
     }
 
+    if (m_batcher)
+    {
+      m_batcher.release();
+      m_backBuffer = NULL;
+    }
     if(m_swapChain)
     {
       m_swapChain->Release();

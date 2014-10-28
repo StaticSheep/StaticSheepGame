@@ -44,7 +44,7 @@ class RenderContext
    GFX_API void DrawIndexed(unsigned indexCount, unsigned indexStart = 0, unsigned vertexStart = 0);
    GFX_API void DrawInstanced(unsigned vertexCount, unsigned instanceCount, unsigned vertexStart = 0, unsigned instanceStart = 0);
    GFX_API void DrawIndexInstanced(unsigned indexCountPerInstance, unsigned instanceCount, unsigned indexStart = 0, unsigned vertexStart = 0, unsigned instanceStart = 0);
-   GFX_API void DrawBatched(DirectSheep::Handle texture, float frameX, float frameY, float frameW, float frameH);
+   GFX_API void DrawBatched(DirectSheep::Handle texture);
    GFX_API void StartBatch();
    GFX_API void EndBatch();
    GFX_API void frameStart();
@@ -172,6 +172,7 @@ class RenderContext
     //---------//
     struct Texture
     {
+      Texture() : shaderResourceView(NULL), texture(NULL) {}
       ID3D11ShaderResourceView *shaderResourceView;
       ID3D11Texture2D          *texture;
       Dimension                 size;
@@ -187,12 +188,14 @@ class RenderContext
 
     struct VertexShader
     {
+      VertexShader() : vShader(NULL), inputLayout(NULL) {}
       ID3D11VertexShader *vShader;
       ID3D11InputLayout  *inputLayout;
     };
 
     struct RenderTarget
     {
+      RenderTarget() : renderTargetView(NULL), shaderResourceView(NULL), texture2D(NULL) {}
       ID3D11RenderTargetView   *renderTargetView;
       ID3D11ShaderResourceView *shaderResourceView;
       ID3D11Texture2D          *texture2D;
@@ -205,6 +208,7 @@ class RenderContext
 
     struct Font
     {
+      Font() : m_fontFactory(NULL), m_fontWrapper(NULL) {}
       IFW1Factory     *m_fontFactory;
       IFW1FontWrapper *m_fontWrapper;
     };

@@ -29,10 +29,11 @@ namespace Framework
     int m_startFrame;
     int m_endFrame;
 
-  private:
+  
     Vec2 uvBegin;
     Vec2 uvEnd;
 
+  private:
     float m_time;
 
     int m_numFramesX;

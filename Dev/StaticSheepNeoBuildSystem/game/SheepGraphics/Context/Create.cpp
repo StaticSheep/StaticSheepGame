@@ -108,7 +108,7 @@ namespace DirectSheep
 
   bool RenderContext::CreateTexture(Handle& handle, const std::string& filename)
   {
-    Texture tempTex = { 0 };
+    Texture tempTex;
     D3D11_TEXTURE2D_DESC desc;
     static bool attempt = false;
 
@@ -131,7 +131,6 @@ namespace DirectSheep
     tempTex.texture->GetDesc(&desc);
 
     tempTex.size = Dimension(desc.Width, desc.Height);
-
     m_textureRes.push_back(tempTex);
     handle.type = TEXTURE;
     handle.index = m_textureRes.size() - 1;

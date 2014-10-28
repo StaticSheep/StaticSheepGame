@@ -99,20 +99,23 @@ namespace DirectSheep
 
   }
 
-  void RenderContext::DrawBatched(DirectSheep::Handle texture, float frameX, float frameY, float frameW, float frameH)
+  void RenderContext::DrawBatched(DirectSheep::Handle texture)
   {
-    RECT sourcePos;
+    float width = GetTextureSize(texture).width;
+    float height = GetTextureSize(texture).height;
 
-    sourcePos.left = 0;
-    sourcePos.right = GetTextureSize(texture).width;
-    sourcePos.top = 0;
-    sourcePos.bottom = GetTextureSize(texture).height;
+    RECT sourcePos;
+    sourcePos.left = width * m_spriteTrans.uvBegin.x;
+    sourcePos.right = width * m_spriteTrans.uvEnd.x;
+    sourcePos.top = height * m_spriteTrans.uvBegin.y;
+    sourcePos.bottom = height * m_spriteTrans.uvEnd.y;
+
     m_batcher->Draw(m_textureRes[texture.index].shaderResourceView,
                Vec2(m_spriteTrans.x, m_spriteTrans.y),
                &sourcePos,
                XMLoadFloat4(&m_spriteBlend),
                m_spriteTrans.theta,
-               Vec2(sourcePos.right / 2.0f, sourcePos.bottom / 2.0f), 
+               Vec2((sourcePos.right - sourcePos.left) / 2.0f, (sourcePos.bottom - sourcePos.top) / 2.0f),
                Vec2(m_spriteTrans.w, -m_spriteTrans.h));
   }
 

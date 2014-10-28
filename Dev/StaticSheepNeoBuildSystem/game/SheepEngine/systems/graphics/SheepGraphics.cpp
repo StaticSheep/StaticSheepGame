@@ -220,7 +220,7 @@ namespace Framework
 
   void SheepGraphics::DrawSprite(Sprite *sprite)
   {
-    m_renderContext->DrawBatched(sprite->GetTexture(),0,0,1,1);
+    m_renderContext->DrawBatched(sprite->GetTexture());
   }
 
   void SheepGraphics::RawDraw(void)
