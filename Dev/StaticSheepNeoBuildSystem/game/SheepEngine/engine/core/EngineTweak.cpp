@@ -14,6 +14,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include <commdlg.h>
 #include <iostream>
 
+#include <boost/filesystem.hpp>
+#include <boost/foreach.hpp>
 
 
 namespace Framework
@@ -60,7 +62,7 @@ namespace Framework
     if (szFile[0] == 0)
       return;
 
-    GameSpace* sp = FACTORY->LoadSpace(szFile);
+    GameSpace* sp = FACTORY->LoadSpaceFilePath(szFile);
     sp->SetPaused(true);
 
     if (sp != nullptr)
@@ -138,11 +140,9 @@ namespace Framework
 
   static void EditorPlayLevel(void* clientData)
   {
-    std::vector<GameSpace*>& gameSpaces = ENGINE->Spaces();
-    for (size_t i = 0; i < gameSpaces.size(); ++i)
-    {
-      //FACTORY->SaveSpaceToFile(gameSpaces[i], "test", true);
-    }
+    ATWEAK->RemoveAllBars();
+
+    ENGINE->PlayInEditor(true);
   }
 
   void Engine::OpenEditor()
@@ -166,6 +166,10 @@ namespace Framework
 
     mainBar->DefineLabel("Load Space");
     mainBar->AddButton("LoadSpace", EditorOpenSpace, ENGINE);
+
+    mainBar->AddSeparator("PIESTUFF");
+    mainBar->DefineLabel("Play In Editor");
+    mainBar->AddButton("PIE", EditorPlayLevel, ENGINE);
   }
 
 }

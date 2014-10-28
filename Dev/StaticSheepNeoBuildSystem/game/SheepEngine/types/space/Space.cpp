@@ -143,7 +143,8 @@ namespace Framework
       GetHandles().Update(moved, moved->self);
 
 #if USE_ANTTWEAKBAR
-    UpdateTweakBar();
+    if (!m_shuttingDown)
+      UpdateTweakBar();
 #endif
   }
 
@@ -375,6 +376,11 @@ namespace Framework
   bool GameSpace::Hidden()
   {
     return m_hidden;
+  }
+
+  void GameSpace::Destroy()
+  {
+    m_valid = false;
   }
 
   void GameSpace::Clear()

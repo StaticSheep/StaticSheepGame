@@ -40,18 +40,16 @@ namespace Framework
     // Creates an empty object
     GameObject* CreateEmptyObject();
 
-    void Clear();
+    // Marks every single object in the space for deletion
+    void Clear(void);
     
+    // Tweaks the space
     void Tweak(void);
 
     void RemoveComponent(GameComponent* comp);
     void RemoveComponent(Handle handle);
 
     GameObject* GetGameObject(Handle handle);
-
-    // Cleans up a space of any (to be) removed game objects.
-    // Called at the end of the GameLogic update
-    void Cleanup();
 
     // Used for updating the tweak bar
     void UpdateTweakBar(void);
@@ -77,6 +75,11 @@ namespace Framework
 
     const std::string GetName() const;
 
+    // Marks a space to be destroyed
+    void Destroy(void);
+    
+
+    // If a space is invalid at the end of a frame it is deleted
     bool m_valid;
 
     GameObject* CreateObjectFromArchetype(const char* name);
@@ -93,6 +96,10 @@ namespace Framework
     bool m_edit;
 
     unsigned int GUID() { return m_spaceGUID; }
+
+    // Filename of the space [DO NOT WRITE TO]
+    std::string m_fileName;
+
 
   private:
     // The collection of all game objects in this game space
@@ -115,11 +122,14 @@ namespace Framework
 
     bool m_shuttingDown;
 
-    
     bool m_paused;
     bool m_hidden;
 
     void RemoveGameObject(GameObject* object);
+
+    // Cleans up a space of any (to be) removed game objects.
+    // Called at the end of the GameLogic update
+    void Cleanup(void);
 
     struct SerializerData
     {
@@ -131,6 +141,7 @@ namespace Framework
 
     friend class Engine;
     friend class Factory;
+    friend class GameLogic;
 	};
 
 }

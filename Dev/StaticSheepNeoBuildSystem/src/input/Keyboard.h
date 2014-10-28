@@ -26,26 +26,30 @@ namespace dit {
     class Keyboard : public InputDevice
     {
     public:
-        typedef std::function<void(const KeyEvent&)> KeyEventConsumer;
+      typedef std::function<void(const KeyEvent&)> KeyEventConsumer;
 
     public:
-        Keyboard();
+      Keyboard();
 
-        virtual void ProcessEvent(const InputEvent& event);
+      virtual void ProcessEvent(const InputEvent& event);
 
-        bool IsKeyDown(Keys keyCode) const;
-        void Reset();
+      bool IsKeyDown(Keys keyCode) const;
+      bool IsKeyPressed(Keys keyCode) const;
+      bool IsKeyReleased(Keys keyCode) const;
 
-        std::vector<KeyEventConsumer> onKeyPress;
-        std::vector<KeyEventConsumer> onKeyRelease;
-        std::vector<KeyEventConsumer> onKeyText;
+      void Reset();
+
+      std::vector<KeyEventConsumer> onKeyPress;
+      std::vector<KeyEventConsumer> onKeyRelease;
+      std::vector<KeyEventConsumer> onKeyText;
 
     private:
-        void KeyPressed(const KeyEvent& keyEvent);
-        void KeyReleased(const KeyEvent& keyEvent);
+      void KeyPressed(const KeyEvent& keyEvent);
+      void KeyReleased(const KeyEvent& keyEvent);
 
     public:
-        std::array<bool, (uint32)Keys::MAX> keyState;
-        Keys lastKey;
+      std::array<bool, (uint32)Keys::MAX> keyState;
+      std::array<bool, (uint32)Keys::MAX> prevKeyState;
+      Keys lastKey;
     };
 }
