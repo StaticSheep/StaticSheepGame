@@ -78,7 +78,7 @@ namespace Framework
 	{
 		
 		//add materials
-		SheepFizz::Material Wood(.8f, .5f, .8f, .4f);
+		SheepFizz::Material Wood(3.0f, 2.5f, .8f, .4f);
 		SheepFizz::Material Iron(1.5f, .8f, .6f, .3f);
 		SheepFizz::Material Steel(1.3f, .8f, .3f, .15f);
 		SheepFizz::Material Fluff(.3f, .2f, .4f, .1f);

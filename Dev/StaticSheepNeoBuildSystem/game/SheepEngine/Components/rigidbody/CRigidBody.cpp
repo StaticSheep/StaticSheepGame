@@ -66,6 +66,11 @@ namespace Framework
 		PHYSICS->SetBodyVelocity(space, m_handle, velocity);
 	}
 
+  void RigidBody::SetAngVelocity(float angularvelocity)
+  {
+    PHYSICS->SetBodyAngVelocity(space, m_handle, angularvelocity);
+  }
+
 	void RigidBody::AddToVelocity(Vec3D& velocity)
 	{
 		PHYSICS->AddToBodyVelocity(space, m_handle, velocity);
@@ -78,7 +83,7 @@ namespace Framework
 
 	void RigidBody::AddToAngVelocity(float angularvelocity)
 	{
-		PHYSICS->AddToBodyVelocity(space, m_handle, angularvelocity);
+		PHYSICS->AddToBodyAngVelocity(space, m_handle, angularvelocity);
 	}
 
 	void RigidBody::AddToTorque(float torque)
