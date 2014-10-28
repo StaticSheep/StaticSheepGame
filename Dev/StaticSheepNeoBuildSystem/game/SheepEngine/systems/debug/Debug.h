@@ -1,15 +1,12 @@
+
 #include "systems/System.h"
-#include "systems/input/Input.h"
-#include <vector>
 
 namespace Framework
 {
   struct DebugAudio;
   struct DebugGraphics;
   struct DebugFramerate;
-
-  
-  
+  struct DebugInput;
 
   enum DebugState
   {

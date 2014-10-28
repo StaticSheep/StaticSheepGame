@@ -11,15 +11,13 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include <Windows.h>
 #include "systems/debug/Debug.h"
 #include "systems/debug/tracelog/TraceLog.h"
-
 #include "systems/audio/SheepAudio.h"
 #include "systems/graphics/SheepGraphics.h"
-#include "systems/input/Input.h"
+//#include "systems/input/Input.h"
+#include "systems/skynet/Skynet.h"
 #include "engine/framerate/FramerateController.h"
 #include "systems/graphics/DrawLib.h"
 #include "engine/window/Window32.h"
-
-
 
 static bool fpsFlag;
 static bool performanceFlag;
@@ -138,9 +136,9 @@ namespace Framework
         if(SHEEPINPUT->Keyboard.KeyIsDown(VK_RIGHT))
           currentX += 1.0f;
 
-        Draw::SetRotation(0.0f);
+        Draw::SetRotation(3.14159f);
         Draw::SetUseCamera(false);
-        Draw::SetPosition( ENGINE->Window->GetWidth() / -2.0f, 0.0f);
+        Draw::SetPosition( 0.0f, 0.0f);
         Draw::SetColor(1.0f,1.0f,1.0f,1.0f);
         Draw::DrawString(fps_string.c_str(), 15.0f, "Helvetica");
         Draw::SetUseCamera(true);
@@ -252,10 +250,34 @@ namespace Framework
       break;
 
     case DEBUG_INPUT:
-      format1 = std::to_string(input->pads[0].State.Gamepad.sThumbLX);
-      format2 = std::to_string(input->pads[0].State.Gamepad.sThumbLY);
+      format1 = std::to_string(input->pads[0].State.Gamepad.sThumbLX / 32767.0f);
+      format2 = std::to_string(input->pads[0].State.Gamepad.sThumbLY / 32767.0f);
 
-      string = "Input Pad 1 X: " + format1 + " Y: " + format2;
+      format1.erase(4, std::string::npos);
+      format2.erase(4, std::string::npos);
+
+      string = "LX: " + format1 + " LY: " + format2 + "\n";
+
+      format1 = std::to_string(input->pads[0].State.Gamepad.sThumbRX / 32767.0f);
+      format2 = std::to_string(input->pads[0].State.Gamepad.sThumbRY / 32767.0f);
+
+      format1.erase(4, std::string::npos);
+      format2.erase(4, std::string::npos);
+
+      string += "RX: " + format1 + " RY: " + format2 + "\n";
+
+      format1 = std::to_string(input->pads[0].State.Gamepad.bLeftTrigger / 255.0f);
+      format2 = std::to_string(input->pads[0].State.Gamepad.bRightTrigger / 255.0f);
+
+      format1.erase(4, std::string::npos);
+      format2.erase(4, std::string::npos);
+
+      string += "Left Trigger " + format1 + " Right Trigger" + format2 + "\n";
+
+      format1 = std::to_string(input->pads[0].State.Gamepad.wButtons);
+
+      string += format1;
+
       break;
 
     default:

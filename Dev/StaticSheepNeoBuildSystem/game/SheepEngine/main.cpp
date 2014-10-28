@@ -18,6 +18,7 @@
 #include "systems/gamelogic/GameLogic.h"
 #include "systems/physics/SheepPhysics.h"
 #include "systems/anttweak/AntTweakModule.h"
+#include "systems/skynet/Skynet.h"
 #include <iostream>
 
 
@@ -65,6 +66,7 @@ int main(int argc, char** argv)
   Engine* Core = new Engine();
 
   Core->AddSystem(new InputManager());
+  Core->AddSystem(new Skynet());
   Core->AddSystem(new GameLogic());
   Core->AddSystem(new SheepPhysics());
   Core->AddSystem(new SheepAudio());

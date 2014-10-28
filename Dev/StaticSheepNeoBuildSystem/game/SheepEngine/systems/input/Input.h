@@ -2,6 +2,7 @@
 #define SHEEP_INPUT_H
 
 #include "systems/System.h"
+#include <Windows.h>
 #include "Xinput.h"
 
 #define LMB 0

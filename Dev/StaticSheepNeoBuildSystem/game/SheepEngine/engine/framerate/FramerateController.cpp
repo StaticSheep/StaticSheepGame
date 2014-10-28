@@ -110,9 +110,10 @@ namespace Framework
   
     //                                                          fps we want - a tiny bit
     //                                                          otherwise it'll go over a tiny bit...
-    if((double)elapsedTime.QuadPart / (double)WILSONS_CONSTANT1 > _fps - (_fps / 1000.0))
+    if((double)elapsedTime.QuadPart / (double)WILSONS_CONSTANT1 > _fps)
     {
-      ((LARGE_INTEGER*)_previousTime)->QuadPart += currentTime.QuadPart - ((LARGE_INTEGER*)_previousTime)->QuadPart;
+
+      ((LARGE_INTEGER*)_previousTime)->QuadPart = currentTime.QuadPart;// -((LARGE_INTEGER*)_previousTime)->QuadPart;
       _dt = (double)elapsedTime.QuadPart / (double)WILSONS_CONSTANT1;
       _currentfps = 1.0 / _dt;
       debug.totalTime = 0.0;
