@@ -131,7 +131,7 @@ namespace Framework
 		Transform *BT = bullet->GetComponent<Transform>(eTransform);
 		CircleCollider *bulletC = bullet->GetComponent <CircleCollider>(eCircleCollider);
 		Transform *playerTrans = space->GetHandles().GetAs<Transform>(playerTransform);
-		BT->SetTranslation(playerTrans->GetTranslation() + aimDir * 20);
+		BT->SetTranslation(playerTrans->GetTranslation() + aimDir * 25);
 		bulletC->AddToVelocity(aimDir * 1000);
 	}
 
