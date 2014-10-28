@@ -34,6 +34,7 @@ namespace Framework
     FramerateController();
     FramerateController(double);
     ~FramerateController();
+
 		// Initialization call for the system
 		void Initialize();
 
@@ -54,12 +55,12 @@ namespace Framework
 
   private:
 
-    void* _previousTime; // for frameratecheck()
-    void* _previousSystemTime; // for checking systems
-    void* _freq; // hardware frequency for calculating time
-    double _dt; // current delta time
-    double _currentfps; // how many fps we got last frame
-    double _fps; // the fps we want
+    void* frameTime; // for frameratecheck()
+    void* systemTime; // for checking systems
+    void* frequency; // hardware frequency for calculating time
+    double dt; // current delta time
+    double currentFps; // how many fps we got last frame
+    double fps; // the fps we want
 
     DebugFramerate debug;
 

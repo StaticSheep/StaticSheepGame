@@ -46,7 +46,7 @@ namespace Framework
 
     virtual std::string GetName() {return "Skynet";};
     
-    void Initialize(); // blegh
+    void Initialize();
     void Update(float dt); // if active then do things
     
     void Disable(){mode = Sky_Deactivated;}; // disable skynet
