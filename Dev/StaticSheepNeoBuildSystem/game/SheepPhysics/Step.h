@@ -46,8 +46,6 @@ namespace SheepFizz
 		PHY_API void SetBodyAngVeloc(Handle handle, float angveloc);
 		PHY_API void SetBodyTorque(Handle handle, float torque);
 
-    PHY_API void SetBodyCollisionCallback(Handle handle, bool collisionCallback);
-
 		//adders
 		PHY_API void AddToBodyVeloc(Handle handle, Vec3D velocity);
 		PHY_API void AddToBodyForce(Handle handle, Vec3D force);
@@ -67,6 +65,11 @@ namespace SheepFizz
 
 		//get the time for the engine
 		PHY_API float GetTime(void);
+
+    //collision functions
+    PHY_API void SetBodyCollisionCallback(Handle handle, bool collisionCallback);
+    PHY_API Vec3D GetCollisionNormal(void* handle, Manifold *manifold);
+
 
 		//add bodies to the body vector
     PHY_API Handle AddBody(
@@ -105,6 +108,8 @@ namespace SheepFizz
 		private:
 			//timestep value
 			float dt_;
+
+      bool locked_ = false;
 
 			//values tied to engine messaging
 			CollisionCB cb_;	//callback function pointer

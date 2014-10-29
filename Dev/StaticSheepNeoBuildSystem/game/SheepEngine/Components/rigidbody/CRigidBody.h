@@ -33,13 +33,17 @@ namespace Framework
 			//removes the component
 			virtual void Remove();
 
+      //forces and velocities
 			virtual void SetVelocity(Vec3D& velocity);
       virtual void SetAngVelocity(float angularvelocity);
-      void SetBodyCollisionCallback(bool collisionCallback);
 			virtual void AddToVelocity(Vec3D& velocity);
 			virtual void AddToForce(Vec3D& force);
 			virtual void AddToAngVelocity(float angularvelocity);
 			virtual void AddToTorque(float torque);
+
+      //collision
+      virtual void SetBodyCollisionCallback(bool collisionCallback);
+      virtual void GetCollisionNormal(void* manifold, void* handle);
 
 		// Properties
 		union

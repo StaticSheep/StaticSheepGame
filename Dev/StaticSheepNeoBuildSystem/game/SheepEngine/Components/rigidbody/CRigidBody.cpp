@@ -95,4 +95,9 @@ namespace Framework
 	{
 		PHYSICS->AddToBodyTorques(space, m_handle, torque);
 	}
+
+  void RigidBody::GetCollisionNormal(void* manifold)
+  {
+    PHYSICS->AddToBodyTorques(space, m_handle, manifold);
+  }
 }

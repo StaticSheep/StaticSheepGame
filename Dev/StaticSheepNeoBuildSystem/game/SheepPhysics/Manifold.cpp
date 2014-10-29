@@ -53,7 +53,7 @@ namespace SheepFizz
 		//the force must be applied across all contact points
 		for(unsigned int i = 0; i < contactCount; ++i)
 		{
-			//this is broken into two primary sections, a seperation
+			//this is broken into two primary sections, a separation
 			//force calculation (impulse) and a friction calculation
 
 			//*******************

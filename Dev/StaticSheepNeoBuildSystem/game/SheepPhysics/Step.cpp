@@ -59,13 +59,14 @@ namespace SheepFizz
 	
 	//change the dt
 	void PhysicsSpace::SetTime(float dt) {dt_ = dt;}
+  //end of SetTime
 
   void PhysicsSpace::SetBodyCollisionCallback(Handle handle, bool collisionCallback)
   {
     Body* body = handles_.GetAs<Body>(handle);
     body->collisionCallback_ = collisionCallback;
   }
-	//end of SetTime
+	
 	//end of settors
 	//*************
 
@@ -139,6 +140,17 @@ namespace SheepFizz
 	//get the time for the engine
 	float PhysicsSpace::GetTime(void) {return dt_;}
 	//end of GetTime
+
+  Vec3D PhysicsSpace::GetCollisionNormal(void* handle, Manifold* manifold)
+  {
+    if (handle == manifold->A->userData)
+      return manifold->normal;
+
+    if (handle == manifold->B->userData)
+      return -(manifold->normal);
+
+  }//end of GetCollisionNormal
+
 	//*************end of gettors
 
 
@@ -146,6 +158,10 @@ namespace SheepFizz
   Handle PhysicsSpace::AddBody(Shapes shape, Material& material, bool collisionCallback, Vec3D position,
 		float xradius, float yval, float orientation, void* userData)
 	{
+    
+    if (locked_)
+      return Handle::null;
+
 		switch(shape)
 		{
 			case Rec:
@@ -230,6 +246,9 @@ namespace SheepFizz
 	//this function advances the game forward one dt
 	void PhysicsSpace::Step(void)
 	{
+
+    locked_ = true;
+
 		//iterate through list of bodies
 		for(unsigned i = 0; i < bodies_.Size(); ++i)
 		{
@@ -285,6 +304,8 @@ namespace SheepFizz
 
 		//empty manifold list;
 		manifolds_.clear();
+
+    locked_ = false;
 
 	}//end of Step
 	//*************
