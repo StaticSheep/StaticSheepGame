@@ -67,6 +67,7 @@ namespace Framework
 		{
 			bc->SetVelocity(Vec3(0.0f, 0.0f, 0.0f));
 			bc->AddToVelocity(Vec3(150.0f, 0.0f, 0.0f));
+      
 		}
 		else if (gp->LeftStick_X() < -0.2)
 		{
@@ -143,8 +144,32 @@ namespace Framework
 	Vec3 PlayerController::aimingDirection(GamePad *gp)
 	{
 		Vec3 returnVec;
-		returnVec.x = gp->RightStick_X();
-		returnVec.y = gp->RightStick_Y();
+    float thresh = 0.7; //the threshold minimum for aiming
+
+		returnVec.x = gp->RightStick_X() * 2;
+		returnVec.y = gp->RightStick_Y() * 2;
+    //you're about to see a lot of if statements, just know that all of these are 
+    //making sure that the default return vector is within a certain range so that
+    //when bullets spawn using that return vector they don't spawn to close to the player.
+    if (returnVec.x > 1.0)
+      returnVec.x = 1.0;
+    if (returnVec.y > 1.0)
+      returnVec.y = 1.0;
+
+    if (returnVec.x < -1.0)
+      returnVec.x = -1.0;
+    if (returnVec.y < -1.0)
+      returnVec.y = -1.0;
+
+    if (returnVec.x < thresh && returnVec.x > 0 && !(returnVec.y >= thresh || returnVec.y <= -thresh))
+      returnVec.x = thresh;
+    if (returnVec.y < thresh && returnVec.y > 0 && !(returnVec.x >= thresh || returnVec.x <= -thresh))
+      returnVec.y = thresh;
+
+    if (returnVec.x > -thresh && returnVec.x < 0)
+      returnVec.x = -thresh;
+    if (returnVec.y > -thresh && returnVec.y < 0)
+      returnVec.y = -thresh;
 
 		return returnVec;
 

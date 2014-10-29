@@ -16,6 +16,6 @@ namespace Framework
 		void Remove();
 
 		//member variables
-
+    Handle bTransfrom;
 	};
 }
