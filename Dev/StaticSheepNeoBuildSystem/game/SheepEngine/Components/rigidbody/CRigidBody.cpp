@@ -21,7 +21,7 @@ namespace Framework
 	{
 
 	}
-	
+	/*
   static Vec3D ScaleDown(Vec3D value)
   {
    return (value *= 1.0f / 32.0f);
@@ -40,7 +40,7 @@ namespace Framework
   static float ScaleUp(float value)
   {
     return (value *= 1.0f / 32.0f);
-  }
+  }*/
 
 	//initialize the rigid body
 	void RigidBody::Initialize(void)
@@ -59,7 +59,7 @@ namespace Framework
 			//if so, add a body and return the pointer to the component
 		if(m_shape == SheepFizz::Cir || m_shape == SheepFizz::Rec)
 		  m_handle = PHYSICS->AddBodies(space->GetHandles().GetAs<GameObject>(owner), m_shape, *m_material, m_hasCollisionCallback,
-      ScaleDown(position), ScaleDown(m_radius), ScaleDown(m_height), rotation);
+      position, m_radius, m_height, rotation);
 
 		 trans->SetPhysicsBody(m_handle);
 	}
@@ -84,7 +84,7 @@ namespace Framework
 
   void RigidBody::SetVelocity(Vec3D& velocity)
 	{
-		PHYSICS->SetBodyVelocity(space, m_handle, ScaleDown(velocity));
+		PHYSICS->SetBodyVelocity(space, m_handle, velocity);
 	}
 
   void RigidBody::SetAngVelocity(float angularvelocity)
@@ -99,12 +99,12 @@ namespace Framework
 
 	void RigidBody::AddToVelocity(Vec3D& velocity)
 	{
-    PHYSICS->AddToBodyVelocity(space, m_handle, ScaleDown(velocity));
+    PHYSICS->AddToBodyVelocity(space, m_handle, velocity);
 	}
 
 	void RigidBody::AddToForce(Vec3D& force)
 	{
-    PHYSICS->AddToBodyForce(space, m_handle, ScaleDown(force));
+    PHYSICS->AddToBodyForce(space, m_handle, force);
 	}
 
 	void RigidBody::AddToAngVelocity(float angularvelocity)
@@ -119,11 +119,11 @@ namespace Framework
 
   Vec3D RigidBody::GetCollisionNormals(void* manifold)
   {
-   return ScaleUp(PHYSICS->GetCollisionNormal(space, m_handle, manifold));
+   return PHYSICS->GetCollisionNormal(space, m_handle, manifold);
   }
 
   Vec3D RigidBody::GetCurrentVelocity(void)
   {
-    return ScaleUp(PHYSICS->GetBodyVelocity(space, m_handle));
+    return PHYSICS->GetBodyVelocity(space, m_handle);
   }
 }

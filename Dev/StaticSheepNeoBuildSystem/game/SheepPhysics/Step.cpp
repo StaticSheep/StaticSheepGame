@@ -9,9 +9,9 @@
 namespace SheepFizz
 {
 
-	PhysicsSpace* PhysicsSpace::Allocate(float dt)
+	PhysicsSpace* PhysicsSpace::Allocate(float dt, float meterScale)
 	{
-		return new PhysicsSpace(dt);
+		return new PhysicsSpace(dt, meterScale);
 	}//end of Allocate
 
 	void PhysicsSpace::Delete(PhysicsSpace* space)
@@ -24,19 +24,19 @@ namespace SheepFizz
 	void PhysicsSpace::SetBodyPos(Handle handle, Vec3D position)
 	{
 		Body* body = handles_.GetAs<Body>(handle);
-		body->position_ = position;
+		body->position_ = position / meterScale_;
 	}//end of SetBodyPos
 
 	void PhysicsSpace::SetBodyVeloc(Handle handle, Vec3D velocity)
 	{
 		Body* body = handles_.GetAs<Body>(handle);
-		body->velocity_ = velocity;
+		body->velocity_ = velocity / meterScale_;
 	}//end of SetBodyVeloc
 	
 	void PhysicsSpace::SetBodyForce(Handle handle, Vec3D force)
 	{
 		Body* body = handles_.GetAs<Body>(handle);
-		body->force_ = force;
+		body->force_ = force / meterScale_;
 	}//end of SetBodyForce
 	
 	void PhysicsSpace::SetBodyRot(Handle handle, float rot)
@@ -76,13 +76,13 @@ namespace SheepFizz
 	void PhysicsSpace::AddToBodyVeloc(Handle handle, Vec3D velocity)
 	{
 		Body* body = handles_.GetAs<Body>(handle);
-		body->velocity_ += velocity;
+		body->velocity_ += velocity / meterScale_;
 	}//end of AddToBodyVeloc
 
 	void PhysicsSpace::AddToBodyForce(Handle handle, Vec3D force)
 	{
 		Body* body = handles_.GetAs<Body>(handle);
-		body->force_ += force;
+		body->force_ += force / meterScale_;
 	}//end of AddToBodyForce
 
 	void PhysicsSpace::AddToBodyAngVeloc(Handle handle, float angveloc)
@@ -104,19 +104,19 @@ namespace SheepFizz
 	Vec3D PhysicsSpace::GetBodyPos(Handle handle)
 	{
 		Body* body = handles_.GetAs<Body>(handle);
-		return body->position_;
+		return body->position_ * meterScale_;
 	}//end of GetBodyPos
 	
 	Vec3D PhysicsSpace::GetBodyVeloc(Handle handle)
 	{
 		Body* body = handles_.GetAs<Body>(handle);
-		return body->velocity_;
+		return body->velocity_ * meterScale_;
 	}//end of GetBodyVeloc
 	
 	Vec3D PhysicsSpace::GetBodyForce(Handle handle)
 	{
 		Body* body = handles_.GetAs<Body>(handle);
-		return body->force_;
+		return body->force_ * meterScale_;
 	}//end of GetBodyForce
 
 	float PhysicsSpace::GetBodyRot(Handle handle)
@@ -170,13 +170,13 @@ namespace SheepFizz
 				{
 					//create the rectangle shape
 					Rectangle* rec = (Rectangle*)shapes_[Rec].Allocate();
-					new (rec) Rectangle(xradius, yval);
+					new (rec) Rectangle(xradius / meterScale_, yval / meterScale_);
 					rec->self = handles_.Insert(rec);
 					handles_.SyncHandles<Rectangle>(shapes_[Rec]);
 			
 					//then add the body
 					Body* body = (Body*)bodies_.Allocate();
-          new (body)Body(rec, material, collisionCallback, position, Vec3D(), Vec3D(), userData, orientation);
+          new (body)Body(rec, material, collisionCallback, position / meterScale_, Vec3D(), Vec3D(), userData, orientation);
 					body->self = handles_.Insert(body);
 					handles_.SyncHandles<Body>(bodies_);
 
@@ -189,13 +189,13 @@ namespace SheepFizz
 				{
 					//create the circle shape
 					Circle* cir = (Circle*)shapes_[Cir].Allocate();
-					new (cir) Circle(xradius);
+					new (cir) Circle(xradius / meterScale_);
 					cir->self = handles_.Insert(cir);
 					handles_.SyncHandles<Circle>(shapes_[Cir]);
 			
 					//then add the body
 					Body* body = (Body*)bodies_.Allocate();
-          new (body)Body(cir, material, collisionCallback, position, Vec3D(), Vec3D(), userData, orientation);
+          new (body)Body(cir, material, collisionCallback, position / meterScale_, Vec3D(), Vec3D(), userData, orientation);
 					body->self = handles_.Insert(body);
 					handles_.SyncHandles<Body>(bodies_);
 
@@ -216,7 +216,7 @@ namespace SheepFizz
 	void PhysicsSpace::ChangeBodies(Handle handle, float xradius, float y)
 	{
 		Body* body = (Body*)handles_.Get(handle);
-		body->ChangeBody(xradius, y);
+		body->ChangeBody(xradius / meterScale_, y / meterScale_);
 	}//end of ChangeBodies
 
 	//change materials
@@ -325,7 +325,7 @@ namespace SheepFizz
 
 		//Velocity can be calculated after adjusting force
 		body.velocity_ += ((body.force_ *= body.massData_.inverseMass) 
-			+ Vec3D(0,GRAVITY) * (float)body.gravityScale_ * (float)body.gravityOn_) * dt_;
+			+ Vec3D(0,modifiedGravity_) * (float)body.gravityScale_ * (float)body.gravityOn_) * dt_;
 
 		//Position changed last
 		body.position_ += body.velocity_ * dt_;

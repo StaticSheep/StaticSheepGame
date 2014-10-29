@@ -15,12 +15,12 @@ namespace SheepFizz
 {
 	//collision callback function pointer
 
-	#define GRAVITY -5.0f
+	#define GRAVITY -100.0f
 
 	class PhysicsSpace
 	{
 		public:
-		PHY_API static PhysicsSpace* Allocate(float dt);
+		PHY_API static PhysicsSpace* Allocate(float dt, float meterScale);
 		PHY_API static void Delete(PhysicsSpace* space);
 
 
@@ -93,6 +93,10 @@ namespace SheepFizz
 		private:
 			//timestep value
 			float dt_;
+
+      //scale value
+      float meterScale_;
+      float modifiedGravity_;
 
       bool locked_ = false;
 

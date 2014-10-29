@@ -16,20 +16,21 @@ namespace SheepFizz
 	//collision callback function pointer
 	typedef void(*CollisionCB)(void*, void*, void*);
 
-	#define GRAVITY -5.0f
+	#define GRAVITY -100.0f
 
 	class PhysicsSpace
 	{
 		public:
 
 		//allocate and delete the physics space (step)
-		PHY_API static PhysicsSpace* Allocate(float dt);
+		PHY_API static PhysicsSpace* Allocate(float dt, float meterScale);
 		PHY_API static void Delete(PhysicsSpace* space);
 
 		//constructor requires a time step to start
-		PhysicsSpace(float dt) : dt_(dt),
+    PhysicsSpace(float dt, float meterScale) : dt_(dt), meterScale_(meterScale),
 			bodies_(sizeof(Body), 1000), cb_(NULL)
 		{
+      modifiedGravity_ = GRAVITY / meterScale_;
 			shapes_[Rec].Initialize(sizeof(Rectangle), 1000);
 			shapes_[Cir].Initialize(sizeof(Circle), 1000);
 			//shapes_[Poly].Initialize(sizeof(Polygon), 10);
@@ -108,6 +109,10 @@ namespace SheepFizz
 		private:
 			//timestep value
 			float dt_;
+
+      //scale value
+      float meterScale_;
+      float modifiedGravity_;
 
       bool locked_ = false;
 

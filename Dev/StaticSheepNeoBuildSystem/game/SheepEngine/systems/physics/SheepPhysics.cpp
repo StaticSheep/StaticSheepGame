@@ -56,7 +56,7 @@ namespace Framework
 
 	void* SheepPhysics::CreateSpace(GameSpace* gameSpace)
 	{
-		SheepFizz::PhysicsSpace* newSpace = SheepFizz::PhysicsSpace::Allocate(0.0167f);
+		SheepFizz::PhysicsSpace* newSpace = SheepFizz::PhysicsSpace::Allocate(0.0167f, 32.0f);
 		
 		newSpace->SetCollisionCallback(CollisionCallback);
 		newSpace->SetUserData(gameSpace);
