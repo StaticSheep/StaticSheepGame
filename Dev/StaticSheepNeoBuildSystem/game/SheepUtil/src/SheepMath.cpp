@@ -23,31 +23,29 @@
 #include <cstdlib>
 
 /******************************************************************************
-    Defines
+    Constants
 ******************************************************************************/
 
-#define M11  0.0f
-#define M12  1.0f
-#define M13  0.0f
-#define M14  0.0f
-#define M21 -0.5f
-#define M22  0.0f
-#define M23  0.5f
-#define M24  0.0f
-#define M31  1.0f
-#define M32 -2.5f
-#define M33  2.0f
-#define M34 -0.5f
-#define M41 -0.5f
-#define M42  1.5f
-#define M43 -1.5f
-#define M44  0.5f
+// these are used for CatSpline
+const float M11 =  0.0f;
+const float M12 =  1.0f;
+const float M13 =  0.0f;
+const float M14 =  0.0f;
+const float M21 = -0.5f;
+const float M22 =  0.0f;
+const float M23 =  0.5f;
+const float M24 =  0.0f;
+const float M31 =  1.0f;
+const float M32 = -2.5f;
+const float M33 =  2.0f;
+const float M34 = -0.5f;
+const float M41 = -0.5f;
+const float M42 =  1.5f;
+const float M43 = -1.5f;
+const float M44 =  0.5f;
 
-/******************************************************************************
-    Globals
-******************************************************************************/
-
-float Floating_Precision = 1000000.0f; //used in float to fractions f()
+const double e = 0.0000000001; // epsilon precision value
+const float Floating_Precision = 1000000.0f; //used in float to fractions f()
 
 namespace Framework
 {
@@ -106,8 +104,11 @@ Private Functions
 /*****************************************************************************/
   double Factorial(int number)
   {
-    if(number <= 0)
+    if(number < 0)
       return 0;
+
+    if(number == 0)
+      return 1;
 
     return _Factorial(number);
   }
@@ -175,10 +176,8 @@ Private Functions
 /*****************************************************************************/
   void Normalize(Vec2D* Vector)
   {
-    double length;
-
-    /*length is  sqrt((x^2) + (y^2))*/
-    length = SquareRoot( ( Vector->x * Vector->x ) + ( Vector->y * Vector->y ) );
+    double length = SquareRoot( ( Vector->x * Vector->x ) + 
+                                ( Vector->y * Vector->y ) );
     
     /*unit length = X / |X| where |X| is the magnitude(length) of the Vector*/
     Vector->x /= (float)length;
@@ -246,11 +245,9 @@ Private Functions
     return (float)(((c4 * x + c3) * x + c2) * x + c1);
   }
   
-  
-
   int GetRandom(int min, int max)
   {
-    static boost::random::mt19937 rng;
+    static boost::random::mt19937 rng(std::time(0));
     boost::random::uniform_int_distribution<> range(min, max);
     return range(rng);
   }
@@ -380,21 +377,20 @@ Private Functions
 
   double _SquareRoot(float Number)
   {
-    double x = (double)Number; /*need to keep Number intact*/
-    double y = 1.0;            /*can only calculate numbers larger than 1*/
-    double e = 0.0000000001;   /*precision value*/
+    double x = (double)Number; /* need to keep Number intact */
+    double y = 1.0;            /* can only calculate numbers larger than 1 */
     
-    while(x - y > e) /*otherwise, do the following until we reach e precision*/
+    while(x - y > e) /* otherwise, do the following until we reach e precision */
     {
       x = (x + y) / 2;
       y = (double)Number / x;
     }
     
-    return x; /*then return what we found*/
+    return x; /* then return what we found */
   }
   
 /*****************************************************************************/
   
-} // end namespace Math
+} // end namespace
 
 

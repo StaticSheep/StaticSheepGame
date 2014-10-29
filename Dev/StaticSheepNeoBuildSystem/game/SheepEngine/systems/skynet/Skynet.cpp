@@ -171,12 +171,12 @@ namespace Framework
     if (movementDelay < 0)
     {
       // left joystick
-      state.Gamepad.sThumbLX = GetRandom(-32767, 32767);
-      state.Gamepad.sThumbLY = GetRandom(-32767, 32767);
+      state.Gamepad.sThumbLX = (short)GetRandom(-32767, 32767);
+      state.Gamepad.sThumbLY = (short)GetRandom(-32767, 32767);
 
       // right joystick
-      state.Gamepad.sThumbRX = GetRandom(-32767, 32767);
-      state.Gamepad.sThumbRY = GetRandom(-32767, 32767);
+      state.Gamepad.sThumbRX = (short)GetRandom(-32767, 32767);
+      state.Gamepad.sThumbRY = (short)GetRandom(-32767, 32767);
 
       // delay between 0.5 seconds to 1.5 seconds
       movementDelay = GetRandom(30, 90);

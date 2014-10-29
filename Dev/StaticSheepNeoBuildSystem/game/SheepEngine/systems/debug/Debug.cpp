@@ -384,7 +384,7 @@ namespace Framework
     for(int i = 0; i < performance.systemCount; ++i)
     {
       Draw::SetColor(performance.color[i].R, performance.color[i].G, performance.color[i].B, 1.0f);
-      Draw::SetRotation(0.0f);
+      Draw::SetRotation(3.14159f);
       
       Draw::DrawRect((ENGINE->Window->GetWidth() / 2.0f) - performance.pos[i] - 4.0f, (ENGINE->Window->GetHeight() / 2.0f) - 16.0f, performance.width[i], 24.0f);
 

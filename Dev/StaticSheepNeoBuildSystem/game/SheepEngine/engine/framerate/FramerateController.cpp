@@ -86,7 +86,7 @@ namespace Framework
 /*****************************************************************************/
   void FramerateController::Initialize(void)
   {
-    for (int i = 0; i < ENGINE->m_systems.size(); ++i)
+    for (unsigned int i = 0; i < ENGINE->m_systems.size(); ++i)
     {
       debug.systems[ENGINE->m_systems[i]->GetName()] = (new DebugSystem);
     }
