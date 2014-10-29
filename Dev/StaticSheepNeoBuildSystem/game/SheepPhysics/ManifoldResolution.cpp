@@ -29,9 +29,9 @@ namespace SheepFizz
       //determine the relative velocity to determine opposite impulse force
       //calculate as if A is stationary and B is moving
       //equation is relveloc = velocity + Cross(angularvelocity, relative vec)
-      Vec3D relativevelocity = B->velocity_ +
-        Vec3D(0, 0, B->angularVelocity_) * bRepulsionVec
-        - A->velocity_ - Vec3D(0, 0, A->angularVelocity_) * aRepulsionVec;
+	  Vec3D relativevelocity = B->velocity_ +
+		  (Vec3D(0, 0, B->angularVelocity_) ^ bRepulsionVec)
+		  - A->velocity_ - (Vec3D(0, 0, A->angularVelocity_) ^ aRepulsionVec);
 
       //determine the contact velocity - the relative velocity along the 
       //collision normal
@@ -44,8 +44,8 @@ namespace SheepFizz
 
       //determine the angular vectors - cross the aRepVec with norm
       //will give only z value - equivalent to scalar
-      Vec3D aRepulsionCrossNorm = aRepulsionVec * normal;
-      Vec3D bRepulsionCrossNorm = bRepulsionVec * normal;
+      Vec3D aRepulsionCrossNorm = aRepulsionVec ^ normal;
+      Vec3D bRepulsionCrossNorm = bRepulsionVec ^ normal;
 
       //determine the inverse mass sum of the two bodies
       //a combination of the total mass plus the moments of inertia
@@ -77,8 +77,8 @@ namespace SheepFizz
 
       //because an angular velocity is being applied, must recalculate
       //relative velocity
-      relativevelocity = B->velocity_ + Vec3D(0, 0, B->angularVelocity_) * bRepulsionVec
-        - A->velocity_ - Vec3D(0, 0, A->angularVelocity_) * aRepulsionVec;
+      relativevelocity = B->velocity_ + (Vec3D(0, 0, B->angularVelocity_) ^ bRepulsionVec)
+        - A->velocity_ - (Vec3D(0, 0, A->angularVelocity_) ^ aRepulsionVec);
 
       //calculate the normalized tangent vector
       //by removing the relative velocity component along the normal, only
@@ -102,10 +102,15 @@ namespace SheepFizz
       else
         frictionImpulse = tangent * -j * mDynamicFriction;
 
+      
+
       //apply friction impulse
       A->ApplyImpulse(-frictionImpulse, aRepulsionVec);
       B->ApplyImpulse(frictionImpulse, bRepulsionVec);
     }
+
+    if (A->shape_->GetShape() == Cir || B->shape_->GetShape() == Cir)
+      printf("hello");
 
   }//end of ApplyForces
 }
