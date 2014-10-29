@@ -18,7 +18,11 @@ namespace Framework
   public:
 
     GamePadInput(){ padIndex = 0; };
-    GamePadInput(int index){ padIndex = index; };
+    GamePadInput(int index)
+    {
+      padIndex = index;
+      ZeroMemory(&State, sizeof(XINPUT_STATE));
+    };
     ~GamePadInput(){};
 
     void Initialize(){};

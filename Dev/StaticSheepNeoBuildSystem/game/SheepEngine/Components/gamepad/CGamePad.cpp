@@ -244,7 +244,7 @@ namespace Framework
     XINPUT_STATE GamePadState;
 
     //Zero memory
-    ZeroMemory(&GamePadState, sizeof(XINPUT_STATE));
+    //ZeroMemory(&GamePadState, sizeof(XINPUT_STATE));
 
     //Get the state of the gamepad
     SHEEPINPUT->GetGamePadState(GamepadIndex, &GamePadState);
