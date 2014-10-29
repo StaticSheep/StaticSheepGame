@@ -67,14 +67,12 @@ namespace Framework
 		{
 			bc->SetVelocity(Vec3(0.0f, 0.0f, 0.0f));
 			bc->AddToVelocity(Vec3(150.0f, 0.0f, 0.0f));
-      bc->SetAngVelocity(0.0);
 			
 		}
 		else if (gp->LeftStick_X() < -0.2)
 		{
 			bc->SetVelocity(Vec3(0.0f, 0.0f, 0.0f));
 			bc->AddToVelocity(Vec3(-150.0f, 0.0f, 0.0f));
-      bc->SetAngVelocity(0.0f);
 		}
 
 		//jump
