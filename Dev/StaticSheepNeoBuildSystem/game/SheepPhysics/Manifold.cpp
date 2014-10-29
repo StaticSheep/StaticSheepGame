@@ -190,7 +190,7 @@ namespace SheepFizz
 
 	    //if the penetration is greater than zero, axis of seperation found
 	    if(tempPenetration > 0.0f)
-	    return;
+	      return;
 
 	    //find the least penetration - it should be negative, but the
 	    //least negative
@@ -211,7 +211,7 @@ namespace SheepFizz
 
 	    //if the penetration is greater than zero, axis of seperation found
 	    if(tempPenetration > 0.0f)
-	    return;
+	      return;
 
 	    //find the least penetration - it should be negative, but the
 	    //least negative

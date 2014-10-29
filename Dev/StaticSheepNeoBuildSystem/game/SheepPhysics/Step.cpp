@@ -262,7 +262,7 @@ namespace SheepFizz
 					continue;
 				
 				//check collision groups
-				if (((Body*)bodies_[i])->collisionGroup_ != ((Body*)bodies_[i])->collisionGroup_)
+				if (((Body*)bodies_[i])->collisionGroup_ != ((Body*)bodies_[j])->collisionGroup_)
 					continue;
 
 				//create a manifold and see if there is any interaction

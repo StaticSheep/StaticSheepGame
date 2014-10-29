@@ -31,7 +31,7 @@ namespace Framework
 
   Vec3D Vec3D::CalculateNormal()
   {
-    Vec3D normal(*this);
+    Vec3D normal(y, -x);
     normal.Normalize();
 
     return normal;
