@@ -33,7 +33,20 @@ namespace Framework
 			//removes the component
 			virtual void Remove();
 
-			virtual void SetVelocity(Vec3& velocity);
+      //forces and velocities
+			virtual void SetVelocity(Vec3D& velocity);
+      virtual void SetAngVelocity(float angularvelocity);
+			virtual void AddToVelocity(Vec3D& velocity);
+			virtual void AddToForce(Vec3D& force);
+			virtual void AddToAngVelocity(float angularvelocity);
+			virtual void AddToTorque(float torque);
+
+      //collision
+      virtual void SetBodyCollisionCallback(bool collisionCallback);
+      virtual Vec3D GetCollisionNormals(void* manifold);
+
+      //gettors
+      virtual Vec3D GetCurrentVelocity(void);
 
 		// Properties
 		union
@@ -45,6 +58,8 @@ namespace Framework
 		float m_height; // For boxes
 
 		std::string m_materialName;
+
+    bool m_hasCollisionCallback;
 
 		protected:
 

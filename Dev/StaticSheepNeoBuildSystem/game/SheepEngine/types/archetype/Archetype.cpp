@@ -12,6 +12,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "TypeInfo.h"
 
 #include "components/lua/CLuaComponent.h"
+#include "components/transform/CTransform.h"
 
 namespace Framework
 {
@@ -140,6 +141,10 @@ namespace Framework
 
     } // End component iteration
 
+
+    // Reset Transform component to zero
+    if (m_components[eTransform])
+      ((Transform*)m_components[eTransform])->SetTranslation(Vec3(0, 0, 0));
 
 
     // Copy over the name and archetype of the object
@@ -323,14 +328,6 @@ namespace Framework
         const Variable v( typeInfo, o->GetComponent( type ) );
         // Serialize the component into the file
         v.Serialize( file );
-
-        // If we aren't quite yet at the end of all the components, make a new line
-        // And pad it for any future components
-        if(i != ecountComponents - 1)
-        {
-          file.Write( "\n" );
-          
-        }
       }
     }
 

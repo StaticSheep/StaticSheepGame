@@ -96,6 +96,22 @@ namespace Framework
     FinishFrame();
 	}
 
+  void SheepGraphics::ReceiveMessage(Message& msg)
+  {
+    if (msg.MessageId == Message::WindowResize)
+    {
+      if (m_renderContext)
+      {
+        ResizeMessage* rMsg = (ResizeMessage*)&msg;
+        _ScreenWidth = (int)rMsg->width;
+        _ScreenHeight = (int)rMsg->height;
+
+        m_renderContext->SetViewport(0, 0, DirectSheep::Dimension(_ScreenWidth, _ScreenHeight));
+      }
+      
+    }
+  }
+
 	void SheepGraphics::Draw()
 	{
     // Draw Hooks

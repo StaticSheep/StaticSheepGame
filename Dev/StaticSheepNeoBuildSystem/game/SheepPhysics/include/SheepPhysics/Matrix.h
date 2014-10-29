@@ -1,5 +1,6 @@
 #pragma once
 #include "Vec3D.h"
+#include "SheepMath.h"
 
 namespace SheepFizz
 {

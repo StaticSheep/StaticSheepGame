@@ -1,0 +1,35 @@
+GameObject
+{
+  name std::string "Bullet"
+  archetype std::string "Bullet"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 0.000000
+      y_ float 0.000000
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "content/circle.png"
+    Size Vec2
+    {
+      X float 0.250000
+      Y float 0.250000
+    }
+  }
+  CircleCollider
+  {
+    m_radius float 4.000000
+    m_materialName std::string "Wood"
+  }
+}

@@ -9,9 +9,9 @@
 namespace SheepFizz
 {
 
-	PhysicsSpace* PhysicsSpace::Allocate(float dt)
+	PhysicsSpace* PhysicsSpace::Allocate(float dt, float meterScale)
 	{
-		return new PhysicsSpace(dt);
+		return new PhysicsSpace(dt, meterScale);
 	}//end of Allocate
 
 	void PhysicsSpace::Delete(PhysicsSpace* space)
@@ -19,23 +19,24 @@ namespace SheepFizz
 		delete space;
 	}//end of Delete
 
-	//body settors//*************
+	//body settors
+	//*************
 	void PhysicsSpace::SetBodyPos(Handle handle, Vec3D position)
 	{
 		Body* body = handles_.GetAs<Body>(handle);
-		body->position_ = position;
+		body->position_ = position / meterScale_;
 	}//end of SetBodyPos
 
 	void PhysicsSpace::SetBodyVeloc(Handle handle, Vec3D velocity)
 	{
 		Body* body = handles_.GetAs<Body>(handle);
-		body->velocity_ = velocity;
+		body->velocity_ = velocity / meterScale_;
 	}//end of SetBodyVeloc
 	
 	void PhysicsSpace::SetBodyForce(Handle handle, Vec3D force)
 	{
 		Body* body = handles_.GetAs<Body>(handle);
-		body->force_ = force;
+		body->force_ = force / meterScale_;
 	}//end of SetBodyForce
 	
 	void PhysicsSpace::SetBodyRot(Handle handle, float rot)
@@ -58,27 +59,64 @@ namespace SheepFizz
 	
 	//change the dt
 	void PhysicsSpace::SetTime(float dt) {dt_ = dt;}
-	//end of SetTime
-	//*************end of settors
+  //end of SetTime
 
+  void PhysicsSpace::SetBodyCollisionCallback(Handle handle, bool collisionCallback)
+  {
+    Body* body = handles_.GetAs<Body>(handle);
+    body->collisionCallback_ = collisionCallback;
+  }
+	
+	//end of settors
+	//*************
+
+
+	//adders
+	//*************
+	void PhysicsSpace::AddToBodyVeloc(Handle handle, Vec3D velocity)
+	{
+		Body* body = handles_.GetAs<Body>(handle);
+		body->velocity_ += velocity / meterScale_;
+	}//end of AddToBodyVeloc
+
+	void PhysicsSpace::AddToBodyForce(Handle handle, Vec3D force)
+	{
+		Body* body = handles_.GetAs<Body>(handle);
+		body->force_ += force / meterScale_;
+	}//end of AddToBodyForce
+
+	void PhysicsSpace::AddToBodyAngVeloc(Handle handle, float angveloc)
+	{
+		Body* body = handles_.GetAs<Body>(handle);
+		body->angularVelocity_ += angveloc;
+	}//end of AddToBodyAngVeloc
+
+	void PhysicsSpace::AddToBodyTorque(Handle handle, float torque)
+	{
+		Body* body = handles_.GetAs<Body>(handle);
+		body->torque_ += torque;
+	}//end of AddToBodyTorque
+
+	//end of adders
+	//*************
 
 	//get values for engine
 	Vec3D PhysicsSpace::GetBodyPos(Handle handle)
 	{
 		Body* body = handles_.GetAs<Body>(handle);
-		return body->position_;
+		return body->position_ * meterScale_;
 	}//end of GetBodyPos
 	
 	Vec3D PhysicsSpace::GetBodyVeloc(Handle handle)
 	{
 		Body* body = handles_.GetAs<Body>(handle);
-		return body->velocity_;
+		return body->velocity_ * meterScale_;
 	}//end of GetBodyVeloc
 	
 	Vec3D PhysicsSpace::GetBodyForce(Handle handle)
 	{
 		Body* body = handles_.GetAs<Body>(handle);
-		return body->force_;
+		return body->force_ * meterScale_;
 	}//end of GetBodyForce
 
 	float PhysicsSpace::GetBodyRot(Handle handle)
@@ -102,26 +140,43 @@ namespace SheepFizz
 	//get the time for the engine
 	float PhysicsSpace::GetTime(void) {return dt_;}
 	//end of GetTime
+
+  Vec3D PhysicsSpace::GetCollisionNorm(void* handle, void* manifold)
+  {
+    if (handle == ((Manifold*)manifold)->A->userData)
+      return ((Manifold*)manifold)->normal;
+
+    if (handle == ((Manifold*)manifold)->B->userData)
+      return -(((Manifold*)manifold)->normal);
+
+    return Vec3D();
+
+  }//end of GetCollisionNormal
+
 	//*************end of gettors
 
 
 	//add bodies to the body vector
-	Handle PhysicsSpace::AddBody(Shapes shape, Material& material, Vec3D position, 
+  Handle PhysicsSpace::AddBody(Shapes shape, Material& material, bool collisionCallback, Vec3D position,
 		float xradius, float yval, float orientation, void* userData)
 	{
+    
+    if (locked_)
+      return Handle::null;
+
 		switch(shape)
 		{
 			case Rec:
 				{
 					//create the rectangle shape
 					Rectangle* rec = (Rectangle*)shapes_[Rec].Allocate();
-					new (rec) Rectangle(xradius, yval);
+					new (rec) Rectangle(xradius / meterScale_, yval / meterScale_);
 					rec->self = handles_.Insert(rec);
 					handles_.SyncHandles<Rectangle>(shapes_[Rec]);
 			
 					//then add the body
 					Body* body = (Body*)bodies_.Allocate();
-					new (body) Body(rec, material, position, Vec3D(), Vec3D(), userData, orientation);
+          new (body)Body(rec, material, collisionCallback, position / meterScale_, Vec3D(), Vec3D(), userData, orientation);
 					body->self = handles_.Insert(body);
 					handles_.SyncHandles<Body>(bodies_);
 
@@ -134,13 +189,13 @@ namespace SheepFizz
 				{
 					//create the circle shape
 					Circle* cir = (Circle*)shapes_[Cir].Allocate();
-					new (cir) Circle(xradius);
+					new (cir) Circle(xradius / meterScale_);
 					cir->self = handles_.Insert(cir);
 					handles_.SyncHandles<Circle>(shapes_[Cir]);
 			
 					//then add the body
 					Body* body = (Body*)bodies_.Allocate();
-					new (body) Body(cir, material, position, Vec3D(), Vec3D(), userData, orientation);
+          new (body)Body(cir, material, collisionCallback, position / meterScale_, Vec3D(), Vec3D(), userData, orientation);
 					body->self = handles_.Insert(body);
 					handles_.SyncHandles<Body>(bodies_);
 
@@ -161,7 +216,7 @@ namespace SheepFizz
 	void PhysicsSpace::ChangeBodies(Handle handle, float xradius, float y)
 	{
 		Body* body = (Body*)handles_.Get(handle);
-		body->ChangeBody(xradius, y);
+		body->ChangeBody(xradius / meterScale_, y / meterScale_);
 	}//end of ChangeBodies
 
 	//change materials
@@ -190,21 +245,25 @@ namespace SheepFizz
 	}//end of RemoveBody
 	//*************
 
-
 	//this function advances the game forward one dt
 	void PhysicsSpace::Step(void)
 	{
+
+    locked_ = true;
+
 		//iterate through list of bodies
 		for(unsigned i = 0; i < bodies_.Size(); ++i)
 		{
-			//if the body is static, don't put it as object A in
-			//a manifold
-			if (((Body*)bodies_[i])->staticObject_ == true)
-				continue;
-
 			//move one body in vector forward to start
 			for(unsigned j = i + 1; j < bodies_.Size(); ++j)
 			{
+				//if the bodies are static, don't put it in a manifold
+				if (((Body*)bodies_[i])->massData_.mass == 0 && ((Body*)bodies_[j])->massData_.mass == 0)
+					continue;
+				
+				//check collision groups
+				if (((Body*)bodies_[i])->collisionGroup_ != ((Body*)bodies_[i])->collisionGroup_)
+					continue;
 
 				//create a manifold and see if there is any interaction
 				Manifold m((Body*)bodies_[i], (Body*)bodies_[j]);
@@ -239,13 +298,16 @@ namespace SheepFizz
 		}
 
 		//send manifold data back to engine for game logic
-		/*for(int i = 0; i < manifolds_.size(); ++i)
+		for(unsigned int i = 0; i < manifolds_.size(); ++i)
 		{
-			cb_(manifolds_[i].A->userData, manifolds_[i].B->userData, userData_);
-		}*/
+      if (manifolds_[i].A->collisionCallback_ || manifolds_[i].B->collisionCallback_)
+			  cb_(manifolds_[i].A->userData, manifolds_[i].B->userData, userData_);
+		}
 
 		//empty manifold list;
 		manifolds_.clear();
+
+    locked_ = false;
 
 	}//end of Step
 	//*************
@@ -263,7 +325,7 @@ namespace SheepFizz
 
 		//Velocity can be calculated after adjusting force
 		body.velocity_ += ((body.force_ *= body.massData_.inverseMass) 
-			+ Vec3D(0,GRAVITY) * (float)body.gravityScale_ * (float)body.gravityOn_) * dt_;
+			+ Vec3D(0,modifiedGravity_) * (float)body.gravityScale_ * (float)body.gravityOn_) * dt_;
 
 		//Position changed last
 		body.position_ += body.velocity_ * dt_;

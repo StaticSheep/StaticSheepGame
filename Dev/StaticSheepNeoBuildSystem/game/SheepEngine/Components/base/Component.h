@@ -41,8 +41,6 @@ namespace Framework
 
       // Each type of component has it's own unique ID
       EComponent typeID;
-
-      
       
       virtual bool operator==(const GameComponent& rhs) const;
       bool operator!=(const GameComponent& rhs) const;
@@ -56,6 +54,8 @@ namespace Framework
 
       friend class TypeInfo;
 
+  private:
+    bool m_toDelete = false;
   };
 
   

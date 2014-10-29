@@ -16,18 +16,18 @@ namespace SheepFizz
 	{
 	public:
 		virtual void PropertyCollision(unsigned int specifier) {}
-		virtual void PropertyResolution() {}
+		virtual void PropertyResolution(Framework::Vec3D& normal) {}
 	};
 
 	class StickyProperty: public BodyProperties
 	{
 		public:
 			virtual void PropertyCollision(unsigned int specifier);
-			virtual void PropertyResolution();
+			virtual void PropertyResolution(Framework::Vec3D& normal);
 
 		private:
-			unsigned int stickyOn;		//whether to stick
-			unsigned int stickySide;
+			unsigned int stickOn;		//whether to stick
+			unsigned int stickySide;    //what side to stick with
 	};
 
 }

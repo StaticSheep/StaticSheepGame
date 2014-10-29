@@ -27,18 +27,19 @@ namespace Framework
     std::string spaceName("NewSpace");
     spaceName += std::to_string(spaceNum++);
     GameSpace* space = ENGINE->CreateSpace(spaceName.c_str());
+    space->SetPaused(true);
     space->Tweak();
   }
 
   static void EditorOpenSpace(void* clientData)
   {
     OPENFILENAME ofn;
-    char szFile[200];
+    char szFile[512];
 
-    TCHAR Buffer[200];
+    TCHAR Buffer[512];
     DWORD dwRet;
 
-    dwRet = GetCurrentDirectory(200, Buffer);
+    dwRet = GetCurrentDirectory(512, Buffer);
 
     ZeroMemory( &ofn , sizeof( ofn));
     ofn.lStructSize = sizeof ( ofn );
@@ -60,6 +61,7 @@ namespace Framework
       return;
 
     GameSpace* sp = FACTORY->LoadSpace(szFile);
+    sp->SetPaused(true);
 
     if (sp != nullptr)
       sp->Tweak();
@@ -73,12 +75,12 @@ namespace Framework
   static void EditorLoadLevel(void* clienData)
   {
     OPENFILENAME ofn;
-    char szFile[100];
+    char szFile[512];
 
-    TCHAR Buffer[128];
+    TCHAR Buffer[512];
     DWORD dwRet;
 
-    dwRet = GetCurrentDirectory(128, Buffer);
+    dwRet = GetCurrentDirectory(512, Buffer);
 
     ZeroMemory( &ofn , sizeof( ofn));
     ofn.lStructSize = sizeof ( ofn );
@@ -105,12 +107,12 @@ namespace Framework
   static void EditorSaveLevel(void* clienData)
   {
     OPENFILENAME ofn;
-    char szFile[100];
+    char szFile[512];
 
-    TCHAR Buffer[128];
+    TCHAR Buffer[512];
     DWORD dwRet;
 
-    dwRet = GetCurrentDirectory(128, Buffer);
+    dwRet = GetCurrentDirectory(512, Buffer);
 
     ZeroMemory( &ofn , sizeof( ofn));
     ofn.lStructSize = sizeof ( ofn );
@@ -136,7 +138,11 @@ namespace Framework
 
   static void EditorPlayLevel(void* clientData)
   {
-
+    std::vector<GameSpace*>& gameSpaces = ENGINE->Spaces();
+    for (size_t i = 0; i < gameSpaces.size(); ++i)
+    {
+      //FACTORY->SaveSpaceToFile(gameSpaces[i], "test", true);
+    }
   }
 
   void Engine::OpenEditor()

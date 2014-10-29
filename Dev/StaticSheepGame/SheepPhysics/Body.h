@@ -38,7 +38,7 @@ class Body
 			float angularVelocity = 0, 
 			float torque = 0,
 			CollisionGroup collisionGroup = CollGroup1, //used for determining collision gorups
-			int bodyGroup = 0,							//used for certain collisions/resolutions 
+			unsigned int bodyGroup = 0,					//used for certain collisions/resolutions 
 			float gravityScale = 1,						//used to modify gravity
 			unsigned int gravityOn = 1,					//used to turn gravity on and off
 			bool staticObject = false);						
@@ -83,7 +83,7 @@ class Body
 
 		//body group - used for different groups of objects
 		//e.g. can be used to turn off gravity for all of one type of object - *not implemented*
-		int bodyGroup_;
+		unsigned int bodyGroup_;
 
 		//collisiongroup - used to ignore collision for various types of objects;
 		CollisionGroup collisionGroup_;
