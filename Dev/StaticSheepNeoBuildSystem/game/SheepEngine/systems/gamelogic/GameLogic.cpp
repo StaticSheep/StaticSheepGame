@@ -38,8 +38,8 @@ namespace Framework
   {
     REGISTER_COMPONENT(LuaComponent);
     REGISTER_COMPONENT(GamePad);
-	REGISTER_COMPONENT(PlayerController);
-	REGISTER_COMPONENT(Bullet_Default);
+	  REGISTER_COMPONENT(PlayerController);
+	  REGISTER_COMPONENT(Bullet_Default);
   }
 
   void GameLogic::Initialize()
