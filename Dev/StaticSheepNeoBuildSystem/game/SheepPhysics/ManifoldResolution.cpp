@@ -109,8 +109,6 @@ namespace SheepFizz
       B->ApplyImpulse(frictionImpulse, bRepulsionVec);
     }
 
-    if (A->shape_->GetShape() == Cir || B->shape_->GetShape() == Cir)
-      printf("hello");
 
   }//end of ApplyForces
 }
