@@ -117,9 +117,9 @@ namespace Framework
 		PHYSICS->AddToBodyTorques(space, m_handle, torque);
 	}
 
-  Vec3D RigidBody::GetCollisionNormals(void* manifold)
+  Vec3D RigidBody::GetCollisionNormals(SheepFizz::ExternalManifold manifold)
   {
-   return ScaleUp(PHYSICS->GetCollisionNormal(space, m_handle, manifold));
+   return ScaleUp(PHYSICS->GetCollisionNormal(space, owner, manifold));
   }
 
   Vec3D RigidBody::GetCurrentVelocity(void)

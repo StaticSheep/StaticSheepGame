@@ -86,6 +86,9 @@ namespace Framework
     template <typename Arg1>
     void Call(std::string eventName, Arg1 arg1);
 
+    template <typename Arg1, typename Arg2>
+    void Call(std::string eventName, Arg1 arg1, Arg2 arg2);
+
     void Clear(std::string eventName);
     void ClearAll();
 
@@ -107,4 +110,12 @@ namespace Framework
     }
   }
 
+  template <typename Arg1, typename Arg2>
+  void HookManager::Call(std::string eventName, Arg1 arg1, Arg2 arg2)
+  {
+    if (HookMap.find(eventName) != HookMap.end())
+    {
+      HookMap.at(eventName)->Trigger(arg1, arg2);
+    }
+  }
 }

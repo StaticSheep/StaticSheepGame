@@ -46,6 +46,8 @@ namespace Framework
     TYPE_SET_FROM_LUA( unsigned int, Lua::IntFromLua );
     TYPE_SET_TWEAK_TYPE( unsigned int, AntTweak::TW_TYPE_UINT32 );
 
+    TYPE_REGISTER_POD(void*);
+
     TYPE_REGISTER_POD(const char*);
     TYPE_SET_TO_LUA(char*, Lua::CharPToLua);
     TYPE_SET_FROM_LUA(char*, Lua::CharPFromLua);

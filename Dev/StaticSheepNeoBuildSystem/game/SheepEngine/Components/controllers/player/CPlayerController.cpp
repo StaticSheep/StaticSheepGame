@@ -100,7 +100,7 @@ namespace Framework
 		
 	}
 
-	void PlayerController::OnCollision(Handle otherObject)
+	void PlayerController::OnCollision(Handle otherObject, SheepFizz::ExternalManifold manifold)
 	{
 		isSnapped = true;
 		//get the thing we are colliding with
@@ -113,13 +113,12 @@ namespace Framework
 
 		if (OtherObject->HasComponent(eBoxCollider))
 		{
-			BoxCollider *OOBc = space->GetHandles().GetAs<BoxCollider>(otherObject);
-
-
+      BoxCollider *OOBc = OtherObject->GetComponent<BoxCollider>(eBoxCollider);
+      Vec3 cNormal = OOBc->GetCollisionNormals(manifold);
 		}
 		else if (OtherObject->HasComponent(eBoxCollider))
 		{
-			CircleCollider *OOCc = space->GetHandles().GetAs<CircleCollider>(otherObject);
+      CircleCollider *OOCc = OtherObject->GetComponent<CircleCollider>(eCircleCollider);
 
 		}
 
@@ -144,7 +143,7 @@ namespace Framework
 	Vec3 PlayerController::aimingDirection(GamePad *gp)
 	{
 		Vec3 returnVec;
-    float thresh = 0.7; //the threshold minimum for aiming
+    float thresh = 0.7f; //the threshold minimum for aiming
 
 		returnVec.x = gp->RightStick_X() * 2;
 		returnVec.y = gp->RightStick_Y() * 2;

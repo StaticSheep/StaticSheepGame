@@ -141,13 +141,13 @@ namespace SheepFizz
 	float PhysicsSpace::GetTime(void) {return dt_;}
 	//end of GetTime
 
-  Vec3D PhysicsSpace::GetCollisionNorm(void* handle, void* manifold)
+  Vec3D PhysicsSpace::GetCollisionNorm(void* handle, ExternalManifold manifold)
   {
     if (handle == ((Manifold*)manifold)->A->userData)
-      return ((Manifold*)manifold)->normal;
+      return -((Manifold*)manifold)->normal;
 
     if (handle == ((Manifold*)manifold)->B->userData)
-      return -(((Manifold*)manifold)->normal);
+      return (((Manifold*)manifold)->normal);
 
     return Vec3D();
 
@@ -301,7 +301,7 @@ namespace SheepFizz
 		for(unsigned int i = 0; i < manifolds_.size(); ++i)
 		{
       if (manifolds_[i].A->collisionCallback_ || manifolds_[i].B->collisionCallback_)
-			  cb_(manifolds_[i].A->userData, manifolds_[i].B->userData, userData_);
+			  cb_(manifolds_[i].A->userData, manifolds_[i].B->userData, userData_, &manifolds_[i]);
 		}
 
 		//empty manifold list;

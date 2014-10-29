@@ -8,6 +8,8 @@
 namespace SheepFizz
 {
 	class Material;
+
+  
 }
 
 namespace Framework
@@ -43,7 +45,7 @@ namespace Framework
 
       //collision
       virtual void SetBodyCollisionCallback(bool collisionCallback);
-      virtual Vec3D GetCollisionNormals(void* manifold);
+      virtual Vec3D GetCollisionNormals(SheepFizz::ExternalManifold manifold);
 
       //gettors
       virtual Vec3D GetCurrentVelocity(void);

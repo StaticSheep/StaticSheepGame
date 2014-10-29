@@ -11,7 +11,7 @@ namespace Framework
 		PlayerController();
 		~PlayerController();
 		void LogicUpdate(float dt);
-		void OnCollision(Handle otherObject);
+		void OnCollision(Handle otherObject, SheepFizz::ExternalManifold manifold);
 		void Initialize();
 		void Remove();
 		void onFire();
