@@ -53,7 +53,7 @@ namespace Framework
 			aimDir = aimingDirection(gp); //get the direction the player is currently aiming;
 
 		//fire on trigger pull
-		if (gp->RightTrigger() && hasFired == false)
+		if (gp->RightTrigger() /*&& hasFired == false*/)
 		{
 			hasFired = true;
 			onFire();
@@ -85,7 +85,7 @@ namespace Framework
 		}
 		else if (!gp->ButtonPressed(XButtons.A))
 		{
-			isSnapped = true;
+			//isSnapped = true;
 		}
 		//melee
 		if (gp->ButtonPressed(XButtons.B))
@@ -93,10 +93,10 @@ namespace Framework
 
 		}
 
-    if (gp->ButtonPressed(XButtons.X))
-    {
-      bc->AddToAngVelocity(.5f);
-    }
+		if (gp->ButtonPressed(XButtons.X))
+		{
+			bc->AddToAngVelocity(.5f);
+		}
 
 
 		
@@ -116,13 +116,14 @@ namespace Framework
 		{
 			BoxCollider *OOBc = space->GetHandles().GetAs<BoxCollider>(otherObject);
 
+
 		}
 		else if (OtherObject->HasComponent(eBoxCollider))
 		{
 			CircleCollider *OOCc = space->GetHandles().GetAs<CircleCollider>(otherObject);
 
 		}
-		
+		isSnapped = true;
 
 	}
 

@@ -30,6 +30,6 @@ GameObject
   CircleCollider
   {
     m_radius float 4.000000
-    m_materialName std::string "Wood"
+    m_materialName std::string "Bounce"
   }
 }
