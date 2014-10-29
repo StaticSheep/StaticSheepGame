@@ -311,6 +311,53 @@ namespace Framework
     return obj;
   }
 
+  GameObject* Factory::LoadObjectFromArchetypeFP(GameSpace* space, const char* filep)
+  {
+	  std::string archetype = filep;
+	  archetype = archetype.substr(archetype.find_last_of('\\') + 1, archetype.length() - archetype.find_last_of('.'));
+
+	  // Quickly grab the archetype from our map if it exists
+	  const Archetype& aType = GetArchetype(archetype);
+
+	  // Check to see if the archetype is valid
+	  if (&aType != &Archetype::null)
+	  {
+		  // Make the object!
+		  GameObject* obj = aType.CreateObject(space);
+		  return obj;
+	  }
+
+	  File file; // File to load from
+	  std::string filePath = filep;
+
+	  if (!File::FileExists(filePath.c_str()))
+		  return nullptr;
+
+	  file.Open(filePath.c_str(), FileAccess::Read);
+
+	  ErrorIf(!file.Validate(), "Factory", "Invalid file!");
+
+	  // Create an empty object
+	  GameObject* obj = space->CreateEmptyObject();
+	  Variable var = *obj; // Set the object as a variable
+
+	  // Deserialize the file into the object
+	  GET_TYPE(GameObject)->Deserialize(file, var);
+
+	  // Reset the Translation to 0,0,0
+	  obj->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(0, 0, 0));
+
+	  obj->archetype = archetype;
+
+	  // The archetype was not found, so we will save the object into our map
+	  if (ArchetypeMap.find(archetype) == ArchetypeMap.end())
+		  ArchetypeMap[archetype].CopyObject(obj);
+
+	  file.Close();
+
+	  return obj;
+  }
+
   GameObject* Factory::LoadObjectFromArchetype(GameSpace* space, const Archetype& archetype)
   {
     return archetype.CreateObject(space);
@@ -370,6 +417,7 @@ namespace Framework
 
     return true;
   }
+
 
 
 
