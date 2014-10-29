@@ -43,12 +43,18 @@ namespace Framework
 			virtual void AddToAngVelocity(float angularvelocity);
 			virtual void AddToTorque(float torque);
 
+      //gravity
+      virtual void SetGravityOn(void);
+      virtual void SetGravityOff(void);
+      virtual void SetGravityNormal(Vec3D);
+
       //collision
       virtual void SetBodyCollisionCallback(bool collisionCallback);
       virtual Vec3D GetCollisionNormals(SheepFizz::ExternalManifold manifold);
 
       //gettors
       virtual Vec3D GetCurrentVelocity(void);
+      virtual Vec3D GetGravityNormal(void);
 
 		// Properties
 		union

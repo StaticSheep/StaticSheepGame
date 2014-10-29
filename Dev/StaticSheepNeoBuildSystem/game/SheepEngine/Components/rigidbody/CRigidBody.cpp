@@ -82,6 +82,21 @@ namespace Framework
 		PHYSICS->RemoveBodies(space, m_handle);
 	}
 
+  void RigidBody::SetGravityOn(void)
+  {
+    PHYSICS->SetBodyGravityOn(space, m_handle);
+  }
+
+  void RigidBody::SetGravityOff(void)
+  {
+    PHYSICS->SetBodyGravityOff(space, m_handle);
+  }
+
+  void RigidBody::SetGravityNormal(Vec3D normal)
+  {
+    PHYSICS->SetBodyGravityNormal(space, m_handle, normal);
+  }
+
   void RigidBody::SetVelocity(Vec3D& velocity)
 	{
 		PHYSICS->SetBodyVelocity(space, m_handle, velocity);
@@ -125,5 +140,10 @@ namespace Framework
   Vec3D RigidBody::GetCurrentVelocity(void)
   {
     return PHYSICS->GetBodyVelocity(space, m_handle);
+  }
+
+  Vec3D RigidBody::GetGravityNormal(void)
+  {
+    return PHYSICS->GetBodyGravityNormal(space, m_handle);
   }
 }
