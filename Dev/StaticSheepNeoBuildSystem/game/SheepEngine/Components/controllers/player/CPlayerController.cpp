@@ -61,30 +61,39 @@ namespace Framework
 		//if the trigger is released, reset the bool
 		if (!gp->RightTrigger())
 			hasFired = false;
+///////////////////////////////////////////////////////////////
+    if (isSnapped)
+    {
+      bc->SetVelocity(snappedNormal * 25);
+      //left stick move
+      if (gp->LeftStick_X() > 0.2)
+      {
+        bc->SetVelocity(Vec3(0.0f, 0.0f, 0.0f));
+        bc->AddToVelocity(-(snappedNormal.CalculateNormal() * 150));
 
-		//left stick move
-		if (gp->LeftStick_X() > 0.2)
-		{
-			bc->SetVelocity(Vec3(0.0f, 0.0f, 0.0f));
-			bc->AddToVelocity(Vec3(150.0f, 0.0f, 0.0f));
-      
-		}
-		else if (gp->LeftStick_X() < -0.2)
-		{
-			bc->SetVelocity(Vec3(0.0f, 0.0f, 0.0f));
-			bc->AddToVelocity(Vec3(-150.0f, 0.0f, 0.0f));
-		}
+      }
+      else if (gp->LeftStick_X() < -0.2)
+      {
+        bc->SetVelocity(Vec3(0.0f, 0.0f, 0.0f));
+        bc->AddToVelocity((snappedNormal.CalculateNormal() * 150));
+      }
 
-		//jump
-		if (gp->ButtonPressed(XButtons.A) && isSnapped)
-		{
-			bc->AddToVelocity(Vec3(0.0f, 100.0f, 0.0f));
-			isSnapped = false;
-		}
-		else if (!gp->ButtonPressed(XButtons.A))
-		{
-			//isSnapped = true;
-		}
+      //jump
+      if (gp->ButtonPressed(XButtons.A) && isSnapped)
+      {
+        bc->AddToVelocity(-(snappedNormal * 300));
+        isSnapped = false;
+      }
+      else if (!gp->ButtonPressed(XButtons.A))
+      {
+        //isSnapped = true;
+      }
+    }
+    else
+    {
+
+    }
+////////////////////////////////////////////////////////////////
 		//melee
 		if (gp->ButtonPressed(XButtons.B))
 		{
@@ -114,12 +123,12 @@ namespace Framework
 		if (OtherObject->HasComponent(eBoxCollider))
 		{
       BoxCollider *OOBc = OtherObject->GetComponent<BoxCollider>(eBoxCollider);
-      Vec3 cNormal = OOBc->GetCollisionNormals(manifold);
+      snappedNormal = OOBc->GetCollisionNormals(manifold);
 		}
 		else if (OtherObject->HasComponent(eBoxCollider))
 		{
       CircleCollider *OOCc = OtherObject->GetComponent<CircleCollider>(eCircleCollider);
-
+      snappedNormal = OOCc->GetCollisionNormals(manifold);
 		}
 
 	}

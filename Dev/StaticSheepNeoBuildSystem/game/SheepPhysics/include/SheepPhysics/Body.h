@@ -33,7 +33,7 @@ class Body
 			float orientation = PI,
 			float angularVelocity = 0,
 			float torque = 0,
-			CollisionGroup collisionGroup = CollGroup1, //used for determining collision gorups
+			CollisionGroup collisionGroup = CollGroup1, //used for determining collision groups
 			unsigned int bodyGroup = 0,					//used for certain collisions/resolutions 
 			float gravityScale = 1,						//used to modify gravity
 			unsigned int gravityOn = 1					//used to turn gravity on and off
@@ -55,7 +55,7 @@ class Body
 
 
 		//shape and material used to calculate MassData;
-		//shape and materail are defined by the gameobject
+		//shape and material are defined by the game object
 		Shape *shape_;
 		Material material_;
 		MassData massData_;
