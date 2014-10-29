@@ -25,6 +25,8 @@ namespace dit {
         virtual Keyboard* GetKeyboard()     { return &keyboard; }
         virtual Mouse* GetMouse()           { return &mouse; }
 
+        virtual void Update(void);
+
         void ProcessKeyEvent(const wxKeyEvent&, bool isKeyDown);
         void ProcessCharEvent(const wxKeyEvent&);
         void ProcessMouseEvent(const wxMouseEvent&);

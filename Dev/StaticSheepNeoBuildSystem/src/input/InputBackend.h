@@ -24,6 +24,8 @@ namespace dit {
         InputBackend() = default;
         virtual ~InputBackend() = default;
 
+        virtual void Update(void) = 0;
+
         virtual Keyboard* GetKeyboard() = 0;
         virtual Mouse* GetMouse() = 0;
     };

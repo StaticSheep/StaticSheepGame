@@ -74,9 +74,22 @@ namespace dit {
         }
     }
 
+    void Mouse::Update()
+    {
+      previous.aux1Button = state.aux1Button;
+      previous.aux2Button = state.aux2Button;
+      previous.leftButton = state.leftButton;
+      previous.rightButton = state.rightButton;
+      previous.middleButton = state.middleButton;
+      previous.x = state.x;
+      previous.y = state.y;
+
+      return;
+    }
+
     //-----------------------------------//
 
-    bool Mouse::IsButtonPressed(MouseButton button) const
+    bool Mouse::IsButtonDown(MouseButton button) const
     {
         switch (button)
         {
@@ -90,6 +103,70 @@ namespace dit {
             return state.aux1Button;
         case MouseButton::Mouse5:
             return state.aux2Button;
+        }
+
+        log("could not map enum: Invalid mouse button");
+        return false;
+    }
+
+    //-----------------------------------//
+
+    bool Mouse::IsButtonPressed(MouseButton button) const
+    {
+      switch (button)
+        {
+        case MouseButton::Left:
+            if(state.leftButton && !previous.leftButton)
+              return true;
+            return false;
+        case MouseButton::Right:
+            if(state.rightButton && !previous.rightButton)
+              return true;
+            return false;
+        case MouseButton::Middle:
+            if(state.middleButton && !previous.middleButton)
+              return true;
+            return false;
+        case MouseButton::Mouse4:
+            if(state.aux1Button && !previous.aux1Button)
+              return true;
+            return false;
+        case MouseButton::Mouse5:
+            if(state.aux2Button && !previous.aux2Button)
+              return true;
+            return false;
+        }
+
+        log("could not map enum: Invalid mouse button");
+        return false;
+    }
+
+    //-----------------------------------//
+
+    bool Mouse::IsButtonReleased(MouseButton button) const
+    {
+      switch (button)
+        {
+        case MouseButton::Left:
+            if(!state.leftButton && previous.leftButton)
+              return true;
+            return false;
+        case MouseButton::Right:
+            if(!state.rightButton && previous.rightButton)
+              return true;
+            return false;
+        case MouseButton::Middle:
+            if(!state.middleButton && previous.middleButton)
+              return true;
+            return false;
+        case MouseButton::Mouse4:
+            if(!state.aux1Button && previous.aux1Button)
+              return true;
+            return false;
+        case MouseButton::Mouse5:
+            if(!state.aux2Button && previous.aux2Button)
+              return true;
+            return false;
         }
 
         log("could not map enum: Invalid mouse button");

@@ -297,14 +297,16 @@ namespace dit {
 
     void App::Update()
     {
-        // clear last frame's filewatch events
-        watchEvents.clear();
 
-        // main loop
-        Framework::ENGINE->Step();
+      input->Update();
+      // clear last frame's filewatch events
+      watchEvents.clear();
 
-        // pump events from other threads
-        core->Update();
+      // main loop
+      Framework::ENGINE->Step();
+
+      // pump events from other threads
+      core->Update();
     }
 
     //-----------------------------------//
@@ -316,8 +318,6 @@ namespace dit {
         // drop out on escape
         if (kb.IsKeyDown(Keys::Escape))
             window->wxw->Close();
-
-        
     }
 
     //-----------------------------------//

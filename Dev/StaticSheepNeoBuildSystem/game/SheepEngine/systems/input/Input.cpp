@@ -19,6 +19,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "input/Keyboard.h"
 #include "input/Mouse.h"
 
+#include "input/InputBackend.h"
+
 namespace Framework
 {
 

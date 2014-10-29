@@ -17,6 +17,13 @@ namespace dit {
 
     static Keys ConvertFromWxKey(int keyCode);
 
+    void WxInputBackend::Update(void)
+    {
+      keyboard.Update();
+      mouse.Update();
+      return;
+    }
+
     void WxInputBackend::ProcessKeyEvent(const wxKeyEvent& event, bool isKeyDown)
     {
         KeyEvent ke = (isKeyDown) ?

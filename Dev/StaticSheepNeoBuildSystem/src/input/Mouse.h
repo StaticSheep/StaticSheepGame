@@ -53,10 +53,16 @@ namespace dit {
     public:
 
         virtual void ProcessEvent(const InputEvent& event);
+        void Update();
+        bool IsButtonDown(MouseButton button) const; // button down
         bool IsButtonPressed(MouseButton button) const;
+        bool IsButtonReleased(MouseButton button) const;
+
+
 
     public:
         MouseInfo state;
+        MouseInfo previous;
 
         std::vector<MouseMoveConsumer> onMouseMove;
         std::vector<MouseDragConsumer> onMouseDrag;

@@ -26,10 +26,36 @@ namespace dit {
 
     //-----------------------------------//
 
+    bool Keyboard::IsKeyPressed(Keys keyCode) const
+    {
+      if(keyState[(int) keyCode] && !prevKeyState[(int) keyCode])
+        return true;
+      return false;
+    }
+
+    //-----------------------------------//
+
+    bool Keyboard::IsKeyReleased(Keys keyCode) const
+    {
+      if(!keyState[(int) keyCode] && prevKeyState[(int)keyCode])
+        return true;
+      return false;
+    }
+
+    //-----------------------------------//
+
     void Keyboard::Reset()
     {
         std::fill(keyState.begin(), keyState.end(), false);
         std::fill(prevKeyState.begin(), prevKeyState.end(), false);
+    }
+
+    void Keyboard::Update()
+    {
+      for(unsigned int i = 0; i < prevKeyState.size(); ++i)
+      {
+        prevKeyState[i] = keyState[i];
+      }
     }
 
     //-----------------------------------//
@@ -71,7 +97,8 @@ namespace dit {
             return;
 
         keyState[(int) keyEvent.keyCode] = true;
-        prevKeyState[(int)keyEvent.keyCode] = false;
+
+        //prevKeyState[(int)keyEvent.keyCode] = false; //z
 
         lastKey = keyEvent.keyCode;
 
@@ -87,7 +114,8 @@ namespace dit {
         return;
 
       keyState[(int)keyEvent.keyCode] = false;
-      prevKeyState[(int)keyEvent.keyCode] = true;
+
+      //prevKeyState[(int)keyEvent.keyCode] = true; //z
 
       for (const auto& fn : onKeyRelease)
         fn(keyEvent);
