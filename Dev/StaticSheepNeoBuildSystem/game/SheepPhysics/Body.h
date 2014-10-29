@@ -31,6 +31,7 @@ class Body
 		//body requires a shape* to be passed - all others default to base constructors
 		Body(Shape* shape,								//a pointer to the shape created
 			Material& material,							//material of the specific body
+      bool collisionCallback,         //activates collisionCallback
 			Vec3D position = Vec3D(),
 			Vec3D velocity = Vec3D(),
 			Vec3D force = Vec3D(),
@@ -88,6 +89,8 @@ class Body
 
 		//collisiongroup - used to ignore collision for various types of objects;
 		CollisionGroup collisionGroup_;
+
+    bool collisionCallback_;
 
 		//key forces and values for body
 		Vec3D velocity_;

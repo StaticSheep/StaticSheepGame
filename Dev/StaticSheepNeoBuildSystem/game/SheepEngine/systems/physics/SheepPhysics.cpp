@@ -96,7 +96,7 @@ namespace Framework
 
 	//add circles or rectangles
 	SheepFizz::Handle SheepPhysics::AddBodies(GameObject* obj, SheepFizz::Shapes shape, 
-		SheepFizz::Material& material, Vec3D position,
+    SheepFizz::Material& material, bool collisionCallback, Vec3D position,
 		float xradius, float yval, float orientation)
 	{
 		GameSpace* space = obj->space;
@@ -105,8 +105,8 @@ namespace Framework
 			CreateSpace(space);
 
 		//return a sheepfizz handle
-		SheepFizz::Handle handle = ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->AddBody(shape, material, position, 
-			xradius, yval, orientation, (void*)((unsigned)obj->self));
+		SheepFizz::Handle handle = ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->AddBody(shape, material, 
+      collisionCallback, position, xradius, yval, orientation, (void*)((unsigned)obj->self));
 		return handle;
 	}//end of AddBodies
 
@@ -178,6 +178,11 @@ namespace Framework
 	if (space->m_pSpace)
 		((SheepFizz::PhysicsSpace*)(space->m_pSpace))->SetTime(dt);
 	}
+
+  void SheepPhysics::SetBodyCollisionCallback(GameSpace* space, SheepFizz::Handle handle, bool collisionCallback)
+  {
+    ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->SetBodyCollisionCallback(handle, collisionCallback);
+  }
 
 	//additive functions
 	void SheepPhysics::AddToBodyVelocity(GameSpace* space, SheepFizz::Handle handle, Vec3D velocity)

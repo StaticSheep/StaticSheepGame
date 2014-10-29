@@ -35,6 +35,7 @@ namespace Framework
 
 			virtual void SetVelocity(Vec3D& velocity);
       virtual void SetAngVelocity(float angularvelocity);
+      void SetBodyCollisionCallback(bool collisionCallback);
 			virtual void AddToVelocity(Vec3D& velocity);
 			virtual void AddToForce(Vec3D& force);
 			virtual void AddToAngVelocity(float angularvelocity);
@@ -50,6 +51,8 @@ namespace Framework
 		float m_height; // For boxes
 
 		std::string m_materialName;
+
+    bool m_hasCollisionCallback;
 
 		protected:
 

@@ -62,6 +62,8 @@ namespace Framework
     for (unsigned int i = 0; i < ecountComponents; ++i)
       m_components[i] = Handle::null;
     fastChildSearch = false;
+
+    
   }
 
   
@@ -214,6 +216,9 @@ namespace Framework
   /// </summary>
   void GameObject::Initialize()
   {
+    // woo
+    hooks.space = space;
+
     GameComponent* component;
     for (size_t i = 0; i < ecountComponents; ++i)
     {
