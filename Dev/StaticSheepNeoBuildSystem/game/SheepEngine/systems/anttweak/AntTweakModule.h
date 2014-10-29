@@ -150,6 +150,7 @@ namespace Framework
     AntTweak::TBar* GetBar(Handle barHandle);
 
     void RemoveBar(AntTweak::TBar* bar);
+    void RemoveAllBars(void);
 
     virtual std::string GetName() {return "AntTweakBar";};
 

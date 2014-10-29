@@ -33,6 +33,7 @@ namespace Framework
 
     // Creates an object of from an archetype. [Loads the archetype if required]
     GameObject* LoadObjectFromArchetype(GameSpace* space, const char* name);
+	GameObject* LoadObjectFromArchetypeFP(GameSpace* space, const char* name);
     // Creates an object from a virtual archetype.
     GameObject* LoadObjectFromArchetype(GameSpace* space, const Archetype& archetype);
     // Preloads an archetype of a specified name
@@ -43,7 +44,10 @@ namespace Framework
 
     void SaveSpaceToFile(GameSpace* space, const char* name, std::vector<std::string>* objInstanceData = NULL, bool includeGeneric = false, bool allData = false);
     void SaveSpaceToFile(GameSpace* space, const char* name, bool standalone);
-    void SaveSpaceToFileEx(GameSpace* space, const char* filepath, bool standalone);
+    // Saves a space to an explicit filepath. This should be used with caution.
+    void SaveSpaceToFilePath(GameSpace* space, const char* filepath);
+
+    GameSpace* LoadSpaceFilePath(const char* filepath);
     GameSpace* LoadSpace(const char* name);
 
     // Saves all of the spaces into a level file

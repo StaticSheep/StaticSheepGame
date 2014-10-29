@@ -29,6 +29,7 @@ namespace dit {
     void Keyboard::Reset()
     {
         std::fill(keyState.begin(), keyState.end(), false);
+        std::fill(prevKeyState.begin(), prevKeyState.end(), false);
     }
 
     //-----------------------------------//
@@ -70,6 +71,8 @@ namespace dit {
             return;
 
         keyState[(int) keyEvent.keyCode] = true;
+        prevKeyState[(int)keyEvent.keyCode] = false;
+
         lastKey = keyEvent.keyCode;
 
         for (const auto& fn : onKeyPress)
@@ -80,10 +83,14 @@ namespace dit {
 
     void Keyboard::KeyReleased(const KeyEvent& keyEvent)
     {
-        keyState[(int) keyEvent.keyCode] = false;
+      if (!keyState[(int)keyEvent.keyCode])
+        return;
 
-        for (const auto& fn : onKeyRelease)
-            fn(keyEvent);
+      keyState[(int)keyEvent.keyCode] = false;
+      prevKeyState[(int)keyEvent.keyCode] = true;
+
+      for (const auto& fn : onKeyRelease)
+        fn(keyEvent);
     }
 
     //-----------------------------------//

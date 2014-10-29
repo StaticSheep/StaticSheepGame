@@ -110,11 +110,11 @@ namespace Framework
 
     
 
-    GameObject* obj = FACTORY->LoadObjectFromArchetype(space, szFile);
+    GameObject* obj = FACTORY->LoadObjectFromArchetypeFP(space, szFile);
 
     space->UpdateTweakBar();
 
-	  ErrorIf(!obj, "SpaceTweaker", "Failed to load object from archetype! Filepath: %s", szFile);
+	ErrorIf(!obj, "SpaceTweaker", "Failed to load object from archetype! Filepath: %s", szFile);
 
     obj->TweakObject();
   }

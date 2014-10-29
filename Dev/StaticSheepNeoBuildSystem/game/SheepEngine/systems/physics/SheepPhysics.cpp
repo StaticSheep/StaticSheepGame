@@ -41,17 +41,18 @@ namespace Framework
 
 	 }//end of RegisterComponents
 
-	static void CollisionCallback(void* A_userData, void* B_userData, void* Space_userData)
+	static void CollisionCallback(void* A_userData, void* B_userData,
+    void* Space_userData, SheepFizz::ExternalManifold manifold)
 	{
 		Handle A_object = (unsigned)A_userData;
 		Handle B_object = (unsigned)B_userData;
 		GameSpace* space = (GameSpace*)Space_userData;
 
 		GameObject* AObj = space->GetHandles().GetAs<GameObject>(A_object);
-		GameObject* BObj = space->GetHandles().GetAs<GameObject>(B_object);
+    AObj->hooks.Call("OnCollision", B_object, manifold);
 
-		AObj->hooks.Call("OnCollision", B_object);
-		BObj->hooks.Call("OnCollision", A_object);
+		GameObject* BObj = space->GetHandles().GetAs<GameObject>(B_object);
+		BObj->hooks.Call("OnCollision", A_object, manifold);
 	}//end of CollisionCallback
 
 	void* SheepPhysics::CreateSpace(GameSpace* gameSpace)
@@ -73,7 +74,7 @@ namespace Framework
 		SheepFizz::PhysicsSpace::Delete((SheepFizz::PhysicsSpace*)p_Space);
 	}//end of DeleteSpace
 
-	//intialize materials
+	// initialize materials
 	void SheepPhysics::Initialize()
 	{
 		
@@ -146,9 +147,9 @@ namespace Framework
 		return ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->GetBodyTorque(handle);
 	}//end of GetBodyTorques
 
-  Vec3D SheepPhysics::GetCollisionNormal(GameSpace* space, SheepFizz::Handle handle, void* manifold)
+  Vec3D SheepPhysics::GetCollisionNormal(GameSpace* space, Framework::Handle ownerHandle, SheepFizz::ExternalManifold manifold)
   {
-    return ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->GetCollisionNorm((void*)(unsigned int)handle, manifold);
+    return ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->GetCollisionNorm((void*)(unsigned int)ownerHandle, manifold);
   }//end of GetBodyTorques
 
 	//settors

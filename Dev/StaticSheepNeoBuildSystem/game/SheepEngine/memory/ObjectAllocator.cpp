@@ -16,6 +16,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include <stdlib.h>
 #include <string.h>
 
+
 namespace Framework
 {
   ObjectAllocator::ObjectAllocator()
@@ -55,7 +56,7 @@ namespace Framework
 		if (m_size == m_capacity)
 			Grow();
 
-		return (char*)m_array + m_size++ * m_objectSize;
+    return (char*)m_array + m_size++ * m_objectSize;
 	}
 
 	void* ObjectAllocator::Free(void* data)
@@ -66,6 +67,7 @@ namespace Framework
 		if (--m_size)
 		{
 			Move(index, m_size);
+
 			return (char*)m_array + index * m_objectSize;
 		}
 

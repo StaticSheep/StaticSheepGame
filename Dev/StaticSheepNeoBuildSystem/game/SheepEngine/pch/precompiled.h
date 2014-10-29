@@ -19,6 +19,11 @@ extern "C"
 #include "lfs.h"
 }
 
+namespace SheepFizz
+{
+  typedef void* ExternalManifold;
+}
+
 // Pre Reqs
 #include <assert.h>
 
@@ -84,9 +89,6 @@ extern "C"
 
 #include "engine/serializer/file/File.h"
 #include "engine/introspection/variable/Variable.h"
-
-
-
 
 
 

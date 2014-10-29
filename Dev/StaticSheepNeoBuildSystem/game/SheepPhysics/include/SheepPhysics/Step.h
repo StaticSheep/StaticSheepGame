@@ -14,6 +14,9 @@
 namespace SheepFizz
 {
 	//collision callback function pointer
+  PHY_API typedef void* ExternalManifold;
+  PHY_API typedef void(*CollisionCB)(void*, void*, void*, ExternalManifold);
+ 
 
 	#define GRAVITY -100.0f
 
@@ -54,14 +57,14 @@ namespace SheepFizz
 
     //collision functions
     PHY_API void SetBodyCollisionCallback(Handle handle, bool collisionCallback);
-    PHY_API Vec3D GetCollisionNorm(void* handle, void* manifold);
+    PHY_API Vec3D GetCollisionNorm(void* handle, ExternalManifold manifold);
 
 
 		//add bodies to the body vector
     PHY_API Handle AddBody(
       Shapes shape,				        //shape of the object
       Material& material,			    //the material ref
-      bool collisionCallback,     //determines if collisioncallback occurs
+      bool collisionCallback,     //determines if collision callback occurs
       Framework::Vec3D position,	//the position of the transform
       float xradius,				      //the radius of circle or width
       float yval = 0,				      //the height - if a rec
@@ -85,7 +88,7 @@ namespace SheepFizz
 		//applied in physics update
 
 		//engine functions for messaging
-		PHY_API void SetCollisionCallback(void(*cb)(void*, void*, void*));
+    PHY_API void SetCollisionCallback(CollisionCB cb);
 		PHY_API void SetUserData(void* userData);
 
 		#ifdef SHEEPPHYSICS

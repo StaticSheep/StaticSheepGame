@@ -9,6 +9,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 #pragma once
 
+#include <boost/unordered_map.hpp>
+
 namespace Framework
 {
 
@@ -84,16 +86,19 @@ namespace Framework
     template <typename Arg1>
     void Call(std::string eventName, Arg1 arg1);
 
+    template <typename Arg1, typename Arg2>
+    void Call(std::string eventName, Arg1 arg1, Arg2 arg2);
+
     void Clear(std::string eventName);
     void ClearAll();
 
     GameSpace* space;
 
   private:
-    void Verify(std::string& eventName);
+    void Verify(std::string eventName);
 
     ObjectAllocator HookCollections;
-    std::unordered_map<std::string, HookCollection*> HookMap;
+    boost::unordered::unordered_map<std::string, HookCollection*> HookMap;
   };
 
   template <typename Arg1>
@@ -105,4 +110,12 @@ namespace Framework
     }
   }
 
+  template <typename Arg1, typename Arg2>
+  void HookManager::Call(std::string eventName, Arg1 arg1, Arg2 arg2)
+  {
+    if (HookMap.find(eventName) != HookMap.end())
+    {
+      HookMap.at(eventName)->Trigger(arg1, arg2);
+    }
+  }
 }

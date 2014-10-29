@@ -12,6 +12,9 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include <fstream>
 #include "components/transform/CTransform.h"
 
+
+#include <boost/filesystem.hpp>
+
 namespace Framework
 {
   Factory *FACTORY = NULL;
@@ -308,6 +311,53 @@ namespace Framework
     return obj;
   }
 
+  GameObject* Factory::LoadObjectFromArchetypeFP(GameSpace* space, const char* filep)
+  {
+	  std::string archetype = filep;
+	  archetype = archetype.substr(archetype.find_last_of('\\') + 1, archetype.length() - archetype.find_last_of('.'));
+
+	  // Quickly grab the archetype from our map if it exists
+	  const Archetype& aType = GetArchetype(archetype);
+
+	  // Check to see if the archetype is valid
+	  if (&aType != &Archetype::null)
+	  {
+		  // Make the object!
+		  GameObject* obj = aType.CreateObject(space);
+		  return obj;
+	  }
+
+	  File file; // File to load from
+	  std::string filePath = filep;
+
+	  if (!File::FileExists(filePath.c_str()))
+		  return nullptr;
+
+	  file.Open(filePath.c_str(), FileAccess::Read);
+
+	  ErrorIf(!file.Validate(), "Factory", "Invalid file!");
+
+	  // Create an empty object
+	  GameObject* obj = space->CreateEmptyObject();
+	  Variable var = *obj; // Set the object as a variable
+
+	  // Deserialize the file into the object
+	  GET_TYPE(GameObject)->Deserialize(file, var);
+
+	  // Reset the Translation to 0,0,0
+	  obj->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(0, 0, 0));
+
+	  obj->archetype = archetype;
+
+	  // The archetype was not found, so we will save the object into our map
+	  if (ArchetypeMap.find(archetype) == ArchetypeMap.end())
+		  ArchetypeMap[archetype].CopyObject(obj);
+
+	  file.Close();
+
+	  return obj;
+  }
+
   GameObject* Factory::LoadObjectFromArchetype(GameSpace* space, const Archetype& archetype)
   {
     return archetype.CreateObject(space);
@@ -373,6 +423,7 @@ namespace Framework
 
 
 
+
   // Backups a file into the backup folder
   static void StoreBackup(const char* filepath)
   {
@@ -385,6 +436,15 @@ namespace Framework
       backUpFile += filepath;
       backUpFile += "." + std::to_string(now->tm_mon) + "_" + std::to_string(now->tm_mday) + "_" +
         std::to_string(now->tm_hour) + "_" + std::to_string(now->tm_min) + "_" + std::to_string(now->tm_sec) + ".backup";
+
+      
+      std::string backUpPath;
+      
+      int lastBackslash = backUpFile.find_last_of('\\');
+      if (lastBackslash != std::string::npos)
+        backUpPath = backUpFile.substr(0, lastBackslash);
+
+      boost::filesystem::create_directories(backUpPath);
 
       std::ifstream src;
       src.open(filepath);
@@ -464,15 +524,36 @@ namespace Framework
     Serializer::Get()->SetUserData(NULL);
 
     file.Close();
+
+    space->m_fileName = name;
+  }
+
+  void Factory::SaveSpaceToFilePath(GameSpace* space, const char* path)
+  {
+    File file; // File to save the space to
+    std::string filepath = path;
+    GameSpace::SerializerData extraData;
+
+    extraData.instanceData = NULL;
+    extraData.includeGeneric = false;
+    extraData.saveAllData = false;
+    extraData.standalone = true;
+
+    StoreBackup(filepath.c_str());
+
+    file.Open(filepath.c_str(), FileAccess::Write); // Open the file
+
+    Serializer::Get()->SetUserData(&extraData);
+
+    Variable(*space).Serialize(file);
+
+    Serializer::Get()->SetUserData(NULL);
+
+    file.Close();
   }
 
 
-  /// <summary>
-  /// Loads a space file.
-  /// </summary>
-  /// <param name="space">The space.</param>
-  /// <param name="name">The name.</param>
-  GameSpace* Factory::LoadSpace(const char* filepath)
+  GameSpace* Factory::LoadSpaceFilePath(const char* filepath)
   {
     File file; // File to save the space to
 
@@ -494,8 +575,20 @@ namespace Framework
 
     file.Close();
 
+    std::string fileName(filepath);
+    int lastSlash = fileName.find_last_of('\\');
+    if (lastSlash != std::string::npos)
+      fileName = fileName.substr(lastSlash - 1, fileName.length() - lastSlash);
+
+    space->m_fileName = fileName;
 
     return space;
+  }
+
+  GameSpace* Factory::LoadSpace(const char* name)
+  {
+    std::string filepath = SpaceFilePath + std::string(name) + SpaceFileExtension;
+    return LoadSpaceFilePath(filepath.c_str());
   }
 
 

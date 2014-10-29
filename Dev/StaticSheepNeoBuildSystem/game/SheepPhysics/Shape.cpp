@@ -59,10 +59,10 @@ namespace SheepFizz
 		vertices_[2] = Vec3D(-width_ / 2, -height_ / 2);
 		vertices_[3] = Vec3D(width_ / 2, -height_ / 2);
 
-		//calculate side normals - starting with vertice 0 and 1
+		//calculate side normals - starting with vertices 0 and 1
 		for(int i = 0; i < 4; i++)
 		{
-			//calculate next vertice after this one
+			//calculate next vertices after this one
 			int nextVertice = i + 1 < 4 ? i + 1 : 0;
 			
 			//subtract two vertices for vector and transform into normal
@@ -84,10 +84,10 @@ namespace SheepFizz
 
 	void Circle::Initialize(void)
 	{
-		SetArea(radius_ * radius_ * PI);
+		SetArea(radius_ * radius_ * (float)PI);
 			
 		//partial moment calculation - no density;
-		SetMomentOfInertia(PI * radius_ * radius_
+		SetMomentOfInertia((float)PI * radius_ * radius_
 			* radius_ * 1/3);
 		SetShape(Cir);
 	}

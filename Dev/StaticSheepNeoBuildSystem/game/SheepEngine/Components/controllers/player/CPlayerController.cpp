@@ -14,7 +14,7 @@ namespace Framework
 		//set defaults
 		playerNum = 0;
 		playerGamePad = Handle::null;
-		isSnapped = false;
+		isSnapped = true;
 		hasFired = false;
 		snappedTo = NULL;
 	}
@@ -53,7 +53,7 @@ namespace Framework
 			aimDir = aimingDirection(gp); //get the direction the player is currently aiming;
 
 		//fire on trigger pull
-		if (gp->RightTrigger() && hasFired == false)
+		if (gp->RightTrigger() /*&& hasFired == false*/)
 		{
 			hasFired = true;
 			onFire();
@@ -67,7 +67,7 @@ namespace Framework
 		{
 			bc->SetVelocity(Vec3(0.0f, 0.0f, 0.0f));
 			bc->AddToVelocity(Vec3(150.0f, 0.0f, 0.0f));
-			
+      
 		}
 		else if (gp->LeftStick_X() < -0.2)
 		{
@@ -83,7 +83,7 @@ namespace Framework
 		}
 		else if (!gp->ButtonPressed(XButtons.A))
 		{
-			isSnapped = true;
+			//isSnapped = true;
 		}
 		//melee
 		if (gp->ButtonPressed(XButtons.B))
@@ -91,17 +91,18 @@ namespace Framework
 
 		}
 
-    if (gp->ButtonPressed(XButtons.X))
-    {
-      bc->AddToAngVelocity(.5f);
-    }
+		if (gp->ButtonPressed(XButtons.X))
+		{
+			//bc->AddToAngVelocity(.5f);
+		}
 
 
 		
 	}
 
-	void PlayerController::OnCollision(Handle otherObject)
+	void PlayerController::OnCollision(Handle otherObject, SheepFizz::ExternalManifold manifold)
 	{
+		isSnapped = true;
 		//get the thing we are colliding with
 		GameObject *OtherObject = space->GetHandles().GetAs<GameObject>(otherObject);
 		//get the transform of the thing we are colliding with
@@ -112,15 +113,14 @@ namespace Framework
 
 		if (OtherObject->HasComponent(eBoxCollider))
 		{
-			BoxCollider *OOBc = space->GetHandles().GetAs<BoxCollider>(otherObject);
-
+      BoxCollider *OOBc = OtherObject->GetComponent<BoxCollider>(eBoxCollider);
+      Vec3 cNormal = OOBc->GetCollisionNormals(manifold);
 		}
 		else if (OtherObject->HasComponent(eBoxCollider))
 		{
-			CircleCollider *OOCc = space->GetHandles().GetAs<CircleCollider>(otherObject);
+      CircleCollider *OOCc = OtherObject->GetComponent<CircleCollider>(eCircleCollider);
 
 		}
-		
 
 	}
 
@@ -136,15 +136,39 @@ namespace Framework
 		Transform *BT = bullet->GetComponent<Transform>(eTransform);
 		CircleCollider *bulletC = bullet->GetComponent <CircleCollider>(eCircleCollider);
 		Transform *playerTrans = space->GetHandles().GetAs<Transform>(playerTransform);
-		BT->SetTranslation(playerTrans->GetTranslation() + aimDir * 20);
+		BT->SetTranslation(playerTrans->GetTranslation() + aimDir * 25);
 		bulletC->AddToVelocity(aimDir * 1000);
 	}
 
 	Vec3 PlayerController::aimingDirection(GamePad *gp)
 	{
 		Vec3 returnVec;
-		returnVec.x = gp->RightStick_X();
-		returnVec.y = gp->RightStick_Y();
+    float thresh = 0.7f; //the threshold minimum for aiming
+
+		returnVec.x = gp->RightStick_X() * 2;
+		returnVec.y = gp->RightStick_Y() * 2;
+    //you're about to see a lot of if statements, just know that all of these are 
+    //making sure that the default return vector is within a certain range so that
+    //when bullets spawn using that return vector they don't spawn to close to the player.
+    if (returnVec.x > 1.0)
+      returnVec.x = 1.0;
+    if (returnVec.y > 1.0)
+      returnVec.y = 1.0;
+
+    if (returnVec.x < -1.0)
+      returnVec.x = -1.0;
+    if (returnVec.y < -1.0)
+      returnVec.y = -1.0;
+
+    if (returnVec.x < thresh && returnVec.x > 0 && !(returnVec.y >= thresh || returnVec.y <= -thresh))
+      returnVec.x = thresh;
+    if (returnVec.y < thresh && returnVec.y > 0 && !(returnVec.x >= thresh || returnVec.x <= -thresh))
+      returnVec.y = thresh;
+
+    if (returnVec.x > -thresh && returnVec.x < 0)
+      returnVec.x = -thresh;
+    if (returnVec.y > -thresh && returnVec.y < 0)
+      returnVec.y = -thresh;
 
 		return returnVec;
 

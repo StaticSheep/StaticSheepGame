@@ -11,7 +11,7 @@ namespace Framework
 		PlayerController();
 		~PlayerController();
 		void LogicUpdate(float dt);
-		void OnCollision(Handle otherObject);
+		void OnCollision(Handle otherObject, SheepFizz::ExternalManifold manifold);
 		void Initialize();
 		void Remove();
 		void onFire();
@@ -21,9 +21,10 @@ namespace Framework
 		int playerNum; //the player number, i.e. 1, 2, 3, 4
 		bool hasFired, isSnapped; //has fired is a flag to prevent fully auto fire, is snapped is a bool to see if the player is snapped to something
 		Vec3 aimDir;  //the direction the player is currently aiming
-		Handle playerGamePad;
-		Handle playerCollider;
-		Handle playerTransform;
+    Vec3 snappedNormal; //the normal of the thing we are currently snapped to
+		Handle playerGamePad; //the players game pad
+		Handle playerCollider; //the players collider (box)
+		Handle playerTransform; //the player's transform
 		Handle snappedTo; //the thing we are currently "snapped" to
 	};
 }

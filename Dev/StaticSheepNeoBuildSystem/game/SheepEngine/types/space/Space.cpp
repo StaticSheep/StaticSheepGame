@@ -14,6 +14,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "systems/anttweak/AntTweakModule.h"
 
 #include <iostream>
+#include "engine/core/Engine.h"
 
 
 namespace Framework
@@ -143,7 +144,8 @@ namespace Framework
       GetHandles().Update(moved, moved->self);
 
 #if USE_ANTTWEAKBAR
-    UpdateTweakBar();
+    if (!m_shuttingDown && !ENGINE->PlayingInEditor())
+      UpdateTweakBar();
 #endif
   }
 
@@ -375,6 +377,11 @@ namespace Framework
   bool GameSpace::Hidden()
   {
     return m_hidden;
+  }
+
+  void GameSpace::Destroy()
+  {
+    m_valid = false;
   }
 
   void GameSpace::Clear()

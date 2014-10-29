@@ -15,6 +15,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/lua/CLuaComponent.h"
 #include "components/gamepad/CGamePad.h"
 #include "components/controllers/player/CPlayerController.h"
+#include "components/gameplay_scripts/CBullet_default.h"
 
 namespace Framework
 {
@@ -38,6 +39,7 @@ namespace Framework
     REGISTER_COMPONENT(LuaComponent);
     REGISTER_COMPONENT(GamePad);
 	REGISTER_COMPONENT(PlayerController);
+	REGISTER_COMPONENT(Bullet_Default);
   }
 
   void GameLogic::Initialize()
