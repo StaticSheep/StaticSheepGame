@@ -181,6 +181,8 @@ namespace Framework
         return it.second;
     }
 
+    std::string realTexture = Texture;
+
     DirectSheep::Handle temp;
 
     m_renderContext->CreateTexture(temp, Texture);

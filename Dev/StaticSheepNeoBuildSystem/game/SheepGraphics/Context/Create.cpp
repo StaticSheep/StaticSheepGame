@@ -114,19 +114,22 @@ namespace DirectSheep
     D3D11_TEXTURE2D_DESC desc;
     static bool attempt = false;
 
-    std::wstring test(filename.begin(), filename.end());
+    std::string filePath(m_contentPath);
+    filePath += filename;
+
+    std::wstring wcFP(filePath.begin(), filePath.end());
 
 
     //  (ID3D11Resource **)&tempTex.texture, &tempTex.shaderResourceView, NULL);
 
-    HRESULT hr = DirectX::CreateWICTextureFromFile(m_device, test.c_str(), (ID3D11Resource **)&tempTex.texture, &tempTex.shaderResourceView, 0);
+    HRESULT hr = DirectX::CreateWICTextureFromFile(m_device, wcFP.c_str(), (ID3D11Resource **)&tempTex.texture, &tempTex.shaderResourceView, 0);
 
     if (FAILED(hr))
     {
       if (attempt)
         DXVerify(hr);
       attempt = true;
-      return CreateTexture(handle, "content/Default.png");
+      return CreateTexture(handle, "Default.png");
     }
     attempt = false;
     tempTex.shaderResourceView->GetResource((ID3D11Resource **)&tempTex.texture);

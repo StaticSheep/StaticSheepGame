@@ -115,7 +115,7 @@ namespace DirectSheep
 
     m_swapChain->SetFullscreenState(FALSE, NULL);
 
-    for (int i = 0; i < m_handles.size(); ++i)
+    for (size_t i = 0; i < m_handles.size(); ++i)
     {
       Release(m_handles[i]);
     }
