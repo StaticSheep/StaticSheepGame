@@ -43,7 +43,10 @@ namespace Framework
 
       //collision
       virtual void SetBodyCollisionCallback(bool collisionCallback);
-      virtual void GetCollisionNormal(void* manifold, void* handle);
+      virtual Vec3D GetCollisionNormals(void* manifold);
+
+      //gettors
+      virtual Vec3D GetCurrentVelocity(void);
 
 		// Properties
 		union

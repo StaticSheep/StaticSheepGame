@@ -22,6 +22,26 @@ namespace Framework
 
 	}
 	
+  static Vec3D ScaleDown(Vec3D value)
+  {
+   return (value *= 1.0f / 32.0f);
+  }
+
+  static float ScaleDown(float value)
+  {
+    return (value *= 1.0f / 32.0f);
+  }
+
+  static Vec3D ScaleUp(Vec3D value)
+  {
+    return (value *= 1.0f / 32.0f);
+  }
+
+  static float ScaleUp(float value)
+  {
+    return (value *= 1.0f / 32.0f);
+  }
+
 	//initialize the rigid body
 	void RigidBody::Initialize(void)
 	{
@@ -30,6 +50,7 @@ namespace Framework
 
 		m_material = PHYSICS->GetMaterial(m_materialName);
 		
+
 		//temp vec for holding position
 		Vec3 position = trans->GetTranslation();
 		float rotation = trans->GetRotation();
@@ -61,7 +82,7 @@ namespace Framework
 		PHYSICS->RemoveBodies(space, m_handle);
 	}
 
-	void RigidBody::SetVelocity(Vec3D& velocity)
+  void RigidBody::SetVelocity(Vec3D& velocity)
 	{
 		PHYSICS->SetBodyVelocity(space, m_handle, velocity);
 	}
@@ -78,17 +99,17 @@ namespace Framework
 
 	void RigidBody::AddToVelocity(Vec3D& velocity)
 	{
-		PHYSICS->AddToBodyVelocity(space, m_handle, velocity);
+    PHYSICS->AddToBodyVelocity(space, m_handle, velocity);
 	}
 
 	void RigidBody::AddToForce(Vec3D& force)
 	{
-		PHYSICS->AddToBodyForce(space, m_handle, force);
+    PHYSICS->AddToBodyForce(space, m_handle, force);
 	}
 
 	void RigidBody::AddToAngVelocity(float angularvelocity)
 	{
-		PHYSICS->AddToBodyAngVelocity(space, m_handle, angularvelocity);
+    PHYSICS->AddToBodyAngVelocity(space, m_handle, angularvelocity);
 	}
 
 	void RigidBody::AddToTorque(float torque)
@@ -96,8 +117,13 @@ namespace Framework
 		PHYSICS->AddToBodyTorques(space, m_handle, torque);
 	}
 
-  void RigidBody::GetCollisionNormal(void* manifold)
+  Vec3D RigidBody::GetCollisionNormals(void* manifold)
   {
-    PHYSICS->AddToBodyTorques(space, m_handle, manifold);
+   return PHYSICS->GetCollisionNormal(space, m_handle, manifold);
+  }
+
+  Vec3D RigidBody::GetCurrentVelocity(void)
+  {
+    return ScaleUp(PHYSICS->GetBodyVelocity(space, m_handle));
   }
 }

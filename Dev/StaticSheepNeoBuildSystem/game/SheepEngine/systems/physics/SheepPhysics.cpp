@@ -148,7 +148,7 @@ namespace Framework
 
   Vec3D SheepPhysics::GetCollisionNormal(GameSpace* space, SheepFizz::Handle handle, void* manifold)
   {
-    return ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->GetCollisionNormal(handle, manifold);
+    return ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->GetCollisionNorm((void*)(unsigned int)handle, manifold);
   }//end of GetBodyTorques
 
 	//settors

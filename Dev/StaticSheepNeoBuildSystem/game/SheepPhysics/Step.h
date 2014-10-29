@@ -16,7 +16,7 @@ namespace SheepFizz
 	//collision callback function pointer
 	typedef void(*CollisionCB)(void*, void*, void*);
 
-	#define GRAVITY -70.0f
+	#define GRAVITY -10.0f
 
 	class PhysicsSpace
 	{
@@ -68,7 +68,7 @@ namespace SheepFizz
 
     //collision functions
     PHY_API void SetBodyCollisionCallback(Handle handle, bool collisionCallback);
-    PHY_API Vec3D GetCollisionNormal(void* handle, Manifold *manifold);
+    PHY_API Vec3D GetCollisionNorm(void* handle, void* manifold);
 
 
 		//add bodies to the body vector
