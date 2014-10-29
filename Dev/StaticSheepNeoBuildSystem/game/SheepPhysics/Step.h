@@ -46,6 +46,8 @@ namespace SheepFizz
 		PHY_API void SetBodyAngVeloc(Handle handle, float angveloc);
 		PHY_API void SetBodyTorque(Handle handle, float torque);
 
+    PHY_API void SetBodyCollisionCallback(Handle handle, bool collisionCallback);
+
 		//adders
 		PHY_API void AddToBodyVeloc(Handle handle, Vec3D velocity);
 		PHY_API void AddToBodyForce(Handle handle, Vec3D force);
@@ -67,13 +69,14 @@ namespace SheepFizz
 		PHY_API float GetTime(void);
 
 		//add bodies to the body vector
-		PHY_API Handle AddBody(
-			Shapes shape,				//shape of the object
-			Material& material,			//the material ref
-			Framework::Vec3D position,	//the position of the transform
-			float xradius,				//the radius of circle or width
-			float yval = 0,				//the height - if a rec
-			float orientation = 0,		//the orientation
+    PHY_API Handle AddBody(
+      Shapes shape,				        //shape of the object
+      Material& material,			    //the material ref
+      bool collisionCallback,     //determines if collisioncallback occurs
+      Framework::Vec3D position,	//the position of the transform
+      float xradius,				      //the radius of circle or width
+      float yval = 0,				      //the height - if a rec
+      float orientation = 0,		  //the orientation
 			void* userData = NULL);		
 
 		//change a specific body's attributes

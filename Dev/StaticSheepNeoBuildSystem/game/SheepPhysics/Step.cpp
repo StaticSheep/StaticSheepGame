@@ -59,6 +59,12 @@ namespace SheepFizz
 	
 	//change the dt
 	void PhysicsSpace::SetTime(float dt) {dt_ = dt;}
+
+  void PhysicsSpace::SetBodyCollisionCallback(Handle handle, bool collisionCallback)
+  {
+    Body* body = handles_.GetAs<Body>(handle);
+    body->collisionCallback_ = collisionCallback;
+  }
 	//end of SetTime
 	//end of settors
 	//*************
@@ -137,7 +143,7 @@ namespace SheepFizz
 
 
 	//add bodies to the body vector
-	Handle PhysicsSpace::AddBody(Shapes shape, Material& material, Vec3D position, 
+  Handle PhysicsSpace::AddBody(Shapes shape, Material& material, bool collisionCallback, Vec3D position,
 		float xradius, float yval, float orientation, void* userData)
 	{
 		switch(shape)
@@ -152,7 +158,7 @@ namespace SheepFizz
 			
 					//then add the body
 					Body* body = (Body*)bodies_.Allocate();
-					new (body) Body(rec, material, position, Vec3D(), Vec3D(), userData, orientation);
+          new (body)Body(rec, material, collisionCallback, position, Vec3D(), Vec3D(), userData, orientation);
 					body->self = handles_.Insert(body);
 					handles_.SyncHandles<Body>(bodies_);
 
@@ -171,7 +177,7 @@ namespace SheepFizz
 			
 					//then add the body
 					Body* body = (Body*)bodies_.Allocate();
-					new (body) Body(cir, material, position, Vec3D(), Vec3D(), userData, orientation);
+          new (body)Body(cir, material, collisionCallback, position, Vec3D(), Vec3D(), userData, orientation);
 					body->self = handles_.Insert(body);
 					handles_.SyncHandles<Body>(bodies_);
 
@@ -271,10 +277,11 @@ namespace SheepFizz
 		}
 
 		//send manifold data back to engine for game logic
-		/*for(int i = 0; i < manifolds_.size(); ++i)
+		for(int i = 0; i < manifolds_.size(); ++i)
 		{
-			cb_(manifolds_[i].A->userData, manifolds_[i].B->userData, userData_);
-		}*/
+      if (manifolds_[i].A->collisionCallback_ || manifolds_[i].B->collisionCallback_)
+			  cb_(manifolds_[i].A->userData, manifolds_[i].B->userData, userData_);
+		}
 
 		//empty manifold list;
 		manifolds_.clear();

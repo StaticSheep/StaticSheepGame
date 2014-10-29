@@ -28,6 +28,7 @@ enum CollisionGroup{
 class Body
 {
 	public:
+		//body requires a shape* to be passed - all others default to base constructors
 			void* userData = NULL,
 			float orientation = PI,
 			float angularVelocity = 0,
@@ -72,6 +73,8 @@ class Body
 
 		//collisiongroup - used to ignore collision for various types of objects;
 		CollisionGroup collisionGroup_;
+
+    bool collisionCallback_;
 
 		//key forces and values for body
 		Vec3D velocity_;

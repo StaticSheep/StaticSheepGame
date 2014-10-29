@@ -33,12 +33,12 @@ namespace Framework
 		//temp vec for holding position
 		Vec3 position = trans->GetTranslation();
 		float rotation = trans->GetRotation();
-
+    m_hasCollisionCallback = false;
 			//check if the shape is a circle or rectangle
 			//if so, add a body and return the pointer to the component
 		if(m_shape == SheepFizz::Cir || m_shape == SheepFizz::Rec)
-		  m_handle = PHYSICS->AddBodies(space->GetHandles().GetAs<GameObject>(owner), m_shape, *m_material, position, 
-		  m_radius, m_height, rotation);
+		  m_handle = PHYSICS->AddBodies(space->GetHandles().GetAs<GameObject>(owner), m_shape, *m_material, m_hasCollisionCallback,
+      position, m_radius, m_height, rotation);
 
 		 trans->SetPhysicsBody(m_handle);
 	}
@@ -69,6 +69,11 @@ namespace Framework
   void RigidBody::SetAngVelocity(float angularvelocity)
   {
     PHYSICS->SetBodyAngVelocity(space, m_handle, angularvelocity);
+  }
+
+  void RigidBody::SetBodyCollisionCallback(bool collisionCallback)
+  {
+    PHYSICS->SetBodyCollisionCallback(space, m_handle, collisionCallback);
   }
 
 	void RigidBody::AddToVelocity(Vec3D& velocity)

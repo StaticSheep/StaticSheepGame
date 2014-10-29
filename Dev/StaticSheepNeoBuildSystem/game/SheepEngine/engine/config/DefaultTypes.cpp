@@ -159,12 +159,14 @@ namespace Framework
     TYPE_REGISTER( BoxCollider );
     TYPE_ADD_MEMBER( BoxCollider, m_width, false, true, "Width");
     TYPE_ADD_MEMBER( BoxCollider, m_height, false, true, "Height");
-    TYPE_ADD_MEMBER( BoxCollider, m_materialName, false, true, "Material");
+    TYPE_ADD_MEMBER(BoxCollider, m_materialName, false, true, "Material"); 
+    TYPE_ADD_MEMBER(BoxCollider, m_hasCollisionCallback, false, true, "UsesCallback");
     TYPE_SET_TWEAK_TYPE(BoxCollider, AntTweak::TW_TYPE_COMPONENT);
 
     TYPE_REGISTER(CircleCollider);
     TYPE_ADD_MEMBER(CircleCollider, m_radius, false, true, "Radius");
     TYPE_ADD_MEMBER(CircleCollider, m_materialName, false, true, "Material");
+    TYPE_ADD_MEMBER(CircleCollider, m_hasCollisionCallback, false, true, "UsesCallback");
     TYPE_SET_TWEAK_TYPE(CircleCollider, AntTweak::TW_TYPE_COMPONENT);
 
     TYPE_REGISTER(GamePad);
