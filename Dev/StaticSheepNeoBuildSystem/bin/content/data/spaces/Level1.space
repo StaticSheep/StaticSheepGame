@@ -66,7 +66,7 @@ GameObject
   }
   Sprite
   {
-    m_spriteName std::string "content/Platform.png"
+    m_spriteName std::string "Platform.png"
     Size Vec2
     {
       X float 1.000000
@@ -103,7 +103,7 @@ GameObject
   }
   Sprite
   {
-    m_spriteName std::string "content/Platform.png"
+    m_spriteName std::string "Platform.png"
     Size Vec2
     {
       X float 1.000000
@@ -140,7 +140,7 @@ GameObject
   }
   Sprite
   {
-    m_spriteName std::string "content/Platform.png"
+    m_spriteName std::string "Platform.png"
     Size Vec2
     {
       X float 1.000000
@@ -177,7 +177,7 @@ GameObject
   }
   Sprite
   {
-    m_spriteName std::string "content/Platform.png"
+    m_spriteName std::string "Platform.png"
     Size Vec2
     {
       X float 1.000000
@@ -214,7 +214,7 @@ GameObject
   }
   Sprite
   {
-    m_spriteName std::string "content/platform.png"
+    m_spriteName std::string "platform.png"
     Size Vec2
     {
       X float 1.000000
@@ -251,7 +251,7 @@ GameObject
   }
   Sprite
   {
-    m_spriteName std::string "content/platform.png"
+    m_spriteName std::string "platform.png"
     Size Vec2
     {
       X float 1.000000
