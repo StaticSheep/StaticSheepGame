@@ -66,6 +66,7 @@ project "SheepGraphics"
   postbuildcommands 
   {
   	"..\\..\\..\\tools\\AutoHeaderVS.exe $(SolutionDir)..\\..\\game\\SheepGraphics\\ $(SolutionDir)..\\..\\game\\SheepGraphics\\include\\SheepGraphics\\ GFX_API",
+    "..\\..\\..\\tools\\AutoHeaderVS.exe $(SolutionDir)..\\..\\game\\SheepGraphics\\Context\\ $(SolutionDir)..\\..\\game\\SheepGraphics\\include\\SheepGraphics\\ GFX_API",
 	}
 
 	libdirs

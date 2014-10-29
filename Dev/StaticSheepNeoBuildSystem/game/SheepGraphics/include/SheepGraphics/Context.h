@@ -1,16 +1,12 @@
 #pragma once
 
-#if defined(DLL_GFXEXPORT)
 #include "DataTypes.h"
-#else
-#include "DataTypes.h"
-#endif
+
 namespace DirectSheep
 {
   class Handle;
 } // namespace Graphics
 
-#include "DataTypes.h"
 
 namespace DirectSheep
 {
@@ -46,6 +42,11 @@ class RenderContext
    GFX_API void DrawIndexed(unsigned indexCount, unsigned indexStart = 0, unsigned vertexStart = 0);
    GFX_API void DrawInstanced(unsigned vertexCount, unsigned instanceCount, unsigned vertexStart = 0, unsigned instanceStart = 0);
    GFX_API void DrawIndexInstanced(unsigned indexCountPerInstance, unsigned instanceCount, unsigned indexStart = 0, unsigned vertexStart = 0, unsigned instanceStart = 0);
+   GFX_API void DrawBatched(DirectSheep::Handle texture);
+   GFX_API void StartBatch();
+   GFX_API void EndBatch();
+   GFX_API void frameStart();
+   GFX_API void frameEnd();
    GFX_API void Present(void);
 
     /////////////////////////////////////////////////////////////
@@ -145,27 +146,23 @@ class RenderContext
     // Structs //
     //---------//
     struct Texture
-    {
       ID3D11ShaderResourceView *shaderResourceView;
       ID3D11Texture2D          *texture;
       Dimension                 size;
     };
 
     struct DepthBuffer
-    {
       ID3D11DepthStencilView      *m_depthBuffer;
       ID3D11DepthStencilState     *m_depthState;
       ID3D11Texture2D             *texture2D;
     };
 
     struct VertexShader
-    {
       ID3D11VertexShader *vShader;
       ID3D11InputLayout  *inputLayout;
     };
 
     struct RenderTarget
-    {
       ID3D11RenderTargetView   *renderTargetView;
       ID3D11ShaderResourceView *shaderResourceView;
       ID3D11Texture2D          *texture2D;
@@ -177,7 +174,6 @@ class RenderContext
     };
 
     struct Font
-    {
       IFW1Factory     *m_fontFactory;
       IFW1FontWrapper *m_fontWrapper;
     };
@@ -231,7 +227,7 @@ class RenderContext
     PrimitiveTopology            m_primative;
 
     Transform                    m_spriteTrans;
-    Vec4                    m_spriteBlend;
+    Vec4                         m_spriteBlend;
 
     /////////////////////////////////
     // Other render configurations //
@@ -253,6 +249,18 @@ class RenderContext
     std::vector<ID3D11Buffer*>               m_constBufferRes;
     std::vector<RenderTarget>                m_renderTargetRes;
 
+    /////////////
+    // Batcher //
+    /////////////
+    
+    std::unique_ptr<DirectX::SpriteBatch> m_batcher;
+
+
+    ///////////
+    //cleanup//
+    ///////////
+
+    std::vector<DirectSheep::Handle>         m_handles;
 #endif
 };
 

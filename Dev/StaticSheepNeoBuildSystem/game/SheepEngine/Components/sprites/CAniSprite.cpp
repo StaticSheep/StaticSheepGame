@@ -104,7 +104,7 @@ namespace Framework
     UpdateUV();
     GRAPHICS->SetPosition(trans->GetTranslation().X, trans->GetTranslation().Y);
     GRAPHICS->SetRotation(trans->GetRotation());
-    GRAPHICS->SetSize(trans->GetScale().X * Size.X * (TextureSize.X / m_frames.X), trans->GetScale().Y * Size.Y * (TextureSize.Y / m_frames.Y));
+    GRAPHICS->SetSize(trans->GetScale().X * Size.X, trans->GetScale().Y * Size.Y);
     GRAPHICS->SetColor(Color);
     GRAPHICS->SetUV(uvBegin, uvEnd);
     GRAPHICS->SetUseCamera(true);
@@ -112,8 +112,6 @@ namespace Framework
     GRAPHICS->DrawSprite(this);
 
     CheckNextFrame();
-    
-    
   }
 
   AniSprite::~AniSprite()

@@ -16,5 +16,6 @@
 #include <directxcolors.h>
 #include <FW1FontWrapper.h>
 #include <DirectXPackedVector.h>
+#include "SpriteBatch.h"
 
 

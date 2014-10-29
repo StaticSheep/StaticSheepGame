@@ -4,8 +4,6 @@
 #include <vector>
 #include <string>
 
-#include "Mallocator.h"
-
 #include "Utilities.h"
 
 #include "DirectXIncludes.h"
@@ -24,3 +22,4 @@
 #else
 #define DXVerify(x) (x)
 #endif
+

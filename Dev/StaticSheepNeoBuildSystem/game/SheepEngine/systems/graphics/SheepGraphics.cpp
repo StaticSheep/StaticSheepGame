@@ -17,6 +17,9 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "engine/window/Window32.h"
 
 #include "components/sprites/CAniSprite.h"
+#include <iostream>
+#include <boost/filesystem.hpp>
+using namespace boost::filesystem;
 
 
 namespace Framework
@@ -81,6 +84,8 @@ namespace Framework
 
     m_renderContext->CreateVertexBuffer(spriteQuad, 120);
 
+    ErrorIf(!LoadAssets(std::string("content")), "AssetLoad", "SheepGraphics.cpp");
+
     
 	}
 
@@ -104,7 +109,8 @@ namespace Framework
         space->hooks.Call("Draw");
     }
     Lua::CallFunc(ENGINE->Lua(), "hook.Call", "Draw");
-
+    m_renderContext->EndBatch();
+    m_renderContext->StartBatch();
     // Post Draw
     for (auto it = ENGINE->Spaces().begin(); it != ENGINE->Spaces().end(); ++it)
     {
@@ -113,7 +119,7 @@ namespace Framework
         space->hooks.Call("PostDraw");
     }
     Lua::CallFunc(ENGINE->Lua(), "hook.Call", "PostDraw");
-
+    m_renderContext->EndBatch();
     Message m(Message::PostDraw);
     ENGINE->SystemMessage(m);
     
@@ -121,14 +127,14 @@ namespace Framework
 
   void SheepGraphics::StartFrame()
   {
-    m_renderContext->ClearBackBuffer();
-    m_renderContext->ClearDepthBuffer();
     UpdateCamera();
+    m_renderContext->frameStart();
+    m_renderContext->StartBatch();
   }
 
   void SheepGraphics::FinishFrame()
   {
-    m_renderContext->Present();
+    m_renderContext->frameEnd();
   }
 
   void SheepGraphics::SetPosition(float x, float y)
@@ -214,19 +220,7 @@ namespace Framework
 
   void SheepGraphics::DrawSprite(Sprite *sprite)
   {
-
-    m_renderContext->BindVertexShader(spritevShader);
-
-    m_renderContext->BindPixelShader(spritepShader);
-
-    m_renderContext->BindVertexBuffer(spriteQuad,20,0);
-
-    m_renderContext->BindTexture(0,sprite->GetTexture());
-
-    m_renderContext->BindConstantBuffer(0, spriteContext, DirectSheep::VERTEX_SHADER);
-    m_renderContext->BindConstantBuffer(0, spriteContext, DirectSheep::PIXEL_SHADER);
-
-    m_renderContext->Draw(6,0);
+    m_renderContext->DrawBatched(sprite->GetTexture());
   }
 
   void SheepGraphics::RawDraw(void)
@@ -277,4 +271,25 @@ namespace Framework
     DirectSheep::Dimension texSize = m_renderContext->GetTextureSize(texture);
     return Vec2((float)texSize.width, (float)texSize.height);
   }
+
+  bool SheepGraphics::LoadAssets(std::string& filepath)
+  {
+    path p(filepath);
+
+    if (exists(p))
+    {
+      if (is_directory(p))
+      {
+        for (directory_iterator it(p), end; it != end; ++it)
+        {
+          std::string foo = it->path().extension().generic_string();
+          if (it->path().extension().generic_string() == ".png" || it->path().extension().generic_string() == ".jpg")
+            SetTexture(it->path().generic_string());
+        }
+      }
+      return true;
+    }
+    return false;
+  }
+  
 }
