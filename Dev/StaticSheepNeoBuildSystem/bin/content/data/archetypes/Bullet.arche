@@ -30,6 +30,10 @@ GameObject
   CircleCollider
   {
     m_radius float 4.000000
-    m_materialName std::string "Bounce"
+    m_materialName std::string "Steel"
+    m_hasCollisionCallback bool true
+  }
+  Bullet_Default
+  {
   }
 }

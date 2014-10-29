@@ -9,6 +9,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 #pragma once
 
+#include <boost/unordered_map.hpp>
+
 namespace Framework
 {
 
@@ -90,10 +92,10 @@ namespace Framework
     GameSpace* space;
 
   private:
-    void Verify(std::string& eventName);
+    void Verify(std::string eventName);
 
     ObjectAllocator HookCollections;
-    std::unordered_map<std::string, HookCollection*> HookMap;
+    boost::unordered::unordered_map<std::string, HookCollection*> HookMap;
   };
 
   template <typename Arg1>

@@ -55,6 +55,7 @@ namespace Framework
     : Generic(eGameObject),
     archetype(),
     name(),
+    m_allocated(true),
     tweakLookup(nullptr),
     tweakCCompCallbacks(nullptr),
     tweakLuaCompCallbacks(nullptr)
@@ -140,8 +141,7 @@ namespace Framework
     }
     
 
-    name.~basic_string();
-    archetype.~basic_string();
+    m_allocated = false;
   }
 
   void GameObject::Copy(GameObject& rhs)

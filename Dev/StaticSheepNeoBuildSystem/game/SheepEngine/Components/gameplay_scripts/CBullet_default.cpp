@@ -23,6 +23,8 @@ namespace Framework
 
 	void Bullet_Default::Remove()
 	{
+    space->GetGameObject(owner)->hooks.Remove("OnCollision", self);
+		space->hooks.Remove("LogicUpdate", self);
 
 	}
 
@@ -33,7 +35,7 @@ namespace Framework
 
 	void Bullet_Default::OnCollision(Handle otherObject)
 	{
-
+		space->GetGameObject(owner)->Destroy();
 	}
 
 

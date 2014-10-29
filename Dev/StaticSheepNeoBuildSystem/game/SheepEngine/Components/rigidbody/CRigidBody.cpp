@@ -12,7 +12,7 @@ namespace Framework
 	//constructor
 	RigidBody::RigidBody(SheepFizz::Shapes shape) :
 		m_shape(shape), m_width(12), m_height(12), m_materialName("Wood"),
-		m_material(nullptr)
+		m_material(nullptr), m_hasCollisionCallback(false)
 	{
 
 	}
@@ -33,7 +33,7 @@ namespace Framework
 		//temp vec for holding position
 		Vec3 position = trans->GetTranslation();
 		float rotation = trans->GetRotation();
-    m_hasCollisionCallback = false;
+
 			//check if the shape is a circle or rectangle
 			//if so, add a body and return the pointer to the component
 		if(m_shape == SheepFizz::Cir || m_shape == SheepFizz::Rec)

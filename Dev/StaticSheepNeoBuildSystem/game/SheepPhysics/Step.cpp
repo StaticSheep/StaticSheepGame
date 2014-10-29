@@ -151,10 +151,10 @@ namespace SheepFizz
 			case Rec:
 				{
 					//create the rectangle shape
-					Rectangle* rec = (Rectangle*)shapes_[Rec].Allocate();
-					new (rec) Rectangle(xradius, yval);
-					rec->self = handles_.Insert(rec);
-					handles_.SyncHandles<Rectangle>(shapes_[Rec]);
+          Rectangle* rec = new Rectangle(xradius, yval);  //(Rectangle*)shapes_[Rec].Allocate();
+          /*new (rec) Rectangle(xradius, yval);
+          rec->self = handles_.Insert(rec);
+          handles_.SyncHandles<Rectangle>(shapes_[Rec]);*/
 			
 					//then add the body
 					Body* body = (Body*)bodies_.Allocate();
@@ -170,10 +170,10 @@ namespace SheepFizz
 			case Cir:
 				{
 					//create the circle shape
-					Circle* cir = (Circle*)shapes_[Cir].Allocate();
-					new (cir) Circle(xradius);
-					cir->self = handles_.Insert(cir);
-					handles_.SyncHandles<Circle>(shapes_[Cir]);
+          Circle* cir = new Circle(xradius);
+          /*new (cir) Circle(xradius);
+          cir->self = handles_.Insert(cir);
+          handles_.SyncHandles<Circle>(shapes_[Cir]);*/
 			
 					//then add the body
 					Body* body = (Body*)bodies_.Allocate();
@@ -213,17 +213,22 @@ namespace SheepFizz
 	{
 		//find body point from handle, then identify shape handle and pointer
 		Body* body = (Body*)handles_.Get(handle);
-		Shape* shape = (Shape*)handles_.Get(body->shape_->self);
+    Shape* shape = body->shape_;
+
+    handles_.Remove(body->self);
 		
 		//free shape and release handle
-		Shape* shapeRemoved = (Shape*)shapes_[body->shape_->GetShape()].Free(shape);
-		if(shapeRemoved)
-			handles_.Update(shapeRemoved, shapeRemoved->self);
+    /*Shape* shapeRemoved = (Shape*)shapes_[body->shape_->GetShape()].Free(shape);
+    if(shapeRemoved)
+    handles_.Update(shapeRemoved, shapeRemoved->self);*/
+
+    
 		
 		//free body and release handle
 		Body* bodyRemoved = (Body*)bodies_.Free(body);
 		if(bodyRemoved)
 			handles_.Update(bodyRemoved, bodyRemoved->self);
+
 	}//end of RemoveBody
 	//*************
 
@@ -277,7 +282,7 @@ namespace SheepFizz
 		}
 
 		//send manifold data back to engine for game logic
-		for(int i = 0; i < manifolds_.size(); ++i)
+		for(size_t i = 0; i < manifolds_.size(); ++i)
 		{
       if (manifolds_[i].A->collisionCallback_ || manifolds_[i].B->collisionCallback_)
 			  cb_(manifolds_[i].A->userData, manifolds_[i].B->userData, userData_);

@@ -8,6 +8,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 #include "pch/precompiled.h"
 #include <utility>
+#include <boost/unordered_map.hpp>
 
 namespace Framework
 {
@@ -69,15 +70,14 @@ namespace Framework
 
   HookManager::~HookManager()
   {
-    ClearAll();
+    //ClearAll();
   }
 
-  void HookManager::Verify(std::string& eventName)
+  void HookManager::Verify(std::string eventName)
   {
     if (HookMap.find(eventName) == HookMap.end())
     {
-      HookCollection* hc = (HookCollection*)HookCollections.Allocate();
-      new (hc) HookCollection(space);
+      HookCollection* hc = new HookCollection(space);
       
       HookMap[eventName] = hc;
     }
@@ -86,13 +86,27 @@ namespace Framework
 
   void HookManager::Add(std::string eventName, Handle owner, const Function& func)
   {
+    if (reinterpret_cast<unsigned int>(&HookMap.end()) == 0xCDCDCDCD)
+    {
+      int crash = 10;
+    }
+
     Verify(eventName);
+
+    if (reinterpret_cast<unsigned int>(&HookMap.end()) == 0xCDCDCDCD)
+    {
+      int crash = 10;
+    }
 
     HookMap.at(eventName)->Add(owner, func);
   }
 
   void HookManager::Call(std::string eventName)
   {
+    if (reinterpret_cast<unsigned int>(&HookMap.end()) == 0xCDCDCDCD)
+    {
+      int crash = 10;
+    }
     if (HookMap.find(eventName) != HookMap.end())
     {
       HookMap.at(eventName)->Trigger();
@@ -115,12 +129,8 @@ namespace Framework
 
   void HookManager::ClearAll()
   {
-    for(auto it = HookMap.begin(); it != HookMap.end(); ++it)
-    {
-      it->second->~HookCollection();
-    }
-    if (HookMap.size() > 0)
-      HookMap.clear();
+    HookMap.empty();
+    HookCollections.Clear();
   }
 
   

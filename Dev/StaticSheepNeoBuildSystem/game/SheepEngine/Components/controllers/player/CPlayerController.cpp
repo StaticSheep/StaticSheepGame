@@ -14,7 +14,7 @@ namespace Framework
 		//set defaults
 		playerNum = 0;
 		playerGamePad = Handle::null;
-		isSnapped = false;
+		isSnapped = true;
 		hasFired = false;
 		snappedTo = NULL;
 	}
@@ -67,14 +67,11 @@ namespace Framework
 		{
 			bc->SetVelocity(Vec3(0.0f, 0.0f, 0.0f));
 			bc->AddToVelocity(Vec3(150.0f, 0.0f, 0.0f));
-      bc->SetAngVelocity(0.0);
-			
 		}
 		else if (gp->LeftStick_X() < -0.2)
 		{
 			bc->SetVelocity(Vec3(0.0f, 0.0f, 0.0f));
 			bc->AddToVelocity(Vec3(-150.0f, 0.0f, 0.0f));
-      bc->SetAngVelocity(0.0f);
 		}
 
 		//jump
@@ -95,7 +92,7 @@ namespace Framework
 
 		if (gp->ButtonPressed(XButtons.X))
 		{
-			bc->AddToAngVelocity(.5f);
+			//bc->AddToAngVelocity(.5f);
 		}
 
 
@@ -104,6 +101,7 @@ namespace Framework
 
 	void PlayerController::OnCollision(Handle otherObject)
 	{
+		isSnapped = true;
 		//get the thing we are colliding with
 		GameObject *OtherObject = space->GetHandles().GetAs<GameObject>(otherObject);
 		//get the transform of the thing we are colliding with
@@ -123,7 +121,6 @@ namespace Framework
 			CircleCollider *OOCc = space->GetHandles().GetAs<CircleCollider>(otherObject);
 
 		}
-		isSnapped = true;
 
 	}
 

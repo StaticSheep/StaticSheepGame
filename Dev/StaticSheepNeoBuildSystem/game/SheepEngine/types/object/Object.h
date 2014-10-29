@@ -159,9 +159,13 @@ namespace Framework
 
       /*========================== END EDITOR =========================*/
 
+      
+
 	    HookManager hooks;
 
     private:
+
+      bool m_allocated = false;
 
       // Active flag, if the object is inactive it will be removed
       bool m_active;

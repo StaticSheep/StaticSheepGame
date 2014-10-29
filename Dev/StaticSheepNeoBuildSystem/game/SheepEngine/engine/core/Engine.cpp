@@ -262,6 +262,10 @@ namespace Framework
 
   }
 
+  bool Engine::PlayingInEditor()
+  {
+	  return ENGINE->m_PIE;
+  }
 
   // This is a static function!
   void Engine::PlayInEditor(bool play)
@@ -296,6 +300,7 @@ namespace Framework
       {
         gameSpaces[i]->SetPaused(false);
         gameSpaces[i]->m_edit = false;
+		gameSpaces[i]->tweakHandle = Handle::null;
       }
     }
     else

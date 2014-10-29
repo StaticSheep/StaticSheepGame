@@ -22,6 +22,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/gamepad/CGamePad.h"
 #include "components/colliders/CCircleCollider.h"
 #include "components/controllers/player/CPlayerController.h"
+#include "components/gameplay_scripts/CBullet_default.h"
 
 namespace Framework
 {
@@ -155,6 +156,9 @@ namespace Framework
 	TYPE_REGISTER(PlayerController);
 	TYPE_SET_TWEAK_TYPE(PlayerController, AntTweak::TW_TYPE_COMPONENT);
 	TYPE_ADD_MEMBER(PlayerController, playerNum, false, true, "Player Number");
+
+	TYPE_REGISTER(Bullet_Default);
+	TYPE_SET_TWEAK_TYPE(Bullet_Default, AntTweak::TW_TYPE_COMPONENT);
 
     TYPE_REGISTER( BoxCollider );
     TYPE_ADD_MEMBER( BoxCollider, m_width, false, true, "Width");

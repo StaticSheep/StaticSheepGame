@@ -48,9 +48,9 @@ namespace Framework
 		GameSpace* space = (GameSpace*)Space_userData;
 
 		GameObject* AObj = space->GetHandles().GetAs<GameObject>(A_object);
-		GameObject* BObj = space->GetHandles().GetAs<GameObject>(B_object);
+    AObj->hooks.Call("OnCollision", B_object);
 
-		AObj->hooks.Call("OnCollision", B_object);
+		GameObject* BObj = space->GetHandles().GetAs<GameObject>(B_object);
 		BObj->hooks.Call("OnCollision", A_object);
 	}//end of CollisionCallback
 
