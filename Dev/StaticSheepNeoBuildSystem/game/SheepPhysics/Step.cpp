@@ -66,6 +66,18 @@ namespace SheepFizz
     Body* body = handles_.GetAs<Body>(handle);
     body->collisionCallback_ = collisionCallback;
   }
+
+ /* void PhysicsSpace::SetBody(Handle handle, unsigned int gravityOn_)
+  {
+    Body* body = handles_.GetAs<Body>(handle);
+    body->collisionCallback_ = collisionCallback;
+  }
+
+  void PhysicsSpace::SetBodyCollisionCallback(Handle handle, bool collisionCallback)
+  {
+    Body* body = handles_.GetAs<Body>(handle);
+    body->collisionCallback_ = collisionCallback;
+  }*/
 	
 	//end of settors
 	//*************

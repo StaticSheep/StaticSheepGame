@@ -11,7 +11,7 @@ namespace Framework
 		Bullet_Default();
 		~Bullet_Default();
 		void LogicUpdate(float dt);
-		void OnCollision(Handle otherObject);
+    void OnCollision(Handle otherObject, SheepFizz::ExternalManifold manifold);
 		void Initialize();
 		void Remove();
 

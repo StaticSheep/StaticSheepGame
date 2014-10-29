@@ -39,7 +39,7 @@ namespace Framework
       space->GetGameObject(owner)->Destroy();
 	}
 
-	void Bullet_Default::OnCollision(Handle otherObject)
+  void Bullet_Default::OnCollision(Handle otherObject, SheepFizz::ExternalManifold manifold)
 	{
 		space->GetGameObject(owner)->Destroy();
 	}

@@ -102,12 +102,14 @@ namespace SheepFizz
       else
         frictionImpulse = tangent * -j * mDynamicFriction;
 
-      
-
       //apply friction impulse
       A->ApplyImpulse(-frictionImpulse, aRepulsionVec);
       B->ApplyImpulse(frictionImpulse, bRepulsionVec);
     }
+
+    //debug info - can be removed
+    if (A->shape_->GetShape() == Cir || B->shape_->GetShape() == Cir)
+      return;
 
 
   }//end of ApplyForces
