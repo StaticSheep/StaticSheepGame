@@ -57,9 +57,12 @@ namespace Framework
 			Vec3D GetBodyPosition(GameSpace* space, SheepFizz::Handle handle);
 			Vec3D GetBodyVelocity(GameSpace* space, SheepFizz::Handle handle);
 			Vec3D GetBodyForce(GameSpace* space, SheepFizz::Handle handle);
-			Vec3D GetBodyRotation(GameSpace* space, SheepFizz::Handle handle);
-			Vec3D GetBodyAngVelocity(GameSpace* space, SheepFizz::Handle handle);
-			Vec3D GetBodyTorques(GameSpace* space, SheepFizz::Handle handle);
+			float GetBodyRotation(GameSpace* space, SheepFizz::Handle handle);
+			float GetBodyAngVelocity(GameSpace* space, SheepFizz::Handle handle);
+			float GetBodyTorques(GameSpace* space, SheepFizz::Handle handle);
+
+      //collision
+      Vec3D GetCollisionNormal(GameSpace* space, SheepFizz::Handle handle, void* manifold);
 
 			//settors
 			void SetBodyPosition(GameSpace* space, SheepFizz::Handle handle, Vec3D position);

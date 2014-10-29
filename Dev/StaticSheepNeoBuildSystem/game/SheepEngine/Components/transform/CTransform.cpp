@@ -47,6 +47,7 @@ namespace Framework
   {
     if (m_hasPhysics)
     {
+      newTr /= 32.0f;
       reinterpret_cast<SheepFizz::PhysicsSpace*>(space->m_pSpace)->SetBodyPos(m_pBody, newTr);
     }
     else
@@ -98,7 +99,7 @@ namespace Framework
   {
     if (m_hasPhysics)
     {
-      return reinterpret_cast<SheepFizz::PhysicsSpace*>(space->m_pSpace)->GetBodyPos(m_pBody);
+      return (reinterpret_cast<SheepFizz::PhysicsSpace*>(space->m_pSpace)->GetBodyPos(m_pBody)) * 32.0f;
     }
     else
       return m_translation;

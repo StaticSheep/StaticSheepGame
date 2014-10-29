@@ -59,13 +59,14 @@ namespace SheepFizz
 	
 	//change the dt
 	void PhysicsSpace::SetTime(float dt) {dt_ = dt;}
+  //end of SetTime
 
   void PhysicsSpace::SetBodyCollisionCallback(Handle handle, bool collisionCallback)
   {
     Body* body = handles_.GetAs<Body>(handle);
     body->collisionCallback_ = collisionCallback;
   }
-	//end of SetTime
+	
 	//end of settors
 	//*************
 
@@ -139,6 +140,19 @@ namespace SheepFizz
 	//get the time for the engine
 	float PhysicsSpace::GetTime(void) {return dt_;}
 	//end of GetTime
+
+  Vec3D PhysicsSpace::GetCollisionNorm(void* handle, void* manifold)
+  {
+    if (handle == ((Manifold*)manifold)->A->userData)
+      return ((Manifold*)manifold)->normal;
+
+    if (handle == ((Manifold*)manifold)->B->userData)
+      return -(((Manifold*)manifold)->normal);
+
+    return Vec3D();
+
+  }//end of GetCollisionNormal
+
 	//*************end of gettors
 
 
@@ -146,15 +160,19 @@ namespace SheepFizz
   Handle PhysicsSpace::AddBody(Shapes shape, Material& material, bool collisionCallback, Vec3D position,
 		float xradius, float yval, float orientation, void* userData)
 	{
+    
+    if (locked_)
+      return Handle::null;
+
 		switch(shape)
 		{
 			case Rec:
 				{
 					//create the rectangle shape
-          Rectangle* rec = new Rectangle(xradius, yval);  //(Rectangle*)shapes_[Rec].Allocate();
-          /*new (rec) Rectangle(xradius, yval);
-          rec->self = handles_.Insert(rec);
-          handles_.SyncHandles<Rectangle>(shapes_[Rec]);*/
+					Rectangle* rec = (Rectangle*)shapes_[Rec].Allocate();
+					new (rec) Rectangle(xradius, yval);
+					rec->self = handles_.Insert(rec);
+					handles_.SyncHandles<Rectangle>(shapes_[Rec]);
 			
 					//then add the body
 					Body* body = (Body*)bodies_.Allocate();
@@ -170,10 +188,10 @@ namespace SheepFizz
 			case Cir:
 				{
 					//create the circle shape
-          Circle* cir = new Circle(xradius);
-          /*new (cir) Circle(xradius);
-          cir->self = handles_.Insert(cir);
-          handles_.SyncHandles<Circle>(shapes_[Cir]);*/
+					Circle* cir = (Circle*)shapes_[Cir].Allocate();
+					new (cir) Circle(xradius);
+					cir->self = handles_.Insert(cir);
+					handles_.SyncHandles<Circle>(shapes_[Cir]);
 			
 					//then add the body
 					Body* body = (Body*)bodies_.Allocate();
@@ -213,28 +231,26 @@ namespace SheepFizz
 	{
 		//find body point from handle, then identify shape handle and pointer
 		Body* body = (Body*)handles_.Get(handle);
-    Shape* shape = body->shape_;
-
-    handles_.Remove(body->self);
+		Shape* shape = (Shape*)handles_.Get(body->shape_->self);
 		
 		//free shape and release handle
-    /*Shape* shapeRemoved = (Shape*)shapes_[body->shape_->GetShape()].Free(shape);
-    if(shapeRemoved)
-    handles_.Update(shapeRemoved, shapeRemoved->self);*/
-
-    
+		Shape* shapeRemoved = (Shape*)shapes_[body->shape_->GetShape()].Free(shape);
+		if(shapeRemoved)
+			handles_.Update(shapeRemoved, shapeRemoved->self);
 		
 		//free body and release handle
 		Body* bodyRemoved = (Body*)bodies_.Free(body);
 		if(bodyRemoved)
 			handles_.Update(bodyRemoved, bodyRemoved->self);
-
 	}//end of RemoveBody
 	//*************
 
 	//this function advances the game forward one dt
 	void PhysicsSpace::Step(void)
 	{
+
+    locked_ = true;
+
 		//iterate through list of bodies
 		for(unsigned i = 0; i < bodies_.Size(); ++i)
 		{
@@ -282,7 +298,7 @@ namespace SheepFizz
 		}
 
 		//send manifold data back to engine for game logic
-		for(size_t i = 0; i < manifolds_.size(); ++i)
+		for(unsigned int i = 0; i < manifolds_.size(); ++i)
 		{
       if (manifolds_[i].A->collisionCallback_ || manifolds_[i].B->collisionCallback_)
 			  cb_(manifolds_[i].A->userData, manifolds_[i].B->userData, userData_);
@@ -290,6 +306,8 @@ namespace SheepFizz
 
 		//empty manifold list;
 		manifolds_.clear();
+
+    locked_ = false;
 
 	}//end of Step
 	//*************

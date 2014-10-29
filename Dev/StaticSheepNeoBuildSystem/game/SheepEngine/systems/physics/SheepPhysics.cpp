@@ -107,6 +107,10 @@ namespace Framework
 		//return a sheepfizz handle
 		SheepFizz::Handle handle = ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->AddBody(shape, material, 
       collisionCallback, position, xradius, yval, orientation, (void*)((unsigned)obj->self));
+
+    ErrorIf(handle == Handle::null, "Sheep Physics", 
+      "Null handle returned from Physics! You're probably creating a physics body when you shouldn't be!");
+
 		return handle;
 	}//end of AddBodies
 
@@ -127,20 +131,25 @@ namespace Framework
 		return ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->GetBodyForce(handle);
 	}//end of GetBodyForce
 
-	Vec3D SheepPhysics::GetBodyRotation(GameSpace* space, SheepFizz::Handle handle)
+	float SheepPhysics::GetBodyRotation(GameSpace* space, SheepFizz::Handle handle)
 	{
 		return ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->GetBodyRot(handle);
 	}//end of GetBodyRotation
 
-	Vec3D SheepPhysics::GetBodyAngVelocity(GameSpace* space, SheepFizz::Handle handle)
+	float SheepPhysics::GetBodyAngVelocity(GameSpace* space, SheepFizz::Handle handle)
 	{
 		return ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->GetBodyAngVeloc(handle);
 	}//end of GetBodyAngVeloc
 
-	Vec3D SheepPhysics::GetBodyTorques(GameSpace* space, SheepFizz::Handle handle)
+	float SheepPhysics::GetBodyTorques(GameSpace* space, SheepFizz::Handle handle)
 	{
 		return ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->GetBodyTorque(handle);
 	}//end of GetBodyTorques
+
+  Vec3D SheepPhysics::GetCollisionNormal(GameSpace* space, SheepFizz::Handle handle, void* manifold)
+  {
+    return ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->GetCollisionNorm((void*)(unsigned int)handle, manifold);
+  }//end of GetBodyTorques
 
 	//settors
 	void SheepPhysics::SetBodyPosition(GameSpace* space, SheepFizz::Handle handle, Vec3D position)
