@@ -48,6 +48,9 @@ namespace Framework
   Fraction  FloatToFraction(float);
   double    SquareRoot(float);
   void      Normalize(Vec3D*);
+  int       GetRandom(int min, int max);
+  float     Minimum(float a, float b);
+  float     Maximum(float a, float b);
   float     CatSpline(double, float, float, float, float);
   float     Minimum(float a, float b);
   float     Maximum(float a, float b);

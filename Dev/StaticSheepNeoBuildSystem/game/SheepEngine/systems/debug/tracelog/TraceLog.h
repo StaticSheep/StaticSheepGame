@@ -29,6 +29,8 @@ namespace Framework
     Tracelog(TRACELOG_LEVEL, const char* = NULL);
     ~Tracelog();
 
+    void Initialize(TRACELOG_LEVEL, const char* = NULL);
+
     // method for printing out to the tracelog
     bool Log(TRACELOG_LEVEL, const char* format, ...);
 

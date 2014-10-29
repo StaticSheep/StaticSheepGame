@@ -19,6 +19,24 @@
 namespace Framework
 {
 
+  float Vec3D::Length()
+  {
+    return sqrtf(x * x + y * y + z * z);
+  }
+
+  float Vec3D::SquareLength()
+  {
+    return (x * x + y * y + z * z);
+  }
+
+  Vec3D Vec3D::CalculateNormal()
+  {
+    Vec3D normal(*this);
+    normal.Normalize();
+
+    return normal;
+  }
+
 /*****************************************************************************/
 /*!
     \brief
@@ -36,6 +54,7 @@ namespace Framework
     
     x /= length;
     y /= length;
+    z /= length;
     
     return *this;
   }
@@ -97,7 +116,10 @@ namespace Framework
 /*****************************************************************************/
   Vec3D& Vec3D::operator+=(const Vec3D& rhs)
   {
-    *this = Vec3D(x + rhs.x, y + rhs.y, z + rhs.z);
+    x += rhs.x;
+    y += rhs.y;
+    z += rhs.z;
+
     return *this;
   }
   
@@ -120,7 +142,10 @@ namespace Framework
 /*****************************************************************************/
   Vec3D& Vec3D::operator-=(const Vec3D& rhs)
   {
-    *this = Vec3D(x - rhs.x, y - rhs.y, z - rhs.z);
+    x -= rhs.x;
+    y -= rhs.y;
+    z -= rhs.z;
+
     return *this;
   }
   
@@ -132,7 +157,7 @@ namespace Framework
 /*****************************************************************************/
   Vec3D Vec3D::operator-() const
   {
-    return Vec3D(-x,-y, -z);
+    return Vec3D(-x,-y,-z);
   }
   
 /*****************************************************************************/
@@ -154,7 +179,7 @@ namespace Framework
 /*****************************************************************************/
   Vec3D Vec3D::operator/(float scalar) const
   {
-    return Vec3D(x / scalar, y / scalar, z);
+    return Vec3D(x / scalar, y / scalar, z / scalar);
   }
   
 /*****************************************************************************/
@@ -165,7 +190,10 @@ namespace Framework
 /*****************************************************************************/
   Vec3D& Vec3D::operator/=(float scalar)
   {
-    *this = Vec3D(x / scalar, y / scalar, z);
+    x /= scalar;
+    y /= scalar;
+    z /= scalar;
+
     return *this;
   }
   
@@ -177,7 +205,7 @@ namespace Framework
 /*****************************************************************************/
   Vec3D Vec3D::operator*(float scalar) const
   {
-    return Vec3D(x * scalar, y * scalar, z);
+    return Vec3D(x * scalar, y * scalar, z * scalar);
   }
   
 /*****************************************************************************/
@@ -188,7 +216,10 @@ namespace Framework
 /*****************************************************************************/
   Vec3D& Vec3D::operator*=(float scalar)
   {
-    *this = Vec3D(x * scalar, y * scalar, z);
+    x *= scalar;
+    y *= scalar;
+    z *= scalar;
+
     return *this;
   }
   

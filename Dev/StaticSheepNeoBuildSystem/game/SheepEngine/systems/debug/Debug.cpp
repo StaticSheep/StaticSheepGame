@@ -8,18 +8,16 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 // debug needs to know about all of the systems.... sigh...
 #include "pch/precompiled.h"
-
+#include <Windows.h>
 #include "systems/debug/Debug.h"
 #include "systems/debug/tracelog/TraceLog.h"
-
 #include "systems/audio/SheepAudio.h"
 #include "systems/graphics/SheepGraphics.h"
-#include "systems/input/Input.h"
+//#include "systems/input/Input.h"
+#include "systems/skynet/Skynet.h"
 #include "engine/framerate/FramerateController.h"
 #include "systems/graphics/DrawLib.h"
 #include "engine/window/Window32.h"
-
-#include <Windows.h>
 
 static bool fpsFlag;
 static bool performanceFlag;
@@ -75,6 +73,11 @@ namespace Framework
     {
       graphics = (DebugGraphics*)GRAPHICS->GetDebugData();
       TRACELOG->Log(DEBUG, "Linked to Graphics system\n");
+    }
+    
+    if (SHEEPINPUT)
+    {
+      input = (DebugInput*)SHEEPINPUT->GetDebugData();
     }
 
     
@@ -133,9 +136,9 @@ namespace Framework
         if(SHEEPINPUT->Keyboard.KeyIsDown(VK_RIGHT))
           currentX += 1.0f;
 
-        Draw::SetRotation(0.0f);
+        Draw::SetRotation(3.14159f);
         Draw::SetUseCamera(false);
-        Draw::SetPosition( ENGINE->Window->GetWidth() / -2.0f, 0.0f);
+        Draw::SetPosition( 0.0f, 0.0f);
         Draw::SetColor(1.0f,1.0f,1.0f,1.0f);
         Draw::DrawString(fps_string.c_str(), 15.0f, "Helvetica");
         Draw::SetUseCamera(true);
@@ -178,6 +181,17 @@ namespace Framework
 
           
 
+          break;
+
+        case DEBUG_INPUT:
+          SHEEPINPUT->GetDebugData();
+          FormatString(currentState);
+          Draw::SetUseCamera(false);
+          Draw::SetColor(1.0f, 1.0f, 1.0f, 1.0f);
+          Draw::SetRotation(3.14159f);
+          Draw::SetPosition(ENGINE->Window->GetWidth() / -4.0f, ENGINE->Window->GetHeight() / 2.0f - 100.0f);
+          Draw::DrawString(string.c_str(), 15.0f, "Helvetica");
+          Draw::SetUseCamera(true);
           break;
 
         case DEBUG_GRAPHICS:
@@ -233,6 +247,37 @@ namespace Framework
                "RAM Allocated: " + std::to_string(audio->RAM / 1000000) + "." + std::to_string((audio->RAM / 100000) % 10) + " mb\n"
                "Channels Playing: " + std::to_string(audio->channels) + "\n"
                "Total Time Taken : " + std::to_string(timetaken).erase(4,std::string::npos) + "ms\n";
+      break;
+
+    case DEBUG_INPUT:
+      format1 = std::to_string(input->pads[0].State.Gamepad.sThumbLX / 32767.0f);
+      format2 = std::to_string(input->pads[0].State.Gamepad.sThumbLY / 32767.0f);
+
+      format1.erase(4, std::string::npos);
+      format2.erase(4, std::string::npos);
+
+      string = "LX: " + format1 + " LY: " + format2 + "\n";
+
+      format1 = std::to_string(input->pads[0].State.Gamepad.sThumbRX / 32767.0f);
+      format2 = std::to_string(input->pads[0].State.Gamepad.sThumbRY / 32767.0f);
+
+      format1.erase(4, std::string::npos);
+      format2.erase(4, std::string::npos);
+
+      string += "RX: " + format1 + " RY: " + format2 + "\n";
+
+      format1 = std::to_string(input->pads[0].State.Gamepad.bLeftTrigger / 255.0f);
+      format2 = std::to_string(input->pads[0].State.Gamepad.bRightTrigger / 255.0f);
+
+      format1.erase(4, std::string::npos);
+      format2.erase(4, std::string::npos);
+
+      string += "Left Trigger " + format1 + " Right Trigger" + format2 + "\n";
+
+      format1 = std::to_string(input->pads[0].State.Gamepad.wButtons);
+
+      string += format1;
+
       break;
 
     default:
@@ -339,7 +384,7 @@ namespace Framework
     for(int i = 0; i < performance.systemCount; ++i)
     {
       Draw::SetColor(performance.color[i].R, performance.color[i].G, performance.color[i].B, 1.0f);
-      Draw::SetRotation(0.0f);
+      Draw::SetRotation(3.14159f);
       
       Draw::DrawRect((ENGINE->Window->GetWidth() / 2.0f) - performance.pos[i] - 4.0f, (ENGINE->Window->GetHeight() / 2.0f) - 16.0f, performance.width[i], 24.0f);
 
@@ -401,6 +446,14 @@ namespace Framework
         currentState = 0;
       else
         currentState = DEBUG_GRAPHICS;
+    }
+
+    if (SHEEPINPUT->Keyboard.KeyIsPressed(VK_F7))
+    {
+      if (currentState == DEBUG_INPUT)
+        currentState = 0;
+      else
+        currentState = DEBUG_INPUT;
     }
 
     // Add more states here.

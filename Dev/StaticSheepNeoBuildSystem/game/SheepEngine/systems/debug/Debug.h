@@ -1,17 +1,19 @@
+
 #include "systems/System.h"
-#include <vector>
 
 namespace Framework
 {
   struct DebugAudio;
   struct DebugGraphics;
   struct DebugFramerate;
+  struct DebugInput;
 
   enum DebugState
   {
     DEBUG_AUDIO = 1,
     DEBUG_GRAPHICS,
-    DEBUG_PERFORMANCE
+    DEBUG_PERFORMANCE,
+    DEBUG_INPUT
   };
 
   struct PerformanceData
@@ -52,6 +54,7 @@ namespace Framework
     DebugAudio*     audio;
     DebugGraphics*  graphics;
     DebugFramerate* framerate;
+    DebugInput*     input;
 
   };
 }

@@ -25,8 +25,13 @@ namespace Framework
     // conversion constructor, assume vector
     Vec3D(const Vec2D& copy) { x = copy.x; y = copy.y; z = 0.0f;};
     
-	//copy constructor
-	Vec3D(const Vec3D& copy) { x = copy.x; y = copy.y; z = copy.z; };
+	  //copy constructor
+	  Vec3D(const Vec3D& copy) { x = copy.x; y = copy.y; z = copy.z; };
+
+    // getters
+    float Length();
+    float SquareLength();
+    Vec3D CalculateNormal();
 
     // setters
     Vec3D& Normalize();

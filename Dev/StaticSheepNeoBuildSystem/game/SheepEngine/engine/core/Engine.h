@@ -116,6 +116,7 @@ namespace Framework
     void CheckReturnFromPIE(void);
 
     friend class GameLogic;
+    friend class FramerateController;
   };
 
 
