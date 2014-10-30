@@ -51,6 +51,8 @@ namespace Framework
       //collision
       virtual void SetBodyCollisionCallback(bool collisionCallback);
       virtual Vec3D GetCollisionNormals(SheepFizz::ExternalManifold manifold);
+      virtual void SetCollisionString(std::string value);
+      virtual std::string GetCollisionString(void);
 
       //gettors
       virtual Vec3D GetCurrentVelocity(void);

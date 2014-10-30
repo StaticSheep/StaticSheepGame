@@ -93,6 +93,7 @@ namespace Framework
 		m_materials.insert(std::pair<std::string, SheepFizz::Material>("Fluff", Fluff));
 		m_materials.insert(std::pair<std::string, SheepFizz::Material>("Bounce", Bounce));
 		m_materials.insert(std::pair<std::string, SheepFizz::Material>("Static", Static));
+
 	}//end of Initialize
 
 	//add circles or rectangles
@@ -158,6 +159,11 @@ namespace Framework
     return ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->GetBodyGravityNormal(handle);
   }
 
+  std::string GetCollisionString(GameSpace* space, Framework::Handle ownerHandle)
+  {
+    return ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->GetCollisionString(handle);
+  }
+
 	//settors
 	void SheepPhysics::SetBodyPosition(GameSpace* space, SheepFizz::Handle handle, Vec3D position)
 	{
@@ -199,6 +205,12 @@ namespace Framework
   {
     ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->SetBodyCollisionCallback(handle, collisionCallback);
   }
+
+  void SetCollisionString(GameSpace* space, SheepFizz::Handle handle, std::string value)
+  {
+    ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->SetCollisionString(handle, value);
+  }
+
 
   //gravity functions
   void SheepPhysics::SetBodyGravityOn(GameSpace* space, SheepFizz::Handle handle)

@@ -38,7 +38,7 @@ project "SheepPhysics"
 		-- collapse header dir structure
 		"platform",
 
-		--Core.includedirs
+		depsdir .. "/boost_1_55",
 	}
 
 	deps
@@ -73,8 +73,7 @@ project "SheepPhysics"
 	configuration "Debug"
 		defines
 		{
-			"DEBUG"
-			, "_DEBUG"
+			"_DEBUG"
 			, "MEMORY_DEBUGGING"
 			,"_HAS_ITERATOR_DEBUGGING=1"
 			, "_SECURE_SCL=1"

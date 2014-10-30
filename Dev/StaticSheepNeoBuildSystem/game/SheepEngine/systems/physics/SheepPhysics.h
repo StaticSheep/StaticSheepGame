@@ -65,6 +65,7 @@ namespace Framework
 
       //collision
       Vec3D GetCollisionNormal(GameSpace* space, Framework::Handle ownerHandle , SheepFizz::ExternalManifold manifold);
+      std::string GetCollisionString(GameSpace* space, Framework::Handle ownerHandle);
 
 			//settors
 			void SetBodyPosition(GameSpace* space, SheepFizz::Handle handle, Vec3D position);
@@ -79,8 +80,10 @@ namespace Framework
       void SetBodyGravityOff(GameSpace* space, SheepFizz::Handle handle);
       void SetBodyGravityNormal(GameSpace* space, SheepFizz::Handle handle, Vec3D normal);
 
+      //collision
       void SetBodyCollisionCallback(GameSpace* space, SheepFizz::Handle handle, bool collisionCallback);
-			
+      void SetCollisionString(GameSpace* space, SheepFizz::Handle handle, std::string value);
+
 			//adders
 			void AddToBodyVelocity(GameSpace* space, SheepFizz::Handle handle, Vec3D velocity);
 			void AddToBodyForce(GameSpace* space, SheepFizz::Handle handle, Vec3D force);

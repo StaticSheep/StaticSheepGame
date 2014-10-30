@@ -4,12 +4,16 @@
 #include "Manifold.h"
 #endif
 
+#include <vector>
+#include <unordered_map>
+#include <utility>
+#include <array>
+
+#include <boost/graph/grid_graph.hpp>
+
 #include "Material.h"
 #include "Shape.h"
 #include "Vec3D.h"
-#include <vector>
-
-
 
 namespace SheepFizz
 {
@@ -35,12 +39,17 @@ namespace SheepFizz
       modifiedGravity_ = GRAVITY / meterScale_;
 			shapes_[Rec].Initialize(sizeof(Rectangle), 1000);
 			shapes_[Cir].Initialize(sizeof(Circle), 1000);
-			//shapes_[Poly].Initialize(sizeof(Polygon), 10);
+      //shapes_[Poly].Initialize(sizeof(Polygon), 10);
+
+      Initialize();
 		}
 
 		//destroy all shapes and bodies remaining
 		~PhysicsSpace(void) {}
 
+    //engine only functions, not exposed
+    void Initialize(void);
+    
 		//body settors
 		PHY_API void SetBodyPos(Handle handle, Vec3D position);
 		PHY_API void SetBodyVeloc(Handle handle, Vec3D velocity);
@@ -48,6 +57,10 @@ namespace SheepFizz
 		PHY_API void SetBodyRot(Handle handle, float rot);
 		PHY_API void SetBodyAngVeloc(Handle handle, float angveloc);
 		PHY_API void SetBodyTorque(Handle handle, float torque);
+
+    //set collision groups
+    PHY_API void SetCollisionString(Handle handle, std::string value);
+    PHY_API void SetBodyCollisionCallback(Handle handle, bool collisionCallback);
 
     //gravity
     PHY_API void SetBodyGravityOn(Handle handle);
@@ -78,9 +91,8 @@ namespace SheepFizz
 		PHY_API float GetTime(void);
 
     //collision functions
-    PHY_API void SetBodyCollisionCallback(Handle handle, bool collisionCallback);
     PHY_API Vec3D GetCollisionNorm(void* handle, ExternalManifold manifold);
-
+    PHY_API std::string GetCollisionString(Handle handle);
 
 		//add bodies to the body vector
     PHY_API Handle AddBody(
@@ -135,7 +147,17 @@ namespace SheepFizz
 			ObjectAllocator shapes_[Count];
 			HandleManager handles_;
 
+      //tracks the manifolds that run the system
 			std::vector<Manifold> manifolds_;
+
+      //used for collision groups
+      std::unordered_map< std::string, unsigned int> collisionGroups_;
+
+      //collision groupings
+      unsigned int collisionResolution_[10][10] = { { 0, 2, 2, 2, 0, 1, 2 }, { 2, 0, 2, 2, 0, 1, 2 },
+      { 2, 2, 0, 2, 0, 1, 2 }, { 2, 2, 2, 0, 0, 1, 2 }, { 0, 0, 0, 0, 0, 0, 0 }, { 1, 1, 1, 1, 1, 0, 1 },
+      { 2, 2, 2, 2, 0, 1, 2 }, { 0 }, { 0 }, { 0 } };
+      
 
 		#endif
 

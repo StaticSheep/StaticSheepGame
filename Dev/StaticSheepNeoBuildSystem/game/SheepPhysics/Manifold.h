@@ -1,5 +1,6 @@
 #pragma once
 #include "Body.h"
+#include "Step.h"
 
 namespace SheepFizz
 {
@@ -22,7 +23,7 @@ namespace SheepFizz
 		//a manifold has a contact count above 0
 		//calculates the manifold Resitution, StatFric, and DynamFric by taking
 		//the minimum of each
-		void Initialize(void);
+		void Initialize(unsigned int collisionValue);
 
 		//this function simply contains the jump table used to go to other
 		//collision and resolution functions
@@ -47,6 +48,8 @@ namespace SheepFizz
 		float mStaticFriction;		//the static friction of the two objects
 
 		unsigned int contactCount;	//the number of contacts in the manifold
+
+    unsigned int mCollisionResolution; //the collision resolution value
 	
 	};
 
@@ -55,6 +58,5 @@ namespace SheepFizz
 	void CircleRectangleManifold(Manifold& m);
 	void RectangleRectangleManifold(Manifold& m);
 	void CircleCircleManifold(Manifold& m);
-
 
 }

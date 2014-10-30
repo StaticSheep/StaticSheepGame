@@ -1,6 +1,7 @@
 #include "precompiled.h"
 #include "Manifold.h"
 #include "Vec3D.h"
+#include "Step.h"
 
 namespace SheepFizz
 {
@@ -13,8 +14,10 @@ namespace SheepFizz
 	//a manifold has a contact count above 0
 	//calculates the manifold Resitution, StatFric, and DynamFric by taking
 	//the minimum of each
-	void Manifold::Initialize(void)
+	void Manifold::Initialize(unsigned int collisionValue)
 	{
+    mCollisionResolution = collisionValue;
+
 		mResitution = Minimum(A->material_.GetMaterialResitution(), 
 			B->material_.GetMaterialResitution());
 
@@ -30,12 +33,9 @@ namespace SheepFizz
 	void (*manifold[2][2])(Manifold& m) = {{RectangleRectangleManifold, RectangleCircleManifold},
 		{CircleRectangleManifold, CircleCircleManifold}};
 
-
 	//uses enums for instant access to the array values
 	void Manifold::ManifoldInteraction(void)
 	{
-		//check collision group
-		if(A->collisionGroup_ == B->collisionGroup_)
 			manifold[A->shape_->GetShape()][B->shape_->GetShape()](*this);
 	}//end of ManifoldInteraction
 

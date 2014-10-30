@@ -8,7 +8,7 @@ namespace SheepFizz
 	//body requires a shape* to be passed - all others default to base constructors
   Body::Body(Shape* shape, Material& material, bool collisionCallback, Vec3D position, Vec3D velocity,
 		Vec3D force, void* userData, float orientation, float angularVelocity, float torque, 
-    CollisionGroup collisionGroup, unsigned int bodyGroup, float gravityScale, unsigned int gravityOn) :
+    std::string collisionGroup, unsigned int bodyGroup, float gravityScale, unsigned int gravityOn) :
 		material_(material), shape_(shape), collisionCallback_(collisionCallback),
     velocity_(velocity), position_(position), force_(force), userData(userData),
 		orientation_(orientation), angularVelocity_(angularVelocity), torque_(torque),

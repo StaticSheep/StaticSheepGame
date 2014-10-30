@@ -19,6 +19,30 @@ namespace SheepFizz
 		delete space;
 	}//end of Delete
 
+  void PhysicsSpace::Initialize(void)
+  {
+
+    collisionGroups_.insert(std::pair<std::string, int>("Player_1", 0));
+    collisionGroups_.insert(std::pair<std::string, int>("Player_2", 1));
+    collisionGroups_.insert(std::pair<std::string, int>("Player_3", 2));
+    collisionGroups_.insert(std::pair<std::string, int>("Player_4", 3));
+    collisionGroups_.insert(std::pair<std::string, int>("NoCollision", 4));
+    collisionGroups_.insert(std::pair<std::string, int>("Collision_NoResolution", 5));
+    collisionGroups_.insert(std::pair<std::string, int>("Collision_Resolution", 6));
+  }
+
+  void PhysicsSpace::SetCollisionString(Handle handle, std::string value)
+  {
+    Body* body = handles_.GetAs<Body>(handle);
+    body->collisionGroup_ = value;
+  }
+
+  std::string PhysicsSpace::GetCollisionString(Handle handle)
+  {
+    Body* body = handles_.GetAs<Body>(handle);
+    return body->collisionGroup_;
+  }
+
 	//body settors
 	//*************
 	void PhysicsSpace::SetBodyPos(Handle handle, Vec3D position)
@@ -286,12 +310,15 @@ namespace SheepFizz
 					continue;
 				
 				//check collision groups
-				if (((Body*)bodies_[i])->collisionGroup_ != ((Body*)bodies_[j])->collisionGroup_)
+        unsigned int Agroup = collisionGroups_[((Body*)bodies_[i])->collisionGroup_];
+        unsigned int Bgroup = collisionGroups_[((Body*)bodies_[j])->collisionGroup_];
+        unsigned int collisionValue = collisionResolution_[Agroup][Bgroup];
+        if (!collisionValue)
 					continue;
 
 				//create a manifold and see if there is any interaction
 				Manifold m((Body*)bodies_[i], (Body*)bodies_[j]);
-				m.Initialize();
+				m.Initialize(collisionValue);
 				m.ManifoldInteraction();
 
 				//if there is an interaction, add the manifold to the list
@@ -304,8 +331,11 @@ namespace SheepFizz
 		//apply forces for all manifolds - positional correction first
 		for(unsigned i = 0; i < manifolds_.size(); ++i)
 		{
-			manifolds_[i].PositionalCorrection();
-			manifolds_[i].ApplyForces();
+      if (manifolds_[i].mCollisionResolution == 2)
+      {
+        manifolds_[i].PositionalCorrection();
+        manifolds_[i].ApplyForces();
+      }
 		}
 
 		//apply forces and velocity to all bodies

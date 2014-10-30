@@ -2,6 +2,7 @@
 #include "Material.h"
 #include "Shape.h"
 #include "BodyProperties.h"
+#include <string>
 
 namespace SheepFizz
 {
@@ -18,8 +19,9 @@ class MassData
 
 enum CollisionGroup{
 
-	CollGroup1,
-	CollGroup2,
+	Collision_Resolution,
+	Collision_NoResolution,
+  NoCollision_NoResolution,
 	CollGroupLength
 
 };
@@ -39,7 +41,7 @@ class Body
 			float orientation = PI,
 			float angularVelocity = 0,
 			float torque = 0,
-			CollisionGroup collisionGroup = CollGroup1, //used for determining collision gorups
+			std::string collisionGroup = "Collision_Resolution", //used for determining collision gorups
 			unsigned int bodyGroup = 0,					//used for certain collisions/resolutions 
 			float gravityScale = 1,						//used to modify gravity
 			unsigned int gravityOn = 1					//used to turn gravity on and off
@@ -88,7 +90,7 @@ class Body
 		unsigned int bodyGroup_;
 
 		//collisiongroup - used to ignore collision for various types of objects;
-		CollisionGroup collisionGroup_;
+		std::string collisionGroup_;
 
 		bool collisionCallback_;
 

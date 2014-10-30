@@ -112,6 +112,11 @@ namespace Framework
     PHYSICS->SetBodyCollisionCallback(space, m_handle, collisionCallback);
   }
 
+  void SetCollisionString(std::string value)
+  {
+    PHYSICS->SetCollisionString(space, m_handle, value);
+  }
+
 	void RigidBody::AddToVelocity(Vec3D& velocity)
 	{
     PHYSICS->AddToBodyVelocity(space, m_handle, velocity);
@@ -145,5 +150,10 @@ namespace Framework
   Vec3D RigidBody::GetGravityNormal(void)
   {
     return PHYSICS->GetBodyGravityNormal(space, m_handle);
+  }
+
+  std::string GetCollisionString(void)
+  {
+    return PHYSICS->GetCollisionString(space, m_handle);
   }
 }
