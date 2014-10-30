@@ -431,7 +431,7 @@ namespace Framework
     }
 
     // F5 for audio debug
-    if(SHEEPINPUT->Keyboard.KeyIsPressed(VK_F5))
+    if(SHEEPINPUT->Keyboard.KeyIsPressed(VK_F9))
     {
       if(currentState == DEBUG_AUDIO)
         currentState = 0;

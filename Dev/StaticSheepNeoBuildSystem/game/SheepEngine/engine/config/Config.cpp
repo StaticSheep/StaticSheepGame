@@ -13,10 +13,12 @@
 #include "systems/gamelogic/GameLogic.h"
 #include "systems/physics/SheepPhysics.h"
 #include "systems/anttweak/AntTweakModule.h"
+#include "systems/skynet/Skynet.h"
 
 #include "WxWindow.h"
 #include "gfx/wxw/d3d/WxD3DCanvas.h"
 #include "gfx/wxw/d3d/WxD3DContext.h"
+
 
 namespace Framework
 {
@@ -25,6 +27,7 @@ namespace Framework
     Engine* Core = new Engine();
 
     Core->AddSystem(new InputManager());
+    Core->AddSystem(new Skynet());
     Core->AddSystem(new GameLogic());
     Core->AddSystem(new SheepPhysics());
     Core->AddSystem(new SheepAudio());
