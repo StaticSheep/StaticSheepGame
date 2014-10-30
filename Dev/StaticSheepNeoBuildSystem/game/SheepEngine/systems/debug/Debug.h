@@ -35,7 +35,7 @@ namespace Framework
 
     virtual std::string GetName() {return "SheepDebug";};
 
-    void ReceiveMessage(Message msg);
+    void ReceiveMessage(Message& msg);
 
     void Initialize(void);
     void Update(float dt);

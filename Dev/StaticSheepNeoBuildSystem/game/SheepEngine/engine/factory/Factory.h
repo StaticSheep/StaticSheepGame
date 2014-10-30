@@ -33,7 +33,7 @@ namespace Framework
 
     // Creates an object of from an archetype. [Loads the archetype if required]
     GameObject* LoadObjectFromArchetype(GameSpace* space, const char* name);
-	GameObject* LoadObjectFromArchetypeFP(GameSpace* space, const char* name);
+	  GameObject* LoadObjectFromArchetypeFP(GameSpace* space, const char* name);
     // Creates an object from a virtual archetype.
     GameObject* LoadObjectFromArchetype(GameSpace* space, const Archetype& archetype);
     // Preloads an archetype of a specified name

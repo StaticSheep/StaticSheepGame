@@ -21,6 +21,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include <boost/filesystem.hpp>
 #include <boost/foreach.hpp>
 
+#include <boost/graph/grid_graph.hpp>
+
 
 static int flag;
 
@@ -36,6 +38,8 @@ namespace Framework
     EngineTypeRegistration();
 
     Window = new SheepWindow();
+
+    boost::grid_graph<30, int, int> t();
 
     ENGINE = this;
   }
@@ -124,6 +128,10 @@ namespace Framework
   {
     Window->Update();
 
+    for (auto it = m_spaces.begin(); it != m_spaces.end(); ++it)
+      if (!(*it)->m_ready)
+        (*it)->m_ready = true;
+
     for (unsigned int i = 0; i < m_systems.size(); ++i)
     {
       Framerate.StartFrame();
@@ -168,7 +176,10 @@ namespace Framework
     {
       if (*it == space)
       {
-        m_spaces.erase(it);
+        // Move the back onto the location we are deleting
+        *it = m_spaces.back();
+        // Pop off the back of the vector
+        m_spaces.pop_back();
         break;
       }
     }

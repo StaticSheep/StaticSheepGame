@@ -8,7 +8,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 #pragma once
 
-#include "systems/debug/tracelog/TraceLog.h"
+#include "engine/tracelog/TraceLog.h"
 
 namespace Framework
 {
@@ -67,6 +67,7 @@ namespace Framework
 
     void ClearSpaces();
 
+    // Creates a new game space
     GameSpace* CreateSpace(const char* name);
 
     void RemoveSpace(GameSpace* space);

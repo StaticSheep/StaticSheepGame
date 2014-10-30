@@ -63,6 +63,9 @@ namespace Framework
     {
       space = *it;
 
+      if (!space->m_ready)
+        continue;
+
       if (!space->Paused())
         space->hooks.Call("LogicUpdate", dt);
 
@@ -83,6 +86,10 @@ namespace Framework
     for (auto it = ENGINE->m_spaces.begin(); it != ENGINE->m_spaces.end(); ++it)
     {
       space = *it;
+
+      if (!space->m_ready)
+        continue;
+
       space->Cleanup();
 
       if (space->m_valid == false)
