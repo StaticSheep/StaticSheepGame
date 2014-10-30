@@ -57,7 +57,7 @@ namespace Framework
 
     if (health <= 0)
     {
-      se->Play("");
+      se->Play("explosion");
       space->GetGameObject(owner)->Destroy();
     }
 		if (gp->RStick_InDeadZone() == false)       //if the right stick is NOT inside of its dead zone
@@ -76,6 +76,7 @@ namespace Framework
     if (isSnapped)
     {
       bc->SetVelocity(snappedNormal * 50);
+      bc->SetAngVelocity(0.0);
       //left stick move
       if (gp->LeftStick_X() > 0.2 && snappedNormal.y != 0)
       {
@@ -148,9 +149,12 @@ namespace Framework
     GameObject *OtherObject = space->GetHandles().GetAs<GameObject>(otherObject);
     if (OtherObject->name == "Bullet")
     {
-      health -= 10;
+      health -= 1;
       return;
     }
+    if (OtherObject->name == "KillBox")
+      space->GetGameObject(owner)->Destroy();
+
 		isSnapped = true;
 		//get the thing we are colliding with
 	
@@ -187,6 +191,10 @@ namespace Framework
 		Transform *playerTrans = space->GetHandles().GetAs<Transform>(playerTransform);
 		BT->SetTranslation(playerTrans->GetTranslation() + aimDir * 25);
 		bulletC->AddToVelocity(aimDir * 1000);
+
+    SoundEmitter *se = space->GetHandles().GetAs<SoundEmitter>(playerSound);
+    se->Play("gunshot");
+
     if (!isSnapped)
     {
       BoxCollider *bc = space->GetHandles().GetAs<BoxCollider>(playerCollider);

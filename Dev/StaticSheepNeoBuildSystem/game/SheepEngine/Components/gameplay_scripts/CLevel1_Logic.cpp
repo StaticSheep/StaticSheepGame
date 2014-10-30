@@ -3,6 +3,7 @@
 #include "types/space/Space.h"
 #include "../transform/CTransform.h"
 #include "../colliders/CBoxCollider.h"
+#include "../sound/CSoundPlayer.h"
 
 namespace Framework
 {
@@ -21,7 +22,9 @@ namespace Framework
 	{
 		//logic setup, you're attached and components are in place
 		space->hooks.Add("LogicUpdate", self, BUILD_FUNCTION(Level1_Logic::LogicUpdate));
-
+    levelSound = space->GetGameObject(owner)->GetComponentHandle(eSoundPlayer);
+    SoundPlayer *sp = space->GetHandles().GetAs<SoundPlayer>(levelSound);
+    sp->Play("space_brawl", PLAY_ONCE);
 	}
 
   void Level1_Logic::Remove()

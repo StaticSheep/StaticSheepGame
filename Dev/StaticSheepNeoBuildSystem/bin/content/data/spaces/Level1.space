@@ -78,7 +78,7 @@ GameObject
   }
   BoxCollider
   {
-    m_width float 1049.599976
+    m_width float 256.000000
     m_height float 32.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
@@ -115,7 +115,7 @@ GameObject
   }
   BoxCollider
   {
-    m_width float 1049.599976
+    m_width float 256.000000
     m_height float 32.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
@@ -215,6 +215,9 @@ GameObject
       z_ float 0.000000
     }
   }
+  SoundPlayer
+  {
+  }
   Level1_Logic
   {
     timeLimit float 120.000000
@@ -251,7 +254,7 @@ GameObject
   }
   BoxCollider
   {
-    m_width float 1049.599976
+    m_width float 256.000000
     m_height float 32.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
@@ -288,7 +291,7 @@ GameObject
   }
   BoxCollider
   {
-    m_width float 1049.599976
+    m_width float 256.000000
     m_height float 32.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
@@ -325,7 +328,7 @@ GameObject
   }
   BoxCollider
   {
-    m_width float 1049.599976
+    m_width float 256.000000
     m_height float 32.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
@@ -362,7 +365,7 @@ GameObject
   }
   BoxCollider
   {
-    m_width float 1049.599976
+    m_width float 256.000000
     m_height float 32.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
@@ -526,7 +529,7 @@ GameObject
     {
       x_ float 490.000000
       y_ float -266.000000
-      z_ float 0.000000
+      z_ float 1.000000
     }
     Rotation float 0.000000
     Scale Vec3
@@ -555,6 +558,9 @@ GameObject
     m_height float 32.000000
     m_materialName std::string "Wood"
     m_hasCollisionCallback bool true
+  }
+  SoundEmitter
+  {
   }
   PlayerController
   {
@@ -601,6 +607,9 @@ GameObject
     m_materialName std::string "Wood"
     m_hasCollisionCallback bool true
   }
+  SoundEmitter
+  {
+  }
   PlayerController
   {
     playerNum int 2
@@ -645,6 +654,9 @@ GameObject
     m_height float 32.000000
     m_materialName std::string "Wood"
     m_hasCollisionCallback bool true
+  }
+  SoundEmitter
+  {
   }
   PlayerController
   {
