@@ -155,12 +155,12 @@ namespace Framework
     TYPE_SET_DESERIALIZER( Transform, Transform::Deserialize );
     TYPE_SET_TWEAK( Transform, Transform::ToTweak );
     
-	TYPE_REGISTER(PlayerController);
-	TYPE_SET_TWEAK_TYPE(PlayerController, AntTweak::TW_TYPE_COMPONENT);
-	TYPE_ADD_MEMBER(PlayerController, playerNum, false, true, "Player Number");
+	  TYPE_REGISTER(PlayerController);
+	  TYPE_SET_TWEAK_TYPE(PlayerController, AntTweak::TW_TYPE_COMPONENT);
+	  TYPE_ADD_MEMBER(PlayerController, playerNum, false, true, "Player Number");
 
-	TYPE_REGISTER(Bullet_Default);
-	TYPE_SET_TWEAK_TYPE(Bullet_Default, AntTweak::TW_TYPE_COMPONENT);
+	  TYPE_REGISTER(Bullet_Default);
+	  TYPE_SET_TWEAK_TYPE(Bullet_Default, AntTweak::TW_TYPE_COMPONENT);
 
     TYPE_REGISTER( BoxCollider );
     TYPE_ADD_MEMBER( BoxCollider, m_width, false, true, "Width");
@@ -182,7 +182,7 @@ namespace Framework
 
     TYPE_REGISTER( Sprite );
     TYPE_ADD_MEMBER(Sprite, m_spriteName, false, true, "Texture", BUILD_FUNCTION(Sprite::TweakSetTexture));
-    TYPE_ADD_MEMBER( Sprite, Size, false, true );
+    TYPE_ADD_MEMBER( Sprite, Size, false, true, "Scale");
     TYPE_SET_TWEAK_TYPE( Sprite, AntTweak::TW_TYPE_COMPONENT );
     TYPE_SET_FROM_LUA( Sprite, Lua::GenericObjectFromLua );
 

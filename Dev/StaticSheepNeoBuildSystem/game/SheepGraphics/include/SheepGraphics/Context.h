@@ -205,6 +205,7 @@ class RenderContext
     Dimension   m_nativeResolution;
     bool        m_fullscreen;
     bool        m_vsync;
+    std::string m_contentPath = "content\\";
 
     /////////////
     // DirectX //

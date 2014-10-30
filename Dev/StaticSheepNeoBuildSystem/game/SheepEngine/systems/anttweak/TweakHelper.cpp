@@ -113,9 +113,9 @@ namespace Framework
                   bar->SetGroupParent(m->TweakLabel(), tempLabel);
               else
                 if (label)
-                  bar->SetGroupParent(m->Name(), label);
+                  bar->SetGroupParent(uniqueName.c_str(), label);
                 else
-                  bar->SetGroupParent(m->Name(), tempLabel);
+                  bar->SetGroupParent(uniqueName.c_str(), tempLabel);
             }
 
             // Subtract the current member offset from the tweakOffset
