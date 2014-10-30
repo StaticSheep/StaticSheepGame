@@ -4,12 +4,13 @@
 #include "Manifold.h"
 #endif
 
+#include <vector>
+#include <unordered_map>
+#include <utility>
+#include <array>
 #include "Material.h"
 #include "Shape.h"
 #include "Vec3D.h"
-#include <vector>
-
-
 
 namespace SheepFizz
 {
@@ -27,6 +28,8 @@ namespace SheepFizz
 		PHY_API static void Delete(PhysicsSpace* space);
 
 
+    //engine only functions, not exposed
+    
 		//body settors
 		PHY_API void SetBodyPos(Handle handle, Vec3D position);
 		PHY_API void SetBodyVeloc(Handle handle, Vec3D velocity);
@@ -34,6 +37,10 @@ namespace SheepFizz
 		PHY_API void SetBodyRot(Handle handle, float rot);
 		PHY_API void SetBodyAngVeloc(Handle handle, float angveloc);
 		PHY_API void SetBodyTorque(Handle handle, float torque);
+
+    //set collision groups
+    PHY_API void SetCollisionString(Handle handle, std::string value);
+    PHY_API void SetBodyCollisionCallback(Handle handle, bool collisionCallback);
 
     //gravity
     PHY_API void SetBodyGravityOn(Handle handle);
@@ -64,9 +71,8 @@ namespace SheepFizz
 		PHY_API float GetTime(void);
 
     //collision functions
-    PHY_API void SetBodyCollisionCallback(Handle handle, bool collisionCallback);
     PHY_API Vec3D GetCollisionNorm(void* handle, ExternalManifold manifold);
-
+    PHY_API std::string GetCollisionString(Handle handle);
 
 		//add bodies to the body vector
     PHY_API Handle AddBody(
@@ -120,8 +126,12 @@ namespace SheepFizz
 			ObjectAllocator shapes_[Count];
 			HandleManager handles_;
 
+      //tracks the manifolds that run the system
 			std::vector<Manifold> manifolds_;
 
+      //used for collision groups
+      std::unordered_map< std::string, unsigned int> collisionGroups_;
+      
 		#endif
 
 	};

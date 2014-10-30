@@ -8,9 +8,6 @@
 #include <unordered_map>
 #include <utility>
 #include <array>
-
-#include <boost/graph/grid_graph.hpp>
-
 #include "Material.h"
 #include "Shape.h"
 #include "Vec3D.h"
@@ -152,13 +149,7 @@ namespace SheepFizz
 
       //used for collision groups
       std::unordered_map< std::string, unsigned int> collisionGroups_;
-
-      //collision groupings
-      unsigned int collisionResolution_[10][10] = { { 0, 2, 2, 2, 0, 1, 2 }, { 2, 0, 2, 2, 0, 1, 2 },
-      { 2, 2, 0, 2, 0, 1, 2 }, { 2, 2, 2, 0, 0, 1, 2 }, { 0, 0, 0, 0, 0, 0, 0 }, { 1, 1, 1, 1, 1, 0, 1 },
-      { 2, 2, 2, 2, 0, 1, 2 }, { 0 }, { 0 }, { 0 } };
       
-
 		#endif
 
 	};

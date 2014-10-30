@@ -41,7 +41,7 @@ class Body
 			float orientation = PI,
 			float angularVelocity = 0,
 			float torque = 0,
-			std::string collisionGroup = "Collision_Resolution", //used for determining collision gorups
+			unsigned int collisionGroup = 6, //used for determining collision gorups
 			unsigned int bodyGroup = 0,					//used for certain collisions/resolutions 
 			float gravityScale = 1,						//used to modify gravity
 			unsigned int gravityOn = 1					//used to turn gravity on and off
@@ -90,7 +90,7 @@ class Body
 		unsigned int bodyGroup_;
 
 		//collisiongroup - used to ignore collision for various types of objects;
-		std::string collisionGroup_;
+		unsigned int collisionGroup_;
 
 		bool collisionCallback_;
 

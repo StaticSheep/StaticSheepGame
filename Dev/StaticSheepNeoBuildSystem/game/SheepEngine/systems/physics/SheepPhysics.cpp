@@ -159,7 +159,7 @@ namespace Framework
     return ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->GetBodyGravityNormal(handle);
   }
 
-  std::string GetCollisionString(GameSpace* space, Framework::Handle ownerHandle)
+  std::string GetCollisionString(GameSpace* space, SheepFizz::Handle handle)
   {
     return ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->GetCollisionString(handle);
   }

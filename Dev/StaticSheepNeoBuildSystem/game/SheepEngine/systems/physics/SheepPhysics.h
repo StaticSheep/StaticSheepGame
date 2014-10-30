@@ -15,7 +15,6 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "systems/System.h"
 
 
-
 namespace Framework
 {
 
@@ -65,7 +64,7 @@ namespace Framework
 
       //collision
       Vec3D GetCollisionNormal(GameSpace* space, Framework::Handle ownerHandle , SheepFizz::ExternalManifold manifold);
-      std::string GetCollisionString(GameSpace* space, Framework::Handle ownerHandle);
+      std::string GetCollisionString(GameSpace* space, SheepFizz::Handle handle);
 
 			//settors
 			void SetBodyPosition(GameSpace* space, SheepFizz::Handle handle, Vec3D position);

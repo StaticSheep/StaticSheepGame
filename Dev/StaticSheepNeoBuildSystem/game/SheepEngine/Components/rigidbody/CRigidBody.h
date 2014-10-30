@@ -5,11 +5,10 @@
 
 #include "systems/physics/SheepPhysics.h"
 
+
 namespace SheepFizz
 {
 	class Material;
-
-  
 }
 
 namespace Framework
@@ -68,6 +67,7 @@ namespace Framework
 		float m_height; // For boxes
 
 		std::string m_materialName;
+    std::string m_collisionGroup;
 
     bool m_hasCollisionCallback;
 

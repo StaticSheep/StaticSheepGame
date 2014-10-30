@@ -12,7 +12,7 @@ namespace Framework
 	//constructor
 	RigidBody::RigidBody(SheepFizz::Shapes shape) :
 		m_shape(shape), m_width(12), m_height(12), m_materialName("Wood"),
-		m_material(nullptr), m_hasCollisionCallback(false)
+    m_material(nullptr), m_hasCollisionCallback(false), m_collisionGroup("Collision_Resolution")
 	{
 
 	}
@@ -21,27 +21,7 @@ namespace Framework
 	{
 
 	}
-	/*
-  static Vec3D ScaleDown(Vec3D value)
-  {
-   return (value *= 1.0f / 32.0f);
-  }
-
-  static float ScaleDown(float value)
-  {
-    return (value *= 1.0f / 32.0f);
-  }
-
-  static Vec3D ScaleUp(Vec3D value)
-  {
-    return (value *= 1.0f / 32.0f);
-  }
-
-  static float ScaleUp(float value)
-  {
-    return (value *= 1.0f / 32.0f);
-  }*/
-
+	
 	//initialize the rigid body
 	void RigidBody::Initialize(void)
 	{
@@ -112,9 +92,10 @@ namespace Framework
     PHYSICS->SetBodyCollisionCallback(space, m_handle, collisionCallback);
   }
 
-  void SetCollisionString(std::string value)
+  void RigidBody::SetCollisionString(std::string value)
   {
     PHYSICS->SetCollisionString(space, m_handle, value);
+    m_collisionGroup = PHYSICS->GetCollisionString(space, m_handle);
   }
 
 	void RigidBody::AddToVelocity(Vec3D& velocity)
@@ -152,7 +133,7 @@ namespace Framework
     return PHYSICS->GetBodyGravityNormal(space, m_handle);
   }
 
-  std::string GetCollisionString(void)
+  std::string RigidBody::GetCollisionString(void)
   {
     return PHYSICS->GetCollisionString(space, m_handle);
   }

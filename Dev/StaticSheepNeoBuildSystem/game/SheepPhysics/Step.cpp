@@ -8,6 +8,10 @@
 
 namespace SheepFizz
 {
+  //collision groupings
+  unsigned int collisionResolution_[10][10] = { { 0, 2, 2, 2, 0, 1, 2 }, { 2, 0, 2, 2, 0, 1, 2 },
+  { 2, 2, 0, 2, 0, 1, 2 }, { 2, 2, 2, 0, 0, 1, 2 }, { 0, 0, 0, 0, 0, 0, 0 }, { 1, 1, 1, 1, 1, 0, 1 },
+  { 2, 2, 2, 2, 0, 1, 2 }, { 0 }, { 0 }, { 0 } };
 
 	PhysicsSpace* PhysicsSpace::Allocate(float dt, float meterScale)
 	{
@@ -31,20 +35,18 @@ namespace SheepFizz
     collisionGroups_.insert(std::pair<std::string, int>("Collision_Resolution", 6));
   }
 
-  void PhysicsSpace::SetCollisionString(Handle handle, std::string value)
-  {
-    Body* body = handles_.GetAs<Body>(handle);
-    body->collisionGroup_ = value;
-  }
-
-  std::string PhysicsSpace::GetCollisionString(Handle handle)
-  {
-    Body* body = handles_.GetAs<Body>(handle);
-    return body->collisionGroup_;
-  }
+  
 
 	//body settors
 	//*************
+
+  void PhysicsSpace::SetCollisionString(Handle handle, std::string value)
+  {
+    Body* body = handles_.GetAs<Body>(handle);
+    //if (collisionGroups_.find(value))
+      body->collisionGroup_ = collisionGroups_[value];
+  }
+
 	void PhysicsSpace::SetBodyPos(Handle handle, Vec3D position)
 	{
 		Body* body = handles_.GetAs<Body>(handle);
@@ -144,6 +146,14 @@ namespace SheepFizz
 	//*************
 
 	//get values for engine
+
+  std::string PhysicsSpace::GetCollisionString(Handle handle)
+  {
+    Body* body = handles_.GetAs<Body>(handle);
+    
+    return "Collision_Resolution";
+  }
+
 	Vec3D PhysicsSpace::GetBodyPos(Handle handle)
 	{
 		Body* body = handles_.GetAs<Body>(handle);
@@ -310,9 +320,8 @@ namespace SheepFizz
 					continue;
 				
 				//check collision groups
-        unsigned int Agroup = collisionGroups_[((Body*)bodies_[i])->collisionGroup_];
-        unsigned int Bgroup = collisionGroups_[((Body*)bodies_[j])->collisionGroup_];
-        unsigned int collisionValue = collisionResolution_[Agroup][Bgroup];
+        unsigned int collisionValue = 
+          collisionResolution_[((Body*)bodies_[i])->collisionGroup_][((Body*)bodies_[j])->collisionGroup_];
         if (!collisionValue)
 					continue;
 

@@ -42,10 +42,11 @@ namespace SheepFizz
 		float mStaticFriction;		//the static friction of the two objects
 
 		unsigned int contactCount;	//the number of contacts in the manifold
+
+    unsigned int mCollisionResolution; //the collision resolution value
 	
 	};
 
 	//collision resolution functions
-
 
 }
