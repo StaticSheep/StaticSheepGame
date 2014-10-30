@@ -55,7 +55,7 @@ namespace Framework
     GRAPHICS->UpdateCamera();
     GRAPHICS->SetSize(width, height);
     GRAPHICS->SetPosition(x, y, 0.0f);
-    GRAPHICS->BindTexture(GRAPHICS->GetTextureID("content/White.png"));
+    GRAPHICS->BindTexture(GRAPHICS->GetTextureID("White.png"));
     GRAPHICS->RawDraw();
   }
 

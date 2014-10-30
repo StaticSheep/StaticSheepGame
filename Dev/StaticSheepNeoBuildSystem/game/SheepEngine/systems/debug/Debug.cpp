@@ -128,7 +128,6 @@ namespace Framework
         format = std::to_string(framerate->currentFps);
         format.erase(4, std::string::npos);
         fps_string = "Current FPS: " + format + "\n";
-        fps_string += "CurrentPosition" + std::to_string(currentX);
 
         if(SHEEPINPUT->Keyboard.KeyIsDown(VK_LEFT))
           currentX -= 1.0f;
@@ -136,9 +135,9 @@ namespace Framework
         if(SHEEPINPUT->Keyboard.KeyIsDown(VK_RIGHT))
           currentX += 1.0f;
 
-        Draw::SetRotation(3.14159f);
+        Draw::SetRotation(0);
         Draw::SetUseCamera(false);
-        Draw::SetPosition( 0.0f, 0.0f);
+        Draw::SetPosition( 200.0f, 400.0f);
         Draw::SetColor(1.0f,1.0f,1.0f,1.0f);
         Draw::DrawString(fps_string.c_str(), 15.0f, "Helvetica");
         Draw::SetUseCamera(true);
@@ -384,7 +383,7 @@ namespace Framework
     for(int i = 0; i < performance.systemCount; ++i)
     {
       Draw::SetColor(performance.color[i].R, performance.color[i].G, performance.color[i].B, 1.0f);
-      Draw::SetRotation(3.14159f);
+      Draw::SetRotation(0.0f);
       
       Draw::DrawRect((ENGINE->Window->GetWidth() / 2.0f) - performance.pos[i] - 4.0f, (ENGINE->Window->GetHeight() / 2.0f) - 16.0f, performance.width[i], 24.0f);
 

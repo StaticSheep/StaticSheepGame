@@ -23,8 +23,7 @@ namespace Framework
 		//logic setup, you're attached and components are in place
 		space->hooks.Add("LogicUpdate", self, BUILD_FUNCTION(Level1_Logic::LogicUpdate));
     levelSound = space->GetGameObject(owner)->GetComponentHandle(eSoundPlayer);
-    SoundPlayer *sp = space->GetHandles().GetAs<SoundPlayer>(levelSound);
-    sp->Play("space_brawl", PLAY_ONCE);
+    
 	}
 
   void Level1_Logic::Remove()
@@ -34,6 +33,7 @@ namespace Framework
 
   void Level1_Logic::LogicUpdate(float dt)
 	{
+    static bool playing = false;
     spawnTimer -= dt;
     if (spawnTimer <= 0)
     {
@@ -50,6 +50,13 @@ namespace Framework
       PT2->SetTranslation(Vec3(-194.79, -320.0, 0.0));
 
       spawnTimer = 2;
+    }
+
+    if(!playing)
+    {
+      SoundPlayer *sp = space->GetHandles().GetAs<SoundPlayer>(levelSound);
+      sp->PlayEx("space_brawl", PLAY_ONCE, 0.25f);
+      playing = true;
     }
 	}
 

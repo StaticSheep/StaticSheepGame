@@ -102,6 +102,8 @@ namespace Framework
 
     ErrorCheck(masterGroup->addDSP(0, dsp));
 
+    ErrorCheck(masterGroup->setVolume(1.0f));
+
     debug = new DebugAudio;
 	}
 

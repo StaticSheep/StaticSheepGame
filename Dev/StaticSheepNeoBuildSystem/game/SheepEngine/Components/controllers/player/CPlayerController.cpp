@@ -71,14 +71,26 @@ namespace Framework
 			aimDir = aimingDirection(gp); //get the direction the player is currently aiming;
 
 		//fire on trigger pull
-		if (gp->RightTrigger() /*&& hasFired == false*/)
+		if (gp->RightTrigger() && hasFired == false)
 		{
 			hasFired = true;
 			onFire();
 		}
+    else
+    {
+      --shotDelay;
+      if(shotDelay < 0)
+      {
+        hasFired = false;
+        shotDelay = 10;
+      }
+    }
 		//if the trigger is released, reset the bool
 		if (!gp->RightTrigger())
+    {
 			hasFired = false;
+      shotDelay = 10;
+    }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
     if (isSnapped)
     {
@@ -200,12 +212,12 @@ namespace Framework
 		bulletC->AddToVelocity(aimDir * 1000);
 
     SoundEmitter *se = space->GetHandles().GetAs<SoundEmitter>(playerSound);
-    se->Play("gunshot");
+    se->PlayEx("gunshot", 0.25f);
 
     if (!isSnapped)
     {
       BoxCollider *bc = space->GetHandles().GetAs<BoxCollider>(playerCollider);
-      bc->AddToVelocity(-aimDir * 5);
+      bc->AddToVelocity(-aimDir * 50);
     }
 	}
 

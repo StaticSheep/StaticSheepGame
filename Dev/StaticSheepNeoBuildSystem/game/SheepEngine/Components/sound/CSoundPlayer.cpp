@@ -23,6 +23,8 @@ namespace Framework
   {
     // connect to the FMOD system
     _soundSystem = AUDIO;
+    _volume = 1.0f;
+    _pitch = 1.0f;
 
     // null out the array of pointers
     for(int i = 0; i < MAX_SOUNDS; ++i)
