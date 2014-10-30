@@ -220,10 +220,11 @@ namespace DirectSheep
       m_vsync = vsync;
     }
 
-   void RenderContext::SetPosition(const float x, const float y)
+   void RenderContext::SetPosition(const float x, const float y, float z)
    {
      m_spriteTrans.x = x;
      m_spriteTrans.y = y;
+     m_spriteTrans.z = z;
    }
    void RenderContext::SetRotation(const float theta)
    {

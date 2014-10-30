@@ -63,7 +63,7 @@ namespace Framework
   {
     Transform* trans = space->GetHandles().GetAs<Transform>(transform);
 
-    GRAPHICS->SetPosition(trans->GetTranslation().X, trans->GetTranslation().Y);
+    GRAPHICS->SetPosition(trans->GetTranslation().X, trans->GetTranslation().Y, trans->GetTranslation().Z);
     GRAPHICS->SetRotation(trans->GetRotation());
     GRAPHICS->SetSize(trans->GetScale().X * Size.X, trans->GetScale().Y * Size.Y);
     GRAPHICS->SetColor(Color);

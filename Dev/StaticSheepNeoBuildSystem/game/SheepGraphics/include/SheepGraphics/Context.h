@@ -97,7 +97,7 @@ class RenderContext
    GFX_API void SetVSync(bool vsync);
 
    GFX_API void SetUV(float x1, float y1, float x2, float y2);
-   GFX_API void SetPosition(const float x, const float y);
+   GFX_API void SetPosition(const float x, const float y, const float z);
    GFX_API void SetRotation(const float theta);
    GFX_API void SetDimensions(const float w, const float h);
    GFX_API void SetBlendCol(const float r, const float g, const float b, const float a);
@@ -188,6 +188,7 @@ class RenderContext
 
       float x;
       float y;
+      float z;
       float w;
       float h;
       Vec2 uvBegin;

@@ -41,7 +41,7 @@ namespace Framework
 
   void Draw::SetPosition(float x, float y)
   {
-    GRAPHICS->SetPosition(x, y);
+    GRAPHICS->SetPosition(x, y, 0.0f);
   }
 
   void Draw::SetColor(float r, float g, float b, float a)
@@ -54,7 +54,7 @@ namespace Framework
   {
     GRAPHICS->UpdateCamera();
     GRAPHICS->SetSize(width, height);
-    GRAPHICS->SetPosition(x, y);
+    GRAPHICS->SetPosition(x, y, 0.0f);
     GRAPHICS->BindTexture(GRAPHICS->GetTextureID("content/White.png"));
     GRAPHICS->RawDraw();
   }
@@ -64,7 +64,7 @@ namespace Framework
     GRAPHICS->UpdateCamera();
     GRAPHICS->SetSize(width, height);
 
-    GRAPHICS->SetPosition(x, y);
+    GRAPHICS->SetPosition(x, y, 0.0f);
 
     GRAPHICS->BindTexture(m_TextureID);
 
@@ -77,7 +77,7 @@ namespace Framework
     float diffX = eX - sX;
     float diffY = eY - sY;
     GRAPHICS->UpdateCamera();
-    GRAPHICS->SetPosition(sX + diffX / 2, sY + diffY / 2);
+    GRAPHICS->SetPosition(sX + diffX / 2, sY + diffY / 2, 0.0f);
     GRAPHICS->SetSize(sqrt(diffX * diffX + diffY * diffY), width);
 
     GRAPHICS->SetRotation(-atan(diffY / diffX));
