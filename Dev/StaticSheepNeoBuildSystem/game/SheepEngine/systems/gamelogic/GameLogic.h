@@ -44,7 +44,7 @@ namespace Framework
     const void* GetDebugData(void);
 
   private:
-    DebugData::GameLogic m_debugData = { 0 };
+    DebugData::GameLogic m_debugData;;
   };
 
   extern GameLogic* GAMELOGIC;

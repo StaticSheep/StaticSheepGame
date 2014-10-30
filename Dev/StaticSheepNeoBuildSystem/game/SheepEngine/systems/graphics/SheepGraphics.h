@@ -114,7 +114,7 @@ namespace Framework
 
     DirectSheep::Handle spriteContext;
 
-    DebugData::SheepGraphics m_debugData = { 0 };
+    DebugData::SheepGraphics m_debugData;
 
 
   public:

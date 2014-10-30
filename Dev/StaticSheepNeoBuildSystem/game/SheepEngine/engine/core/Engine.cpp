@@ -21,6 +21,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include <boost/filesystem.hpp>
 #include <boost/foreach.hpp>
 
+#include <boost/graph/grid_graph.hpp>
+
 
 static int flag;
 
@@ -36,6 +38,8 @@ namespace Framework
     EngineTypeRegistration();
 
     Window = new SheepWindow();
+
+    boost::grid_graph<30, int, int> t();
 
     ENGINE = this;
   }

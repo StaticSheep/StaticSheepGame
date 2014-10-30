@@ -10,7 +10,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "pch/precompiled.h"
 #include <Windows.h>
 #include "systems/debug/Debug.h"
-#include "systems/debug/tracelog/TraceLog.h"
+#include "engine/tracelog/TraceLog.h"
 #include "systems/audio/SheepAudio.h"
 #include "systems/graphics/SheepGraphics.h"
 //#include "systems/input/Input.h"
