@@ -43,7 +43,7 @@ namespace SheepFizz
   void PhysicsSpace::SetCollisionString(Handle handle, std::string value)
   {
     Body* body = handles_.GetAs<Body>(handle);
-    //if (collisionGroups_.find(value))
+    if (collisionGroups_.find[value])
       body->collisionGroup_ = collisionGroups_[value];
   }
 
