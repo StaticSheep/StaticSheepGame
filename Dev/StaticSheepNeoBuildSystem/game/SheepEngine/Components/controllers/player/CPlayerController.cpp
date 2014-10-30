@@ -5,6 +5,7 @@
 #include "types/vectors/Vec3.h"
 #include "components/transform/CTransform.h"
 #include "../../colliders/CCircleCollider.h"
+#include "../../sound/CSoundEmitter.h"
 
 namespace Framework
 {
@@ -16,6 +17,7 @@ namespace Framework
 		isSnapped = true;
 		hasFired = false;
 		snappedTo = NULL;
+    health = 100;
 	}
 
 	PlayerController::~PlayerController() //4
@@ -33,12 +35,16 @@ namespace Framework
 		playerGamePad = space->GetGameObject(owner)->GetComponentHandle(eGamePad); //gets the handle to the gamepad
 		playerCollider = space->GetGameObject(owner)->GetComponentHandle(eBoxCollider);
 		playerTransform = space->GetGameObject(owner)->GetComponentHandle(eTransform);
+    playerSound = space->GetGameObject(owner)->GetComponentHandle(eSoundEmitter);
 
 		GamePad *gp = space->GetHandles().GetAs<GamePad>(playerGamePad); //actually gets the gamepad
 		gp->SetPad(playerNum); //setting pad number
 
 		aimDir.x = 1;
 		aimDir.y = 0;
+
+    BoxCollider *bc = space->GetHandles().GetAs<BoxCollider>(playerCollider);
+    bc->SetGravityOff();
 	}
 
 	void PlayerController::LogicUpdate(float dt)
@@ -47,7 +53,13 @@ namespace Framework
 		GamePad *gp = space->GetHandles().GetAs<GamePad>(playerGamePad);
 		//get the box collider of player
 		BoxCollider *bc = space->GetHandles().GetAs<BoxCollider>(playerCollider);
+    SoundEmitter *se = space->GetHandles().GetAs<SoundEmitter>(playerSound);
 
+    if (health <= 0)
+    {
+      se->Play("");
+      space->GetGameObject(owner)->Destroy();
+    }
 		if (gp->RStick_InDeadZone() == false)       //if the right stick is NOT inside of its dead zone
 			aimDir = aimingDirection(gp); //get the direction the player is currently aiming;
 
@@ -100,7 +112,7 @@ namespace Framework
       }
 
       //jump
-      if ((gp->ButtonPressed(XButtons.A) || gp->ButtonPressed(XButtons.RShoulder)) && isSnapped)
+      if ((gp->ButtonPressed(XButtons.A) || gp->ButtonPressed(XButtons.LShoulder)) && isSnapped)
       {
         bc->AddToVelocity(-(snappedNormal * 300));
         isSnapped = false;
@@ -133,9 +145,15 @@ namespace Framework
   /////////////////////////////////////////////////////////////////////////////////////////////////////
 	void PlayerController::OnCollision(Handle otherObject, SheepFizz::ExternalManifold manifold)
 	{
+    GameObject *OtherObject = space->GetHandles().GetAs<GameObject>(otherObject);
+    if (OtherObject->name == "Bullet")
+    {
+      health -= 10;
+      return;
+    }
 		isSnapped = true;
 		//get the thing we are colliding with
-		GameObject *OtherObject = space->GetHandles().GetAs<GameObject>(otherObject);
+	
 		//get the transform of the thing we are colliding with
 		Transform *OOT = OtherObject->GetComponent<Transform>(eTransform);
 		//if that thing we collided with's transform is missing, get the fuck otta here, i mean what are you even doing?
@@ -169,13 +187,18 @@ namespace Framework
 		Transform *playerTrans = space->GetHandles().GetAs<Transform>(playerTransform);
 		BT->SetTranslation(playerTrans->GetTranslation() + aimDir * 25);
 		bulletC->AddToVelocity(aimDir * 1000);
+    if (!isSnapped)
+    {
+      BoxCollider *bc = space->GetHandles().GetAs<BoxCollider>(playerCollider);
+      bc->AddToVelocity(-aimDir * 5);
+    }
 	}
 
   ///////////////////////////////////////////////////////////////////////////////////////////
 	Vec3 PlayerController::aimingDirection(GamePad *gp)
 	{
 		Vec3 returnVec;
-    float thresh = 0.7f; //the threshold minimum for aiming
+    float thresh = 1.0f; //the threshold minimum for aiming
 
 		returnVec.x = gp->RightStick_X() * 2;
 		returnVec.y = gp->RightStick_Y() * 2;
@@ -197,9 +220,9 @@ namespace Framework
     if (returnVec.y < thresh && returnVec.y > 0 && !(returnVec.x >= thresh || returnVec.x <= -thresh))
       returnVec.y = thresh;
 
-    if (returnVec.x > -thresh && returnVec.x < 0)
+    if (returnVec.x > -thresh && returnVec.x < 0 && !(returnVec.y <= thresh || returnVec.y >= -thresh))
       returnVec.x = -thresh;
-    if (returnVec.y > -thresh && returnVec.y < 0)
+    if (returnVec.y > -thresh && returnVec.y < 0 && !(returnVec.x <= thresh || returnVec.x >= -thresh))
       returnVec.y = -thresh;
 
 		return returnVec;

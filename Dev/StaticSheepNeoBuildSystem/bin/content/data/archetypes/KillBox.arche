@@ -1,7 +1,7 @@
 GameObject
 {
-  name std::string "Small Platform Right"
-  archetype std::string "SmallP"
+  name std::string "KillBox"
+  archetype std::string "KillBox"
   Transform
   {
     Translation Vec3
@@ -13,14 +13,14 @@ GameObject
     Rotation float 0.000000
     Scale Vec3
     {
-      x_ float 0.250000
+      x_ float 4.090000
       y_ float 1.000000
       z_ float 0.000000
     }
   }
   Sprite
   {
-    m_spriteName std::string "platform.png"
+    m_spriteName std::string "danger.png"
     Size Vec2
     {
       X float 1.000000
@@ -29,13 +29,9 @@ GameObject
   }
   BoxCollider
   {
-    m_width float 128.000000
+    m_width float 130.880005
     m_height float 32.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
-  }
-  ElevatorPlat
-  {
-    direction bool true
   }
 }
