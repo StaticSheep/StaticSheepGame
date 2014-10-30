@@ -1,4 +1,3 @@
-
 #include "pch/precompiled.h"
 #include "CPlayerController.h"
 #include "types/space/Space.h"
@@ -61,25 +60,47 @@ namespace Framework
 		//if the trigger is released, reset the bool
 		if (!gp->RightTrigger())
 			hasFired = false;
-///////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////
     if (isSnapped)
     {
-      bc->SetVelocity(snappedNormal * 25);
+      bc->SetVelocity(snappedNormal * 50);
       //left stick move
-      if (gp->LeftStick_X() > 0.2)
+      if (gp->LeftStick_X() > 0.2 && snappedNormal.y != 0)
       {
-        bc->SetVelocity(Vec3(0.0f, 0.0f, 0.0f));
-        bc->AddToVelocity(-(snappedNormal.CalculateNormal() * 150));
-
+        //bc->SetVelocity(Vec3(0.0f, 0.0f, 0.0f));
+        if (snappedNormal.y > 0)
+          bc->AddToVelocity((snappedNormal.CalculateNormal() * 250));
+        else if (snappedNormal.y < 0)
+          bc->AddToVelocity(-(snappedNormal.CalculateNormal() * 250));
       }
-      else if (gp->LeftStick_X() < -0.2)
+      else if (gp->LeftStick_X() < -0.2 && snappedNormal.y != 0)
       {
-        bc->SetVelocity(Vec3(0.0f, 0.0f, 0.0f));
-        bc->AddToVelocity((snappedNormal.CalculateNormal() * 150));
+        //bc->SetVelocity(Vec3(0.0f, 0.0f, 0.0f));
+        if (snappedNormal.y > 0)
+          bc->AddToVelocity(-(snappedNormal.CalculateNormal() * 250));
+        if (snappedNormal.y < 0)
+          bc->AddToVelocity((snappedNormal.CalculateNormal() * 250));
+      }
+      ////////////////////////////////////////////////////////////////////
+      if (gp->LeftStick_Y() > 0.2 && snappedNormal.x != 0)
+      {
+        //bc->SetVelocity(Vec3(0.0f, 0.0f, 0.0f));
+        if (snappedNormal.x > 0)
+          bc->AddToVelocity(-(snappedNormal.CalculateNormal() * 250));
+        else if (snappedNormal.x < 0)
+          bc->AddToVelocity((snappedNormal.CalculateNormal() * 250));
+      }
+      else if (gp->LeftStick_Y() < -0.2 && snappedNormal.x != 0)
+      {
+        //bc->SetVelocity(Vec3(0.0f, 0.0f, 0.0f));
+        if (snappedNormal.x > 0)
+          bc->AddToVelocity((snappedNormal.CalculateNormal() * 250));
+        if (snappedNormal.x < 0)
+          bc->AddToVelocity(-(snappedNormal.CalculateNormal() * 250));
       }
 
       //jump
-      if (gp->ButtonPressed(XButtons.A) && isSnapped)
+      if ((gp->ButtonPressed(XButtons.A) || gp->ButtonPressed(XButtons.RShoulder)) && isSnapped)
       {
         bc->AddToVelocity(-(snappedNormal * 300));
         isSnapped = false;
@@ -105,10 +126,11 @@ namespace Framework
 			//bc->AddToAngVelocity(.5f);
 		}
 
-
+    isSnapped = false;
 		
 	}
 
+  /////////////////////////////////////////////////////////////////////////////////////////////////////
 	void PlayerController::OnCollision(Handle otherObject, SheepFizz::ExternalManifold manifold)
 	{
 		isSnapped = true;
@@ -125,7 +147,7 @@ namespace Framework
       BoxCollider *OOBc = OtherObject->GetComponent<BoxCollider>(eBoxCollider);
       snappedNormal = OOBc->GetCollisionNormals(manifold);
 		}
-		else if (OtherObject->HasComponent(eBoxCollider))
+		else if (OtherObject->HasComponent(eCircleCollider))
 		{
       CircleCollider *OOCc = OtherObject->GetComponent<CircleCollider>(eCircleCollider);
       snappedNormal = OOCc->GetCollisionNormals(manifold);
@@ -149,6 +171,7 @@ namespace Framework
 		bulletC->AddToVelocity(aimDir * 1000);
 	}
 
+  ///////////////////////////////////////////////////////////////////////////////////////////
 	Vec3 PlayerController::aimingDirection(GamePad *gp)
 	{
 		Vec3 returnVec;
