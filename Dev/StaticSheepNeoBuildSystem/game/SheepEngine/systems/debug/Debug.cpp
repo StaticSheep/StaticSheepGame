@@ -127,10 +127,10 @@ namespace Framework
         fps_string = "Current FPS: " + format + "\n";
         fps_string += "CurrentPosition" + std::to_string(currentX);
 
-        if(SHEEPINPUT->Keyboard.KeyIsDown(VK_LEFT))
+        if(SHEEPINPUT->KeyIsDown(VK_LEFT))
           currentX -= 1.0f;
 
-        if(SHEEPINPUT->Keyboard.KeyIsDown(VK_RIGHT))
+        if(SHEEPINPUT->KeyIsDown(VK_RIGHT))
           currentX += 1.0f;
 
         Draw::SetRotation(0.0f);
@@ -375,18 +375,18 @@ namespace Framework
   int Debug::GetState()
   {
     // F2 for FPS printing
-    if(SHEEPINPUT->Keyboard.KeyIsPressed(VK_F2))
+    if(SHEEPINPUT->KeyIsPressed(VK_F2))
     {
       fpsFlag = !fpsFlag;
     }
 
-    if(SHEEPINPUT->Keyboard.KeyIsPressed(VK_F3))
+    if(SHEEPINPUT->KeyIsPressed(VK_F3))
     {
       performanceFlag = !performanceFlag;
     }
 
     // F5 for audio debug
-    if(SHEEPINPUT->Keyboard.KeyIsPressed(VK_F5))
+    if(SHEEPINPUT->KeyIsPressed(VK_F5))
     {
       if(currentState == DEBUG_AUDIO)
         currentState = 0;
@@ -395,7 +395,7 @@ namespace Framework
     }
 
     // F6 for graphics debug
-    if(SHEEPINPUT->Keyboard.KeyIsPressed(VK_F6))
+    if(SHEEPINPUT->KeyIsPressed((unsigned int)dit::Keys::F5))
     {
       if(currentState == DEBUG_GRAPHICS)
         currentState = 0;

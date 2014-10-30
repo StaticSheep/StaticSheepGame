@@ -2,6 +2,10 @@
 #define SHEEP_INPUT_H
 
 #include "systems/System.h"
+#include "input/Keyboard.h"
+#include "input/Mouse.h"
+#include "input/InputBackend.h"
+
 
 #define LMB 0
 #define RMB 1
@@ -11,7 +15,7 @@ class Msg;
 
 namespace Framework
 {
-
+  /*
   class MouseInput
   {
   public:
@@ -87,7 +91,7 @@ namespace Framework
 
     // let the input manager touch our privates
     friend class InputManager;
-  };
+  };*/
 
 
   class InputManager  : public ISystem
@@ -102,11 +106,34 @@ namespace Framework
     void Initialize();
     void Update(float dt);
 
-    // we have one mouse...
-    MouseInput Mouse;
-    // and one keyboard...
-    KeyboardInput Keyboard;
+    bool KeyIsPressed(unsigned int key) const;
+    bool KeyIsDown(unsigned int key) const;
+    bool KeyIsReleased(unsigned int key) const;
 
+    bool ButtonPressed(unsigned int button) const;
+    bool ButtonDown(unsigned int button) const;
+    bool ButtonReleased(unsigned int button) const;
+
+    dit::InputBackend* input;
+
+  };
+
+  class WinProcInput : public dit::InputBackend
+  {
+    inline
+    virtual dit::Keyboard* GetKeyboard()     { return &keyboard; }
+
+    inline
+    virtual dit::Mouse* GetMouse()           { return &mouse; }
+
+    virtual void Update(void){};
+
+    void ProcessKeyEvent(){};
+    void ProcessCharEvent(){};
+    void ProcessMouseEvent(){};
+
+    dit::Keyboard keyboard;
+    dit::Mouse mouse;
   };
 
 

@@ -113,11 +113,11 @@ namespace Framework
 
   void Engine::CheckReturnFromPIE()
   {
-    if (SHEEPINPUT->Keyboard.KeyIsPressed(VK_F5))
+    if (SHEEPINPUT->KeyIsPressed(VK_F5))
     {
       PlayInEditor(false);
     }
-      
+
   }
 
   void Engine::Step(void)

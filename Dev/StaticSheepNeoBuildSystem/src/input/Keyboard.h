@@ -34,8 +34,6 @@ namespace dit {
       virtual void ProcessEvent(const InputEvent& event);
 
       bool IsKeyDown(Keys keyCode) const;
-
-
       bool IsKeyPressed(Keys keyCode) const;
       bool IsKeyReleased(Keys keyCode) const;
 
