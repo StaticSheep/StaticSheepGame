@@ -1,13 +1,16 @@
 #pragma once
 
-#include "include/SheepGraphics/api.h"
+#include "SheepGraphics/api.h"
 
-#include "DataTypes.h"
 //#include "..\Tools\Resource.h"
 
 namespace DirectSheep
 {
-
+  enum ObjectType
+  {
+    TEXTURE,
+    NONE,
+  };
 class Handle
 {
   public:
@@ -27,8 +30,7 @@ class Handle
     ObjectType type;
     int index;
 
-    friend class RenderContext;
-    friend class GraphicsManager;
+    friend class Interface;
 };
 
 } //namespace Graphics

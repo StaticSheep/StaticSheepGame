@@ -12,7 +12,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 #include "SheepGraphics\api.h"
 #include "SheepGraphics\Handle.h"
-#include "SheepGraphics\Context.h"
+#include "SheepGraphics\Interface.h"
 
 #include "engine/window/Window32.h"
 
@@ -35,7 +35,7 @@ namespace Framework
     ErrorIf(GRAPHICS != NULL, "SheepGraphics", "Graphics already initialized");
 		GRAPHICS = this;
 
-    m_renderContext = (DirectSheep::RenderContext*)rc;
+    m_renderContext = (DirectSheep::Interface*)rc;
 
     CurrentCamera = NULL;
 	}
@@ -69,20 +69,12 @@ namespace Framework
 
     if (m_renderContext == nullptr)
     {
-      m_renderContext = DirectSheep::RenderContext::Allocate();
+      m_renderContext = DirectSheep::Interface::Allocate();
       m_renderContext->Initialize(ENGINE->Window->GetHandle(), (float)_ScreenWidth, (float)_ScreenHeight);
     }
     
     Message m(Message::GFXDeviceInit);
     ENGINE->SystemMessage(m);
-
-    spritepShader = SetPShader("Generic.hlsl");
-
-    spritevShader = SetVShader("Generic.hlsl");
-
-    m_renderContext->CreateConstantBuffer(spriteContext, 160);
-
-    m_renderContext->CreateVertexBuffer(spriteQuad, 120);
 
     ErrorIf(!LoadAssets(std::string("content")), "AssetLoad", "SheepGraphics.cpp");
 
@@ -179,40 +171,6 @@ namespace Framework
     m_renderContext->BindTexture(0,DirectSheep::Handle(DirectSheep::TEXTURE, ID));
   }
 
-  DirectSheep::Handle SheepGraphics::SetPShader(const std::string& Shader)
-  {
-    for(auto it : m_pshaderMap)
-    {
-      if(it.first == Shader)
-        return it.second;
-    }
-      DirectSheep::Handle temp;
-
-      m_renderContext->CreatePixelShader(temp, Shader);
-
-      m_pshaderMap[Shader] = temp;
-
-      return m_pshaderMap[Shader];
-    }
-
-  DirectSheep::Handle SheepGraphics::SetVShader(const std::string& Shader)
-  {
-    for(auto it : m_vshaderMap)
-    {
-      if(it.first == Shader)
-        return it.second;
-    }
-
-    DirectSheep::InputLayout layout;
-    layout.push_back(DirectSheep::InputElement("POSITION",(DirectSheep::Format)DXGI_FORMAT_R32G32B32_FLOAT));
-    layout.push_back(DirectSheep::InputElement("TEXCOORD",(DirectSheep::Format)DXGI_FORMAT_R32G32_FLOAT));
-    DirectSheep::Handle temp;
-    m_renderContext->CreateVertexShader(temp, Shader, layout);
-    
-    m_vshaderMap[Shader] = temp;
-    return m_vshaderMap[Shader];
-  }
-
   void SheepGraphics::SetColor(Vec4 Color)
   {
     m_renderContext->SetBlendCol(Color.R, Color.G, Color.B, Color.A);
@@ -225,15 +183,6 @@ namespace Framework
 
   void SheepGraphics::RawDraw(void)
   {
-    m_renderContext->BindVertexShader(spritevShader);
-
-    m_renderContext->BindPixelShader(spritepShader);
-
-    m_renderContext->BindVertexBuffer(spriteQuad,20,0);
-
-    m_renderContext->BindConstantBuffer(0, spriteContext, DirectSheep::VERTEX_SHADER);
-    m_renderContext->BindConstantBuffer(0, spriteContext, DirectSheep::PIXEL_SHADER);
-
     m_renderContext->Draw(6,0);
   }
   int SheepGraphics::GetTextureID(const std::string& texture)
@@ -268,8 +217,8 @@ namespace Framework
 
   Vec2 SheepGraphics::GetTextureDim(DirectSheep::Handle texture)
   {
-    DirectSheep::Dimension texSize = m_renderContext->GetTextureSize(texture);
-    return Vec2((float)texSize.width, (float)texSize.height);
+    float* temp = m_renderContext->GetTextureSize(texture);
+    return Vec2(temp[0], temp[1]);
   }
 
   bool SheepGraphics::LoadAssets(std::string& filepath)

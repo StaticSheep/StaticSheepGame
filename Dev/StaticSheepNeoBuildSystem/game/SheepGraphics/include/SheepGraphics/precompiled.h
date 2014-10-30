@@ -9,7 +9,7 @@
 #include "DirectXIncludes.h"
 #include "WindowsIncludes.h"
 
-#include "VertexTypes.h"
+#include "Vertices.h"
 #include "DataTypes.h"
 
 
@@ -22,4 +22,3 @@
 #else
 #define DXVerify(x) (x)
 #endif
-

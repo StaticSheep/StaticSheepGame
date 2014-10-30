@@ -12,11 +12,17 @@
 #endif
 
 #include <d3d11_1.h>
+#include <dxgi.h>
+#include <dxgiformat.h>
+#include <DirectXMath.h>
 #include <d3dcompiler.h>
 #include <directxcolors.h>
 #include <FW1FontWrapper.h>
 #include <DirectXPackedVector.h>
+#include "VertexTypes.h"
 #include "SpriteBatch.h"
+#include "SpriteFont.h"
+#include "SimpleMath.h"
 
 
 

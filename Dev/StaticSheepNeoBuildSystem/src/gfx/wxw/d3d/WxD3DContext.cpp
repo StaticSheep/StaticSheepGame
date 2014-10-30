@@ -18,7 +18,7 @@
 
 #include "d3d/WxD3DCanvas.h"
 
-#include "SheepGraphics/Context.h"
+#include "SheepGraphics/Interface.h"
 
 #ifdef D3DGetContext
 #undef D3DGetContext
@@ -31,7 +31,7 @@ namespace dit {
 
     namespace D3D {
 
-      DirectSheep::RenderContext* d3dCtx = nullptr;
+      DirectSheep::Interface* d3dCtx = nullptr;
 
     }
 
@@ -73,8 +73,8 @@ namespace dit {
 
         if (D3DGetContext() == nullptr)
         {
-          D3DGetContext() = DirectSheep::RenderContext::Allocate();
-          DirectSheep::RenderContext* d3d = D3DGetContext();
+          D3DGetContext() = DirectSheep::Interface::Allocate();
+          DirectSheep::Interface* d3d = D3DGetContext();
 
           canvas->context = this;
 
@@ -87,8 +87,8 @@ namespace dit {
         }
         else
         {
-          DirectSheep::RenderContext* d3d = D3DGetContext();
-          d3d->SetViewport(0, 0, DirectSheep::Dimension(canvas->GetSize().GetX(), canvas->GetSize().GetY()));
+          DirectSheep::Interface* d3d = D3DGetContext();
+          d3d->changeResolution();
         }
 #endif
     }

@@ -109,7 +109,7 @@ namespace Framework
     int _ScreenHeight;
 
 
-    DirectSheep::RenderContext *m_renderContext;
+    DirectSheep::Interface *m_renderContext;
 
 	};
 

@@ -7,6 +7,9 @@ cbuffer DefaultBuffer
   float2 cuvEnd;
 }
 
+float4 AmbientColor = float4(1, 1, 1, 1);
+float AmbientIntensity = 0.1;
+
 Texture2D gTexture : register(t0);
 
 SamplerState gSampler : register(s0);
@@ -32,7 +35,16 @@ PSInput VShader(VSInput input)
   return output;
 }
 
-float4 PShader(PSInput input) : SV_TARGET
+float4 PShader(float4 color : COLOR0, float2 texCoord : TEXCOORD0) : SV_TARGET0
 {
-  return cBlendColor * gTexture.Sample(gSampler, input.texCoord);
+  return gTexture.Sample(gSampler, texCoord) * AmbientColor * AmbientIntensity;
+}
+
+technique Ambient
+{
+  pass Pass1
+  {
+    VertexShader = compile vs_4_0 VShader();
+    PixelShader = compile ps_4_0 PShader();
+  }
 }

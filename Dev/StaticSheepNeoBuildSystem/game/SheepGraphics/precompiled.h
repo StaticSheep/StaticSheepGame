@@ -9,7 +9,7 @@
 #include "DirectXIncludes.h"
 #include "WindowsIncludes.h"
 
-#include "VertexTypes.h"
+#include "Vertices.h"
 #include "DataTypes.h"
 
 
@@ -22,13 +22,3 @@
 #else
 #define DXVerify(x) (x)
 #endif
-
-template <typename T1>
-void SafeRelease(T1 toRelease)
-{
-  if (toRelease)
-  {
-    toRelease->Release();
-    toRelease = NULL;
-  }
-}

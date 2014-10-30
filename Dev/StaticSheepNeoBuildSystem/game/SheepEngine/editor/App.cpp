@@ -21,7 +21,7 @@
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/fstream.hpp>
 
-#include "SheepGraphics/Context.h"
+#include "SheepGraphics/Interface.h"
 #include "engine/config/Config.h"
 #include "systems/graphics/SheepGraphics.h"
 
@@ -226,7 +226,7 @@ namespace dit {
 
       wxSize canvasSize = gwp->GetSize();
 
-      Framework::GRAPHICS->m_renderContext = (DirectSheep::RenderContext*)wxd3dCtx->GetRenderContext();
+      Framework::GRAPHICS->m_renderContext = (DirectSheep::Interface*)wxd3dCtx->GetRenderContext();
       Framework::GRAPHICS->_ScreenWidth = canvasSize.GetX();
       Framework::GRAPHICS->_ScreenHeight = canvasSize.GetY();
 
