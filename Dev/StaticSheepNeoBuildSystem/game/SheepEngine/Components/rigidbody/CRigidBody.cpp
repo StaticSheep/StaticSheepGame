@@ -21,26 +21,6 @@ namespace Framework
 	{
 
 	}
-	/*
-  static Vec3D ScaleDown(Vec3D value)
-  {
-   return (value *= 1.0f / 32.0f);
-  }
-
-  static float ScaleDown(float value)
-  {
-    return (value *= 1.0f / 32.0f);
-  }
-
-  static Vec3D ScaleUp(Vec3D value)
-  {
-    return (value *= 1.0f / 32.0f);
-  }
-
-  static float ScaleUp(float value)
-  {
-    return (value *= 1.0f / 32.0f);
-  }*/
 
 	//initialize the rigid body
 	void RigidBody::Initialize(void)

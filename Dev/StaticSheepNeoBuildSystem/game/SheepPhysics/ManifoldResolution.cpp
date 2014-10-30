@@ -107,10 +107,5 @@ namespace SheepFizz
       B->ApplyImpulse(frictionImpulse, bRepulsionVec);
     }
 
-    //debug info - can be removed
-    if (A->shape_->GetShape() == Cir || B->shape_->GetShape() == Cir)
-      return;
-
-
   }//end of ApplyForces
 }
