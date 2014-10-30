@@ -1,7 +1,7 @@
 GameObject
 {
-  name std::string "SmallPlatform"
-  archetype std::string "SmallPlat"
+  name std::string "Small Platform Right"
+  archetype std::string "SmallP"
   Transform
   {
     Translation Vec3

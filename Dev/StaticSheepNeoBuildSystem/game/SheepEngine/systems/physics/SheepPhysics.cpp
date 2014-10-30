@@ -21,17 +21,17 @@ namespace Framework
 	{
 		// Initialize physics object list
 		PHYSICS = this;
-	}//end of Constructor
+	}
 
 	SheepPhysics::~SheepPhysics()
 	{
 		PHYSICS = nullptr;
-	}//end of Destructor
+	}
 
 	void SheepPhysics::Shutdown()
 	{
 
-	}//end of Shutdown
+	}
 
 	void SheepPhysics::RegisterComponents()
 	{
@@ -39,7 +39,7 @@ namespace Framework
 		REGISTER_COMPONENT(BoxCollider);
 		REGISTER_COMPONENT(CircleCollider);
 
-	 }//end of RegisterComponents
+	 }
 
 	static void CollisionCallback(void* A_userData, void* B_userData,
     void* Space_userData, SheepFizz::ExternalManifold manifold)
@@ -72,7 +72,7 @@ namespace Framework
 	void SheepPhysics::DeleteSpace(void* p_Space)
 	{
 		SheepFizz::PhysicsSpace::Delete((SheepFizz::PhysicsSpace*)p_Space);
-	}//end of DeleteSpace
+	}
 
 	// initialize materials
 	void SheepPhysics::Initialize()
@@ -121,67 +121,73 @@ namespace Framework
 	Vec3D SheepPhysics::GetBodyPosition(GameSpace* space, SheepFizz::Handle handle)
 	{
 		return ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->GetBodyPos(handle);
-	}//end of GetBodyPosition
+	}
 
 	Vec3D SheepPhysics::GetBodyVelocity(GameSpace* space, SheepFizz::Handle handle)
 	{
 		return ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->GetBodyVeloc(handle);
-	}//end of GetBodyVelocity
+	}
+
 	Vec3D SheepPhysics::GetBodyForce(GameSpace* space, SheepFizz::Handle handle)
 	{
 		return ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->GetBodyForce(handle);
-	}//end of GetBodyForce
+	}
 
 	float SheepPhysics::GetBodyRotation(GameSpace* space, SheepFizz::Handle handle)
 	{
 		return ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->GetBodyRot(handle);
-	}//end of GetBodyRotation
+	}
 
 	float SheepPhysics::GetBodyAngVelocity(GameSpace* space, SheepFizz::Handle handle)
 	{
 		return ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->GetBodyAngVeloc(handle);
-	}//end of GetBodyAngVeloc
+	}
 
 	float SheepPhysics::GetBodyTorques(GameSpace* space, SheepFizz::Handle handle)
 	{
 		return ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->GetBodyTorque(handle);
-	}//end of GetBodyTorques
+	}
 
   Vec3D SheepPhysics::GetCollisionNormal(GameSpace* space, Framework::Handle ownerHandle, SheepFizz::ExternalManifold manifold)
   {
     return ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->GetCollisionNorm((void*)(unsigned int)ownerHandle, manifold);
-  }//end of GetBodyTorques
+  }
+
+  Vec3D SheepPhysics::GetBodyGravityNormal(GameSpace* space, SheepFizz::Handle handle)
+  {
+    return ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->GetBodyGravityNormal(handle);
+  }
 
 	//settors
 	void SheepPhysics::SetBodyPosition(GameSpace* space, SheepFizz::Handle handle, Vec3D position)
 	{
 		((SheepFizz::PhysicsSpace*)(space->m_pSpace))->SetBodyPos(handle, position);
-	}//end of SetBodyPosition
+	}
 	
 	void SheepPhysics::SetBodyVelocity(GameSpace* space, SheepFizz::Handle handle, Vec3D velocity)
 	{
 		((SheepFizz::PhysicsSpace*)(space->m_pSpace))->SetBodyVeloc(handle, velocity);
-	}//end of SetBodyVeloc
+	}
 
 	void SheepPhysics::SetBodyForce(GameSpace* space, SheepFizz::Handle handle, Vec3D force)
 	{
 		((SheepFizz::PhysicsSpace*)(space->m_pSpace))->SetBodyForce(handle, force);
-	}//end of SetBodyForce
+	}
 
 	void SheepPhysics::SetBodyRotation(GameSpace* space, SheepFizz::Handle handle, float rotation)
 	{
 		((SheepFizz::PhysicsSpace*)(space->m_pSpace))->SetBodyRot(handle, rotation);
-	}//end of SetBodyRoation
+	}
 
 	void SheepPhysics::SetBodyAngVelocity(GameSpace* space, SheepFizz::Handle handle, float angveloc)
 	{
 		((SheepFizz::PhysicsSpace*)(space->m_pSpace))->SetBodyAngVeloc(handle, angveloc);
-	}//end of SetBodyAngVelocity
+	}
 
 	void SheepPhysics::SetBodyTorques(GameSpace* space, SheepFizz::Handle handle, float torque)
 	{
 		((SheepFizz::PhysicsSpace*)(space->m_pSpace))->SetBodyTorque(handle, torque);
-	}//end of SetBodyTorques
+	}
 
 	void SheepPhysics::SetDT(GameSpace* space, float dt)
 	{
@@ -194,26 +200,42 @@ namespace Framework
     ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->SetBodyCollisionCallback(handle, collisionCallback);
   }
 
+  //gravity functions
+  void SheepPhysics::SetBodyGravityOn(GameSpace* space, SheepFizz::Handle handle)
+  {
+    ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->SetBodyGravityOn(handle);
+  }
+
+  void SheepPhysics::SetBodyGravityOff(GameSpace* space, SheepFizz::Handle handle)
+  {
+    ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->SetBodyGravityOff(handle);
+  }
+
+  void SheepPhysics::SetBodyGravityNormal(GameSpace* space, SheepFizz::Handle handle, Vec3D normal)
+  {
+    ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->SetBodyGravityNormal(handle, normal);
+  }
+
 	//additive functions
 	void SheepPhysics::AddToBodyVelocity(GameSpace* space, SheepFizz::Handle handle, Vec3D velocity)
 	{
 		((SheepFizz::PhysicsSpace*)(space->m_pSpace))->AddToBodyVeloc(handle, velocity);
-	}//end of AddToBodyVeloc
+	}
 
 	void SheepPhysics::AddToBodyForce(GameSpace* space, SheepFizz::Handle handle, Vec3D force)
 	{
 		((SheepFizz::PhysicsSpace*)(space->m_pSpace))->AddToBodyForce(handle, force);
-	}//end of AddToBodyForce
+	}
 
 	void SheepPhysics::AddToBodyAngVelocity(GameSpace* space, SheepFizz::Handle handle, float angveloc)
 	{
 		((SheepFizz::PhysicsSpace*)(space->m_pSpace))->AddToBodyAngVeloc(handle, angveloc);
-	}//end of AddToBodyAngVelocity
+	}
 
 	void SheepPhysics::AddToBodyTorques(GameSpace* space, SheepFizz::Handle handle, float torque)
 	{
 		((SheepFizz::PhysicsSpace*)(space->m_pSpace))->AddToBodyTorque(handle, torque);
-	}//end of AddToBodyTorques
+	}
 
 	//end of gettors and settors
 	//********************
@@ -224,25 +246,25 @@ namespace Framework
 	void SheepPhysics::ChangePhysBodies(GameSpace* space, SheepFizz::Handle handle, float xradius, float y)
 	{
 		((SheepFizz::PhysicsSpace*)(space->m_pSpace))->ChangeBodies(handle, xradius, y);
-	}//end of ChangePhysBodies
+	}
 
 	void SheepPhysics::ChangePhysMaterials(GameSpace* space, SheepFizz::Handle handle, SheepFizz::Material& material)
 	{
 		((SheepFizz::PhysicsSpace*)(space->m_pSpace))->ChangeMaterials(handle, material);
-	}//end of ChangePhysMaterials
+	}
 
 	//remove bodies from space
 	void SheepPhysics::RemoveBodies(GameSpace* space, SheepFizz::Handle handle)
 	{
 		((SheepFizz::PhysicsSpace*)(space->m_pSpace))->RemoveBody(handle);
-	}//end of RemoveBodies
+	}
 
 	SheepFizz::Material* SheepPhysics::GetMaterial(std::string name)
 	{
 		//find the material and return it
 		SheepFizz::Material* material = &m_materials[name];
 		return material;
-	}//end of GetMaterial
+	}
 	//********************
 
 	//update all gamespaces by dt
@@ -254,6 +276,6 @@ namespace Framework
 			if (gSpaces[i]->m_pSpace && !gSpaces[i]->Paused())
 				((SheepFizz::PhysicsSpace*)(gSpaces[i]->m_pSpace))->Step();
 		}
-	}//end of Update
+	}
 
 }

@@ -58,7 +58,7 @@ namespace Framework
 		// Sheep graphics interface deconstructor
 		~SheepGraphics();
 
-    void SetPosition(float x, float y);
+    void SetPosition(float x, float y, float Z);
     void SetRotation(float theta);
     void SetSize(float x, float y);
     void SetColor(Vec4 Color);

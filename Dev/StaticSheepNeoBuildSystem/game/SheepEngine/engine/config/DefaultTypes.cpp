@@ -23,6 +23,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/colliders/CCircleCollider.h"
 #include "components/controllers/player/CPlayerController.h"
 #include "components/gameplay_scripts/CBullet_default.h"
+#include "components/gameplay_scripts/CElevatorPlat.h"
+#include "components/gameplay_scripts/CLevel1_Logic.h"
 
 namespace Framework
 {
@@ -161,6 +163,14 @@ namespace Framework
 
 	  TYPE_REGISTER(Bullet_Default);
 	  TYPE_SET_TWEAK_TYPE(Bullet_Default, AntTweak::TW_TYPE_COMPONENT);
+
+    TYPE_REGISTER(ElevatorPlat);
+    TYPE_SET_TWEAK_TYPE(ElevatorPlat, AntTweak::TW_TYPE_COMPONENT);
+    TYPE_ADD_MEMBER(ElevatorPlat, direction, false, true, "Elevator Direction");
+
+    TYPE_REGISTER(Level1_Logic);
+    TYPE_SET_TWEAK_TYPE(Level1_Logic, AntTweak::TW_TYPE_COMPONENT);
+    TYPE_ADD_MEMBER(Level1_Logic, timeLimit, false, true, "Level Time Limit");
 
     TYPE_REGISTER( BoxCollider );
     TYPE_ADD_MEMBER( BoxCollider, m_width, false, true, "Width");

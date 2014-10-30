@@ -20,7 +20,7 @@ GameObject
   }
   Sprite
   {
-    m_spriteName std::string "content/circle.png"
+    m_spriteName std::string "circle.png"
     Size Vec2
     {
       X float 0.250000

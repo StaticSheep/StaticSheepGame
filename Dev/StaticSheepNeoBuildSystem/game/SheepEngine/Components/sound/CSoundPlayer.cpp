@@ -23,6 +23,8 @@ namespace Framework
   {
     // connect to the FMOD system
     _soundSystem = AUDIO;
+    _volume = 1.0f;
+    _pitch = 1.0f;
 
     // null out the array of pointers
     for(int i = 0; i < MAX_SOUNDS; ++i)
@@ -158,6 +160,20 @@ namespace Framework
   void SoundPlayer::SetPitch(float pitch)
   {
     _pitch = pitch;
+  }
+
+  void SoundPlayer::SetVolume(float volume)
+  {
+    _volume = volume;
+
+    for (int i = 0; i < MAX_SOUNDS; ++i)
+    {
+      if (_instanceList[i].instance != NULL)
+      {
+        _instanceList[i].instance->setVolume(volume);
+        _instanceList[i].instance->setPitch(_pitch);
+      }
+    }
   }
 
 }// end namespace

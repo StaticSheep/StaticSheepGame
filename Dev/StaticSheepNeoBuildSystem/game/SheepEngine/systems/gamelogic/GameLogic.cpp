@@ -16,6 +16,9 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/gamepad/CGamePad.h"
 #include "components/controllers/player/CPlayerController.h"
 #include "components/gameplay_scripts/CBullet_default.h"
+#include "components/gameplay_scripts/CElevatorPlat.h"
+#include "components/gameplay_scripts/CLevel1_Logic.h"
+#include "Components/sound/CSoundEmitter.h"
 
 namespace Framework
 {
@@ -40,6 +43,9 @@ namespace Framework
     REGISTER_COMPONENT(GamePad);
 	  REGISTER_COMPONENT(PlayerController);
 	  REGISTER_COMPONENT(Bullet_Default);
+    REGISTER_COMPONENT(ElevatorPlat);
+    REGISTER_COMPONENT(Level1_Logic);
+    REGISTER_COMPONENT(SoundEmitter);
   }
 
   void GameLogic::Initialize()

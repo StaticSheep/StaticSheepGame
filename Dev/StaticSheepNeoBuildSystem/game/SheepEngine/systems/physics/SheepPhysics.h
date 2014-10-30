@@ -61,6 +61,8 @@ namespace Framework
 			float GetBodyAngVelocity(GameSpace* space, SheepFizz::Handle handle);
 			float GetBodyTorques(GameSpace* space, SheepFizz::Handle handle);
 
+      Vec3D GetBodyGravityNormal(GameSpace* space, SheepFizz::Handle handle);
+
       //collision
       Vec3D GetCollisionNormal(GameSpace* space, Framework::Handle ownerHandle , SheepFizz::ExternalManifold manifold);
 
@@ -71,6 +73,11 @@ namespace Framework
 			void SetBodyRotation(GameSpace* space, SheepFizz::Handle handle, float rotation);
 			void SetBodyAngVelocity(GameSpace* space, SheepFizz::Handle handle, float angveloc);
 			void SetBodyTorques(GameSpace* space, SheepFizz::Handle handle, float torque);
+
+      //gravity
+      void SetBodyGravityOn(GameSpace* space, SheepFizz::Handle handle);
+      void SetBodyGravityOff(GameSpace* space, SheepFizz::Handle handle);
+      void SetBodyGravityNormal(GameSpace* space, SheepFizz::Handle handle, Vec3D normal);
 
       void SetBodyCollisionCallback(GameSpace* space, SheepFizz::Handle handle, bool collisionCallback);
 			

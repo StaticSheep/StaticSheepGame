@@ -1,4 +1,3 @@
-
 #include "pch/precompiled.h"
 #include "CPlayerController.h"
 #include "types/space/Space.h"
@@ -6,12 +5,11 @@
 #include "types/vectors/Vec3.h"
 #include "components/transform/CTransform.h"
 #include "../../colliders/CCircleCollider.h"
-
-
-#include "systems/input/Input.h"
+#include "../../sound/CSoundEmitter.h"
 
 namespace Framework
 {
+#define delay 5
 	PlayerController::PlayerController() //1
 	{
 		//set defaults
@@ -20,6 +18,9 @@ namespace Framework
 		isSnapped = true;
 		hasFired = false;
 		snappedTo = NULL;
+    health = 100;
+    respawnTimer = 0.0;
+    shotDelay = delay;
 	}
 
 	PlayerController::~PlayerController() //4
@@ -37,12 +38,16 @@ namespace Framework
 		playerGamePad = space->GetGameObject(owner)->GetComponentHandle(eGamePad); //gets the handle to the gamepad
 		playerCollider = space->GetGameObject(owner)->GetComponentHandle(eBoxCollider);
 		playerTransform = space->GetGameObject(owner)->GetComponentHandle(eTransform);
+    playerSound = space->GetGameObject(owner)->GetComponentHandle(eSoundEmitter);
 
 		GamePad *gp = space->GetHandles().GetAs<GamePad>(playerGamePad); //actually gets the gamepad
 		gp->SetPad(playerNum); //setting pad number
 
 		aimDir.x = 1;
 		aimDir.y = 0;
+
+    BoxCollider *bc = space->GetHandles().GetAs<BoxCollider>(playerCollider);
+    bc->SetGravityOff();
 	}
 
 	void PlayerController::LogicUpdate(float dt)
@@ -51,38 +56,85 @@ namespace Framework
 		GamePad *gp = space->GetHandles().GetAs<GamePad>(playerGamePad);
 		//get the box collider of player
 		BoxCollider *bc = space->GetHandles().GetAs<BoxCollider>(playerCollider);
+    SoundEmitter *se = space->GetHandles().GetAs<SoundEmitter>(playerSound);
+    Transform *ps = space->GetHandles().GetAs<Transform>(playerTransform);
+
+    if (health <= 0)
+    {
+      se->Play("explosion");
+      //space->GetGameObject(owner)->Destroy();
+      ps->SetTranslation(Vec3(0.0, 0.0, 0.0));
+      health = 100;
+
+    }
+
 
 		if (gp->RStick_InDeadZone() == false)       //if the right stick is NOT inside of its dead zone
 			aimDir = aimingDirection(gp); //get the direction the player is currently aiming;
 
 		//fire on trigger pull
-		if (gp->RightTrigger() /*&& hasFired == false*/)
+		if (gp->RightTrigger() && hasFired == false)
 		{
 			hasFired = true;
 			onFire();
 		}
+    else
+    {
+      --shotDelay;
+      if(shotDelay < 0)
+      {
+        hasFired = false;
+        shotDelay = delay;
+      }
+    }
 		//if the trigger is released, reset the bool
 		if (!gp->RightTrigger())
+    {
 			hasFired = false;
-///////////////////////////////////////////////////////////////
+      shotDelay = delay;
+    }
+///////////////////////////////////////////////////////////////////////////////////////////////////////
     if (isSnapped)
     {
-      bc->SetVelocity(snappedNormal * 25);
+      bc->SetVelocity(snappedNormal * 50);
+      bc->SetAngVelocity(0.0);
       //left stick move
-      if (gp->LeftStick_X() > 0.2)
+      if (gp->LeftStick_X() > 0.2 && snappedNormal.y != 0)
       {
-        bc->SetVelocity(Vec3(0.0f, 0.0f, 0.0f));
-        bc->AddToVelocity(-(snappedNormal.CalculateNormal() * 150));
-
+        //bc->SetVelocity(Vec3(0.0f, 0.0f, 0.0f));
+        if (snappedNormal.y > 0)
+          bc->AddToVelocity((snappedNormal.CalculateNormal() * 250));
+        else if (snappedNormal.y < 0)
+          bc->AddToVelocity(-(snappedNormal.CalculateNormal() * 250));
       }
-      else if (gp->LeftStick_X() < -0.2)
+      else if (gp->LeftStick_X() < -0.2 && snappedNormal.y != 0)
       {
-        bc->SetVelocity(Vec3(0.0f, 0.0f, 0.0f));
-        bc->AddToVelocity((snappedNormal.CalculateNormal() * 150));
+        //bc->SetVelocity(Vec3(0.0f, 0.0f, 0.0f));
+        if (snappedNormal.y > 0)
+          bc->AddToVelocity(-(snappedNormal.CalculateNormal() * 250));
+        if (snappedNormal.y < 0)
+          bc->AddToVelocity((snappedNormal.CalculateNormal() * 250));
+      }
+      ////////////////////////////////////////////////////////////////////
+      if (gp->LeftStick_Y() > 0.2 && snappedNormal.x != 0)
+      {
+        //bc->SetVelocity(Vec3(0.0f, 0.0f, 0.0f));
+        if (snappedNormal.x > 0)
+          bc->AddToVelocity(-(snappedNormal.CalculateNormal() * 250));
+        else if (snappedNormal.x < 0)
+          bc->AddToVelocity((snappedNormal.CalculateNormal() * 250));
+      }
+      else if (gp->LeftStick_Y() < -0.2 && snappedNormal.x != 0)
+      {
+        //bc->SetVelocity(Vec3(0.0f, 0.0f, 0.0f));
+        if (snappedNormal.x > 0)
+          bc->AddToVelocity((snappedNormal.CalculateNormal() * 250));
+        if (snappedNormal.x < 0)
+          bc->AddToVelocity(-(snappedNormal.CalculateNormal() * 250));
       }
 
       //jump
-      if (gp->ButtonPressed(XButtons.A) && isSnapped)
+      if ((gp->ButtonPressed(XButtons.A) || gp->ButtonPressed(XButtons.LShoulder)) && isSnapped)
       {
         bc->AddToVelocity(-(snappedNormal * 300));
         isSnapped = false;
@@ -108,20 +160,25 @@ namespace Framework
 			//bc->AddToAngVelocity(.5f);
 		}
 
-
-    if (SHEEPINPUT->Keyboard.KeyIsPressed('A'))
-    {
-      //ENGINE->ChangeLevel("Level2");
-    }
-
+    isSnapped = false;
 		
 	}
 
+  /////////////////////////////////////////////////////////////////////////////////////////////////////
 	void PlayerController::OnCollision(Handle otherObject, SheepFizz::ExternalManifold manifold)
 	{
+    GameObject *OtherObject = space->GetHandles().GetAs<GameObject>(otherObject);
+    if (OtherObject->name == "Bullet")
+    {
+      health -= 10;
+      return;
+    }
+    if (OtherObject->name == "KillBox")
+      health = 0;
+
 		isSnapped = true;
 		//get the thing we are colliding with
-		GameObject *OtherObject = space->GetHandles().GetAs<GameObject>(otherObject);
+	
 		//get the transform of the thing we are colliding with
 		Transform *OOT = OtherObject->GetComponent<Transform>(eTransform);
 		//if that thing we collided with's transform is missing, get the fuck otta here, i mean what are you even doing?
@@ -133,7 +190,7 @@ namespace Framework
       BoxCollider *OOBc = OtherObject->GetComponent<BoxCollider>(eBoxCollider);
       snappedNormal = OOBc->GetCollisionNormals(manifold);
 		}
-		else if (OtherObject->HasComponent(eBoxCollider))
+		else if (OtherObject->HasComponent(eCircleCollider))
 		{
       CircleCollider *OOCc = OtherObject->GetComponent<CircleCollider>(eCircleCollider);
       snappedNormal = OOCc->GetCollisionNormals(manifold);
@@ -155,12 +212,22 @@ namespace Framework
 		Transform *playerTrans = space->GetHandles().GetAs<Transform>(playerTransform);
 		BT->SetTranslation(playerTrans->GetTranslation() + aimDir * 25);
 		bulletC->AddToVelocity(aimDir * 1000);
+
+    SoundEmitter *se = space->GetHandles().GetAs<SoundEmitter>(playerSound);
+    se->PlayEx("gunshot", 0.125f);
+
+    if (!isSnapped)
+    {
+      BoxCollider *bc = space->GetHandles().GetAs<BoxCollider>(playerCollider);
+      bc->AddToVelocity(-aimDir * 25);
+    }
 	}
 
+  ///////////////////////////////////////////////////////////////////////////////////////////
 	Vec3 PlayerController::aimingDirection(GamePad *gp)
 	{
 		Vec3 returnVec;
-    float thresh = 0.7f; //the threshold minimum for aiming
+    float thresh = 1.0f; //the threshold minimum for aiming
 
 		returnVec.x = gp->RightStick_X() * 2;
 		returnVec.y = gp->RightStick_Y() * 2;
@@ -182,9 +249,9 @@ namespace Framework
     if (returnVec.y < thresh && returnVec.y > 0 && !(returnVec.x >= thresh || returnVec.x <= -thresh))
       returnVec.y = thresh;
 
-    if (returnVec.x > -thresh && returnVec.x < 0)
+    if (returnVec.x > -thresh && returnVec.x < 0 && !(returnVec.y <= thresh || returnVec.y >= -thresh))
       returnVec.x = -thresh;
-    if (returnVec.y > -thresh && returnVec.y < 0)
+    if (returnVec.y > -thresh && returnVec.y < 0 && !(returnVec.x <= thresh || returnVec.x >= -thresh))
       returnVec.y = -thresh;
 
 		return returnVec;

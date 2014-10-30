@@ -21,26 +21,6 @@ namespace Framework
 	{
 
 	}
-	/*
-  static Vec3D ScaleDown(Vec3D value)
-  {
-   return (value *= 1.0f / 32.0f);
-  }
-
-  static float ScaleDown(float value)
-  {
-    return (value *= 1.0f / 32.0f);
-  }
-
-  static Vec3D ScaleUp(Vec3D value)
-  {
-    return (value *= 1.0f / 32.0f);
-  }
-
-  static float ScaleUp(float value)
-  {
-    return (value *= 1.0f / 32.0f);
-  }*/
 
 	//initialize the rigid body
 	void RigidBody::Initialize(void)
@@ -81,6 +61,21 @@ namespace Framework
 
 		PHYSICS->RemoveBodies(space, m_handle);
 	}
+
+  void RigidBody::SetGravityOn(void)
+  {
+    PHYSICS->SetBodyGravityOn(space, m_handle);
+  }
+
+  void RigidBody::SetGravityOff(void)
+  {
+    PHYSICS->SetBodyGravityOff(space, m_handle);
+  }
+
+  void RigidBody::SetGravityNormal(Vec3D normal)
+  {
+    PHYSICS->SetBodyGravityNormal(space, m_handle, normal);
+  }
 
   void RigidBody::SetVelocity(Vec3D& velocity)
 	{
@@ -125,5 +120,10 @@ namespace Framework
   Vec3D RigidBody::GetCurrentVelocity(void)
   {
     return PHYSICS->GetBodyVelocity(space, m_handle);
+  }
+
+  Vec3D RigidBody::GetGravityNormal(void)
+  {
+    return PHYSICS->GetBodyGravityNormal(space, m_handle);
   }
 }

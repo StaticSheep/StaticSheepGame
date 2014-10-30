@@ -172,9 +172,9 @@ namespace Framework
     m_renderContext->frameEnd();
   }
 
-  void SheepGraphics::SetPosition(float x, float y)
+  void SheepGraphics::SetPosition(float x, float y, float Z)
   {
-    m_renderContext->SetPosition(x,y);
+    m_renderContext->SetPosition(x,y, Z);
   }
 
   void SheepGraphics::SetRotation(float theta)

@@ -394,7 +394,7 @@ namespace Framework
   /// <returns></returns>
   Handle GameObject::GetComponentHandle(EComponent type)
   {
-    return space->GetHandles().GetAs<GameComponent>(m_components[type])->self;
+    return m_components[type];
   }
 
   /// <summary>

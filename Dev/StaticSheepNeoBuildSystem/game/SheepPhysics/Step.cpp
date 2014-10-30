@@ -65,20 +65,27 @@ namespace SheepFizz
   {
     Body* body = handles_.GetAs<Body>(handle);
     body->collisionCallback_ = collisionCallback;
-  }
+  }//end of SetBodyCollisionCallback
 
- /* void PhysicsSpace::SetBody(Handle handle, unsigned int gravityOn_)
+  //gravity functions
+  void PhysicsSpace::SetBodyGravityOn(Handle handle)
   {
     Body* body = handles_.GetAs<Body>(handle);
-    body->collisionCallback_ = collisionCallback;
-  }
+    body->gravityOn_ = 1;
+  }//end of SetBodyGravityOn
 
-  void PhysicsSpace::SetBodyCollisionCallback(Handle handle, bool collisionCallback)
+  void PhysicsSpace::SetBodyGravityOff(Handle handle)
   {
     Body* body = handles_.GetAs<Body>(handle);
-    body->collisionCallback_ = collisionCallback;
-  }*/
-	
+    body->gravityOn_ = 0;
+  }//end of SetBodyGravityOff
+
+  void PhysicsSpace::SetBodyGravityNormal(Handle handle, Vec3D normal)
+  {
+    Body* body = handles_.GetAs<Body>(handle);
+    body->gravityNormal_ = normal;
+  }//end of SetBodyGravityNormal
+
 	//end of settors
 	//*************
 
@@ -149,9 +156,14 @@ namespace SheepFizz
 		return body->torque_;
 	}//end of GetBodyTorque
 
+  Vec3D PhysicsSpace::GetBodyGravityNormal(Handle handle)
+  {
+    Body* body = handles_.GetAs<Body>(handle);
+    return body->gravityNormal_;
+  }//end of GetBodyGravityNormal
+
 	//get the time for the engine
 	float PhysicsSpace::GetTime(void) {return dt_;}
-	//end of GetTime
 
   Vec3D PhysicsSpace::GetCollisionNorm(void* handle, ExternalManifold manifold)
   {
