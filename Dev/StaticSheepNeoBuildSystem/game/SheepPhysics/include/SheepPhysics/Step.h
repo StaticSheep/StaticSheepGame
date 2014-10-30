@@ -35,6 +35,11 @@ namespace SheepFizz
 		PHY_API void SetBodyAngVeloc(Handle handle, float angveloc);
 		PHY_API void SetBodyTorque(Handle handle, float torque);
 
+    //gravity
+    PHY_API void SetBodyGravityOn(Handle handle);
+    PHY_API void SetBodyGravityOff(Handle handle);
+    PHY_API void SetBodyGravityNormal(Handle handle, Vec3D normal);
+
 		//adders
 		PHY_API void AddToBodyVeloc(Handle handle, Vec3D velocity);
 		PHY_API void AddToBodyForce(Handle handle, Vec3D force);
@@ -51,6 +56,9 @@ namespace SheepFizz
 		PHY_API float GetBodyRot(Handle handle);
 		PHY_API float GetBodyAngVeloc(Handle handle);
 		PHY_API float GetBodyTorque(Handle handle);
+
+    //gravity gettors
+    PHY_API Vec3D GetBodyGravityNormal(Handle handle);
 
 		//get the time for the engine
 		PHY_API float GetTime(void);
