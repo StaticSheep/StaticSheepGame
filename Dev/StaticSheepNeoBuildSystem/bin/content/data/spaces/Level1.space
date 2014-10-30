@@ -7,8 +7,8 @@ GameObject
   {
     Translation Vec3
     {
-      x_ float -489.730011
-      y_ float -200.000000
+      x_ float -487.640015
+      y_ float -265.000000
       z_ float 0.000000
     }
     Rotation float 0.000000
@@ -57,7 +57,7 @@ GameObject
     {
       x_ float -390.000000
       y_ float -295.000000
-      z_ float -0.010000
+      z_ float 0.000000
     }
     Rotation float 0.000000
     Scale Vec3
@@ -94,7 +94,7 @@ GameObject
     {
       x_ float 0.000000
       y_ float -295.000000
-      z_ float -0.010000
+      z_ float 0.000000
     }
     Rotation float 0.000000
     Scale Vec3
@@ -168,7 +168,7 @@ GameObject
     {
       x_ float 530.000000
       y_ float 0.000000
-      z_ float 0.010000
+      z_ float 0.000000
     }
     Rotation float 1.570700
     Scale Vec3
@@ -233,7 +233,7 @@ GameObject
     {
       x_ float 390.000000
       y_ float -295.000000
-      z_ float -0.010000
+      z_ float 0.000000
     }
     Rotation float 0.000000
     Scale Vec3
@@ -270,7 +270,7 @@ GameObject
     {
       x_ float -390.000000
       y_ float 295.000000
-      z_ float -0.010000
+      z_ float 0.000000
     }
     Rotation float 0.000000
     Scale Vec3
@@ -307,7 +307,7 @@ GameObject
     {
       x_ float 390.000000
       y_ float 295.000000
-      z_ float -0.010000
+      z_ float 0.000000
     }
     Rotation float 0.000000
     Scale Vec3
@@ -344,7 +344,7 @@ GameObject
     {
       x_ float 0.000000
       y_ float 295.000000
-      z_ float -0.010000
+      z_ float 0.000000
     }
     Rotation float 0.000000
     Scale Vec3
@@ -529,7 +529,7 @@ GameObject
     {
       x_ float 490.000000
       y_ float -266.000000
-      z_ float 1.000000
+      z_ float 0.000000
     }
     Rotation float 0.000000
     Scale Vec3

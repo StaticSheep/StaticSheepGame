@@ -9,6 +9,7 @@
 
 namespace Framework
 {
+#define delay 5
 	PlayerController::PlayerController() //1
 	{
 		//set defaults
@@ -19,6 +20,7 @@ namespace Framework
 		snappedTo = NULL;
     health = 100;
     respawnTimer = 0.0;
+    shotDelay = delay;
 	}
 
 	PlayerController::~PlayerController() //4
@@ -82,14 +84,14 @@ namespace Framework
       if(shotDelay < 0)
       {
         hasFired = false;
-        shotDelay = 10;
+        shotDelay = delay;
       }
     }
 		//if the trigger is released, reset the bool
 		if (!gp->RightTrigger())
     {
 			hasFired = false;
-      shotDelay = 10;
+      shotDelay = delay;
     }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
     if (isSnapped)
@@ -168,7 +170,7 @@ namespace Framework
     GameObject *OtherObject = space->GetHandles().GetAs<GameObject>(otherObject);
     if (OtherObject->name == "Bullet")
     {
-      health -= 1;
+      health -= 10;
       return;
     }
     if (OtherObject->name == "KillBox")
@@ -212,12 +214,12 @@ namespace Framework
 		bulletC->AddToVelocity(aimDir * 1000);
 
     SoundEmitter *se = space->GetHandles().GetAs<SoundEmitter>(playerSound);
-    se->PlayEx("gunshot", 0.25f);
+    se->PlayEx("gunshot", 0.125f);
 
     if (!isSnapped)
     {
       BoxCollider *bc = space->GetHandles().GetAs<BoxCollider>(playerCollider);
-      bc->AddToVelocity(-aimDir * 50);
+      bc->AddToVelocity(-aimDir * 25);
     }
 	}
 

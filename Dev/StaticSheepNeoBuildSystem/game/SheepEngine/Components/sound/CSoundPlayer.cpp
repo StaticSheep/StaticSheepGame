@@ -162,4 +162,18 @@ namespace Framework
     _pitch = pitch;
   }
 
+  void SoundPlayer::SetVolume(float volume)
+  {
+    _volume = volume;
+
+    for (int i = 0; i < MAX_SOUNDS; ++i)
+    {
+      if (_instanceList[i].instance != NULL)
+      {
+        _instanceList[i].instance->setVolume(volume);
+        _instanceList[i].instance->setPitch(_pitch);
+      }
+    }
+  }
+
 }// end namespace
