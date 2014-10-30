@@ -32,9 +32,9 @@ class Body
 		Body(Shape* shape,								//a pointer to the shape created
 			Material& material,							//material of the specific body
       bool collisionCallback,         //activates collisionCallback
-			Vec3D position = Vec3D(),
-			Vec3D velocity = Vec3D(),
-			Vec3D force = Vec3D(),
+			Vec3D position = Vec3D(0,0,0),
+			Vec3D velocity = Vec3D(0,0,0),
+			Vec3D force = Vec3D(0,0,0),
 			void* userData = NULL,
 			float orientation = PI,
 			float angularVelocity = 0,
