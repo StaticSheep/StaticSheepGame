@@ -9,8 +9,8 @@ namespace Framework
 {
   namespace Config
   {
-    static int desiredWidth = 1900;
-    static int desiredHeight = 950;
+    static int desiredWidth = 1600;
+    static int desiredHeight = 900;
   }
 
 

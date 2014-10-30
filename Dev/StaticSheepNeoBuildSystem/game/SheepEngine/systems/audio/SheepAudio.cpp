@@ -82,7 +82,7 @@ namespace Framework
     ErrorCheck(SOUND::System::create(&_system));
 
     // initialize the sound system, with 512 channels... NEVER RUN OUT
-    ErrorCheck(_system->initialize(256, FMOD_STUDIO_INIT_SYNCHRONOUS_UPDATE, 
+    ErrorCheck(_system->initialize(512, FMOD_STUDIO_INIT_SYNCHRONOUS_UPDATE, 
                                         FMOD_STUDIO_INIT_SYNCHRONOUS_UPDATE, 0));
     ErrorCheck(_system->getLowLevelSystem(&_lowLevelSystem));
 

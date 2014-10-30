@@ -190,43 +190,41 @@ namespace SheepFizz
 
 		switch(shape)
 		{
-			case Rec:
-				{
-					//create the rectangle shape
-					Rectangle* rec = (Rectangle*)shapes_[Rec].Allocate();
-					new (rec) Rectangle(xradius / meterScale_, yval / meterScale_);
-					rec->self = handles_.Insert(rec);
-					handles_.SyncHandles<Rectangle>(shapes_[Rec]);
-			
-					//then add the body
-					Body* body = (Body*)bodies_.Allocate();
-          new (body)Body(rec, material, collisionCallback, position / meterScale_, Vec3D(), Vec3D(), userData, orientation);
-					body->self = handles_.Insert(body);
-					handles_.SyncHandles<Body>(bodies_);
+    case Rec: {
+                //create the rectangle shape
+                Rectangle* rec = new Rectangle(xradius / meterScale_, yval / meterScale_);
+                // (Rectangle*)shapes_[Rec].Allocate();
+                //new (rec) Rectangle(xradius / meterScale_, yval / meterScale_);
+                rec->self = handles_.Insert(rec);
+                handles_.SyncHandles<Rectangle>(shapes_[Rec]);
 
-					return body->self;
+                //then add the body
+                Body* body = (Body*)bodies_.Allocate();
+                new (body)Body(rec, material, collisionCallback, position / meterScale_, Vec3D(), Vec3D(), userData, orientation);
+                body->self = handles_.Insert(body);
+                handles_.SyncHandles<Body>(bodies_);
 
-					break;
-				}
+                return body->self;
+        }
+        break;
 
-			case Cir:
-				{
-					//create the circle shape
-					Circle* cir = (Circle*)shapes_[Cir].Allocate();
-					new (cir) Circle(xradius / meterScale_);
-					cir->self = handles_.Insert(cir);
-					handles_.SyncHandles<Circle>(shapes_[Cir]);
-			
-					//then add the body
-					Body* body = (Body*)bodies_.Allocate();
-          new (body)Body(cir, material, collisionCallback, position / meterScale_, Vec3D(), Vec3D(), userData, orientation);
-					body->self = handles_.Insert(body);
-					handles_.SyncHandles<Body>(bodies_);
+    case Cir: {
+                //create the circle shape
+                Circle* cir = new Circle(xradius / meterScale_);
+                //Circle* cir = (Circle*)shapes_[Cir].Allocate();
+                //new (cir) Circle(xradius / meterScale_);
+                cir->self = handles_.Insert(cir);
+                handles_.SyncHandles<Circle>(shapes_[Cir]);
 
-					return body->self;
+                //then add the body
+                Body* body = (Body*)bodies_.Allocate();
+                new (body)Body(cir, material, collisionCallback, position / meterScale_, Vec3D(), Vec3D(), userData, orientation);
+                body->self = handles_.Insert(body);
+                handles_.SyncHandles<Body>(bodies_);
 
-					break;
-				}
+                return body->self;
+        }
+				break;
 
 			default:
 				return NULL;
@@ -257,10 +255,14 @@ namespace SheepFizz
 		Body* body = (Body*)handles_.Get(handle);
 		Shape* shape = (Shape*)handles_.Get(body->shape_->self);
 		
+    handles_.Remove(handle);
+    handles_.Remove(shape->self);
+
+
 		//free shape and release handle
-		Shape* shapeRemoved = (Shape*)shapes_[body->shape_->GetShape()].Free(shape);
-		if(shapeRemoved)
-			handles_.Update(shapeRemoved, shapeRemoved->self);
+		//Shape* shapeRemoved = (Shape*)shapes_[body->shape_->GetShape()].Free(shape);
+		//if(shapeRemoved)
+		//	handles_.Update(shapeRemoved, shapeRemoved->self);
 		
 		//free body and release handle
 		Body* bodyRemoved = (Body*)bodies_.Free(body);
