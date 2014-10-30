@@ -103,7 +103,7 @@ namespace Framework
 
     SetCurrentDirectory(Buffer);
 
-    FACTORY->LoadLevel(szFile, TweakSpaceCB);
+    FACTORY->LoadLevelFilePath(szFile, TweakSpaceCB);
   }
 
   static void EditorSaveLevel(void* clienData)

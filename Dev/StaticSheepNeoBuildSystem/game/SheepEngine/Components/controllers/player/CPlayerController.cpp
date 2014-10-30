@@ -111,7 +111,7 @@ namespace Framework
 
     if (SHEEPINPUT->Keyboard.KeyIsPressed('A'))
     {
-      FACTORY->LoadSpace("TestSpace");
+      //ENGINE->ChangeLevel("Level2");
     }
 
 		

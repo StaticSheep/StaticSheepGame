@@ -220,8 +220,7 @@ namespace Framework
   {
     for (unsigned int i = 0; i < m_spaces.size(); ++i)
     {
-      GameSpace* space = m_spaces[i];
-      space->m_valid = false;
+      m_spaces[i]->Destroy();
     }
   }
 
@@ -240,6 +239,7 @@ namespace Framework
     if (!m_spaces.empty())
     {
       ClearSpaces();
+      CleanUp();
     }
 
     FACTORY->LoadLevel(m_nextLevel.c_str(), nullptr);
