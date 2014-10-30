@@ -6,7 +6,7 @@ namespace DirectSheep
 {
   void RenderTarget::clearBackBuffer(const Color& color)
   {
-    m_linkedContext->ClearRenderTargetView(m_Target->m_renderTarget, (float*)&Vec4(color.R(), color.G(), color.B(), color.A()));
+    m_linkedContext->ClearRenderTargetView(m_Target->m_renderTarget.Get(), (float*)&Vec4(color.R(), color.G(), color.B(), color.A()));
   }
 
   void RenderTarget::clearDepthBuffer()
@@ -170,6 +170,9 @@ namespace DirectSheep
     m_viewport.MinDepth = 0.0f;
     m_viewport.Width = static_cast<FLOAT>(width);
     m_viewport.Height = static_cast<FLOAT>(height);
+    m_linkedContext->RSSetViewports(1, &m_viewport);
+
+
   }
 
   void RenderTarget::createSamplerState(ID3D11Device* dev)

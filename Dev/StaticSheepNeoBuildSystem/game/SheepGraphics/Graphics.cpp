@@ -31,7 +31,7 @@ namespace DirectSheep
 
   HRESULT Graphics::createFactory()
   {
-    return CreateDXGIFactory1(__uuidof(IDXGIFactory), reinterpret_cast<void**>(&m_factory));
+    return CreateDXGIFactory(__uuidof(IDXGIFactory), reinterpret_cast<void**>(&m_factory));
   }
 
   HRESULT Graphics::createDeviceAndDeviceContext()

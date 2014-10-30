@@ -4,6 +4,8 @@
 #include <vector>
 #include <string>
 
+#define _WIN32_WINNT 0x0601
+
 #include "Utilities.h"
 
 #include "DirectXIncludes.h"

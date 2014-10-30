@@ -121,7 +121,6 @@ namespace Framework
   {
     UpdateCamera();
     m_renderContext->frameStart();
-    m_renderContext->StartBatch();
   }
 
   void SheepGraphics::FinishFrame()

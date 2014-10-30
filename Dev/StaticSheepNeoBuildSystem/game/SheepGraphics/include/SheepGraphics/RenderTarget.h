@@ -31,8 +31,6 @@ namespace DirectSheep
     {
 
       RECT sourcePos;
-
-      m_Batcher->Draw(texture.m_ShaderRes,
         position,
         &sourcePos,
         color,

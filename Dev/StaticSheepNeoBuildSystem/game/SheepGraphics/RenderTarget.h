@@ -92,7 +92,7 @@ namespace DirectSheep
       sourcePos.top = (long)(height * uv.y);
       sourcePos.bottom = (long)(height * uv.w);
 
-      m_Batcher->Draw(texture.m_ShaderRes,
+      m_Batcher->Draw(texture.m_ShaderRes.Get(),
         position,
         &sourcePos,
         color,

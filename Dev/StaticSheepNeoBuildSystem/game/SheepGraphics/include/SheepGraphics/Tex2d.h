@@ -18,8 +18,8 @@ namespace DirectSheep
 
 
   private:
-    ID3D11Texture2D* m_rawTex;
-    ID3D11RenderTargetView* m_renderTarget;
-    ID3D11ShaderResourceView* m_ShaderRes;
+    Microsoft::WRL::ComPtr<ID3D11Texture2D> m_rawTex;
+    Microsoft::WRL::ComPtr<ID3D11RenderTargetView> m_renderTarget;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_ShaderRes;
   };
 }

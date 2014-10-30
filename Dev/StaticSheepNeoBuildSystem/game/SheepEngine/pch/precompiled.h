@@ -3,6 +3,8 @@
 
 #include "engine/config/Config.h"
 
+#define _WIN32_WINNT 0x0601
+
 #ifdef _DEBUG
 #define DBG_NEW new ( _NORMAL_BLOCK , __FILE__ , __LINE__ )
 #else  // _DEBUG

@@ -3,6 +3,7 @@
 
 #include <Windows.h>
 #include <Windowsx.h>
+#include <wrl\client.h>
 
 #if defined(_DEBUG)
 

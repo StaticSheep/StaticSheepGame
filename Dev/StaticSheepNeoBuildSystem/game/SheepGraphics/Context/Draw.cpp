@@ -73,6 +73,7 @@ namespace DirectSheep
   void Interface::frameStart(void)
   {
     m_Context->startFrame(m_clearColor);
+    StartBatch();
   }
 
   void Interface::StartBatch()
@@ -82,8 +83,7 @@ namespace DirectSheep
 
   void Interface::EndBatch()
   {
-    
-    m_Context->endFrame();
+    m_Context->endBatch();
   }
 
   void Interface::frameEnd(void)

@@ -17,7 +17,7 @@ namespace DirectSheep
   RenderContext::RenderContext(IDXGIFactory* Factory,
     ID3D11Device* dev, ID3D11DeviceContext* devCon,
     HWND hwnd, UINT width, UINT height, bool fullscreen) : RenderTarget(dev, devCon, width, height),
-    m_hwnd(NULL),
+    m_hwnd(hwnd),
     m_vSync(false)
   {
     createSwapChain(Factory, width, height, fullscreen);
@@ -27,8 +27,8 @@ namespace DirectSheep
     DXVerify(m_swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&rawTex)));
 
     Tex2D* newTex(new Tex2D(dev, rawTex));
-    
-    rawTex->Release();
+
+    ULONG refs = rawTex->Release();
 
     RenderTarget::setTargetOutput(newTex);
   }
