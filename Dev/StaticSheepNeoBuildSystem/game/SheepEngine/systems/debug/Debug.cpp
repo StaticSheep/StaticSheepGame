@@ -106,7 +106,7 @@ namespace Framework
     The message hamster!
 */
 /*****************************************************************************/
-  void Debug::ReceiveMessage(Message hamster)
+  void Debug::ReceiveMessage(Message& hamster)
   {
     if (hamster.MessageId == Message::PostDraw)
     {

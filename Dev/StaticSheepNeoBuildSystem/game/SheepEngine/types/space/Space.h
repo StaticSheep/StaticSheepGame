@@ -28,6 +28,8 @@ namespace Framework
     void SetHidden(bool hidden);
     bool Hidden();
 
+    bool Ready(void) { return m_ready; }
+
     /*template <typename T>
     void SyncHandles(ObjectAllocator& m_allocator, bool force = false);*/
 
@@ -124,6 +126,8 @@ namespace Framework
 
     bool m_paused;
     bool m_hidden;
+
+    bool m_ready = false;
 
     void RemoveGameObject(GameObject* object);
 

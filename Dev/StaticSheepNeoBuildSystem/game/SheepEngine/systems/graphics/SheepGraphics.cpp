@@ -127,24 +127,37 @@ namespace Framework
     for (auto it = ENGINE->Spaces().begin(); it != ENGINE->Spaces().end(); ++it)
     {
       space = *it;
+
+      if (!space->Ready())
+        continue;
+
       if (!space->Hidden())
         space->hooks.Call("Draw");
     }
+
     Lua::CallFunc(ENGINE->Lua(), "hook.Call", "Draw");
+
     m_renderContext->EndBatch();
     m_renderContext->StartBatch();
+
     // Post Draw
     for (auto it = ENGINE->Spaces().begin(); it != ENGINE->Spaces().end(); ++it)
     {
       space = *it;
+
+      if (!space->Ready())
+        continue;
+
       if (!space->Hidden())
         space->hooks.Call("PostDraw");
     }
+
     Lua::CallFunc(ENGINE->Lua(), "hook.Call", "PostDraw");
+
     m_renderContext->EndBatch();
+
     Message m(Message::PostDraw);
     ENGINE->SystemMessage(m);
-    
 	}
 
   void SheepGraphics::StartFrame()

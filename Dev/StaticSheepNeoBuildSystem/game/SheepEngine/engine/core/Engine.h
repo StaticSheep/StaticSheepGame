@@ -67,6 +67,7 @@ namespace Framework
 
     void ClearSpaces();
 
+    // Creates a new game space
     GameSpace* CreateSpace(const char* name);
 
     void RemoveSpace(GameSpace* space);
