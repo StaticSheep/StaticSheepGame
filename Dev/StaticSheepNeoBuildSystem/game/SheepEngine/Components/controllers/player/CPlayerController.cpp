@@ -18,6 +18,7 @@ namespace Framework
 		hasFired = false;
 		snappedTo = NULL;
     health = 100;
+    respawnTimer = 0.0;
 	}
 
 	PlayerController::~PlayerController() //4
@@ -54,12 +55,18 @@ namespace Framework
 		//get the box collider of player
 		BoxCollider *bc = space->GetHandles().GetAs<BoxCollider>(playerCollider);
     SoundEmitter *se = space->GetHandles().GetAs<SoundEmitter>(playerSound);
+    Transform *ps = space->GetHandles().GetAs<Transform>(playerTransform);
 
     if (health <= 0)
     {
       se->Play("explosion");
-      space->GetGameObject(owner)->Destroy();
+      //space->GetGameObject(owner)->Destroy();
+      ps->SetTranslation(Vec3(0.0, 0.0, 0.0));
+      health = 100;
+
     }
+
+
 		if (gp->RStick_InDeadZone() == false)       //if the right stick is NOT inside of its dead zone
 			aimDir = aimingDirection(gp); //get the direction the player is currently aiming;
 
@@ -153,7 +160,7 @@ namespace Framework
       return;
     }
     if (OtherObject->name == "KillBox")
-      space->GetGameObject(owner)->Destroy();
+      health = 0;
 
 		isSnapped = true;
 		//get the thing we are colliding with

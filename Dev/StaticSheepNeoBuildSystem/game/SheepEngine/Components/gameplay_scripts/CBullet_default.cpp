@@ -35,7 +35,7 @@ namespace Framework
 	{
     Transform *bt = space->GetHandles().GetAs<Transform>(bTransfrom);
 
-    if (bt->GetTranslation().x > 2000 || bt->GetTranslation().x < -2000 || bt->GetTranslation().y > 2000 || bt->GetTranslation().y < -2000)
+    if (bt->GetTranslation().x > 700 || bt->GetTranslation().x < -700 || bt->GetTranslation().y > 700 || bt->GetTranslation().y < -700)
       space->GetGameObject(owner)->Destroy();
 	}
 
