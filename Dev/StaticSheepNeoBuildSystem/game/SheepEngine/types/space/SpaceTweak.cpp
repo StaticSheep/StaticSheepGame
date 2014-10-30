@@ -74,7 +74,7 @@ namespace Framework
   static void DeleteSpaceCB(void* clientData)
   {
     GameSpace* space = (GameSpace*)clientData;
-    space->m_valid = false;
+    space->Destroy();
   }
 
   static void LoadArchetypeFile(void* clientData)

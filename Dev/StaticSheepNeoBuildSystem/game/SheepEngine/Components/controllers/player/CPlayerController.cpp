@@ -7,6 +7,9 @@
 #include "components/transform/CTransform.h"
 #include "../../colliders/CCircleCollider.h"
 
+
+#include "systems/input/Input.h"
+
 namespace Framework
 {
 	PlayerController::PlayerController() //1
@@ -105,6 +108,11 @@ namespace Framework
 			//bc->AddToAngVelocity(.5f);
 		}
 
+
+    if (SHEEPINPUT->Keyboard.KeyIsPressed('A'))
+    {
+      FACTORY->LoadSpace("TestSpace");
+    }
 
 		
 	}

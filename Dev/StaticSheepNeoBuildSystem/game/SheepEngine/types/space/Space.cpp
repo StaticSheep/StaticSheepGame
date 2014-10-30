@@ -381,6 +381,8 @@ namespace Framework
 
   void GameSpace::Destroy()
   {
+    if (m_valid)
+      ENGINE->m_spaceRemoveList.push_back(this);
     m_valid = false;
   }
 

@@ -6,6 +6,31 @@
 namespace Framework
 {
 
+  lua_State* Engine::Lua() const
+  {
+    return L;
+  }
+
+  void Engine::LoadLuaLevel(const char* path)
+  {
+    m_loadLuaLevels = true;
+    m_luaLevelsToLoad.push(path);
+  }
+
+  void Engine::LoadLuaLevels()
+  {
+    std::string luaLevel;
+
+    while (!m_luaLevelsToLoad.empty())
+    {
+      luaLevel = m_luaLevelsToLoad.top();
+      Lua::CallFunc(L, "LoadLuaLevel", luaLevel.c_str());
+      m_luaLevelsToLoad.pop();
+    }
+
+    m_loadLuaLevels = false;
+  }
+
   GameSpace* Engine::LuaCreateSpace(const char* name)
   {
     GameSpace* space = ENGINE->GetSpace(name);
@@ -78,5 +103,10 @@ namespace Framework
   void Engine::LuaRemoveSpace(const char* name)
   {
     ENGINE->GetSpace(name)->m_valid = false;
+  }
+
+  void Engine::LuaError(const char* msg)
+  {
+    FORCEERROR("LuaError", "%s", msg);
   }
 }

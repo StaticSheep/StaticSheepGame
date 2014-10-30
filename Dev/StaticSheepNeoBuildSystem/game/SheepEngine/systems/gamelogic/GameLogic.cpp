@@ -85,13 +85,7 @@ namespace Framework
         continue;
 
       space->Cleanup();
-
-      if (space->m_valid == false)
-        removeList.push_back(space);
     }
-
-    for (auto it = removeList.begin(); it != removeList.end(); ++it)
-      ENGINE->RemoveSpace(*it);
 
   }
 
