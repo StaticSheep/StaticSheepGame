@@ -91,6 +91,12 @@ namespace Framework
 
 	void SheepGraphics::Update(float dt)
 	{
+#if SHEEP_DEBUG
+    m_debugData.numDrawCalls = 0;
+    m_debugData.numBatchedCalls = 0;
+    m_debugData.numTextDraws = 0;
+#endif
+
     StartFrame();
     Draw();
     FinishFrame();
@@ -186,6 +192,10 @@ namespace Framework
     DirectSheep::Handle temp;
 
     m_renderContext->CreateTexture(temp, Texture);
+    
+#if SHEEP_DEBUG
+    ++(m_debugData.numTextures);
+#endif
 
     m_textureMap[Texture] = temp;
 
@@ -204,13 +214,18 @@ namespace Framework
       if(it.first == Shader)
         return it.second;
     }
-      DirectSheep::Handle temp;
 
-      m_renderContext->CreatePixelShader(temp, Shader);
+    DirectSheep::Handle temp;
 
-      m_pshaderMap[Shader] = temp;
+    m_renderContext->CreatePixelShader(temp, Shader);
 
-      return m_pshaderMap[Shader];
+#if SHEEP_DEBUG
+    ++(m_debugData.numShaders);
+#endif
+
+    m_pshaderMap[Shader] = temp;
+
+    return m_pshaderMap[Shader];
     }
 
   DirectSheep::Handle SheepGraphics::SetVShader(const std::string& Shader)
@@ -239,6 +254,10 @@ namespace Framework
   void SheepGraphics::DrawSprite(Sprite *sprite)
   {
     m_renderContext->DrawBatched(sprite->GetTexture());
+
+#if SHEEP_DEBUG
+    ++(m_debugData.numBatchedCalls);
+#endif
   }
 
   void SheepGraphics::RawDraw(void)
@@ -253,6 +272,11 @@ namespace Framework
     m_renderContext->BindConstantBuffer(0, spriteContext, DirectSheep::PIXEL_SHADER);
 
     m_renderContext->Draw(6,0);
+
+
+#if SHEEP_DEBUG
+    ++(m_debugData.numDrawCalls);
+#endif
   }
   int SheepGraphics::GetTextureID(const std::string& texture)
   {
@@ -273,6 +297,10 @@ namespace Framework
   {
     UpdateCamera();
     m_renderContext->DrawSpriteText(text, size, font);
+
+#if SHEEP_DEBUG
+    ++(m_debugData.numTextDraws);
+#endif
   }
 
   void SheepGraphics::UpdateCamera(void)

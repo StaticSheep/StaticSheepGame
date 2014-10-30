@@ -2,7 +2,7 @@
 
 #define USE_EDITOR 0
 #define USE_ANTTWEAKBAR 1
-
+#define SHEEP_DEBUG 1
 
 
 namespace Framework

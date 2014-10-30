@@ -27,8 +27,23 @@ namespace DirectSheep
   class RenderContext;
 };
 
+
 namespace Framework
 {
+
+  namespace DebugData
+  {
+    struct SheepGraphics
+    {
+      unsigned numTextures;
+      unsigned numShaders;
+
+      unsigned numDrawCalls;
+      unsigned numBatchedCalls;
+      unsigned numTextDraws;
+    };
+  }
+
 	class SheepGraphics : public ISystem
 	{
 	public:
@@ -85,8 +100,6 @@ namespace Framework
 
 		void Draw(void);
 
-    
-
     std::unordered_map<std::string, DirectSheep::Handle> m_textureMap;
 
     std::unordered_map<std::string, DirectSheep::Handle> m_vshaderMap;
@@ -100,6 +113,9 @@ namespace Framework
     DirectSheep::Handle spriteQuad;
 
     DirectSheep::Handle spriteContext;
+
+    DebugData::SheepGraphics m_debugData = { 0 };
+
 
   public:
 

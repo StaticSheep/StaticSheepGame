@@ -51,6 +51,8 @@ namespace Framework
     GameSpace* space;
     std::vector<GameSpace*> removeList;
 
+    m_debugData = { 0 };
+
     for (auto it = ENGINE->m_spaces.begin(); it != ENGINE->m_spaces.end(); ++it)
     {
       space = *it;
@@ -59,6 +61,15 @@ namespace Framework
         space->hooks.Call("LogicUpdate", dt);
 
       space->hooks.Call("FrameUpdate", dt);
+
+#if SHEEP_DEBUG
+      ++(m_debugData.numSpaces);
+      m_debugData.objectsAllocated += space->m_objects.Size();
+      for (size_t i = 0; i < ecountComponents; ++i)
+      {
+        m_debugData.componentsAllocated += space->m_components[i].Size();
+      }
+#endif
     }
 
     Lua::CallFunc(ENGINE->Lua(), "hook.Call", "LogicUpdate", dt);
@@ -77,5 +88,9 @@ namespace Framework
 
   }
 
+  const void* GameLogic::GetDebugData()
+  {
+    return &m_debugData;
+  }
 
 }
