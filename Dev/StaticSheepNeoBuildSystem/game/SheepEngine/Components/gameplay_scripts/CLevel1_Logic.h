@@ -18,6 +18,7 @@ namespace Framework
     //Handle bTransfrom;
     float timeLimit;
     float spawnTimer;
+    bool playing;
     Handle levelSound;
 	};
 }

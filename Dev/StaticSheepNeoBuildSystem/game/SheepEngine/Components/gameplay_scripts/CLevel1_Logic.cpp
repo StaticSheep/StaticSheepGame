@@ -11,11 +11,11 @@ namespace Framework
 	{
     timeLimit = 120;
     spawnTimer = 2;
+    playing = false;
 	}
 
   Level1_Logic::~Level1_Logic()
 	{
-
 	}
 
   void Level1_Logic::Initialize()
@@ -33,7 +33,6 @@ namespace Framework
 
   void Level1_Logic::LogicUpdate(float dt)
 	{
-    static bool playing = false;
     spawnTimer -= dt;
     if (spawnTimer <= 0)
     {
