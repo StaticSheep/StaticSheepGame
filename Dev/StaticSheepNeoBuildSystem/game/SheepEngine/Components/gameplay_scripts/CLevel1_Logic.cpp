@@ -4,6 +4,7 @@
 #include "../transform/CTransform.h"
 #include "../colliders/CBoxCollider.h"
 #include "../sound/CSoundPlayer.h"
+#include "CElevatorPlat.h"
 
 namespace Framework
 {
@@ -40,14 +41,14 @@ namespace Framework
       GameObject *ePlat = (FACTORY->LoadObjectFromArchetype(space, "SmallPlat"));
       Transform *PT = ePlat->GetComponent<Transform>(eTransform);
       BoxCollider *platC = ePlat->GetComponent <BoxCollider>(eBoxCollider);
-      //Transform *playerTrans = space->GetHandles().GetAs<Transform>(playerTransform);
+      ePlat->GetComponent<ElevatorPlat>(eElevatorPlat)->direction = true;
       PT->SetTranslation(Vec3(194.79,-320.0,0.0));
 
       GameObject *ePlat2 = (FACTORY->LoadObjectFromArchetype(space, "SmallPlat"));
       Transform *PT2 = ePlat2->GetComponent<Transform>(eTransform);
       BoxCollider *platC2 = ePlat2->GetComponent <BoxCollider>(eBoxCollider);
-      //Transform *playerTrans = space->GetHandles().GetAs<Transform>(playerTransform);
-      PT2->SetTranslation(Vec3(-194.79, -320.0, 0.0));
+      ePlat2->GetComponent<ElevatorPlat>(eElevatorPlat)->direction = false;
+      PT2->SetTranslation(Vec3(-194.79, 320.0, 0.0));
 
       spawnTimer = 2;
     }

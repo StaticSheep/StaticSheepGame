@@ -340,8 +340,12 @@ namespace SheepFizz
 
 	void PhysicsSpace::SymplecticEuler(Body& body)
 	{
-		if(body.massData_.mass == 0)
-			return;
+    if (body.massData_.mass == 0)
+    {
+      body.position_ += body.velocity_ * dt_;
+      return;
+    }
+			
 
 		//calculate the angular velocity
 		body.angularVelocity_ += (body.torque_ * body.massData_.inverseInertia) * dt_;

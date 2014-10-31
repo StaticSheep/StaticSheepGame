@@ -17,6 +17,7 @@ namespace Framework
 
 		//member variables
     Handle pTransfrom;
+    Handle pCollider;
     bool direction;
 	};
 }

@@ -14,11 +14,11 @@ namespace Framework
 	{
 		//set defaults
 		playerNum = 0;
-		playerGamePad = Handle::null;
+		playerGamePad = Handle::null; //this is how you null a handle right
 		isSnapped = true;
 		hasFired = false;
-		snappedTo = NULL;
     health = 100;
+    snappedTo = Handle::null;
     respawnTimer = 0.0;
     shotDelay = delay;
 	}
@@ -98,6 +98,16 @@ namespace Framework
     {
       bc->SetVelocity(snappedNormal * 50);
       bc->SetAngVelocity(0.0);
+      if (snappedTo != Handle::null)
+      {
+        //snappedObject->Get(BoxCollider); => snappedObject->GetComponent<BoxCollider>(eBoxCollider);
+        GameObject *snappedObject = space->GetHandles().GetAs<GameObject>(snappedTo);
+        if ((snappedObject->name == "SmallPlatform" || snappedObject->name == "SmallPlat"))
+        {
+          Vec3 addedVel = (snappedObject->GetComponent<BoxCollider>(eBoxCollider))->GetCurrentVelocity();
+          bc->AddToVelocity(addedVel);
+        }
+      }
       //left stick move
       if (gp->LeftStick_X() > 0.2 && snappedNormal.y != 0)
       {
@@ -178,7 +188,7 @@ namespace Framework
 
 		isSnapped = true;
 		//get the thing we are colliding with
-	
+    snappedTo = otherObject;
 		//get the transform of the thing we are colliding with
 		Transform *OOT = OtherObject->GetComponent<Transform>(eTransform);
 		//if that thing we collided with's transform is missing, get the fuck otta here, i mean what are you even doing?
