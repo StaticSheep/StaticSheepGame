@@ -59,7 +59,7 @@ namespace Framework
 
     if (health <= 0)
     {
-      se->Play("explosion");
+      se->PlayEx("explosion", 1.0f);
       //space->GetGameObject(owner)->Destroy();
       ps->SetTranslation(Vec3(0.0, 0.0, 0.0));
       health = 100;
