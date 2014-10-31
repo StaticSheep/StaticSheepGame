@@ -25,7 +25,7 @@ namespace Framework
     
   public:
     SoundPlayer();
-    ~SoundPlayer() {};
+    ~SoundPlayer();
     
     void Play(const std::string &name, PlayMode mode);
     void PlayEx(const std::string &name, PlayMode mode, float volume);

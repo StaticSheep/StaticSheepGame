@@ -32,6 +32,17 @@ namespace Framework
       _instanceList[i].instance = NULL;
     }
   }
+
+  SoundPlayer::~SoundPlayer()
+  {
+    for(int i = 0; i < MAX_SOUNDS; ++i)
+    {
+      _instanceList[i].instance->stop(FMOD_STUDIO_STOP_IMMEDIATE);
+      _instanceList[i].instance->release();
+      _instanceList[i].instance = NULL;
+      _instanceList[i].name = "null";
+    }
+  }
   
 /*****************************************************************************/
 /*!
