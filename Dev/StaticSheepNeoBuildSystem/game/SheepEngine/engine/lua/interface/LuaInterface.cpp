@@ -179,6 +179,10 @@ namespace Framework
           lua_pushvalue(L, -2); // 4
           lua_settable(L, -3); // 2[3] = 4
 
+          lua_pushstring(L, it->second->Name()); // 3
+          lua_pushvalue(L, -2); // 4
+          lua_settable(L, -4); // 1[3] = 4
+
           // We are done with everything so we clear the stack
           lua_settop(L, 0);
         }
@@ -196,10 +200,14 @@ namespace Framework
       SetupTypeMembers(L);
 
       // Runs the lua function for setting up meta tables
-      Lua::CallFunc(L, "SetupMetatables");
+      Lua::CallFunc(L, "SetupCMetatables");
+
+      Lua::CallFunc(L, "PostInit");
 
       // Tells the lua file system to load <all> the files in content/lua/
       CallFunc(L, "filesystem.LoadLuaFiles", "content/lua/");
+
+      
 
       return L;
     }
