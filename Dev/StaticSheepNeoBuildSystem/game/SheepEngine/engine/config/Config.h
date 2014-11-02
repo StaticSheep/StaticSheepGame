@@ -1,7 +1,7 @@
 #pragma once
 
 
-#define USE_EDITOR 0
+#define USE_EDITOR 1
 #define USE_ANTTWEAKBAR 1
 
 namespace Framework

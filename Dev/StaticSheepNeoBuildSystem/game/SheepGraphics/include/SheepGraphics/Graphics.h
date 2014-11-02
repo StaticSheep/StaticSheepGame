@@ -1,6 +1,5 @@
 #pragma once
 
-#include <list>
 #include "DirectXIncludes.h"
 #include "Effects\Effect.h"
 #include "model.h"
@@ -9,6 +8,7 @@ namespace DirectSheep
 {
   class Graphics
   {
+
   public:
 
 

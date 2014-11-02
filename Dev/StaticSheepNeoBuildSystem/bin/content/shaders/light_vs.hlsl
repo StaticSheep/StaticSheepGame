@@ -1,6 +1,6 @@
 struct VSInput
 {
-  float4 : POSITION;
+  float4 position : POSITION;
 };
 
 struct VSOutput
@@ -17,9 +17,10 @@ cbuffer MatrixBuffer : register(cb0)
 
 VSOutput VSMain(VSInput input)
 {
+  VSOutput output;
   output.position = mul(input.position, world);
   output.position = mul(output.position, view);
-  output.position = mul(output.position, projection);
+  output.position = mul(output.position, proj);
 
   return output;
 }

@@ -44,13 +44,21 @@ namespace DirectSheep
       D3D_DRIVER_TYPE_SOFTWARE
     };
 
+    D3D_FEATURE_LEVEL featureLevels[] =
+    {
+      D3D_FEATURE_LEVEL_11_0, // DirectX 11
+      D3D_FEATURE_LEVEL_10_1, // '' '' 10.1
+      D3D_FEATURE_LEVEL_10_0, // '' '' 10
+    };
+
     int numDriverTypes = ARRAYSIZE(driverTypes);
+    UINT numFeatureLevels = ARRAYSIZE(featureLevels);
 
     HRESULT result(E_FAIL);
     for (int i = 0; i < numDriverTypes && FAILED(result); ++i)
     {
       m_driverType = driverTypes[i];
-      result = D3D11CreateDevice(NULL, m_driverType, NULL, 0, NULL, 0, D3D11_SDK_VERSION,
+      result = D3D11CreateDevice(NULL, m_driverType, NULL, 0, featureLevels, numFeatureLevels, D3D11_SDK_VERSION,
         &m_Device, &m_featureLevel, &m_DeviceContext);
     }
 

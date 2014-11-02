@@ -10,6 +10,7 @@
 #include "Tex2d.h"
 #include "RenderContext.h"
 #include "Effects.h"
+#include "Effects\plight_effect.h"
 #include "Graphics.h"
 #include "model.h"
 #include "vertex_types.h"
@@ -108,14 +109,6 @@ class Interface
       bool          used;
     };
 
-      float x;
-      float y;
-      float w;
-      float h;
-      Vec2 uvBegin;
-      Vec2 uvEnd;
-      float theta;
-    };
 
     //////////////
     //  System  //
@@ -128,10 +121,9 @@ class Interface
     /////////////
     Color                        m_clearColor;
 
-    Transform                    m_spriteTrans;
     Vec4                         m_spriteBlend;
 
-    Graphics                     m_graphics;
+    Graphics*                     m_graphics;
     RenderContext*                m_Context;
 
     /////////////////////////////////
@@ -142,16 +134,21 @@ class Interface
     Vec4                                     m_UV;
     Vec2                                     m_position;
     Vec2                                     m_scale;
-    Color                                     m_BlendCol;
+    Color                                    m_BlendCol;
     float                                    m_theta;
-    Tex2D*                                    m_currTex;
+    Tex2D*                                   m_currTex;
+
+    Mat4          m_world;
+    Mat4 m_view;
+    Mat4 m_projection;
+    Light m_cursorLight;
 
     ///////////////
     // Resources //
     ///////////////
     std::vector<Tex2D> m_TextureRes;
-    std::vector<Effect> m_EffectRes;
-
+    std::vector<PointLight*> m_EffectRes;
+    Model<PositionVertex>*             m_posModel;
     IFW1FontWrapper*                  m_FontWrapper;
     IFW1Factory*                      m_FontFactory;
 

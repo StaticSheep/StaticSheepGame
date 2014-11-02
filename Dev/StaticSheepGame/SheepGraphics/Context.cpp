@@ -375,10 +375,10 @@ namespace DirectSheep
                             entryFunc.c_str(),
                             "vs_4_0", 
                             D3D10_SHADER_OPTIMIZATION_LEVEL3 | D3D10_SHADER_WARNINGS_ARE_ERRORS, // fully optimized shader
-                            0, 
-                            0, 
-                            &VS, 
-                            &Errors, 
+                            0,
+                            0,
+                            &VS,
+                            &Errors,
                             0);
 
       ErrorIf(Errors || !VS, "ShaderCompile", "Vertex Shader Failed To Compile"); // if there are any errors...

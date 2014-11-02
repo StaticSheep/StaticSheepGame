@@ -26,20 +26,24 @@ namespace DirectSheep
     std::string pShaderEntry,
     std::string pShaderTarget)
   {
+    ID3DBlob* error;
     std::wstring wvShader(vShaderName.begin(), vShaderName.end());
     std::wstring wpShader(pShaderName.begin(), pShaderName.end());
-    int compFlags;
+    int compFlags = D3DCOMPILE_ENABLE_STRICTNESS;
 #if defined (_DEBUG)
     compFlags |= D3DCOMPILE_DEBUG;
 #endif
 
-    DXVerify(D3DCompileFromFile(wvShader.c_str(), NULL, D3D_COMPILE_STANDARD_FILE_INCLUDE, vShaderEntry.c_str(), vShaderTarget.c_str(), compFlags, 0, &m_vShaderBlob, NULL));
+    D3DCompileFromFile(wvShader.c_str(), NULL, D3D_COMPILE_STANDARD_FILE_INCLUDE, vShaderEntry.c_str(), vShaderTarget.c_str(), compFlags, 0, &m_vShaderBlob, &error);
 
+    ErrorIf(error, "VShader", "Failed to compile shader: %s", (const char *)error->GetBufferPointer());
 
     DXVerify(pDevice->CreateVertexShader(m_vShaderBlob->GetBufferPointer(), m_vShaderBlob->GetBufferSize(),
       NULL, &m_vShader));
 
-    DXVerify(D3DCompileFromFile(wpShader.c_str(), NULL, D3D_COMPILE_STANDARD_FILE_INCLUDE, pShaderEntry.c_str(), pShaderTarget.c_str(), compFlags, 0, &m_pShaderBlob, NULL));
+    D3DCompileFromFile(wpShader.c_str(), NULL, D3D_COMPILE_STANDARD_FILE_INCLUDE, pShaderEntry.c_str(), pShaderTarget.c_str(), compFlags, 0, &m_pShaderBlob, &error);
+
+    ErrorIf(error, "PShader", "Failed to compile shader: %s", (const char *)error->GetBufferPointer());
 
     DXVerify(pDevice->CreatePixelShader(m_pShaderBlob->GetBufferPointer(), m_pShaderBlob->GetBufferSize(),
       NULL, &m_pShader));

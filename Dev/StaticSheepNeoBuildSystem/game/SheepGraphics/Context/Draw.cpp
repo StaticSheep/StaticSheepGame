@@ -29,10 +29,10 @@ namespace DirectSheep
     transMat = XMMatrixIdentity();
 
 
-    rotMat = XMMatrixRotationRollPitchYaw((float)XM_PI, 0.0f, m_spriteTrans.theta);
+    rotMat = XMMatrixRotationRollPitchYaw((float)XM_PI, 0.0f, m_theta);
 
 
-    transMat = XMMatrixTranslation(m_spriteTrans.x, m_spriteTrans.y, 0.0f);
+    transMat = XMMatrixTranslation(m_position.x, m_position.y, 0.0f);
 
     rotMat = XMMatrixMultiply(rotMat, transMat);
 
@@ -49,7 +49,7 @@ namespace DirectSheep
     std::wstring WFont(sfont.begin(), sfont.end());
 
     m_FontWrapper->DrawString(
-      m_graphics.getContext(),
+      m_graphics->getContext(),
       test.c_str(),// String
       WFont.c_str(),
       size,
@@ -66,7 +66,7 @@ namespace DirectSheep
 
   void Interface::DrawBatched(DirectSheep::Handle texture)
   {
-    m_Context->renderBatch(m_TextureRes[texture.index], m_position, m_BlendCol, m_theta, m_scale, m_UV);
+    //m_Context->renderBatch(m_TextureRes[texture.index], m_position, m_BlendCol, m_theta, m_scale, m_UV);
   }
 
 
@@ -78,17 +78,22 @@ namespace DirectSheep
 
   void Interface::StartBatch()
   {
-    m_Context->startBatch();
+    //m_Context->startBatch(Mat4(m_camera.viewProj));
   }
 
   void Interface::EndBatch()
   {
-    m_Context->endBatch();
+    //m_Context->endBatch();
   }
 
   void Interface::frameEnd(void)
   {
     m_Context->endFrame();
+
+    m_EffectRes[0]->bindMatrices(m_graphics->getContext(), m_projection, m_view, m_world);
+    m_EffectRes[0]->bindLight(m_graphics->getContext(), m_cursorLight);
+    m_Context->render(m_posModel, m_EffectRes[0], BlendStates::ADDITIVE);
+
     Present();
   }
 

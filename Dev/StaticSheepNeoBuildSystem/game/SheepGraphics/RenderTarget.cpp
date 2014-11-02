@@ -34,9 +34,9 @@ namespace DirectSheep
   {
   }
 
-  void RenderTarget::startBatch()
+  void RenderTarget::startBatch(Mat4& camera)
   {
-    m_Batcher->Begin(DirectX::SpriteSortMode::SpriteSortMode_Texture, m_blendState[PREMULTIPLIED_ALPHA], nullptr, m_depthEnabled ? m_depthStencilState : NULL);
+    m_Batcher->Begin(DirectX::SpriteSortMode::SpriteSortMode_Texture, m_blendState[PREMULTIPLIED_ALPHA],m_sampler, m_depthEnabled ? m_depthStencilState : NULL, m_rastState, nullptr, camera);
   }
 
   void RenderTarget::endBatch()
@@ -46,8 +46,8 @@ namespace DirectSheep
 
   RenderTarget::RenderTarget(ID3D11Device* dev, ID3D11DeviceContext* devCon,
     UINT width, UINT height, DXGI_FORMAT format) :
-    m_blendEnabled(false),
-    m_depthEnabled(false),
+    m_blendEnabled(true),
+    m_depthEnabled(true),
     m_linkedContext(devCon),
     m_linkedDevice(dev)
   {
@@ -57,13 +57,13 @@ namespace DirectSheep
 
     createDepthStencilandView(dev, width, height);
 
-    createRastState(dev);
-
-    createSamplerState(dev);
-
     m_Batcher.reset(new SpriteBatch(devCon));
 
     createViewport(width, height);
+
+    createRastState(dev);
+
+    createSamplerState(dev);
   }
 
   void RenderTarget::renderText(DirectX::SpriteFont* Font, const std::string& text,
@@ -96,6 +96,7 @@ namespace DirectSheep
   void RenderTarget::setTargetOutput(Tex2D* Target)
   {
     m_Target.reset(Target);
+ 
   }
 
   void RenderTarget::createBlendState(ID3D11Device* dev)

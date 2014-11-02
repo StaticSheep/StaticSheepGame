@@ -24,7 +24,7 @@ namespace DirectSheep
 
     ID3D11Texture2D* rawTex(nullptr);
 
-    DXVerify(m_swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&rawTex)));
+    DXVerify(m_swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&rawTex));
 
     Tex2D* newTex(new Tex2D(dev, rawTex));
 
@@ -45,26 +45,30 @@ namespace DirectSheep
 
   void RenderContext::createSwapChain(IDXGIFactory* factory, UINT width, UINT height, bool fullscreen)
   {
-    DXGI_MODE_DESC buffDesc =
+    /*DXGI_MODE_DESC buffDesc =
     {
       width, height,
       { 0, 1 },
       DXGI_FORMAT_R8G8B8A8_UNORM,
       DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED,
       DXGI_MODE_SCALING_UNSPECIFIED
-    };
+    };*/
 
-    DXGI_SWAP_CHAIN_DESC swapDesc =
-    {
-      buffDesc,
-      { 1, 0 },
-      DXGI_USAGE_RENDER_TARGET_OUTPUT,
-      1,
-      m_hwnd,
-      !fullscreen,
-      DXGI_SWAP_EFFECT_DISCARD,
-      0
-    };
+    DXGI_SWAP_CHAIN_DESC swapDesc;
+
+    ZeroMemory(&swapDesc, sizeof(swapDesc));
+
+    swapDesc.BufferCount = 1;                                   // single back buffer
+    swapDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;    // 32-bit color
+    swapDesc.BufferDesc.Width = width;           // back buffer width
+    swapDesc.BufferDesc.Height = height;         // back buffer height
+    swapDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;     // use buffer as render target
+    swapDesc.OutputWindow = m_hwnd;                          // attach to window
+    swapDesc.SampleDesc.Count = 4;                           // # of multisamples
+    swapDesc.Windowed = !fullscreen;                           // windowed/full-screen mode
+    swapDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;    // allow full-screen switching
+    //swapDesc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
+    //swapDesc.BufferDesc = buffDesc;
 
     DXVerify(factory->CreateSwapChain(m_linkedDevice, &swapDesc, &m_swapChain));
   }

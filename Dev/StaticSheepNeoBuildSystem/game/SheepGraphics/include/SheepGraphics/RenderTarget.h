@@ -16,6 +16,7 @@ namespace DirectSheep
   };
   class RenderTarget
   {
+    friend class Interface;
   public:
 
 

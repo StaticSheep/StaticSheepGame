@@ -13,7 +13,7 @@ namespace DirectSheep
 
   void Interface::CreateTexture(Handle& handle, const std::string& filename)
   {
-    Tex2D temp(m_graphics.getDevice(), filename);
+    Tex2D temp(m_graphics->getDevice(), filename);
 
     m_TextureRes.push_back(temp);
     handle.type = TEXTURE;
@@ -21,9 +21,9 @@ namespace DirectSheep
     m_handles.push_back(handle);
   }
 
-  /*bool Interface::CreateFontWrapper(void)
+  void Interface::CreateFontWrapper(void)
   {
-    DXVerify(FW1CreateFactory(FW1_VERSION, &m_font.m_fontFactory));
+    DXVerify(FW1CreateFactory(FW1_VERSION, &m_FontFactory));
 
     FW1_FONTWRAPPERCREATEPARAMS Params;
     ZeroMemory(&Params, sizeof(Params));
@@ -35,14 +35,11 @@ namespace DirectSheep
     Params.DefaultFontParams.FontStyle = DWRITE_FONT_STYLE_NORMAL;
     Params.DefaultFontParams.FontStretch = DWRITE_FONT_STRETCH_NORMAL;
 
-    DXVerify(m_font.m_fontFactory->CreateFontWrapper(m_device, NULL, &Params, &m_font.m_fontWrapper));
+    DXVerify(m_FontFactory->CreateFontWrapper(m_graphics->getDevice(), NULL, &Params, &m_FontWrapper));
 
-    m_font.m_fontFactory->Release();
-    m_font.m_fontFactory = NULL;
-
-
-    return true;
-  }*/
+    m_FontFactory->Release();
+    m_FontFactory = NULL;
+  }
 
   /////////////////////////////////////////////////////////////
   //              PRIVATE INITIALIZE FUNCTIONS               //

@@ -16,6 +16,7 @@ namespace DirectSheep
   };
   class RenderTarget
   {
+    friend class Interface;
   public:
 
     void clearBackBuffer(const Color& color);
@@ -28,7 +29,7 @@ namespace DirectSheep
 
     void startFrame(Color& clearColor);
 
-    void startBatch();
+    void startBatch(Mat4& camera);
 
     void endBatch();
 

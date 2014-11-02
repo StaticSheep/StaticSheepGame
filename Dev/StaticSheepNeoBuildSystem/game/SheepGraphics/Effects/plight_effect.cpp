@@ -40,7 +40,7 @@ namespace DirectSheep
     m_lightBuffer->setData(pContext, buf);
   }
 
-  PointLight::PointLight(ID3D11Device* pDevice) : Effect(pDevice, "light_vs.hlsl", "VSMain", "vs_5_0", "light_ps.hlsl", "PSMain", "ps_5_0")
+  PointLight::PointLight(ID3D11Device* pDevice) : Effect(pDevice, "content/shaders/light_vs.hlsl", "VSMain", "vs_5_0", "content/shaders/light_ps.hlsl", "PSMain", "ps_5_0")
   {
     m_lightBuffer = new CBuffer<LightBuffer>(pDevice);
 
