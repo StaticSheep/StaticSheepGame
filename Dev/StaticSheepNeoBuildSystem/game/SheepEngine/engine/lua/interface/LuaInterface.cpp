@@ -202,12 +202,10 @@ namespace Framework
       // Runs the lua function for setting up meta tables
       Lua::CallFunc(L, "SetupCMetatables");
 
-      Lua::CallFunc(L, "PostInit");
-
       // Tells the lua file system to load <all> the files in content/lua/
-      CallFunc(L, "filesystem.LoadLuaFiles", "content/lua/");
+      Lua::CallFunc(L, "filesystem.LoadLuaFiles", "content/lua/");
 
-      
+      Lua::CallFunc(L, "LuaLoaded");
 
       return L;
     }
