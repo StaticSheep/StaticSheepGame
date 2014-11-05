@@ -110,7 +110,7 @@ namespace DirectSheep
     sourcePos.top = (long)(height * m_spriteTrans.uvBegin.y);
     sourcePos.bottom = (long)(height * m_spriteTrans.uvEnd.y);
 
-    m_batcher->Draw(m_textureRes[texture.index].shaderResourceView,
+    m_batcher->Draw(m_textureRes[texture.index].m_ShaderRes,
                Vec2(m_spriteTrans.x, m_spriteTrans.y),
                &sourcePos,
                XMLoadFloat4(&m_spriteBlend),

@@ -6,7 +6,7 @@ namespace DirectSheep
 {
   class Tex2D
   {
-    friend class RenderTarget;
+    friend class RenderContext;
 
   public:
 

@@ -11,6 +11,7 @@
 
 #include "VertexTypes.h"
 #include "DataTypes.h"
+#include "Tex2d.h"
 
 
 

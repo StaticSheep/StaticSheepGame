@@ -24,7 +24,7 @@ namespace Framework
 
     if(m_texture.GetType() == DirectSheep::NONE)
     {
-      SetTexture("content/spritesheet.png");
+      SetTexture("spritesheet.png");
     }
     else
       SetTexture(m_spriteName.c_str());

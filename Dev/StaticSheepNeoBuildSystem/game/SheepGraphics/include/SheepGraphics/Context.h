@@ -111,12 +111,13 @@ class RenderContext
    GFX_API void* ExternalGetDevice(void) const;
    GFX_API const Dimension& GetNativeResolution(void) const;
    GFX_API const Viewport& GetViewport(void) const;
-   GFX_API const Dimension& GetTextureSize(const Handle& texHandle) const;
+   GFX_API const Dimension GetTextureSize(const Handle& texHandle) const;
 
     /////////////////////////////////////////////////////////////
     //                    UTILITY FUNCTIONS                    //
     /////////////////////////////////////////////////////////////
 
+   GFX_API void ClearRenderTarget(const Handle& handle, float r, float g, float b, float a);
    GFX_API void ClearBackBuffer(void);
    GFX_API void ClearDepthBuffer(void);
 
@@ -242,7 +243,7 @@ class RenderContext
     ///////////////
     std::vector<VertexShader>                m_vertexShaderRes;
     std::vector<ID3D11PixelShader*>          m_pixelShaderRes;
-    std::vector<Texture>                     m_textureRes;
+    std::vector<Tex2D>                       m_textureRes;
     std::vector<ID3D11Buffer*>               m_vertexBufferRes;
     std::vector<ID3D11Buffer*>               m_indexBufferRes;
     std::vector<ID3D11Buffer*>               m_constBufferRes;

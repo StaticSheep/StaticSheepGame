@@ -29,7 +29,7 @@ namespace DirectSheep
   }
 
   Tex2D::Tex2D(ID3D11Device* dev,
-    UINT width, UINT height, DXGI_FORMAT format)
+    UINT width, UINT height, DXGI_FORMAT format) : m_rawTex(NULL), m_renderTarget(NULL), m_ShaderRes(NULL)
   {
     CD3D11_TEXTURE2D_DESC textureDesc(format,
       width, height, 1, 0,
@@ -42,7 +42,7 @@ namespace DirectSheep
     DXVerify(dev->CreateShaderResourceView(m_rawTex, NULL, &m_ShaderRes));
   }
 
-  Tex2D::Tex2D(ID3D11Device* dev, ID3D11Texture2D* raw)
+  Tex2D::Tex2D(ID3D11Device* dev, ID3D11Texture2D* raw) : m_rawTex(NULL), m_renderTarget(NULL), m_ShaderRes(NULL)
   {
     ULONG refs = raw->AddRef();
 
@@ -53,7 +53,7 @@ namespace DirectSheep
     dev->CreateShaderResourceView(m_rawTex, NULL, &m_ShaderRes);
   }
 
-  Tex2D::Tex2D(ID3D11Device* dev, const std::string& filename)
+  Tex2D::Tex2D(ID3D11Device* dev, const std::string& filename) : m_rawTex(NULL), m_renderTarget(NULL), m_ShaderRes(NULL)
   {
     std::wstring test(filename.begin(), filename.end());
 
@@ -61,10 +61,9 @@ namespace DirectSheep
 
     if (FAILED(hr))
     {
-      DirectX::CreateWICTextureFromFile(dev, L"content/Default.png", (ID3D11Resource **)&m_rawTex, &m_ShaderRes, 0);
+      hr = DirectX::CreateWICTextureFromFile(dev, L"content\\Default.png", (ID3D11Resource **)&m_rawTex, &m_ShaderRes, 0);
+      if (FAILED(hr))
+        DXVerify(hr);
     }
-
-    if (FAILED(hr))
-      DXVerify(hr);
   }
 }

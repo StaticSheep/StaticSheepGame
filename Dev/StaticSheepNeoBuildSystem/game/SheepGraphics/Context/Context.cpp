@@ -299,9 +299,9 @@ namespace DirectSheep
       return m_graphicsCardInfo;
     }
 
-    const Dimension& RenderContext::GetTextureSize(const Handle& texHandle) const
+    const Dimension RenderContext::GetTextureSize(const Handle& texHandle) const
     {
-      return m_textureRes[texHandle.index].size;
+      return Dimension(m_textureRes[texHandle.index].getWidth(), m_textureRes[texHandle.index].getHeight());
     }
 
     void RenderContext::SetUseCam(bool camUse)
@@ -364,7 +364,9 @@ namespace DirectSheep
   {
     if(texture.type == TEXTURE)
     {
-      m_textureRes[texture.index].Release();
+     SafeRelease(m_textureRes[texture.index].m_rawTex);
+     SafeRelease(m_textureRes[texture.index].m_renderTarget);
+     SafeRelease(m_textureRes[texture.index].m_ShaderRes);
     }
   }
 

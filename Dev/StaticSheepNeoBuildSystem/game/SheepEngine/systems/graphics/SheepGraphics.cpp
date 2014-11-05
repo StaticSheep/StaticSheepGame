@@ -343,7 +343,7 @@ namespace Framework
         {
           std::string foo = it->path().extension().generic_string();
           if (it->path().extension().generic_string() == ".png" || it->path().extension().generic_string() == ".jpg")
-            SetTexture(it->path().generic_string());
+            SetTexture(it->path().filename().generic_string());
         }
       }
       return true;
