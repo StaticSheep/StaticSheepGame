@@ -2,6 +2,7 @@
 #include "CBullet_default.h"
 #include "types/space/Space.h"
 #include "../transform/CTransform.h"
+#include "../colliders/CBoxCollider.h"
 
 namespace Framework
 {
@@ -22,6 +23,7 @@ namespace Framework
 		space->GetGameObject(owner)->hooks.Add("OnCollision", self, BUILD_FUNCTION(Bullet_Default::OnCollision));
 
     bTransfrom = space->GetGameObject(owner)->GetComponentHandle(eTransform);
+    space->GetHandles().GetAs<BoxCollider>(space->GetGameObject(owner)->GetComponentHandle(eCircleCollider))->SetGravityOff();
 	}
 
 	void Bullet_Default::Remove()

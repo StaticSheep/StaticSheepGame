@@ -10,7 +10,7 @@ namespace Framework
 {
   Level1_Logic::Level1_Logic()
 	{
-    timeLimit = 120;
+    timeLimit = 10;
     spawnTimer = 2;
 	}
 
@@ -36,6 +36,7 @@ namespace Framework
 	{
     static bool playing = false;
     spawnTimer -= dt;
+    timeLimit -= dt;
     if (spawnTimer <= 0)
     {
       GameObject *ePlat = (FACTORY->LoadObjectFromArchetype(space, "SmallPlat"));
@@ -51,6 +52,15 @@ namespace Framework
       PT2->SetTranslation(Vec3(-194.79, 320.0, 0.0));
 
       spawnTimer = 2;
+    }
+
+    if (timeLimit <= 0)
+    {
+      GameObject *eGiantPlat = (FACTORY->LoadObjectFromArchetype(space, "KillBoxBig"));
+      Transform *GPT = eGiantPlat->GetComponent<Transform>(eTransform);
+      BoxCollider *gaintPlatC = eGiantPlat->GetComponent <BoxCollider>(eBoxCollider);
+      GPT->SetTranslation(Vec3(400.0, 0.0, 0.0));
+      timeLimit = 60;
     }
 
     if(!playing)

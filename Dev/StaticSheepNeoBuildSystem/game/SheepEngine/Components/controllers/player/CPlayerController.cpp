@@ -183,7 +183,7 @@ namespace Framework
       health -= 10;
       return;
     }
-    if (OtherObject->name == "KillBox")
+    if (OtherObject->name == "KillBox" || OtherObject->name == "KillBoxBig")
       health = 0;
 
 		isSnapped = true;
@@ -239,8 +239,8 @@ namespace Framework
 		Vec3 returnVec;
     float thresh = 1.0f; //the threshold minimum for aiming
 
-		returnVec.x = gp->RightStick_X() * 2;
-		returnVec.y = gp->RightStick_Y() * 2;
+		returnVec.x = gp->RightStick_X() * 10;
+		returnVec.y = gp->RightStick_Y() * 10;
     //you're about to see a lot of if statements, just know that all of these are 
     //making sure that the default return vector is within a certain range so that
     //when bullets spawn using that return vector they don't spawn to close to the player.
@@ -254,7 +254,7 @@ namespace Framework
     if (returnVec.y < -1.0)
       returnVec.y = -1.0;
 
-    if (returnVec.x < thresh && returnVec.x > 0 && !(returnVec.y >= thresh || returnVec.y <= -thresh))
+    /*if (returnVec.x < thresh && returnVec.x > 0 && !(returnVec.y >= thresh || returnVec.y <= -thresh))
       returnVec.x = thresh;
     if (returnVec.y < thresh && returnVec.y > 0 && !(returnVec.x >= thresh || returnVec.x <= -thresh))
       returnVec.y = thresh;
@@ -262,7 +262,7 @@ namespace Framework
     if (returnVec.x > -thresh && returnVec.x < 0 && !(returnVec.y <= thresh || returnVec.y >= -thresh))
       returnVec.x = -thresh;
     if (returnVec.y > -thresh && returnVec.y < 0 && !(returnVec.x <= thresh || returnVec.x >= -thresh))
-      returnVec.y = -thresh;
+      returnVec.y = -thresh;*/
 
 		return returnVec;
 

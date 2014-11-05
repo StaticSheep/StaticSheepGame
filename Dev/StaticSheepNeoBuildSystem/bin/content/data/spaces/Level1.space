@@ -380,7 +380,7 @@ GameObject
     Translation Vec3
     {
       x_ float 194.789993
-      y_ float -310.209991
+      y_ float -310.000000
       z_ float 0.000000
     }
     Rotation float 0.000000
