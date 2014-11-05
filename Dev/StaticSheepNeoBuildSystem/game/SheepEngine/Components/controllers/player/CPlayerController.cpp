@@ -62,10 +62,8 @@ namespace Framework
     if (health <= 0)
     {
       se->PlayEx("explosion", 1.0f);
-      //space->GetGameObject(owner)->Destroy();
-      ps->SetTranslation(Vec3(0.0, 0.0, 0.0));
-      health = 100;
-
+      space->hooks.Call("PlayerDied", playerNum); //calling an event called player died
+      space->GetGameObject(owner)->Destroy();
     }
 
 
@@ -239,8 +237,10 @@ namespace Framework
 		Vec3 returnVec;
     float thresh = 1.0f; //the threshold minimum for aiming
 
-		returnVec.x = gp->RightStick_X() * 10;
-		returnVec.y = gp->RightStick_Y() * 10;
+		returnVec.x = gp->RightStick_X();
+		returnVec.y = gp->RightStick_Y();
+    returnVec.Normalize();
+    returnVec *= 1.5;
     //you're about to see a lot of if statements, just know that all of these are 
     //making sure that the default return vector is within a certain range so that
     //when bullets spawn using that return vector they don't spawn to close to the player.

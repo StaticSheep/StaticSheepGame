@@ -1,50 +1,32 @@
 Level1
 GameObject
 {
-  name std::string "Player1"
-  archetype std::string "Character"
+  name std::string "Background"
+  archetype std::string ""
   Transform
   {
     Translation Vec3
     {
-      x_ float -487.640015
-      y_ float -265.000000
-      z_ float 0.000000
+      x_ float 0.000000
+      y_ float 0.000000
+      z_ float -500.000000
     }
     Rotation float 0.000000
     Scale Vec3
     {
-      x_ float 1.000000
+      x_ float 2.000000
       y_ float 1.000000
       z_ float 0.000000
     }
   }
   Sprite
   {
-    m_spriteName std::string "red.png"
+    m_spriteName std::string "Background.png"
     Size Vec2
     {
       X float 1.000000
       Y float 1.000000
     }
-  }
-  GamePad
-  {
-    GamepadIndex int 0
-  }
-  BoxCollider
-  {
-    m_width float 32.000000
-    m_height float 32.000000
-    m_materialName std::string "Wood"
-    m_hasCollisionCallback bool true
-  }
-  SoundEmitter
-  {
-  }
-  PlayerController
-  {
-    playerNum int 0
   }
 }
 GameObject
@@ -220,9 +202,10 @@ GameObject
   }
   Level1_Logic
   {
-    timeLimit float 120.000000
+    timeLimit float 60.000000
   }
 }
+
 GameObject
 {
   name std::string "PlatformBottomRight"
@@ -517,179 +500,5 @@ GameObject
     m_height float 32.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
-  }
-}
-GameObject
-{
-  name std::string "Player2"
-  archetype std::string "Character"
-  Transform
-  {
-    Translation Vec3
-    {
-      x_ float 490.000000
-      y_ float -266.000000
-      z_ float 0.000000
-    }
-    Rotation float 0.000000
-    Scale Vec3
-    {
-      x_ float 1.000000
-      y_ float 1.000000
-      z_ float 0.000000
-    }
-  }
-  Sprite
-  {
-    m_spriteName std::string "blue.png"
-    Size Vec2
-    {
-      X float 1.000000
-      Y float 1.000000
-    }
-  }
-  GamePad
-  {
-    GamepadIndex int 1
-  }
-  BoxCollider
-  {
-    m_width float 32.000000
-    m_height float 32.000000
-    m_materialName std::string "Wood"
-    m_hasCollisionCallback bool true
-  }
-  SoundEmitter
-  {
-  }
-  PlayerController
-  {
-    playerNum int 1
-  }
-}
-GameObject
-{
-  name std::string "Player3"
-  archetype std::string "Character"
-  Transform
-  {
-    Translation Vec3
-    {
-      x_ float 490.000000
-      y_ float 266.000000
-      z_ float 0.000000
-    }
-    Rotation float 0.000000
-    Scale Vec3
-    {
-      x_ float 1.000000
-      y_ float 1.000000
-      z_ float 0.000000
-    }
-  }
-  Sprite
-  {
-    m_spriteName std::string "purple.png"
-    Size Vec2
-    {
-      X float 1.000000
-      Y float 1.000000
-    }
-  }
-  GamePad
-  {
-    GamepadIndex int 2
-  }
-  BoxCollider
-  {
-    m_width float 32.000000
-    m_height float 32.000000
-    m_materialName std::string "Wood"
-    m_hasCollisionCallback bool true
-  }
-  SoundEmitter
-  {
-  }
-  PlayerController
-  {
-    playerNum int 2
-  }
-}
-GameObject
-{
-  name std::string "Player4"
-  archetype std::string "Character"
-  Transform
-  {
-    Translation Vec3
-    {
-      x_ float -490.000000
-      y_ float 266.000000
-      z_ float 0.000000
-    }
-    Rotation float 0.000000
-    Scale Vec3
-    {
-      x_ float 1.000000
-      y_ float 1.000000
-      z_ float 0.000000
-    }
-  }
-  Sprite
-  {
-    m_spriteName std::string "green.png"
-    Size Vec2
-    {
-      X float 1.000000
-      Y float 1.000000
-    }
-  }
-  GamePad
-  {
-    GamepadIndex int 3
-  }
-  BoxCollider
-  {
-    m_width float 32.000000
-    m_height float 32.000000
-    m_materialName std::string "Wood"
-    m_hasCollisionCallback bool true
-  }
-  SoundEmitter
-  {
-  }
-  PlayerController
-  {
-    playerNum int 3
-  }
-}
-GameObject
-{
-  name std::string "Background"
-  archetype std::string ""
-  Transform
-  {
-    Translation Vec3
-    {
-      x_ float 0.000000
-      y_ float 0.000000
-      z_ float -500.000000
-    }
-    Rotation float 0.000000
-    Scale Vec3
-    {
-      x_ float 2.000000
-      y_ float 1.000000
-      z_ float 0.000000
-    }
-  }
-  Sprite
-  {
-    m_spriteName std::string "Background.png"
-    Size Vec2
-    {
-      X float 1.000000
-      Y float 1.000000
-    }
   }
 }
