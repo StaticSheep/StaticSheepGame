@@ -37,7 +37,7 @@ namespace DirectSheep
 
     Vec4 upVector(0.0f, 1.0f, 0.0f, 0);
 
-    iMat4 matView = XMMatrixLookAtLH(ToVector(&eyepoint), ToVector(&lootAtPoint), ToVector(&upVector));
+    iMat4 matView = XMMatrixLookAtLH(eyepoint, lootAtPoint, upVector);
     m_camera.view = matView;
 
     iMat4 matProj;
@@ -63,7 +63,7 @@ namespace DirectSheep
     m_output(NULL),
     m_displayModeIndex(0),
     m_backBuffer(NULL),
-    m_clearColor(Color(Colors::Black)),
+    m_clearColor(Color(Colors::Black.operator const float *())),
     m_spriteBlend(Vec4(1, 1, 1, 1)),
     m_primative(PRIMITIVE_TOPOLOGY_TRIANGLELIST),
     m_rastState(NULL)
@@ -155,11 +155,6 @@ namespace DirectSheep
     void RenderContext::SetClearColor(const float r, const float g, const float b, const float a)
     {
       m_clearColor = Color(r, g, b, a);
-    }
-
-    void RenderContext::SetClearColor(const Color& color)
-    {
-      m_clearColor = color;
     }
 
     void RenderContext::SetTargetWindow(const HWND& hwnd)
@@ -317,21 +312,9 @@ namespace DirectSheep
     //                    UTILITY FUNCTIONS                    //
     /////////////////////////////////////////////////////////////
 
-    void RenderContext::ClearRenderTarget(const Handle& handle, float r, float g, float b, float a)
-    {
-      if(handle.type == RENDER_TARGET)
-        m_deviceContext->ClearRenderTargetView(m_renderTargetRes[handle.index].renderTargetView, (float*)&Vec4(r,g,b,a));
-    }
-
-    void RenderContext::ClearRenderTarget(const Handle& handle, Color clearColor)
-    {
-      if(handle.type == RENDER_TARGET)
-        m_deviceContext->ClearRenderTargetView(m_renderTargetRes[handle.index].renderTargetView, (float*)&Vec4(clearColor.r, clearColor.g, clearColor.b, clearColor.a));
-    }
-
     void RenderContext::ClearBackBuffer(void)
     {
-      m_deviceContext->ClearRenderTargetView(m_backBuffer, (float*)&Vec4(m_clearColor.r, m_clearColor.g, m_clearColor.b, 1.0f));
+      m_deviceContext->ClearRenderTargetView(m_backBuffer, (float*)&Vec4(m_clearColor.R(), m_clearColor.G(), m_clearColor.B(), 1.0f));
     }
 
     void RenderContext::ClearDepthBuffer(void)
