@@ -87,7 +87,6 @@ class RenderContext
     /////////////////////////////////////////////////////////////
 
    GFX_API void SetClearColor(const float r, const float g, const float b, const float a);
-   GFX_API void SetClearColor(const Color& color);
    GFX_API void SetTargetWindow(const HWND& hwnd);
    GFX_API void SetFullscreen(const bool fullscreen);
    GFX_API void SetPrimitiveTopology(const PrimitiveTopology primitiveTopology);
@@ -120,7 +119,7 @@ class RenderContext
     int GetCurrentDisplayModeIndex(void) const;
     const std::vector<DisplayMode>& GetDisplayModes(void) const;
     const std::string& GetGraphicsCardInfo(void) const;
-   GFX_API const Dimension& GetTextureSize(const Handle& texHandle) const;
+   GFX_API const Dimension GetTextureSize(const Handle& texHandle) const;
 
     /////////////////////////////////////////////////////////////
     //                    UTILITY FUNCTIONS                    //
@@ -128,7 +127,6 @@ class RenderContext
 
     void CopyData(const Handle& handle, const void *data, size_t size = 0);
    GFX_API void ClearRenderTarget(const Handle& handle, float r, float g, float b, float a);
-   GFX_API void ClearRenderTarget(const Handle& handle, Color clearColor);
    GFX_API void ClearBackBuffer(void);
    GFX_API void ClearDepthBuffer(void);
 
@@ -289,7 +287,7 @@ class RenderContext
     ///////////////
     std::vector<VertexShader>                m_vertexShaderRes;
     std::vector<ID3D11PixelShader*>          m_pixelShaderRes;
-    std::vector<Texture>                     m_textureRes;
+    std::vector<Tex2D>                       m_textureRes;
     std::vector<ID3D11Buffer*>               m_vertexBufferRes;
     std::vector<ID3D11Buffer*>               m_indexBufferRes;
     std::vector<ID3D11Buffer*>               m_constBufferRes;

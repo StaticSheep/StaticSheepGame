@@ -197,6 +197,7 @@ namespace Framework
 
     TYPE_REGISTER( Sprite );
     TYPE_ADD_MEMBER(Sprite, m_spriteName, false, true, "Texture", BUILD_FUNCTION(Sprite::TweakSetTexture));
+    TYPE_ADD_MEMBER(Sprite, Color, false, true, "Color");
     TYPE_ADD_MEMBER( Sprite, Size, false, true, "Scale");
     TYPE_SET_TWEAK_TYPE( Sprite, AntTweak::TW_TYPE_COMPONENT );
     TYPE_SET_FROM_LUA( Sprite, Lua::GenericObjectFromLua );

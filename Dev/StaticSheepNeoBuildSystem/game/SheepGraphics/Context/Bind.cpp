@@ -29,7 +29,7 @@ namespace DirectSheep
   void RenderContext::BindTexture(unsigned slot, const Handle& texHandle)
   {
     if (texHandle.type == TEXTURE)
-      m_deviceContext->PSSetShaderResources(slot, 1, &m_textureRes[texHandle.index].shaderResourceView);
+      m_deviceContext->PSSetShaderResources(slot, 1, &m_textureRes[texHandle.index].m_ShaderRes);
   }
 
   void RenderContext::BindTextures(unsigned count, const Handle texHandles[], unsigned startSlot)
@@ -37,7 +37,7 @@ namespace DirectSheep
     for (unsigned i = 0; i < count; ++i)
     {
       if (texHandles[i].type == TEXTURE)
-        m_deviceContext->PSSetShaderResources(startSlot + i, 1, &m_textureRes[texHandles[i].index].shaderResourceView);
+        m_deviceContext->PSSetShaderResources(startSlot + i, 1, &m_textureRes[texHandles[i].index].m_ShaderRes);
     }
   }
 

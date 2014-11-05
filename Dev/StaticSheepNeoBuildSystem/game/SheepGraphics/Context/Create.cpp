@@ -110,37 +110,12 @@ namespace DirectSheep
 
   bool RenderContext::CreateTexture(Handle& handle, const std::string& filename)
   {
-    Texture tempTex;
-    D3D11_TEXTURE2D_DESC desc;
-    static bool attempt = false;
+    Tex2D temp(m_device, m_contentPath + filename);
 
-    std::string filePath(m_contentPath);
-    filePath += filename;
-
-    std::wstring wcFP(filePath.begin(), filePath.end());
-
-
-    //  (ID3D11Resource **)&tempTex.texture, &tempTex.shaderResourceView, NULL);
-
-    HRESULT hr = DirectX::CreateWICTextureFromFile(m_device, wcFP.c_str(), (ID3D11Resource **)&tempTex.texture, &tempTex.shaderResourceView, 0);
-
-    if (FAILED(hr))
-    {
-      if (attempt)
-        DXVerify(hr);
-      attempt = true;
-      return CreateTexture(handle, "Default.png");
-    }
-    attempt = false;
-    tempTex.shaderResourceView->GetResource((ID3D11Resource **)&tempTex.texture);
-    tempTex.texture->GetDesc(&desc);
-
-    tempTex.size = Dimension(desc.Width, desc.Height);
-    m_textureRes.push_back(tempTex);
+    m_textureRes.push_back(temp);
     handle.type = TEXTURE;
     handle.index = m_textureRes.size() - 1;
     m_handles.push_back(handle);
-
     return true;
   }
 

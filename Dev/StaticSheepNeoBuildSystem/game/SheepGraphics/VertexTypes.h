@@ -8,14 +8,15 @@ namespace DirectSheep
 {
   // Our Custom Vertex
 
-  typedef DirectX::XMFLOAT2 Vec2;
-  typedef DirectX::XMFLOAT3 Vec3;
-  typedef DirectX::XMFLOAT4 Vec4;
+  typedef DirectX::SimpleMath::Vector2 Vec2;
+  typedef DirectX::SimpleMath::Vector3 Vec3;
+  typedef DirectX::SimpleMath::Vector4 Vec4;
+  typedef DirectX::SimpleMath::Color Color;
 
   typedef DirectX::PackedVector::XMCOLOR iCol4;
   typedef DirectX::XMVECTOR iVec4;
 
-  typedef DirectX::XMFLOAT4X4 Mat4;
+  typedef DirectX::SimpleMath::Matrix Mat4;
   typedef DirectX::XMMATRIX iMat4;
 
   struct DefaultBuffer
@@ -26,6 +27,19 @@ namespace DirectSheep
     Vec2 uvBegin;
     Vec2 uvEnd;
   };
+
+  struct Bufferpf
+  {
+    Vec4 ambientColor;
+    float ambientIntensity;
+  };
+
+  struct PSframe
+  {
+
+  };
+
+  struct PSObject;
 
   template <typename T>
   inline DirectX::XMVECTOR ToVector(T input);

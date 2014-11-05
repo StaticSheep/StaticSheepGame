@@ -24,7 +24,7 @@ namespace Framework
     transform = this->GetOwner()->GetComponentHandle(eTransform);
 
     if (m_spriteName.length() == 0)
-      m_spriteName = "content/Default.png";
+      m_spriteName = "Default.png";
 
     if(m_texture.GetType() == DirectSheep::NONE)
     {
