@@ -6,6 +6,7 @@
 #include "components/transform/CTransform.h"
 #include "../../colliders/CCircleCollider.h"
 #include "../../sound/CSoundEmitter.h"
+#include "../../sprites/CSprite.h"
 
 namespace Framework
 {
@@ -19,8 +20,10 @@ namespace Framework
 		hasFired = false;
     health = 100;
     snappedTo = Handle::null;
-    respawnTimer = 0.0;
+    respawnTimer = 2.0f;
     shotDelay = delay;
+    hasRespawned = false;
+    blink = false;
 	}
 
 	PlayerController::~PlayerController() //4
@@ -39,6 +42,7 @@ namespace Framework
 		playerCollider = space->GetGameObject(owner)->GetComponentHandle(eBoxCollider);
 		playerTransform = space->GetGameObject(owner)->GetComponentHandle(eTransform);
     playerSound = space->GetGameObject(owner)->GetComponentHandle(eSoundEmitter);
+    playerSprite = space->GetGameObject(owner)->GetComponentHandle(eSprite);
 
 		GamePad *gp = space->GetHandles().GetAs<GamePad>(playerGamePad); //actually gets the gamepad
 		gp->SetPad(playerNum); //setting pad number
@@ -66,6 +70,32 @@ namespace Framework
       space->GetGameObject(owner)->Destroy();
     }
 
+    if (hasRespawned)
+    {
+      Sprite *ps = space->GetHandles().GetAs<Sprite>(playerSprite);
+
+      if (respawnTimer > 0.0f)
+      {
+        if (!blink)
+          ps->Color.A -= dt * 10.0f;
+        else
+          ps->Color.A += dt * 10.0f;
+
+        respawnTimer -= dt;
+
+        if (ps->Color.A <= 0.0f)
+          blink = true;
+
+        if (ps->Color.A >= 1.0f)
+          blink = false;
+      }
+      else
+      {
+        ps->Color.A = 255.0f;
+        hasRespawned = false;
+        respawnTimer = 2.0f;
+      }
+    }
 
 		if (gp->RStick_InDeadZone() == false)       //if the right stick is NOT inside of its dead zone
 			aimDir = aimingDirection(gp); //get the direction the player is currently aiming;
@@ -160,7 +190,7 @@ namespace Framework
 		//melee
 		if (gp->ButtonPressed(XButtons.B))
 		{
-
+      Melee();
 		}
 
 		if (gp->ButtonPressed(XButtons.X))
@@ -176,12 +206,12 @@ namespace Framework
 	void PlayerController::OnCollision(Handle otherObject, SheepFizz::ExternalManifold manifold)
 	{
     GameObject *OtherObject = space->GetHandles().GetAs<GameObject>(otherObject);
-    if (OtherObject->name == "Bullet")
+    if (OtherObject->name == "Bullet" && !hasRespawned)
     {
       health -= 10;
       return;
     }
-    if (OtherObject->name == "KillBox" || OtherObject->name == "KillBoxBig")
+    if ((OtherObject->name == "KillBox" || OtherObject->name == "KillBoxBig") && !hasRespawned)
       health = 0;
 
 		isSnapped = true;
@@ -241,9 +271,9 @@ namespace Framework
 		returnVec.y = gp->RightStick_Y();
     returnVec.Normalize();
     returnVec *= 1.5;
-    //you're about to see a lot of if statements, just know that all of these are 
+
     //making sure that the default return vector is within a certain range so that
-    //when bullets spawn using that return vector they don't spawn to close to the player.
+    //when bullets spawn using that return vector they don't spawn to far away from the player.
     if (returnVec.x > 1.0)
       returnVec.x = 1.0;
     if (returnVec.y > 1.0)
@@ -254,17 +284,12 @@ namespace Framework
     if (returnVec.y < -1.0)
       returnVec.y = -1.0;
 
-    /*if (returnVec.x < thresh && returnVec.x > 0 && !(returnVec.y >= thresh || returnVec.y <= -thresh))
-      returnVec.x = thresh;
-    if (returnVec.y < thresh && returnVec.y > 0 && !(returnVec.x >= thresh || returnVec.x <= -thresh))
-      returnVec.y = thresh;
-
-    if (returnVec.x > -thresh && returnVec.x < 0 && !(returnVec.y <= thresh || returnVec.y >= -thresh))
-      returnVec.x = -thresh;
-    if (returnVec.y > -thresh && returnVec.y < 0 && !(returnVec.x <= thresh || returnVec.x >= -thresh))
-      returnVec.y = -thresh;*/
-
 		return returnVec;
 
 	}
+
+  void PlayerController::Melee()
+  {
+
+  }
 }

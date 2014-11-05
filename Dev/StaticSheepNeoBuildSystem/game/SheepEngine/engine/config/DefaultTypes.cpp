@@ -26,6 +26,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/gameplay_scripts/CElevatorPlat.h"
 #include "components/gameplay_scripts/CLevel1_Logic.h"
 #include "components/gameplay_scripts/CGiantKillBox.h"
+#include "components/gameplay_scripts/CGrinder.h"
 
 namespace Framework
 {
@@ -176,6 +177,9 @@ namespace Framework
 
     TYPE_REGISTER(GiantKillBox);
     TYPE_SET_TWEAK_TYPE(GiantKillBox, AntTweak::TW_TYPE_COMPONENT);
+
+    TYPE_REGISTER(Grinder);
+    TYPE_SET_TWEAK_TYPE(Grinder, AntTweak::TW_TYPE_COMPONENT);
 
     TYPE_REGISTER( BoxCollider );
     TYPE_ADD_MEMBER( BoxCollider, m_width, false, true, "Width");

@@ -5,6 +5,7 @@
 #include "../colliders/CBoxCollider.h"
 #include "../sound/CSoundPlayer.h"
 #include "CElevatorPlat.h"
+#include "../controllers/player/CPlayerController.h"
 
 static const char *playerNames[] = { "Player1", "Player2", "Player3", "Player4" };
 
@@ -113,6 +114,7 @@ namespace Framework
         playTrans = space->GetGameObject(Players[i])->GetComponent<Transform>(eTransform);
         playTrans->SetTranslation(spawnPos[i]);
         spawnTimers[i] = 2.0f;
+        space->GetGameObject(Players[i])->GetComponent<PlayerController>(ePlayerController)->hasRespawned = true;
       }
       else if (Players[i] == Handle::null && spawnTimers[i] > 0)
         spawnTimers[i] -= dt;

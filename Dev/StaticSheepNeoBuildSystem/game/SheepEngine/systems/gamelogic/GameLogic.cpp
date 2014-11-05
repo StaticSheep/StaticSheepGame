@@ -19,6 +19,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/gameplay_scripts/CElevatorPlat.h"
 #include "components/gameplay_scripts/CLevel1_Logic.h"
 #include "components/gameplay_scripts/CGiantKillBox.h"
+#include "components/gameplay_scripts/CGrinder.h"
 #include "Components/sound/CSoundEmitter.h"
 
 namespace Framework
@@ -48,6 +49,7 @@ namespace Framework
     REGISTER_COMPONENT(Level1_Logic);
     REGISTER_COMPONENT(SoundEmitter);
     REGISTER_COMPONENT(GiantKillBox);
+    REGISTER_COMPONENT(Grinder);
   }
 
   void GameLogic::Initialize()
