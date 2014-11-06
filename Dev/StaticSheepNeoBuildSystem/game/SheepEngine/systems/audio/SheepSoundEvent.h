@@ -28,6 +28,95 @@ enum FadeOut
   BEES
 };
 
+struct SoundInstance
+{
+  int type;
+  PlayMode mode;
+  float volume;
+  float pitch;
+  float* parameters = nullptr;
+  int size = 0;
+  
+  void SetParameters(int size, ...); // variadic function ftw
+  
+  union
+  {
+    SOUND::EventInstance* eventInstance;
+    FMOD::Sound* soundInstance;
+  };
+  
+  SoundInstance()
+  {type = 0; mode = PLAY_ONCE; volume = 1.0f; pitch = 1.0f;};
+  
+};
+
+class Sound
+{
+public:
+  
+  Sound(){};
+  //virtual ~Sound() = 0;
+  
+  virtual bool Play(SoundInstance* instance) = 0;
+  virtual std::string GetName(void) = 0;
+  
+private:
+  
+  Sound(const Sound&);
+  Sound& operator=(const Sound&);
+  
+};
+
+class SoundEvent : public Sound
+{
+public:
+  ~SoundEvent(){};
+  SoundEvent(SOUND::System* system, std::string& name);
+  bool Play(SoundInstance* instance);
+  std::string GetName(){return name;};
+  
+private:
+  
+  SoundEvent(const SoundEvent&);
+  
+  SoundEvent& operator=(const SoundEvent&);
+
+  bool _PlayOnce(SoundInstance*);
+  bool _PlayLoop(SoundInstance*);
+  bool _PlayStream(SoundInstance*);
+  
+  SOUND::EventDescription* description;
+  SOUND::ID id;
+  std::string name;
+  
+};
+
+class SoundFile : public Sound
+{
+public:
+  
+  bool Play(SoundInstance* instance);
+  std::string GetName(){return name;};
+  
+private:
+  
+  SoundFile(const SoundFile&);
+  SoundFile& operator=(const SoundFile&);
+  
+  bool _PlayOnce(SoundInstance*);
+  bool _PlayLoop(SoundInstance*);
+  bool _PlayStream(SoundInstance*);
+
+  FMOD::Sound* sound;
+  std::string name;
+  
+  static FMOD::System* system;
+  
+};
+
+
+/*
+
 class SoundEvent
 {
 public:
@@ -68,7 +157,7 @@ private:
   SOUND::EventDescription *_description;
   SOUND::EventInstance *_instance;
 
-};
+};*/
 
 
 namespace SoundUtility

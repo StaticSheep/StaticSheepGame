@@ -25,23 +25,10 @@ namespace Framework
     _soundSystem = AUDIO;
     _volume = 1.0f;
     _pitch = 1.0f;
-
-    // null out the array of pointers
-    for(int i = 0; i < MAX_SOUNDS; ++i)
-    {
-      _instanceList[i].instance = NULL;
-    }
   }
 
   SoundPlayer::~SoundPlayer()
   {
-    for(int i = 0; i < MAX_SOUNDS; ++i)
-    {
-      _instanceList[i].instance->stop(FMOD_STUDIO_STOP_IMMEDIATE);
-      _instanceList[i].instance->release();
-      _instanceList[i].instance = NULL;
-      _instanceList[i].name = "null";
-    }
   }
   
 /*****************************************************************************/
@@ -58,49 +45,15 @@ namespace Framework
     PLAY_LOOP in disguise...)
 */
 /*****************************************************************************/
-  void SoundPlayer::Play(const std::string &name, PlayMode mode)
+  void SoundPlayer::Play(const std::string &name, SoundInstance* instance)
   {
-    for(int i = 0; i < MAX_SOUNDS; ++i)
-    {
-      if(_instanceList[i].instance == NULL)
-      {
-        _instanceList[i].instance = _soundSystem->Play(name, mode, _volume, _pitch);
-        _instanceList[i].name = name;
 
-        break;
-      }
-    }
-  }
+    if(instanceList[name].active)
+      return;
 
-/*****************************************************************************/
-/*!
-  \brief
-    Extended functionality to the play function. Can set the volume of that
-    instance.
-
-  \param name
-    Name of the event to play
-
-  \param mode
-    How to play the sound. PLAY_ONCE or PLAY_LOOP (PLAY_STREAM is pretty much
-    PLAY_LOOP in disguise...)
-
-  \param volume
-    How loud to play the sound. It is a normalized value, between 0 - 1.
-*/
-/*****************************************************************************/  
-  void SoundPlayer::PlayEx(const std::string &name, PlayMode mode, float volume)
-  {
-    for(int i = 0; i < MAX_SOUNDS; ++i)
-    {
-      if(_instanceList[i].instance == NULL)
-      {
-        _instanceList[i].instance = _soundSystem->Play(name, mode, volume, _pitch);
-        _instanceList[i].name = name;
-
-        break;
-      }
-    }
+    instanceList[name].inst = *instance;
+    instanceList[name].active = true;
+    _soundSystem->Play(name, &instanceList[name].inst);
   }
   
 /*****************************************************************************/
@@ -117,17 +70,7 @@ namespace Framework
 /*****************************************************************************/
   void SoundPlayer::Stop(std::string name, FadeOut mode)
   {
-    for(int i = 0; i < MAX_SOUNDS; ++i)
-    {
-      if(_instanceList[i].name == name)
-      {
-        _instanceList[i].instance->stop(FMOD_STUDIO_STOP_IMMEDIATE);
-        _instanceList[i].instance->release();
-        _instanceList[i].instance = NULL;
-        _instanceList[i].name = "null";
-        break;
-      }
-    }
+    _soundSystem->Stop(&instanceList[name].inst);
   }
 
 /*****************************************************************************/
@@ -144,14 +87,7 @@ namespace Framework
 /*****************************************************************************/  
   void SoundPlayer::Pause(std::string name, bool flag)
   {
-    for(int i = 0; i < MAX_SOUNDS; ++i)
-    {
-      if(_instanceList[i].name == name)
-      {
-        _instanceList[i].instance->setPaused(flag);
-        break;
-      }
-    }
+    _soundSystem->Pause(&instanceList[name].inst);
   }
   
 /*****************************************************************************/

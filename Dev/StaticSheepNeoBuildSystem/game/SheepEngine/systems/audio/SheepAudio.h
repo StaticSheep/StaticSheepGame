@@ -25,6 +25,45 @@ namespace Framework
     unsigned int block;
   };
 
+  class SheepAudio : public ISystem
+  {
+  public:
+    SheepAudio();
+    ~SheepAudio();
+  
+    virtual std::string GetName() {return "SheepAudio";};
+  
+    void Update(float dt);
+    void Initialize();
+  
+    void RegisterComponents();
+    const void* GetDebugData();
+  
+    bool Play(const std::string& name, SoundInstance* instance);
+  
+    bool Stop(SoundInstance* instance);
+    void StopAll();
+    void Pause(SoundInstance* instance){};
+    void PauseAll(){};
+
+    bool GetLoadState() const;
+
+    DebugAudio* debug;
+  
+  private:
+
+    const std::string GUID;
+    std::unordered_map<std::string, Sound *> soundMap;
+    std::vector<SOUND::Bank *> banks;
+    SOUND::System* system;
+    FMOD::System* lowLevelSystem;
+
+    
+  };
+
+
+
+  /*
 	class SheepAudio : public ISystem
 	{
 	public:
@@ -76,7 +115,7 @@ namespace Framework
 
     void** _ninjaPointer; // just in case
 
-	};
+	};*/
 
 	extern SheepAudio* AUDIO;
 }

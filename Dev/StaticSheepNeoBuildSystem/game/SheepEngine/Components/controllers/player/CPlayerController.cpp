@@ -59,7 +59,7 @@ namespace Framework
 
     if (health <= 0)
     {
-      se->PlayEx("explosion", 1.0f);
+      se->Play("explosion");
       //space->GetGameObject(owner)->Destroy();
       ps->SetTranslation(Vec3(0.0, 0.0, 0.0));
       health = 100;
@@ -212,7 +212,7 @@ namespace Framework
 		bulletC->AddToVelocity(aimDir * 1000);
 
     SoundEmitter *se = space->GetHandles().GetAs<SoundEmitter>(playerSound);
-    se->PlayEx("gunshot", 0.25f);
+    se->Play("gunshot");
 
     if (!isSnapped)
     {

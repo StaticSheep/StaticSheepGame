@@ -54,7 +54,7 @@ namespace Framework
     if(!playing)
     {
       SoundPlayer *sp = space->GetHandles().GetAs<SoundPlayer>(levelSound);
-      sp->PlayEx("space_brawl", PLAY_ONCE, 1.0f);
+      sp->Play("space_brawl");
       playing = true;
     }
 	}

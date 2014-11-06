@@ -18,16 +18,16 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include <iostream>
 
 // lets just call this an event map...
-typedef std::unordered_map<std::string, SoundEvent> EventMap;
+typedef std::unordered_map<std::string, Sound*> SoundMap;
 
 // and this a vector of banks... bank pointers really
 typedef std::vector<SOUND::Bank *> BankVector;
 
 // static prototypes
 static void ParseBanks(SOUND::System *system, std::ifstream &file, BankVector &bank);
-static void ParseEvents(SOUND::System *system, std::ifstream &file, EventMap &eventMap);
+static void ParseEvents(SOUND::System *system, std::ifstream &file, SoundMap &eventMap);
 static void LoadBank(SOUND::System *system, std::string &name, BankVector &bank);
-static void LoadEvent(SOUND::System *system, std::string &name, EventMap &events);
+static void LoadEvent(SOUND::System *system, std::string &name, SoundMap &events);
 
 static FMOD::ChannelGroup* masterGroup;
 static FMOD::DSP* dsp;
@@ -43,17 +43,13 @@ namespace Framework
     Default constructor for the SheepAudio class
 */
 /*****************************************************************************/
-	SheepAudio::SheepAudio() : _GUID("GUIDs.txt") // need to find the GUIDs file
+	SheepAudio::SheepAudio() : GUID("GUIDs.txt") // need to find the GUIDs file
 	{
     // set the global pointer 
 		AUDIO = this;
 
     // need to read in config files for volume settings later...
     // but for now just set everything to max volume
-
-    _MasterVolume = 1.0f;
-    _SFXVolume = 1.0f;
-    _MusicVolume = 1.0f;
 	}
 
 /*****************************************************************************/
@@ -66,7 +62,7 @@ namespace Framework
 	SheepAudio::~SheepAudio()
 	{
 		// Release the FMOD system
-    _system->release();
+    system->release();
 
 	}
 
@@ -79,30 +75,30 @@ namespace Framework
 	void SheepAudio::Initialize()
 	{
       // create the sound system
-    ErrorCheck(SOUND::System::create(&_system));
+    ErrorCheck(SOUND::System::create(&system));
 
     // initialize the sound system, with 512 channels... NEVER RUN OUT
-    ErrorCheck(_system->initialize(256, FMOD_STUDIO_INIT_SYNCHRONOUS_UPDATE, 
+    ErrorCheck(system->initialize(256, FMOD_STUDIO_INIT_SYNCHRONOUS_UPDATE, 
                                         FMOD_STUDIO_INIT_SYNCHRONOUS_UPDATE, 0));
-    ErrorCheck(_system->getLowLevelSystem(&_lowLevelSystem));
+    ErrorCheck(system->getLowLevelSystem(&lowLevelSystem));
 
     // open the GUID file
-    std::ifstream infile(SoundUtility::SourcePath(_GUID, SoundUtility::TYPE_GUIDs).c_str());
+    std::ifstream infile(SoundUtility::SourcePath(GUID, SoundUtility::TYPE_GUIDs).c_str());
 
     // if the file couldn't be opened... throw an exception
     if(!infile.is_open())
       throw std::invalid_argument("Invalid File"); // replace with event handling system
 
     // parse through the GUID file and load the banks and events
-    ParseBanks(_system, infile, _banks);
-    ParseEvents(_system, infile, _events);
+    ParseBanks(system, infile, banks);
+    ParseEvents(system, infile, soundMap);
 
-    //ErrorCheck(_lowLevelSystem->getMasterChannelGroup(&masterGroup));
-    //ErrorCheck(_lowLevelSystem->createDSPByType(FMOD_DSP_TYPE_FFT, &dsp));
+    ErrorCheck(lowLevelSystem->getMasterChannelGroup(&masterGroup));
+    ErrorCheck(lowLevelSystem->createDSPByType(FMOD_DSP_TYPE_FFT, &dsp));
 
-    //ErrorCheck(masterGroup->addDSP(0, dsp));
+    ErrorCheck(masterGroup->addDSP(0, dsp));
 
-    //ErrorCheck(masterGroup->setVolume(1.0f));
+    ErrorCheck(masterGroup->setVolume(1.0f));
 
     debug = new DebugAudio;
 	}
@@ -124,7 +120,7 @@ namespace Framework
     float temp = dt; // get rid of warning
 
     // update all of the sounds
-    ErrorCheck(_system->update());
+    ErrorCheck(system->update());
     return;
 	}
 
@@ -140,10 +136,10 @@ namespace Framework
     How we want to play the sound. Single-shot, looped, or streamed.
 */
 /*****************************************************************************/
-  SOUND::EventInstance* SheepAudio::Play(const std::string &event_name, PlayMode mode, float volume, float pitch)
+  bool SheepAudio::Play(const std::string &event_name, SoundInstance* instance)
   {
     // tell this event to play
-    return _events[event_name].Play(mode,volume,pitch);
+    return soundMap[event_name]->Play(instance);
   }
 
 /*****************************************************************************/
@@ -158,11 +154,22 @@ namespace Framework
     How we want to fade out when we stop... currently only use 0 or 1.
 */
 /*****************************************************************************/
-  void SheepAudio::Stop(const std::string &event_name, FadeOut mode)
+  bool SheepAudio::Stop(SoundInstance* instance)
   {
     // tell this event to stop
-    _events[event_name].Stop(mode);
-    return;
+    if(instance->type == 0)
+    {
+      if(ErrorCheck(instance->eventInstance->stop(FMOD_STUDIO_STOP_IMMEDIATE)))
+        return false;
+    }
+
+    if(instance->type == 1)
+    {
+      if(ErrorCheck(instance->soundInstance->release()))
+        return false;
+    }
+
+    return true;
   }
 
 /*****************************************************************************/
@@ -174,13 +181,10 @@ namespace Framework
     How we want to fade out. Use either 0 or 1 for now...
 */
 /*****************************************************************************/
-  void SheepAudio::StopAll(FadeOut mode)
+  void SheepAudio::StopAll()
   {
     // iterate through all events and stop all of them
-    for( auto it = _events.begin(); it != _events.end(); ++it)
-    {
-      it->second.Stop(mode); // hopefully this works
-    }
+    masterGroup->stop();
 
     return;
   }
@@ -193,7 +197,7 @@ namespace Framework
 /*****************************************************************************/
   bool SheepAudio::GetLoadState() const
   {
-      for (auto it = _banks.begin(); it != _banks.end(); ++it)
+      for (auto it = banks.begin(); it != banks.end(); ++it)
       {
           FMOD_STUDIO_LOADING_STATE state;
 
@@ -208,10 +212,10 @@ namespace Framework
 
   const void* SheepAudio::GetDebugData()
   {
-    ErrorCheck(_system->getCPUUsage(&debug->cpuLoad));
-    ErrorCheck(_lowLevelSystem->getChannelsPlaying(&debug->channels));
+    ErrorCheck(system->getCPUUsage(&debug->cpuLoad));
+    ErrorCheck(lowLevelSystem->getChannelsPlaying(&debug->channels));
     ErrorCheck(FMOD::Memory_GetStats(NULL, &debug->RAM, false));
-    ErrorCheck(_system->getBufferUsage(&debug->bufferInfo));
+    ErrorCheck(system->getBufferUsage(&debug->bufferInfo));
 
     //ErrorCheck(dsp->getParameterData(2, &debug->data, &debug->block, NULL, 0));
 
@@ -296,7 +300,7 @@ void ParseBanks(SOUND::System *system, std::ifstream &file, BankVector &bank)
     into.
 */
 /*****************************************************************************/
-void ParseEvents(SOUND::System *system, std::ifstream &file, EventMap &eventMap)
+void ParseEvents(SOUND::System *system, std::ifstream &file, SoundMap &soundMap)
 {
   // string for extraction
   std::string str;
@@ -316,7 +320,7 @@ void ParseEvents(SOUND::System *system, std::ifstream &file, EventMap &eventMap)
       std::size_t endPos = str.length() - position;
 
       // loading the event (substring)
-      LoadEvent(system, str.substr(position, endPos), eventMap);
+      LoadEvent(system, str.substr(position, endPos), soundMap);
     }
   }
 }
@@ -369,10 +373,10 @@ void LoadBank(SOUND::System *system, std::string &name, BankVector &bank)
     Reference to the unordered map of events to load into.
 */
 /*****************************************************************************/
-void LoadEvent(SOUND::System *system, std::string &name, EventMap &events)
+void LoadEvent(SOUND::System *system, std::string &name, SoundMap &sounds)
 {
   // create a new event...
-  SoundEvent newEvent(system, name);
+  SoundEvent* newEvent = new SoundEvent(system, name);
 
   // lets get rid of the event:/ part...
   std::size_t pos = name.find("/");
@@ -381,7 +385,7 @@ void LoadEvent(SOUND::System *system, std::string &name, EventMap &events)
   std::string newName = name.substr((pos + 1), endPos);
 
   // and shove it into the map with the string name..
-  events[newName] = newEvent;
+  sounds[newName] = newEvent;
 
   // we can now access the event by "Folder/Event
   // example... Music/TopGun... or with the EventString defines... MUSIC_TOPGUN
