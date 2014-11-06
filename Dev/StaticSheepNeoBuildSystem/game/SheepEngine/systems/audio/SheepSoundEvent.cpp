@@ -99,6 +99,7 @@ SoundEvent::SoundEvent(SOUND::System *system, std::string &name) :
   ErrorCheck(system->getEvent(name.c_str(), &_description) );
 
   _pitch = 1.0f;
+  _volume = 1.0f;
 }
 
 
@@ -111,7 +112,7 @@ SoundEvent::SoundEvent(SOUND::System *system, std::string &name) :
     How the sound should be played. Once, looped, or streamed
 */
 /*****************************************************************************/
-SOUND::EventInstance* SoundEvent::Play(PlayMode mode)
+SOUND::EventInstance* SoundEvent::Play(PlayMode mode, float volume, float pitch)
 {
   // set the mode 
   _mode = mode;
@@ -120,19 +121,19 @@ SOUND::EventInstance* SoundEvent::Play(PlayMode mode)
   switch(mode)
   {
   case PLAY_ONCE:
-    _PlayOnce();
+    _PlayOnce(volume, pitch);
     break;
 
   case PLAY_LOOP:
-    _PlayLoop();
+    _PlayLoop(volume, pitch);
     break;
 
   case PLAY_STREAM:
-    _PlayStream();
+    _PlayStream(volume, pitch);
     break;
 
   default:
-    _PlayOnce();
+    _PlayOnce(volume, pitch);
     break;
   }
 
@@ -214,16 +215,17 @@ bool SoundEvent::PlayState()
     Private method for playing the sound only once
 */
 /*****************************************************************************/
-SOUND::EventInstance* SoundEvent::_PlayOnce()
+SOUND::EventInstance* SoundEvent::_PlayOnce(float volume, float pitch)
 {
   // create the sound event
   ErrorCheck( _description->createInstance(&_instance) );
-
+  ErrorCheck( _instance->setPitch(pitch));
+  ErrorCheck( _instance->setVolume(volume));
   // play it once...
   ErrorCheck( _instance->start() );
 
   // then release it
-  //ErrorCheck( _instance->release() );
+  ErrorCheck( _instance->release() );
 
   // no longer playing
   _playing = false;
@@ -237,7 +239,7 @@ SOUND::EventInstance* SoundEvent::_PlayOnce()
     Private method for playing the sound in a loop
 */
 /*****************************************************************************/
-SOUND::EventInstance* SoundEvent::_PlayLoop()
+SOUND::EventInstance* SoundEvent::_PlayLoop(float volume, float pitch)
 {
   // if we are already playing this, then just return
   if(_playing)
@@ -245,7 +247,8 @@ SOUND::EventInstance* SoundEvent::_PlayLoop()
 
   // create the sound event
   ErrorCheck( _description->createInstance(&_instance) );
-
+  ErrorCheck( _instance->setPitch(pitch));
+  ErrorCheck( _instance->setVolume(volume));
   // play it once...
   ErrorCheck( _instance->start() );
 
@@ -261,12 +264,14 @@ SOUND::EventInstance* SoundEvent::_PlayLoop()
     Private method for playing the sound in a stream
 */
 /*****************************************************************************/
-SOUND::EventInstance* SoundEvent::_PlayStream()
+SOUND::EventInstance* SoundEvent::_PlayStream(float volume, float pitch)
 {
   // if we are not playing... then create the sound instance
   if(!_playing)
   {
     ErrorCheck( _description->createInstance(&_instance) );
+    ErrorCheck( _instance->setPitch(pitch));
+    ErrorCheck( _instance->setVolume(volume));
     // start it
     ErrorCheck( _instance->start() );
 

@@ -44,7 +44,7 @@ namespace Framework
 		void Update(float dt);
 
     // Play the things! Stop the things!
-    SOUND::EventInstance* Play(const std::string &event_name, PlayMode mode);
+    SOUND::EventInstance* Play(const std::string &event_name, PlayMode mode, float volume, float pitch);
 
     const void* GetDebugData();
 

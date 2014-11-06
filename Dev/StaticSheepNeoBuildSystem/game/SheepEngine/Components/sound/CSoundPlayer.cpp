@@ -64,10 +64,8 @@ namespace Framework
     {
       if(_instanceList[i].instance == NULL)
       {
-        _instanceList[i].instance = _soundSystem->Play(name, mode);
+        _instanceList[i].instance = _soundSystem->Play(name, mode, _volume, _pitch);
         _instanceList[i].name = name;
-        _instanceList[i].instance->setVolume(_volume);
-        _instanceList[i].instance->setPitch(_pitch);
 
         break;
       }
@@ -97,10 +95,8 @@ namespace Framework
     {
       if(_instanceList[i].instance == NULL)
       {
-        _instanceList[i].instance = _soundSystem->Play(name, mode);
+        _instanceList[i].instance = _soundSystem->Play(name, mode, volume, _pitch);
         _instanceList[i].name = name;
-        _instanceList[i].instance->setVolume(volume);
-        _instanceList[i].instance->setPitch(_pitch);
 
         break;
       }
