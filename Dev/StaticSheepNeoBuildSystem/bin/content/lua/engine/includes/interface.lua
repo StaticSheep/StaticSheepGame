@@ -70,8 +70,13 @@ filesystem.BlacklistFolder("levels")
 
 hook.Add("LogicUpdate", "CheckFiles", filesystem.UpdateOldFiles)
 
-function PostInit()
+function LuaLoaded()
   include("luaspace.lua")
+end
+
+function PostInit()
+  QueryComponents()
+  
 end
 
 

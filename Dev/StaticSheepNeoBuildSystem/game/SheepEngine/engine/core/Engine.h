@@ -94,6 +94,8 @@ namespace Framework
     static void LuaGetVariable(Generic* obj, Member* member);
     static void LuaClearSpaces();
     static void LuaRemoveSpace(const char* name);
+    static void LuaGetComponentList(int count, int dummy);
+
     // Function used by lua for printing errors
     static void LuaError(const char* msg);
 
@@ -157,6 +159,9 @@ namespace Framework
 
     // The Lua environment
     lua_State* L;
+
+    // Lua components
+    std::vector<std::string> m_luaComponentList;
 
     // Lua Level Stack
     std::stack<std::string> m_luaLevelsToLoad;
