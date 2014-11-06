@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Vertices.h"
 #include "DirectXIncludes.h"
 #include "vertex_types.h"
 

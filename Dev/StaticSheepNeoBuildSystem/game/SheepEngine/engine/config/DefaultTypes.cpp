@@ -198,8 +198,13 @@ namespace Framework
     TYPE_SET_FROM_LUA( Sprite, Lua::GenericObjectFromLua );
 
     TYPE_REGISTER( AniSprite );
-    TYPE_ADD_MEMBER( AniSprite, Size, false, true, "Size");
-    //TYPE_ADD_MEMBER( AniSprite, m_, false, true, "Frames");
+    TYPE_ADD_MEMBER(AniSprite, m_spriteName, false, true, "Texture", BUILD_FUNCTION(Sprite::TweakSetTexture));
+    TYPE_ADD_MEMBER(AniSprite, m_frames, false, true, "Frames");
+    TYPE_ADD_MEMBER(AniSprite, m_startFrame, false, true, "StartFrame");
+    TYPE_ADD_MEMBER(AniSprite, m_endFrame, false, true, "EndFrame");
+    TYPE_ADD_MEMBER(AniSprite, m_frameRate, false, true, "FrameRate");
+    TYPE_ADD_MEMBER(AniSprite, Color, false, true, "Color");
+    TYPE_ADD_MEMBER( AniSprite, Size, false, true, "Scale");
     TYPE_SET_TWEAK_TYPE( AniSprite, AntTweak::TW_TYPE_COMPONENT );
     TYPE_SET_FROM_LUA( AniSprite, Lua::GenericObjectFromLua );
 
