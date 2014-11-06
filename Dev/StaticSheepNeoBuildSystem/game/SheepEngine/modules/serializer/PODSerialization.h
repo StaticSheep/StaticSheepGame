@@ -114,7 +114,7 @@ namespace Framework
   template <>
   void SerializePOD<int>(File& file, Variable var);
   template <>
-  void SerializePOD<unsigned>(File& file, Variable var);
+  void SerializePOD<unsigned int>(File& file, Variable var);
   template <>
   void SerializePOD<float>(File& file, Variable var);
   template <>
@@ -131,6 +131,8 @@ namespace Framework
 
   template <>
   void DeserializePOD<int>(File& file, Variable var);
+  template <>
+  void DeserializePOD<unsigned int>(File& file, Variable var);
   template <>
   void DeserializePOD<float>(File& file, Variable var);
   template <>

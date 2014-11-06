@@ -18,7 +18,7 @@ namespace Framework
   }
 
   template <>
-  void SerializePOD<unsigned>(File& file, Variable var)
+  void SerializePOD<unsigned int>(File& file, Variable var)
   {
     file.Write("%s ", var.GetTypeInfo()->Name());
     file.Write("%u\n", var.GetValue<unsigned>());
@@ -71,7 +71,7 @@ namespace Framework
   }
 
   template <>
-  void DeserializePOD<unsigned>(File& file, Variable var)
+  void DeserializePOD<unsigned int>(File& file, Variable var)
   {
     if(var.GetTypeInfo() != Serializer::Get()->PeekType(file, Serializer::Get()->GetPadLevel()))
       assert(false); // Type mismatch between type from file and actual member type.

@@ -66,6 +66,9 @@ namespace Framework
     if (health <= 0)
     {
       se->PlayEx("explosion", 1.0f);
+      Handle explosion = (FACTORY->LoadObjectFromArchetype(space, "explosion"))->self;
+      Transform *exT = space->GetGameObject(explosion)->GetComponent<Transform>(eTransform);
+      exT->SetTranslation(ps->GetTranslation());
       space->hooks.Call("PlayerDied", playerNum); //calling an event called player died
       space->GetGameObject(owner)->Destroy();
     }
@@ -213,6 +216,9 @@ namespace Framework
     }
     if ((OtherObject->name == "KillBox" || OtherObject->name == "KillBoxBig") && !hasRespawned)
       health = 0;
+
+    if ((OtherObject->name == "Grinder") && !hasRespawned)
+      health -= 1;
 
 		isSnapped = true;
 		//get the thing we are colliding with

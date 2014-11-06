@@ -61,7 +61,7 @@ namespace Framework
     std::string clean = "";
     std::string theName = name;
 
-    for(unsigned i = 0; i < theName.length(); ++i)
+    for (unsigned i = 0; i < theName.length(); ++i)
       if (theName[i] != ' ')
         clean += theName[i];
 

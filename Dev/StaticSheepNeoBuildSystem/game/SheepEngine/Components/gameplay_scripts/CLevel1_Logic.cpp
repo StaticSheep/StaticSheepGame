@@ -127,7 +127,7 @@ namespace Framework
   {
     if (ply < 0 || ply > numOfPlayers)
       return;
-
+    
     Players[ply] = Handle::null;
   }
 

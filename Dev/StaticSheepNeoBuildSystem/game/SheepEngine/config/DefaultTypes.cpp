@@ -48,6 +48,8 @@ namespace Framework
     TYPE_REGISTER_POD( unsigned int );
     TYPE_SET_TO_LUA( unsigned int, Lua::UIntToLua );
     TYPE_SET_FROM_LUA( unsigned int, Lua::IntFromLua );
+    TYPE_SET_SERIALIZER(unsigned int, SerializePOD<unsigned int>);
+    TYPE_SET_DESERIALIZER(unsigned int, DeserializePOD<unsigned int>);
     TYPE_SET_TWEAK_TYPE( unsigned int, AntTweak::TW_TYPE_UINT32 );
 
     TYPE_REGISTER_POD(void*);

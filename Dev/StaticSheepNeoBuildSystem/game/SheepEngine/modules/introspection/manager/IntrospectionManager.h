@@ -154,7 +154,7 @@ namespace Framework
     }
 
     typeInfo->m_metatable = mt;
-    m_typeMap[name] = typeInfo;
+    m_typeMap[typeInfo->m_name] = typeInfo;
     return typeInfo;
   }
 }

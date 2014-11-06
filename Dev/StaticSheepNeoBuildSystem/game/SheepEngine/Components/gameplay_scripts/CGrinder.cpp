@@ -38,6 +38,8 @@ namespace Framework
 
     //pc->AddToAngVelocity(100);
     pt->SetRotation(pt->GetRotation() + (dt * 10));
+    if (pt->GetRotation() > 2 * PI)
+      pt->SetRotation(0);
 
 	}
 
