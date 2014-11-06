@@ -160,9 +160,9 @@ namespace Framework
             systemCounter = 0;
           }
 
-          channels = (*(FMOD_DSP_PARAMETER_FFT*)audio->data).numchannels;
+          //channels = (*(FMOD_DSP_PARAMETER_FFT*)audio->data).numchannels;
           Draw::SetUseCamera(false);
-          for(int i = 0; i < 1; ++i)
+          /*for(int i = 0; i < 1; ++i)
           {
             for(int j = 0; j < 128; ++j)
             {
@@ -170,7 +170,7 @@ namespace Framework
               Draw::SetColor(1.0f,0.0f,0.0f,1.0f);
               Draw::DrawRect(-128.0f + j * 2.0f, ENGINE->Window->GetHeight() / -3.0f, 2.0f, height * 1000.0f);
             }
-          }
+          }*/
           
           Draw::SetColor(1.0f,1.0f,1.0f,1.0f);
           Draw::SetRotation(0.0f);

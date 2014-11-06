@@ -97,12 +97,12 @@ namespace Framework
     ParseBanks(_system, infile, _banks);
     ParseEvents(_system, infile, _events);
 
-    ErrorCheck(_lowLevelSystem->getMasterChannelGroup(&masterGroup));
-    ErrorCheck(_lowLevelSystem->createDSPByType(FMOD_DSP_TYPE_FFT, &dsp));
+    //ErrorCheck(_lowLevelSystem->getMasterChannelGroup(&masterGroup));
+    //ErrorCheck(_lowLevelSystem->createDSPByType(FMOD_DSP_TYPE_FFT, &dsp));
 
-    ErrorCheck(masterGroup->addDSP(0, dsp));
+    //ErrorCheck(masterGroup->addDSP(0, dsp));
 
-    ErrorCheck(masterGroup->setVolume(1.0f));
+    //ErrorCheck(masterGroup->setVolume(1.0f));
 
     debug = new DebugAudio;
 	}
@@ -140,10 +140,10 @@ namespace Framework
     How we want to play the sound. Single-shot, looped, or streamed.
 */
 /*****************************************************************************/
-  SOUND::EventInstance* SheepAudio::Play(const std::string &event_name, PlayMode mode)
+  SOUND::EventInstance* SheepAudio::Play(const std::string &event_name, PlayMode mode, float volume, float pitch)
   {
     // tell this event to play
-    return _events[event_name].Play(mode);
+    return _events[event_name].Play(mode,volume,pitch);
   }
 
 /*****************************************************************************/
@@ -213,7 +213,7 @@ namespace Framework
     ErrorCheck(FMOD::Memory_GetStats(NULL, &debug->RAM, false));
     ErrorCheck(_system->getBufferUsage(&debug->bufferInfo));
 
-    ErrorCheck(dsp->getParameterData(2, &debug->data, &debug->block, NULL, 0));
+    //ErrorCheck(dsp->getParameterData(2, &debug->data, &debug->block, NULL, 0));
 
     return (void*)debug;
   }
