@@ -104,6 +104,7 @@ namespace DirectSheep
     InitializeBlendModes();
     InitializeDepthState();
 
+    PointLight light(m_device);
     m_initialized = true;
     return true;
   }
@@ -277,26 +278,6 @@ namespace DirectSheep
     const Viewport& RenderContext::GetViewport(void) const
     {
       return m_viewport;
-    }
-
-    DisplayMode RenderContext::GetCurrentDisplayMode(void) const
-    {
-      return m_displayModes[m_displayModeIndex];
-    }
-
-    int RenderContext::GetCurrentDisplayModeIndex(void) const
-    {
-      return m_displayModeIndex;
-    }
-
-    const std::vector<DisplayMode>& RenderContext::GetDisplayModes(void) const
-    {
-      return m_displayModes;
-    }
-
-    const std::string& RenderContext::GetGraphicsCardInfo(void) const
-    {
-      return m_graphicsCardInfo;
     }
 
     const Dimension RenderContext::GetTextureSize(const Handle& texHandle) const

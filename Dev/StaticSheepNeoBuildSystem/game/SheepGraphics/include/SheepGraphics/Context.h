@@ -143,11 +143,6 @@ class RenderContext
     //---------//
     // Structs //
     //---------//
-    struct Texture
-      ID3D11ShaderResourceView *shaderResourceView;
-      ID3D11Texture2D          *texture;
-      Dimension                 size;
-    };
 
     struct DepthBuffer
       ID3D11DepthStencilView      *m_depthBuffer;
@@ -199,7 +194,6 @@ class RenderContext
     //////////////
     bool        m_initialized;
     HWND        m_hwnd;
-    std::string m_graphicsCardInfo;
     Dimension   m_resolution;
     Dimension   m_nativeResolution;
     bool        m_fullscreen;
@@ -217,7 +211,6 @@ class RenderContext
     IDXGIOutput                 *m_output;
     Font                         m_font;               
     int                         m_displayModeIndex;
-    std::vector<DisplayMode>    m_displayModes;
     std::vector<DXGI_MODE_DESC> m_displayModeDescs;
                                 
     ID3D11RenderTargetView      *m_backBuffer;

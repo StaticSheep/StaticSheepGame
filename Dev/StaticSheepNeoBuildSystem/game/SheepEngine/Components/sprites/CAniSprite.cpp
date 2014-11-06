@@ -8,12 +8,14 @@
 namespace Framework
 {
 
-  AniSprite::AniSprite(): uvBegin(0,0), uvEnd(1,1), m_frames(12,1), m_currFrame(0),
-    m_endFrame(11),
+  AniSprite::AniSprite(): uvBegin(0,0), uvEnd(1,1), m_frames(1,1), m_currFrame(0),
+    m_endFrame(0),
     m_startFrame(0),
     m_startFramePos(0, 0),
     m_frameRate(20),
-    m_time(0)
+    m_time(0),
+    m_frameWidth(1 / m_frames.X),
+    m_frameHeight(1 / m_frames.Y)
   {
     transform = NULL;
   }
@@ -39,9 +41,6 @@ namespace Framework
     m_texture = GRAPHICS->SetTexture(Texture);
     TextureSize = GRAPHICS->GetTextureDim(m_texture);
 
-    m_frameWidth = 1 / m_frames.X;
-    m_frameHeight = 1 / m_frames.Y;
-
     m_time = 0;
 
     m_framePos = Vec2(0, 0);
@@ -49,12 +48,21 @@ namespace Framework
     return m_texture;
   }
 
+  void AniSprite::SetFrames(Vec2 frames)
+  {
+    m_frames = frames;
+
+    m_frameWidth = 1 / m_frames.X;
+    m_frameHeight = 1 / m_frames.Y;
+  }
+
+
   void AniSprite::UpdateUV(void)
   {
     float offsetX;
     float offsetY;
-
-
+    m_frameWidth = 1 / m_frames.X;
+    m_frameHeight = 1 / m_frames.Y;
     offsetX = m_frameWidth * m_framePos.X;
     offsetY = m_frameHeight * m_framePos.Y;
 
@@ -69,7 +77,7 @@ namespace Framework
 
   void AniSprite::CheckNextFrame()
   {
-    float dt = 0.0167f;
+    float dt = ENGINE->Framerate.GetDT();
 
     m_time += dt;
 
