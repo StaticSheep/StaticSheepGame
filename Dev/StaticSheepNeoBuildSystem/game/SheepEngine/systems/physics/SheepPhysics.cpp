@@ -9,6 +9,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "pch/precompiled.h"
 #include "SheepPhysics.h"
 
+#include "systems/graphics/DrawLib.h"
+
 #include "components/transform/CTransform.h"
 #include "components/colliders/CBoxCollider.h"
 #include "components/colliders/CCircleCollider.h"
@@ -40,6 +42,30 @@ namespace Framework
 		REGISTER_COMPONENT(CircleCollider);
 
 	 }
+
+  
+  void SheepPhysics::ReceiveMessage(Message& msg)
+  {
+    if (msg.MessageId == Message::PostDraw)
+    {
+      std::vector<GameSpace*>& gspaces = ENGINE->Spaces();
+
+      for (int i = 0; i < gspaces.size(); ++i)
+      {
+        if (!gspaces[i]->Ready())
+          return;
+
+        ObjectAllocator* boxes = gspaces[i]->GetComponents(eBoxCollider);
+        
+        for (int j = 0; j < boxes->Size(); ++j)
+        {
+          Draw::DrawLine(0, 0,
+            ((BoxCollider*)(*boxes)[j])->GetCurrentVelocity().x, ((BoxCollider*)(*boxes)[j])->GetCurrentVelocity().y);
+        }
+
+      }
+    }
+  }
 
 	static void CollisionCallback(void* A_userData, void* B_userData,
     void* Space_userData, SheepFizz::ExternalManifold manifold)
