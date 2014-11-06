@@ -21,6 +21,10 @@ namespace Framework
     void TweakSetFrames(const void* frames);
     void Draw(void);
     void UpdateUV(void);
+    void Paused(bool ispaused);
+    void Play(unsigned start, unsigned end, int loop = -1, unsigned framerate = 20);
+
+
 
     Vec2 m_frames;
 
@@ -36,6 +40,10 @@ namespace Framework
 
   private:
     float m_time;
+
+    bool m_paused;
+
+    unsigned m_loop;
 
     int m_numFramesX;
     int m_numFramesY;
