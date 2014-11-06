@@ -14,7 +14,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "engine/window/Window32.h"
 
 
-#include "editor/App.h"
+#include "wxeditor/App.h"
 #include "input/InputBackend.h"
 #include "input/Keyboard.h"
 #include "input/Mouse.h"

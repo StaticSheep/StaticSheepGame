@@ -8,7 +8,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 #pragma once
 
-#include "engine/introspection/enum/Enum.h"
+#include "modules/introspection/enum/Enum.h"
 
 namespace Framework
 {

@@ -21,7 +21,7 @@
 #include <iostream>
 
 
-#include "editor/App.h"
+#include "wxeditor/App.h"
 #include "wx\app.h"
 
 #pragma comment (lib, "SheepGraphics.lib")

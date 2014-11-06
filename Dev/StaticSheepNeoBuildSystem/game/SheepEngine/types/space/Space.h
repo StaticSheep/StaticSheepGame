@@ -7,8 +7,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 *****************************************************************/
 
 #pragma once
-#include "memory/ObjectAllocator.h"
-#include "engine/handlemanager/HandleManager.h"
+#include "modules/memory/ObjectAllocator.h"
+#include "modules/handlemanager/HandleManager.h"
 #include "components/base/Component.h"
 
 namespace Framework
