@@ -34,14 +34,14 @@ namespace DirectSheep
     compFlags |= D3DCOMPILE_DEBUG;
 #endif
 
-    DXVerify(D3DCompileFromFile(wvShader.c_str(), NULL, D3D_COMPILE_STANDARD_FILE_INCLUDE, vShaderEntry.c_str(), vShaderTarget.c_str(), compFlags, 0, &m_vShaderBlob, &error));
+    D3DCompileFromFile(wvShader.c_str(), NULL, D3D_COMPILE_STANDARD_FILE_INCLUDE, vShaderEntry.c_str(), vShaderTarget.c_str(), compFlags, 0, &m_vShaderBlob, &error);
 
     ErrorIf(error, "VShader", "Failed to compile shader: %s", (const char *)error->GetBufferPointer());
 
     DXVerify(pDevice->CreateVertexShader(m_vShaderBlob->GetBufferPointer(), m_vShaderBlob->GetBufferSize(),
       NULL, &m_vShader));
 
-    DXVerify(D3DCompileFromFile(wpShader.c_str(), NULL, D3D_COMPILE_STANDARD_FILE_INCLUDE, pShaderEntry.c_str(), pShaderTarget.c_str(), compFlags, 0, &m_pShaderBlob, &error));
+    D3DCompileFromFile(wpShader.c_str(), NULL, D3D_COMPILE_STANDARD_FILE_INCLUDE, pShaderEntry.c_str(), pShaderTarget.c_str(), compFlags, 0, &m_pShaderBlob, &error);
 
     ErrorIf(error, "PShader", "Failed to compile shader: %s", (const char *)error->GetBufferPointer());
 

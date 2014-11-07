@@ -9,6 +9,14 @@ namespace DirectSheep
   //                    BIND FUNCTIONS                       //
   /////////////////////////////////////////////////////////////
 
+  void RenderContext::setWireFrame(bool isWired)
+  {
+    if (isWired)
+      m_currentRast = RastStates::Wire;
+    else
+      m_currentRast = RastStates::Fill;
+  }
+
   void RenderContext::Resize(float width, float height)
   {
     if (m_swapChain)

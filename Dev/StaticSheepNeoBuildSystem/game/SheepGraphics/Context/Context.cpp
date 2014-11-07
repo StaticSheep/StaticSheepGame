@@ -65,11 +65,12 @@ namespace DirectSheep
     m_backBuffer(NULL),
     m_clearColor(Color(Colors::Black.operator const float *())),
     m_spriteBlend(Vec4(1, 1, 1, 1)),
-    m_primative(PRIMITIVE_TOPOLOGY_TRIANGLELIST),
-    m_rastState(NULL)
+    m_primative(PRIMITIVE_TOPOLOGY_TRIANGLELIST)
   {
     m_sampleStates[0] = NULL;
     m_sampleStates[1] = NULL;
+    m_rastState[0] = NULL;
+    m_rastState[1] = NULL;
   }
 
   RenderContext::~RenderContext(void)
@@ -104,7 +105,9 @@ namespace DirectSheep
     InitializeBlendModes();
     InitializeDepthState();
 
-    PointLight light(m_device);
+    //m_genericEffect = new GenEffect(m_device);
+    //m_PointLight = new PointLight(m_device);
+
     m_initialized = true;
     return true;
   }
@@ -133,12 +136,11 @@ namespace DirectSheep
 
     m_depthBuffer.Release();
 
-    SafeRelease(m_rastState);
+    for (int i = 0; i < RastStates::NumStates; ++i)
+      SafeRelease(m_rastState[i]);
 
     for (int i = 0; i < (sizeof(m_sampleStates) / sizeof(ID3D11SamplerState*)); ++i)
-    {
       SafeRelease(m_sampleStates[i]);
-    }
 
     for(auto it : m_blendStateMap)
     {

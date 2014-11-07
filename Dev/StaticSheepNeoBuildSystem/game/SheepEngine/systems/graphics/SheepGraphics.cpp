@@ -120,9 +120,10 @@ namespace Framework
 
 	void SheepGraphics::Draw()
 	{
+    m_renderContext->setWireFrame(true);
     // Draw Hooks
     GameSpace* space;
-
+    m_renderContext->StartBatch();
     // Regular Draw
     for (auto it = ENGINE->Spaces().begin(); it != ENGINE->Spaces().end(); ++it)
     {
@@ -164,7 +165,6 @@ namespace Framework
   {
     UpdateCamera();
     m_renderContext->frameStart();
-    m_renderContext->StartBatch();
   }
 
   void SheepGraphics::FinishFrame()
