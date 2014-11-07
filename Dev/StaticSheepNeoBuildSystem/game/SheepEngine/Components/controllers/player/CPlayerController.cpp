@@ -110,7 +110,7 @@ namespace Framework
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
     if (isSnapped)
     {
-      bc->SetVelocity(snappedNormal * 50);
+      bc->SetVelocity(snappedNormal * 100);
       bc->SetAngVelocity(0.0);
       if (snappedTo != Handle::null)
       {
@@ -123,7 +123,7 @@ namespace Framework
         }
       }
       //left stick move
-      if (gp->LeftStick_X() > 0.2 && snappedNormal.y != 0)
+      if (gp->LeftStick_X() > 0.2 && snappedNormal.x == 0)
       {
         //bc->SetVelocity(Vec3(0.0f, 0.0f, 0.0f));
         if (snappedNormal.y > 0)
@@ -131,7 +131,7 @@ namespace Framework
         else if (snappedNormal.y < 0)
           bc->AddToVelocity(-(snappedNormal.CalculateNormal() * 250));
       }
-      else if (gp->LeftStick_X() < -0.2 && snappedNormal.y != 0)
+      else if (gp->LeftStick_X() < -0.2 && snappedNormal.x == 0)
       {
         //bc->SetVelocity(Vec3(0.0f, 0.0f, 0.0f));
         if (snappedNormal.y > 0)
@@ -185,7 +185,7 @@ namespace Framework
 		}
 
     isSnapped = false;
-		
+    //snappedNormal = Vec3(0.0, 0.0, 0.0);
 	}
 
 
@@ -221,10 +221,14 @@ namespace Framework
 		if (!OOT)
 			return;
 
-		if (OtherObject->HasComponent(eBoxCollider))
+		if (OtherObject->HasComponent(eBoxCollider) && OtherObject->name != "Player")
 		{
       BoxCollider *OOBc = OtherObject->GetComponent<BoxCollider>(eBoxCollider);
+      Transform *ps = space->GetHandles().GetAs<Transform>(playerTransform);
+      if (snappedNormal.x != OOBc->GetCollisionNormals(manifold).x && snappedNormal.y != OOBc->GetCollisionNormals(manifold).y)
+        ps->SetTranslation(ps->GetTranslation() + -(snappedNormal * 1.5));
       snappedNormal = OOBc->GetCollisionNormals(manifold);
+      ps->SetRotation(OOT->GetRotation());
 		}
 		else if (OtherObject->HasComponent(eCircleCollider))
 		{

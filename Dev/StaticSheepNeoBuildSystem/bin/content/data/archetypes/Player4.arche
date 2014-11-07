@@ -1,6 +1,6 @@
 GameObject
 {
-  name std::string "Player4"
+  name std::string "Player"
   archetype std::string "Player4"
   Transform
   {
