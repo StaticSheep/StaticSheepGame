@@ -101,6 +101,19 @@ namespace Framework
 
         }
 
+        ObjectAllocator* circles = gspaces[i]->GetComponents(eCircleCollider);
+
+        for (int j = 0; j < circles->Size(); ++j)
+        {
+          Vec3D bodyPosition = ((CircleCollider*)(*circles)[j])->GetBodyPosition();
+          Vec3D bodyVelocity = ((CircleCollider*)(*circles)[j])->GetCurrentVelocity();
+
+          Draw::SetColor(1, 0, 0, 1);
+          Draw::DrawLine(bodyPosition.x, bodyPosition.y,
+            bodyPosition.x + bodyVelocity.x * .5f, bodyPosition.y + bodyVelocity.y * .5f);
+
+          
+        }
       }
     }
   }
