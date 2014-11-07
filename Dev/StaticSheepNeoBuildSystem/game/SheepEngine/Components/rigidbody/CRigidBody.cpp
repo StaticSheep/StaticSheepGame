@@ -132,7 +132,12 @@ namespace Framework
     return PHYSICS->GetBodyPosition(space, m_handle);
   }
 
-  Vec3D RigidBody::GetBodyVertexNumber(void)
+  float RigidBody::GetBodyRotation(void)
+  {
+    return PHYSICS->GetBodyRotation(space, m_handle);
+  }
+
+  unsigned int RigidBody::GetBodyVertexNumber(void)
   {
     return PHYSICS->GetBodyVertexNumber(space, m_handle);
   }

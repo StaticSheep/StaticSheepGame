@@ -207,11 +207,11 @@ namespace SheepFizz
     switch (shape)
     {
     case Poly:
-      return ((Polygon*)(body->shape_))->GetVertex(vertex);
+      return ((Polygon*)(body->shape_))->GetVertex(vertex) * meterScale_;
       break;
 
     case Rec:
-      return ((Rectangle*)(body->shape_))->GetVertex(vertex);
+      return ((Rectangle*)(body->shape_))->GetVertex(vertex) * meterScale_;
       break;
 
     default:
