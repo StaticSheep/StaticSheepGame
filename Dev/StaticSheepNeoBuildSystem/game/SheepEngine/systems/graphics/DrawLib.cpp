@@ -78,6 +78,7 @@ namespace Framework
     float diffY = eY - sY;
     GRAPHICS->UpdateCamera();
     GRAPHICS->SetSize(sqrt(diffX * diffX + diffY * diffY) * .5f, width);
+    GRAPHICS->BindTexture(GRAPHICS->GetTextureID("White.png"));
 
     float rotation = Framework::PI / 2;
     if (diffX != 0)

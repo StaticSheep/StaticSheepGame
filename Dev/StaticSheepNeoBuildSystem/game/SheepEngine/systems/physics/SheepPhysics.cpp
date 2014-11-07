@@ -62,6 +62,7 @@ namespace Framework
           Vec3D bodyPosition = ((BoxCollider*)(*boxes)[j])->GetBodyPosition();
           Vec3D bodyVelocity = ((BoxCollider*)(*boxes)[j])->GetCurrentVelocity();
 
+          Draw::SetColor(1, 0, 0, 1);
           Draw::DrawLine(bodyPosition.x, bodyPosition.y,
             bodyPosition.x + bodyVelocity.x, bodyPosition.y + bodyVelocity.y);
         }
