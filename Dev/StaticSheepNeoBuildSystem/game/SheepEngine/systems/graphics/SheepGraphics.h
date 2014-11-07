@@ -74,6 +74,7 @@ namespace Framework
 
     void BindTexture(int ID);
 
+    void SetWireframe(bool iswired);
     void SetUseCamera(bool useCam);
     void DrawSprite(Sprite *sprite);
     int GetTextureID(const std::string& texture);
