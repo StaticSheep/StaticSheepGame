@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+  <Type Name="Framework::Vec4D">
+        <DisplayString>({x},{y},{z},{w})</DisplayString>
+        <Expand>
+            <Item Name="X">x</Item>
+            <Item Name="Y">y</Item>
+            <Item Name="Z">z</Item>
+            <Item Name="W">w</Item>
+        </Expand>
+    </Type>
+    <Type Name="Framework::Vec4">
+        <DisplayString>({x},{y},{z},{w})</DisplayString>
+        <Expand>
+            <Item Name="X">x</Item>
+            <Item Name="Y">y</Item>
+            <Item Name="Z">z</Item>
+            <Item Name="W">w</Item>
+        </Expand>
+    </Type>
+    <Type Name="Framework::Vec3D">
+        <DisplayString>({x},{y},{z})</DisplayString>
+        <Expand>
+            <Item Name="X">x</Item>
+            <Item Name="Y">y</Item>
+            <Item Name="Z">z</Item>
+        </Expand>
+    </Type>
+    <Type Name="Framework::Vec3">
+        <DisplayString>({x},{y},{z})</DisplayString>
+        <Expand>
+            <Item Name="X">x</Item>
+            <Item Name="Y">y</Item>
+            <Item Name="Z">z</Item>
+        </Expand>
+    </Type>
+    <Type Name="Framework::Vec2">
+        <DisplayString>({x},{y})</DisplayString>
+        <Expand>
+            <Item Name="X">x</Item>
+            <Item Name="Y">y</Item>
+        </Expand>
+    </Type>
+    <Type Name="Framework::Vec2D">
+        <DisplayString>({x},{y})</DisplayString>
+        <Expand>
+            <Item Name="X">x</Item>
+            <Item Name="Y">y</Item>
+        </Expand>
+    </Type>
+</AutoVisualizer>
