@@ -64,7 +64,7 @@ namespace Framework
 
           Draw::SetColor(1, 0, 0, 1);
           Draw::DrawLine(bodyPosition.x, bodyPosition.y,
-            bodyPosition.x + bodyVelocity.x, bodyPosition.y + bodyVelocity.y);
+            bodyPosition.x + bodyVelocity.x * .5f, bodyPosition.y + bodyVelocity.y * .5f);
         }
 
       }
@@ -186,6 +186,17 @@ namespace Framework
   Vec3D SheepPhysics::GetBodyGravityNormal(GameSpace* space, SheepFizz::Handle handle)
   {
     return ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->GetBodyGravityNormal(handle);
+  }
+
+  //shape
+  unsigned int SheepPhysics::GetBodyVertexNumber(GameSpace* space, SheepFizz::Handle handle)
+  {
+    return ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->GetBodyVertexNumber(handle);
+  }
+  
+  Vec3D SheepPhysics::GetBodyVertex(GameSpace* space, SheepFizz::Handle handle, unsigned int vertex)
+  {
+    return ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->GetBodyVertex(handle, vertex);
   }
 
 	//settors

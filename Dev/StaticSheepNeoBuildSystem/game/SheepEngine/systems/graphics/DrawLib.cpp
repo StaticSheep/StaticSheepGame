@@ -77,7 +77,7 @@ namespace Framework
     float diffX = eX - sX;
     float diffY = eY - sY;
     GRAPHICS->UpdateCamera();
-    GRAPHICS->SetSize(sqrt(diffX * diffX + diffY * diffY) * .5f, width);
+    GRAPHICS->SetSize(sqrt(diffX * diffX + diffY * diffY), width);
     GRAPHICS->BindTexture(GRAPHICS->GetTextureID("White.png"));
 
     float rotation = Framework::PI / 2;
@@ -89,7 +89,7 @@ namespace Framework
 
     GRAPHICS->SetRotation(rotation);
 
-    GRAPHICS->SetPosition(sX + diffX / 4, sY + diffY / 4, 0.0f);
+    GRAPHICS->SetPosition(sX + diffX / 2, sY + diffY / 2, 0.0f);
 
     GRAPHICS->RawDraw();
 

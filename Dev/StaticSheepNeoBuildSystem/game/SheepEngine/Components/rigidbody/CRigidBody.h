@@ -58,7 +58,7 @@ namespace Framework
       virtual Vec3D GetBodyPosition(void);
 
       //debug
-      virtual Vec3D GetBodyVertices(void);
+      virtual Vec3D GetBodyVertexNumber(void);
       virtual Vec3D GetBodyVertex(unsigned int vertex);
 
 		// Properties

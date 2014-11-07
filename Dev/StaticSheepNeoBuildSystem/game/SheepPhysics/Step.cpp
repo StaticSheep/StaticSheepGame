@@ -177,6 +177,50 @@ namespace SheepFizz
 
   }//end of GetCollisionNormal
 
+  unsigned int PhysicsSpace::GetBodyVertexNumber(Handle handle)
+  {
+    Body* body = handles_.GetAs<Body>(handle);
+    Shapes shape = body->shape_->GetShape();
+
+    switch (shape)
+    {
+      case Poly:
+        return ((Polygon*)(body->shape_))->GetVertexNumber();
+        break;
+
+      case Rec:
+        return MAXVERTICES;
+        break;
+
+      default:
+        return 0;
+        break;
+    }
+
+  }
+
+  Vec3D PhysicsSpace::GetBodyVertex(Handle handle, unsigned int vertex)
+  {
+    Body* body = handles_.GetAs<Body>(handle);
+    Shapes shape = body->shape_->GetShape();
+
+    switch (shape)
+    {
+    case Poly:
+      return ((Polygon*)(body->shape_))->GetVertex(vertex);
+      break;
+
+    case Rec:
+      return ((Rectangle*)(body->shape_))->GetVertex(vertex);
+      break;
+
+    default:
+      return 0;
+      break;
+    }
+
+  }
+
 	//*************end of gettors
 
 

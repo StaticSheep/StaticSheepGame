@@ -97,6 +97,10 @@ namespace Framework
 
 			SheepFizz::Material* GetMaterial(std::string name);
 
+      //shape info
+      unsigned int GetBodyVertexNumber(GameSpace* space, SheepFizz::Handle handle);
+      Vec3D GetBodyVertex(GameSpace* space, SheepFizz::Handle handle, unsigned int vertex);
+
 			// Update per frame
 			void Update(float dt);
 
