@@ -192,6 +192,11 @@ namespace Framework
     m_renderContext->SetUV(uvBegin.X, uvBegin.Y, uvEnd.X, uvEnd.Y);
   }
 
+  void SheepGraphics::SetWireframe(bool iswired)
+  {
+    m_renderContext->setWireFrame(iswired);
+  }
+
   DirectSheep::Handle SheepGraphics::SetTexture(const std::string& Texture)
   {
     for(auto it : m_textureMap)
