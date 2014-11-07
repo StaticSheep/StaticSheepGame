@@ -112,7 +112,8 @@ namespace Framework
         _ScreenWidth = (int)rMsg->width;
         _ScreenHeight = (int)rMsg->height;
 
-        m_renderContext->SetViewport(0, 0, DirectSheep::Dimension(_ScreenWidth, _ScreenHeight));
+        //m_renderContext->SetViewport(0, 0, DirectSheep::Dimension(_ScreenWidth, _ScreenHeight));
+        m_renderContext->Resize(_ScreenWidth, _ScreenHeight);
       }
       
     }
