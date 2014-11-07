@@ -97,7 +97,7 @@ namespace Framework
 
   void Draw::DrawCircle(float x, float y, float radius)
   {
-    const int numLines = 128;
+    const int numLines = 32;
 
     float theta = 0;
 
