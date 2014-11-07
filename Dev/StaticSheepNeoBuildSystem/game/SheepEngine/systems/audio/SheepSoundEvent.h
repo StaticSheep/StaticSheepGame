@@ -37,6 +37,7 @@ struct SoundInstance
   float* parameters = nullptr;
   int size = 0;
   int channel;
+  bool active;
   
   void SetParameters(int size, ...); // variadic function ftw
   
@@ -47,7 +48,7 @@ struct SoundInstance
   };
   
   SoundInstance()
-  {type = 0; mode = PLAY_ONCE; volume = 1.0f; pitch = 1.0f;};
+  {type = 0; mode = PLAY_ONCE; volume = 1.0f; pitch = 1.0f;active = false;};
   
 };
 

@@ -22,7 +22,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 typedef std::unordered_map<std::string, Sound*> SoundMap;
 
 // and this a vector of banks... bank pointers really
-typedef std::vector<SOUND::Bank *> BankVector;
+typedef std::vector<SOUND::Bank*> BankVector;
 
 // static prototypes
 static void ParseBanks(SOUND::System *system, std::ifstream &file, BankVector &bank);
@@ -43,8 +43,8 @@ namespace Framework
 
 /*****************************************************************************/
 /*!
-  \brief
-    Default constructor for the SheepAudio class
+ \brief
+  Default constructor for the SheepAudio class
 */
 /*****************************************************************************/
 	SheepAudio::SheepAudio() : GUID("GUIDs.txt") // need to find the GUIDs file
@@ -53,23 +53,19 @@ namespace Framework
 		AUDIO = this;
 
     masterVolume = 1.0f;
-
-    // need to read in config files for volume settings later...
-    // but for now just set everything to max volume
 	}
 
 /*****************************************************************************/
 /*!
-  \brief
-    Destructor for the SheepAudio class, all it does is release the FMOD
-    system.
+ \brief
+ Destructor for the SheepAudio class, all it does is release the FMOD
+ system.
 */
 /*****************************************************************************/
 	SheepAudio::~SheepAudio()
 	{
 		// Release the FMOD system
     system->release();
-
 	}
 
   void SheepAudio::Shutdown()
@@ -83,26 +79,33 @@ namespace Framework
 
 /*****************************************************************************/
 /*!
-  \brief
-    Initializes the audio system. Loads all of the banks and events.
+ \brief
+ Initializes the audio system. Loads all of the banks and events.
 */
 /*****************************************************************************/
 	void SheepAudio::Initialize()
 	{
-      // create the sound system
+    // create the sound system
     ErrorCheck(SOUND::System::create(&system));
 
     // initialize the sound system, with 512 channels... NEVER RUN OUT
     ErrorCheck(system->initialize(256, FMOD_STUDIO_INIT_SYNCHRONOUS_UPDATE, 
-                                        FMOD_STUDIO_INIT_SYNCHRONOUS_UPDATE, 0));
+                      FMOD_STUDIO_INIT_SYNCHRONOUS_UPDATE, 0));
     ErrorCheck(system->getLowLevelSystem(&lowLevelSystem));
+
+    int driver;
+
+    ErrorCheck(lowLevelSystem->getNumDrivers(&driver));
+
+    if(driver == 0)
+     ErrorCheck(lowLevelSystem->setOutput(FMOD_OUTPUTTYPE_NOSOUND));
 
     // open the GUID file
     std::ifstream infile(SoundUtility::SourcePath(GUID, SoundUtility::TYPE_GUIDs).c_str());
 
     // if the file couldn't be opened... throw an exception
     if(!infile.is_open())
-      throw std::invalid_argument("Invalid File"); // replace with event handling system
+     throw std::invalid_argument("Invalid File"); // replace with event handling system
 
     // parse through the GUID file and load the banks and events
     ParseBanks(system, infile, banks);
@@ -116,11 +119,6 @@ namespace Framework
 
     ErrorCheck(masterGroup->setVolume(1.0f));
 
-    /*
-    SoundInstance instance;
-    instance.mode = PLAY_LOOP;
-    soundMap["topgun"]->Play(&instance);*/
-
     debug = new DebugAudio;
 	}
 
@@ -132,8 +130,8 @@ namespace Framework
 
 /*****************************************************************************/
 /*!
-  \brief
-    Updates the audio system. All it does it update FMOD.
+ \brief
+  Updates the audio system. All it does it update FMOD.
 */
 /*****************************************************************************/
 	void SheepAudio::Update(float dt)
@@ -147,14 +145,14 @@ namespace Framework
 
 /*****************************************************************************/
 /*!
-  \brief
-    Plays a sound!
+ \brief
+  Plays a sound!
 
-  \param event_name
-    The event name that we want to play. This is a string.
+ \param event_name
+  The event name that we want to play. This is a string.
 
-  \param mode
-    How we want to play the sound. Single-shot, looped, or streamed.
+ \param mode
+  How we want to play the sound. Single-shot, looped, or streamed.
 */
 /*****************************************************************************/
   bool SheepAudio::Play(const std::string &event_name, SoundInstance* instance)
@@ -165,14 +163,14 @@ namespace Framework
 
 /*****************************************************************************/
 /*!
-  \brief
-    Tells and event to stop playing.
+ \brief
+  Tells and event to stop playing.
 
-  \param event_name
-    The event that we want to stop playing.
+ \param event_name
+  The event that we want to stop playing.
 
-  \param mode
-    How we want to fade out when we stop... currently only use 0 or 1.
+ \param mode
+  How we want to fade out when we stop... currently only use 0 or 1.
 */
 /*****************************************************************************/
   bool SheepAudio::Stop(SoundInstance* instance)
@@ -180,14 +178,14 @@ namespace Framework
     // tell this event to stop
     if(instance->type == 0)
     {
-      if(ErrorCheck(instance->eventInstance->stop(FMOD_STUDIO_STOP_IMMEDIATE)))
-        return false;
+     if(ErrorCheck(instance->eventInstance->stop(FMOD_STUDIO_STOP_IMMEDIATE)))
+      return false;
     }
 
     if(instance->type == 1)
     {
-      if(ErrorCheck(instance->soundInstance->release()))
-        return false;
+     if(ErrorCheck(instance->soundInstance->release()))
+      return false;
     }
 
     return true;
@@ -196,14 +194,14 @@ namespace Framework
   void SheepAudio::Pause(SoundInstance* instance, bool status)
   {
     if(instance->type == 0)
-      instance->eventInstance->setPaused(status);
+     instance->eventInstance->setPaused(status);
+
     if(instance->type == 1)
     {
-      FMOD::Channel* channel;
-      lowLevelSystem->getChannel(instance->channel, &channel);
-      channel->setPaused(status);
+     FMOD::Channel* channel;
+     lowLevelSystem->getChannel(instance->channel, &channel);
+     channel->setPaused(status);
     }
-
   }
 
 /*****************************************************************************/
@@ -219,7 +217,6 @@ namespace Framework
   {
     // iterate through all events and stop all of them
     masterGroup->stop();
-
     return;
   }
 
@@ -253,17 +250,17 @@ namespace Framework
 /*****************************************************************************/
   bool SheepAudio::GetLoadState() const
   {
-      for (auto it = banks.begin(); it != banks.end(); ++it)
-      {
-          FMOD_STUDIO_LOADING_STATE state;
+    for(auto it = banks.begin(); it != banks.end(); ++it)
+    {
+     FMOD_STUDIO_LOADING_STATE state;
 
-          ErrorCheck( (*it)->getSampleLoadingState(&state) );
+     ErrorCheck((*it)->getSampleLoadingState(&state));
 
-          if (state != FMOD_STUDIO_LOADING_STATE_LOADED)
-              return false;
-      }
+     if(state != FMOD_STUDIO_LOADING_STATE_LOADED)
+      return false;
+    }
 
-      return true;
+    return true;
   }
 
   const void* SheepAudio::GetDebugData()
@@ -311,12 +308,9 @@ void ParseBanks(SOUND::System *system, std::ifstream &file, BankVector &bank)
   // string for extraction
   std::string str;
 
-  // must start at the beginning of the file
+   // must start at the beginning of the file
   file.clear();
   file.seekg(0, file.beg);
-
-  
-  
 
   // using getline to retain whitespaces
   while (std::getline(file, str))
@@ -443,9 +437,6 @@ void LoadBank(SOUND::System *system, std::string &name, BankVector &bank)
 
   // push the pointer to the bank onto the vector
   bank.push_back(newBank);
-
-  
-
   return;
 }
 
@@ -482,8 +473,6 @@ void LoadEvent(SOUND::System *system, std::string &name, SoundMap &sounds)
   // example... Music/TopGun... or with the EventString defines... MUSIC_TOPGUN
 
   // then gtfo
-
-  
   return;
 }
 

@@ -50,9 +50,9 @@ namespace Framework
     if(instanceList[name].active)
       return;
 
-    instanceList[name].inst = *instance;
+    instanceList[name] = *instance;
     instanceList[name].active = true;
-    _soundSystem->Play(name, &instanceList[name].inst);
+    _soundSystem->Play(name, &instanceList[name]);
   }
   
 /*****************************************************************************/
@@ -69,7 +69,8 @@ namespace Framework
 /*****************************************************************************/
   void SoundPlayer::Stop(std::string name, FadeOut mode)
   {
-    _soundSystem->Stop(&instanceList[name].inst);
+    _soundSystem->Stop(&instanceList[name]);
+    instanceList[name].active = false;
   }
 
 /*****************************************************************************/
@@ -86,7 +87,7 @@ namespace Framework
 /*****************************************************************************/  
   void SoundPlayer::Pause(std::string name, bool flag)
   {
-    _soundSystem->Pause(&instanceList[name].inst, flag);
+    _soundSystem->Pause(&instanceList[name], flag);
   }
   
 /*****************************************************************************/

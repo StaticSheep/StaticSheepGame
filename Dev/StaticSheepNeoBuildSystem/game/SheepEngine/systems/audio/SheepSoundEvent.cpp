@@ -235,6 +235,7 @@ bool SoundEvent::_PlayStream(SoundInstance* instance)
   return true;
 }
 
+
 SoundFile::SoundFile(FMOD::System* system, const std::string& name, bool stream)
 {
   if(stream)
@@ -310,12 +311,12 @@ FMOD_RESULT F_CALLBACK mycallback(FMOD_CHANNELCONTROL *chanControl, FMOD_CHANNEL
     FMOD::Channel *channel = (FMOD::Channel *)chanControl;
 
     SoundInstance* instance;
-    channel->getUserData((void**)&instance);
 
-    if(instance->mode == PLAY_LOOP)
-      ErrorCheck(channel->setMode(FMOD_LOOP_NORMAL));
-    else
-      ErrorCheck(channel->stop());
+    if(ErrorCheck(channel->getUserData((void**)&instance)) == FMOD_OK)
+    {
+      instance->active = false;
+    }
+
   }
   return FMOD_OK;
 }

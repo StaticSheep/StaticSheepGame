@@ -52,17 +52,27 @@ namespace Framework
       spawnTimer = 2;
     }
 
+
     if(!playing)
     {
       SoundPlayer *sp = space->GetHandles().GetAs<SoundPlayer>(levelSound);
+
+      // SoundPlayers now take a SoundInstance*, which is kind of like a messaging system.
+      // if you want something to loop, you need to create a SoundInstance, and set it's
+      // mode. You can also set other properties like volume, pitch, and later 
+      // parameters. It is not absolutely necessary to give the player an instance, as it
+      // will use a default one that plays once.
+
       SoundInstance instance;
       instance.mode = PLAY_LOOP;
       sp->Play("space_brawl", &instance);
+
       playing = true;
     }
 
     if(SHEEPINPUT->Keyboard.KeyIsPressed(0x41))
     {
+      // Pause test. Pressing A pauses the main theme.
       static bool flag = true;
       SoundPlayer *sp = space->GetHandles().GetAs<SoundPlayer>(levelSound);
       sp->Pause("space_brawl", flag);

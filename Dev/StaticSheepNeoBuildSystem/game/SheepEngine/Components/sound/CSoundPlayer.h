@@ -15,12 +15,6 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 namespace Framework
 {
 
-  struct InstanceData
-  {
-    bool active = false;
-    SoundInstance inst;
-  };
-
   class SoundPlayer : public GameComponent
   {
     
@@ -41,7 +35,7 @@ namespace Framework
     SheepAudio* _soundSystem;
     
     // keeps track of the currently playing instances
-    std::unordered_map<std::string, InstanceData> instanceList;
+    std::unordered_map<std::string, SoundInstance> instanceList;
     
     float _pitch;
     float _volume;
