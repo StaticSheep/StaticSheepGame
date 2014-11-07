@@ -51,6 +51,7 @@ namespace Framework
       //collision
       virtual void SetBodyCollisionCallback(bool collisionCallback);
       virtual Vec3D GetCollisionNormals(SheepFizz::ExternalManifold manifold);
+      virtual Vec3D GetCollisionPoint(SheepFizz::ExternalManifold manifold);
 
       //gettors
       virtual Vec3D GetCurrentVelocity(void);
@@ -61,6 +62,7 @@ namespace Framework
       //debug
       virtual unsigned int GetBodyVertexNumber(void);
       virtual Vec3D GetBodyVertex(unsigned int vertex);
+      void OnCollision(Handle otherObject, SheepFizz::ExternalManifold manifold);
 
 		// Properties
 		union
@@ -74,6 +76,10 @@ namespace Framework
 		std::string m_materialName;
 
     bool m_hasCollisionCallback;
+
+    //debug - stores normal as first index, collision point as second
+    //normals_[0] - normal, normals_[1] - point, normals_[2] - normal, etc.
+    std::vector<Vec3D> normals_;
 
 		protected:
 

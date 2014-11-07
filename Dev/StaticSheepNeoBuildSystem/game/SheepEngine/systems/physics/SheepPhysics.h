@@ -68,6 +68,7 @@ namespace Framework
 
       //collision
       Vec3D GetCollisionNormal(GameSpace* space, Framework::Handle ownerHandle , SheepFizz::ExternalManifold manifold);
+      Vec3D GetCollisionPoint(GameSpace* space, SheepFizz::ExternalManifold manifold);
 
 			//settors
 			void SetBodyPosition(GameSpace* space, SheepFizz::Handle handle, Vec3D position);
