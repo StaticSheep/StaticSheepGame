@@ -210,7 +210,7 @@ namespace Framework
 
     TYPE_REGISTER( AniSprite );
     TYPE_ADD_MEMBER(AniSprite, m_spriteName, false, true, "Texture", BUILD_FUNCTION(Sprite::TweakSetTexture));
-    TYPE_ADD_MEMBER(AniSprite, m_frames, false, true, "Frames");
+    TYPE_ADD_MEMBER(AniSprite, m_frames, false, true, "Frames", BUILD_FUNCTION(AniSprite::Test));
     TYPE_ADD_MEMBER(AniSprite, m_startFrame, false, true, "StartFrame");
     TYPE_ADD_MEMBER(AniSprite, m_endFrame, false, true, "EndFrame");
     TYPE_ADD_MEMBER(AniSprite, m_frameRate, false, true, "FrameRate");

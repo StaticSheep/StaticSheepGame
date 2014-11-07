@@ -55,6 +55,8 @@ namespace Framework
     // AniSprite Draw Call
     void Draw(void);
 
+    void Test(void* value);
+
     Vec2 m_frames;
 
     float m_frameRate;
