@@ -165,8 +165,6 @@ namespace Framework
     UpdateCamera();
     m_renderContext->frameStart();
     m_renderContext->StartBatch();
-
-    Draw::DrawCircle(0, 0, 50);
   }
 
   void SheepGraphics::FinishFrame()
