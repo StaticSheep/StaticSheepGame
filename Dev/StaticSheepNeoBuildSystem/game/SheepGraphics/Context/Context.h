@@ -86,6 +86,7 @@ class RenderContext
     //                    SETTER FUNCTIONS                     //
     /////////////////////////////////////////////////////////////
 
+   GFX_API void Resize(float width, float height);
    GFX_API void SetClearColor(const float r, const float g, const float b, const float a);
    GFX_API void SetTargetWindow(const HWND& hwnd);
    GFX_API void SetFullscreen(const bool fullscreen);
