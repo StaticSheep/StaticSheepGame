@@ -9,10 +9,11 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "pch/precompiled.h"
 
 #include "SheepAudio.h"
+#include "../SheepUtil/include/SheepMath.h"
 
 #include "components/sound/CSoundEmitter.h"
 #include "components/sound/CSoundPlayer.h"
-
+#include <boost/filesystem.hpp>
 
 #include <fstream>
 #include <iostream>
@@ -26,11 +27,14 @@ typedef std::vector<SOUND::Bank *> BankVector;
 // static prototypes
 static void ParseBanks(SOUND::System *system, std::ifstream &file, BankVector &bank);
 static void ParseEvents(SOUND::System *system, std::ifstream &file, SoundMap &eventMap);
+static void ParseFiles(FMOD::System* lowLevelSystem, SoundMap &eventMap);
 static void LoadBank(SOUND::System *system, std::string &name, BankVector &bank);
 static void LoadEvent(SOUND::System *system, std::string &name, SoundMap &events);
 
 static FMOD::ChannelGroup* masterGroup;
 static FMOD::DSP* dsp;
+
+using namespace boost::filesystem;
 
 namespace Framework
 {
@@ -47,6 +51,8 @@ namespace Framework
 	{
     // set the global pointer 
 		AUDIO = this;
+
+    masterVolume = 1.0f;
 
     // need to read in config files for volume settings later...
     // but for now just set everything to max volume
@@ -65,6 +71,15 @@ namespace Framework
     system->release();
 
 	}
+
+  void SheepAudio::Shutdown()
+  {
+    for(auto it = soundMap.begin(); it != soundMap.end(); ++it)
+    {
+      delete it->second;
+      it->second = 0;
+    }
+  }
 
 /*****************************************************************************/
 /*!
@@ -92,6 +107,7 @@ namespace Framework
     // parse through the GUID file and load the banks and events
     ParseBanks(system, infile, banks);
     ParseEvents(system, infile, soundMap);
+    ParseFiles(lowLevelSystem, soundMap);;
 
     ErrorCheck(lowLevelSystem->getMasterChannelGroup(&masterGroup));
     ErrorCheck(lowLevelSystem->createDSPByType(FMOD_DSP_TYPE_FFT, &dsp));
@@ -99,6 +115,11 @@ namespace Framework
     ErrorCheck(masterGroup->addDSP(0, dsp));
 
     ErrorCheck(masterGroup->setVolume(1.0f));
+
+    /*
+    SoundInstance instance;
+    instance.mode = PLAY_LOOP;
+    soundMap["topgun"]->Play(&instance);*/
 
     debug = new DebugAudio;
 	}
@@ -172,6 +193,19 @@ namespace Framework
     return true;
   }
 
+  void SheepAudio::Pause(SoundInstance* instance, bool status)
+  {
+    if(instance->type == 0)
+      instance->eventInstance->setPaused(status);
+    if(instance->type == 1)
+    {
+      FMOD::Channel* channel;
+      lowLevelSystem->getChannel(instance->channel, &channel);
+      channel->setPaused(status);
+    }
+
+  }
+
 /*****************************************************************************/
 /*!
   \brief
@@ -187,6 +221,28 @@ namespace Framework
     masterGroup->stop();
 
     return;
+  }
+
+  void SheepAudio::SetMasterVolume(float volume)
+  {
+    masterVolume = Clamp(volume, 0.0f, 1.0f);
+    masterGroup->setVolume(masterVolume);
+  }
+
+  float SheepAudio::GetMasterVolume()
+  {
+    return masterVolume;
+  }
+
+  void SheepAudio::SetMasterPitch(float pitch)
+  {
+    masterPitch = Clamp(pitch, 0.0f, 1.0f);
+    masterGroup->setPitch(masterPitch);
+  }
+
+  float SheepAudio::GetMasterPitch()
+  {
+    return masterPitch;
   }
 
 /*****************************************************************************/
@@ -324,6 +380,41 @@ void ParseEvents(SOUND::System *system, std::ifstream &file, SoundMap &soundMap)
     }
   }
 }
+
+void ParseFiles(FMOD::System* system, SoundMap& soundMap)
+{
+  path p("content\\Audio\\");
+
+  if (exists(p))
+  {
+    if (is_directory(p))
+    {
+      for (directory_iterator it(p), end; it != end; ++it)
+      {
+        if (it->path().extension().generic_string() == ".wav" || it->path().extension().generic_string() == ".mp3")
+        {
+          int size = file_size(it->path().generic_string());
+          bool flag = false;
+
+          // if it is larger than a megabyte, load it as a stream instead
+          if(size > 1000000)
+          {
+            flag = true;
+          }
+
+          std::string name = it->path().generic_string();
+          std::size_t start = name.find_last_of("/");
+          std::size_t end = name.find_last_of(".") - start;
+
+          // cut out the directories and the extension for putting into the map
+          soundMap[name.substr(start + 1,end - 1)] = new SoundFile(system, it->path().generic_string(), flag);
+        }
+      }
+    }
+  }
+  return;
+}
+
 
 /*****************************************************************************/
 /*!

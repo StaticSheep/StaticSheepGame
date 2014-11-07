@@ -262,6 +262,17 @@ Private Functions
     return ((a > b) ? a : b);
   }
 
+  float Clamp(float a, float min, float max)
+  {
+    if(a < min)
+      return min;
+
+    if(a > max)
+      return max;
+
+    return a;
+  }
+
 /******************************************************************************
     Private Functions
 ******************************************************************************/
@@ -388,6 +399,8 @@ Private Functions
     
     return x; /* then return what we found */
   }
+
+  
   
 /*****************************************************************************/
   

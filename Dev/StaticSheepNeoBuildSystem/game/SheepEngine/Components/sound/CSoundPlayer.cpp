@@ -47,7 +47,6 @@ namespace Framework
 /*****************************************************************************/
   void SoundPlayer::Play(const std::string &name, SoundInstance* instance)
   {
-
     if(instanceList[name].active)
       return;
 
@@ -87,7 +86,7 @@ namespace Framework
 /*****************************************************************************/  
   void SoundPlayer::Pause(std::string name, bool flag)
   {
-    _soundSystem->Pause(&instanceList[name].inst);
+    _soundSystem->Pause(&instanceList[name].inst, flag);
   }
   
 /*****************************************************************************/

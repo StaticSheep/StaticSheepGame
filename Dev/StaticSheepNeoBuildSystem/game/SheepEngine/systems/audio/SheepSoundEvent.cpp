@@ -11,6 +11,14 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include <iostream>
 #include <unordered_map>
 
+// callback function for sound files
+FMOD_RESULT F_CALLBACK mycallback(FMOD_CHANNELCONTROL *chanControl, FMOD_CHANNELCONTROL_TYPE controlType, FMOD_CHANNELCONTROL_CALLBACK_TYPE callbackType, void *commandData1, void *commandData2);
+
+// callback function for studio events
+FMOD_RESULT F_CALLBACK mycallback(FMOD_STUDIO_EVENT_CALLBACK_TYPE type, FMOD_STUDIO_EVENTINSTANCE *event, void *parameters);
+
+FMOD::System* SoundFile::_system = 0;
+
 /*****************************************************************************/
 /*!
   \brief
@@ -98,15 +106,8 @@ SoundEvent::SoundEvent(SOUND::System *system, std::string &name)
 /*****************************************************************************/
 bool SoundEvent::Play(SoundInstance* instance)
 {
-  // set the mode 
-  SoundInstance newInstance;
-
-  if(!instance)
-  {
-    *instance = newInstance;
-  }
-
   int mode = instance->mode;
+  instance->type = 0;
 
   // call the correct private method for playing
   switch(mode)
@@ -189,6 +190,8 @@ bool SoundEvent::_PlayLoop(SoundInstance* instance)
     }
   }
 
+  ErrorCheck( instance->eventInstance->setCallback(mycallback) );
+
   check +=    ErrorCheck( instance->eventInstance->start() );
 
   if(check)
@@ -230,4 +233,116 @@ bool SoundEvent::_PlayStream(SoundInstance* instance)
   if(check)
     return false;
   return true;
+}
+
+SoundFile::SoundFile(FMOD::System* system, const std::string& name, bool stream)
+{
+  if(stream)
+    ErrorCheck(system->createStream(name.c_str(), FMOD_CREATESTREAM, 0, &sound));
+  else
+    ErrorCheck(system->createSound(name.c_str(), FMOD_DEFAULT, 0, &sound));
+
+  if(_system == NULL)
+    _system = system;
+}
+  
+bool SoundFile::Play(SoundInstance* instance)
+{
+  int mode = instance->mode;
+  instance->type = 1;
+
+  // call the correct private method for playing
+  switch(mode)
+  {
+  case PLAY_ONCE : return _PlayOnce(instance);
+
+  case PLAY_LOOP : return _PlayLoop(instance);
+
+  case PLAY_STREAM : return _PlayStream(instance);
+
+  default : return _PlayOnce(instance);
+  }
+
+
+  
+  return true;
+}
+
+bool SoundFile::_PlayOnce(SoundInstance* instance)
+{
+  ErrorCheck(_system->playSound(sound, 0, true, &channel));
+  ErrorCheck(channel->setVolume(instance->volume));
+  ErrorCheck(channel->setPitch(instance->pitch));
+  ErrorCheck(channel->setPaused(false));
+
+  channel->getIndex(&instance->channel);
+
+  ErrorCheck(channel->setCallback(mycallback));
+
+  return true;
+}
+
+bool SoundFile::_PlayLoop(SoundInstance* instance)
+{
+  ErrorCheck(_system->playSound(sound, 0, true, &channel));
+  ErrorCheck(channel->setVolume(instance->volume));
+  ErrorCheck(channel->setPitch(instance->pitch));
+  ErrorCheck(channel->setPaused(false));
+  ErrorCheck(channel->setMode(FMOD_LOOP_NORMAL));
+  ErrorCheck(channel->setUserData(instance));
+
+  channel->getIndex(&instance->channel);
+
+  ErrorCheck(channel->setCallback(mycallback));
+
+  return true;
+}
+
+bool SoundFile::_PlayStream(SoundInstance* instance)
+{
+  return true;
+}
+  
+FMOD_RESULT F_CALLBACK mycallback(FMOD_CHANNELCONTROL *chanControl, FMOD_CHANNELCONTROL_TYPE controlType, FMOD_CHANNELCONTROL_CALLBACK_TYPE callbackType, void *commandData1, void *commandData2)
+{
+  if(callbackType == FMOD_CHANNELCONTROL_CALLBACK_END)
+  {
+    FMOD::Channel *channel = (FMOD::Channel *)chanControl;
+
+    SoundInstance* instance;
+    channel->getUserData((void**)&instance);
+
+    if(instance->mode == PLAY_LOOP)
+      ErrorCheck(channel->setMode(FMOD_LOOP_NORMAL));
+    else
+      ErrorCheck(channel->stop());
+  }
+  return FMOD_OK;
+}
+
+FMOD_RESULT F_CALLBACK mycallback(FMOD_STUDIO_EVENT_CALLBACK_TYPE type, FMOD_STUDIO_EVENTINSTANCE *event, void *parameters)
+{
+    FMOD::Studio::EventInstance *instance = (FMOD::Studio::EventInstance*)event;
+
+    if (type == FMOD_STUDIO_EVENT_CALLBACK_STOPPED)
+    {
+      int size;
+      instance->getParameterCount(&size);
+
+      for(int i = 0; i < size; ++i)
+      {
+        instance->setParameterValueByIndex(i, 1.0f);
+      }
+
+      instance->start();
+    }
+    else if (type == FMOD_STUDIO_EVENT_CALLBACK_CREATE_PROGRAMMER_SOUND
+        || type == FMOD_STUDIO_EVENT_CALLBACK_DESTROY_PROGRAMMER_SOUND)
+    {
+        FMOD_STUDIO_PROGRAMMER_SOUND_PROPERTIES* properties = (FMOD_STUDIO_PROGRAMMER_SOUND_PROPERTIES *)parameters;
+
+        // Handle programmer sound creation and destruction here
+    }
+
+    return FMOD_OK;
 }

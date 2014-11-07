@@ -30,6 +30,8 @@ namespace Framework
   public:
     SheepAudio();
     ~SheepAudio();
+
+    void Shutdown();
   
     virtual std::string GetName() {return "SheepAudio";};
   
@@ -43,8 +45,14 @@ namespace Framework
   
     bool Stop(SoundInstance* instance);
     void StopAll();
-    void Pause(SoundInstance* instance){};
+    void Pause(SoundInstance* instance, bool status);
     void PauseAll(){};
+
+    void SetMasterVolume(float volume);
+    float GetMasterVolume();
+
+    void SetMasterPitch(float pitch);
+    float GetMasterPitch();
 
     bool GetLoadState() const;
 
@@ -58,6 +66,8 @@ namespace Framework
     SOUND::System* system;
     FMOD::System* lowLevelSystem;
 
+    float masterVolume;
+    float masterPitch;
     
   };
 

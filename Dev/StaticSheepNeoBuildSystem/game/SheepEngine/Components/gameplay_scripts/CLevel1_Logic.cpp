@@ -4,6 +4,7 @@
 #include "../transform/CTransform.h"
 #include "../colliders/CBoxCollider.h"
 #include "../sound/CSoundPlayer.h"
+#include "../../systems/input/Input.h"
 
 namespace Framework
 {
@@ -54,8 +55,19 @@ namespace Framework
     if(!playing)
     {
       SoundPlayer *sp = space->GetHandles().GetAs<SoundPlayer>(levelSound);
-      sp->Play("space_brawl");
+      SoundInstance instance;
+      instance.mode = PLAY_LOOP;
+      sp->Play("space_brawl", &instance);
       playing = true;
+    }
+
+    if(SHEEPINPUT->Keyboard.KeyIsPressed(0x41))
+    {
+      static bool flag = true;
+      SoundPlayer *sp = space->GetHandles().GetAs<SoundPlayer>(levelSound);
+      sp->Pause("space_brawl", flag);
+
+      flag = !flag;
     }
 	}
 

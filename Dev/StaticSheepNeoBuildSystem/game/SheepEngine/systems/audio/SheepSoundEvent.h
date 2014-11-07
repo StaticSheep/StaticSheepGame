@@ -36,6 +36,7 @@ struct SoundInstance
   float pitch;
   float* parameters = nullptr;
   int size = 0;
+  int channel;
   
   void SetParameters(int size, ...); // variadic function ftw
   
@@ -88,16 +89,19 @@ private:
   SOUND::EventDescription* description;
   SOUND::ID id;
   std::string name;
-  
+
 };
 
 class SoundFile : public Sound
 {
 public:
   
+  SoundFile(FMOD::System* system, const std::string& name, bool stream);
   bool Play(SoundInstance* instance);
   std::string GetName(){return name;};
   
+  FMOD::Channel* GetChannel(void){return channel;};
+
 private:
   
   SoundFile(const SoundFile&);
@@ -109,8 +113,9 @@ private:
 
   FMOD::Sound* sound;
   std::string name;
+  FMOD::Channel* channel;
   
-  static FMOD::System* system;
+  static FMOD::System* _system;
   
 };
 
