@@ -13,7 +13,7 @@ namespace DirectSheep
   {
     if (m_swapChain)
     {
-      m_viewport.dim = Dimension(width, height);
+      m_viewport.dim = Dimension((unsigned)width, (unsigned)height);
       m_viewport.offsetX = 0;
       m_viewport.offsetY = 0;
 
@@ -29,7 +29,7 @@ namespace DirectSheep
 
       InitializeBackBuffer();
 
-      SetViewport(0, 0, Dimension(width, height));
+      SetViewport(0, 0, Dimension((unsigned)width, (unsigned)height));
     }
   }
 

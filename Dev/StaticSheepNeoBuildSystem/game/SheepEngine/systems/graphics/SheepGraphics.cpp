@@ -112,8 +112,7 @@ namespace Framework
         _ScreenWidth = (int)rMsg->width;
         _ScreenHeight = (int)rMsg->height;
 
-        //m_renderContext->SetViewport(0, 0, DirectSheep::Dimension(_ScreenWidth, _ScreenHeight));
-        m_renderContext->Resize(_ScreenWidth, _ScreenHeight);
+        m_renderContext->Resize((float)_ScreenWidth, (float)_ScreenHeight);
       }
       
     }
@@ -166,6 +165,8 @@ namespace Framework
     UpdateCamera();
     m_renderContext->frameStart();
     m_renderContext->StartBatch();
+
+    Draw::DrawCircle(0, 0, 50);
   }
 
   void SheepGraphics::FinishFrame()
