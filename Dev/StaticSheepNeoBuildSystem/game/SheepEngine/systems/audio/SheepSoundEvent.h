@@ -37,7 +37,7 @@ public:
   SoundEvent(SOUND::System *system, std::string &name);
 
   // public methods
-  SOUND::EventInstance* Play(PlayMode mode);
+  SOUND::EventInstance* Play(PlayMode mode, float volume, float pitch);
   void Stop(FadeOut mode);
   void Pause();
 
@@ -47,19 +47,21 @@ public:
   void GetChannelGroup(FMOD::ChannelGroup* group);
 
   void SetPitch(float);
+  void SetVolume(float);
 
   bool PlayState(void);
 
 private:
 
   // private methods
-  SOUND::EventInstance* _PlayOnce(void);
-  SOUND::EventInstance* _PlayLoop(void);
-  SOUND::EventInstance* _PlayStream(void);
+  SOUND::EventInstance* _PlayOnce(float volume, float pitch);
+  SOUND::EventInstance* _PlayLoop(float volume, float pitch);
+  SOUND::EventInstance* _PlayStream(float volume, float pitch);
 
   // private members
 
   float _pitch;
+  float _volume;
   PlayMode _mode; 
   bool _playing;
   SOUND::ID _id;

@@ -1,6 +1,5 @@
 #pragma once
 
-#include "components/transform/CTransform.h"
 #include "components/sprites/CSprite.h"
 
 namespace Framework
@@ -18,6 +17,8 @@ namespace Framework
     virtual void Remove();
 
     DirectSheep::Handle& SetTexture(const std::string& Texture);
+    void SetFrames(Vec2 frames);
+    void TweakSetFrames(const void* frames);
     void Draw(void);
     void UpdateUV(void);
 
@@ -25,9 +26,9 @@ namespace Framework
 
     float m_frameRate;
 
-    int m_currFrame;
-    int m_startFrame;
-    int m_endFrame;
+    unsigned m_currFrame;
+    unsigned m_startFrame;
+    unsigned m_endFrame;
 
   
     Vec2 uvBegin;

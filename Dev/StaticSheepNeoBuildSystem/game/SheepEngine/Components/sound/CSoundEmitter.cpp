@@ -23,12 +23,7 @@ namespace Framework
 /*****************************************************************************/
   void SoundEmitter::Play(std::string name)
   {
-    SOUND::EventInstance* instance = _soundSystem->Play(name, PLAY_ONCE);
-    
-    instance->setVolume(_volume);
-    instance->setPitch(_pitch);
-    
-    instance->release();
+    SOUND::EventInstance* instance = _soundSystem->Play(name, PLAY_ONCE, _volume, _pitch);
   }
 
   void SoundEmitter::Initialize()
@@ -51,12 +46,7 @@ namespace Framework
 /*****************************************************************************/
   void SoundEmitter::PlayEx(std::string name, float volume)
   {
-    SOUND::EventInstance* instance = _soundSystem->Play(name, PLAY_ONCE);
-    
-    instance->setVolume(volume);
-    instance->setPitch(_pitch);
-    
-    instance->release();
+    SOUND::EventInstance* instance = _soundSystem->Play(name, PLAY_ONCE, volume, _pitch);
   }
 
 

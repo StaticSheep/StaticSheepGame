@@ -7,11 +7,12 @@
 #include "Utilities.h"
 
 #include "DirectXIncludes.h"
-#include "WindowsIncludes.h"
-
 #include "VertexTypes.h"
 #include "DataTypes.h"
-#include "Tex2d.h"
+#include "Texture/Tex2d.h"
+#include "CBuffer.h"
+#include "CBuffer_types.h"
+#include "Effects\plight_effect.h"
 
 
 

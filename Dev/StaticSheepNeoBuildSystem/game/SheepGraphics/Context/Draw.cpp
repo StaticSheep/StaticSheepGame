@@ -52,8 +52,6 @@ namespace DirectSheep
     m_deviceContext->Draw(vertexCount, vertexStart);
   }
 
-  
-
   void RenderContext::DrawSpriteText(const char * text, float size, const char * font)
   {
     iMat4 matFinal;
@@ -64,9 +62,7 @@ namespace DirectSheep
     rotMat = XMMatrixIdentity();
     transMat = XMMatrixIdentity();
 
-
     rotMat = XMMatrixRotationRollPitchYaw((float)XM_PI, 0.0f, m_spriteTrans.theta);
-
 
     transMat = XMMatrixTranslation(m_spriteTrans.x, m_spriteTrans.y, 0.0f);
 
