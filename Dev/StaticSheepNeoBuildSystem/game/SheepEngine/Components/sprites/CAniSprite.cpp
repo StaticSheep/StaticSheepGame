@@ -1,3 +1,10 @@
+/******************************************************************************
+Filename: CAniSprite.cpp
+Project:
+Author(s): Scott Nelson
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+******************************************************************************/
 #include "pch/precompiled.h"
 #include "CAniSprite.h"
 
@@ -8,6 +15,12 @@
 namespace Framework
 {
 
+  /*****************************************************************************/
+  /*!
+      \brief
+      Default constructor for AniSprite Component
+  */
+  /*****************************************************************************/
   AniSprite::AniSprite() : uvBegin(0, 0), uvEnd(1, 1), m_frames(1, 1), m_currFrame(0),
     m_endFrame(0),
     m_startFrame(0),
@@ -22,6 +35,12 @@ namespace Framework
     transform = NULL;
   }
 
+  /*****************************************************************************/
+  /*!
+      \brief
+      Initializes AniSprite with texture
+  */
+  /*****************************************************************************/
   void AniSprite::Initialize()
   {
     transform = this->GetOwner()->GetComponentHandle(eTransform);
@@ -40,6 +59,12 @@ namespace Framework
     space->hooks.Add("Draw", self, BUILD_FUNCTION(AniSprite::Draw));
   }
 
+  /*****************************************************************************/
+  /*!
+      \brief
+        Binds texture to AniSprite
+  */
+  /*****************************************************************************/
   DirectSheep::Handle& AniSprite::SetTexture(const std::string& Texture)
   {
     m_spriteName = Texture;
@@ -53,6 +78,12 @@ namespace Framework
     return m_texture;
   }
 
+  /*****************************************************************************/
+  /*!
+      \brief
+        Sets row and column count for AniSprite
+  */
+  /*****************************************************************************/
   void AniSprite::SetFrames(Vec2 frames)
   {
     m_frames = frames;
@@ -61,20 +92,104 @@ namespace Framework
     m_frameHeight = 1 / m_frames.Y;
   }
 
-  void AniSprite::Paused(bool ispaused)
+  /*****************************************************************************/
+  /*!
+      \brief
+        Pauses AniSprites sequence
+  */
+  /*****************************************************************************/
+  void AniSprite::Pause(bool ispaused)
   {
     m_paused = ispaused;
   }
 
-  void AniSprite::Play(unsigned start, unsigned end, int loop, unsigned framerate)
+  bool AniSprite::Paused()
+  {
+    return m_paused;
+  }
+
+  /*****************************************************************************/
+  /*!
+      \brief
+        Check to see if AniSprite is in stopped state
+  */
+  /*****************************************************************************/
+  bool AniSprite::Stopped(void)
+  {
+    return (m_currFrame == m_startFrame && m_paused);
+  }
+
+  /*****************************************************************************/
+  /*!
+      \brief
+        Sets start frame and end frame range for AniSprite
+  */
+  /*****************************************************************************/
+  void AniSprite::SetRange(unsigned start, unsigned end)
+  {
+    m_startFrame = start;
+    m_endFrame = end;
+  }
+
+  /*****************************************************************************/
+  /*!
+      \brief
+        Sets start frame and end frame range for AniSprite
+  */
+  /*****************************************************************************/
+  void AniSprite::SetRange(Vec2 range)
+  {
+    m_startFrame = range.X;
+    m_endFrame = range.Y;
+  }
+
+  /*****************************************************************************/
+  /*!
+      \brief
+        Plays anisprite "loops" number of time, if loops < 0 then loop forever
+  */
+  /*****************************************************************************/
+  void AniSprite::Play(float loops)
+  {
+    m_paused = false;
+    m_loop = loops;
+  }
+
+  /*****************************************************************************/
+  /*!
+      \brief
+        Adds onto play with setting range of frames and framerate
+  */
+  /*****************************************************************************/
+  void AniSprite::PlayEx(unsigned start, unsigned end, int loops, unsigned framerate)
   {
     m_paused = false;
     m_startFrame = start;
     m_endFrame = end;
-    m_frameRate = framerate;
-    m_loop = loop;
+    SetFrameRate(framerate);
+    m_loop = loops;
   }
 
+  /*****************************************************************************/
+  /*!
+      \brief
+        Sets framerate for Anisprite, cannot be <= 0
+  */
+  /*****************************************************************************/
+  void AniSprite::SetFrameRate(float framerate)
+  {
+    if (framerate <= 0)
+      framerate = 1;
+
+    m_frameRate = framerate;
+  }
+
+  /*****************************************************************************/
+  /*!
+      \brief
+        Updates UV coordinates to be passed to graphics engine
+  */
+  /*****************************************************************************/
   void AniSprite::UpdateUV(void)
   {
     float offsetX;
@@ -88,51 +203,86 @@ namespace Framework
     uvEnd = Vec2(offsetX + m_frameWidth, offsetY + m_frameHeight);
   }
 
+  /*****************************************************************************/
+  /*!
+      \brief
+        Removes AniSrite from listening to draw message
+  */
+  /*****************************************************************************/
   void AniSprite::Remove(void)
   {
     space->hooks.Remove("Draw", self);
   }
 
+  /*****************************************************************************/
+  /*!
+      \brief
+        AniSprite update checks for change in frame
+  */
+  /*****************************************************************************/
   void AniSprite::CheckNextFrame()
   {
-    if (m_paused || m_loop == 0)
+    // If we are paused or stopped, don't update frames
+    if (m_paused || Stopped())
       return;
 
+    // grab dt
     float dt = ENGINE->Framerate.GetDT();
 
+    // update frame dt
     m_time += dt;
 
+    // if we have exceeded our framerate
     if (m_time > 1 / m_frameRate)
     {
+      // reset time to count up to next frame
       m_time -= 1 / m_frameRate;
+
+      // increment currframe
       m_currFrame += 1;
 
+      // If we have reached our endframe
       if (m_currFrame > m_endFrame)
       {
+        // loop back to beginning of animation
         m_currFrame = m_startFrame;
         m_framePos = m_startFramePos;
+
+        // If we are finitely looping decrement loops
         if (m_loop)
-        --m_loop;
+          --m_loop;
+
+        // If loop is -1 we loop infinitley, else pause and stop
+        else if (m_loop != -1)
+        {
+          space->GetGameObject(owner)->hooks.Call("AnimEnd");
+          Pause(true);
+        }
+
+        // our job is done
         return;
       }
 
+      // Else we continue to next frame
       m_framePos.X += 1;
 
+      // If we have exceeded number of columns drop down a row
       if (m_framePos.X > m_frames.X)
       {
         m_framePos.X = 0;
         m_framePos.Y += 1;
       }
-      
-    }
-    
+    } 
   }
 
+  /*****************************************************************************/
+  /*!
+      \brief
+        AniSprite Draw Call
+  */
+  /*****************************************************************************/
   void AniSprite::Draw()
   {
-    if (m_loop == 0)
-      return;
-
     Transform* trans = space->GetHandles().GetAs<Transform>(transform);
 
     UpdateUV();
@@ -148,6 +298,12 @@ namespace Framework
     CheckNextFrame();
   }
 
+  /*****************************************************************************/
+  /*!
+      \brief
+        AniSprite Deconstructor
+  */
+  /*****************************************************************************/
   AniSprite::~AniSprite()
   {
   }
