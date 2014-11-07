@@ -89,7 +89,7 @@ namespace Framework
 
     GRAPHICS->SetRotation(rotation);
 
-    GRAPHICS->SetPosition(sX + diffX / 4, sY + diffY / 4, 0.0f);
+    GRAPHICS->SetPosition(sX + diffX / 2, sY + diffY / 2, 0.0f);
 
     GRAPHICS->RawDraw();
 

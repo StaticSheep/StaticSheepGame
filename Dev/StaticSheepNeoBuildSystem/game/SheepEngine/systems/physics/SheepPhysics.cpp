@@ -64,7 +64,41 @@ namespace Framework
 
           Draw::SetColor(1, 0, 0, 1);
           Draw::DrawLine(bodyPosition.x, bodyPosition.y,
-            bodyPosition.x + bodyVelocity.x, bodyPosition.y + bodyVelocity.y);
+            bodyPosition.x + bodyVelocity.x * .5f, bodyPosition.y + bodyVelocity.y * .5f);
+
+          unsigned int vertexTotal = ((BoxCollider*)(*boxes)[j])->GetBodyVertexNumber();
+
+          unsigned int nextVertex;
+          float rotation = ((BoxCollider*)(*boxes)[j])->GetBodyRotation();
+
+          Vec3D vertexPos1;
+          Vec3D vertexPos2;
+
+          Vec3D vertex1 = ((BoxCollider*)(*boxes)[j])->GetBodyVertex(i);
+          Vec3D vertex0 = vertex1;
+          Vec3D vertex2;
+
+          for (int i = 0; i < vertexTotal; ++i)
+          {
+            nextVertex = ((i + 1) < vertexTotal) ? (i + 1) : 0;
+
+            if (nextVertex)
+              vertex2 = ((BoxCollider*)(*boxes)[j])->GetBodyVertex(nextVertex);
+            else
+              vertex2 = vertex0;
+
+            vertexPos1.x = vertex1.x * cos(rotation) - vertex1.y * sin(rotation);
+            vertexPos1.y = vertex1.x * sin(rotation) + vertex1.y * cos(rotation);
+            vertexPos2.x = vertex2.x * cos(rotation) - vertex2.y * sin(rotation);
+            vertexPos2.y = vertex2.x * sin(rotation) + vertex2.y * cos(rotation);
+
+            Draw::SetColor(1, 1, 0, 1);
+            Draw::DrawLine(bodyPosition.x + vertexPos1.x, bodyPosition.y + vertexPos1.y, 
+              bodyPosition.x + vertexPos2.x, bodyPosition.y + vertexPos2.y);
+
+            vertex1 = vertex2;
+          }
+
         }
 
       }
@@ -186,6 +220,17 @@ namespace Framework
   Vec3D SheepPhysics::GetBodyGravityNormal(GameSpace* space, SheepFizz::Handle handle)
   {
     return ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->GetBodyGravityNormal(handle);
+  }
+
+  //shape
+  unsigned int SheepPhysics::GetBodyVertexNumber(GameSpace* space, SheepFizz::Handle handle)
+  {
+    return ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->GetBodyVertexNumber(handle);
+  }
+  
+  Vec3D SheepPhysics::GetBodyVertex(GameSpace* space, SheepFizz::Handle handle, unsigned int vertex)
+  {
+    return ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->GetBodyVertex(handle, vertex);
   }
 
 	//settors
