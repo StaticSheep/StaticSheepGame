@@ -62,6 +62,41 @@ namespace SheepFizz
 		
 	};
 
+  //create a polygon
+  class Polygon : public Shape
+  {
+    public:
+      //constructor
+      Polygon(float width, float height);
+
+      //gettors
+      //float GetWidth(void);
+      //float GetHeight(void);
+      Vec3D GetVertex(unsigned int i);
+      Vec3D GetNormal(unsigned int i);
+      unsigned int GetVertexNumber(void);
+
+      Shapes GetType(void);
+
+      //initializes area and vertices/normals used in manifold functions
+      void Initialize(void);
+      void PolygonFormation(Vec3D* vertices, unsigned int size);
+
+    private:
+      float width_;
+      float height_;
+
+      unsigned int vertexNumber_;
+
+      //list of the vertices - at origin
+      //vertices are oriented counterclockwise
+      Vec3D* vertices_;
+
+      //normals of every side of shape
+      Vec3D* normals_;
+
+  };
+
 	//create a rectangle
 	class Rectangle: public Shape
 	{
@@ -74,6 +109,7 @@ namespace SheepFizz
 			float GetHeight(void);
 			Vec3D GetVertex(unsigned int i);
 			Vec3D GetNormal(unsigned int i);
+      unsigned int GetVertexNumber(void);
 
 			Shapes GetType(void);
 
@@ -86,6 +122,8 @@ namespace SheepFizz
 		private:
 			float width_;
 			float height_;
+
+      unsigned int vertexNumber_;
 
 			//list of the vertices - at origin
 			//vertices are oriented counterclockwise

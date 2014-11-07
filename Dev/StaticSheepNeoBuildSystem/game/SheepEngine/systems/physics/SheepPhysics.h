@@ -35,8 +35,11 @@ namespace Framework
 
 			void DeleteSpace(void*);
 
-			// Initialization call
+			//Initialization call
 			void Initialize(void);
+
+      //Debug
+      void ReceiveMessage(Message& msg);
 
 			//Adds rectangles and circles to the physics engine
       SheepFizz::Handle AddBodies(GameObject* obj,
