@@ -2,6 +2,8 @@
 
 #include "components/base/Component.h"
 #include "components/gamepad/CGamePad.h"
+#include "../../sound/CSoundEmitter.h"
+#include "../../transform/CTransform.h"
 
 namespace Framework
 {
@@ -17,6 +19,8 @@ namespace Framework
 		void onFire();
 		Vec3 aimingDirection(GamePad *gp);
     void Melee();
+    void RespawnBlink(float dt);
+    void PlayerDeath(SoundEmitter *se, Transform *pt);
 
 		//member variables
 		int playerNum; //the player number, i.e. 1, 2, 3, 4
@@ -33,5 +37,6 @@ namespace Framework
     Handle playerSound; //to play sound from the player
     Handle playerSprite; //to adjust the sprite colors and alpha
 
+    int delay;
 	};
 }

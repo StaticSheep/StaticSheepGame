@@ -249,14 +249,14 @@ namespace Framework
         m_framePos = m_startFramePos;
 
         // If we are finitely looping decrement loops
-        if (m_loop)
+        if (m_loop > 1)
           --m_loop;
 
         // If loop is -1 we loop infinitley, else pause and stop
         else if (m_loop != -1)
         {
-          space->GetGameObject(owner)->hooks.Call("AnimEnd");
           Pause(true);
+          space->GetGameObject(owner)->hooks.Call("AnimEnd");
         }
 
         // our job is done
