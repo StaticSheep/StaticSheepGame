@@ -12,6 +12,9 @@ namespace Framework
     const Member* Tweaker::tweakMember = nullptr;
     Generic* Tweaker::tweakGeneric = nullptr;
     unsigned Tweaker::tweakOffset = 0;
+    Function Tweaker::tweakSetCB = Function();
+    Function Tweaker::tweakGetCB = Function();
+    TweakGenericVar* Tweaker::currentGeneric = nullptr;
 
     void Tweaker::DoTweak(AntTweak::TBar* bar, Variable& var, const char* tempLabel, const char* label)
     {
@@ -26,10 +29,16 @@ namespace Framework
       if (isTweakGeneric)
       {
         // If there is a tweaking get or set callback for this type then we need to use another function
-        if (tweakMember->TweakSetCB().Signature() != nullptr)
+        if (tweakMember->TweakSetCB())
           bar->AddGenericVarCB(tempLabel, varType, tweakMember, tweakOffset, tweakGeneric, tweakMember->TweakSetCB(), tweakMember->TweakGetCB());
         else
-          bar->AddGenericVarRW(tempLabel, varType, tweakMember, tweakOffset, tweakGeneric);
+        {
+          if (tweakSetCB)
+            bar->AddGenericVarCB(tempLabel, varType, tweakMember, tweakOffset, tweakGeneric, tweakSetCB, tweakGetCB);
+          else
+            bar->AddGenericVarRW(tempLabel, varType, tweakMember, tweakOffset, tweakGeneric);
+        }
+          
       }
       else
       {
@@ -81,6 +90,15 @@ namespace Framework
             // Setup a variable for the member and send it to be tweaked
             Variable mVar(m->Type(), (char*)var.GetData() + currentOffset);
 
+            if (tweakMember)
+            {
+              if (tweakMember->TweakSetCB())
+                tweakSetCB = tweakMember->TweakSetCB();
+
+              if (tweakMember->TweakGetCB())
+                tweakGetCB = tweakMember->TweakGetCB();
+            }
+            
             // Set which member we are tweaking on the Tweaker
             tweakMember = m;
 
@@ -117,6 +135,9 @@ namespace Framework
                 else
                   bar->SetGroupParent(uniqueName.c_str(), tempLabel);
             }
+
+            tweakSetCB = Function();
+            tweakGetCB = Function();
 
             // Subtract the current member offset from the tweakOffset
             tweakOffset -= currentOffset;

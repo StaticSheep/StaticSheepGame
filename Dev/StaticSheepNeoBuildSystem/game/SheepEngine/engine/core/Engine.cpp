@@ -319,10 +319,10 @@ namespace Framework
       std::string cacheLocation = "cache\\spaces\\";
       std::string filepath;
 
-      boost::filesystem::create_directories(cacheLocation);
-
       // We want to clear out the cache
-      boost::filesystem::remove_all(cacheLocation + std::string("*"));
+      boost::filesystem::remove_all(cacheLocation);
+
+      boost::filesystem::create_directories(cacheLocation);
 
       // We want to cache all of our current spaces into our cache
       // so we can pull them up later

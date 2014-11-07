@@ -12,6 +12,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "SheepGraphics\api.h"
 #include "SheepGraphics\Handle.h"
 
+#include "systems\anttweak\TweakHelper.h"
+
 namespace Framework
 {
 
@@ -306,6 +308,11 @@ namespace Framework
   /*****************************************************************************/
   AniSprite::~AniSprite()
   {
+  }
+
+  void AniSprite::Test(void* value)
+  {
+    *(int*)((char*)this + AntTweak::Tweaker::currentGeneric->realOffset) = *(int*)value;
   }
 
 }
