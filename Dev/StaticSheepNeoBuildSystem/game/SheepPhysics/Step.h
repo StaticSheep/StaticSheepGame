@@ -81,6 +81,9 @@ namespace SheepFizz
     PHY_API void SetBodyCollisionCallback(Handle handle, bool collisionCallback);
     PHY_API Vec3D GetCollisionNorm(void* handle, ExternalManifold manifold);
 
+    //shape functions
+    PHY_API Vec3D GetBodyVertices(Handle handle);
+    PHY_API Vec3D GetBodyVertexNumber(Handle handle);
 
 		//add bodies to the body vector
     PHY_API Handle AddBody(

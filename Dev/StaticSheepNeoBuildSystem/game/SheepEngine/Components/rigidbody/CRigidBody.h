@@ -55,6 +55,11 @@ namespace Framework
       //gettors
       virtual Vec3D GetCurrentVelocity(void);
       virtual Vec3D GetGravityNormal(void);
+      virtual Vec3D GetBodyPosition(void);
+
+      //debug
+      virtual Vec3D GetBodyVertices(void);
+      virtual Vec3D GetBodyVertex(unsigned int vertex);
 
 		// Properties
 		union

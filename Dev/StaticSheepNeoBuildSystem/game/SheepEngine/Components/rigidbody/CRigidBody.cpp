@@ -126,4 +126,19 @@ namespace Framework
   {
     return PHYSICS->GetBodyGravityNormal(space, m_handle);
   }
+
+  Vec3D RigidBody::GetBodyPosition(void)
+  {
+    return PHYSICS->GetBodyPosition(space, m_handle);
+  }
+
+  Vec3D RigidBody::GetBodyVertices(void)
+  {
+    return Vec3D();
+  }
+
+  Vec3D RigidBody::GetBodyVertex(unsigned int vertex)
+  {
+    return Vec3D();
+  }
 }

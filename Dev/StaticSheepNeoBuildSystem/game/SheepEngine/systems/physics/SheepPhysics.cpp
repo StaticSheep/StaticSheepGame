@@ -59,8 +59,11 @@ namespace Framework
         
         for (int j = 0; j < boxes->Size(); ++j)
         {
-          Draw::DrawLine(0, 0,
-            ((BoxCollider*)(*boxes)[j])->GetCurrentVelocity().x, ((BoxCollider*)(*boxes)[j])->GetCurrentVelocity().y);
+          Vec3D bodyPosition = ((BoxCollider*)(*boxes)[j])->GetBodyPosition();
+          Vec3D bodyVelocity = ((BoxCollider*)(*boxes)[j])->GetCurrentVelocity();
+
+          Draw::DrawLine(bodyPosition.x, bodyPosition.y,
+            bodyPosition.x + bodyVelocity.x, bodyPosition.y + bodyVelocity.y);
         }
 
       }
