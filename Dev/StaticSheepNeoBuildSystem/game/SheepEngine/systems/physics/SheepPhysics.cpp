@@ -10,6 +10,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "SheepPhysics.h"
 
 #include "systems/graphics/DrawLib.h"
+#include "systems/graphics/SheepGraphics.h"
 
 #include "components/transform/CTransform.h"
 #include "components/colliders/CBoxCollider.h"
@@ -23,6 +24,7 @@ namespace Framework
 	{
 		// Initialize physics object list
 		PHYSICS = this;
+    debugOn = false;
 	}
 
 	SheepPhysics::~SheepPhysics()
@@ -46,6 +48,10 @@ namespace Framework
   //debug draw after postdraw message received
   void SheepPhysics::ReceiveMessage(Message& msg)
   {
+    if (!debugOn)
+      return;
+
+    GRAPHICS->SetWireframe(true);
 
     if (msg.MessageId == Message::PostDraw)
     {
@@ -152,6 +158,18 @@ namespace Framework
     }//end of the if check
 
   }//end of RecieveMsg - DebugDraw
+
+  void SheepPhysics::SetDebug(bool on)
+  {
+    debugOn = on;
+  }
+  bool SheepPhysics::IsDebugOn(void)
+  {
+    return debugOn;
+  }
+
+  //end of Debug
+  //************
 
 	static void CollisionCallback(void* A_userData, void* B_userData,
     void* Space_userData, SheepFizz::ExternalManifold manifold)

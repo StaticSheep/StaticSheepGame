@@ -40,6 +40,8 @@ namespace Framework
 
       //Debug
       void ReceiveMessage(Message& msg);
+      void SetDebug(bool on);
+      bool IsDebugOn(void);
 
 			//Adds rectangles and circles to the physics engine
       SheepFizz::Handle AddBodies(GameObject* obj,
@@ -109,7 +111,8 @@ namespace Framework
 
 		private:
 			//void PhysicsStep(float dt);
-			std::unordered_map<std::string, SheepFizz::Material> m_materials;
+			std::unordered_map<std::string, SheepFizz::Material> m_materials;      
+      bool debugOn;
 	};
 
 	extern SheepPhysics* PHYSICS;

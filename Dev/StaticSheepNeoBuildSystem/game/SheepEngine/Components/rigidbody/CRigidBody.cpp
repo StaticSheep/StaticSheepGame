@@ -158,6 +158,9 @@ namespace Framework
 
   void RigidBody::OnCollision(Handle otherObject, SheepFizz::ExternalManifold manifold)
   {
+    if (!PHYSICS->IsDebugOn())
+      return;
+
     GameObject *OtherObject = space->GetHandles().GetAs<GameObject>(otherObject);
 
     Vec3D normal;
