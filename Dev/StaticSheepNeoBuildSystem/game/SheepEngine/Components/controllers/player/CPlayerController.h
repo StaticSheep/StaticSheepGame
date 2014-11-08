@@ -4,6 +4,7 @@
 #include "components/gamepad/CGamePad.h"
 #include "../../sound/CSoundEmitter.h"
 #include "../../transform/CTransform.h"
+#include "types/weapons/WBase.h"
 
 namespace Framework
 {
@@ -28,6 +29,7 @@ namespace Framework
 		bool hasFired, isSnapped, hasRespawned, blink; //has fired is a flag to prevent fully auto fire, is snapped is a bool to see if the player is snapped to something
     int shotDelay;
     float respawnTimer;
+    Weapon *weapon;
 		Vec3 aimDir;  //the direction the player is currently aiming
     Vec3 snappedNormal; //the normal of the thing we are currently snapped to
 		Handle playerGamePad; //the players game pad
@@ -36,7 +38,5 @@ namespace Framework
 		Handle snappedTo; //the thing we are currently "snapped" to
     Handle playerSound; //to play sound from the player
     Handle playerSprite; //to adjust the sprite colors and alpha
-
-    int delay;
 	};
 }

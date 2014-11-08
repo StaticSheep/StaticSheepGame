@@ -28,6 +28,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/gameplay_scripts/CGiantKillBox.h"
 #include "components/gameplay_scripts/CGrinder.h"
 #include "components/gameplay_scripts/CExplosion.h"
+#include "components/gameplay_scripts/CWeaponPickup.h"
 
 namespace Framework
 {
@@ -186,6 +187,9 @@ namespace Framework
 
     TYPE_REGISTER(Explosion);
     TYPE_SET_TWEAK_TYPE(Explosion, AntTweak::TW_TYPE_COMPONENT);
+
+    TYPE_REGISTER(WeaponPickup);
+    TYPE_SET_TWEAK_TYPE(WeaponPickup, AntTweak::TW_TYPE_COMPONENT);
 
     TYPE_REGISTER( BoxCollider );
     TYPE_ADD_MEMBER( BoxCollider, m_width, false, true, "Width");

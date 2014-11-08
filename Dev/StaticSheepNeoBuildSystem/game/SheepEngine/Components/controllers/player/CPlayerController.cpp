@@ -5,6 +5,7 @@
 #include "types/vectors/Vec3.h"
 #include "../../colliders/CCircleCollider.h"
 #include "../../sprites/CSprite.h"
+#include "types/weapons/WPistol.h"
 
 namespace Framework
 {
@@ -19,15 +20,15 @@ namespace Framework
     health = 100;
     snappedTo = Handle::null;
     respawnTimer = 2.0f;
-    shotDelay = delay;
     hasRespawned = false;
     blink = false;
-    delay = 10;
+
 	}
 
 	PlayerController::~PlayerController() //4
 	{
 		//release dynamic memory
+    free(weapon);
 	}
 
 
@@ -58,6 +59,9 @@ namespace Framework
 
     BoxCollider *bc = space->GetHandles().GetAs<BoxCollider>(playerCollider);
     bc->SetGravityOff();
+
+    weapon = new Pistol();
+    shotDelay = weapon->delay;
 	}
 
 	//************************************
@@ -98,19 +102,19 @@ namespace Framework
       if(shotDelay < 0)
       {
         hasFired = false;
-        shotDelay = delay;
+        shotDelay = weapon->delay;
       }
     }
 		//if the trigger is released, reset the bool
 		if (!gp->RightTrigger())
     {
 			hasFired = false;
-      shotDelay = delay;
+      shotDelay = weapon->delay;
     }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
     if (isSnapped)
     {
-      bc->SetVelocity(snappedNormal * 50);
+      bc->SetVelocity(snappedNormal * 100);
       bc->SetAngVelocity(0.0);
       if (snappedTo != Handle::null)
       {
@@ -123,7 +127,7 @@ namespace Framework
         }
       }
       //left stick move
-      if (gp->LeftStick_X() > 0.2 && snappedNormal.y != 0)
+      if (gp->LeftStick_X() > 0.2 && snappedNormal.x == 0)
       {
         //bc->SetVelocity(Vec3(0.0f, 0.0f, 0.0f));
         if (snappedNormal.y > 0)
@@ -131,7 +135,7 @@ namespace Framework
         else if (snappedNormal.y < 0)
           bc->AddToVelocity(-(snappedNormal.CalculateNormal() * 250));
       }
-      else if (gp->LeftStick_X() < -0.2 && snappedNormal.y != 0)
+      else if (gp->LeftStick_X() < -0.2 && snappedNormal.x == 0)
       {
         //bc->SetVelocity(Vec3(0.0f, 0.0f, 0.0f));
         if (snappedNormal.y > 0)
@@ -185,7 +189,7 @@ namespace Framework
 		}
 
     isSnapped = false;
-		
+    //snappedNormal = Vec3(0.0, 0.0, 0.0);
 	}
 
 
@@ -221,10 +225,14 @@ namespace Framework
 		if (!OOT)
 			return;
 
-		if (OtherObject->HasComponent(eBoxCollider))
+		if (OtherObject->HasComponent(eBoxCollider) && OtherObject->name != "Player")
 		{
       BoxCollider *OOBc = OtherObject->GetComponent<BoxCollider>(eBoxCollider);
+      Transform *ps = space->GetHandles().GetAs<Transform>(playerTransform);
+      if (snappedNormal.x != OOBc->GetCollisionNormals(manifold).x && snappedNormal.y != OOBc->GetCollisionNormals(manifold).y)
+        ps->SetTranslation(ps->GetTranslation() + -(snappedNormal * 1.5));
       snappedNormal = OOBc->GetCollisionNormals(manifold);
+      ps->SetRotation(OOT->GetRotation());
 		}
 		else if (OtherObject->HasComponent(eCircleCollider))
 		{
@@ -256,15 +264,7 @@ namespace Framework
 	//************************************
 	void PlayerController::onFire()
 	{
-		GameObject *bullet = (FACTORY->LoadObjectFromArchetype(space, "Bullet"));
-		Transform *BT = bullet->GetComponent<Transform>(eTransform);
-		CircleCollider *bulletC = bullet->GetComponent <CircleCollider>(eCircleCollider);
-		Transform *playerTrans = space->GetHandles().GetAs<Transform>(playerTransform);
-		BT->SetTranslation(playerTrans->GetTranslation() + aimDir * 25);
-		bulletC->AddToVelocity(aimDir * 1000);
-
-    SoundEmitter *se = space->GetHandles().GetAs<SoundEmitter>(playerSound);
-    se->PlayEx("gunshot", 0.125f);
+    weapon->Fire(space->GetHandles().GetAs<GameObject>(owner));
 
     if (!isSnapped)
     {
