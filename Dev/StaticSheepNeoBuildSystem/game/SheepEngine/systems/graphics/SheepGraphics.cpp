@@ -130,7 +130,6 @@ namespace Framework
 
 	void SheepGraphics::Draw()
 	{
-    m_renderContext->setWireFrame(true);
     // Draw Hooks
     GameSpace* space;
     m_renderContext->StartBatch();
