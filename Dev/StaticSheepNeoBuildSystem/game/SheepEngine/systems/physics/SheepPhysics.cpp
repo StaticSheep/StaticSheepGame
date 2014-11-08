@@ -9,9 +9,10 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "pch/precompiled.h"
 #include "SheepPhysics.h"
 
-#include "systems/graphics/DrawLib.h"
-#include "systems/graphics/SheepGraphics.h"
-
+#include "systems/graphics/DrawLib.h"           //Draw::     
+#include "systems/graphics/SheepGraphics.h"     //Wireframe()
+#include "systems/debug/Debug.h"                //Debug Struct
+#include "systems/input/Input.h"                //input SHEEPINPUT
 #include "components/transform/CTransform.h"
 #include "components/colliders/CBoxCollider.h"
 #include "components/colliders/CCircleCollider.h"
@@ -24,7 +25,6 @@ namespace Framework
 	{
 		// Initialize physics object list
 		PHYSICS = this;
-    debugOn = false;
 	}
 
 	SheepPhysics::~SheepPhysics()
@@ -223,6 +223,8 @@ namespace Framework
 		m_materials.insert(std::pair<std::string, SheepFizz::Material>("Fluff", Fluff));
 		m_materials.insert(std::pair<std::string, SheepFizz::Material>("Bounce", Bounce));
 		m_materials.insert(std::pair<std::string, SheepFizz::Material>("Static", Static));
+
+    debugOn = false;
 	}//end of Initialize
 
 	//add circles or rectangles
@@ -416,6 +418,13 @@ namespace Framework
 	//update all gamespaces by dt
 	void SheepPhysics::Update(float dt)
 	{
+    if (SHEEPINPUT->Keyboard.KeyIsPressed(VK_F11))
+    {
+      debugOn = !debugOn;
+      if (!debugOn)
+        GRAPHICS->SetWireframe(false);
+    }
+
 		std::vector<GameSpace*>& gSpaces = ENGINE->Spaces();
 		for(size_t i = 0; i < gSpaces.size(); ++i)
 		{

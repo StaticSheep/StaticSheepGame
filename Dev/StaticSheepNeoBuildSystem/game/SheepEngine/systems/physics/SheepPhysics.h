@@ -110,9 +110,9 @@ namespace Framework
 			void Shutdown(void);
 
 		private:
-			//void PhysicsStep(float dt);
 			std::unordered_map<std::string, SheepFizz::Material> m_materials;      
       bool debugOn;
+
 	};
 
 	extern SheepPhysics* PHYSICS;
