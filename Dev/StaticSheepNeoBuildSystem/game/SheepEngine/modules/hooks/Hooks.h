@@ -107,27 +107,27 @@ namespace Framework
   template <typename Arg1>
   void HookManager::Call(std::string hook, Arg1 arg1)
   {
-    if (HookMap.find(eventName) != HookMap.end())
+    if (HookMap.find(hook) != HookMap.end())
     {
-      HookMap.at(eventName)->Trigger(arg1);
+      HookMap.at(hook)->Trigger(arg1);
     }
   }
 
   template <typename Arg1, typename Arg2>
   void HookManager::Call(std::string hook, Arg1 arg1, Arg2 arg2)
   {
-    if (HookMap.find(eventName) != HookMap.end())
+    if (HookMap.find(hook) != HookMap.end())
     {
-      HookMap.at(eventName)->Trigger(arg1, arg2);
+      HookMap.at(hook)->Trigger(arg1, arg2);
     }
   }
 
   template <typename Arg1, typename Arg2, typename Arg3>
   void HookManager::Call(std::string hook, Arg1 arg1, Arg2 arg2, Arg3 arg3)
   {
-    if (HookMap.find(eventName) != HookMap.end())
+    if (HookMap.find(hook) != HookMap.end())
     {
-      HookMap.at(eventName)->Trigger(arg1, arg2, arg3);
+      HookMap.at(hook)->Trigger(arg1, arg2, arg3);
     }
   }
 }
