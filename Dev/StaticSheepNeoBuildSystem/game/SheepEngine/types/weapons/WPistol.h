@@ -8,7 +8,7 @@ namespace Framework
     Pistol();
     virtual ~Pistol();
 
-    virtual void Fire();
+    virtual void Fire(GameObject*);
 
   };
 }

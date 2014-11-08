@@ -22,6 +22,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/gameplay_scripts/CGrinder.h"
 #include "components/gameplay_scripts/CExplosion.h"
 #include "Components/sound/CSoundEmitter.h"
+#include "components/gameplay_scripts/CWeaponPickup.h"
 
 namespace Framework
 {
@@ -52,6 +53,7 @@ namespace Framework
     REGISTER_COMPONENT(GiantKillBox);
     REGISTER_COMPONENT(Grinder);
     REGISTER_COMPONENT(Explosion);
+    REGISTER_COMPONENT(WeaponPickup);
   }
 
   void GameLogic::Initialize()

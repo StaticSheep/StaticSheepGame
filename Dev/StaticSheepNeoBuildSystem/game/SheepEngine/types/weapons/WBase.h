@@ -6,8 +6,7 @@ namespace Framework
   {
     Weapon() {};
     virtual ~Weapon() {};
-
-    virtual void Fire() = 0;
+    virtual void Fire(GameObject*) = 0;
 
     int delay;  //delay between shots
     int damage; //damage caused by weapon
