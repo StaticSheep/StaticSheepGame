@@ -113,6 +113,8 @@ namespace Framework
 
     // Trace log
     Tracelog TraceLog;
+
+    bool m_editorAcitve = false;
   private:
 
     // ========================== PRIVATE FUNCTIONS ===================== //

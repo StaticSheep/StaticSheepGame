@@ -114,13 +114,22 @@ namespace Framework
 
         m_renderContext->Resize((float)_ScreenWidth, (float)_ScreenHeight);
       }
+
+      if (msg.MessageId == Message::WindowMinimize)
+      {
+
+      }
+
+      if (msg.MessageId == Message::WindowRestore)
+      {
+
+      }
       
     }
   }
 
 	void SheepGraphics::Draw()
 	{
-    m_renderContext->setWireFrame(true);
     // Draw Hooks
     GameSpace* space;
     m_renderContext->StartBatch();
