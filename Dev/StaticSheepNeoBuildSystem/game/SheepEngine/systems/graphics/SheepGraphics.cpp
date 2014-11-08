@@ -114,6 +114,16 @@ namespace Framework
 
         m_renderContext->Resize((float)_ScreenWidth, (float)_ScreenHeight);
       }
+
+      if (msg.MessageId == Message::WindowMinimize)
+      {
+
+      }
+
+      if (msg.MessageId == Message::WindowRestore)
+      {
+
+      }
       
     }
   }
