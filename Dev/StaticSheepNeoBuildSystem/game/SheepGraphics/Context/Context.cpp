@@ -44,7 +44,7 @@ namespace DirectSheep
     if(m_camera.used)
       matProj = XMMatrixPerspectiveFovLH((FLOAT)XMConvertToRadians(fov), (float)m_viewport.dim.width / (float)m_viewport.dim.height, 1.0f, 1000.0f);
     else
-      matProj = XMMatrixOrthographicLH((float)m_viewport.dim.width, (float)m_viewport.dim.height, 1.0f, 1000.0f);
+      matProj = XMMatrixOrthographicOffCenterLH(0, (float)m_viewport.dim.width, (float)m_viewport.dim.height, 0, 1.0f, 1000.0f);
     m_camera.proj = matProj;
 
     m_camera.viewProj = matView * matProj;

@@ -39,9 +39,6 @@ class RenderContext
 
    GFX_API void Draw(unsigned vertexCount, unsigned vertexStart = 0);
    GFX_API void DrawSpriteText(const char * text, float size = 32, const char * font = "Arial");
-   GFX_API void DrawIndexed(unsigned indexCount, unsigned indexStart = 0, unsigned vertexStart = 0);
-   GFX_API void DrawInstanced(unsigned vertexCount, unsigned instanceCount, unsigned vertexStart = 0, unsigned instanceStart = 0);
-   GFX_API void DrawIndexInstanced(unsigned indexCountPerInstance, unsigned instanceCount, unsigned indexStart = 0, unsigned vertexStart = 0, unsigned instanceStart = 0);
    GFX_API void DrawBatched(DirectSheep::Handle texture);
    GFX_API void StartBatch();
    GFX_API void EndBatch();
@@ -56,12 +53,8 @@ class RenderContext
    GFX_API bool CreateVertexShader(Handle& handle, const std::string& filename, const InputLayout& inputLayout, const std::string& entryFunc = "VShader");
    GFX_API bool CreatePixelShader(Handle& handle, const std::string& filename, const std::string& entryFunc = "PShader");
    GFX_API bool CreateTexture(Handle& handle, const std::string& filename);
-   GFX_API bool CreateTexture(Handle& handle, const void *data, const Dimension& dim, const Format format);
    GFX_API bool CreateVertexBuffer(Handle& handle, size_t size);
-   GFX_API bool CreateIndexBuffer(Handle& handle, size_t size);
    GFX_API bool CreateConstantBuffer(Handle& handle, size_t size);
-   GFX_API bool CreateRenderTarget(Handle& handle, const RenderTargetMode mode, const Format format, const float downsamplePercentage = 1.0f, const Dimension& dim = Dimension());
-   GFX_API bool CreateDepthBuffer(void);
    GFX_API bool CreateFontWrapper(void);
 
     /////////////////////////////////////////////////////////////

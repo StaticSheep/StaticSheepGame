@@ -28,6 +28,7 @@ namespace DirectSheep
     CONSTANT_BUFFER,
     RENDER_TARGET,
     BACK_BUFFER,
+    CAMERA,
     oTypecount,
   };
 
@@ -94,11 +95,4 @@ namespace DirectSheep
   };
 
   typedef std::vector<InputElement> InputLayout;
-
-  struct DisplayMode
-  {
-
-    Dimension resolution;
-    unsigned refreshRate;
-  };
 }

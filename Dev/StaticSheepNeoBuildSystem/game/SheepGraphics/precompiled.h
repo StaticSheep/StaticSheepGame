@@ -7,13 +7,13 @@
 #include "Utilities.h"
 
 #include "DirectXIncludes.h"
-#include "VertexTypes.h"
 #include "DataTypes.h"
 #include "Texture/Tex2d.h"
 #include "CBuffer.h"
 #include "CBuffer_types.h"
 #include "Effects\plight_effect.h"
 #include "Effects\gen_effect.h"
+#include "Camera\Camera.h"
 
 
 
