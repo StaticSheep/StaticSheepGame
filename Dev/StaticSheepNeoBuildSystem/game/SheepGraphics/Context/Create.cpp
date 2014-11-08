@@ -354,13 +354,17 @@ namespace DirectSheep
     rd.FrontCounterClockwise = FALSE;
     rd.DepthClipEnable = TRUE;
     rd.ScissorEnable = FALSE;
-    rd.AntialiasedLineEnable = FALSE;
+    rd.AntialiasedLineEnable = TRUE;
     rd.MultisampleEnable = FALSE;
     rd.DepthBias = 0;
     rd.DepthBiasClamp = 0.0f;
     rd.SlopeScaledDepthBias = 0.0f;
 
-    DXVerify(m_device->CreateRasterizerState(&rd, &m_rastState));
+    DXVerify(m_device->CreateRasterizerState(&rd, &m_rastState[RastStates::Fill]));
+
+    rd.FillMode = D3D11_FILL_WIREFRAME;
+
+    DXVerify(m_device->CreateRasterizerState(&rd, &m_rastState[RastStates::Wire]));
   }
   void RenderContext::InitializeBackBuffer(void)
   {

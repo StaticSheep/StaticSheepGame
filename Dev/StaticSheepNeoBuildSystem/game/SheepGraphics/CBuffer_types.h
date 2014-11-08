@@ -11,6 +11,13 @@ namespace DirectSheep
     Mat4 m_world;
   };
 
+  struct UV_ColBuffer
+  {
+    Vec4 m_Color;
+    Vec2 m_UVBegin;
+    Vec2 m_UVEnd;
+  };
+
   struct LightBuffer
   {
     Vec4 atten;

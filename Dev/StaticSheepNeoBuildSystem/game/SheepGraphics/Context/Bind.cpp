@@ -9,6 +9,38 @@ namespace DirectSheep
   //                    BIND FUNCTIONS                       //
   /////////////////////////////////////////////////////////////
 
+  void RenderContext::setWireFrame(bool isWired)
+  {
+    if (isWired)
+      m_currentRast = RastStates::Wire;
+    else
+      m_currentRast = RastStates::Fill;
+  }
+
+  void RenderContext::Resize(float width, float height)
+  {
+    if (m_swapChain)
+    {
+      m_viewport.dim = Dimension((unsigned)width, (unsigned)height);
+      m_viewport.offsetX = 0;
+      m_viewport.offsetY = 0;
+
+      m_deviceContext->OMSetRenderTargets(0, 0, 0);
+
+      m_backBuffer->Release();
+      m_depthBuffer.m_depthBuffer->Release();
+      m_depthBuffer.texture2D->Release();
+
+      DXVerify(m_swapChain->ResizeBuffers(0, 0, 0, DXGI_FORMAT_UNKNOWN, 0));
+
+      CreateDepthBuffer();
+
+      InitializeBackBuffer();
+
+      SetViewport(0, 0, Dimension((unsigned)width, (unsigned)height));
+    }
+  }
+
   void RenderContext::BindVertexShader(const Handle& vsHandle)
   {
     if (vsHandle.type == VERTEX_SHADER)

@@ -13,6 +13,7 @@
 #include "CBuffer.h"
 #include "CBuffer_types.h"
 #include "Effects\plight_effect.h"
+#include "Effects\gen_effect.h"
 
 
 

@@ -32,7 +32,7 @@ namespace Framework
     void Play(float loops = -1);
 
     // Define Start and end frames along with loops and framerate
-    void PlayEx(unsigned start, unsigned end, int loops = -1, unsigned framerate = 20);
+    void PlayEx(unsigned start, unsigned end, int loops = -1, float framerate = 20);
 
     // Check for if animation is in a stopped state
     bool Stopped(void);
@@ -64,16 +64,14 @@ namespace Framework
     unsigned m_currFrame;
     unsigned m_startFrame;
     unsigned m_endFrame;
+    int m_loop;
+    bool m_paused;
 
     Vec2 uvBegin;
     Vec2 uvEnd;
 
   private:
     float m_time;
-
-    bool m_paused;
-
-    int m_loop;
 
     int m_numFramesX;
     int m_numFramesY;

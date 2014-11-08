@@ -1,7 +1,7 @@
 GameObject
 {
   name std::string "explosion"
-  archetype std::string "explosion"
+  archetype std::string "explos"
   Transform
   {
     Translation Vec3
@@ -30,7 +30,7 @@ GameObject
     m_endFrame unsignedint 9
     m_frameRate float 20.000000
     m_loop int 1
-    m_paused bool false
+    m_paused bool true
     Color Vec4
     {
       R float 1.000000

@@ -86,6 +86,7 @@ class RenderContext
     //                    SETTER FUNCTIONS                     //
     /////////////////////////////////////////////////////////////
 
+   GFX_API void setWireFrame(bool isWired);
    GFX_API void Resize(float width, float height);
    GFX_API void SetClearColor(const float r, const float g, const float b, const float a);
    GFX_API void SetTargetWindow(const HWND& hwnd);
@@ -169,6 +170,13 @@ class RenderContext
     //---------//
     // Structs //
     //---------//
+
+    enum RastStates
+    {
+      Fill = 0,
+      Wire,
+      NumStates,
+    };
 
     struct DepthBuffer
     {
@@ -268,10 +276,12 @@ class RenderContext
     // Other render configurations //
     /////////////////////////////////
     ID3D11SamplerState                      *m_sampleStates[2];
-    ID3D11RasterizerState                   *m_rastState;
+    ID3D11RasterizerState                   *m_rastState[RastStates::NumStates];
     std::map<BlendMode, ID3D11BlendState *>  m_blendStateMap;
     DepthBuffer                              m_depthBuffer;
     Camera                                   m_camera;
+
+    RastStates                               m_currentRast = RastStates::Fill;
 
     ///////////////
     // Resources //
@@ -289,6 +299,13 @@ class RenderContext
     /////////////
     
     std::unique_ptr<DirectX::SpriteBatch> m_batcher;
+
+    /////////////
+    // Effects //
+    /////////////
+
+    GenEffect*                               m_genericEffect;
+    PointLight*                              m_PointLight;
 
 
     ///////////

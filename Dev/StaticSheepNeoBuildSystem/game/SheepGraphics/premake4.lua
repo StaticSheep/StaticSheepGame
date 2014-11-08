@@ -15,7 +15,7 @@ project "SheepGraphics"
 		-- local assignment files
 		"**.h",
 		"**.cpp",
-		"../../bin/shaders/*.hlsl",
+		"../../bin/content/shaders/*.hlsl",
 		"include/SheepGraphics/api.h",
 
 		-- hw2 files (used for figuring out model scale)

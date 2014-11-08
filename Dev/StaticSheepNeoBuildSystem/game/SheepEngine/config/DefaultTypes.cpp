@@ -27,6 +27,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/gameplay_scripts/CLevel1_Logic.h"
 #include "components/gameplay_scripts/CGiantKillBox.h"
 #include "components/gameplay_scripts/CGrinder.h"
+#include "components/gameplay_scripts/CExplosion.h"
 
 namespace Framework
 {
@@ -183,6 +184,9 @@ namespace Framework
     TYPE_REGISTER(Grinder);
     TYPE_SET_TWEAK_TYPE(Grinder, AntTweak::TW_TYPE_COMPONENT);
 
+    TYPE_REGISTER(Explosion);
+    TYPE_SET_TWEAK_TYPE(Explosion, AntTweak::TW_TYPE_COMPONENT);
+
     TYPE_REGISTER( BoxCollider );
     TYPE_ADD_MEMBER( BoxCollider, m_width, false, true, "Width");
     TYPE_ADD_MEMBER( BoxCollider, m_height, false, true, "Height");
@@ -214,6 +218,8 @@ namespace Framework
     TYPE_ADD_MEMBER(AniSprite, m_startFrame, false, true, "StartFrame");
     TYPE_ADD_MEMBER(AniSprite, m_endFrame, false, true, "EndFrame");
     TYPE_ADD_MEMBER(AniSprite, m_frameRate, false, true, "FrameRate");
+    TYPE_ADD_MEMBER(AniSprite, m_loop, false, true, "Animation Loops");
+    TYPE_ADD_MEMBER(AniSprite, m_paused, false, true, "Pause");
     TYPE_ADD_MEMBER(AniSprite, Color, false, true, "Color");
     TYPE_ADD_MEMBER( AniSprite, Size, false, true, "Scale");
     TYPE_SET_TWEAK_TYPE( AniSprite, AntTweak::TW_TYPE_COMPONENT );
