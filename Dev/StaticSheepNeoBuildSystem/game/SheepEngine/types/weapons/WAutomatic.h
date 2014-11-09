@@ -8,5 +8,6 @@ namespace Framework
     Automatic();
     virtual ~Automatic();
 
+    virtual void Fire(GameObject*);
   };
 }

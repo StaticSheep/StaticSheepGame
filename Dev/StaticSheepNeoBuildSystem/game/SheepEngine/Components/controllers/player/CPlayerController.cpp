@@ -7,7 +7,6 @@
 #include "../../sprites/CSprite.h"
 #include "types/weapons/WPistol.h"
 #include "../../gameplay_scripts/CBullet_default.h"
-#include "types/weapons/WShotgun.h"
 
 namespace Framework
 {
@@ -47,6 +46,8 @@ namespace Framework
 		space->hooks.Add("LogicUpdate", self, BUILD_FUNCTION(PlayerController::LogicUpdate));
 		space->GetGameObject(owner)->hooks.Add("OnCollision", self, BUILD_FUNCTION(PlayerController::OnCollision));
 
+    //Generic* gobj = space->GetHandles().GetAs<Generic>(owner);
+
 		playerGamePad = space->GetGameObject(owner)->GetComponentHandle(eGamePad); //gets the handle to the gamepad
 		playerCollider = space->GetGameObject(owner)->GetComponentHandle(eBoxCollider);
 		playerTransform = space->GetGameObject(owner)->GetComponentHandle(eTransform);
@@ -61,7 +62,7 @@ namespace Framework
 
     BoxCollider *bc = space->GetHandles().GetAs<BoxCollider>(playerCollider);
     bc->SetGravityOff();
-    weapon = (Shotgun*)GET_TYPE(Shotgun)->New();
+    weapon = (Pistol*)GET_TYPE(Pistol)->New();
     shotDelay = weapon->delay;
 	}
 

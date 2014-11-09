@@ -6,6 +6,7 @@
 #include "../sound/CSoundPlayer.h"
 #include "CElevatorPlat.h"
 #include "../controllers/player/CPlayerController.h"
+#include "../SheepUtil/include/SheepMath.h"
 
 static const char *playerNames[] = { "Player1", "Player2", "Player3", "Player4" };
 
@@ -48,24 +49,42 @@ namespace Framework
 	{
 
     SpawnPlayers(dt);
-
+    
     static bool playing = false;
     spawnTimer -= dt;
     timeLimit -= dt;
 
     if (spawnTimer <= 0)
     {
+      int randomDrop = GetRandom(0, 2);
+
       GameObject *ePlat = (FACTORY->LoadObjectFromArchetype(space, "SmallPlat"));
       Transform *PT = ePlat->GetComponent<Transform>(eTransform);
       //BoxCollider *platC = ePlat->GetComponent <BoxCollider>(eBoxCollider);
       ePlat->GetComponent<ElevatorPlat>(eElevatorPlat)->direction = true;
       PT->SetTranslation(Vec3(194.79,-320.0,0.0));
 
+      if (randomDrop == 0)
+      {
+        GameObject *weap = (FACTORY->LoadObjectFromArchetype(space, "ShotgunPickup"));
+        Transform *WT = weap->GetComponent<Transform>(eTransform);
+        WT->SetTranslation(PT->GetTranslation() + Vec3(0.0, 16.0, 0.0));
+      }
+
+      randomDrop = GetRandom(0, 2);
+
       GameObject *ePlat2 = (FACTORY->LoadObjectFromArchetype(space, "SmallPlat"));
       Transform *PT2 = ePlat2->GetComponent<Transform>(eTransform);
       //BoxCollider *platC2 = ePlat2->GetComponent <BoxCollider>(eBoxCollider);
       ePlat2->GetComponent<ElevatorPlat>(eElevatorPlat)->direction = false;
       PT2->SetTranslation(Vec3(-194.79, 320.0, 0.0));
+
+      if (randomDrop == 0)
+      {
+        GameObject *weap = (FACTORY->LoadObjectFromArchetype(space, "AutoPickup"));
+        Transform *WT = weap->GetComponent<Transform>(eTransform);
+        WT->SetTranslation(PT2->GetTranslation() + Vec3(0.0, -16.0, 0.0));
+      }
 
       spawnTimer = 2;
     }
