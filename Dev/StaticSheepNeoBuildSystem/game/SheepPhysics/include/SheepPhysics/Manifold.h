@@ -5,8 +5,10 @@ namespace SheepFizz
 {
 
 	#define POSCORRECT	0.4f	//the percent for positional correction
-	#define POSSLACK	0.05f	//the penetration needed to start positional correction
+	#define POSSLACK	0.001f	//the penetration needed to start positional correction
 	#define MAXVALUE	3.402823466e+38F  //the max value of a float, used in rec collision
+  #define MAXITERATIONS 5   //the number of iterations for the accumulated impulse
+  #define BIASFACTOR -0.2f
 
 	//manifold struct is used for collisions
 	//it gives the collision normal and depth of penetration for
@@ -35,6 +37,9 @@ namespace SheepFizz
 
 		Vec3D normal;				//the normal from A to B
 		Vec3D contacts[2];			//the contact points
+    float accumulatedImpulse[4];  //holds the accumulated impulse
+
+    float dt_; //the time step, used in resolution
 
 		float penetration;			//depth of penetration between objects along normal
 		float mResitution;			//the restitution for the two objects

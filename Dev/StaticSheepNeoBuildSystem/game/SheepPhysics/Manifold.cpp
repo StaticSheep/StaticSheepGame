@@ -14,8 +14,10 @@ namespace SheepFizz
 	//a manifold has a contact count above 0
 	//calculates the manifold Resitution, StatFric, and DynamFric by taking
 	//the minimum of each
-	void Manifold::Initialize(void)
+  void Manifold::Initialize(float dt)
 	{
+    dt_ = dt;
+
 		mResitution = Minimum(A->material_.GetMaterialResitution(), 
 			B->material_.GetMaterialResitution());
 
@@ -39,26 +41,6 @@ namespace SheepFizz
 		if(A->collisionGroup_ == B->collisionGroup_)
 			manifold[A->shape_->GetShape()][B->shape_->GetShape()](*this);
 	}//end of ManifoldInteraction
-
-
-  //*******************
-	//positional correction is designed to prevent sinking of one
-	//object into another
-	void Manifold::PositionalCorrection(void)
-	{
-    //if both objects have infinite mass, skip calculations
-    if(A->massData_.mass == 0 && B->massData_.mass == 0)
-      return;
-
-		Vec3D correction = (Maximum(penetration - POSSLACK, 0.0f) /
-			(A->massData_.inverseMass + B->massData_.inverseMass)) * POSCORRECT
-			* normal;
-
-		A->position_ -= A->massData_.inverseMass * correction;
-		B->position_ += B->massData_.inverseMass * correction;
-
-	}//end of PositionalCorrection
-
 
   //*******************
 	//determine the support point on body B relative to the face of body A

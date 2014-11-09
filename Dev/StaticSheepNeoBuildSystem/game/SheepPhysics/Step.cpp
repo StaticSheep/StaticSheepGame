@@ -343,7 +343,7 @@ namespace SheepFizz
 
 				//create a manifold and see if there is any interaction
 				Manifold m((Body*)bodies_[i], (Body*)bodies_[j]);
-				m.Initialize();
+				m.Initialize(dt_);
 				m.ManifoldInteraction();
 
 				//if there is an interaction, add the manifold to the list
@@ -356,7 +356,6 @@ namespace SheepFizz
 		//apply forces for all manifolds - positional correction first
 		for(unsigned i = 0; i < manifolds_.size(); ++i)
 		{
-			manifolds_[i].PositionalCorrection();
 			manifolds_[i].ApplyForces();
 		}
 
