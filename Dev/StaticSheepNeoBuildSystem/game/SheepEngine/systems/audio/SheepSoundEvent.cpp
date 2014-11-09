@@ -11,15 +11,9 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include <iostream>
 #include <unordered_map>
 
-// callback function for sound files
-FMOD_RESULT F_CALLBACK mycallback(FMOD_CHANNELCONTROL *chanControl, FMOD_CHANNELCONTROL_TYPE controlType, FMOD_CHANNELCONTROL_CALLBACK_TYPE callbackType, void *commandData1, void *commandData2);
-
-// callback function for studio events
-FMOD_RESULT F_CALLBACK mycallback(FMOD_STUDIO_EVENT_CALLBACK_TYPE type, FMOD_STUDIO_EVENTINSTANCE *event, void *parameters);
-
+// initialize static pointer for SoundFile class
 FMOD::System* SoundFile::_system = 0;
 
-/*****************************************************************************/
 /*!
   \brief
     FMOD error check.
@@ -28,7 +22,6 @@ FMOD::System* SoundFile::_system = 0;
     Checks the result of the FMOD function to see if it was an error or not.
 
 */
-/*****************************************************************************/
 bool ErrorCheck(FMOD_RESULT result)
 {
   if (result != FMOD_OK)
@@ -42,11 +35,9 @@ bool ErrorCheck(FMOD_RESULT result)
 
 }
 
-
 namespace SoundUtility
 {
 
-/*****************************************************************************/
 /*!
   \brief
     Utility function to figure out where to look for sound files.
@@ -58,7 +49,6 @@ namespace SoundUtility
     Type of file, which is an enum. 
 
 */
-/*****************************************************************************/
   std::string SourcePath(const std::string file, SourceType type)
   {
     switch(type)
@@ -73,7 +63,6 @@ namespace SoundUtility
 }// end namespace
 
 
-/*****************************************************************************/
 /*!
   \brief
     Constructor for the SoundEvent class
@@ -84,7 +73,6 @@ namespace SoundUtility
   \param name
     Name of the sound file
 */
-/*****************************************************************************/
 SoundEvent::SoundEvent(SOUND::System *system, std::string &name)
 {
   // get the ID and check it
@@ -95,7 +83,7 @@ SoundEvent::SoundEvent(SOUND::System *system, std::string &name)
 }
 
 
-/*****************************************************************************/
+
 /*!
   \brief
     Public method for playing a sound event
@@ -103,7 +91,6 @@ SoundEvent::SoundEvent(SOUND::System *system, std::string &name)
   \param mode
     How the sound should be played. Once, looped, or streamed
 */
-/*****************************************************************************/
 bool SoundEvent::Play(SoundInstance* instance)
 {
   int mode = instance->mode;
@@ -122,12 +109,11 @@ bool SoundEvent::Play(SoundInstance* instance)
   }
 }
 
-/*****************************************************************************/
+
 /*!
   \brief
     Private method for playing the sound only once
 */
-/*****************************************************************************/
 bool SoundEvent::_PlayOnce(SoundInstance* instance)
 {
   int check = 0;
@@ -161,12 +147,11 @@ bool SoundEvent::_PlayOnce(SoundInstance* instance)
   return true;
 }
 
-/*****************************************************************************/
+
 /*!
   \brief
     Private method for playing the sound in a loop
 */
-/*****************************************************************************/
 bool SoundEvent::_PlayLoop(SoundInstance* instance)
 {
   int check = 0;
@@ -199,12 +184,11 @@ bool SoundEvent::_PlayLoop(SoundInstance* instance)
   return true;
 }
 
-/*****************************************************************************/
+
 /*!
   \brief
     Private method for playing the sound in a stream
 */
-/*****************************************************************************/
 bool SoundEvent::_PlayStream(SoundInstance* instance)
 {
   int check = 0;
@@ -235,7 +219,10 @@ bool SoundEvent::_PlayStream(SoundInstance* instance)
   return true;
 }
 
-
+/*!
+  \brief
+    Non-default constructor for creating and loading from a soundfile
+*/
 SoundFile::SoundFile(FMOD::System* system, const std::string& name, bool stream)
 {
   if(stream)
@@ -247,6 +234,10 @@ SoundFile::SoundFile(FMOD::System* system, const std::string& name, bool stream)
     _system = system;
 }
   
+/*!
+  \brief
+    Playing from a soundfile.
+*/
 bool SoundFile::Play(SoundInstance* instance)
 {
   int mode = instance->mode;
@@ -263,26 +254,36 @@ bool SoundFile::Play(SoundInstance* instance)
 
   default : return _PlayOnce(instance);
   }
-
-
-  
   return true;
 }
 
+/*!
+  \brief
+    Private method for playing a file once.
+*/
 bool SoundFile::_PlayOnce(SoundInstance* instance)
 {
+  // play once and set all of the settings
   ErrorCheck(_system->playSound(sound, 0, true, &channel));
   ErrorCheck(channel->setVolume(instance->volume));
   ErrorCheck(channel->setPitch(instance->pitch));
+
+  // actually start up the sound
   ErrorCheck(channel->setPaused(false));
 
+  // grab the channel index
   channel->getIndex(&instance->channel);
 
+  // and give that channel a callback for when it stops
   ErrorCheck(channel->setCallback(mycallback));
 
   return true;
 }
 
+/*!
+  \brief
+    Private method for playing a file looping.
+*/
 bool SoundFile::_PlayLoop(SoundInstance* instance)
 {
   ErrorCheck(_system->playSound(sound, 0, true, &channel));
@@ -299,15 +300,25 @@ bool SoundFile::_PlayLoop(SoundInstance* instance)
   return true;
 }
 
+/*!
+  \brief
+    Private method for playing a file streaming, not really needed.
+*/
 bool SoundFile::_PlayStream(SoundInstance* instance)
 {
   return true;
 }
   
+/*!
+  \brief
+    Callback function for FMOD sound events. .wav and .mp3
+*/
 FMOD_RESULT F_CALLBACK mycallback(FMOD_CHANNELCONTROL *chanControl, FMOD_CHANNELCONTROL_TYPE controlType, FMOD_CHANNELCONTROL_CALLBACK_TYPE callbackType, void *commandData1, void *commandData2)
 {
+  // if the event is that the sound just ended
   if(callbackType == FMOD_CHANNELCONTROL_CALLBACK_END)
   {
+    // grab the channel
     FMOD::Channel *channel = (FMOD::Channel *)chanControl;
 
     SoundInstance* instance;
@@ -317,14 +328,21 @@ FMOD_RESULT F_CALLBACK mycallback(FMOD_CHANNELCONTROL *chanControl, FMOD_CHANNEL
       instance->active = false;
     }
 
+    ErrorCheck(channel->stop());
+
   }
   return FMOD_OK;
 }
 
+/*!
+  \brief
+    Callback function for FMOD studio events.
+*/
 FMOD_RESULT F_CALLBACK mycallback(FMOD_STUDIO_EVENT_CALLBACK_TYPE type, FMOD_STUDIO_EVENTINSTANCE *event, void *parameters)
 {
     FMOD::Studio::EventInstance *instance = (FMOD::Studio::EventInstance*)event;
 
+    // if the callback event is that the sound just stopped
     if (type == FMOD_STUDIO_EVENT_CALLBACK_STOPPED)
     {
       int size;

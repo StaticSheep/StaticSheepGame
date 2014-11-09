@@ -1,17 +1,10 @@
-/*****************************************************************************/
-/*!
-\file   math.cpp
-\author Zakary Wilson
-\par    Course: GAM200
-\par    Giga Gravity Games
-\date   10/20/2014<BR>
-\brief  
-    This file contains math functions to calculate square roots, normalize
-    vectors and other such goodies.<BR>
+/******************************************************************************
+Filename: SheepMath.cpp
+Project: 
+Author(s): Zakary Wilson
 
-\par    All content © 2014 DigiPen (USA) Corporation, all rights reserved.
-*/
-/*****************************************************************************/
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+******************************************************************************/
 
 /******************************************************************************
     Includes
@@ -51,7 +44,7 @@ namespace Framework
 {
 
 /******************************************************************************
-Private Functions
+  Private Function Prototypes
 ******************************************************************************/
 
   double    _POW(float,int);
@@ -60,8 +53,8 @@ Private Functions
   Fraction  _FloatToFraction(float);
   double    _SquareRoot(float);
 
-
 /*****************************************************************************/
+
 /*!
     \brief
       Raises a float to the power of the passed int exponent.
@@ -75,7 +68,6 @@ Private Functions
     \return result
       Return a double, since the number could be potentially very large.
 */
-/*****************************************************************************/
   double POW(float number, int exponent)
   {
     if(exponent == 1)
@@ -90,7 +82,7 @@ Private Functions
     return _POW(number, exponent);
   }
 
-/*****************************************************************************/
+ 
 /*!
     \brief
       Calculates the factorial of an integer
@@ -101,7 +93,6 @@ Private Functions
     \return result
       Return a double, since the number could be potentially very large.
 */
-/*****************************************************************************/
   double Factorial(int number)
   {
     if(number < 0)
@@ -113,7 +104,7 @@ Private Functions
     return _Factorial(number);
   }
 
-/*****************************************************************************/
+ 
 /*!
     \brief
       Changes a float into a fraction(struct) of integers.
@@ -124,7 +115,6 @@ Private Functions
     \return fract
       Return a struct that contains the numerator and denominator.
 */
-/*****************************************************************************/
   Fraction FloatToFraction(float number)
   {
     Fraction Zero(0,0);
@@ -134,7 +124,7 @@ Private Functions
       return Zero;
   }
 
-/*****************************************************************************/
+ 
 /*!
     \brief
       Approximates accurately the square root of a positive float.
@@ -145,7 +135,6 @@ Private Functions
     \return x
       Return the square root in double form, for maximum accuracy.
 */
-/*****************************************************************************/
   double SquareRoot(float Number)
   {
     Fraction fract(0,0);
@@ -165,7 +154,7 @@ Private Functions
     return _SquareRoot(Number);
   }
 
-/*****************************************************************************/
+ 
 /*!
     \brief
       Sets a Vec2 to unit length.
@@ -173,7 +162,6 @@ Private Functions
     \param Vector
       Pointer to the Vec2 to be normalized.
 */
-/*****************************************************************************/
   void Normalize(Vec2D* Vector)
   {
     double length = SquareRoot( ( Vector->x * Vector->x ) + 
@@ -186,7 +174,7 @@ Private Functions
     return;
   }
 
-/*****************************************************************************/
+ 
 /*!
     \brief
       Sets a Vec3 to unit length.
@@ -194,7 +182,6 @@ Private Functions
     \param Vector
       Pointer to the Vec3 to be normalized.
 */
-/*****************************************************************************/
   void Normalize(Vec3D* Vector)
   {
     float length;
@@ -210,7 +197,7 @@ Private Functions
     return;
   }
   
-/*****************************************************************************/
+ 
 /*!
     \brief
       This approximates a curve with 4 given control points. It will make the
@@ -232,7 +219,6 @@ Private Functions
     \param v3
       The fourth control point
 */
-/*****************************************************************************/
   float CatSpline(double x, float v0, float v1, float v2, float v3)
   {
     float c1,c2,c3,c4;
@@ -245,23 +231,45 @@ Private Functions
     return (float)(((c4 * x + c3) * x + c2) * x + c1);
   }
   
+/*!
+    \brief
+      Gets a random number between min and max
+    
+    \param min
+      The minimum value
+
+    \param max
+      The maximum value
+*/
   int GetRandom(int min, int max)
   {
-    static boost::random::mt19937 rng(std::time(0));
+    static boost::random::mt19937 rng((uint32_t)std::time(0));
     boost::random::uniform_int_distribution<> range(min, max);
     return range(rng);
   }
 
+/*!
+    \brief
+      Gets the smallest of the two numbers
+*/
   float Minimum(float a, float b)
   {
     return ((a < b) ? a : b);
   }
   
+/*!
+    \brief
+      Gets the largest of the two numbers
+*/
   float Maximum(float a, float b)
   {
     return ((a > b) ? a : b);
   }
 
+/*!
+    \brief
+      Clamps a number between two values
+*/
   float Clamp(float a, float min, float max)
   {
     if(a < min)
@@ -277,6 +285,10 @@ Private Functions
     Private Functions
 ******************************************************************************/
 
+/*!
+    \brief
+      Calculates the greatest common denominator
+*/
   int _GCD(int a, int b)
   {
     int m = 0;
@@ -324,8 +336,10 @@ Private Functions
     return n; //then returns it
   }
 
-/*****************************************************************************/
-
+/*!
+    \brief
+      Simple power function with integral exponents
+*/
   double _POW(float number, int exponent)
   {
     int i;
@@ -343,8 +357,10 @@ Private Functions
     return result;
   }
 
-/*****************************************************************************/
-
+/*!
+    \brief
+      Calculates the factorial of a number.
+*/
   double _Factorial(int number)
   {
     int i;
@@ -360,11 +376,12 @@ Private Functions
     return result;
   }
 
-/*****************************************************************************/
-
+/*!
+    \brief
+      Turns a float into a fraction value of integers
+*/
   Fraction _FloatToFraction(float number)
   {
-
     //get rid of the decimal value.
     int numerator = (int)(number * Floating_Precision);
     int denominator = (int)Floating_Precision;
@@ -384,8 +401,10 @@ Private Functions
 
   }
 
-/*****************************************************************************/
-
+/*!
+    \brief
+      Approximates the square root of a number.
+*/
   double _SquareRoot(float Number)
   {
     double x = (double)Number; /* need to keep Number intact */
@@ -399,11 +418,4 @@ Private Functions
     
     return x; /* then return what we found */
   }
-
-  
-  
-/*****************************************************************************/
-  
 } // end namespace
-
-

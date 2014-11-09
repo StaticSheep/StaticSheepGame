@@ -1,15 +1,13 @@
-/*****************************************************************
+/******************************************************************************
 Filename: SheepSoundEvent.h
 Project: 
 Author(s): Zakary Wilson
 
 All content © 2014 DigiPen (USA) Corporation, all rights reserved.
-*****************************************************************/
+******************************************************************************/
 
-////////////////////////////////////////////////////////////////////////////////
 #ifndef SHEEP_SOUND_H
 #define SHEEP_SOUND_H
-////////////////////////////////////////////////////////////////////////////////
 
 #include "SheepFMOD.h"
 
@@ -57,7 +55,6 @@ class Sound
 public:
   
   Sound(){};
-  //virtual ~Sound() = 0;
   
   virtual bool Play(SoundInstance* instance) = 0;
   virtual std::string GetName(void) = 0;
@@ -72,23 +69,36 @@ private:
 class SoundEvent : public Sound
 {
 public:
-  ~SoundEvent(){};
+
+  // non-default constructor, gets the event and loads it
   SoundEvent(SOUND::System* system, std::string& name);
+
+  // no dynamic allocation, don't need to clear anything
+  ~SoundEvent(){};
+
+  // virtual function for playing the event
   bool Play(SoundInstance* instance);
+
+  // getter for getting the name of the event
   std::string GetName(){return name;};
   
 private:
-  
+
+  // say no to copy constructor and assignment
   SoundEvent(const SoundEvent&);
-  
   SoundEvent& operator=(const SoundEvent&);
 
+  // private methods for playing things
   bool _PlayOnce(SoundInstance*);
   bool _PlayLoop(SoundInstance*);
   bool _PlayStream(SoundInstance*);
   
+  // description of the event from the bank files
   SOUND::EventDescription* description;
+  // the id of the event
   SOUND::ID id;
+
+  // the name of the event
   std::string name;
 
 };
@@ -120,52 +130,6 @@ private:
   
 };
 
-
-/*
-
-class SoundEvent
-{
-public:
-
-  // constructors
-  SoundEvent();
-  SoundEvent(SOUND::System *system, std::string &name);
-
-  // public methods
-  SOUND::EventInstance* Play(PlayMode mode, float volume, float pitch);
-  void Stop(FadeOut mode);
-  void Pause();
-
-  // getters
-  PlayMode GetMode(void);
-
-  void GetChannelGroup(FMOD::ChannelGroup* group);
-
-  void SetPitch(float);
-  void SetVolume(float);
-
-  bool PlayState(void);
-
-private:
-
-  // private methods
-  SOUND::EventInstance* _PlayOnce(float volume, float pitch);
-  SOUND::EventInstance* _PlayLoop(float volume, float pitch);
-  SOUND::EventInstance* _PlayStream(float volume, float pitch);
-
-  // private members
-
-  float _pitch;
-  float _volume;
-  PlayMode _mode; 
-  bool _playing;
-  SOUND::ID _id;
-  SOUND::EventDescription *_description;
-  SOUND::EventInstance *_instance;
-
-};*/
-
-
 namespace SoundUtility
 {
   // enum for defining where to look for files
@@ -179,6 +143,4 @@ namespace SoundUtility
   std::string SourcePath(const std::string file, SourceType type);
 }
 
-////////////////////////////////////////////////////////////////////////////////
 #endif
-////////////////////////////////////////////////////////////////////////////////
