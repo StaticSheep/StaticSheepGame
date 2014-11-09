@@ -356,6 +356,7 @@ namespace SheepFizz
 		//apply forces for all manifolds - positional correction first
 		for(unsigned i = 0; i < manifolds_.size(); ++i)
 		{
+			manifolds_[i].PositionalCorrection();
 			manifolds_[i].ApplyForces();
 		}
 

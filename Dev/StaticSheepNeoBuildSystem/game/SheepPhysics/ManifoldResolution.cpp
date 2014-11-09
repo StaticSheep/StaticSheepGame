@@ -20,7 +20,7 @@ namespace SheepFizz
     }
 
     //accumulated impulse contact bias
-    float contactBias = BIASFACTOR * 1 / dt_ * Minimum(0.0f, penetration + POSSLACK);
+    float contactBias = BIASFACTOR * 1 / dt_ * Minimum(0.0f, penetration + POSSLACKBIAS);
     float combinedBias;
     float biasDefault;
     
@@ -53,12 +53,6 @@ namespace SheepFizz
         Vec3D relativevelocity = B->velocity_ +
           (Vec3D(0, 0, B->angularVelocity_) ^ bRepulsionVec)
           - A->velocity_ - (Vec3D(0, 0, A->angularVelocity_) ^ aRepulsionVec);
-
-        if (B->velocity_.x > 1000 || B->velocity_.x < -1000 || B->velocity_.y > 1000 || B->velocity_.y < -1000)
-          return;
-
-        if (A->velocity_.x > 1000 || A->velocity_.x < -1000 || A->velocity_.y > 1000 || A->velocity_.y < -1000)
-          return;
 
         //determine the contact velocity - the relative velocity along the 
         //collision normal
@@ -93,6 +87,9 @@ namespace SheepFizz
         //from B to A;
         Vec3D impulse = j * normal;
 
+        if (impulse.x > 100 || impulse.x < -100 || impulse.y > 100 || impulse.y < -100)
+          return;
+
         A->ApplyImpulse(-impulse, aRepulsionVec);
         B->ApplyImpulse(impulse, bRepulsionVec);
 
@@ -126,6 +123,9 @@ namespace SheepFizz
         jFriction = accumulatedImpulse[i + 2] - previousImpulseTan;
         
         Vec3D frictionImpulse = jFriction * tangent;
+
+        if (frictionImpulse.x > 30 || frictionImpulse.x < -30 || frictionImpulse.y > 30 || frictionImpulse.y < -30)
+          return;
 
         //apply friction impulse
         A->ApplyImpulse(-frictionImpulse, aRepulsionVec);
