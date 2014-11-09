@@ -177,6 +177,56 @@ namespace SheepFizz
 
   }//end of GetCollisionNormal
 
+  Vec3D PhysicsSpace::GetCollisionPoint(ExternalManifold manifold)
+  {
+    return ((Manifold*)manifold)->contacts[0];
+  }//end of GetCollisionPoint
+
+
+  unsigned int PhysicsSpace::GetBodyVertexNumber(Handle handle)
+  {
+    Body* body = handles_.GetAs<Body>(handle);
+    Shapes shape = body->shape_->GetShape();
+
+    switch (shape)
+    {
+      case Poly:
+        return ((Polygon*)(body->shape_))->GetVertexNumber();
+        break;
+
+      case Rec:
+        return MAXVERTICES;
+        break;
+
+      default:
+        return 0;
+        break;
+    }
+
+  }
+
+  Vec3D PhysicsSpace::GetBodyVertex(Handle handle, unsigned int vertex)
+  {
+    Body* body = handles_.GetAs<Body>(handle);
+    Shapes shape = body->shape_->GetShape();
+
+    switch (shape)
+    {
+    case Poly:
+      return ((Polygon*)(body->shape_))->GetVertex(vertex) * meterScale_;
+      break;
+
+    case Rec:
+      return ((Rectangle*)(body->shape_))->GetVertex(vertex) * meterScale_;
+      break;
+
+    default:
+      return 0;
+      break;
+    }
+
+  }
+
 	//*************end of gettors
 
 
@@ -330,7 +380,7 @@ namespace SheepFizz
 			  cb_(manifolds_[i].A->userData, manifolds_[i].B->userData, userData_, &manifolds_[i]);
 		}
 
-		//empty manifold list;
+		//empty manifold list
 		manifolds_.clear();
 
     locked_ = false;

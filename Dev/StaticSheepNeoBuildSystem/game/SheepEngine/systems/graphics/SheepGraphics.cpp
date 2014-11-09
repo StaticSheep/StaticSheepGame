@@ -112,8 +112,17 @@ namespace Framework
         _ScreenWidth = (int)rMsg->width;
         _ScreenHeight = (int)rMsg->height;
 
-        //m_renderContext->SetViewport(0, 0, DirectSheep::Dimension(_ScreenWidth, _ScreenHeight));
-        m_renderContext->Resize(_ScreenWidth, _ScreenHeight);
+        m_renderContext->Resize((float)_ScreenWidth, (float)_ScreenHeight);
+      }
+
+      if (msg.MessageId == Message::WindowMinimize)
+      {
+
+      }
+
+      if (msg.MessageId == Message::WindowRestore)
+      {
+
       }
       
     }
@@ -123,7 +132,7 @@ namespace Framework
 	{
     // Draw Hooks
     GameSpace* space;
-
+    m_renderContext->StartBatch();
     // Regular Draw
     for (auto it = ENGINE->Spaces().begin(); it != ENGINE->Spaces().end(); ++it)
     {
@@ -165,7 +174,6 @@ namespace Framework
   {
     UpdateCamera();
     m_renderContext->frameStart();
-    m_renderContext->StartBatch();
   }
 
   void SheepGraphics::FinishFrame()
@@ -191,6 +199,11 @@ namespace Framework
   void SheepGraphics::SetUV(Vec2 uvBegin, Vec2 uvEnd)
   {
     m_renderContext->SetUV(uvBegin.X, uvBegin.Y, uvEnd.X, uvEnd.Y);
+  }
+
+  void SheepGraphics::SetWireframe(bool iswired)
+  {
+    m_renderContext->setWireFrame(iswired);
   }
 
   DirectSheep::Handle SheepGraphics::SetTexture(const std::string& Texture)

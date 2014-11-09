@@ -1,7 +1,6 @@
 #pragma once
 #include "pch/precompiled.h"
 
-
 #include "CRigidBody.h"
 #include "components/transform/CTransform.h"
 
@@ -9,6 +8,9 @@
 
 namespace Framework
 {
+  class BoxCollider;
+  class CircleCollider;
+
 	//constructor
 	RigidBody::RigidBody(SheepFizz::Shapes shape) :
 		m_shape(shape), m_width(12), m_height(12), m_materialName("Wood"),
@@ -42,6 +44,8 @@ namespace Framework
       position, m_radius, m_height, rotation);
 
 		 trans->SetPhysicsBody(m_handle);
+
+     space->GetGameObject(owner)->hooks.Add("OnCollision", self, BUILD_FUNCTION(RigidBody::OnCollision));
 	}
 
 	//remove the body from the space
@@ -117,6 +121,11 @@ namespace Framework
    return PHYSICS->GetCollisionNormal(space, owner, manifold);
   }
 
+  Vec3D RigidBody::GetCollisionPoint(SheepFizz::ExternalManifold manifold)
+  {
+    return PHYSICS->GetCollisionPoint(space, manifold);
+  }
+
   Vec3D RigidBody::GetCurrentVelocity(void)
   {
     return PHYSICS->GetBodyVelocity(space, m_handle);
@@ -132,13 +141,45 @@ namespace Framework
     return PHYSICS->GetBodyPosition(space, m_handle);
   }
 
-  Vec3D RigidBody::GetBodyVertices(void)
+  float RigidBody::GetBodyRotation(void)
   {
-    return Vec3D();
+    return PHYSICS->GetBodyRotation(space, m_handle);
+  }
+
+  unsigned int RigidBody::GetBodyVertexNumber(void)
+  {
+    return PHYSICS->GetBodyVertexNumber(space, m_handle);
   }
 
   Vec3D RigidBody::GetBodyVertex(unsigned int vertex)
   {
-    return Vec3D();
+    return PHYSICS->GetBodyVertex(space, m_handle, vertex);
+  }
+
+  void RigidBody::OnCollision(Handle otherObject, SheepFizz::ExternalManifold manifold)
+  {
+    if (!PHYSICS->IsDebugOn())
+      return;
+
+    GameObject *OtherObject = space->GetHandles().GetAs<GameObject>(otherObject);
+
+    Vec3D normal;
+    Vec3D location;
+
+    if (OtherObject->HasComponent(eBoxCollider))
+    {
+      RigidBody* OOBc = OtherObject->GetComponent<RigidBody>(eBoxCollider);
+      normal = OOBc->GetCollisionNormals(manifold);
+      location = OOBc->GetCollisionPoint(manifold);
+    }
+    else if (OtherObject->HasComponent(eCircleCollider))
+    {
+      RigidBody* OOCc = OtherObject->GetComponent<RigidBody>(eCircleCollider);
+      normal = OOCc->GetCollisionNormals(manifold);
+      location = OOCc->GetCollisionPoint(manifold);
+    }
+
+    normals_.push_back(normal);
+    normals_.push_back(location);
   }
 }

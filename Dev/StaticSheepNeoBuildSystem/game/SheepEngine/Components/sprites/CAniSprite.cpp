@@ -141,8 +141,8 @@ namespace Framework
   /*****************************************************************************/
   void AniSprite::SetRange(Vec2 range)
   {
-    m_startFrame = range.X;
-    m_endFrame = range.Y;
+    m_startFrame = (unsigned)range.X;
+    m_endFrame = (unsigned)range.Y;
   }
 
   /*****************************************************************************/
@@ -154,7 +154,7 @@ namespace Framework
   void AniSprite::Play(float loops)
   {
     m_paused = false;
-    m_loop = loops;
+    m_loop = (unsigned)loops;
   }
 
   /*****************************************************************************/
@@ -163,7 +163,7 @@ namespace Framework
         Adds onto play with setting range of frames and framerate
   */
   /*****************************************************************************/
-  void AniSprite::PlayEx(unsigned start, unsigned end, int loops, unsigned framerate)
+  void AniSprite::PlayEx(unsigned start, unsigned end, int loops, float framerate)
   {
     m_paused = false;
     m_startFrame = start;

@@ -13,6 +13,7 @@ namespace DirectSheep
   {
     friend class Effect;
     friend class PointLight;
+    friend class GenEffect;
 
   public:
     CBuffer(ID3D11Device* pDevice)

@@ -9,11 +9,19 @@ namespace DirectSheep
   //                    BIND FUNCTIONS                       //
   /////////////////////////////////////////////////////////////
 
+  void RenderContext::setWireFrame(bool isWired)
+  {
+    if (isWired)
+      m_currentRast = RastStates::Wire;
+    else
+      m_currentRast = RastStates::Fill;
+  }
+
   void RenderContext::Resize(float width, float height)
   {
     if (m_swapChain)
     {
-      m_viewport.dim = Dimension(width, height);
+      m_viewport.dim = Dimension((unsigned)width, (unsigned)height);
       m_viewport.offsetX = 0;
       m_viewport.offsetY = 0;
 
@@ -29,7 +37,7 @@ namespace DirectSheep
 
       InitializeBackBuffer();
 
-      SetViewport(0, 0, Dimension(width, height));
+      SetViewport(0, 0, Dimension((unsigned)width, (unsigned)height));
     }
   }
 

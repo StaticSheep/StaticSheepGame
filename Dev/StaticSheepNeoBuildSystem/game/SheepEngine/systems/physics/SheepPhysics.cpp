@@ -9,8 +9,10 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "pch/precompiled.h"
 #include "SheepPhysics.h"
 
-#include "systems/graphics/DrawLib.h"
-
+#include "systems/graphics/DrawLib.h"           //Draw::     
+#include "systems/graphics/SheepGraphics.h"     //Wireframe()
+#include "systems/debug/Debug.h"                //Debug Struct
+#include "systems/input/Input.h"                //input SHEEPINPUT
 #include "components/transform/CTransform.h"
 #include "components/colliders/CBoxCollider.h"
 #include "components/colliders/CCircleCollider.h"
@@ -43,18 +45,27 @@ namespace Framework
 
 	 }
 
-  
+  //debug draw after postdraw message received
   void SheepPhysics::ReceiveMessage(Message& msg)
   {
+    if (!debugOn)
+      return;
+
+    GRAPHICS->SetWireframe(true);
+
     if (msg.MessageId == Message::PostDraw)
     {
+      //go through all the game spaces
       std::vector<GameSpace*>& gspaces = ENGINE->Spaces();
 
       for (int i = 0; i < gspaces.size(); ++i)
       {
+        //skip if the gamespace is not ready for some reason
         if (!gspaces[i]->Ready())
           return;
 
+        //******************************
+        //go through box colliders first
         ObjectAllocator* boxes = gspaces[i]->GetComponents(eBoxCollider);
         
         for (int j = 0; j < boxes->Size(); ++j)
@@ -62,14 +73,103 @@ namespace Framework
           Vec3D bodyPosition = ((BoxCollider*)(*boxes)[j])->GetBodyPosition();
           Vec3D bodyVelocity = ((BoxCollider*)(*boxes)[j])->GetCurrentVelocity();
 
+          //draw velocity line
           Draw::SetColor(1, 0, 0, 1);
           Draw::DrawLine(bodyPosition.x, bodyPosition.y,
-            bodyPosition.x + bodyVelocity.x, bodyPosition.y + bodyVelocity.y);
-        }
+            bodyPosition.x + bodyVelocity.x * .5f, bodyPosition.y + bodyVelocity.y * .5f);
 
-      }
-    }
+          //draw normals
+          Vec3D normal;
+          Vec3D location;
+
+          for (int k = 0; k < ((BoxCollider*)(*boxes)[j])->normals_.size(); k += 2)
+          {
+            normal = ((BoxCollider*)(*boxes)[j])->normals_[k];
+            location = ((BoxCollider*)(*boxes)[j])->normals_[k + 1];
+
+            //modify by size modifer
+            normal *= -20;
+            location *= 32;
+
+            Draw::SetColor(0, 1, 0, 1);
+            Draw::DrawLine(location.x, location.y,
+              location.x + normal.x, location.y + normal.y);
+
+          }
+
+          ((BoxCollider*)(*boxes)[j])->normals_.clear();
+
+          //determine the number of vertices - should work for polygons, as well
+          unsigned int vertexTotal = ((BoxCollider*)(*boxes)[j])->GetBodyVertexNumber();
+
+          unsigned int nextVertex;
+          float rotation = ((BoxCollider*)(*boxes)[j])->GetBodyRotation();
+
+          //set up vec3s for vertices
+          Vec3D vertexPos1;
+          Vec3D vertexPos2;
+
+          Vec3D vertex1 = ((BoxCollider*)(*boxes)[j])->GetBodyVertex(i);
+          Vec3D vertex0 = vertex1;
+          Vec3D vertex2;
+
+          //draw outside edge of box
+          for (int i = 0; i < vertexTotal; ++i)
+          {
+            nextVertex = ((i + 1) < vertexTotal) ? (i + 1) : 0;
+
+            if (nextVertex)
+              vertex2 = ((BoxCollider*)(*boxes)[j])->GetBodyVertex(nextVertex);
+            else
+              vertex2 = vertex0;
+
+            //move the two vertices
+            vertexPos1.x = vertex1.x * cos(rotation) - vertex1.y * sin(rotation);
+            vertexPos1.y = vertex1.x * sin(rotation) + vertex1.y * cos(rotation);
+            vertexPos2.x = vertex2.x * cos(rotation) - vertex2.y * sin(rotation);
+            vertexPos2.y = vertex2.x * sin(rotation) + vertex2.y * cos(rotation);
+
+            Draw::SetColor(1, 1, 0, 1);
+            Draw::DrawLine(bodyPosition.x + vertexPos1.x, bodyPosition.y + vertexPos1.y, 
+              bodyPosition.x + vertexPos2.x, bodyPosition.y + vertexPos2.y);
+
+            vertex1 = vertex2;
+          }
+
+        }//end of box collider area
+
+        //******************************
+        //now go through circle colliders
+        ObjectAllocator* circles = gspaces[i]->GetComponents(eCircleCollider);
+
+        for (int j = 0; j < circles->Size(); ++j)
+        {
+          Vec3D bodyPosition = ((CircleCollider*)(*circles)[j])->GetBodyPosition();
+          Vec3D bodyVelocity = ((CircleCollider*)(*circles)[j])->GetCurrentVelocity();
+
+          //draw velocity line
+          Draw::SetColor(1, 0, 0, 1);
+          Draw::DrawLine(bodyPosition.x, bodyPosition.y,
+            bodyPosition.x + bodyVelocity.x * .5f, bodyPosition.y + bodyVelocity.y * .5f);    
+        }
+      
+      }//end of the space loop
+
+    }//end of the if check
+
+  }//end of RecieveMsg - DebugDraw
+
+  void SheepPhysics::SetDebug(bool on)
+  {
+    debugOn = on;
   }
+  bool SheepPhysics::IsDebugOn(void)
+  {
+    return debugOn;
+  }
+
+  //end of Debug
+  //************
 
 	static void CollisionCallback(void* A_userData, void* B_userData,
     void* Space_userData, SheepFizz::ExternalManifold manifold)
@@ -123,6 +223,8 @@ namespace Framework
 		m_materials.insert(std::pair<std::string, SheepFizz::Material>("Fluff", Fluff));
 		m_materials.insert(std::pair<std::string, SheepFizz::Material>("Bounce", Bounce));
 		m_materials.insert(std::pair<std::string, SheepFizz::Material>("Static", Static));
+
+    debugOn = false;
 	}//end of Initialize
 
 	//add circles or rectangles
@@ -186,6 +288,22 @@ namespace Framework
   Vec3D SheepPhysics::GetBodyGravityNormal(GameSpace* space, SheepFizz::Handle handle)
   {
     return ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->GetBodyGravityNormal(handle);
+  }
+
+  Vec3D SheepPhysics::GetCollisionPoint(GameSpace* space, SheepFizz::ExternalManifold manifold)
+  {
+    return ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->GetCollisionPoint(manifold);
+  }
+
+  //shape
+  unsigned int SheepPhysics::GetBodyVertexNumber(GameSpace* space, SheepFizz::Handle handle)
+  {
+    return ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->GetBodyVertexNumber(handle);
+  }
+  
+  Vec3D SheepPhysics::GetBodyVertex(GameSpace* space, SheepFizz::Handle handle, unsigned int vertex)
+  {
+    return ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->GetBodyVertex(handle, vertex);
   }
 
 	//settors
@@ -300,6 +418,13 @@ namespace Framework
 	//update all gamespaces by dt
 	void SheepPhysics::Update(float dt)
 	{
+    if (SHEEPINPUT->Keyboard.KeyIsPressed(VK_F11))
+    {
+      debugOn = !debugOn;
+      if (!debugOn)
+        GRAPHICS->SetWireframe(false);
+    }
+
 		std::vector<GameSpace*>& gSpaces = ENGINE->Spaces();
 		for(size_t i = 0; i < gSpaces.size(); ++i)
 		{

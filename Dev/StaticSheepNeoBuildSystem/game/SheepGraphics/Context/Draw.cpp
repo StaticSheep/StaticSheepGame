@@ -39,7 +39,7 @@ namespace DirectSheep
     buffer.uvBegin = m_spriteTrans.uvBegin;
     buffer.uvEnd = m_spriteTrans.uvEnd;
 
-    m_deviceContext->RSSetState(m_rastState);
+    m_deviceContext->RSSetState(m_rastState[m_currentRast]);
 
     m_deviceContext->PSSetSamplers(0, 1, &m_sampleStates[0]);
 
@@ -124,7 +124,7 @@ namespace DirectSheep
 
   void RenderContext::StartBatch()
   {
-    m_batcher->Begin(SpriteSortMode_Texture, m_blendStateMap[BLEND_MODE_ALPHA], m_sampleStates[0], m_depthBuffer.m_depthState, m_rastState, nullptr, m_camera.viewProj);
+    m_batcher->Begin(SpriteSortMode_Texture, m_blendStateMap[BLEND_MODE_ALPHA], m_sampleStates[0], m_depthBuffer.m_depthState, m_rastState[m_currentRast], nullptr, m_camera.viewProj);
   }
 
   void RenderContext::EndBatch()
