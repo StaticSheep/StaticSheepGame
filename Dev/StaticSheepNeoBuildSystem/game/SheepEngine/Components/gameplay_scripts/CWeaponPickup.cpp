@@ -15,7 +15,9 @@ namespace Framework
 
   static std::unordered_map<EWeapons, const char*> WeaponMap =
   {
-    { ePistol, "Pistol" }
+    { ePistol, "Pistol" },
+    { eAutomatic, "Automatic" },
+    { eShotgun, "Shotgun" }
   };
 
   WeaponPickup::WeaponPickup()
@@ -69,6 +71,8 @@ namespace Framework
     GameObject *OtherObject = space->GetHandles().GetAs<GameObject>(otherObject);
     if (OtherObject->name == "Player" || "KillBox")
     {
+      if (space->GetHandles().GetAs<PlayerController>(otherObject)->weapon != nullptr)
+        free(space->GetHandles().GetAs<PlayerController>(otherObject)->weapon);
       space->GetHandles().GetAs<PlayerController>(otherObject)->weapon = (Weapon *)weaponType->New();
       space->GetGameObject(owner)->Destroy();
     }

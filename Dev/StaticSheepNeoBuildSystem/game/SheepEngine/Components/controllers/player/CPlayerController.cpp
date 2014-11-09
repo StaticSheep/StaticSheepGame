@@ -6,6 +6,8 @@
 #include "../../colliders/CCircleCollider.h"
 #include "../../sprites/CSprite.h"
 #include "types/weapons/WPistol.h"
+#include "../../gameplay_scripts/CBullet_default.h"
+#include "types/weapons/WShotgun.h"
 
 namespace Framework
 {
@@ -22,13 +24,13 @@ namespace Framework
     respawnTimer = 2.0f;
     hasRespawned = false;
     blink = false;
+    weapon = nullptr;
 
 	}
 
 	PlayerController::~PlayerController() //4
 	{
-		//release dynamic memory
-    free(weapon);
+
 	}
 
 
@@ -59,8 +61,7 @@ namespace Framework
 
     BoxCollider *bc = space->GetHandles().GetAs<BoxCollider>(playerCollider);
     bc->SetGravityOff();
-
-    weapon = new Pistol();
+    weapon = (Shotgun*)GET_TYPE(Shotgun)->New();
     shotDelay = weapon->delay;
 	}
 
@@ -207,7 +208,7 @@ namespace Framework
     GameObject *OtherObject = space->GetHandles().GetAs<GameObject>(otherObject);
     if (OtherObject->name == "Bullet" && !hasRespawned)
     {
-      health -= 10;
+      health -= OtherObject->GetComponent<Bullet_Default>(eBullet_Default)->damage;
       return;
     }
     if ((OtherObject->name == "KillBox" || OtherObject->name == "KillBoxBig") && !hasRespawned)
@@ -253,6 +254,12 @@ namespace Framework
 	{
 		//opposite of init
 		space->hooks.Remove("LogicUpdate", self);
+
+    if (weapon != nullptr)
+    {
+      free(weapon); //release dynamic memory
+      weapon = nullptr;
+    }
 	}
 
 	//************************************
