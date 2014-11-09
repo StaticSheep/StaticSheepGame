@@ -23,7 +23,6 @@ class RenderContext
   public:
 
     GFX_API static RenderContext * Allocate(void);
-    GFX_API void UpdateCamera(float x, float y, float fov);
 
     //Returns true if the RenderContext is Initialized, else false
     GFX_API bool IsInitialized(void) const;
@@ -45,6 +44,19 @@ class RenderContext
    GFX_API void frameStart();
    GFX_API void frameEnd();
    GFX_API void Present(void);
+
+
+   //////////////////////////////////////////////////////////////
+   //                     CAMERA FUNCTIONS                     //
+   //////////////////////////////////////////////////////////////
+   GFX_API Handle NewCamera();
+   GFX_API void SetUseCam(bool camUse);
+   GFX_API void SetCamPosition(Handle Camera, float x, float y);
+   GFX_API void SetCamPosition(Handle Camera, float x, float y, float z);
+   GFX_API void SetCamScale(Handle Camera, float width, float height);
+   GFX_API void SetCamFOV(Handle Camera, float FOV);
+   GFX_API void SetCamActive(Handle Camera);
+   GFX_API Handle GetCamActive();
 
     /////////////////////////////////////////////////////////////
     //                    CREATE FUNCTIONS                     //
@@ -95,7 +107,6 @@ class RenderContext
    GFX_API void SetRotation(const float theta);
    GFX_API void SetDimensions(const float w, const float h);
    GFX_API void SetBlendCol(const float r, const float g, const float b, const float a);
-   GFX_API void SetUseCam(bool camUse);
 
     /////////////////////////////////////////////////////////////
     //                    GETTER FUNCTIONS                     //
@@ -173,14 +184,6 @@ class RenderContext
       IFW1FontWrapper *m_fontWrapper;
     };
 
-    struct Camera
-    {
-      iMat4         view;
-      iMat4         proj;
-      iMat4         viewProj;
-      bool         used;
-    };
-
       float x;
       float y;
       float z;
@@ -208,12 +211,8 @@ class RenderContext
     IDXGISwapChain              *m_swapChain;
     ID3D11Device                *m_device;   
     ID3D11DeviceContext         *m_deviceContext;
-    IDXGIFactory                *m_factory;
-    IDXGIAdapter                *m_adapter;
-    IDXGIOutput                 *m_output;
     Font                         m_font;               
     int                         m_displayModeIndex;
-    std::vector<DXGI_MODE_DESC> m_displayModeDescs;
                                 
     ID3D11RenderTargetView      *m_backBuffer;
     Dimension                    m_backBufferSize;
@@ -231,7 +230,10 @@ class RenderContext
     ID3D11RasterizerState                   *m_rastState[RastStates::NumStates];
     std::map<BlendMode, ID3D11BlendState *>  m_blendStateMap;
     DepthBuffer                              m_depthBuffer;
-    Camera                                   m_camera;
+    Handle                                   m_camera;
+    Handle                                   m_Perspective;
+    Handle                                   m_Ortho;
+    bool                                     m_camUse;
 
     RastStates                               m_currentRast = RastStates::Fill;
 

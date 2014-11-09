@@ -9,6 +9,8 @@ namespace DirectSheep
     ~Camera();
 
     // Getters and setters for camera position
+    void SetPosition(float x, float y);
+    void SetPosition(Vec2 position);
     void SetPosition(float x, float y, float z);
     void SetPosition(Vec3 position);
     Vec3 GetPosition();
@@ -24,6 +26,10 @@ namespace DirectSheep
     void SetScale(float width, float height);
     void SetScale(Vec2 scale);
     Vec2 GetScale();
+
+    Mat4 getView();
+    Mat4 getProj();
+    Mat4 getViewProj();
 
   private:
     void BuildView();

@@ -1,11 +1,10 @@
 #pragma once
 
-#if SHEEPGRAPHICS
+#if defined(SHEEPGRAPHICS)
 #include "include/SheepGraphics/api.h"
 #else
 #include "SheepGraphics/api.h"
 #endif
-
 #include "DataTypes.h"
 //#include "..\Tools\Resource.h"
 
@@ -27,11 +26,15 @@ class Handle
   private:
 
     ObjectType type;
-    int index;
+
+    union
+    {
+      int index;
+      void* ptr;
+    };
 
     friend class RenderContext;
-    friend class GraphicsManager;
 };
 
-} //namespace Graphics
+}
 

@@ -40,6 +40,7 @@ namespace DirectSheep
   }
 
   Handle::Handle(ObjectType type, int index) : type(type), index(index) {}
+  Handle::Handle(ObjectType type, void* ptr) : type(type), ptr(ptr) {}
 
 
 }

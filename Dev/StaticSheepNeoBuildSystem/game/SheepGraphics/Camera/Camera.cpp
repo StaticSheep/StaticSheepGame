@@ -5,12 +5,16 @@ namespace DirectSheep
   Camera::Camera(float screenWidth, float screenHeight, bool isPerspective) : m_perspective(isPerspective),
     m_width(screenWidth),
     m_height(screenHeight),
-    m_position(0, 0, -400.0f), m_Theta(0),
-    m_Projection(DirectX::SimpleMath::Matrix::Identity),
-    m_View(m_Projection),
-    m_viewProj(m_Projection)
+    m_Fov(75),
+    m_position(Vec3(0, 0, -400.0f)), 
+    m_Theta(0)
   {
-
+    BuildView();
+    if (m_perspective)
+      BuildPerspective();
+    else
+      BuildOrthographic();
+    m_viewProj = m_View * m_Projection;
   }
 
   Camera::~Camera()
@@ -22,12 +26,14 @@ namespace DirectSheep
   {
     m_position = Vec3(x, y, z);
     BuildView();
+    m_viewProj = m_View * m_Projection;
   }
 
   void Camera::SetPosition(Vec3 position)
   {
     m_position = position;
     BuildView();
+    m_viewProj = m_View * m_Projection;
   }
 
   Vec3 Camera::GetPosition()
@@ -35,6 +41,21 @@ namespace DirectSheep
     return m_position;
   }
 
+  void Camera::SetPosition(float x, float y)
+  {
+    m_position.x = x;
+    m_position.y = y;
+    BuildView();
+    m_viewProj = m_View * m_Projection;
+  }
+
+  void Camera::SetPosition(Vec2 position)
+  {
+    m_position.x = position.x;
+    m_position.y = position.y;
+    BuildView();
+    m_viewProj = m_View * m_Projection;
+  }
 
   // Getters and setters for camera orientation
   void Camera::SetOrientation(float orientation)
@@ -52,6 +73,7 @@ namespace DirectSheep
   {
     m_Fov;
     BuildPerspective();
+    m_viewProj = m_View * m_Projection;
   }
 
   float Camera::GetFov()
@@ -68,6 +90,7 @@ namespace DirectSheep
       BuildPerspective();
     else
       BuildOrthographic();
+    m_viewProj = m_View * m_Projection;
   }
 
   void Camera::SetScale(Vec2 scale)
@@ -79,6 +102,7 @@ namespace DirectSheep
       BuildPerspective();
     else
       BuildOrthographic();
+    m_viewProj = m_View * m_Projection;
   }
 
   Vec2 Camera::GetScale()
@@ -86,15 +110,26 @@ namespace DirectSheep
     return Vec2(m_width, m_height);
   }
 
+  Mat4 Camera::getView()
+  {
+    return m_View;
+  }
+
+  Mat4 Camera::getProj()
+  {
+    return m_Projection;
+  }
+
+  Mat4 Camera::getViewProj()
+  {
+    return m_viewProj;
+  }
+
   void Camera::BuildView()
   {
-    float cameraX = m_position.x;
-    float cameraY = m_position.y;
-    float cameraZ = m_position.z;
+    Vec4 eyepoint(m_position.x, m_position.y, m_position.z, 0);
 
-    Vec4 eyepoint(cameraX, cameraY, cameraZ, 0);
-
-    Vec4 lootAtPoint(cameraX, cameraY, 0.0f, 1.0f);
+    Vec4 lootAtPoint(m_position.x, m_position.y, 0.0f, 1.0f);
 
     Vec4 upVector(0.0f, 1.0f, 0.0f, 0);
 
@@ -108,6 +143,6 @@ namespace DirectSheep
 
   void Camera::BuildOrthographic()
   {
-    m_Projection = DirectX::XMMatrixOrthographicLH((float)m_width, (float)m_height, 1.0f, 1000.0f);
+    m_Projection = DirectX::XMMatrixOrthographicOffCenterLH(0, m_width, m_height, 0, 1.0f, 1000.0f);
   }
 }

@@ -14,9 +14,9 @@ namespace DirectSheep
 
   void RenderContext::Draw(unsigned vertexCount, unsigned vertexStart)
   {
-    iMat4 matFinal;
+    Mat4 matFinal;
 
-    iMat4 scaleMat, rotMat, transMat;
+    Mat4 scaleMat, rotMat, transMat;
 
     rotMat = DirectX::XMMatrixIdentity();
     transMat = DirectX::XMMatrixIdentity();
@@ -30,7 +30,7 @@ namespace DirectSheep
 
     scaleMat = DirectX::XMMatrixMultiply(scaleMat, transMat);
 
-    matFinal = scaleMat * m_camera.viewProj;
+    matFinal = scaleMat * ((Camera*)m_camera.ptr)->getViewProj();
 
     DefaultBuffer buffer;
     buffer.Final = matFinal;
@@ -54,9 +54,9 @@ namespace DirectSheep
 
   void RenderContext::DrawSpriteText(const char * text, float size, const char * font)
   {
-    iMat4 matFinal;
+    Mat4 matFinal;
 
-    iMat4 rotMat, transMat;
+    Mat4 rotMat, transMat;
 
     matFinal = XMMatrixIdentity();
     rotMat = XMMatrixIdentity();
@@ -68,7 +68,7 @@ namespace DirectSheep
 
     rotMat = XMMatrixMultiply(rotMat, transMat);
 
-    matFinal = rotMat * m_camera.viewProj;
+    matFinal = rotMat * ((Camera*)m_camera.ptr)->getViewProj();
 
     FW1_RECTF rect;
     rect.Left = rect.Right = 0.0f;
@@ -106,6 +106,7 @@ namespace DirectSheep
     sourcePos.top = (long)(height * m_spriteTrans.uvBegin.y);
     sourcePos.bottom = (long)(height * m_spriteTrans.uvEnd.y);
 
+    Transform boop = m_spriteTrans;
     m_batcher->Draw(m_textureRes[texture.index].m_ShaderRes,
                Vec2(m_spriteTrans.x, m_spriteTrans.y),
                &sourcePos,
@@ -124,7 +125,7 @@ namespace DirectSheep
 
   void RenderContext::StartBatch()
   {
-    m_batcher->Begin(SpriteSortMode_Texture, m_blendStateMap[BLEND_MODE_ALPHA], m_sampleStates[0], m_depthBuffer.m_depthState, m_rastState[m_currentRast], nullptr, m_camera.viewProj);
+    m_batcher->Begin(SpriteSortMode_Texture, m_blendStateMap[BLEND_MODE_ALPHA], m_sampleStates[0], m_depthBuffer.m_depthState, m_rastState[m_currentRast], nullptr, ((Camera*)m_camera.ptr)->getViewProj());
   }
 
   void RenderContext::EndBatch()

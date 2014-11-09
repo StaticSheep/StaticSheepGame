@@ -20,36 +20,6 @@ namespace DirectSheep
     return rc;
   }
 
-  void RenderContext::UpdateCamera(float x, float y, float fov)
-  {
-    float cameraX = x;
-    float cameraY = y;
-    float cameraZ;
-
-    if(m_camera.used)
-      cameraZ = -400.0f;
-    else
-      cameraZ = -10.0f;
-
-    Vec4 eyepoint(cameraX, cameraY, cameraZ, 0);
-
-    Vec4 lootAtPoint(cameraX, cameraY, 0.0f, 1.0f);
-
-    Vec4 upVector(0.0f, 1.0f, 0.0f, 0);
-
-    iMat4 matView = XMMatrixLookAtLH(eyepoint, lootAtPoint, upVector);
-    m_camera.view = matView;
-
-    iMat4 matProj;
-    if(m_camera.used)
-      matProj = XMMatrixPerspectiveFovLH((FLOAT)XMConvertToRadians(fov), (float)m_viewport.dim.width / (float)m_viewport.dim.height, 1.0f, 1000.0f);
-    else
-      matProj = XMMatrixOrthographicOffCenterLH(0, (float)m_viewport.dim.width, (float)m_viewport.dim.height, 0, 1.0f, 1000.0f);
-    m_camera.proj = matProj;
-
-    m_camera.viewProj = matView * matProj;
-  }
-
   RenderContext::RenderContext(void) :
     m_initialized(false),
     m_hwnd(NULL),
@@ -58,9 +28,6 @@ namespace DirectSheep
     m_swapChain(NULL),
     m_device(NULL),
     m_deviceContext(NULL),
-    m_factory(NULL),
-    m_adapter(NULL),
-    m_output(NULL),
     m_displayModeIndex(0),
     m_backBuffer(NULL),
     m_clearColor(Color(Colors::Black.operator const float *())),
@@ -89,7 +56,7 @@ namespace DirectSheep
   {
     m_viewport.dim = Dimension((unsigned)width, (unsigned)height);
     m_hwnd = hwnd;
-    m_camera.used = true;
+    m_camUse = true;
     InitializeDeviceAndSwapChain();
     m_batcher = std::unique_ptr<DirectX::SpriteBatch>(new SpriteBatch(m_deviceContext));
     m_batcher->SetRotation(DXGI_MODE_ROTATION_UNSPECIFIED);
@@ -104,6 +71,10 @@ namespace DirectSheep
     InitializeSamplerState();
     InitializeBlendModes();
     InitializeDepthState();
+
+    m_Ortho = Handle(CAMERA, new Camera(1920, 1080, false));
+    m_Perspective = Handle(CAMERA, new Camera(1920, 1080, true));
+    m_camera = m_Perspective;
 
     //m_genericEffect = new GenEffect(m_device);
     //m_PointLight = new PointLight(m_device);
@@ -285,11 +256,6 @@ namespace DirectSheep
     const Dimension RenderContext::GetTextureSize(const Handle& texHandle) const
     {
       return Dimension(m_textureRes[texHandle.index].getWidth(), m_textureRes[texHandle.index].getHeight());
-    }
-
-    void RenderContext::SetUseCam(bool camUse)
-    {
-      m_camera.used = camUse;
     }
     /////////////////////////////////////////////////////////////
     //                    UTILITY FUNCTIONS                    //

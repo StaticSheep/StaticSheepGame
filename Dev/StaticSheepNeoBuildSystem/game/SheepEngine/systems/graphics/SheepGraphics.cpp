@@ -172,7 +172,6 @@ namespace Framework
 
   void SheepGraphics::StartFrame()
   {
-    UpdateCamera();
     m_renderContext->frameStart();
   }
 
@@ -322,17 +321,11 @@ namespace Framework
 
   void SheepGraphics::DrawSpriteText(const char * text, float size, const char * font)
   {
-    UpdateCamera();
     m_renderContext->DrawSpriteText(text, size, font);
 
 #if SHEEP_DEBUG
     ++(m_debugData.numTextDraws);
 #endif
-  }
-
-  void SheepGraphics::UpdateCamera(void)
-  {
-      m_renderContext->UpdateCamera(0, 0, 75);
   }
   void* SheepGraphics::GetDevice()
   {
