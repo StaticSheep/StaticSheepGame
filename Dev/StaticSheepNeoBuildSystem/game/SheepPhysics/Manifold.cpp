@@ -53,10 +53,14 @@ namespace SheepFizz
 		Vec3D correction = (Maximum(penetration - POSSLACK, 0.0f) /
 			(A->massData_.inverseMass + B->massData_.inverseMass)) * POSCORRECT
 			* normal;
+    
+    Vec3D correctionHoriz = (Maximum(penetration - POSSLACK, 0.0f) /
+      (A->massData_.inverseMass + B->massData_.inverseMass)) * POSCORRECT * POSCORRECT
+      * 1.25 * -normal.CalculateNormal();
 
-		A->position_ -= A->massData_.inverseMass * correction;
-		B->position_ += B->massData_.inverseMass * correction;
-
+    A->position_ -= A->massData_.inverseMass * correction - A->massData_.inverseMass * correctionHoriz;
+    B->position_ += B->massData_.inverseMass * correction + B->massData_.inverseMass * correctionHoriz;
+    
 	}//end of PositionalCorrection
 
 
