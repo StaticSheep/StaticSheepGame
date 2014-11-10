@@ -8,7 +8,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 #pragma once
 
-#include "engine/introspection/enum/Enum.h"
+#include "modules/introspection/enum/Enum.h"
 
 namespace Framework
 {
@@ -53,7 +53,8 @@ namespace Framework
     // Saves all of the spaces into a level file
     void SaveLevel(const char* filePath);
     // Loads a level file, which loads multiple spaces
-    void LoadLevel(const char* filePath, void(*cb)(GameSpace* space));
+    void LoadLevel(const char* name, void(*cb)(GameSpace* space));
+    void LoadLevelFilePath(const char* filePath, void(*cb)(GameSpace* space));
 
     static const std::string ArchetypeFileExtension;
     static const std::string ArchetypePrefix;

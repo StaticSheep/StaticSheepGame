@@ -39,7 +39,7 @@ namespace DirectSheep
     buffer.uvBegin = m_spriteTrans.uvBegin;
     buffer.uvEnd = m_spriteTrans.uvEnd;
 
-    m_deviceContext->RSSetState(m_rastState);
+    m_deviceContext->RSSetState(m_rastState[m_currentRast]);
 
     m_deviceContext->PSSetSamplers(0, 1, &m_sampleStates[0]);
 
@@ -52,8 +52,6 @@ namespace DirectSheep
     m_deviceContext->Draw(vertexCount, vertexStart);
   }
 
-  
-
   void RenderContext::DrawSpriteText(const char * text, float size, const char * font)
   {
     iMat4 matFinal;
@@ -64,9 +62,7 @@ namespace DirectSheep
     rotMat = XMMatrixIdentity();
     transMat = XMMatrixIdentity();
 
-
     rotMat = XMMatrixRotationRollPitchYaw((float)XM_PI, 0.0f, m_spriteTrans.theta);
-
 
     transMat = XMMatrixTranslation(m_spriteTrans.x, m_spriteTrans.y, 0.0f);
 
@@ -110,7 +106,7 @@ namespace DirectSheep
     sourcePos.top = (long)(height * m_spriteTrans.uvBegin.y);
     sourcePos.bottom = (long)(height * m_spriteTrans.uvEnd.y);
 
-    m_batcher->Draw(m_textureRes[texture.index].shaderResourceView,
+    m_batcher->Draw(m_textureRes[texture.index].m_ShaderRes,
                Vec2(m_spriteTrans.x, m_spriteTrans.y),
                &sourcePos,
                XMLoadFloat4(&m_spriteBlend),
@@ -128,7 +124,7 @@ namespace DirectSheep
 
   void RenderContext::StartBatch()
   {
-    m_batcher->Begin(SpriteSortMode_Texture, m_blendStateMap[BLEND_MODE_ALPHA], m_sampleStates[0], m_depthBuffer.m_depthState, m_rastState, nullptr, m_camera.viewProj);
+    m_batcher->Begin(SpriteSortMode_Texture, m_blendStateMap[BLEND_MODE_ALPHA], m_sampleStates[0], m_depthBuffer.m_depthState, m_rastState[m_currentRast], nullptr, m_camera.viewProj);
   }
 
   void RenderContext::EndBatch()

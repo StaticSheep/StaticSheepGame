@@ -95,6 +95,22 @@ namespace Framework
       PostQuitMessage( 0 );
       break;
 
+    case WM_ACTIVATE:
+      if (wParam == WA_INACTIVE && !ENGINE->m_editorAcitve)
+      {
+        ShowWindow(hWnd, SW_MINIMIZE);
+
+        ENGINE->SystemMessage(Message(Message::WindowMinimize));
+      }
+
+      else if (wParam == WA_CLICKACTIVE && !ENGINE->m_editorAcitve)
+      {
+        ShowWindow(hWnd, SW_RESTORE);
+
+        ENGINE->SystemMessage(Message(Message::WindowRestore));
+      }
+      break;
+
 /*****************************************************************************/
 //    Mouse Events
 /*****************************************************************************/

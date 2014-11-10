@@ -47,6 +47,8 @@ struct SoundInstance
   
   SoundInstance()
   {type = 0; mode = PLAY_ONCE; volume = 1.0f; pitch = 1.0f;active = false;};
+  SoundInstance(float _volume)
+  {type = 0; mode = PLAY_ONCE; volume = _volume; pitch = 1.0f;active = false;};
   
 };
 

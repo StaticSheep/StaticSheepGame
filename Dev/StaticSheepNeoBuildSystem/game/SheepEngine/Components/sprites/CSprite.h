@@ -1,4 +1,10 @@
+/******************************************************************************
+Filename: CSprite.h
+Project:
+Author(s): Scott Nelson
 
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+******************************************************************************/
 #pragma once
 
 #include "types/vectors/Vec2.h"

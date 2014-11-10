@@ -2,6 +2,7 @@
 #include "CElevatorPlat.h"
 #include "types/space/Space.h"
 #include "../transform/CTransform.h"
+#include "../colliders/CBoxCollider.h"
 
 namespace Framework
 {
@@ -22,6 +23,7 @@ namespace Framework
     space->GetGameObject(owner)->hooks.Add("OnCollision", self, BUILD_FUNCTION(ElevatorPlat::OnCollision));
 
     pTransfrom = space->GetGameObject(owner)->GetComponentHandle(eTransform);
+    pCollider = space->GetGameObject(owner)->GetComponentHandle(eBoxCollider);
 	}
 
   void ElevatorPlat::Remove()
@@ -33,15 +35,20 @@ namespace Framework
   void ElevatorPlat::LogicUpdate(float dt)
 	{
     Transform *pt = space->GetHandles().GetAs<Transform>(pTransfrom);
-
+    BoxCollider *pc = space->GetHandles().GetAs <BoxCollider>(pCollider);
     if (pt->GetTranslation().y > 500 || pt->GetTranslation().y < -500)
       space->GetGameObject(owner)->Destroy();
 
     if (direction)
-      pt->SetTranslation(pt->GetTranslation() + Vec3(0.0, 1.0, 0.0));
+    {
+      pc->SetVelocity(Vec3(0.0, 100.0, 0.0));
+      //pt->SetTranslation(pt->GetTranslation() + Vec3(0.0, 1.0, 0.0));
+    }
     else
-      pt->SetTranslation(pt->GetTranslation() + Vec3(0.0, -1.0, 0.0));
-
+    {
+      pc->SetVelocity(Vec3(0.0, -100.0, 0.0));
+      //pt->SetTranslation(pt->GetTranslation() + Vec3(0.0, -1.0, 0.0));
+    }
 	}
 
   void ElevatorPlat::OnCollision(Handle otherObject, SheepFizz::ExternalManifold manifold)

@@ -37,7 +37,7 @@ namespace DirectSheep
 
     Vec4 upVector(0.0f, 1.0f, 0.0f, 0);
 
-    iMat4 matView = XMMatrixLookAtLH(ToVector(&eyepoint), ToVector(&lootAtPoint), ToVector(&upVector));
+    iMat4 matView = XMMatrixLookAtLH(eyepoint, lootAtPoint, upVector);
     m_camera.view = matView;
 
     iMat4 matProj;
@@ -63,13 +63,14 @@ namespace DirectSheep
     m_output(NULL),
     m_displayModeIndex(0),
     m_backBuffer(NULL),
-    m_clearColor(Color(Colors::Black)),
+    m_clearColor(Color(Colors::Black.operator const float *())),
     m_spriteBlend(Vec4(1, 1, 1, 1)),
-    m_primative(PRIMITIVE_TOPOLOGY_TRIANGLELIST),
-    m_rastState(NULL)
+    m_primative(PRIMITIVE_TOPOLOGY_TRIANGLELIST)
   {
     m_sampleStates[0] = NULL;
     m_sampleStates[1] = NULL;
+    m_rastState[0] = NULL;
+    m_rastState[1] = NULL;
   }
 
   RenderContext::~RenderContext(void)
@@ -104,6 +105,9 @@ namespace DirectSheep
     InitializeBlendModes();
     InitializeDepthState();
 
+    //m_genericEffect = new GenEffect(m_device);
+    //m_PointLight = new PointLight(m_device);
+
     m_initialized = true;
     return true;
   }
@@ -132,12 +136,11 @@ namespace DirectSheep
 
     m_depthBuffer.Release();
 
-    SafeRelease(m_rastState);
+    for (int i = 0; i < RastStates::NumStates; ++i)
+      SafeRelease(m_rastState[i]);
 
     for (int i = 0; i < (sizeof(m_sampleStates) / sizeof(ID3D11SamplerState*)); ++i)
-    {
       SafeRelease(m_sampleStates[i]);
-    }
 
     for(auto it : m_blendStateMap)
     {
@@ -155,11 +158,6 @@ namespace DirectSheep
     void RenderContext::SetClearColor(const float r, const float g, const float b, const float a)
     {
       m_clearColor = Color(r, g, b, a);
-    }
-
-    void RenderContext::SetClearColor(const Color& color)
-    {
-      m_clearColor = color;
     }
 
     void RenderContext::SetTargetWindow(const HWND& hwnd)
@@ -284,29 +282,9 @@ namespace DirectSheep
       return m_viewport;
     }
 
-    DisplayMode RenderContext::GetCurrentDisplayMode(void) const
+    const Dimension RenderContext::GetTextureSize(const Handle& texHandle) const
     {
-      return m_displayModes[m_displayModeIndex];
-    }
-
-    int RenderContext::GetCurrentDisplayModeIndex(void) const
-    {
-      return m_displayModeIndex;
-    }
-
-    const std::vector<DisplayMode>& RenderContext::GetDisplayModes(void) const
-    {
-      return m_displayModes;
-    }
-
-    const std::string& RenderContext::GetGraphicsCardInfo(void) const
-    {
-      return m_graphicsCardInfo;
-    }
-
-    const Dimension& RenderContext::GetTextureSize(const Handle& texHandle) const
-    {
-      return m_textureRes[texHandle.index].size;
+      return Dimension(m_textureRes[texHandle.index].getWidth(), m_textureRes[texHandle.index].getHeight());
     }
 
     void RenderContext::SetUseCam(bool camUse)
@@ -317,21 +295,9 @@ namespace DirectSheep
     //                    UTILITY FUNCTIONS                    //
     /////////////////////////////////////////////////////////////
 
-    void RenderContext::ClearRenderTarget(const Handle& handle, float r, float g, float b, float a)
-    {
-      if(handle.type == RENDER_TARGET)
-        m_deviceContext->ClearRenderTargetView(m_renderTargetRes[handle.index].renderTargetView, (float*)&Vec4(r,g,b,a));
-    }
-
-    void RenderContext::ClearRenderTarget(const Handle& handle, Color clearColor)
-    {
-      if(handle.type == RENDER_TARGET)
-        m_deviceContext->ClearRenderTargetView(m_renderTargetRes[handle.index].renderTargetView, (float*)&Vec4(clearColor.r, clearColor.g, clearColor.b, clearColor.a));
-    }
-
     void RenderContext::ClearBackBuffer(void)
     {
-      m_deviceContext->ClearRenderTargetView(m_backBuffer, (float*)&Vec4(m_clearColor.r, m_clearColor.g, m_clearColor.b, 1.0f));
+      m_deviceContext->ClearRenderTargetView(m_backBuffer, (float*)&Vec4(m_clearColor.R(), m_clearColor.G(), m_clearColor.B(), 1.0f));
     }
 
     void RenderContext::ClearDepthBuffer(void)
@@ -381,7 +347,9 @@ namespace DirectSheep
   {
     if(texture.type == TEXTURE)
     {
-      m_textureRes[texture.index].Release();
+     SafeRelease(m_textureRes[texture.index].m_rawTex);
+     SafeRelease(m_textureRes[texture.index].m_renderTarget);
+     SafeRelease(m_textureRes[texture.index].m_ShaderRes);
     }
   }
 

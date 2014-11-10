@@ -628,7 +628,36 @@ namespace Framework
     file.Close();
   }
 
-  void Factory::LoadLevel(const char* filePath, void(*cb)(GameSpace* space))
+  void Factory::LoadLevel(const char* name, void(*cb)(GameSpace* space))
+  {
+    File file;
+
+    std::string filePath = LevelFilePath + std::string(name) + LevelFileExtension;
+
+    file.Open(filePath.c_str(), FileAccess::Read);
+
+    ErrorIf(!file.Validate(), "Level Factory", "Greg's a nerd");
+
+    std::string spaceName;
+
+    while (file.Validate())
+    {
+      spaceName = file.GetLine('\n');
+      if (spaceName.length() > 0)
+      {
+        spaceName = SpaceFilePath + spaceName + SpaceFileExtension;
+        GameSpace* sp;
+        sp = LoadSpaceFilePath(spaceName.c_str());
+        if (cb)
+          cb(sp);
+      }
+    }
+
+    file.Close();
+
+  }
+
+  void Factory::LoadLevelFilePath(const char* filePath, void(*cb)(GameSpace* space))
   {
     File file;
 

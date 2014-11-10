@@ -4,7 +4,7 @@ action = _ACTION or ""
 
 depsdir = path.getabsolute("../../deps");
 extdir = path.getabsolute("../../externals");
-srcdir = path.getabsolute("../../src");
+srcdir = path.getabsolute("../../ditfw");
 incdir = path.getabsolute("../../inc");
 projectsdir = path.getabsolute("../../game");
 bindir = path.getabsolute("../../bin");

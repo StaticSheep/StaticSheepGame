@@ -77,11 +77,51 @@ namespace Framework
     float diffX = eX - sX;
     float diffY = eY - sY;
     GRAPHICS->UpdateCamera();
-    GRAPHICS->SetPosition(sX + diffX / 2, sY + diffY / 2, 0.0f);
     GRAPHICS->SetSize(sqrt(diffX * diffX + diffY * diffY), width);
+    GRAPHICS->BindTexture(GRAPHICS->GetTextureID("White.png"));
 
-    GRAPHICS->SetRotation(-atan(diffY / diffX));
+    float rotation = (float)Framework::PI / 2.0f;
+    if (diffX != 0)
+      rotation = atan(diffY / diffX);
+     
+    float offsetX = diffX * cos(rotation) - diffY * sin(rotation);
+    float offxetY = diffX * sin(rotation) - diffY * cos(rotation);
 
+    GRAPHICS->SetRotation(rotation);
+
+    GRAPHICS->SetPosition(sX + diffX / 2, sY + diffY / 2, 0.0f);
+
+    GRAPHICS->RawDraw();
+
+  }
+
+  void Draw::DrawCircle(float x, float y, float radius)
+  {
+    const int numLines = 32;
+
+    float theta = 0;
+
+    float lineAngle = (2.0f * (float)Framework::PI) / (float)numLines;
+
+    Vec3D p2(cosf(theta), sinf(theta));
+
+    p2 *= radius;
+    p2 += Vec3D(x, y);
+
+    Vec3D p1 = p2;
+    for (int i = 0; i < numLines; ++i)
+    {
+      theta += lineAngle;
+
+      p2 = Vec3D(cosf(theta), sinf(theta));
+
+      p2 *= radius;
+      p2 += Vec3D(x, y);
+
+      DrawLine(p1.X, p1.Y, p2.X, p2.Y);
+
+      p1 = p2;
+    }
   }
 
   void Draw::DrawString(const char* text, float size, const char* font)

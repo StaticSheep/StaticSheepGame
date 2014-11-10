@@ -45,11 +45,14 @@ AddPath("/lua/")
 SheepModules = {}
 GameSpaces = {}
 LuaSpaces = {} -- Pure lua objects
+LuaComponents = {}
+
 
 include("util.lua")
+include("components.lua")
 include("level.lua")
-include("luaspace.lua")
 include("gamespace.lua")
+
 
 require("hook")
 require("filesystem")
@@ -66,5 +69,14 @@ filesystem.BlacklistFolder("includes")
 filesystem.BlacklistFolder("levels")
 
 hook.Add("LogicUpdate", "CheckFiles", filesystem.UpdateOldFiles)
+
+function LuaLoaded()
+  include("luaspace.lua")
+end
+
+function PostInit()
+  QueryComponents()
+  
+end
 
 

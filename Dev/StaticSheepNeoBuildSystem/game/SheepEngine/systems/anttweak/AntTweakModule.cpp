@@ -422,6 +422,7 @@ namespace Framework
 
     if (clientData->genericMember == nullptr || clientData->setCB)
     {
+      AntTweak::Tweaker::currentGeneric = clientData;
       clientData->setCB.ForceBind(genericObject);
       clientData->setCB(value);
       return;
@@ -448,6 +449,7 @@ namespace Framework
 
     if (clientData->genericMember == nullptr || clientData->getCB)
     {
+      AntTweak::Tweaker::currentGeneric = clientData;
       clientData->getCB.ForceBind(genericObject);
       clientData->getCB(value);
       return;
@@ -475,6 +477,7 @@ namespace Framework
 
     if (clientData->genericMember == nullptr || clientData->getCB)
     {
+      AntTweak::Tweaker::currentGeneric = clientData;
       clientData->getCB.ForceBind(genericObject);
       clientData->getCB(value);
       return;

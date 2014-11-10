@@ -13,12 +13,19 @@ namespace Framework
 		void LogicUpdate(float dt);
 		void Initialize();
 		void Remove();
+    void SpawnPlayers(float dt);
+    void PlayerDied(int ply);
 
 		//member variables
     //Handle bTransfrom;
     float timeLimit;
     float spawnTimer;
     bool playing;
+    bool startFlag;
     Handle levelSound;
+    Vec3 spawnPos[4];
+    Handle Players[4];
+    float spawnTimers[4];
+    int numOfPlayers;
 	};
 }

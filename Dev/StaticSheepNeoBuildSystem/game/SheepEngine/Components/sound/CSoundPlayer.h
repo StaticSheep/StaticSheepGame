@@ -29,6 +29,7 @@ namespace Framework
     void Pause(std::string name, bool flag);
     
     void SetPitch(float pitch);
+    void SetVolume(float volume);
     
    private:
     

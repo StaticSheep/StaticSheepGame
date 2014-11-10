@@ -84,8 +84,9 @@ class RenderContext
     //                    SETTER FUNCTIONS                     //
     /////////////////////////////////////////////////////////////
 
+   GFX_API void setWireFrame(bool isWired);
+   GFX_API void Resize(float width, float height);
    GFX_API void SetClearColor(const float r, const float g, const float b, const float a);
-   GFX_API void SetClearColor(const Color& color);
    GFX_API void SetTargetWindow(const HWND& hwnd);
    GFX_API void SetFullscreen(const bool fullscreen);
    GFX_API void SetPrimitiveTopology(const PrimitiveTopology primitiveTopology);
@@ -112,14 +113,13 @@ class RenderContext
    GFX_API void* ExternalGetDevice(void) const;
    GFX_API const Dimension& GetNativeResolution(void) const;
    GFX_API const Viewport& GetViewport(void) const;
-   GFX_API const Dimension& GetTextureSize(const Handle& texHandle) const;
+   GFX_API const Dimension GetTextureSize(const Handle& texHandle) const;
 
     /////////////////////////////////////////////////////////////
     //                    UTILITY FUNCTIONS                    //
     /////////////////////////////////////////////////////////////
 
    GFX_API void ClearRenderTarget(const Handle& handle, float r, float g, float b, float a);
-   GFX_API void ClearRenderTarget(const Handle& handle, Color clearColor);
    GFX_API void ClearBackBuffer(void);
    GFX_API void ClearDepthBuffer(void);
 
@@ -145,10 +145,12 @@ class RenderContext
     //---------//
     // Structs //
     //---------//
-    struct Texture
-      ID3D11ShaderResourceView *shaderResourceView;
-      ID3D11Texture2D          *texture;
-      Dimension                 size;
+
+    enum RastStates
+    {
+      Fill = 0,
+      Wire,
+      NumStates,
     };
 
     struct DepthBuffer
@@ -201,7 +203,6 @@ class RenderContext
     //////////////
     bool        m_initialized;
     HWND        m_hwnd;
-    std::string m_graphicsCardInfo;
     Dimension   m_resolution;
     Dimension   m_nativeResolution;
     bool        m_fullscreen;
@@ -219,7 +220,6 @@ class RenderContext
     IDXGIOutput                 *m_output;
     Font                         m_font;               
     int                         m_displayModeIndex;
-    std::vector<DisplayMode>    m_displayModes;
     std::vector<DXGI_MODE_DESC> m_displayModeDescs;
                                 
     ID3D11RenderTargetView      *m_backBuffer;
@@ -235,17 +235,19 @@ class RenderContext
     // Other render configurations //
     /////////////////////////////////
     ID3D11SamplerState                      *m_sampleStates[2];
-    ID3D11RasterizerState                   *m_rastState;
+    ID3D11RasterizerState                   *m_rastState[RastStates::NumStates];
     std::map<BlendMode, ID3D11BlendState *>  m_blendStateMap;
     DepthBuffer                              m_depthBuffer;
     Camera                                   m_camera;
+
+    RastStates                               m_currentRast = RastStates::Fill;
 
     ///////////////
     // Resources //
     ///////////////
     std::vector<VertexShader>                m_vertexShaderRes;
     std::vector<ID3D11PixelShader*>          m_pixelShaderRes;
-    std::vector<Texture>                     m_textureRes;
+    std::vector<Tex2D>                       m_textureRes;
     std::vector<ID3D11Buffer*>               m_vertexBufferRes;
     std::vector<ID3D11Buffer*>               m_indexBufferRes;
     std::vector<ID3D11Buffer*>               m_constBufferRes;
@@ -256,6 +258,13 @@ class RenderContext
     /////////////
     
     std::unique_ptr<DirectX::SpriteBatch> m_batcher;
+
+    /////////////
+    // Effects //
+    /////////////
+
+    GenEffect*                               m_genericEffect;
+    PointLight*                              m_PointLight;
 
 
     ///////////

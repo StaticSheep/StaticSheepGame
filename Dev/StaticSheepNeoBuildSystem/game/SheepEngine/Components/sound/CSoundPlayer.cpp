@@ -105,4 +105,9 @@ namespace Framework
     _pitch = pitch;
   }
 
+  void SoundPlayer::SetVolume(float volume)
+  {
+    _volume = volume;
+  }
+
 }// end namespace

@@ -103,7 +103,7 @@ namespace Framework
 
     SetCurrentDirectory(Buffer);
 
-    FACTORY->LoadLevel(szFile, TweakSpaceCB);
+    FACTORY->LoadLevelFilePath(szFile, TweakSpaceCB);
   }
 
   static void EditorSaveLevel(void* clienData)
@@ -149,6 +149,7 @@ namespace Framework
   {
     // Create the main bar and get a handle to it
     
+    ENGINE->m_editorAcitve = true;
     AntTweak::TBar* mainBar = ATWEAK->CreateBar("Editor");
     EngineBar = mainBar->self;
 

@@ -7,8 +7,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 *****************************************************************/
 
 #pragma once
-#include "memory/ObjectAllocator.h"
-#include "engine/handlemanager/HandleManager.h"
+#include "modules/memory/ObjectAllocator.h"
+#include "modules/handlemanager/HandleManager.h"
 #include "components/base/Component.h"
 
 namespace Framework
@@ -29,6 +29,7 @@ namespace Framework
     bool Hidden();
 
     bool Ready(void) { return m_ready; }
+    bool Valid(void) { return m_valid; }
 
     /*template <typename T>
     void SyncHandles(ObjectAllocator& m_allocator, bool force = false);*/
@@ -81,9 +82,6 @@ namespace Framework
     void Destroy(void);
     
 
-    // If a space is invalid at the end of a frame it is deleted
-    bool m_valid;
-
     GameObject* CreateObjectFromArchetype(const char* name);
 
     GameSpace* CopyGameSpace(const char* new_name);
@@ -126,6 +124,9 @@ namespace Framework
 
     bool m_paused;
     bool m_hidden;
+
+    // If a space is invalid at the end of a frame it is deleted
+    bool m_valid;
 
     bool m_ready = false;
 

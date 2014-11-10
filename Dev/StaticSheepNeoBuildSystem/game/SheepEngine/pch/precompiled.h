@@ -1,7 +1,7 @@
 
 //#include "../../src/API.h"
 
-#include "engine/config/Config.h"
+#include "config/Config.h"
 
 #ifdef _DEBUG
 #define DBG_NEW new ( _NORMAL_BLOCK , __FILE__ , __LINE__ )
@@ -28,34 +28,34 @@ namespace SheepFizz
 #include <assert.h>
 
 // Utilities
-#include "engine/introspection/Qualifiers.h" // Qualifier removal
+#include "modules/introspection/Qualifiers.h" // Qualifier removal
 #include "engine/core/Macros.h" // Macro Helpers
 #include "Utilities.h" // Debug macros and helpers
 
 
-#include "engine/serializer/file/File.h" // File handler
-#include "engine/introspection/variable/Variable.h" // Variable delegate
-#include "engine/introspection/enum/Enum.h" // Enumeration Serialization/Introspection
-#include "engine/introspection/types/TypeInfo.h" // Type introspection
-#include "engine/serializer/Serialization.h" // Serialization
-#include "engine/serializer/PODSerialization.h" // Plain old Data serialization routines
+#include "modules/serializer/file/File.h" // File handler
+#include "modules/introspection/variable/Variable.h" // Variable delegate
+#include "modules/introspection/enum/Enum.h" // Enumeration Serialization/Introspection
+#include "modules/introspection/types/TypeInfo.h" // Type introspection
+#include "modules/serializer/Serialization.h" // Serialization
+#include "modules/serializer/PODSerialization.h" // Plain old Data serialization routines
 
-#include "engine/functionbinding/FuncSignature.h" // Function Signatures (For Binding)
-#include "engine/functionbinding/Function.h" // Function binding
+#include "modules/functionbinding/FuncSignature.h" // Function Signatures (For Binding)
+#include "modules/functionbinding/Function.h" // Function binding
 
-#include "engine/introspection/manager/IntrospectionManager.h" // Introspection
+#include "modules/introspection/manager/IntrospectionManager.h" // Introspection
 
-#include "engine/lua/transfer/LuaTransfer.h" // Lua<->C++ Transfer
-#include "engine/lua/interface/LuaInterface.h" // Lua interface
+#include "modules/lua/transfer/LuaTransfer.h" // Lua<->C++ Transfer
+#include "modules/lua/interface/LuaInterface.h" // Lua interface
 
 #include "types/handle/Handle.h" // Handle type
 
-#include "memory/ObjectAllocator.h" // Object Memory manager
+#include "modules/memory/ObjectAllocator.h" // Object Memory manager
 #include "types/generic/Generic.h" // Generic Object/Component type
 
-#include "engine/handlemanager/HandleManager.h" // Handle management
+#include "modules/handlemanager/HandleManager.h" // Handle management
 
-#include "engine/hooks/Hooks.h" // Hook System
+#include "modules/hooks/Hooks.h" // Hook System
 
 #include "components/base/Component.h" // Component type
 #include "engine/factory/ComponentCreator.h" // Component Factory
@@ -84,11 +84,11 @@ namespace SheepFizz
 #include "systems/graphics/DrawLib.h" // Drawing Extension Library
 
 // Type and function Binding
-#include "engine/introspection/DefaultTypes.h"
-#include "engine/lua/LuaDefaultBinds.h"
+#include "modules/introspection/DefaultTypes.h"
+#include "modules/lua/LuaDefaultBinds.h"
 
-#include "engine/serializer/file/File.h"
-#include "engine/introspection/variable/Variable.h"
+#include "modules/serializer/file/File.h"
+#include "modules/introspection/variable/Variable.h"
 
 
 

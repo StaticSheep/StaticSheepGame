@@ -13,18 +13,18 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #pragma comment (lib, "luaSource.lib")
 
 #include "pch/precompiled.h"
+
+#include "engine/core/Engine.h"
+
 #include <iostream>
+
+
 #include "engine/window/Window32.h"
 #include "components/transform/CTransform.h"
 #include "systems/input/Input.h"
 
 #include <boost/filesystem.hpp>
 #include <boost/foreach.hpp>
-
-#include <boost/graph/grid_graph.hpp>
-
-
-static int flag;
 
 namespace Framework
 {
@@ -33,13 +33,9 @@ namespace Framework
   Engine::Engine()
     : m_running(true), L(nullptr)
   {
-    shittyFramerate = 0;
-
     EngineTypeRegistration();
 
     Window = new SheepWindow();
-
-    boost::grid_graph<30, int, int> t();
 
     ENGINE = this;
   }
@@ -70,13 +66,15 @@ namespace Framework
 
     Lua::BindDefaultFunctions();
 
+    Lua::CallFunc(L, "PostInit");
+
     //Lua::CallFunc(L, "filesystem.UpdateOldFiles");
 
     for (unsigned int i = 0; i < m_systems.size(); ++i)
     {
       m_systems[i]->Initialize();
-      //
     }
+
     Framerate.Initialize();
   }
 
@@ -115,14 +113,6 @@ namespace Framework
       m_systems[i]->ReceiveMessage(msg);
   }
 
-  void Engine::CheckReturnFromPIE()
-  {
-    if (SHEEPINPUT->Keyboard.KeyIsPressed(VK_F5))
-    {
-      PlayInEditor(false);
-    }
-      
-  }
 
   void Engine::Step(void)
   {
@@ -139,6 +129,15 @@ namespace Framework
       Framerate.EndFrame(m_systems[i]->GetName().c_str());
     }
 
+
+    CleanUp();
+
+    if (m_levelChange)
+      GotoNextLevel();
+
+    if (m_loadLuaLevels)
+      LoadLuaLevels();
+
     if (m_returnFromPIE)
       ReloadEditor();
 
@@ -154,6 +153,25 @@ namespace Framework
     }
   }
 
+  bool Engine::Running() const
+  {
+    return m_running;
+  }
+
+  void Engine::Quit()
+  {
+    m_running = false;
+  }
+
+
+
+
+
+  std::vector<GameSpace*>& Engine::Spaces()
+  {
+    return m_spaces;
+  }
+
   GameSpace* Engine::CreateSpace(const char* name)
   {
     // Allocate space for a new space
@@ -167,6 +185,14 @@ namespace Framework
     Lua::CallFunc(L, "AddGameSpace", name);
 
     return space;
+  }
+
+  GameSpace* Engine::GetSpace(const char* name)
+  {
+    //std::string spaceName = name;
+    if (m_spaceMap.find(name) != m_spaceMap.end())
+      return m_spaceMap[name];
+    return nullptr;
   }
 
   void Engine::RemoveSpace(GameSpace* space)
@@ -192,57 +218,58 @@ namespace Framework
     delete space;
   }
 
-  std::vector<GameSpace*>& Engine::Spaces()
-  {
-    return m_spaces;
-  }
-
-  lua_State* Engine::Lua() const
-  {
-    return L;
-  }
-
-  void Engine::LuaError(const char* msg)
-  {
-    FORCEERROR("LuaError","%s", msg);
-  }
-
-  GameSpace* Engine::GetSpace(const char* name)
-  {
-    //std::string spaceName = name;
-    if (m_spaceMap.find(name) != m_spaceMap.end())
-      return m_spaceMap[name];
-    return nullptr;
-  }
-
-  void Engine::LoadLevel(const char* name)
-  {
-    FACTORY->LoadSpaceFilePath(name);
-  }
-
-  void Engine::LoadLuaLevel(const char* path)
-  {
-    Lua::CallFunc(L, "LoadLuaLevel", path);
-    //Lua::LoadFile(L, path);
-  }
-
   void Engine::ClearSpaces()
   {
     for (unsigned int i = 0; i < m_spaces.size(); ++i)
     {
-      GameSpace* space = m_spaces[i];
-      space->m_valid = false;
+      m_spaces[i]->Destroy();
     }
   }
 
-  bool Engine::Running() const
+
+
+
+
+  void Engine::ChangeLevel(const char* name)
   {
-    return m_running;
+    m_levelChange = true;
+    m_nextLevel = name;
   }
 
-  void Engine::Quit()
+  void Engine::GotoNextLevel()
   {
-    m_running = false;
+    if (!m_spaces.empty())
+    {
+      ClearSpaces();
+      CleanUp();
+    }
+
+    FACTORY->LoadLevel(m_nextLevel.c_str(), nullptr);
+
+    m_nextLevel.clear();
+    m_levelChange = false;
+  }
+
+
+
+  void Engine::CleanUp()
+  {
+    for (auto it = m_spaceRemoveList.begin(); it != m_spaceRemoveList.end(); ++it)
+      RemoveSpace(*it);
+
+    m_spaceRemoveList.clear();
+  }
+
+
+
+
+
+  void Engine::CheckReturnFromPIE()
+  {
+    if (SHEEPINPUT->Keyboard.KeyIsPressed(VK_F5))
+    {
+      PlayInEditor(false);
+    }
   }
 
   void Engine::ReloadEditor()
@@ -292,15 +319,17 @@ namespace Framework
       std::string cacheLocation = "cache\\spaces\\";
       std::string filepath;
 
+      // We want to clear out the cache
+      boost::filesystem::remove_all(cacheLocation);
+
       boost::filesystem::create_directories(cacheLocation);
 
-      // We want to clear out the cache
-      boost::filesystem::remove_all(cacheLocation + std::string("*"));
-
-      // We want to cache all of our current spaces into our cache so we can pull them up later
+      // We want to cache all of our current spaces into our cache
+      // so we can pull them up later
       for (size_t i = 0; i < gameSpaces.size(); ++i)
       {
-        filepath = cacheLocation + gameSpaces[i]->GetName() + FACTORY->LevelFileExtension;
+        filepath = cacheLocation + gameSpaces[i]->GetName()
+          + FACTORY->LevelFileExtension;
         FACTORY->SaveSpaceToFilePath(gameSpaces[i], filepath.c_str());
 
         //if (gameSpaces[i]->m_fileName.length() > 0)
@@ -311,7 +340,7 @@ namespace Framework
       {
         gameSpaces[i]->SetPaused(false);
         gameSpaces[i]->m_edit = false;
-		gameSpaces[i]->tweakHandle = Handle::null;
+		    gameSpaces[i]->tweakHandle = Handle::null;
       }
     }
     else

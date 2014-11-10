@@ -37,6 +37,6 @@ solution "StaticSheep"
 	group "core"
 		dofile( srcdir .. "/premake4.lua")
 
-	group "projects"
+	group "game"
 		print("Searching for projects...")
 		IncludePremakeProjects(path.join(projectsdir,"*"))

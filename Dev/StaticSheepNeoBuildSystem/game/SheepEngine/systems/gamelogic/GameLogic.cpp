@@ -18,7 +18,11 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/gameplay_scripts/CBullet_default.h"
 #include "components/gameplay_scripts/CElevatorPlat.h"
 #include "components/gameplay_scripts/CLevel1_Logic.h"
+#include "components/gameplay_scripts/CGiantKillBox.h"
+#include "components/gameplay_scripts/CGrinder.h"
+#include "components/gameplay_scripts/CExplosion.h"
 #include "Components/sound/CSoundEmitter.h"
+#include "components/gameplay_scripts/CWeaponPickup.h"
 
 namespace Framework
 {
@@ -46,6 +50,10 @@ namespace Framework
     REGISTER_COMPONENT(ElevatorPlat);
     REGISTER_COMPONENT(Level1_Logic);
     REGISTER_COMPONENT(SoundEmitter);
+    REGISTER_COMPONENT(GiantKillBox);
+    REGISTER_COMPONENT(Grinder);
+    REGISTER_COMPONENT(Explosion);
+    REGISTER_COMPONENT(WeaponPickup);
   }
 
   void GameLogic::Initialize()
@@ -91,13 +99,7 @@ namespace Framework
         continue;
 
       space->Cleanup();
-
-      if (space->m_valid == false)
-        removeList.push_back(space);
     }
-
-    for (auto it = removeList.begin(); it != removeList.end(); ++it)
-      ENGINE->RemoveSpace(*it);
 
   }
 

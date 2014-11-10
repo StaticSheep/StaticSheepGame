@@ -2,12 +2,13 @@
 #include "CBullet_default.h"
 #include "types/space/Space.h"
 #include "../transform/CTransform.h"
+#include "../colliders/CBoxCollider.h"
 
 namespace Framework
 {
 	Bullet_Default::Bullet_Default()
 	{
-
+    damage = 10;
 	}
 
 	Bullet_Default::~Bullet_Default()
@@ -22,6 +23,7 @@ namespace Framework
 		space->GetGameObject(owner)->hooks.Add("OnCollision", self, BUILD_FUNCTION(Bullet_Default::OnCollision));
 
     bTransfrom = space->GetGameObject(owner)->GetComponentHandle(eTransform);
+    space->GetHandles().GetAs<BoxCollider>(space->GetGameObject(owner)->GetComponentHandle(eCircleCollider))->SetGravityOff();
 	}
 
 	void Bullet_Default::Remove()
@@ -41,7 +43,11 @@ namespace Framework
 
   void Bullet_Default::OnCollision(Handle otherObject, SheepFizz::ExternalManifold manifold)
 	{
-		space->GetGameObject(owner)->Destroy();
+    GameObject *OtherObject = space->GetHandles().GetAs<GameObject>(otherObject);
+    if (OtherObject->name != "Bullet")
+    {
+      space->GetGameObject(owner)->Destroy();
+    }
 	}
 
 
