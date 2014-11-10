@@ -50,6 +50,7 @@ struct SoundInstance
   
 };
 
+// pure virtual class for playing sounds
 class Sound
 {
 public:
@@ -61,6 +62,7 @@ public:
   
 private:
   
+  // say no to copy and assignment constructors
   Sound(const Sound&);
   Sound& operator=(const Sound&);
   

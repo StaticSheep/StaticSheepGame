@@ -82,8 +82,6 @@ SoundEvent::SoundEvent(SOUND::System *system, std::string &name)
   ErrorCheck(system->getEvent(name.c_str(), &description) );
 }
 
-
-
 /*!
   \brief
     Public method for playing a sound event
@@ -108,7 +106,6 @@ bool SoundEvent::Play(SoundInstance* instance)
   default : return _PlayOnce(instance);
   }
 }
-
 
 /*!
   \brief
@@ -323,6 +320,7 @@ FMOD_RESULT F_CALLBACK mycallback(FMOD_CHANNELCONTROL *chanControl, FMOD_CHANNEL
 
     SoundInstance* instance;
 
+    // try and grab any instance data if it was given
     if(ErrorCheck(channel->getUserData((void**)&instance)) == FMOD_OK)
     {
       instance->active = false;
@@ -353,7 +351,7 @@ FMOD_RESULT F_CALLBACK mycallback(FMOD_STUDIO_EVENT_CALLBACK_TYPE type, FMOD_STU
         instance->setParameterValueByIndex(i, 1.0f);
       }
 
-      instance->start();
+      //instance->start();
     }
     else if (type == FMOD_STUDIO_EVENT_CALLBACK_CREATE_PROGRAMMER_SOUND
         || type == FMOD_STUDIO_EVENT_CALLBACK_DESTROY_PROGRAMMER_SOUND)

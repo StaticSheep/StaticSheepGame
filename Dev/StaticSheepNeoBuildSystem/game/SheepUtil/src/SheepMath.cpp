@@ -55,6 +55,7 @@ namespace Framework
 
 /*****************************************************************************/
 
+
 /*!
     \brief
       Raises a float to the power of the passed int exponent.
