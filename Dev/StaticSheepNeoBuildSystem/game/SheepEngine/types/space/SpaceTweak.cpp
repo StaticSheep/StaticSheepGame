@@ -74,7 +74,7 @@ namespace Framework
   static void DeleteSpaceCB(void* clientData)
   {
     GameSpace* space = (GameSpace*)clientData;
-    space->m_valid = false;
+    space->Destroy();
   }
 
   static void LoadArchetypeFile(void* clientData)
@@ -82,12 +82,12 @@ namespace Framework
     GameSpace* space = (GameSpace*)clientData;
 
     OPENFILENAME ofn;
-    char szFile[100];
+    char szFile[512];
 
-    TCHAR Buffer[128];
+    TCHAR Buffer[512];
     DWORD dwRet;
 
-    dwRet = GetCurrentDirectory(128, Buffer);
+    dwRet = GetCurrentDirectory(512, Buffer);
 
     ZeroMemory( &ofn , sizeof( ofn));
     ofn.lStructSize = sizeof ( ofn );
@@ -110,9 +110,11 @@ namespace Framework
 
     
 
-    GameObject* obj = FACTORY->LoadObjectFromArchetype(space, szFile);
+    GameObject* obj = FACTORY->LoadObjectFromArchetypeFP(space, szFile);
 
     space->UpdateTweakBar();
+
+	ErrorIf(!obj, "SpaceTweaker", "Failed to load object from archetype! Filepath: %s", szFile);
 
     obj->TweakObject();
   }

@@ -7,8 +7,8 @@ project "SheepUtil"
 
 	SetupNativeProjects()
 
-	pchheader "precompiled.h"
-	pchsource "precompiled.cpp"
+	pchheader "src/precompiled.h"
+	pchsource "src/precompiled.cpp"
 
 	files
 	{
@@ -28,6 +28,7 @@ project "SheepUtil"
 	includedirs
 	{
 		-- hack needed because this script is an extra dir deeper than the invoking "src/premake4.lua"
+    "../SheepUtil",
 		"../SheepUtil/src",
 		"../SheepUtil/include",
 		--"../cs350hw1"
@@ -35,12 +36,13 @@ project "SheepUtil"
 		-- collapse header dir structure
 		--"platform",
 
-		--Core.includedirs
+		Core.includedirs
 	}
 
 	deps
 	{
 		--Core.deps
+
 	}
 
 	defines

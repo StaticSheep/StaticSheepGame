@@ -25,6 +25,9 @@ namespace Framework
       None,
       GFXDeviceInit,
       PostDraw,
+      WindowResize,
+      WindowMinimize,
+      WindowRestore,
       Pause,
       Quit,
     };
@@ -33,7 +36,20 @@ namespace Framework
 		Message(MessageType id) : MessageId(id){};
 		MessageType MessageId;
 		virtual ~Message(){};
-
-    
 	};
+
+  class ResizeMessage : public Message
+  {
+  public:
+    ResizeMessage(float w, float h)
+      : Message(WindowResize),
+      width(w),
+      height(h)
+    {
+      
+    }
+
+    float width;
+    float height;
+  };
 }

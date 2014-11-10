@@ -1,0 +1,48 @@
+GameObject
+{
+  name std::string "Player"
+  archetype std::string "Player3"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 0.000000
+      y_ float 0.000000
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "purple.png"
+    Size Vec2
+    {
+      X float 1.000000
+      Y float 1.000000
+    }
+  }
+  GamePad
+  {
+    GamepadIndex int 2
+  }
+  BoxCollider
+  {
+    m_width float 32.000000
+    m_height float 32.000000
+    m_materialName std::string "Wood"
+    m_hasCollisionCallback bool true
+  }
+  SoundEmitter
+  {
+  }
+  PlayerController
+  {
+    playerNum int 2
+  }
+}

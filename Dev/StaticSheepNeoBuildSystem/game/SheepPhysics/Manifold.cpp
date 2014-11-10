@@ -1,5 +1,3 @@
-
-
 #include "precompiled.h"
 #include "Manifold.h"
 #include "Vec3D.h"
@@ -10,6 +8,7 @@ namespace SheepFizz
 	//constructor - requires the two bodies
 	Manifold::Manifold(Body* a, Body* b) : A(a), B(b) {}
 	
+  //*******************
 	//Initialize is used after manifold interactions have been calculated to
 	//determine how the bodies will react - it is not called unless
 	//a manifold has a contact count above 0
@@ -42,111 +41,7 @@ namespace SheepFizz
 	}//end of ManifoldInteraction
 
 
-	//apply forces in the direction of the normals determined in
-	//collision functions
-	void Manifold::ApplyForces(void)
-	{
-		//if both objects have infinite mass, skip calculations
-		if(A->massData_.mass == 0 && B->massData_.mass == 0)
-			return;
-
-		//the force must be applied across all contact points
-		for(int i = 0; i < contactCount; ++i)
-		{
-			//this is broken into two primary sections, a seperation
-			//force calculation (impulse) and a friction calculation
-
-			//*******************
-			//calculate impulse
-			//*******************
-			//calculate the relative vectors between the center of mass
-			//and each of the contact points
-			Vec3D aRepulsionVec = contacts[i] - A->position_;
-			Vec3D bRepulsionVec = contacts[i] - B->position_;
-
-			//determine the relative velocity to determine opposite impulse force
-			//calculate as if A is stationary and B is moving
-			//equation is relveloc = velocity + Cross(angularvelocity, relative vec)
-			Vec3D relativevelocity = B->velocity_ + 
-				Vec3D(0,0,B->angularVelocity_) * bRepulsionVec 
-				- A->velocity_ - Vec3D(0,0,A->angularVelocity_) * aRepulsionVec;
-
-			//determine the contact velocity - the relative velocity along the 
-			//collision normal
-			float contactVelocity = relativevelocity.DotProduct(normal);
-
-			//if contactVelocity is greater than 0, it means that the objects are
-			//seperating and we don't want to screw it up
-			if(contactVelocity > 0)
-				return;
-
-			//determine the angular vectors - cross the aRepVec with norm
-			//will give only z value - equivalent to scalar
-			Vec3D aRepulsionCrossNorm = aRepulsionVec * normal;
-			Vec3D bRepulsionCrossNorm = bRepulsionVec * normal;
-
-			//determine the inverse mass sum of the two bodies
-			//a combination of the total mass plus the moments of inertia
-			//used in calculation of scalar to multiply along collision
-			//normal for final calculation of impulse
-			float inverseMassSum = A->massData_.inverseMass + B->massData_.inverseMass +
-				(aRepulsionCrossNorm.z_ * aRepulsionCrossNorm.z_ * A->massData_.inverseInertia) +
-				(bRepulsionCrossNorm.z_ * bRepulsionCrossNorm.z_ * B->massData_.inverseInertia);
-
-			//calculate impulse scalar : "j"
-			float j = -(1.0f + mResitution) * contactVelocity / inverseMassSum;
-
-			//divide by number of contact points
-			j /= contactCount;
-
-
-			//calculate impulse and apply to bodies
-			//A's impulse is negative because the normal is
-			//from B to A;
-			Vec3D impulse = j * normal;
-			A->ApplyImpulse(-impulse, aRepulsionVec);
-			B->ApplyImpulse(impulse, bRepulsionVec);
-
-			//*******************
-			//calculate friction
-			//*******************
-			//uses the same basic equations as impulse, but replaces normal vector
-			//with tangent vector - in the direction closest to the relative velocity
-
-			//because an angular velocity is being applied, must recalculate
-			//relative velocity
-			relativevelocity = B->velocity_ + Vec3D(0,0,B->angularVelocity_) * bRepulsionVec 
-			- A->velocity_ - Vec3D(0,0,A->angularVelocity_) * aRepulsionVec;
-
-			//calculate the normalized tangent vector
-			//by removing the relative velocity component along the normal, only
-			//the tangent remains (non-normalized)
-			Vec3D tangent = relativevelocity - (normal * contactVelocity);
-			tangent.Normalize();
-
-			//calculate friction contact velocity - negative to tangentVector
-			float frictionContactVelocity = relativevelocity.DotProduct(-tangent);
-
-			//calculate friction scalar
-			float jFriction = frictionContactVelocity / inverseMassSum;
-			jFriction /= contactCount;
-
-
-			//calculate friction impulse - use Coulomb's Law of Friction
-			//friction force cannot exceed normal impulse
-			Vec3D frictionImpulse;
-			if(std::abs(jFriction) < j * mStaticFriction)
-				frictionImpulse = jFriction * tangent;
-			else
-				frictionImpulse = tangent * -j * mDynamicFriction;
-
-			//apply friction impulse
-			A->ApplyImpulse(-frictionImpulse, aRepulsionVec);
-			B->ApplyImpulse(frictionImpulse, bRepulsionVec);
-		}
-
-	}//end of ApplyForces
-
+  //*******************
 	//positional correction is designed to prevent sinking of one
 	//object into another
 	void Manifold::PositionalCorrection(void)
@@ -164,6 +59,8 @@ namespace SheepFizz
 
 	}//end of PositionalCorrection
 
+
+  //*******************
 	//determine the support point on body B relative to the face of body A
 	float SupportPoint(Body& A, Body& B, Vec3D vertex, Vec3D normal, unsigned int& supportPoint)
 	{
@@ -174,286 +71,298 @@ namespace SheepFizz
 	Matrix2D aRotation(A.orientation_);
 	Matrix2D bRotation(B.orientation_);
 
+  unsigned int BvertexNumber = ((Rectangle*)B.shape_)->GetVertexNumber();
+
 	//pull a vertex from B to check against A
-	for(unsigned int i = 0; i < MAXVERTICES; ++i)
+  for (unsigned int i = 0; i < BvertexNumber; ++i)
 	{
-	//grab vertex from Body B - will act as support point
-	Vec3D vertexB = ((Rectangle*)B.shape_)->GetVertex(i);
+		//grab vertex from Body B - will act as support point
+		Vec3D vertexB = ((Rectangle*)B.shape_)->GetVertex(i);
 
-	//move vertexB into world space
-	vertexB = bRotation * vertexB;
-	vertexB += B.position_;
+		//move vertexB into world space
+		vertexB = bRotation * vertexB;
+		vertexB += B.position_;
 
-	//move it into A's space
-	vertexB -= A.position_;
-	vertexB = aRotation.Transpose() * vertexB;
+		//move it into A's space
+		vertexB -= A.position_;
+		vertexB = aRotation.Transpose() * vertexB;
 
-	//get the penetration of the support point
-	supportPenetration = vertexB.DotProduct(normal) - vertex.DotProduct(normal);
+		//get the penetration of the support point
+		supportPenetration = vertexB.DotProduct(normal) - vertex.DotProduct(normal);
 
-	//if the supportPenetration is smaller, it means the point is closer
-	//a negative value is required for penetration
-	if(supportPenetration < minMagnitude)
-	{
-	minMagnitude = supportPenetration;
-	supportPoint = i;
-	}
+		//if the supportPenetration is smaller, it means the point is closer
+		//a negative value is required for penetration
+		if(supportPenetration < minMagnitude)
+		{
+		minMagnitude = supportPenetration;
+		supportPoint = i;
+		}
 	}
 
 	return minMagnitude;
 	}//end of SupportPoint
 
 
+  //*******************
 	//find the incident face vertices of the incident body upon the reference body
 	//the incident vertices will be in the reference body's frame
-	void IncidentFace(Vec3D* incidentFaceVertices, Body* referenceBody, Body* incidentBody, 
+  void IncidentFace(Vec3D* incidentFaceVertices, Body* referenceBody, Body* incidentBody, 
 	unsigned int referenceVertex, unsigned int supportPoint)
 	{
-	Vec3D refNormal = ((Rectangle*)referenceBody->shape_)->GetNormal(referenceVertex);
+	  Vec3D refNormal = ((Rectangle*)referenceBody->shape_)->GetNormal(referenceVertex);
 
-	//get the two normals possible for the incident body - the support point normal
-	//and the normal of the support point - 1
-	Vec3D supportNormal = ((Rectangle*)incidentBody->shape_)->GetNormal(supportPoint);
-	unsigned int supportPoint2 = (supportPoint + 1) < MAXVERTICES ? supportPoint + 1 : 0;
-	Vec3D preSupportNormal = ((Rectangle*)incidentBody->shape_)->GetNormal(supportPoint2);
+    unsigned int incVertexNumber = ((Rectangle*)incidentBody->shape_)->GetVertexNumber();
 
-	//translate the normals into the proper reference frame
-	Matrix2D refRotation(referenceBody->orientation_);
-	Matrix2D incRotation(incidentBody->orientation_);
+	  //get the two normals possible for the incident body - the support point normal
+	  //and the normal of the support point - 1
+	  Vec3D supportNormal = ((Rectangle*)incidentBody->shape_)->GetNormal(supportPoint);
+    unsigned int supportPoint2 = (supportPoint + 1) < incVertexNumber ? supportPoint + 1 : 0;
+	  Vec3D preSupportNormal = ((Rectangle*)incidentBody->shape_)->GetNormal(supportPoint2);
 
-	supportNormal = refRotation.Transpose() * (incRotation * supportNormal);
-	preSupportNormal = refRotation.Transpose() * (incRotation * preSupportNormal);
+	  //translate the normals into the proper reference frame
+	  Matrix2D refRotation(referenceBody->orientation_);
+	  Matrix2D incRotation(incidentBody->orientation_);
 
-	//determine which face to use - the most negative result will provide the best face
-	float supportMagnitude = refNormal.DotProduct(supportNormal);
-	float preSupportMagnitude = refNormal.DotProduct(preSupportNormal);
+	  supportNormal = refRotation.Transpose() * (incRotation * supportNormal);
+	  preSupportNormal = refRotation.Transpose() * (incRotation * preSupportNormal);
 
-	//determine which is the first face vertex and which is the second
-	//support point and support point + 1
-	if(supportMagnitude < preSupportMagnitude)
-	{
-	incidentFaceVertices[0] = ((Rectangle*)incidentBody->shape_)->GetVertex(supportPoint);
-	supportPoint = (supportPoint + 1) < MAXVERTICES ? supportPoint + 1 : 0;		
-	incidentFaceVertices[1] = ((Rectangle*)incidentBody->shape_)->GetVertex(supportPoint);
-	}
+	  //determine which face to use - the most negative result will provide the best face
+	  float supportMagnitude = refNormal.DotProduct(supportNormal);
+	  float preSupportMagnitude = refNormal.DotProduct(preSupportNormal);
 
-	//support point - 1 and support point
-	else
-	{
-	incidentFaceVertices[1] = ((Rectangle*)incidentBody->shape_)->GetVertex(supportPoint);
-	supportPoint = (supportPoint - 1) > -1 ? supportPoint - 1 : 3;		
-	incidentFaceVertices[0] = ((Rectangle*)incidentBody->shape_)->GetVertex(supportPoint);
-	}
+	  //determine which is the first face vertex and which is the second
+	  //support point and support point + 1
+	  if(supportMagnitude < preSupportMagnitude)
+	  {
+	  incidentFaceVertices[0] = ((Rectangle*)incidentBody->shape_)->GetVertex(supportPoint);
+    supportPoint = (supportPoint + 1) < incVertexNumber ? supportPoint + 1 : 0;
+	  incidentFaceVertices[1] = ((Rectangle*)incidentBody->shape_)->GetVertex(supportPoint);
+	  }
 
-	//move the face vertices into the reference body's frame
-	incidentFaceVertices[0] = incRotation * incidentFaceVertices[0];
-	incidentFaceVertices[0] += incidentBody->position_;
-	incidentFaceVertices[0] -= referenceBody->position_;
-	incidentFaceVertices[0] = refRotation.Transpose() * incidentFaceVertices[0];
+	  //support point - 1 and support point
+	  else
+	  {
+	  incidentFaceVertices[1] = ((Rectangle*)incidentBody->shape_)->GetVertex(supportPoint);
+	  supportPoint = (supportPoint - 1) > -1 ? supportPoint - 1 : 3;		
+	  incidentFaceVertices[0] = ((Rectangle*)incidentBody->shape_)->GetVertex(supportPoint);
+	  }
 
-	incidentFaceVertices[1] = incRotation * incidentFaceVertices[1];
-	incidentFaceVertices[1] += incidentBody->position_;
-	incidentFaceVertices[1] -= referenceBody->position_;
-	incidentFaceVertices[1] = refRotation.Transpose() * incidentFaceVertices[1];
+	  //move the face vertices into the reference body's frame
+	  incidentFaceVertices[0] = incRotation * incidentFaceVertices[0];
+	  incidentFaceVertices[0] += incidentBody->position_;
+	  incidentFaceVertices[0] -= referenceBody->position_;
+	  incidentFaceVertices[0] = refRotation.Transpose() * incidentFaceVertices[0];
+
+	  incidentFaceVertices[1] = incRotation * incidentFaceVertices[1];
+	  incidentFaceVertices[1] += incidentBody->position_;
+	  incidentFaceVertices[1] -= referenceBody->position_;
+	  incidentFaceVertices[1] = refRotation.Transpose() * incidentFaceVertices[1];
 
 	}//end of IncidentFace
 
 
+  //*******************
 	//determines if two polygons are colliding
 	void RectangleRectangleManifold(Manifold& m)
 	{
-	//preset the contact count to 0;
-	m.contactCount = 0;
+	  //preset the contact count to 0;
+	  m.contactCount = 0;
 
-	//create shortcut pointers to each shape
-	Rectangle* a = (Rectangle*)(m.A->shape_);
-	Rectangle* b = (Rectangle*)(m.B->shape_);
+	  //create shortcut pointers to each shape
+	  Rectangle* a = (Rectangle*)(m.A->shape_);
+	  Rectangle* b = (Rectangle*)(m.B->shape_);
 
-	//arrays to hold the support points of each object
-	//support point is the point on other object that
-	//is 'closest' to first object
-	unsigned int supportA;
-	unsigned int supportB;
+	  //arrays to hold the support points of each object
+	  //support point is the point on other object that
+	  //is 'closest' to first object
+	  unsigned int supportA;
+	  unsigned int supportB;
 
-	//used to hold the support point in the support point
-	//function
-	unsigned int tempSupport;
+	  //used to hold the support point in the support point
+	  //function
+	  unsigned int tempSupport;
 
-	//hold the smallest penetration for each shape
-	//used for collision detection and resolution of contact points
-	float leastPenetrationA = -MAXVALUE;
-	float leastPenetrationB = -MAXVALUE;
-	float tempPenetration;
+	  //hold the smallest penetration for each shape
+	  //used for collision detection and resolution of contact points
+	  float leastPenetrationA = -MAXVALUE;
+	  float leastPenetrationB = -MAXVALUE;
+	  float tempPenetration;
 
-	//record the contact vertex/normal
-	unsigned int vertexA;
-	unsigned int vertexB;
+	  //record the contact vertex/normal
+	  unsigned int vertexA;
+	  unsigned int vertexB;
 
-	//determine if rectangles/polys are colliding*****************
-	//test body A
-	for(unsigned int i = 0; i < MAXVERTICES; ++i)
-	{
-	tempPenetration = SupportPoint(*(m.A), *(m.B), a->GetVertex(i), 
-	a->GetNormal(i), tempSupport);
+	  //determine if rectangles/polys are colliding*****************
+	  //test body A
+    unsigned int AVertexNumber = ((Rectangle*)m.A->shape_)->GetVertexNumber();
 
-	//if the penetration is greater than zero, axis of seperation found
-	if(tempPenetration > 0.0f)
-	return;
+    for (unsigned int i = 0; i < AVertexNumber; ++i)
+	  {
+	    tempPenetration = SupportPoint(*(m.A), *(m.B), a->GetVertex(i), 
+	    a->GetNormal(i), tempSupport);
 
-	//find the least penetration - it should be negative, but the
-	//least negative
-	if(tempPenetration > leastPenetrationA)
-	{
-	//set penetration and support point
-	leastPenetrationA = tempPenetration;
-	supportA = tempSupport;
-	vertexA = i;
-	}
-	}
+	    //if the penetration is greater than zero, axis of seperation found
+	    if(tempPenetration > 0.0f)
+	      return;
 
-	//test body B
-	for(unsigned int i = 0; i < MAXVERTICES; ++i)
-	{
-	tempPenetration = SupportPoint(*(m.B), *(m.A), b->GetVertex(i), 
-	b->GetNormal(i), tempSupport);
+	    //find the least penetration - it should be negative, but the
+	    //least negative
+	    if(tempPenetration > leastPenetrationA)
+	    {
+	      //set penetration and support point
+	      leastPenetrationA = tempPenetration;
+	      supportA = tempSupport;
+	      vertexA = i;
+	    }
+	  }
 
-	//if the penetration is greater than zero, axis of seperation found
-	if(tempPenetration > 0.0f)
-	return;
+	  //test body B
+    unsigned int BVertexNumber = ((Rectangle*)m.B->shape_)->GetVertexNumber();
 
-	//find the least penetration - it should be negative, but the
-	//least negative
-	if(tempPenetration > leastPenetrationB)
-	{
-	//set penetration and support point
-	leastPenetrationB = tempPenetration;
-	supportB = tempSupport;
-	vertexB = i;
-	}
-	}
-	//if this point is reached, the two objects are colliding
-	//end of supportpoint testing and SAT***********
+	  for(unsigned int i = 0; i < BVertexNumber; ++i)
+	  {
+	    tempPenetration = SupportPoint(*(m.B), *(m.A), b->GetVertex(i), 
+	    b->GetNormal(i), tempSupport);
 
-	//set ref and inc bodies***********
-	//create holding values for reference and incident faces
-	Body* referenceBody;
-	float referenceBodyVertex;
+	    //if the penetration is greater than zero, axis of seperation found
+	    if(tempPenetration > 0.0f)
+	      return;
 
-	Body* incidentBody;
-	float incidentBodySupport;
+	    //find the least penetration - it should be negative, but the
+	    //least negative
+	    if(tempPenetration > leastPenetrationB)
+	    {
+	      //set penetration and support point
+	      leastPenetrationB = tempPenetration;
+	      supportB = tempSupport;
+	      vertexB = i;
+	    }
+	  }
+	  //if this point is reached, the two objects are colliding
+	  //end of supportpoint testing and SAT***********
 
-	//add a flag for the case where the B body becomes the
-	//reference face
-	bool flip = false;
+	  //set ref and inc bodies***********
+	  //create holding values for reference and incident faces
+	  Body* referenceBody;
+	  unsigned int referenceBodyVertex;
 
-	//determine which object had the least penetration upon it
-	//and set the appropriate values
-	if(leastPenetrationA > leastPenetrationB)
-	{
-	referenceBody = m.A;
-	referenceBodyVertex = vertexA;
+	  Body* incidentBody;
+	  unsigned int incidentBodySupport;
 
-	incidentBody = m.B;
-	incidentBodySupport = supportA;
-	}
+	  //add a flag for the case where the B body becomes the
+	  //reference face
+	  bool flip = false;
 
-	else
-	{
-	referenceBody = m.B;
-	referenceBodyVertex = vertexB;
+	  //determine which object had the least penetration upon it
+	  //and set the appropriate values
+	  if(leastPenetrationA > leastPenetrationB)
+	  {
+	    referenceBody = m.A;
+	    referenceBodyVertex = vertexA;
 
-	incidentBody = m.A;
-	incidentBodySupport = supportB;
+	    incidentBody = m.B;
+	    incidentBodySupport = supportA;
+	  }
 
-	flip = true;
-	}
-	//end of setting ref and inc bodies***********
+	  else
+	  {
+	  referenceBody = m.B;
+	  referenceBodyVertex = vertexB;
 
-	//determine incident face
-	Vec3D incidentFaceVertices[2];
-	IncidentFace(incidentFaceVertices, referenceBody, incidentBody, referenceBodyVertex, incidentBodySupport);
+	  incidentBody = m.A;
+	  incidentBodySupport = supportB;
 
-	//clipping***********
-	//find direction vector for reference face
-	Vec3D refVertex1 = ((Rectangle*)referenceBody->shape_)->GetVertex(referenceBodyVertex);
-	unsigned int refVertexNext = (referenceBodyVertex + 1 < MAXVERTICES) ? referenceBodyVertex + 1 : 0;
-	Vec3D refVertex2 = ((Rectangle*)referenceBody->shape_)->GetVertex(refVertexNext);
-	Vec3D refDirection = refVertex2 - refVertex1;
+	  flip = true;
+	  }
+	  //end of setting ref and inc bodies***********
 
-	refDirection.Normalize();
+	  //determine incident face
+	  Vec3D incidentFaceVertices[2];
+	  IncidentFace(incidentFaceVertices, referenceBody, incidentBody, referenceBodyVertex, incidentBodySupport);
 
-	//find the incident face direction
-	Vec3D incDirection = incidentFaceVertices[1] - incidentFaceVertices[0];
+    unsigned int refVertexNumber = ((Rectangle*)referenceBody->shape_)->GetVertexNumber();
 
-	//determine if the two incident faces are outside the bounds of the side
-	//keep track of the amount that needs to be clipped by determining the distance
-	//of each vertex from the side being tested
-	//the ref face with the face vertex
-	float incidentDirection1 = refDirection.DotProduct(incidentFaceVertices[0]);
-	//the other face vertex with ref face (opposite direction)
-	float opDirection1 = refDirection.DotProduct(incidentFaceVertices[1]);
-	//the edge of the face with the ref face
-	float sideDirection1 = refDirection.DotProduct(refVertex2);
-	//the magnitude of the face vert with the edge of ref face
-	float incMagnitude1 = incidentDirection1 - sideDirection1;
-	//the other face with the edge of the ref face
-	float opMagnitude1 = sideDirection1 - opDirection1;
+	  //clipping***********
+	  //find direction vector for reference face
+	  Vec3D refVertex1 = ((Rectangle*)referenceBody->shape_)->GetVertex(referenceBodyVertex);
+	  unsigned int refVertexNext = (referenceBodyVertex + 1 < refVertexNumber) ? referenceBodyVertex + 1 : 0;
+	  Vec3D refVertex2 = ((Rectangle*)referenceBody->shape_)->GetVertex(refVertexNext);
+	  Vec3D refDirection = refVertex2 - refVertex1;
 
-	//clip other side
-	float incidentDirection2 = (-refDirection).DotProduct(incidentFaceVertices[1]);
-	float opDirection2 = (-refDirection).DotProduct(incidentFaceVertices[0]);
-	float sideDirection2 = (-refDirection).DotProduct(refVertex1);
-	float incMagnitude2 = incidentDirection2 - sideDirection2;
-	float opMagnitude2 = sideDirection2 - opDirection2;
+	  refDirection.Normalize();
 
-	//the ratio for moving along the incDirection
-	float incidentRatio;
+	  //find the incident face direction
+	  Vec3D incDirection = incidentFaceVertices[1] - incidentFaceVertices[0];
 
-	//clip sides
-	if(incMagnitude1 > 0)
-	{
-	incidentRatio = incMagnitude1 / (incMagnitude1 + opMagnitude1);
-	incidentFaceVertices[0] = incidentRatio * incDirection + incidentFaceVertices[0];
-	}
+	  //determine if the two incident faces are outside the bounds of the side
+	  //keep track of the amount that needs to be clipped by determining the distance
+	  //of each vertex from the side being tested
+	  //the ref face with the face vertex
+	  float incidentDirection1 = refDirection.DotProduct(incidentFaceVertices[0]);
+	  //the other face vertex with ref face (opposite direction)
+	  float opDirection1 = refDirection.DotProduct(incidentFaceVertices[1]);
+	  //the edge of the face with the ref face
+	  float sideDirection1 = refDirection.DotProduct(refVertex2);
+	  //the magnitude of the face vert with the edge of ref face
+	  float incMagnitude1 = incidentDirection1 - sideDirection1;
+	  //the other face with the edge of the ref face
+	  float opMagnitude1 = sideDirection1 - opDirection1;
 
-	if(incMagnitude2 > 0)
-	{
-	incidentRatio = incMagnitude2 / (incMagnitude2 + opMagnitude2);
-	incidentFaceVertices[1] = -incidentRatio * incDirection + incidentFaceVertices[1];
-	}
+	  //clip other side
+	  float incidentDirection2 = (-refDirection).DotProduct(incidentFaceVertices[1]);
+	  float opDirection2 = (-refDirection).DotProduct(incidentFaceVertices[0]);
+	  float sideDirection2 = (-refDirection).DotProduct(refVertex1);
+	  float incMagnitude2 = incidentDirection2 - sideDirection2;
+	  float opMagnitude2 = sideDirection2 - opDirection2;
 
-	//set the normal for the manifold
-	m.normal = ((Rectangle*)referenceBody->shape_)->GetNormal(referenceBodyVertex);
+	  //the ratio for moving along the incDirection
+	  float incidentRatio;
 
-	//get the rotation matrix for the orientation
-	Matrix2D refRotation(referenceBody->orientation_);
+	  //clip sides
+	  if(incMagnitude1 > 0)
+	  {
+	  incidentRatio = incMagnitude1 / (incMagnitude1 + opMagnitude1);
+	  incidentFaceVertices[0] = incidentRatio * incDirection + incidentFaceVertices[0];
+	  }
 
-	//test if the incident vertices are behind the reference face - set the contact points
-	//back into world space
-	if(incidentFaceVertices[0].DotProduct(m.normal) - (refVertex1.DotProduct(m.normal)) < 0)
-	{
-	m.penetration = -(incidentFaceVertices[0].DotProduct(m.normal) - (refVertex1.DotProduct(m.normal)));
-	m.contacts[m.contactCount++] = referenceBody->position_ + refRotation * incidentFaceVertices[0];
-	}
+	  if(incMagnitude2 > 0)
+	  {
+	  incidentRatio = incMagnitude2 / (incMagnitude2 + opMagnitude2);
+	  incidentFaceVertices[1] = -incidentRatio * incDirection + incidentFaceVertices[1];
+	  }
 
-	if(incidentFaceVertices[1].DotProduct(m.normal) - (refVertex1.DotProduct(m.normal)) < 0)
-	{
-	m.penetration -= (incidentFaceVertices[1].DotProduct(m.normal) - (refVertex1.DotProduct(m.normal)));
-	m.contacts[m.contactCount++] = referenceBody->position_ + refRotation * incidentFaceVertices[1];
-	}
-	//end of clipping***********
+	  //set the normal for the manifold
+	  m.normal = ((Rectangle*)referenceBody->shape_)->GetNormal(referenceBodyVertex);
 
-	//shift the reference normal back into world space
-	m.normal = refRotation * m.normal;
+	  //get the rotation matrix for the orientation
+	  Matrix2D refRotation(referenceBody->orientation_);
 
-	//flip the normal if B is the reference face and average the penetration
-	if(flip)
-	m.normal = -(m.normal);
+	  //test if the incident vertices are behind the reference face - set the contact points
+	  //back into world space
+	  if(incidentFaceVertices[0].DotProduct(m.normal) - (refVertex1.DotProduct(m.normal)) < 0)
+	  {
+	  m.penetration = -(incidentFaceVertices[0].DotProduct(m.normal) - (refVertex1.DotProduct(m.normal)));
+	  m.contacts[m.contactCount++] = referenceBody->position_ + refRotation * incidentFaceVertices[0];
+	  }
 
-	if(m.penetration > 4)
-	m.contactCount = 0;
+	  if(incidentFaceVertices[1].DotProduct(m.normal) - (refVertex1.DotProduct(m.normal)) < 0)
+	  {
+	  m.penetration -= (incidentFaceVertices[1].DotProduct(m.normal) - (refVertex1.DotProduct(m.normal)));
+	  m.contacts[m.contactCount++] = referenceBody->position_ + refRotation * incidentFaceVertices[1];
+	  }
+	  //end of clipping***********
 
-	m.penetration /= m.contactCount;
+	  //shift the reference normal back into world space
+	  m.normal = refRotation * m.normal;
+
+	  //flip the normal if B is the reference face and average the penetration
+	  if(flip)
+	  m.normal = -(m.normal);
+
+	  if(m.penetration > 20)
+	  m.contactCount = 0;
+
+	  m.penetration /= m.contactCount;
 
 	}//end of RectangleRectangleManifold
 
@@ -511,9 +420,11 @@ namespace SheepFizz
 		//incident side
 		unsigned int rectangleSide;
 
-		for(unsigned int i = 0; i < MAXVERTICES; ++i)
+    unsigned int BVertexNumber = b->GetVertexNumber();
+
+    for (unsigned int i = 0; i < BVertexNumber; ++i)
 		{
-			//find the seperation between circle and rec
+			//find the separation between circle and rec
 			float separation = (b->GetNormal(i)).DotProduct(circleCenter - b->GetVertex(i));
 
 			//if separation exceeds radius, the shapes are not colliding
@@ -532,10 +443,10 @@ namespace SheepFizz
 
 		//get two vertices of rectangle
 		Vec3D rectangleVertex1 = b->GetVertex(rectangleSide);
-		unsigned int rectangleSide2 = ((rectangleSide + 1) < MAXVERTICES) ? (rectangleSide + 1) : 0;
+		unsigned int rectangleSide2 = ((rectangleSide + 1) < BVertexNumber) ? (rectangleSide + 1) : 0;
 		Vec3D rectangleVertex2 = b->GetVertex(rectangleSide2);
 
-		//create a side for dotproducts
+		//create a side for dot products
 		Vec3D side = rectangleVertex2 - rectangleVertex1;
 
 		//determine if circle is within bounds of a side

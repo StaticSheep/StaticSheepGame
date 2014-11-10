@@ -42,7 +42,7 @@ namespace Framework
     
   }
 
-  void AntTweakModule::ReceiveMessage(Message msg)
+  void AntTweakModule::ReceiveMessage(Message& msg)
   {
 #if USE_ANTTWEAKBAR
     if (msg.MessageId == Message::PostDraw)
@@ -58,6 +58,11 @@ namespace Framework
       TwCopyStdStringToClientFunc(CopyStdStringToClient); // must be called once (just after TwInit for instance)
       
       return;
+    }
+    if (msg.MessageId == Message::WindowResize)
+    {
+      ResizeMessage* rMsg = (ResizeMessage*)&msg;
+      TwWindowSize((int)rMsg->width, (int)rMsg->height);
     }
 #endif
   }
@@ -95,6 +100,16 @@ namespace Framework
       return;
 
     bar->toRemove = true;
+#endif
+  }
+
+  void AntTweakModule::RemoveAllBars(void)
+  {
+#if USE_ANTTWEAKBAR
+    for (size_t i = 0; i < m_bars.Size(); ++i)
+    {
+      reinterpret_cast<AntTweak::TBar*>(m_bars[i])->toRemove = true;
+    }
 #endif
   }
 
@@ -407,6 +422,7 @@ namespace Framework
 
     if (clientData->genericMember == nullptr || clientData->setCB)
     {
+      AntTweak::Tweaker::currentGeneric = clientData;
       clientData->setCB.ForceBind(genericObject);
       clientData->setCB(value);
       return;
@@ -433,6 +449,7 @@ namespace Framework
 
     if (clientData->genericMember == nullptr || clientData->getCB)
     {
+      AntTweak::Tweaker::currentGeneric = clientData;
       clientData->getCB.ForceBind(genericObject);
       clientData->getCB(value);
       return;
@@ -460,6 +477,7 @@ namespace Framework
 
     if (clientData->genericMember == nullptr || clientData->getCB)
     {
+      AntTweak::Tweaker::currentGeneric = clientData;
       clientData->getCB.ForceBind(genericObject);
       clientData->getCB(value);
       return;

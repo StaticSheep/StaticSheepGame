@@ -1,6 +1,7 @@
 #pragma once
 #include "Material.h"
 #include "Shape.h"
+#include "BodyProperties.h"
 
 namespace SheepFizz
 {
@@ -15,14 +16,6 @@ class MassData
 		float inverseInertia;
 };
 
-enum BodyGroup{
-
-	BodyGroup1,
-	BodyGroup2,
-	BodyGroup3,
-	BodyGroupLength
-};
-
 enum CollisionGroup{
 
 	CollGroup1,
@@ -35,17 +28,25 @@ enum CollisionGroup{
 class Body
 {
 	public:
-    Body(Shape* shape,
+		//body requires a shape* to be passed - all others default to base constructors
 			void* userData = NULL,
-			float orientation = PI, 
-			float angularVelocity = 0, 
+			float orientation = PI,
+			float angularVelocity = 0,
 			float torque = 0,
-			CollisionGroup collisionGroup = CollGroup1, //used for determining collision gorups
-			BodyGroup bodyGroup = BodyGroup1,			//used for certain collisions/resolutions 
+			CollisionGroup collisionGroup = CollGroup1, //used for determining collision groups
+			unsigned int bodyGroup = 0,					//used for certain collisions/resolutions 
 			float gravityScale = 1,						//used to modify gravity
-			unsigned int gravityOn = 1);						//used to turn gravity on and off
+			unsigned int gravityOn = 1					//used to turn gravity on and off
+			);					
 
 		//used in initialization of body - computes mass
+
+		//function used to identify type of body
+		//and apply special functions to player
+
+		//turn gravity on and off in a direction
+
+		//used for expansion for other collisions
 
 		//apply forces directly to the body - an impulse is an
 		//instantaneous force application, so no dt is applied
@@ -54,7 +55,7 @@ class Body
 
 
 		//shape and material used to calculate MassData;
-		//shape and materail are defined by the gameobject
+		//shape and material are defined by the game object
 		Shape *shape_;
 		Material material_;
 		MassData massData_;
@@ -64,13 +65,16 @@ class Body
 
 		//turns gravity on and off for a specific body;
 		unsigned int gravityOn_;
+		Vec3D gravityNormal_;
 
 		//body group - used for different groups of objects
 		//e.g. can be used to turn off gravity for all of one type of object - *not implemented*
-		BodyGroup bodyGroup_;
+		unsigned int bodyGroup_;
 
 		//collisiongroup - used to ignore collision for various types of objects;
 		CollisionGroup collisionGroup_;
+
+		bool collisionCallback_;
 
 		//key forces and values for body
 		Vec3D velocity_;

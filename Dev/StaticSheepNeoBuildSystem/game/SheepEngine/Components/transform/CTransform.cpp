@@ -77,8 +77,17 @@ namespace Framework
 
   void Transform::SetPhysicsBody(unsigned body)
   {
-    m_pBody = body;
-    m_hasPhysics = true;
+    if (body == Handle::null)
+    {
+      m_pBody = Handle::null;
+      m_hasPhysics = false;
+    }
+    else
+    {
+      m_pBody = body;
+      m_hasPhysics = true;
+    }
+    
   }
 
 
@@ -89,7 +98,7 @@ namespace Framework
   {
     if (m_hasPhysics)
     {
-      return reinterpret_cast<SheepFizz::PhysicsSpace*>(space->m_pSpace)->GetBodyPos(m_pBody);
+      return (reinterpret_cast<SheepFizz::PhysicsSpace*>(space->m_pSpace)->GetBodyPos(m_pBody));
     }
     else
       return m_translation;
@@ -165,7 +174,7 @@ namespace Framework
     // Decrease padding level
     s->Padding(file, --s->GetPadLevel());
     // Write a bracket
-    file.Write("}");
+    file.Write("}\n");
   }
 
   void Transform::Deserialize(File& file, Variable var)

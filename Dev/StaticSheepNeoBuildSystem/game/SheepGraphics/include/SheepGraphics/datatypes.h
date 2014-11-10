@@ -101,15 +101,4 @@ namespace DirectSheep
     Dimension resolution;
     unsigned refreshRate;
   };
-
-  struct Color
-  {
-   GFX_API Color() : r(1.0f), g(1.0f), b(1.0f), a(1.0f) {}
-   GFX_API Color(float r, float g, float b, float a=1) : r(r), g(g), b(b), a(a) {}
-
-    float r;
-    float g;
-    float b;
-    float a;
-  };
 }

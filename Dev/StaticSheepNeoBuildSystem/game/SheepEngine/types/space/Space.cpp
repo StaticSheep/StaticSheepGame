@@ -14,24 +14,28 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "systems/anttweak/AntTweakModule.h"
 
 #include <iostream>
+#include "engine/core/Engine.h"
 
 
 namespace Framework
 {
 
+  unsigned int GameSpace::maxGuid = 0;
+
   GameSpace::GameSpace() :
-    m_objects(sizeof(GameObject), 50),
+    m_objects(sizeof(GameObject), 150),
     m_shuttingDown(false),
     m_paused(false),
     m_hidden(false),
     m_valid(true),
-    m_guid(0),
-	m_pSpace(nullptr)
+    m_spaceGUID(GameSpace::maxGuid++),
+    m_pSpace(nullptr),
+    m_edit(false)
   {
     for(unsigned i = 0; i < ecountComponents; ++i)
     {
       if (FACTORY->m_componentCreators[i])
-        m_components[i].Initialize(FACTORY->m_componentCreators[i]->m_size, 50);
+        m_components[i].Initialize(FACTORY->m_componentCreators[i]->m_size, 150);
     }
     
     hooks.space = this;
@@ -140,7 +144,8 @@ namespace Framework
       GetHandles().Update(moved, moved->self);
 
 #if USE_ANTTWEAKBAR
-    UpdateTweakBar();
+    if (!m_shuttingDown && !ENGINE->PlayingInEditor())
+      UpdateTweakBar();
 #endif
   }
 
@@ -349,6 +354,11 @@ namespace Framework
   {
     m_paused = paused;
 
+    if (paused)
+      PHYSICS->SetDT(this, 0.0f);
+    else
+      PHYSICS->SetDT(this, 0.0167f);
+
     Lua::CallFunc(ENGINE->Lua(), "PauseGameSpace", m_name, paused);
   }
 
@@ -367,6 +377,13 @@ namespace Framework
   bool GameSpace::Hidden()
   {
     return m_hidden;
+  }
+
+  void GameSpace::Destroy()
+  {
+    if (m_valid)
+      ENGINE->m_spaceRemoveList.push_back(this);
+    m_valid = false;
   }
 
   void GameSpace::Clear()
@@ -408,6 +425,7 @@ namespace Framework
   
   void GameSpace::Tweak()
   {
+    m_edit = true;
     GET_TYPE(GameSpace)->Tweak(nullptr, this, nullptr, nullptr);
   }
 

@@ -1,0 +1,422 @@
+/******************************************************************************
+Filename: SheepMath.cpp
+Project: 
+Author(s): Zakary Wilson
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+******************************************************************************/
+
+/******************************************************************************
+    Includes
+******************************************************************************/
+
+#include "src/precompiled.h"
+#include "SheepMath.h" /* math functions */
+#include "boost/random.hpp"
+#include <cstdlib>
+
+/******************************************************************************
+    Constants
+******************************************************************************/
+
+// these are used for CatSpline
+const float M11 =  0.0f;
+const float M12 =  1.0f;
+const float M13 =  0.0f;
+const float M14 =  0.0f;
+const float M21 = -0.5f;
+const float M22 =  0.0f;
+const float M23 =  0.5f;
+const float M24 =  0.0f;
+const float M31 =  1.0f;
+const float M32 = -2.5f;
+const float M33 =  2.0f;
+const float M34 = -0.5f;
+const float M41 = -0.5f;
+const float M42 =  1.5f;
+const float M43 = -1.5f;
+const float M44 =  0.5f;
+
+const double e = 0.0000000001; // epsilon precision value
+const float Floating_Precision = 1000000.0f; //used in float to fractions f()
+
+namespace Framework
+{
+
+/******************************************************************************
+  Private Function Prototypes
+******************************************************************************/
+
+  double    _POW(float,int);
+  double    _Factorial(int);
+  int       _GDC(int,int);
+  Fraction  _FloatToFraction(float);
+  double    _SquareRoot(float);
+
+/*****************************************************************************/
+
+
+/*!
+    \brief
+      Raises a float to the power of the passed int exponent.
+    
+    \param number
+      Number to be raised to the power of exponent.
+    
+    \param exponent
+      The power to raise number to.
+      
+    \return result
+      Return a double, since the number could be potentially very large.
+*/
+  double POW(float number, int exponent)
+  {
+    if(exponent == 1)
+      return (double)number;
+
+    if(exponent == 0)
+      return 1.0;
+
+    if(exponent < 0)
+      return ( 1.0 / _POW(number, -exponent) );
+
+    return _POW(number, exponent);
+  }
+
+ 
+/*!
+    \brief
+      Calculates the factorial of an integer
+    
+    \param number
+      The number to find the factorial of. Positive only
+      
+    \return result
+      Return a double, since the number could be potentially very large.
+*/
+  double Factorial(int number)
+  {
+    if(number < 0)
+      return 0;
+
+    if(number == 0)
+      return 1;
+
+    return _Factorial(number);
+  }
+
+ 
+/*!
+    \brief
+      Changes a float into a fraction(struct) of integers.
+    
+    \param number
+      The number to find the integer fraction of.
+      
+    \return fract
+      Return a struct that contains the numerator and denominator.
+*/
+  Fraction FloatToFraction(float number)
+  {
+    Fraction Zero(0,0);
+    if(number)
+      return _FloatToFraction(number);
+    else
+      return Zero;
+  }
+
+ 
+/*!
+    \brief
+      Approximates accurately the square root of a positive float.
+    
+    \param number
+      The number to find the square root of.
+      
+    \return x
+      Return the square root in double form, for maximum accuracy.
+*/
+  double SquareRoot(float Number)
+  {
+    Fraction fract(0,0);
+    int x, y;
+
+    if( Number <= 0.0f )
+      return Number;
+
+    if( Number < 1.0f ) // between 0 and 1 is a special case, need to calculate
+    {                   // calculate a fraction
+      fract = _FloatToFraction(Number);
+      x = (int)_SquareRoot((float)fract.Numerator);
+      y = (int)_SquareRoot((float)fract.Denominator);
+      return ( x / y );
+    }
+
+    return _SquareRoot(Number);
+  }
+
+ 
+/*!
+    \brief
+      Sets a Vec2 to unit length.
+    
+    \param Vector
+      Pointer to the Vec2 to be normalized.
+*/
+  void Normalize(Vec2D* Vector)
+  {
+    double length = SquareRoot( ( Vector->x * Vector->x ) + 
+                                ( Vector->y * Vector->y ) );
+    
+    /*unit length = X / |X| where |X| is the magnitude(length) of the Vector*/
+    Vector->x /= (float)length;
+    Vector->y /= (float)length;
+
+    return;
+  }
+
+ 
+/*!
+    \brief
+      Sets a Vec3 to unit length.
+    
+    \param Vector
+      Pointer to the Vec3 to be normalized.
+*/
+  void Normalize(Vec3D* Vector)
+  {
+    float length;
+    
+    /*length is sqrt((x^2) + (y^2) + (z^2))*/
+    length = (float)SquareRoot( ( Vector->x * Vector->x ) + 
+                                ( Vector->y * Vector->y ) );
+    
+    /*unit length = X / |X| where |X| is the magnitude(length) of the Vector*/
+    Vector->x /= (float)length;
+    Vector->y /= (float)length;
+    
+    return;
+  }
+  
+ 
+/*!
+    \brief
+      This approximates a curve with 4 given control points. It will make the
+      curve between the two middle points. The curve will start and end on
+      the second and third points.
+    
+    \param x
+      The time, or position on the curve
+      
+    \param v0
+      The first control point
+      
+    \param v1
+      The second control point
+    
+    \param v2
+      The third control point
+      
+    \param v3
+      The fourth control point
+*/
+  float CatSpline(double x, float v0, float v1, float v2, float v3)
+  {
+    float c1,c2,c3,c4;
+
+    c1 =            M12 * v1;
+    c2 = M21 * v0            + M23 * v2;
+    c3 = M31 * v0 + M32 * v1 + M33 * v2 + M34 * v3;
+    c4 = M41 * v0 + M42 * v1 + M43 * v2 + M44 * v3;
+    
+    return (float)(((c4 * x + c3) * x + c2) * x + c1);
+  }
+  
+/*!
+    \brief
+      Gets a random number between min and max
+    
+    \param min
+      The minimum value
+
+    \param max
+      The maximum value
+*/
+  int GetRandom(int min, int max)
+  {
+    static boost::random::mt19937 rng((uint32_t)std::time(0));
+    boost::random::uniform_int_distribution<> range(min, max);
+    return range(rng);
+  }
+
+/*!
+    \brief
+      Gets the smallest of the two numbers
+*/
+  float Minimum(float a, float b)
+  {
+    return ((a < b) ? a : b);
+  }
+  
+/*!
+    \brief
+      Gets the largest of the two numbers
+*/
+  float Maximum(float a, float b)
+  {
+    return ((a > b) ? a : b);
+  }
+
+/*!
+    \brief
+      Clamps a number between two values
+*/
+  float Clamp(float a, float min, float max)
+  {
+    if(a < min)
+      return min;
+
+    if(a > max)
+      return max;
+
+    return a;
+  }
+
+/******************************************************************************
+    Private Functions
+******************************************************************************/
+
+/*!
+    \brief
+      Calculates the greatest common denominator
+*/
+  int _GCD(int a, int b)
+  {
+    int m = 0;
+    int n = 0;
+    int r = 0;
+    
+    //edge case detection
+      if(a == 0)
+        return b;
+      
+      if(b == 0)
+        return a;
+
+      if(a < 0)
+        a = -a;
+      
+      if(b < 0)
+        b = -b;
+    
+    //set up the values of m and n correctly
+      if(a > b)
+      {
+        m = a;
+        n = b;
+      }
+      if(a < b)
+      {
+        n = a;
+        m = b;
+      }
+      if(a == b)
+      {
+        return 0; //return if they are the same number
+      }
+
+    r = m % n;
+    //standard gcd calculation loop
+      while (r != 0)
+      {
+        m = n;
+        n = r;
+        r = m % n; //iterates until the gcd is found
+      }
+
+    return n; //then returns it
+  }
+
+/*!
+    \brief
+      Simple power function with integral exponents
+*/
+  double _POW(float number, int exponent)
+  {
+    int i;
+    double result = (double)number;
+
+    /* main calculation. Multiply the number by itself exponent amount of times*/
+    for(i = 1; i < exponent; ++i)
+    {
+      result *= number;
+    }
+
+    if(exponent < 0)/* this may need to change later */
+      return ( 1.0 / result);
+
+    return result;
+  }
+
+/*!
+    \brief
+      Calculates the factorial of a number.
+*/
+  double _Factorial(int number)
+  {
+    int i;
+    /*set result to 1 for easier calculations... */
+    double result = 1.0;
+
+    /* start at 1, then * 2, * 3, * 4... * N amount of times */
+    for(i = 2; i <= number; ++i)
+    {
+      result *= i;
+    }
+
+    return result;
+  }
+
+/*!
+    \brief
+      Turns a float into a fraction value of integers
+*/
+  Fraction _FloatToFraction(float number)
+  {
+    //get rid of the decimal value.
+    int numerator = (int)(number * Floating_Precision);
+    int denominator = (int)Floating_Precision;
+
+    //declare a fraction struct. Has numerator and denominator
+    Fraction fract; 
+
+    //find the greatest common denominator between the two.
+    int gcd = _GCD(numerator, denominator);
+
+    //divide the numerator and denominator by the gcd
+    fract.Numerator = numerator / gcd;
+    fract.Denominator = denominator / gcd;
+
+    //this returns a struct that has the correct numerator and denominator
+    return fract;
+
+  }
+
+/*!
+    \brief
+      Approximates the square root of a number.
+*/
+  double _SquareRoot(float Number)
+  {
+    double x = (double)Number; /* need to keep Number intact */
+    double y = 1.0;            /* can only calculate numbers larger than 1 */
+    
+    while(x - y > e) /* otherwise, do the following until we reach e precision */
+    {
+      x = (x + y) / 2;
+      y = (double)Number / x;
+    }
+    
+    return x; /* then return what we found */
+  }
+} // end namespace

@@ -1,5 +1,6 @@
 #include "pch/precompiled.h"
 #include "CGamePad.h"
+#include "systems/input/Input.h"
 #pragma comment(lib, "Xinput9_1_0.lib")
 
 namespace Framework
@@ -33,7 +34,7 @@ namespace Framework
     RThumbstick = 11;
   }
   //default constructor
-  GamePad::GamePad() {GamepadIndex = 1;}
+  GamePad::GamePad() {GamepadIndex = 0;}
   
   //remove the component
   void GamePad::Remove()
@@ -45,7 +46,7 @@ namespace Framework
   void GamePad::SetPad(int padNum)
   {
      //set gamepad
-    GamepadIndex = padNum - 1;
+    GamepadIndex = padNum;
 
     //Iterate through all gamepad buttons
     for(int i = 0; i < ButtonCount; i++)
@@ -56,11 +57,16 @@ namespace Framework
     }
   }
 
+  void GamePad::EditorSetPad(void* padNum)
+  {
+    SetPad(*(int*)padNum);
+  }
+
   //initialize the component
   void GamePad::Initialize()
   {
     SetPad(GamepadIndex);
-    space->hooks.Add("FrameUpdate", self, BUILD_FUNCTION(GamePad::Update));
+    space->hooks.Add("FrameUpdate", self, BUILD_FUNCTION(GamePad::FrameUpdate));
   }
 
   //////////////////////////////////////////////////////////////////////
@@ -68,7 +74,7 @@ namespace Framework
   //////////////////////////////////////////////////////////////////////
 
   //update gamepad state
-  void GamePad::Update()
+  void GamePad::FrameUpdate(float dt)
   {
     RefreshState(); //store old button presses
 
@@ -170,7 +176,7 @@ namespace Framework
   //return the Y axis of the right stick
   float GamePad::RightStick_Y()
   {
-    //Obtain the Y axis of th eright stick
+    //Obtain the Y axis of the right stick
     short sY = State.Gamepad.sThumbRY;
 
     //convert the value to a float
@@ -238,10 +244,10 @@ namespace Framework
     XINPUT_STATE GamePadState;
 
     //Zero memory
-    ZeroMemory(&GamePadState, sizeof(XINPUT_STATE));
+    //ZeroMemory(&GamePadState, sizeof(XINPUT_STATE));
 
     //Get the state of the gamepad
-    XInputGetState(GamepadIndex, &GamePadState);
+    SHEEPINPUT->GetGamePadState(GamepadIndex, &GamePadState);
 
     //return the gampad state
     return GamePadState;

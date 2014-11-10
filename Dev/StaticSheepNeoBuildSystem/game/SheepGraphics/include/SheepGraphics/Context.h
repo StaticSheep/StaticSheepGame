@@ -1,16 +1,12 @@
 #pragma once
 
-#if defined(DLL_GFXEXPORT)
 #include "DataTypes.h"
-#else
-#include "DataTypes.h"
-#endif
+
 namespace DirectSheep
 {
   class Handle;
 } // namespace Graphics
 
-#include "DataTypes.h"
 
 namespace DirectSheep
 {
@@ -46,6 +42,11 @@ class RenderContext
    GFX_API void DrawIndexed(unsigned indexCount, unsigned indexStart = 0, unsigned vertexStart = 0);
    GFX_API void DrawInstanced(unsigned vertexCount, unsigned instanceCount, unsigned vertexStart = 0, unsigned instanceStart = 0);
    GFX_API void DrawIndexInstanced(unsigned indexCountPerInstance, unsigned instanceCount, unsigned indexStart = 0, unsigned vertexStart = 0, unsigned instanceStart = 0);
+   GFX_API void DrawBatched(DirectSheep::Handle texture);
+   GFX_API void StartBatch();
+   GFX_API void EndBatch();
+   GFX_API void frameStart();
+   GFX_API void frameEnd();
    GFX_API void Present(void);
 
     /////////////////////////////////////////////////////////////
@@ -83,8 +84,9 @@ class RenderContext
     //                    SETTER FUNCTIONS                     //
     /////////////////////////////////////////////////////////////
 
+   GFX_API void setWireFrame(bool isWired);
+   GFX_API void Resize(float width, float height);
    GFX_API void SetClearColor(const float r, const float g, const float b, const float a);
-   GFX_API void SetClearColor(const Color& color);
    GFX_API void SetTargetWindow(const HWND& hwnd);
    GFX_API void SetFullscreen(const bool fullscreen);
    GFX_API void SetPrimitiveTopology(const PrimitiveTopology primitiveTopology);
@@ -96,7 +98,7 @@ class RenderContext
    GFX_API void SetVSync(bool vsync);
 
    GFX_API void SetUV(float x1, float y1, float x2, float y2);
-   GFX_API void SetPosition(const float x, const float y);
+   GFX_API void SetPosition(const float x, const float y, const float z);
    GFX_API void SetRotation(const float theta);
    GFX_API void SetDimensions(const float w, const float h);
    GFX_API void SetBlendCol(const float r, const float g, const float b, const float a);
@@ -111,14 +113,13 @@ class RenderContext
    GFX_API void* ExternalGetDevice(void) const;
    GFX_API const Dimension& GetNativeResolution(void) const;
    GFX_API const Viewport& GetViewport(void) const;
-   GFX_API const Dimension& GetTextureSize(const Handle& texHandle) const;
+   GFX_API const Dimension GetTextureSize(const Handle& texHandle) const;
 
     /////////////////////////////////////////////////////////////
     //                    UTILITY FUNCTIONS                    //
     /////////////////////////////////////////////////////////////
 
    GFX_API void ClearRenderTarget(const Handle& handle, float r, float g, float b, float a);
-   GFX_API void ClearRenderTarget(const Handle& handle, Color clearColor);
    GFX_API void ClearBackBuffer(void);
    GFX_API void ClearDepthBuffer(void);
 
@@ -144,28 +145,26 @@ class RenderContext
     //---------//
     // Structs //
     //---------//
-    struct Texture
+
+    enum RastStates
     {
-      ID3D11ShaderResourceView *shaderResourceView;
-      ID3D11Texture2D          *texture;
-      Dimension                 size;
+      Fill = 0,
+      Wire,
+      NumStates,
     };
 
     struct DepthBuffer
-    {
       ID3D11DepthStencilView      *m_depthBuffer;
       ID3D11DepthStencilState     *m_depthState;
       ID3D11Texture2D             *texture2D;
     };
 
     struct VertexShader
-    {
       ID3D11VertexShader *vShader;
       ID3D11InputLayout  *inputLayout;
     };
 
     struct RenderTarget
-    {
       ID3D11RenderTargetView   *renderTargetView;
       ID3D11ShaderResourceView *shaderResourceView;
       ID3D11Texture2D          *texture2D;
@@ -177,7 +176,6 @@ class RenderContext
     };
 
     struct Font
-    {
       IFW1Factory     *m_fontFactory;
       IFW1FontWrapper *m_fontWrapper;
     };
@@ -192,6 +190,7 @@ class RenderContext
 
       float x;
       float y;
+      float z;
       float w;
       float h;
       Vec2 uvBegin;
@@ -204,11 +203,11 @@ class RenderContext
     //////////////
     bool        m_initialized;
     HWND        m_hwnd;
-    std::string m_graphicsCardInfo;
     Dimension   m_resolution;
     Dimension   m_nativeResolution;
     bool        m_fullscreen;
     bool        m_vsync;
+    std::string m_contentPath = "content\\";
 
     /////////////
     // DirectX //
@@ -221,7 +220,6 @@ class RenderContext
     IDXGIOutput                 *m_output;
     Font                         m_font;               
     int                         m_displayModeIndex;
-    std::vector<DisplayMode>    m_displayModes;
     std::vector<DXGI_MODE_DESC> m_displayModeDescs;
                                 
     ID3D11RenderTargetView      *m_backBuffer;
@@ -231,28 +229,49 @@ class RenderContext
     PrimitiveTopology            m_primative;
 
     Transform                    m_spriteTrans;
-    Vec4                    m_spriteBlend;
+    Vec4                         m_spriteBlend;
 
     /////////////////////////////////
     // Other render configurations //
     /////////////////////////////////
     ID3D11SamplerState                      *m_sampleStates[2];
-    ID3D11RasterizerState                   *m_rastState;
+    ID3D11RasterizerState                   *m_rastState[RastStates::NumStates];
     std::map<BlendMode, ID3D11BlendState *>  m_blendStateMap;
     DepthBuffer                              m_depthBuffer;
     Camera                                   m_camera;
+
+    RastStates                               m_currentRast = RastStates::Fill;
 
     ///////////////
     // Resources //
     ///////////////
     std::vector<VertexShader>                m_vertexShaderRes;
     std::vector<ID3D11PixelShader*>          m_pixelShaderRes;
-    std::vector<Texture>                     m_textureRes;
+    std::vector<Tex2D>                       m_textureRes;
     std::vector<ID3D11Buffer*>               m_vertexBufferRes;
     std::vector<ID3D11Buffer*>               m_indexBufferRes;
     std::vector<ID3D11Buffer*>               m_constBufferRes;
     std::vector<RenderTarget>                m_renderTargetRes;
 
+    /////////////
+    // Batcher //
+    /////////////
+    
+    std::unique_ptr<DirectX::SpriteBatch> m_batcher;
+
+    /////////////
+    // Effects //
+    /////////////
+
+    GenEffect*                               m_genericEffect;
+    PointLight*                              m_PointLight;
+
+
+    ///////////
+    //cleanup//
+    ///////////
+
+    std::vector<DirectSheep::Handle>         m_handles;
 #endif
 };
 

@@ -140,7 +140,7 @@ namespace Framework
     // Update per frame
     void Update(float dt);
 
-    void ReceiveMessage(Message msg);
+    void ReceiveMessage(Message& msg);
 
     void Shutdown();
 
@@ -150,6 +150,7 @@ namespace Framework
     AntTweak::TBar* GetBar(Handle barHandle);
 
     void RemoveBar(AntTweak::TBar* bar);
+    void RemoveAllBars(void);
 
     virtual std::string GetName() {return "AntTweakBar";};
 

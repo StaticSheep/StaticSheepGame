@@ -10,6 +10,10 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "pch/precompiled.h"
 #include <time.h>
 #include <fstream>
+#include "components/transform/CTransform.h"
+
+
+#include <boost/filesystem.hpp>
 
 namespace Framework
 {
@@ -203,104 +207,12 @@ namespace Framework
   /// <param name="name">The name.</param>
   void Factory::SaveObjectToArchetype(GameObject* obj, const char* name)
   {
-    File file; // File to save to
-    std::string filepath = name;
+    if (obj->archetype.length() == 0)
+      obj->archetype = name;
 
-    filepath = ArchetypeFilePath + filepath + ArchetypeFileExtension;
+    ArchetypeMap[obj->archetype].CopyObject(obj);
 
-    file.Open(filepath.c_str(), FileAccess::Write); // Open the file
-
-    // Serialize the object
-    GET_TYPE(GameObject)->Serialize(file, *obj);
-
-    file.Close(); // Force close, will save now
-
-    if (ArchetypeMap.find(obj->archetype) == ArchetypeMap.end())
-      ArchetypeMap[obj->archetype].CopyObject(obj);
-    
-  }
-
-  /// <summary>
-  /// load object from archetype.
-  /// </summary>
-  /// <param name="space">The space.</param>
-  /// <param name="name">The name.</param>
-  /// <returns></returns>
-  GameObject* Factory::LuaLoadObjectFromArchetype(GameSpace* space, const char* name)
-  {
-    return FACTORY->LoadObjectFromArchetype(space, name);
-  }
-
-  /// <summary>
-  /// Loads an object from a archetype.
-  /// </summary>
-  /// <param name="space">The space.</param>
-  /// <param name="name">The name.</param>
-  /// <returns>The object</returns>
-  GameObject* Factory::LoadObjectFromArchetype(GameSpace* space, const char* filepath)
-  {
-    File file; // File to load from
-    std::string archetype = filepath;
-
-    archetype = archetype.substr(archetype.find_last_of('\\') + 1, archetype.length() - archetype.find_last_of('\\') - 1);
-    archetype = archetype.substr(0, archetype.find_first_of('.'));
-
-    // Quickly grab the archetype from our map if it exists
-    const Archetype& aType = GetArchetype(archetype);
-
-    // Check to see if the archetype is valid
-    if (&aType != &Archetype::null)
-    {
-      // Make the object!
-      GameObject* obj = aType.CreateObject(space);
-      
-      return obj;
-    }
-
-
-    if (!File::FileExists(filepath))
-    {
-      return nullptr;
-    }
-
-    file.Open(filepath, FileAccess::Read);
-
-    ErrorIf(!file.Validate(), "Factory", "Invalid file!");
-
-    // Create an empty object
-    GameObject* obj = space->CreateEmptyObject();
-    Variable var = *obj; // Set the object as a variable
-
-    // Deserialize the file into the object
-    GET_TYPE(GameObject)->Deserialize(file, var);
-
-    obj->archetype = archetype;
-
-    // The archetype was not found, so we will save the object into our map
-    if (ArchetypeMap.find(archetype) == ArchetypeMap.end())
-      ArchetypeMap[archetype].CopyObject(obj);
-
-    file.Close();
-
-    return obj;
-  }
-
-  GameObject* Factory::LoadObjectFromArchetype(GameSpace* space, const Archetype& archetype)
-  {
-    return archetype.CreateObject(space);
-  }
-
-  /// <summary>
-  /// Gets an archetype.
-  /// </summary>
-  /// <param name="name">The name.</param>
-  /// <returns>Const Archetype reference</returns>
-  const Archetype& Factory::GetArchetype(std::string name)
-  {
-    if (ArchetypeMap.find(name) != ArchetypeMap.end())
-      return ArchetypeMap[name];
-
-    return Archetype::null;
+    SaveArchetypeToFile(ArchetypeMap[obj->archetype]);
   }
 
   /// <summary>
@@ -310,16 +222,9 @@ namespace Framework
   void Factory::SaveArchetypeToFile(const Archetype& archetype)
   {
     File file; // File to load from
-    std::string filepath = archetype.archetype;
+    std::string filepath;
 
-    //Check if we need to do any trimming
-    if (filepath.substr(0, ArchetypePrefix.length()) != ArchetypePrefix)
-    {
-      // Add the prefix on if it's not there
-      filepath = ArchetypePrefix + archetype.archetype;
-    }
-
-    filepath += ArchetypeFileExtension;
+    filepath = ArchetypeFilePath + archetype.archetype + ArchetypeFileExtension;
 
     file.Open(filepath.c_str(), FileAccess::Write);
 
@@ -341,6 +246,134 @@ namespace Framework
 
     if (&archetype != &Archetype::null)
       SaveArchetypeToFile(archetype);
+  }
+
+  /// <summary>
+  /// load object from archetype.
+  /// </summary>
+  /// <param name="space">The space.</param>
+  /// <param name="name">The name.</param>
+  /// <returns></returns>
+  GameObject* Factory::LuaLoadObjectFromArchetype(GameSpace* space, const char* name)
+  {
+    return FACTORY->LoadObjectFromArchetype(space, name);
+  }
+
+  /// <summary>
+  /// Loads an object from a archetype.
+  /// </summary>
+  /// <param name="space">The space.</param>
+  /// <param name="name">The name of the archetype.</param>
+  /// <returns>The object</returns>
+  GameObject* Factory::LoadObjectFromArchetype(GameSpace* space, const char* name)
+  {
+    std::string archetype = name;
+
+    // Quickly grab the archetype from our map if it exists
+    const Archetype& aType = GetArchetype(archetype);
+
+    // Check to see if the archetype is valid
+    if (&aType != &Archetype::null)
+    {
+      // Make the object!
+      GameObject* obj = aType.CreateObject(space);
+      return obj;
+    }
+
+    File file; // File to load from
+    std::string filePath = ArchetypeFilePath + std::string(name) + ArchetypeFileExtension;
+
+    if (!File::FileExists(filePath.c_str()))
+      return nullptr;
+
+    file.Open(filePath.c_str(), FileAccess::Read);
+
+    ErrorIf(!file.Validate(), "Factory", "Invalid file!");
+
+    // Create an empty object
+    GameObject* obj = space->CreateEmptyObject();
+    Variable var = *obj; // Set the object as a variable
+
+    // Deserialize the file into the object
+    GET_TYPE(GameObject)->Deserialize(file, var);
+
+    // Reset the Translation to 0,0,0
+    obj->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(0, 0, 0));
+
+    obj->archetype = archetype;
+
+    // The archetype was not found, so we will save the object into our map
+    if (ArchetypeMap.find(archetype) == ArchetypeMap.end())
+      ArchetypeMap[archetype].CopyObject(obj);
+
+    file.Close();
+
+    return obj;
+  }
+
+  GameObject* Factory::LoadObjectFromArchetypeFP(GameSpace* space, const char* filep)
+  {
+	  std::string archetype = filep;
+	  archetype = archetype.substr(archetype.find_last_of('\\') + 1, archetype.length() - archetype.find_last_of('.'));
+
+	  // Quickly grab the archetype from our map if it exists
+	  const Archetype& aType = GetArchetype(archetype);
+
+	  // Check to see if the archetype is valid
+	  if (&aType != &Archetype::null)
+	  {
+		  // Make the object!
+		  GameObject* obj = aType.CreateObject(space);
+		  return obj;
+	  }
+
+	  File file; // File to load from
+	  std::string filePath = filep;
+
+	  if (!File::FileExists(filePath.c_str()))
+		  return nullptr;
+
+	  file.Open(filePath.c_str(), FileAccess::Read);
+
+	  ErrorIf(!file.Validate(), "Factory", "Invalid file!");
+
+	  // Create an empty object
+	  GameObject* obj = space->CreateEmptyObject();
+	  Variable var = *obj; // Set the object as a variable
+
+	  // Deserialize the file into the object
+	  GET_TYPE(GameObject)->Deserialize(file, var);
+
+	  // Reset the Translation to 0,0,0
+	  obj->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(0, 0, 0));
+
+	  obj->archetype = archetype;
+
+	  // The archetype was not found, so we will save the object into our map
+	  if (ArchetypeMap.find(archetype) == ArchetypeMap.end())
+		  ArchetypeMap[archetype].CopyObject(obj);
+
+	  file.Close();
+
+	  return obj;
+  }
+
+  GameObject* Factory::LoadObjectFromArchetype(GameSpace* space, const Archetype& archetype)
+  {
+    return archetype.CreateObject(space);
+  }
+
+  /// <summary>
+  /// Gets an archetype.
+  /// </summary>
+  /// <param name="name">The name.</param>
+  /// <returns>Const Archetype reference</returns>
+  const Archetype& Factory::GetArchetype(std::string name)
+  {
+    if (ArchetypeMap.find(name) != ArchetypeMap.end())
+      return ArchetypeMap[name];
+
+    return Archetype::null;
   }
 
   /// <summary>
@@ -390,6 +423,7 @@ namespace Framework
 
 
 
+
   // Backups a file into the backup folder
   static void StoreBackup(const char* filepath)
   {
@@ -402,6 +436,15 @@ namespace Framework
       backUpFile += filepath;
       backUpFile += "." + std::to_string(now->tm_mon) + "_" + std::to_string(now->tm_mday) + "_" +
         std::to_string(now->tm_hour) + "_" + std::to_string(now->tm_min) + "_" + std::to_string(now->tm_sec) + ".backup";
+
+      
+      std::string backUpPath;
+      
+      int lastBackslash = backUpFile.find_last_of('\\');
+      if (lastBackslash != std::string::npos)
+        backUpPath = backUpFile.substr(0, lastBackslash);
+
+      boost::filesystem::create_directories(backUpPath);
 
       std::ifstream src;
       src.open(filepath);
@@ -481,15 +524,36 @@ namespace Framework
     Serializer::Get()->SetUserData(NULL);
 
     file.Close();
+
+    space->m_fileName = name;
+  }
+
+  void Factory::SaveSpaceToFilePath(GameSpace* space, const char* path)
+  {
+    File file; // File to save the space to
+    std::string filepath = path;
+    GameSpace::SerializerData extraData;
+
+    extraData.instanceData = NULL;
+    extraData.includeGeneric = false;
+    extraData.saveAllData = false;
+    extraData.standalone = true;
+
+    StoreBackup(filepath.c_str());
+
+    file.Open(filepath.c_str(), FileAccess::Write); // Open the file
+
+    Serializer::Get()->SetUserData(&extraData);
+
+    Variable(*space).Serialize(file);
+
+    Serializer::Get()->SetUserData(NULL);
+
+    file.Close();
   }
 
 
-  /// <summary>
-  /// Loads a space file.
-  /// </summary>
-  /// <param name="space">The space.</param>
-  /// <param name="name">The name.</param>
-  GameSpace* Factory::LoadSpace(const char* filepath)
+  GameSpace* Factory::LoadSpaceFilePath(const char* filepath)
   {
     File file; // File to save the space to
 
@@ -511,8 +575,20 @@ namespace Framework
 
     file.Close();
 
+    std::string fileName(filepath);
+    int lastSlash = fileName.find_last_of('\\');
+    if (lastSlash != std::string::npos)
+      fileName = fileName.substr(lastSlash - 1, fileName.length() - lastSlash);
+
+    space->m_fileName = fileName;
 
     return space;
+  }
+
+  GameSpace* Factory::LoadSpace(const char* name)
+  {
+    std::string filepath = SpaceFilePath + std::string(name) + SpaceFileExtension;
+    return LoadSpaceFilePath(filepath.c_str());
   }
 
 
@@ -521,7 +597,22 @@ namespace Framework
     File file;
 
     std::string levelPath = filePath;
-    levelPath += LevelFileExtension;
+    if (levelPath.find_last_of('.') != std::string::npos)
+    {
+      std::string extension = levelPath.substr(levelPath.find_last_of('.'), levelPath.length() - levelPath.find_last_of('.'));
+      if (extension == ".level")
+      {
+
+      }
+      else
+      {
+        levelPath += LevelFileExtension;
+      }
+    }
+    else
+    {
+      levelPath += LevelFileExtension;
+    }
 
     file.Open(levelPath.c_str(), FileAccess::Write);
 
@@ -537,7 +628,36 @@ namespace Framework
     file.Close();
   }
 
-  void Factory::LoadLevel(const char* filePath, void(*cb)(GameSpace* space))
+  void Factory::LoadLevel(const char* name, void(*cb)(GameSpace* space))
+  {
+    File file;
+
+    std::string filePath = LevelFilePath + std::string(name) + LevelFileExtension;
+
+    file.Open(filePath.c_str(), FileAccess::Read);
+
+    ErrorIf(!file.Validate(), "Level Factory", "Greg's a nerd");
+
+    std::string spaceName;
+
+    while (file.Validate())
+    {
+      spaceName = file.GetLine('\n');
+      if (spaceName.length() > 0)
+      {
+        spaceName = SpaceFilePath + spaceName + SpaceFileExtension;
+        GameSpace* sp;
+        sp = LoadSpaceFilePath(spaceName.c_str());
+        if (cb)
+          cb(sp);
+      }
+    }
+
+    file.Close();
+
+  }
+
+  void Factory::LoadLevelFilePath(const char* filePath, void(*cb)(GameSpace* space))
   {
     File file;
 

@@ -15,7 +15,7 @@ project "SheepGraphics"
 		-- local assignment files
 		"**.h",
 		"**.cpp",
-		"../../bin/shaders/*.hlsl",
+		"../../bin/content/shaders/*.hlsl",
 		"include/SheepGraphics/api.h",
 
 		-- hw2 files (used for figuring out model scale)
@@ -66,6 +66,7 @@ project "SheepGraphics"
   postbuildcommands 
   {
   	"..\\..\\..\\tools\\AutoHeaderVS.exe $(SolutionDir)..\\..\\game\\SheepGraphics\\ $(SolutionDir)..\\..\\game\\SheepGraphics\\include\\SheepGraphics\\ GFX_API",
+    "..\\..\\..\\tools\\AutoHeaderVS.exe $(SolutionDir)..\\..\\game\\SheepGraphics\\Context\\ $(SolutionDir)..\\..\\game\\SheepGraphics\\include\\SheepGraphics\\ GFX_API",
 	}
 
 	libdirs

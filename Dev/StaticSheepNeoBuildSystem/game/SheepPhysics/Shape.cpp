@@ -39,6 +39,7 @@ namespace SheepFizz
 	float Rectangle::GetHeight(void) {return height_;}
 	Vec3D Rectangle::GetVertex(unsigned int i) {return vertices_[i];}
 	Vec3D Rectangle::GetNormal(unsigned int i) {return normals_[i];}
+  unsigned int Rectangle::GetVertexNumber(void) { return vertexNumber_; }
 	
 	Shapes Rectangle::GetType(void) {return Rec;}
 
@@ -48,21 +49,23 @@ namespace SheepFizz
 		SetArea(width_ * height_);
 		
 		//calculate partial moment - no density
-		float moment = .5f * width_ * width_ * height_;
+    float moment = 1.0f / 2.0f * width_ * width_ * width_ * height_;
 		SetMomentOfInertia(moment);
 
 		SetShape(Rec);
 		
+    vertexNumber_ = MAXVERTICES;
+
 		//vertices oriented counterclockwise
 		vertices_[0] = Vec3D(width_ / 2, height_ / 2);
 		vertices_[1] = Vec3D(-width_ / 2, height_ / 2);
 		vertices_[2] = Vec3D(-width_ / 2, -height_ / 2);
 		vertices_[3] = Vec3D(width_ / 2, -height_ / 2);
 
-		//calculate side normals - starting with vertice 0 and 1
+		//calculate side normals - starting with vertices 0 and 1
 		for(int i = 0; i < 4; i++)
 		{
-			//calculate next vertice after this one
+			//calculate next vertices after this one
 			int nextVertice = i + 1 < 4 ? i + 1 : 0;
 			
 			//subtract two vertices for vector and transform into normal
@@ -84,10 +87,10 @@ namespace SheepFizz
 
 	void Circle::Initialize(void)
 	{
-		SetArea(radius_ * radius_ * PI);
+		SetArea(radius_ * radius_ * (float)PI);
 			
 		//partial moment calculation - no density;
-		SetMomentOfInertia(PI * radius_ * radius_
+		SetMomentOfInertia((float)PI * radius_ * radius_
 			* radius_ * 1/3);
 		SetShape(Cir);
 	}
@@ -102,5 +105,48 @@ namespace SheepFizz
 	//gettors
 	float Circle::GetRadius(void) {return radius_;}
 	Shapes Circle::GetType(void) {return Cir;}
+
+  Vec3D Polygon::GetVertex(unsigned int i) { return vertices_[i]; }
+  Vec3D Polygon::GetNormal(unsigned int i) { return normals_[i]; }
+  unsigned int Polygon::GetVertexNumber(void) { return vertexNumber_; }
+
+  Shapes Polygon::GetType(void) { return Rec; }
+
+  //initializes area and vertices/normals used in manifold functions
+  void Polygon::Initialize(void)
+  {
+    SetShape(Poly);
+  }
+
+  void Polygon::PolygonFormation(Vec3D* vertices, unsigned int size)
+  {
+    SetArea(width_ * height_);
+
+    //calculate partial moment - no density
+    float moment = 1.0f / 2.0f * width_ * width_ * width_ * height_;
+    SetMomentOfInertia(moment);
+
+    SetShape(Rec);
+
+    vertexNumber_ = MAXVERTICES;
+
+    //vertices oriented counterclockwise
+    vertices_[0] = Vec3D(width_ / 2, height_ / 2);
+    vertices_[1] = Vec3D(-width_ / 2, height_ / 2);
+    vertices_[2] = Vec3D(-width_ / 2, -height_ / 2);
+    vertices_[3] = Vec3D(width_ / 2, -height_ / 2);
+
+    //calculate side normals - starting with vertices 0 and 1
+    for (int i = 0; i < 4; i++)
+    {
+      //calculate next vertices after this one
+      int nextVertice = i + 1 < 4 ? i + 1 : 0;
+
+      //subtract two vertices for vector and transform into normal
+      normals_[i] = (vertices_[nextVertice] - vertices_[i]).CalculateNormal();
+
+    }
+
+  }
 
 }

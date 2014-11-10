@@ -20,9 +20,9 @@ namespace Framework
 		// Removal function
 		void Remove();
 
-		void SetVelocity()
+		void SetVelocity(Vec3D& velocity)
 		{
-		  RigidBody::SetVelocity();
+		  RigidBody::SetVelocity(velocity);
 		}
 	};
 }

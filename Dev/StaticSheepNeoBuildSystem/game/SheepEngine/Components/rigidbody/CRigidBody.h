@@ -8,6 +8,8 @@
 namespace SheepFizz
 {
 	class Material;
+
+  
 }
 
 namespace Framework
@@ -20,7 +22,7 @@ namespace Framework
 	
 		public:
 			
-      //RigidBody(); // Default Constructor
+			//RigidBody(); // Default Constructor
 
 			RigidBody(SheepFizz::Shapes shape);
 
@@ -33,28 +35,63 @@ namespace Framework
 			//removes the component
 			virtual void Remove();
 
-      virtual void SetVelocity() {};
+      //forces and velocities
+			virtual void SetVelocity(Vec3D& velocity);
+      virtual void SetAngVelocity(float angularvelocity);
+			virtual void AddToVelocity(Vec3D& velocity);
+			virtual void AddToForce(Vec3D& force);
+			virtual void AddToAngVelocity(float angularvelocity);
+			virtual void AddToTorque(float torque);
 
-      // Properties
-      union
-      {
-        float m_width;
-        float m_radius;
-      };
+      //gravity
+      virtual void SetGravityOn(void);
+      virtual void SetGravityOff(void);
+      virtual void SetGravityNormal(Vec3D);
+
+      //collision
+      virtual void SetBodyCollisionCallback(bool collisionCallback);
+      virtual Vec3D GetCollisionNormals(SheepFizz::ExternalManifold manifold);
+      virtual Vec3D GetCollisionPoint(SheepFizz::ExternalManifold manifold);
+
+      //gettors
+      virtual Vec3D GetCurrentVelocity(void);
+      virtual Vec3D GetGravityNormal(void);
+      virtual Vec3D GetBodyPosition(void);
+      virtual float GetBodyRotation(void);
+
+      //debug
+      virtual unsigned int GetBodyVertexNumber(void);
+      virtual Vec3D GetBodyVertex(unsigned int vertex);
+      void OnCollision(Handle otherObject, SheepFizz::ExternalManifold manifold);
+
+		// Properties
+		union
+		{
+		float m_width;
+		float m_radius;
+		};
       
-      float m_height; // For boxes
+		float m_height; // For boxes
 
-      std::string m_materialName;
+		std::string m_materialName;
 
-      protected:
+    bool m_hasCollisionCallback;
+
+    //debug - stores normal as first index, collision point as second
+    //normals_[0] - normal, normals_[1] - point, normals_[2] - normal, etc.
+    std::vector<Vec3D> normals_;
+
+		protected:
 
 			//these values are all temp storage for initialization
 			SheepFizz::Material* m_material;
-      // Shape of the object
-      SheepFizz::Shapes m_shape; 
+      
+			// Shape of the object
+			SheepFizz::Shapes m_shape; 
 			
-      // Handle to created physics
+			// Handle to created physics
 			SheepFizz::Handle m_handle;
+
 	};
 	
 }

@@ -13,11 +13,18 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #pragma comment (lib, "luaSource.lib")
 
 #include "pch/precompiled.h"
+
+#include "engine/core/Engine.h"
+
 #include <iostream>
+
+
 #include "engine/window/Window32.h"
 #include "components/transform/CTransform.h"
+#include "systems/input/Input.h"
 
-static int flag;
+#include <boost/filesystem.hpp>
+#include <boost/foreach.hpp>
 
 namespace Framework
 {
@@ -26,8 +33,6 @@ namespace Framework
   Engine::Engine()
     : m_running(true), L(nullptr)
   {
-    shittyFramerate = 0;
-
     EngineTypeRegistration();
 
     Window = new SheepWindow();
@@ -61,14 +66,16 @@ namespace Framework
 
     Lua::BindDefaultFunctions();
 
+    Lua::CallFunc(L, "PostInit");
+
     //Lua::CallFunc(L, "filesystem.UpdateOldFiles");
 
     for (unsigned int i = 0; i < m_systems.size(); ++i)
     {
       m_systems[i]->Initialize();
-      Framerate.Initialize(i, m_systems[i]->GetName().c_str());
     }
 
+    Framerate.Initialize();
   }
 
   void Engine::MakeWindow(void* hInstance, int show)
@@ -106,9 +113,14 @@ namespace Framework
       m_systems[i]->ReceiveMessage(msg);
   }
 
-  void Engine::Step()
+
+  void Engine::Step(void)
   {
     Window->Update();
+
+    for (auto it = m_spaces.begin(); it != m_spaces.end(); ++it)
+      if (!(*it)->m_ready)
+        (*it)->m_ready = true;
 
     for (unsigned int i = 0; i < m_systems.size(); ++i)
     {
@@ -116,6 +128,21 @@ namespace Framework
       m_systems[i]->Update(Framerate.GetDT());
       Framerate.EndFrame(m_systems[i]->GetName().c_str());
     }
+
+
+    CleanUp();
+
+    if (m_levelChange)
+      GotoNextLevel();
+
+    if (m_loadLuaLevels)
+      LoadLuaLevels();
+
+    if (m_returnFromPIE)
+      ReloadEditor();
+
+    if (m_PIE)
+      CheckReturnFromPIE();
   }
 
   void Engine::MainLoop()
@@ -124,6 +151,25 @@ namespace Framework
     {
       Step();
     }
+  }
+
+  bool Engine::Running() const
+  {
+    return m_running;
+  }
+
+  void Engine::Quit()
+  {
+    m_running = false;
+  }
+
+
+
+
+
+  std::vector<GameSpace*>& Engine::Spaces()
+  {
+    return m_spaces;
   }
 
   GameSpace* Engine::CreateSpace(const char* name)
@@ -141,6 +187,14 @@ namespace Framework
     return space;
   }
 
+  GameSpace* Engine::GetSpace(const char* name)
+  {
+    //std::string spaceName = name;
+    if (m_spaceMap.find(name) != m_spaceMap.end())
+      return m_spaceMap[name];
+    return nullptr;
+  }
+
   void Engine::RemoveSpace(GameSpace* space)
   {
     m_spaceMap.erase(space->m_name);
@@ -148,7 +202,10 @@ namespace Framework
     {
       if (*it == space)
       {
-        m_spaces.erase(it);
+        // Move the back onto the location we are deleting
+        *it = m_spaces.back();
+        // Pop off the back of the vector
+        m_spaces.pop_back();
         break;
       }
     }
@@ -161,134 +218,146 @@ namespace Framework
     delete space;
   }
 
-  std::vector<GameSpace*>& Engine::Spaces()
-  {
-    return m_spaces;
-  }
-
-  lua_State* Engine::Lua() const
-  {
-    return L;
-  }
-
-  void Engine::LuaError(const char* msg)
-  {
-    FORCEERROR("LuaError","%s", msg);
-  }
-
-  GameSpace* Engine::GetSpace(const char* name)
-  {
-    //std::string spaceName = name;
-    if (m_spaceMap.find(name) != m_spaceMap.end())
-      return m_spaceMap[name];
-    return nullptr;
-  }
-
-  void Engine::LoadLevel(const char* name)
-  {
-    FACTORY->LoadSpace(name);
-  }
-
-  void Engine::LoadLuaLevel(const char* path)
-  {
-    Lua::CallFunc(L, "LoadLuaLevel", path);
-    //Lua::LoadFile(L, path);
-  }
-
   void Engine::ClearSpaces()
   {
     for (unsigned int i = 0; i < m_spaces.size(); ++i)
     {
-      GameSpace* space = m_spaces[i];
-      space->m_valid = false;
+      m_spaces[i]->Destroy();
     }
   }
 
-  bool Engine::Running() const
+
+
+
+
+  void Engine::ChangeLevel(const char* name)
   {
-    return m_running;
+    m_levelChange = true;
+    m_nextLevel = name;
   }
 
-  GameSpace* Engine::LuaCreateSpace(const char* name)
+  void Engine::GotoNextLevel()
   {
-    GameSpace* space = ENGINE->GetSpace(name);
-    if (space == nullptr)
+    if (!m_spaces.empty())
     {
-      // Creates the space
-      return ENGINE->CreateSpace(name);
+      ClearSpaces();
+      CleanUp();
+    }
+
+    FACTORY->LoadLevel(m_nextLevel.c_str(), nullptr);
+
+    m_nextLevel.clear();
+    m_levelChange = false;
+  }
+
+
+
+  void Engine::CleanUp()
+  {
+    for (auto it = m_spaceRemoveList.begin(); it != m_spaceRemoveList.end(); ++it)
+      RemoveSpace(*it);
+
+    m_spaceRemoveList.clear();
+  }
+
+
+
+
+
+  void Engine::CheckReturnFromPIE()
+  {
+    if (SHEEPINPUT->Keyboard.KeyIsPressed(VK_F5))
+    {
+      PlayInEditor(false);
+    }
+  }
+
+  void Engine::ReloadEditor()
+  {
+    // Wait until all of our game spaces have been deleted
+    if (m_spaces.size() > 0)
+      return;
+
+    TRACELOG->Log(INFO, "Reloading the editor.");
+
+    std::string filePath = "cache\\spaces\\";
+
+    boost::filesystem::directory_iterator it(filePath), eod;
+
+    m_returnFromPIE = false;
+
+    OpenEditor();
+
+    BOOST_FOREACH(boost::filesystem::path const &p, std::make_pair(it, eod))
+    {
+      if (is_regular(p))
+      {
+        GameSpace* sp = FACTORY->LoadSpaceFilePath(p.string().c_str());
+        sp->Tweak();
+        sp->SetPaused(true);
+      }
+    }
+
+  }
+
+  bool Engine::PlayingInEditor()
+  {
+	  return ENGINE->m_PIE;
+  }
+
+  // This is a static function!
+  void Engine::PlayInEditor(bool play)
+  {
+    ENGINE->m_PIE = play;
+
+    if (play)
+    {
+      TRACELOG->Log(INFO, "Entering PIE mode.");
+
+      std::vector<GameSpace*>& gameSpaces = ENGINE->Spaces();
+
+      std::string cacheLocation = "cache\\spaces\\";
+      std::string filepath;
+
+      // We want to clear out the cache
+      boost::filesystem::remove_all(cacheLocation);
+
+      boost::filesystem::create_directories(cacheLocation);
+
+      // We want to cache all of our current spaces into our cache
+      // so we can pull them up later
+      for (size_t i = 0; i < gameSpaces.size(); ++i)
+      {
+        filepath = cacheLocation + gameSpaces[i]->GetName()
+          + FACTORY->LevelFileExtension;
+        FACTORY->SaveSpaceToFilePath(gameSpaces[i], filepath.c_str());
+
+        //if (gameSpaces[i]->m_fileName.length() > 0)
+        //  FACTORY->SaveSpaceToFile(gameSpaces[i], gameSpaces[i]->m_fileName.c_str(), true);
+      }
+
+      for (size_t i = 0; i < gameSpaces.size(); ++i)
+      {
+        gameSpaces[i]->SetPaused(false);
+        gameSpaces[i]->m_edit = false;
+		    gameSpaces[i]->tweakHandle = Handle::null;
+      }
     }
     else
     {
-      std::string realName = name;
-      realName += "[nametaken]";
-      // Creates the space
-      return ENGINE->LuaCreateSpace(realName.c_str());
+      TRACELOG->Log(INFO, "PIE mode ended.");
+
+      std::vector<GameSpace*>& gameSpaces = ENGINE->Spaces();
+
+      // Mark all current gamespaces for deletion
+      for (size_t i = 0; i < gameSpaces.size(); ++i)
+        gameSpaces[i]->Destroy();
+      
+      ENGINE->m_PIE = false;
+      ENGINE->m_returnFromPIE = true;
     }
-    //return space;
   }
-
-  void Engine::Quit()
-  {
-    m_running = false;
-  }
-
-  GameSpace* Engine::LuaGetSpace(const char* name)
-  {
-    return ENGINE->GetSpace(name);
-  }
-
-  GameComponent* Engine::LuaGetComponent(const char* name, unsigned int handle, const char* type)
-  {
-    GameSpace* space = (GameSpace*)ENGINE->GetSpace(name);
-
-    ErrorIf(space == nullptr, "Engine-Lua Interface", "Space not found: %s", name);
-
-    const char* mt = GET_TYPE(Transform)->LuaMetaTable();
-
-    EComponent cType = (EComponent)GET_ENUM(Component)->GetIndexFromString(type);
-    return space->GetHandles().GetAs<GameObject>(handle)->GetComponent(cType);
-  }
-
-  void Engine::LuaRemoveObjectFromEngine(const char* space, unsigned int handle)
-  {
-    ENGINE->GetSpace(space)->GetHandles().GetAs<GameObject>(handle)->Destroy();
-  }
-
-  void Engine::LuaQuit()
-  {
-    ENGINE->Quit();
-  }
-
-  void Engine::LuaSetVariable(Generic* obj, Member* member, int dummy)
-  {
-    Variable value;
-
-    void* buffer = alloca(member->Type()->Size());
-
-    new (&value) Variable(member->Type(), buffer);
-    value.PlacementNew();
-
-    value.FromLua(ENGINE->Lua(), 3); // 2 + 1 (Argument 2 [zero based], + 1) 
-
-    member->Type()->PlacementCopy((char*)obj + member->Offset(), buffer);
-  }
-
-  void Engine::LuaGetVariable(Generic* obj, Member* member)
-  {
-    Variable value(member->Type(), (char*)obj + member->Offset());
-
-    value.ToLua(ENGINE->Lua());
-  }
-
-  void Engine::LuaClearSpaces()
-  {
-    ENGINE->ClearSpaces();
-  }
-
-  void Engine::LuaRemoveSpace(const char* name)
-  {
-    ENGINE->GetSpace(name)->m_valid = false;
-  }
+  
 
 
 }

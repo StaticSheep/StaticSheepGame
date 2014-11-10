@@ -2,6 +2,8 @@
 #define SHEEP_INPUT_H
 
 #include "systems/System.h"
+#include <Windows.h>
+#include "Xinput.h"
 
 #define LMB 0
 #define RMB 1
@@ -11,6 +13,30 @@ class Msg;
 
 namespace Framework
 {
+  class GamePadInput
+  {
+  public:
+
+    GamePadInput(){ padIndex = 0; };
+    GamePadInput(int index)
+    {
+      padIndex = index;
+      ZeroMemory(&State, sizeof(XINPUT_STATE));
+    };
+    ~GamePadInput(){};
+
+    void Initialize(){};
+    void Update();
+
+    int padIndex;
+    XINPUT_STATE State;
+
+  };
+
+  struct DebugInput
+  {
+    GamePadInput* pads;
+  };
 
   class MouseInput
   {
@@ -49,7 +75,7 @@ namespace Framework
     void _UpdateMove(void* msg);
 
     void _ScreenToWorld();
-
+    
     // let the manager touch our privates
     friend class InputManager;
 
@@ -101,11 +127,18 @@ namespace Framework
 
     void Initialize();
     void Update(float dt);
+    void GetGamePadState(int index, XINPUT_STATE* state);
+    const void* GetDebugData();
 
     // we have one mouse...
     MouseInput Mouse;
     // and one keyboard...
     KeyboardInput Keyboard;
+
+    GamePadInput Pads[4];
+
+    bool Autoplay;
+    DebugInput debug;
 
   };
 

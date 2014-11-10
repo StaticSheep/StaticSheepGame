@@ -103,7 +103,12 @@ if not module then
     end
 end
 
-function SetupMetatable(key, meta)
+function SetupMetatable(name, meta)
+
+  print("Registered Lua Type: "..name)
+
+  meta.__name = name;
+  meta.__metaName = "__"..name.."_MT";
 
   function meta.__index(self, key, ...)
     if type(self) == "table" then
@@ -207,18 +212,18 @@ function SetupMetatable(key, meta)
 end
 
 
-function SetupMetatables()
-  _R.METAVALUES = {}
+function SetupCMetatables()  
 
   for key, meta in pairs(_R) do
     SetupMetatable(key, meta)
   end
 
+  _R.METAVALUES = {}
 end
 
 function GetMeta(name)
   if _R["__"..name.."_MT"] == nil then
-    print("Metatable not found for: \""..name.."\" creating one!")
+    --print("Metatable not found for: \""..name.."\" creating one!")
     _R["__"..name.."_MT"] = {}
     
     SetupMetatable(name, _R["__"..name.."_MT"])

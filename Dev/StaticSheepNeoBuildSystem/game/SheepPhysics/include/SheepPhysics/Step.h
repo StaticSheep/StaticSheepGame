@@ -14,13 +14,16 @@
 namespace SheepFizz
 {
 	//collision callback function pointer
+  PHY_API typedef void* ExternalManifold;
+  PHY_API typedef void(*CollisionCB)(void*, void*, void*, ExternalManifold);
+ 
 
-	#define GRAVITY -37.0f
+	#define GRAVITY -100.0f
 
 	class PhysicsSpace
 	{
 		public:
-		PHY_API static PhysicsSpace* Allocate(float dt);
+		PHY_API static PhysicsSpace* Allocate(float dt, float meterScale);
 		PHY_API static void Delete(PhysicsSpace* space);
 
 
@@ -31,6 +34,17 @@ namespace SheepFizz
 		PHY_API void SetBodyRot(Handle handle, float rot);
 		PHY_API void SetBodyAngVeloc(Handle handle, float angveloc);
 		PHY_API void SetBodyTorque(Handle handle, float torque);
+
+    //gravity
+    PHY_API void SetBodyGravityOn(Handle handle);
+    PHY_API void SetBodyGravityOff(Handle handle);
+    PHY_API void SetBodyGravityNormal(Handle handle, Vec3D normal);
+
+		//adders
+		PHY_API void AddToBodyVeloc(Handle handle, Vec3D velocity);
+		PHY_API void AddToBodyForce(Handle handle, Vec3D force);
+		PHY_API void AddToBodyAngVeloc(Handle handle, float angveloc);
+		PHY_API void AddToBodyTorque(Handle handle, float torque);
 
 		//change the dt
 		PHY_API void SetTime(float dt);
@@ -43,17 +57,30 @@ namespace SheepFizz
 		PHY_API float GetBodyAngVeloc(Handle handle);
 		PHY_API float GetBodyTorque(Handle handle);
 
+    //gravity gettors
+    PHY_API Vec3D GetBodyGravityNormal(Handle handle);
+
 		//get the time for the engine
 		PHY_API float GetTime(void);
 
+    //collision functions
+    PHY_API void SetBodyCollisionCallback(Handle handle, bool collisionCallback);
+    PHY_API Vec3D GetCollisionNorm(void* handle, ExternalManifold manifold);
+    PHY_API Vec3D GetCollisionPoint(ExternalManifold manifold);
+
+    //shape functions
+    PHY_API unsigned int GetBodyVertexNumber(Handle handle);
+    PHY_API Vec3D GetBodyVertex(Handle handle, unsigned int vertex);
+
 		//add bodies to the body vector
-		PHY_API Handle AddBody(
-			Shapes shape,				//shape of the object
-			Material& material,			//the material ref
-			Framework::Vec3D position,	//the position of the transform
-			float xradius,				//the radius of circle or width
-			float yval = 0,				//the height - if a rec
-			float orientation = 0,		//the orientation
+    PHY_API Handle AddBody(
+      Shapes shape,				        //shape of the object
+      Material& material,			    //the material ref
+      bool collisionCallback,     //determines if collision callback occurs
+      Framework::Vec3D position,	//the position of the transform
+      float xradius,				      //the radius of circle or width
+      float yval = 0,				      //the height - if a rec
+      float orientation = 0,		  //the orientation
 			void* userData = NULL);		
 
 		//change a specific body's attributes
@@ -73,7 +100,7 @@ namespace SheepFizz
 		//applied in physics update
 
 		//engine functions for messaging
-		PHY_API void SetCollisionCallback(void(*cb)(void*, void*, void*));
+    PHY_API void SetCollisionCallback(CollisionCB cb);
 		PHY_API void SetUserData(void* userData);
 
 		#ifdef SHEEPPHYSICS
@@ -81,6 +108,12 @@ namespace SheepFizz
 		private:
 			//timestep value
 			float dt_;
+
+      //scale value
+      float meterScale_;
+      float modifiedGravity_;
+
+      bool locked_ = false;
 
 			//values tied to engine messaging
 			CollisionCB cb_;	//callback function pointer

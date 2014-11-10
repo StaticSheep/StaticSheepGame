@@ -50,7 +50,7 @@ namespace Framework
     objName += " [GUID: ";
     objName += std::to_string(obj.guid) + "]";
 
-    std::string barID = std::to_string(obj.guid);
+    std::string barID = std::to_string(obj.space->GUID()) + std::string("_") + std::to_string(obj.guid);
 
     // Create a new bar for this object
     AntTweak::TBar* objectBar = ATWEAK->CreateBar(barID.c_str());
@@ -192,14 +192,14 @@ namespace Framework
     {
       // Don't remove the Transform component you idiot!
       if (obj->HasComponent(cType) && cType != eTransform)
-        obj->RemoveComponent(cType);
+        obj->DetatchComponent(cType);
     }
     else
     {
 
     }
 
-    obj->Initialize();
+    //obj->Initialize(); //This may or may not be needed?
 
     obj->tweakDeleteComponent = false;
     obj->tweakListComponents = false;
@@ -290,8 +290,16 @@ namespace Framework
         if (member->TweakLabel())
           objectBar->DefineLabel(member->TweakLabel());
 
-        // Since this is an object member variable we are tweaking we have to use the generic tweak
-        objectBar->AddGenericVarRW(member->Name(), member->Type()->GetAType(), member, 0, this);
+        if (member->TweakSetCB())
+        {
+          objectBar->AddGenericVarCB(member->Name(), member->Type()->GetAType(), member, 0, this, member->TweakSetCB(), Function());
+        }
+        else
+        {
+          // Since this is an object member variable we are tweaking we have to use the generic tweak
+          objectBar->AddGenericVarRW(member->Name(), member->Type()->GetAType(), member, 0, this);
+        }
+        
       }
     }
 
@@ -436,6 +444,12 @@ namespace Framework
       CustomTweak(nullptr, Variable(this), nullptr, nullptr);
     else
       UpdateTweakBar();
+  }
+
+  void GameObject::TweakSetName(void* inname)
+  {
+    name = *(std::string*)inname;
+    space->UpdateTweakBar();
   }
 
 }

@@ -23,3 +23,5 @@ function META:Update(deltaTime)
   --print("UPDATE")
   --print("Update! SPACE: "..self._space.." CID="..self._cid)
 end
+
+RegisterComponent(META)

@@ -6,16 +6,17 @@ namespace SheepFizz
 {
 
 	//body requires a shape* to be passed - all others default to base constructors
-	Body::Body(Shape* shape, Material& material, Vec3D position, Vec3D velocity, 
-		Vec3D force, void* userData, float orientation, float angularVelocity, float torque,
-		CollisionGroup collisionGroup, BodyGroup bodyGroup, float gravityScale, 
-		unsigned int gravityOn): 
-		material_(material), shape_(shape), velocity_(velocity), position_(position), force_(force), userData(userData),
+  Body::Body(Shape* shape, Material& material, bool collisionCallback, Vec3D position, Vec3D velocity,
+		Vec3D force, void* userData, float orientation, float angularVelocity, float torque, 
+    CollisionGroup collisionGroup, unsigned int bodyGroup, float gravityScale, unsigned int gravityOn) :
+		material_(material), shape_(shape), collisionCallback_(collisionCallback),
+    velocity_(velocity), position_(position), force_(force), userData(userData),
 		orientation_(orientation), angularVelocity_(angularVelocity), torque_(torque),
 		collisionGroup_(collisionGroup), bodyGroup_(bodyGroup), gravityScale_(gravityScale), gravityOn_(gravityOn)
 		{ 
 			shape_->Initialize();
 			ComputeMass();
+      position_.z = 0.0f;
 		}
 
 	void Body::ComputeMass(void)
@@ -58,7 +59,10 @@ namespace SheepFizz
 			//takes the contact vector - which is the distance from center of mass to contact point
 			//and crosses it with the actual impulse, creating angular rotation.  The further out
 			//the contact point, the greater the rotation applied
-			angularVelocity_ += (contactvector * impulse).z_ * massData_.inverseInertia;
+			angularVelocity_ += (contactvector ^ impulse).z_ * massData_.inverseInertia;
 		}	
 
+	void Body::ActivateGravity(void) { gravityOn_ = 1; }
+
+	void Body::DeactivateGravity(void) { gravityOn_ = 0; }
 }

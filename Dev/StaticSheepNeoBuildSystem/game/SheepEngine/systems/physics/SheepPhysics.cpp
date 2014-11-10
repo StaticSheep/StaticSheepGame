@@ -9,6 +9,10 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "pch/precompiled.h"
 #include "SheepPhysics.h"
 
+#include "systems/graphics/DrawLib.h"           //Draw::     
+#include "systems/graphics/SheepGraphics.h"     //Wireframe()
+#include "systems/debug/Debug.h"                //Debug Struct
+#include "systems/input/Input.h"                //input SHEEPINPUT
 #include "components/transform/CTransform.h"
 #include "components/colliders/CBoxCollider.h"
 #include "components/colliders/CCircleCollider.h"
@@ -21,17 +25,17 @@ namespace Framework
 	{
 		// Initialize physics object list
 		PHYSICS = this;
-	}//end of Constructor
+	}
 
 	SheepPhysics::~SheepPhysics()
 	{
 		PHYSICS = nullptr;
-	}//end of Destructor
+	}
 
 	void SheepPhysics::Shutdown()
 	{
 
-	}//end of Shutdown
+	}
 
 	void SheepPhysics::RegisterComponents()
 	{
@@ -39,28 +43,158 @@ namespace Framework
 		REGISTER_COMPONENT(BoxCollider);
 		REGISTER_COMPONENT(CircleCollider);
 
-	 }//end of RegisterComponents
+	 }
 
-	static void CollisionCallback(void* A_userData, void* B_userData, void* Space_userData)
+  //debug draw after postdraw message received
+  void SheepPhysics::ReceiveMessage(Message& msg)
+  {
+    if (!debugOn)
+      return;
+
+    GRAPHICS->SetWireframe(true);
+
+    if (msg.MessageId == Message::PostDraw)
+    {
+      //go through all the game spaces
+      std::vector<GameSpace*>& gspaces = ENGINE->Spaces();
+
+      for (int i = 0; i < gspaces.size(); ++i)
+      {
+        //skip if the gamespace is not ready for some reason
+        if (!gspaces[i]->Ready())
+          return;
+
+        //******************************
+        //go through box colliders first
+        ObjectAllocator* boxes = gspaces[i]->GetComponents(eBoxCollider);
+        
+        for (int j = 0; j < boxes->Size(); ++j)
+        {
+          Vec3D bodyPosition = ((BoxCollider*)(*boxes)[j])->GetBodyPosition();
+          Vec3D bodyVelocity = ((BoxCollider*)(*boxes)[j])->GetCurrentVelocity();
+
+          //draw velocity line
+          Draw::SetColor(1, 0, 0, 1);
+          Draw::DrawLine(bodyPosition.x, bodyPosition.y,
+            bodyPosition.x + bodyVelocity.x * .5f, bodyPosition.y + bodyVelocity.y * .5f);
+
+          //draw normals
+          Vec3D normal;
+          Vec3D location;
+
+          for (int k = 0; k < ((BoxCollider*)(*boxes)[j])->normals_.size(); k += 2)
+          {
+            normal = ((BoxCollider*)(*boxes)[j])->normals_[k];
+            location = ((BoxCollider*)(*boxes)[j])->normals_[k + 1];
+
+            //modify by size modifer
+            normal *= -20;
+            location *= 32;
+
+            Draw::SetColor(0, 1, 0, 1);
+            Draw::DrawLine(location.x, location.y,
+              location.x + normal.x, location.y + normal.y);
+
+          }
+
+          ((BoxCollider*)(*boxes)[j])->normals_.clear();
+
+          //determine the number of vertices - should work for polygons, as well
+          unsigned int vertexTotal = ((BoxCollider*)(*boxes)[j])->GetBodyVertexNumber();
+
+          unsigned int nextVertex;
+          float rotation = ((BoxCollider*)(*boxes)[j])->GetBodyRotation();
+
+          //set up vec3s for vertices
+          Vec3D vertexPos1;
+          Vec3D vertexPos2;
+
+          Vec3D vertex1 = ((BoxCollider*)(*boxes)[j])->GetBodyVertex(i);
+          Vec3D vertex0 = vertex1;
+          Vec3D vertex2;
+
+          //draw outside edge of box
+          for (int i = 0; i < vertexTotal; ++i)
+          {
+            nextVertex = ((i + 1) < vertexTotal) ? (i + 1) : 0;
+
+            if (nextVertex)
+              vertex2 = ((BoxCollider*)(*boxes)[j])->GetBodyVertex(nextVertex);
+            else
+              vertex2 = vertex0;
+
+            //move the two vertices
+            vertexPos1.x = vertex1.x * cos(rotation) - vertex1.y * sin(rotation);
+            vertexPos1.y = vertex1.x * sin(rotation) + vertex1.y * cos(rotation);
+            vertexPos2.x = vertex2.x * cos(rotation) - vertex2.y * sin(rotation);
+            vertexPos2.y = vertex2.x * sin(rotation) + vertex2.y * cos(rotation);
+
+            Draw::SetColor(1, 1, 0, 1);
+            Draw::DrawLine(bodyPosition.x + vertexPos1.x, bodyPosition.y + vertexPos1.y, 
+              bodyPosition.x + vertexPos2.x, bodyPosition.y + vertexPos2.y);
+
+            vertex1 = vertex2;
+          }
+
+        }//end of box collider area
+
+        //******************************
+        //now go through circle colliders
+        ObjectAllocator* circles = gspaces[i]->GetComponents(eCircleCollider);
+
+        for (int j = 0; j < circles->Size(); ++j)
+        {
+          Vec3D bodyPosition = ((CircleCollider*)(*circles)[j])->GetBodyPosition();
+          Vec3D bodyVelocity = ((CircleCollider*)(*circles)[j])->GetCurrentVelocity();
+
+          //draw velocity line
+          Draw::SetColor(1, 0, 0, 1);
+          Draw::DrawLine(bodyPosition.x, bodyPosition.y,
+            bodyPosition.x + bodyVelocity.x * .5f, bodyPosition.y + bodyVelocity.y * .5f);    
+        }
+      
+      }//end of the space loop
+
+    }//end of the if check
+
+  }//end of RecieveMsg - DebugDraw
+
+  void SheepPhysics::SetDebug(bool on)
+  {
+    debugOn = on;
+  }
+  bool SheepPhysics::IsDebugOn(void)
+  {
+    return debugOn;
+  }
+
+  //end of Debug
+  //************
+
+	static void CollisionCallback(void* A_userData, void* B_userData,
+    void* Space_userData, SheepFizz::ExternalManifold manifold)
 	{
 		Handle A_object = (unsigned)A_userData;
 		Handle B_object = (unsigned)B_userData;
 		GameSpace* space = (GameSpace*)Space_userData;
 
 		GameObject* AObj = space->GetHandles().GetAs<GameObject>(A_object);
-		GameObject* BObj = space->GetHandles().GetAs<GameObject>(B_object);
+    AObj->hooks.Call("OnCollision", B_object, manifold);
 
-		AObj->m_hooks.Call("Collision",B_object);
-		BObj->m_hooks.Call("Collision",A_object);
+		GameObject* BObj = space->GetHandles().GetAs<GameObject>(B_object);
+		BObj->hooks.Call("OnCollision", A_object, manifold);
 	}//end of CollisionCallback
 
 	void* SheepPhysics::CreateSpace(GameSpace* gameSpace)
 	{
-		SheepFizz::PhysicsSpace* newSpace = SheepFizz::PhysicsSpace::Allocate(0.0167f);
+		SheepFizz::PhysicsSpace* newSpace = SheepFizz::PhysicsSpace::Allocate(0.0167f, 32.0f);
 		
 		newSpace->SetCollisionCallback(CollisionCallback);
 		newSpace->SetUserData(gameSpace);
 		gameSpace->m_pSpace = newSpace;
+
+    if (gameSpace->Paused())
+      SetDT(gameSpace, 0.0f);
 
 		return newSpace;
 	}//end of CreateSpace
@@ -68,14 +202,14 @@ namespace Framework
 	void SheepPhysics::DeleteSpace(void* p_Space)
 	{
 		SheepFizz::PhysicsSpace::Delete((SheepFizz::PhysicsSpace*)p_Space);
-	}//end of DeleteSpace
+	}
 
-	//intialize materials
+	// initialize materials
 	void SheepPhysics::Initialize()
 	{
 		
 		//add materials
-		SheepFizz::Material Wood(.8f, .5f, .8f, .4f);
+		SheepFizz::Material Wood(3.0f, 2.5f, .8f, .4f);
 		SheepFizz::Material Iron(1.5f, .8f, .6f, .3f);
 		SheepFizz::Material Steel(1.3f, .8f, .3f, .15f);
 		SheepFizz::Material Fluff(.3f, .2f, .4f, .1f);
@@ -89,11 +223,13 @@ namespace Framework
 		m_materials.insert(std::pair<std::string, SheepFizz::Material>("Fluff", Fluff));
 		m_materials.insert(std::pair<std::string, SheepFizz::Material>("Bounce", Bounce));
 		m_materials.insert(std::pair<std::string, SheepFizz::Material>("Static", Static));
+
+    debugOn = false;
 	}//end of Initialize
 
 	//add circles or rectangles
 	SheepFizz::Handle SheepPhysics::AddBodies(GameObject* obj, SheepFizz::Shapes shape, 
-		SheepFizz::Material& material, Vec3D position,
+    SheepFizz::Material& material, bool collisionCallback, Vec3D position,
 		float xradius, float yval, float orientation)
 	{
 		GameSpace* space = obj->space;
@@ -102,8 +238,12 @@ namespace Framework
 			CreateSpace(space);
 
 		//return a sheepfizz handle
-		SheepFizz::Handle handle = ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->AddBody(shape, material, position, 
-			xradius, yval, orientation, (void*)((unsigned)obj->self));
+		SheepFizz::Handle handle = ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->AddBody(shape, material, 
+      collisionCallback, position, xradius, yval, orientation, (void*)((unsigned)obj->self));
+
+    ErrorIf(handle == Handle::null, "Sheep Physics", 
+      "Null handle returned from Physics! You're probably creating a physics body when you shouldn't be!");
+
 		return handle;
 	}//end of AddBodies
 
@@ -113,61 +253,137 @@ namespace Framework
 	Vec3D SheepPhysics::GetBodyPosition(GameSpace* space, SheepFizz::Handle handle)
 	{
 		return ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->GetBodyPos(handle);
-	}//end of GetBodyPosition
+	}
 
 	Vec3D SheepPhysics::GetBodyVelocity(GameSpace* space, SheepFizz::Handle handle)
 	{
 		return ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->GetBodyVeloc(handle);
-	}//end of GetBodyVelocity
+	}
+
 	Vec3D SheepPhysics::GetBodyForce(GameSpace* space, SheepFizz::Handle handle)
 	{
 		return ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->GetBodyForce(handle);
-	}//end of GetBodyForce
+	}
 
-	Vec3D SheepPhysics::GetBodyRotation(GameSpace* space, SheepFizz::Handle handle)
+	float SheepPhysics::GetBodyRotation(GameSpace* space, SheepFizz::Handle handle)
 	{
 		return ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->GetBodyRot(handle);
-	}//end of GetBodyRotation
+	}
 
-	Vec3D SheepPhysics::GetBodyAngVelocity(GameSpace* space, SheepFizz::Handle handle)
+	float SheepPhysics::GetBodyAngVelocity(GameSpace* space, SheepFizz::Handle handle)
 	{
 		return ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->GetBodyAngVeloc(handle);
-	}//end of GetBodyAngVeloc
+	}
 
-	Vec3D SheepPhysics::GetBodyTorques(GameSpace* space, SheepFizz::Handle handle)
+	float SheepPhysics::GetBodyTorques(GameSpace* space, SheepFizz::Handle handle)
 	{
 		return ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->GetBodyTorque(handle);
-	}//end of GetBodyTorques
+	}
+
+  Vec3D SheepPhysics::GetCollisionNormal(GameSpace* space, Framework::Handle ownerHandle, SheepFizz::ExternalManifold manifold)
+  {
+    return ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->GetCollisionNorm((void*)(unsigned int)ownerHandle, manifold);
+  }
+
+  Vec3D SheepPhysics::GetBodyGravityNormal(GameSpace* space, SheepFizz::Handle handle)
+  {
+    return ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->GetBodyGravityNormal(handle);
+  }
+
+  Vec3D SheepPhysics::GetCollisionPoint(GameSpace* space, SheepFizz::ExternalManifold manifold)
+  {
+    return ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->GetCollisionPoint(manifold);
+  }
+
+  //shape
+  unsigned int SheepPhysics::GetBodyVertexNumber(GameSpace* space, SheepFizz::Handle handle)
+  {
+    return ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->GetBodyVertexNumber(handle);
+  }
+  
+  Vec3D SheepPhysics::GetBodyVertex(GameSpace* space, SheepFizz::Handle handle, unsigned int vertex)
+  {
+    return ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->GetBodyVertex(handle, vertex);
+  }
 
 	//settors
 	void SheepPhysics::SetBodyPosition(GameSpace* space, SheepFizz::Handle handle, Vec3D position)
 	{
 		((SheepFizz::PhysicsSpace*)(space->m_pSpace))->SetBodyPos(handle, position);
-	}//end of SetBodyPosition
+	}
+	
 	void SheepPhysics::SetBodyVelocity(GameSpace* space, SheepFizz::Handle handle, Vec3D velocity)
 	{
 		((SheepFizz::PhysicsSpace*)(space->m_pSpace))->SetBodyVeloc(handle, velocity);
-	}//end of SetBodyVeloc
+	}
 
-	void SetBodyForce(GameSpace* space, SheepFizz::Handle handle, Vec3D force)
+	void SheepPhysics::SetBodyForce(GameSpace* space, SheepFizz::Handle handle, Vec3D force)
 	{
 		((SheepFizz::PhysicsSpace*)(space->m_pSpace))->SetBodyForce(handle, force);
-	}//end of SetBodyForce
+	}
 
 	void SheepPhysics::SetBodyRotation(GameSpace* space, SheepFizz::Handle handle, float rotation)
 	{
 		((SheepFizz::PhysicsSpace*)(space->m_pSpace))->SetBodyRot(handle, rotation);
-	}//end of SetBodyRoation
+	}
 
 	void SheepPhysics::SetBodyAngVelocity(GameSpace* space, SheepFizz::Handle handle, float angveloc)
 	{
 		((SheepFizz::PhysicsSpace*)(space->m_pSpace))->SetBodyAngVeloc(handle, angveloc);
-	}//end of SetBodyAngVelocity
+	}
 
 	void SheepPhysics::SetBodyTorques(GameSpace* space, SheepFizz::Handle handle, float torque)
 	{
 		((SheepFizz::PhysicsSpace*)(space->m_pSpace))->SetBodyTorque(handle, torque);
-	}//end of SetBodyTorques
+	}
+
+	void SheepPhysics::SetDT(GameSpace* space, float dt)
+	{
+	if (space->m_pSpace)
+		((SheepFizz::PhysicsSpace*)(space->m_pSpace))->SetTime(dt);
+	}
+
+  void SheepPhysics::SetBodyCollisionCallback(GameSpace* space, SheepFizz::Handle handle, bool collisionCallback)
+  {
+    ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->SetBodyCollisionCallback(handle, collisionCallback);
+  }
+
+  //gravity functions
+  void SheepPhysics::SetBodyGravityOn(GameSpace* space, SheepFizz::Handle handle)
+  {
+    ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->SetBodyGravityOn(handle);
+  }
+
+  void SheepPhysics::SetBodyGravityOff(GameSpace* space, SheepFizz::Handle handle)
+  {
+    ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->SetBodyGravityOff(handle);
+  }
+
+  void SheepPhysics::SetBodyGravityNormal(GameSpace* space, SheepFizz::Handle handle, Vec3D normal)
+  {
+    ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->SetBodyGravityNormal(handle, normal);
+  }
+
+	//additive functions
+	void SheepPhysics::AddToBodyVelocity(GameSpace* space, SheepFizz::Handle handle, Vec3D velocity)
+	{
+		((SheepFizz::PhysicsSpace*)(space->m_pSpace))->AddToBodyVeloc(handle, velocity);
+	}
+
+	void SheepPhysics::AddToBodyForce(GameSpace* space, SheepFizz::Handle handle, Vec3D force)
+	{
+		((SheepFizz::PhysicsSpace*)(space->m_pSpace))->AddToBodyForce(handle, force);
+	}
+
+	void SheepPhysics::AddToBodyAngVelocity(GameSpace* space, SheepFizz::Handle handle, float angveloc)
+	{
+		((SheepFizz::PhysicsSpace*)(space->m_pSpace))->AddToBodyAngVeloc(handle, angveloc);
+	}
+
+	void SheepPhysics::AddToBodyTorques(GameSpace* space, SheepFizz::Handle handle, float torque)
+	{
+		((SheepFizz::PhysicsSpace*)(space->m_pSpace))->AddToBodyTorque(handle, torque);
+	}
 
 	//end of gettors and settors
 	//********************
@@ -178,36 +394,43 @@ namespace Framework
 	void SheepPhysics::ChangePhysBodies(GameSpace* space, SheepFizz::Handle handle, float xradius, float y)
 	{
 		((SheepFizz::PhysicsSpace*)(space->m_pSpace))->ChangeBodies(handle, xradius, y);
-	}//end of ChangePhysBodies
+	}
 
 	void SheepPhysics::ChangePhysMaterials(GameSpace* space, SheepFizz::Handle handle, SheepFizz::Material& material)
 	{
 		((SheepFizz::PhysicsSpace*)(space->m_pSpace))->ChangeMaterials(handle, material);
-	}//end of ChangePhysMaterials
+	}
 
 	//remove bodies from space
 	void SheepPhysics::RemoveBodies(GameSpace* space, SheepFizz::Handle handle)
 	{
 		((SheepFizz::PhysicsSpace*)(space->m_pSpace))->RemoveBody(handle);
-	}//end of RemoveBodies
+	}
 
 	SheepFizz::Material* SheepPhysics::GetMaterial(std::string name)
 	{
 		//find the material and return it
 		SheepFizz::Material* material = &m_materials[name];
 		return material;
-	}//end of GetMaterial
+	}
 	//********************
 
 	//update all gamespaces by dt
 	void SheepPhysics::Update(float dt)
 	{
+    if (SHEEPINPUT->Keyboard.KeyIsPressed(VK_F11))
+    {
+      debugOn = !debugOn;
+      if (!debugOn)
+        GRAPHICS->SetWireframe(false);
+    }
+
 		std::vector<GameSpace*>& gSpaces = ENGINE->Spaces();
 		for(size_t i = 0; i < gSpaces.size(); ++i)
 		{
-			if (gSpaces[i]->m_pSpace)
+			if (gSpaces[i]->m_pSpace && !gSpaces[i]->Paused())
 				((SheepFizz::PhysicsSpace*)(gSpaces[i]->m_pSpace))->Step();
 		}
-	}//end of Update
+	}
 
 }

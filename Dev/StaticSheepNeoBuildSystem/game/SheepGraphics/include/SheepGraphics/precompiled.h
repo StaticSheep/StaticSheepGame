@@ -4,15 +4,16 @@
 #include <vector>
 #include <string>
 
-#include "Mallocator.h"
-
 #include "Utilities.h"
 
 #include "DirectXIncludes.h"
-#include "WindowsIncludes.h"
-
 #include "VertexTypes.h"
 #include "DataTypes.h"
+#include "Texture/Tex2d.h"
+#include "CBuffer.h"
+#include "CBuffer_types.h"
+#include "Effects\plight_effect.h"
+#include "Effects\gen_effect.h"
 
 
 
@@ -24,3 +25,4 @@
 #else
 #define DXVerify(x) (x)
 #endif
+

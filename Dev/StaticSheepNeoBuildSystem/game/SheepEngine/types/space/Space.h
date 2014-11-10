@@ -7,8 +7,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 *****************************************************************/
 
 #pragma once
-#include "memory/ObjectAllocator.h"
-#include "engine/handlemanager/HandleManager.h"
+#include "modules/memory/ObjectAllocator.h"
+#include "modules/handlemanager/HandleManager.h"
 #include "components/base/Component.h"
 
 namespace Framework
@@ -28,6 +28,9 @@ namespace Framework
     void SetHidden(bool hidden);
     bool Hidden();
 
+    bool Ready(void) { return m_ready; }
+    bool Valid(void) { return m_valid; }
+
     /*template <typename T>
     void SyncHandles(ObjectAllocator& m_allocator, bool force = false);*/
 
@@ -40,18 +43,16 @@ namespace Framework
     // Creates an empty object
     GameObject* CreateEmptyObject();
 
-    void Clear();
+    // Marks every single object in the space for deletion
+    void Clear(void);
     
+    // Tweaks the space
     void Tweak(void);
 
     void RemoveComponent(GameComponent* comp);
     void RemoveComponent(Handle handle);
 
     GameObject* GetGameObject(Handle handle);
-
-    // Cleans up a space of any (to be) removed game objects.
-    // Called at the end of the GameLogic update
-    void Cleanup();
 
     // Used for updating the tweak bar
     void UpdateTweakBar(void);
@@ -77,16 +78,29 @@ namespace Framework
 
     const std::string GetName() const;
 
-    bool m_valid;
+    // Marks a space to be destroyed
+    void Destroy(void);
+    
 
     GameObject* CreateObjectFromArchetype(const char* name);
 
     GameSpace* CopyGameSpace(const char* new_name);
     
+    // Handle used by AntTweak bar for keeping track of the game space tweak bar
     Handle tweakHandle;
 
+    // Physics Space to simulate this game space's physics
 	  void* m_pSpace;
     
+    // The game space is being edited
+    bool m_edit;
+
+    unsigned int GUID() { return m_spaceGUID; }
+
+    // Filename of the space [DO NOT WRITE TO]
+    std::string m_fileName;
+
+
   private:
     // The collection of all game objects in this game space
     ObjectAllocator m_objects;
@@ -101,14 +115,26 @@ namespace Framework
     std::string m_name;
 
     // Global Unique ID counter
-    unsigned int m_guid;
+    unsigned int m_guid = 0;
+
+    unsigned int m_spaceGUID;
+    static unsigned int maxGuid;
 
     bool m_shuttingDown;
 
     bool m_paused;
     bool m_hidden;
 
+    // If a space is invalid at the end of a frame it is deleted
+    bool m_valid;
+
+    bool m_ready = false;
+
     void RemoveGameObject(GameObject* object);
+
+    // Cleans up a space of any (to be) removed game objects.
+    // Called at the end of the GameLogic update
+    void Cleanup(void);
 
     struct SerializerData
     {
@@ -120,6 +146,7 @@ namespace Framework
 
     friend class Engine;
     friend class Factory;
+    friend class GameLogic;
 	};
 
 }

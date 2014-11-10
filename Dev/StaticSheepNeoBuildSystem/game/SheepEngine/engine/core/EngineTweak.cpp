@@ -14,6 +14,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include <commdlg.h>
 #include <iostream>
 
+#include <boost/filesystem.hpp>
+#include <boost/foreach.hpp>
 
 
 namespace Framework
@@ -27,18 +29,19 @@ namespace Framework
     std::string spaceName("NewSpace");
     spaceName += std::to_string(spaceNum++);
     GameSpace* space = ENGINE->CreateSpace(spaceName.c_str());
+    space->SetPaused(true);
     space->Tweak();
   }
 
   static void EditorOpenSpace(void* clientData)
   {
     OPENFILENAME ofn;
-    char szFile[200];
+    char szFile[512];
 
-    TCHAR Buffer[200];
+    TCHAR Buffer[512];
     DWORD dwRet;
 
-    dwRet = GetCurrentDirectory(200, Buffer);
+    dwRet = GetCurrentDirectory(512, Buffer);
 
     ZeroMemory( &ofn , sizeof( ofn));
     ofn.lStructSize = sizeof ( ofn );
@@ -59,7 +62,8 @@ namespace Framework
     if (szFile[0] == 0)
       return;
 
-    GameSpace* sp = FACTORY->LoadSpace(szFile);
+    GameSpace* sp = FACTORY->LoadSpaceFilePath(szFile);
+    sp->SetPaused(true);
 
     if (sp != nullptr)
       sp->Tweak();
@@ -73,12 +77,12 @@ namespace Framework
   static void EditorLoadLevel(void* clienData)
   {
     OPENFILENAME ofn;
-    char szFile[100];
+    char szFile[512];
 
-    TCHAR Buffer[128];
+    TCHAR Buffer[512];
     DWORD dwRet;
 
-    dwRet = GetCurrentDirectory(128, Buffer);
+    dwRet = GetCurrentDirectory(512, Buffer);
 
     ZeroMemory( &ofn , sizeof( ofn));
     ofn.lStructSize = sizeof ( ofn );
@@ -99,18 +103,18 @@ namespace Framework
 
     SetCurrentDirectory(Buffer);
 
-    FACTORY->LoadLevel(szFile, TweakSpaceCB);
+    FACTORY->LoadLevelFilePath(szFile, TweakSpaceCB);
   }
 
   static void EditorSaveLevel(void* clienData)
   {
     OPENFILENAME ofn;
-    char szFile[100];
+    char szFile[512];
 
-    TCHAR Buffer[128];
+    TCHAR Buffer[512];
     DWORD dwRet;
 
-    dwRet = GetCurrentDirectory(128, Buffer);
+    dwRet = GetCurrentDirectory(512, Buffer);
 
     ZeroMemory( &ofn , sizeof( ofn));
     ofn.lStructSize = sizeof ( ofn );
@@ -136,13 +140,16 @@ namespace Framework
 
   static void EditorPlayLevel(void* clientData)
   {
+    ATWEAK->RemoveAllBars();
 
+    ENGINE->PlayInEditor(true);
   }
 
   void Engine::OpenEditor()
   {
     // Create the main bar and get a handle to it
     
+    ENGINE->m_editorAcitve = true;
     AntTweak::TBar* mainBar = ATWEAK->CreateBar("Editor");
     EngineBar = mainBar->self;
 
@@ -160,6 +167,10 @@ namespace Framework
 
     mainBar->DefineLabel("Load Space");
     mainBar->AddButton("LoadSpace", EditorOpenSpace, ENGINE);
+
+    mainBar->AddSeparator("PIESTUFF");
+    mainBar->DefineLabel("Play In Editor");
+    mainBar->AddButton("PIE", EditorPlayLevel, ENGINE);
   }
 
 }

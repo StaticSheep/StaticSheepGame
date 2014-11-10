@@ -55,6 +55,7 @@ namespace Framework
     : Generic(eGameObject),
     archetype(),
     name(),
+    m_allocated(true),
     tweakLookup(nullptr),
     tweakCCompCallbacks(nullptr),
     tweakLuaCompCallbacks(nullptr)
@@ -62,6 +63,8 @@ namespace Framework
     for (unsigned int i = 0; i < ecountComponents; ++i)
       m_components[i] = Handle::null;
     fastChildSearch = false;
+
+    
   }
 
   
@@ -72,8 +75,6 @@ namespace Framework
   /// </summary>
   GameObject::~GameObject()
   {
-
-
     // If the object is not active, time to destroy it
     for (unsigned int j = 0; j < ecountComponents; ++j)
     {
@@ -84,6 +85,19 @@ namespace Framework
       if (HasComponent(type) && type != eLuaComponent)
       {
         RemoveComponent(type);
+      }
+    } // End component loop
+
+    // If the object is not active, time to destroy it
+    for (unsigned int j = 0; j < ecountComponents; ++j)
+    {
+      // Get the enum type of the component
+      EComponent type = (EComponent)j;
+
+      // Check to see if the Object has that type of component
+      if (HasComponent(type) && type != eLuaComponent)
+      {
+        DetatchComponent(type);
       }
     } // End component loop
 
@@ -127,8 +141,7 @@ namespace Framework
     }
     
 
-    name.~basic_string();
-    archetype.~basic_string();
+    m_allocated = false;
   }
 
   void GameObject::Copy(GameObject& rhs)
@@ -203,6 +216,9 @@ namespace Framework
   /// </summary>
   void GameObject::Initialize()
   {
+    // woo
+    hooks.space = space;
+
     GameComponent* component;
     for (size_t i = 0; i < ecountComponents; ++i)
     {
@@ -242,14 +258,17 @@ namespace Framework
   }
 
   /// <summary>
-  /// Removes a component.
+  /// Properly detaches a component from an object
+  /// If the component is not yet ready for removal it runs the remove logic
   /// </summary>
   /// <param name="type">The type of component.</param>
-  void GameObject::RemoveComponent(EComponent type)
+  void GameObject::DetatchComponent(EComponent type)
   {
     // Get the component
     GameComponent* comp = GetComponent(type);
-    comp->Remove(); // Remove the component
+
+    if (!comp->m_toDelete)
+      RemoveComponent(comp);
 
     // Remove the handle from the space
     space->GetHandles().Remove(comp->self);
@@ -263,6 +282,28 @@ namespace Framework
       space->GetHandles().Update(moved, moved->self);
 
     m_components[type] = Handle::null;
+  }
+
+  /// <summary>
+  /// Runs the remove routine for a component.
+  /// </summary>
+  /// <param name="type">The type of component.</param>
+  void GameObject::RemoveComponent(EComponent type)
+  {
+    // Get the component
+    GameComponent* comp = GetComponent(type);
+    comp->Remove();
+    comp->m_toDelete = true;
+  }
+
+  /// <summary>
+  /// Prepares a component to be detached.
+  /// </summary>
+  /// <param name="comp">The component.</param>
+  void GameObject::RemoveComponent(GameComponent* comp)
+  {
+    comp->Remove();
+    comp->m_toDelete = true;
   }
 
   /// <summary>
@@ -353,7 +394,7 @@ namespace Framework
   /// <returns></returns>
   Handle GameObject::GetComponentHandle(EComponent type)
   {
-    return space->GetHandles().GetAs<GameComponent>(m_components[type])->self;
+    return m_components[type];
   }
 
   /// <summary>
@@ -447,19 +488,14 @@ namespace Framework
     // Now we are going to iterate through every component and serialize them
     for ( unsigned int i = 0; i < ecountComponents; ++i)
     {
-
-      
       if (o->HasComponent(EComponent(i)) && i != eLuaComponent)
       {
         s->Padding( file, pad );
 
         Variable v = o->m_components[i];
         v.Serialize(file);
-      }
 
-      if(i != ecountComponents - 1)
-      {
-        file.Write( "\n" );
+        //file.Write("\n");
       }
     }
 

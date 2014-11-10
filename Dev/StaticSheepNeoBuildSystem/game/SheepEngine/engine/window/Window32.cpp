@@ -39,8 +39,8 @@ namespace Framework
     ErrorIf(!RegisterClassEx(&wcex), "Window", "Window class failed to register!");
 
     // Create Window
-    width = 1900;
-    height = 1020;
+    width = Config::desiredWidth;
+    height = Config::desiredHeight;
     RECT rc = {0, 0, width, height};                     // Defines rectangle dimensions for window
     AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE); // Takes borders into considerations for window size
 
@@ -67,6 +67,9 @@ namespace Framework
     PAINTSTRUCT ps;                         // Data to redraw window if moved
     HDC hdc;                                // Hande to a Device Context
     MSG msg;
+    DWORD windowSize;
+    WORD width;
+    WORD height;
 
 #if USE_ANTTWEAKBAR
     if (TwEventWin(hWnd, message, wParam, lParam))
@@ -80,9 +83,32 @@ namespace Framework
       EndPaint( hWnd, &ps );
       break;
 
+    case WM_SIZE:
+      windowSize = lParam;
+      width = LOWORD(windowSize);
+      height = HIWORD(windowSize);
+      ENGINE->SystemMessage(ResizeMessage(width, height));
+      break;
+
     case WM_DESTROY:                    // Window has been requested to close
       ENGINE->Quit();
       PostQuitMessage( 0 );
+      break;
+
+    case WM_ACTIVATE:
+      if (wParam == WA_INACTIVE && !ENGINE->m_editorAcitve)
+      {
+        ShowWindow(hWnd, SW_MINIMIZE);
+
+        ENGINE->SystemMessage(Message(Message::WindowMinimize));
+      }
+
+      else if (wParam == WA_CLICKACTIVE && !ENGINE->m_editorAcitve)
+      {
+        ShowWindow(hWnd, SW_RESTORE);
+
+        ENGINE->SystemMessage(Message(Message::WindowRestore));
+      }
       break;
 
 /*****************************************************************************/

@@ -12,6 +12,17 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 namespace Framework
 {
+
+  namespace DebugData
+  {
+    struct GameLogic
+    {
+      unsigned numSpaces;
+      unsigned objectsAllocated;
+      unsigned componentsAllocated;
+    };
+  }
+
   class GameLogic : public ISystem
   {
   public:
@@ -28,7 +39,12 @@ namespace Framework
     // Update per frame
     virtual void Update(float dt);
 
-    virtual void RegisterComponents();
+    virtual void RegisterComponents(void);
+
+    const void* GetDebugData(void);
+
+  private:
+    DebugData::GameLogic m_debugData;;
   };
 
   extern GameLogic* GAMELOGIC;

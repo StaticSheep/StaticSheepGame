@@ -30,7 +30,7 @@ namespace Framework
 		virtual void Update(float dt) = 0;
 
 		// Systems receive and handle messages in different ways
-		virtual void ReceiveMessage(Message msg) {};
+		virtual void ReceiveMessage(Message& msg) {};
 
 		// Systems can have names too!
 		virtual std::string GetName() = 0;

@@ -7,14 +7,14 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 ******************************************************************************/
 
 #include "pch/precompiled.h"
-#include "Input.h"
+
 #include <iostream>
 #include <windows.h>
-
+#include "Input.h"
 #include "engine/window/Window32.h"
 
 
-#include "editor/App.h"
+#include "wxeditor/App.h"
 #include "input/InputBackend.h"
 #include "input/Keyboard.h"
 #include "input/Mouse.h"
@@ -23,6 +23,11 @@ namespace Framework
 {
 
   InputManager* SHEEPINPUT = NULL;
+
+  void GamePadInput::Update()
+  {
+
+  }
 
 /*****************************************************************************/
 /*********************************MOUSE***************************************/
@@ -442,6 +447,11 @@ namespace Framework
 /*****************************************************************************/
   InputManager::InputManager()
   {
+    Pads[0] = GamePadInput(0);
+    Pads[1] = GamePadInput(1);
+    Pads[2] = GamePadInput(2);
+    Pads[3] = GamePadInput(3);
+
     SHEEPINPUT = this;
   }
 
@@ -466,8 +476,21 @@ namespace Framework
   {
     Mouse.Initialize();
     Keyboard.Initialize();
+    Autoplay = false;
 
     return;
+  }
+
+  void InputManager::GetGamePadState(int index, XINPUT_STATE* state)
+  {
+    *state = Pads[index].State;
+  }
+
+  const void* InputManager::GetDebugData()
+  {
+    debug.pads = Pads;
+    XInputGetState(0, &Pads[0].State);
+    return (void*)&debug;
   }
 
 /*****************************************************************************/
@@ -483,6 +506,11 @@ namespace Framework
 
     Mouse.Update();
     Keyboard.Update();
+    
+    for (int i = 0; i < 4; ++i)
+    {
+      XInputGetState(i, &Pads[i].State);
+    }
 
 #if USE_EDITOR
 

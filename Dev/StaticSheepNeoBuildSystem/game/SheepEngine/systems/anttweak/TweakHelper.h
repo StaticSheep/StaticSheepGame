@@ -5,6 +5,8 @@ namespace Framework
 {
   namespace AntTweak
   {
+    class TweakGenericVar;
+
     class Tweaker
     {
     public:
@@ -12,11 +14,13 @@ namespace Framework
       static void TweakString(AntTweak::TBar* bar, Variable& var, const char* tempLabel, const char* label);
       static void DoTweak(AntTweak::TBar* bar, Variable& var, const char* tempLabel, const char* label);
 
-
+      static Function tweakGetCB;
+      static Function tweakSetCB;
       static unsigned tweakOffset;
       static bool isTweakGeneric;
       static const Member* tweakMember;
       static Generic* tweakGeneric;
+      static TweakGenericVar* currentGeneric;
     };
     
 

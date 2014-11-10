@@ -1,6 +1,10 @@
+/******************************************************************************
+Filename: CSprite.cpp
+Project:
+Author(s): Scott Nelson
 
-
-
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+******************************************************************************/
 #include "pch/precompiled.h"
 #include "CSprite.h"
 #include "systems/graphics/SheepGraphics.h"
@@ -24,7 +28,7 @@ namespace Framework
     transform = this->GetOwner()->GetComponentHandle(eTransform);
 
     if (m_spriteName.length() == 0)
-      m_spriteName = "content/Default.png";
+      m_spriteName = "Default.png";
 
     if(m_texture.GetType() == DirectSheep::NONE)
     {
@@ -63,9 +67,9 @@ namespace Framework
   {
     Transform* trans = space->GetHandles().GetAs<Transform>(transform);
 
-    GRAPHICS->SetPosition(trans->GetTranslation().X, trans->GetTranslation().Y);
+    GRAPHICS->SetPosition(trans->GetTranslation().X, trans->GetTranslation().Y, trans->GetTranslation().Z);
     GRAPHICS->SetRotation(trans->GetRotation());
-    GRAPHICS->SetSize(trans->GetScale().X * Size.X * TextureSize.X, trans->GetScale().Y * Size.Y * TextureSize.Y);
+    GRAPHICS->SetSize(trans->GetScale().X * Size.X, trans->GetScale().Y * Size.Y);
     GRAPHICS->SetColor(Color);
     GRAPHICS->SetUV(Vec2(0,0), Vec2(1,1));
     GRAPHICS->SetUseCamera(true);

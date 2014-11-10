@@ -8,18 +8,16 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 // debug needs to know about all of the systems.... sigh...
 #include "pch/precompiled.h"
-
+#include <Windows.h>
 #include "systems/debug/Debug.h"
-#include "systems/debug/tracelog/TraceLog.h"
-
+#include "engine/tracelog/TraceLog.h"
 #include "systems/audio/SheepAudio.h"
 #include "systems/graphics/SheepGraphics.h"
-#include "systems/input/Input.h"
+//#include "systems/input/Input.h"
+#include "systems/skynet/Skynet.h"
 #include "engine/framerate/FramerateController.h"
 #include "systems/graphics/DrawLib.h"
 #include "engine/window/Window32.h"
-
-#include <Windows.h>
 
 static bool fpsFlag;
 static bool performanceFlag;
@@ -68,18 +66,23 @@ namespace Framework
     if(AUDIO)
     {
       audio = (DebugAudio*)AUDIO->GetDebugData();
-      LOG->TraceLog(DEBUG, "Linked to Audio system\n");
+      TRACELOG->Log(DEBUG, "Linked to Audio system\n");
     }
 
     if(GRAPHICS)
     {
       graphics = (DebugGraphics*)GRAPHICS->GetDebugData();
-      LOG->TraceLog(DEBUG, "Linked to Graphics system\n");
+      TRACELOG->Log(DEBUG, "Linked to Graphics system\n");
+    }
+    
+    if (SHEEPINPUT)
+    {
+      input = (DebugInput*)SHEEPINPUT->GetDebugData();
     }
 
     
     framerate = (DebugFramerate*)ENGINE->Framerate.GetDebugData();
-    LOG->TraceLog(DEBUG, "Linked to Framerate Controller\n");
+    TRACELOG->Log(DEBUG, "Linked to Framerate Controller\n");
   }
 
 /*****************************************************************************/
@@ -90,7 +93,7 @@ namespace Framework
 /*****************************************************************************/
   void Debug::Update(float dt)
   {
-    
+
   }
 
 /*****************************************************************************/
@@ -103,11 +106,10 @@ namespace Framework
     The message hamster!
 */
 /*****************************************************************************/
-  void Debug::ReceiveMessage(Message hamster)
+  void Debug::ReceiveMessage(Message& hamster)
   {
     if (hamster.MessageId == Message::PostDraw)
     {
-      int channels;
       // if F2 was pressed, lets display the FPS
       if(fpsFlag)
       {
@@ -125,7 +127,6 @@ namespace Framework
         format = std::to_string(framerate->currentFps);
         format.erase(4, std::string::npos);
         fps_string = "Current FPS: " + format + "\n";
-        fps_string += "CurrentPosition" + std::to_string(currentX);
 
         if(SHEEPINPUT->Keyboard.KeyIsDown(VK_LEFT))
           currentX -= 1.0f;
@@ -133,9 +134,9 @@ namespace Framework
         if(SHEEPINPUT->Keyboard.KeyIsDown(VK_RIGHT))
           currentX += 1.0f;
 
-        Draw::SetRotation(0.0f);
+        Draw::SetRotation(0);
         Draw::SetUseCamera(false);
-        Draw::SetPosition( ENGINE->Window->GetWidth() / -2.0f, 0.0f);
+        Draw::SetPosition( 200.0f, 400.0f);
         Draw::SetColor(1.0f,1.0f,1.0f,1.0f);
         Draw::DrawString(fps_string.c_str(), 15.0f, "Helvetica");
         Draw::SetUseCamera(true);
@@ -158,9 +159,9 @@ namespace Framework
             systemCounter = 0;
           }
 
-          channels = (*(FMOD_DSP_PARAMETER_FFT*)audio->data).numchannels;
+          //channels = (*(FMOD_DSP_PARAMETER_FFT*)audio->data).numchannels;
           Draw::SetUseCamera(false);
-          for(int i = 0; i < 1; ++i)
+          /*for(int i = 0; i < 1; ++i)
           {
             for(int j = 0; j < 128; ++j)
             {
@@ -168,7 +169,7 @@ namespace Framework
               Draw::SetColor(1.0f,0.0f,0.0f,1.0f);
               Draw::DrawRect(-128.0f + j * 2.0f, ENGINE->Window->GetHeight() / -3.0f, 2.0f, height * 1000.0f);
             }
-          }
+          }*/
           
           Draw::SetColor(1.0f,1.0f,1.0f,1.0f);
           Draw::SetRotation(0.0f);
@@ -178,6 +179,17 @@ namespace Framework
 
           
 
+          break;
+
+        case DEBUG_INPUT:
+          SHEEPINPUT->GetDebugData();
+          FormatString(currentState);
+          Draw::SetUseCamera(false);
+          Draw::SetColor(1.0f, 1.0f, 1.0f, 1.0f);
+          Draw::SetRotation(3.14159f);
+          Draw::SetPosition(ENGINE->Window->GetWidth() / -4.0f, ENGINE->Window->GetHeight() / 2.0f - 100.0f);
+          Draw::DrawString(string.c_str(), 15.0f, "Helvetica");
+          Draw::SetUseCamera(true);
           break;
 
         case DEBUG_GRAPHICS:
@@ -233,6 +245,37 @@ namespace Framework
                "RAM Allocated: " + std::to_string(audio->RAM / 1000000) + "." + std::to_string((audio->RAM / 100000) % 10) + " mb\n"
                "Channels Playing: " + std::to_string(audio->channels) + "\n"
                "Total Time Taken : " + std::to_string(timetaken).erase(4,std::string::npos) + "ms\n";
+      break;
+
+    case DEBUG_INPUT:
+      format1 = std::to_string(input->pads[0].State.Gamepad.sThumbLX / 32767.0f);
+      format2 = std::to_string(input->pads[0].State.Gamepad.sThumbLY / 32767.0f);
+
+      format1.erase(4, std::string::npos);
+      format2.erase(4, std::string::npos);
+
+      string = "LX: " + format1 + " LY: " + format2 + "\n";
+
+      format1 = std::to_string(input->pads[0].State.Gamepad.sThumbRX / 32767.0f);
+      format2 = std::to_string(input->pads[0].State.Gamepad.sThumbRY / 32767.0f);
+
+      format1.erase(4, std::string::npos);
+      format2.erase(4, std::string::npos);
+
+      string += "RX: " + format1 + " RY: " + format2 + "\n";
+
+      format1 = std::to_string(input->pads[0].State.Gamepad.bLeftTrigger / 255.0f);
+      format2 = std::to_string(input->pads[0].State.Gamepad.bRightTrigger / 255.0f);
+
+      format1.erase(4, std::string::npos);
+      format2.erase(4, std::string::npos);
+
+      string += "Left Trigger " + format1 + " Right Trigger" + format2 + "\n";
+
+      format1 = std::to_string(input->pads[0].State.Gamepad.wButtons);
+
+      string += format1;
+
       break;
 
     default:
@@ -386,7 +429,7 @@ namespace Framework
     }
 
     // F5 for audio debug
-    if(SHEEPINPUT->Keyboard.KeyIsPressed(VK_F5))
+    if(SHEEPINPUT->Keyboard.KeyIsPressed(VK_F9))
     {
       if(currentState == DEBUG_AUDIO)
         currentState = 0;
@@ -401,6 +444,14 @@ namespace Framework
         currentState = 0;
       else
         currentState = DEBUG_GRAPHICS;
+    }
+
+    if (SHEEPINPUT->Keyboard.KeyIsPressed(VK_F7))
+    {
+      if (currentState == DEBUG_INPUT)
+        currentState = 0;
+      else
+        currentState = DEBUG_INPUT;
     }
 
     // Add more states here.

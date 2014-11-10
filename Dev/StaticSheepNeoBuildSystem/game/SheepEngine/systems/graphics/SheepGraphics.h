@@ -27,8 +27,23 @@ namespace DirectSheep
   class RenderContext;
 };
 
+
 namespace Framework
 {
+
+  namespace DebugData
+  {
+    struct SheepGraphics
+    {
+      unsigned numTextures;
+      unsigned numShaders;
+
+      unsigned numDrawCalls;
+      unsigned numBatchedCalls;
+      unsigned numTextDraws;
+    };
+  }
+
 	class SheepGraphics : public ISystem
 	{
 	public:
@@ -43,7 +58,7 @@ namespace Framework
 		// Sheep graphics interface deconstructor
 		~SheepGraphics();
 
-    void SetPosition(float x, float y);
+    void SetPosition(float x, float y, float Z);
     void SetRotation(float theta);
     void SetSize(float x, float y);
     void SetColor(Vec4 Color);
@@ -59,6 +74,7 @@ namespace Framework
 
     void BindTexture(int ID);
 
+    void SetWireframe(bool iswired);
     void SetUseCamera(bool useCam);
     void DrawSprite(Sprite *sprite);
     int GetTextureID(const std::string& texture);
@@ -66,6 +82,8 @@ namespace Framework
     void DrawSpriteText(const char * text, float size, const char * font);
 
 
+    bool LoadAssets(std::string& filepath);
+    void ReceiveMessage(Message& msg);
     void* GetDevice(void);
 
 	private:
@@ -83,8 +101,6 @@ namespace Framework
 
 		void Draw(void);
 
-    
-
     std::unordered_map<std::string, DirectSheep::Handle> m_textureMap;
 
     std::unordered_map<std::string, DirectSheep::Handle> m_vshaderMap;
@@ -98,6 +114,9 @@ namespace Framework
     DirectSheep::Handle spriteQuad;
 
     DirectSheep::Handle spriteContext;
+
+    DebugData::SheepGraphics m_debugData;
+
 
   public:
 
