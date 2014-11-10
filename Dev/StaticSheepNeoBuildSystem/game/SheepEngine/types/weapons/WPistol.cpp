@@ -31,6 +31,6 @@ namespace Framework
     bulletC->AddToVelocity(AimDir * 1000);
 
     SoundEmitter *se = player->GetComponent<SoundEmitter>(eSoundEmitter);
-    se->Play("gunshot", &SoundInstance(0.25f));
+    se->Play("gunshot", &SoundInstance(0.125f));
   }
 }
