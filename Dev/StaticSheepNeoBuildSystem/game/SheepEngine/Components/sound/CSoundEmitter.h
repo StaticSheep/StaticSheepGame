@@ -22,8 +22,7 @@ namespace Framework
 
     void Initialize();
     
-    void Play(std::string name);
-    void PlayEx(std::string name, float volume);
+    void Play(std::string name, SoundInstance* instance = &SoundInstance());
     
     void SetPitch(float pitch);
     

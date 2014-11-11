@@ -17,5 +17,6 @@ namespace Framework
 
 		//member variables
     Handle bTransfrom;
+    int damage;
 	};
 }

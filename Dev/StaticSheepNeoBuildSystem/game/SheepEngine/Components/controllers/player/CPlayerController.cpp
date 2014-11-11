@@ -6,6 +6,7 @@
 #include "../../colliders/CCircleCollider.h"
 #include "../../sprites/CSprite.h"
 #include "types/weapons/WPistol.h"
+#include "../../gameplay_scripts/CBullet_default.h"
 
 namespace Framework
 {
@@ -22,13 +23,13 @@ namespace Framework
     respawnTimer = 2.0f;
     hasRespawned = false;
     blink = false;
+    weapon = nullptr;
 
 	}
 
 	PlayerController::~PlayerController() //4
 	{
-		//release dynamic memory
-    free(weapon);
+
 	}
 
 
@@ -45,6 +46,8 @@ namespace Framework
 		space->hooks.Add("LogicUpdate", self, BUILD_FUNCTION(PlayerController::LogicUpdate));
 		space->GetGameObject(owner)->hooks.Add("OnCollision", self, BUILD_FUNCTION(PlayerController::OnCollision));
 
+    //Generic* gobj = space->GetHandles().GetAs<Generic>(owner);
+
 		playerGamePad = space->GetGameObject(owner)->GetComponentHandle(eGamePad); //gets the handle to the gamepad
 		playerCollider = space->GetGameObject(owner)->GetComponentHandle(eBoxCollider);
 		playerTransform = space->GetGameObject(owner)->GetComponentHandle(eTransform);
@@ -59,8 +62,7 @@ namespace Framework
 
     BoxCollider *bc = space->GetHandles().GetAs<BoxCollider>(playerCollider);
     bc->SetGravityOff();
-
-    weapon = new Pistol();
+    weapon = (Pistol*)GET_TYPE(Pistol)->New();
     shotDelay = weapon->delay;
 	}
 
@@ -207,7 +209,7 @@ namespace Framework
     GameObject *OtherObject = space->GetHandles().GetAs<GameObject>(otherObject);
     if (OtherObject->name == "Bullet" && !hasRespawned)
     {
-      health -= 10;
+      health -= OtherObject->GetComponent<Bullet_Default>(eBullet_Default)->damage;
       return;
     }
     if ((OtherObject->name == "KillBox" || OtherObject->name == "KillBoxBig") && !hasRespawned)
@@ -253,6 +255,12 @@ namespace Framework
 	{
 		//opposite of init
 		space->hooks.Remove("LogicUpdate", self);
+
+    if (weapon != nullptr)
+    {
+      free(weapon); //release dynamic memory
+      weapon = nullptr;
+    }
 	}
 
 	//************************************
@@ -365,7 +373,7 @@ namespace Framework
   //************************************
   void PlayerController::PlayerDeath(SoundEmitter *se, Transform *ps)
   {
-    se->PlayEx("explosion", 1.0f);
+    se->Play("explosion", &SoundInstance(0.5f));
     Handle explosion = (FACTORY->LoadObjectFromArchetype(space, "explosion"))->self;
     Transform *exT = space->GetGameObject(explosion)->GetComponent<Transform>(eTransform);
     exT->SetTranslation(ps->GetTranslation());

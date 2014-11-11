@@ -29,6 +29,9 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/gameplay_scripts/CGrinder.h"
 #include "components/gameplay_scripts/CExplosion.h"
 #include "components/gameplay_scripts/CWeaponPickup.h"
+#include "types/weapons/WPistol.h"
+#include "types/weapons/WShotgun.h"
+#include "types/weapons/WAutomatic.h"
 
 namespace Framework
 {
@@ -190,6 +193,12 @@ namespace Framework
 
     TYPE_REGISTER(WeaponPickup);
     TYPE_SET_TWEAK_TYPE(WeaponPickup, AntTweak::TW_TYPE_COMPONENT);
+    TYPE_ADD_MEMBER(WeaponPickup, weaponID, false, true, "Weapon Type");
+    TYPE_ADD_MEMBER(WeaponPickup, weaponNum, false, true, "Weapon Num");
+
+    TYPE_REGISTER(Pistol);
+    TYPE_REGISTER(Shotgun);
+    TYPE_REGISTER(Automatic);
 
     TYPE_REGISTER( BoxCollider );
     TYPE_ADD_MEMBER( BoxCollider, m_width, false, true, "Width");

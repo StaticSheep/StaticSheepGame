@@ -27,7 +27,6 @@ namespace Framework
 
   void Grinder::Remove()
 	{
-    space->GetGameObject(owner)->hooks.Remove("OnCollision", self);
 		space->hooks.Remove("LogicUpdate", self);
 	}
 

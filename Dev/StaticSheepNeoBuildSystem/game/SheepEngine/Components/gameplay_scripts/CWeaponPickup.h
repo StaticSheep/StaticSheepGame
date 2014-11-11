@@ -19,6 +19,7 @@ namespace Framework
     Handle wpTransfrom;
     Handle wpCollider;
     EWeapons weaponID = eNoWeapon;
+    int weaponNum;
   private:
     const TypeInfo *weaponType = nullptr;
 	};

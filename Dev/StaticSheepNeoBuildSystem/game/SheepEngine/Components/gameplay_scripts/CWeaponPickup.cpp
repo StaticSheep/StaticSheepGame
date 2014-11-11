@@ -15,7 +15,9 @@ namespace Framework
 
   static std::unordered_map<EWeapons, const char*> WeaponMap =
   {
-    { ePistol, "Pistol" }
+    { ePistol, "Pistol" },
+    { eAutomatic, "Automatic" },
+    { eShotgun, "Shotgun" }
   };
 
   WeaponPickup::WeaponPickup()
@@ -30,6 +32,13 @@ namespace Framework
 
   void WeaponPickup::Initialize()
 	{
+
+    //weaponID = (EWeapons)weaponNum;
+    if (weaponNum == 1)
+      weaponID = eShotgun;
+    else if (weaponNum == 2)
+      weaponID = eAutomatic;
+
     if (weaponID == eNoWeapon)
     {
       int randomNumber = 0;
@@ -46,7 +55,7 @@ namespace Framework
     space->GetGameObject(owner)->hooks.Add("OnCollision", self, BUILD_FUNCTION(WeaponPickup::OnCollision));
 
     wpTransfrom = space->GetGameObject(owner)->GetComponentHandle(eTransform);
-    space->GetHandles().GetAs<BoxCollider>(space->GetGameObject(owner)->GetComponentHandle(eCircleCollider))->SetGravityOff();
+    space->GetHandles().GetAs<BoxCollider>(space->GetGameObject(owner)->GetComponentHandle(eBoxCollider))->SetGravityOff();
 	}
 
   void WeaponPickup::Remove()
@@ -66,13 +75,17 @@ namespace Framework
 
   void WeaponPickup::OnCollision(Handle otherObject, SheepFizz::ExternalManifold manifold)
 	{
-    GameObject *OtherObject = space->GetHandles().GetAs<GameObject>(otherObject);
-    if (OtherObject->name == "Player" || "KillBox")
+    GameObject *OtherObject = space->GetGameObject(otherObject);
+    if (OtherObject->name == "Player")
     {
-      space->GetHandles().GetAs<PlayerController>(otherObject)->weapon = (Weapon *)weaponType->New();
+      PlayerController *playerController = OtherObject->GetComponent<PlayerController>(ePlayerController);
+      if (playerController->weapon != nullptr)
+        free(playerController->weapon);
+      playerController->weapon = (Weapon *)weaponType->New();
       space->GetGameObject(owner)->Destroy();
     }
-		
+    if (OtherObject->name == "KillBox")
+      space->GetGameObject(owner)->Destroy();
 
 	}
 

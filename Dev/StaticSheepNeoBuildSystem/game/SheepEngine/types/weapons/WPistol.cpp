@@ -3,6 +3,7 @@
 #include "Components/transform/CTransform.h"
 #include "Components/colliders/CCircleCollider.h"
 #include "Components/controllers/player/CPlayerController.h"
+#include "components/gameplay_scripts/CBullet_default.h"
 
 namespace Framework
 {
@@ -21,6 +22,7 @@ namespace Framework
   {
     
     GameObject *bullet = (FACTORY->LoadObjectFromArchetype(player->space, "Bullet"));
+    bullet->GetComponent<Bullet_Default>(eBullet_Default)->damage = damage;
     Transform *BT = bullet->GetComponent<Transform>(eTransform);
     CircleCollider *bulletC = bullet->GetComponent <CircleCollider>(eCircleCollider);
     Transform *playerTrans = player->GetComponent <Transform>(eTransform);
@@ -29,6 +31,6 @@ namespace Framework
     bulletC->AddToVelocity(AimDir * 1000);
 
     SoundEmitter *se = player->GetComponent<SoundEmitter>(eSoundEmitter);
-    se->PlayEx("gunshot", 0.125f);
+    se->Play("gunshot", &SoundInstance(0.125f));
   }
 }
