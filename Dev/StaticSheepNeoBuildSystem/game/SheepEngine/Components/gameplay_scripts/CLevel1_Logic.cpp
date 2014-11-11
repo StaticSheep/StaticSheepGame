@@ -98,14 +98,26 @@ namespace Framework
       timeLimit = 60;
     }
 
-    /*if(!playing)
+    /*
+    if(!playing)
     {
       SoundPlayer *sp = space->GetHandles().GetAs<SoundPlayer>(levelSound);
-      sp->PlayEx("space_brawl", PLAY_ONCE, 0.5f);
+
+      // So for SoundPlayers and SoundEmitters, if you want to change the way they 
+      // play things, you will have to make a SoundInstance, and change the things
+      // in the instance and give it to the Play function.
+
+      // SoundPlayer keeps track of instances, so if you want to stop a song,
+      // you can do sp->Stop("space_brawl") and it'll stop.
+
+      SoundInstance instance;
+      instance.volume = 0.5f;
+
+      sp->Play("space_brawl", &instance);
       playing = true;
-    }
+    } */
     SoundPlayer *sp = space->GetHandles().GetAs<SoundPlayer>(levelSound);
-    sp->SetVolume(0.25f);*/
+    sp->SetVolume(0.25f);
 
 	}
 

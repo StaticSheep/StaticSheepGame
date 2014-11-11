@@ -93,7 +93,7 @@ namespace Framework
 /*****************************************************************************/
   void Debug::Update(float dt)
   {
-    
+
   }
 
 /*****************************************************************************/
@@ -110,7 +110,6 @@ namespace Framework
   {
     if (hamster.MessageId == Message::PostDraw)
     {
-      int channels;
       // if F2 was pressed, lets display the FPS
       if(fpsFlag)
       {

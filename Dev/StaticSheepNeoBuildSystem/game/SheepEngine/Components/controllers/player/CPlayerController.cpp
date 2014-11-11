@@ -373,7 +373,7 @@ namespace Framework
   //************************************
   void PlayerController::PlayerDeath(SoundEmitter *se, Transform *ps)
   {
-    se->PlayEx("explosion", 1.0f);
+    se->Play("explosion", &SoundInstance(0.5f));
     Handle explosion = (FACTORY->LoadObjectFromArchetype(space, "explosion"))->self;
     Transform *exT = space->GetGameObject(explosion)->GetComponent<Transform>(eTransform);
     exT->SetTranslation(ps->GetTranslation());
