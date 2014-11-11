@@ -425,7 +425,8 @@ void ParseFiles(FMOD::System* system, SoundMap& soundMap)
       for (directory_iterator it(p), end; it != end; ++it)
       {
         // if the current file is a .wav or .mp3
-        if (it->path().extension().generic_string() == ".wav" || it->path().extension().generic_string() == ".mp3")
+        if (it->path().extension().generic_string() == ".wav" || it->path().extension().generic_string() == ".mp3"
+         || it->path().extension().generic_string() == ".aif")
         {
           // get it's size first
           int size = (int)file_size(it->path().generic_string());
