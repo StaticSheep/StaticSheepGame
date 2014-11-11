@@ -1,5 +1,3 @@
-
-
 local PanelFactory = {}
 
 local panelMetaTable = GetMeta("Panel")

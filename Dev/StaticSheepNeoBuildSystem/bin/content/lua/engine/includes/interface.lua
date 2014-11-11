@@ -50,6 +50,7 @@ LuaSpaces = {} -- Pure lua objects
 LuaComponents = {}
 
 include("util.lua")
+include("meta.lua")
 
 require("hook")
 require("filesystem")
