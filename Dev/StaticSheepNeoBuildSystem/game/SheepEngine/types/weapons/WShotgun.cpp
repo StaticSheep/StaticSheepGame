@@ -11,7 +11,7 @@ namespace Framework
   Shotgun::Shotgun()
   {
     delay = 20;
-    damage = 20;
+    damage = 34;
   }
 
   Shotgun::~Shotgun()

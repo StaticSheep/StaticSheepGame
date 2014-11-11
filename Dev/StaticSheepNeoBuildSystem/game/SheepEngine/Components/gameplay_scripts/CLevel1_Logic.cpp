@@ -62,7 +62,7 @@ namespace Framework
       Transform *PT = ePlat->GetComponent<Transform>(eTransform);
       //BoxCollider *platC = ePlat->GetComponent <BoxCollider>(eBoxCollider);
       ePlat->GetComponent<ElevatorPlat>(eElevatorPlat)->direction = true;
-      PT->SetTranslation(Vec3(194.79,-320.0,0.0));
+      PT->SetTranslation(Vec3(242.0,-320.0,0.0));
 
       if (randomDrop == 0)
       {
@@ -77,7 +77,7 @@ namespace Framework
       Transform *PT2 = ePlat2->GetComponent<Transform>(eTransform);
       //BoxCollider *platC2 = ePlat2->GetComponent <BoxCollider>(eBoxCollider);
       ePlat2->GetComponent<ElevatorPlat>(eElevatorPlat)->direction = false;
-      PT2->SetTranslation(Vec3(-194.79, 320.0, 0.0));
+      PT2->SetTranslation(Vec3(-235.0, 320.0, 0.0));
 
       if (randomDrop == 0)
       {
