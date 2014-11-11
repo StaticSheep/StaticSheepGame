@@ -68,7 +68,17 @@ filesystem.BlacklistFolder("lua_levels")
 filesystem.LoadLuaFiles("content/lua/engine/includes/libraries/")
 filesystem.LoadLuaFiles("content/lua/engine/includes/management/")
 
-hook.Add("LogicUpdate", "CheckFiles", filesystem.UpdateOldFiles)
+
+
+local function FileReloaded()
+  ReloadObjects()
+  ReloadComponents()
+  gui.Reloaded()
+end
+
+function CheckOldFiles()
+  filesystem.UpdateOldFiles(FileReloaded)
+end
 
 function LuaLoaded()
 end
@@ -76,5 +86,8 @@ end
 function PostInit()
   QueryComponents()
 end
+
+
+hook.Add("LogicUpdate", "CheckFiles", CheckOldFiles)
 
 

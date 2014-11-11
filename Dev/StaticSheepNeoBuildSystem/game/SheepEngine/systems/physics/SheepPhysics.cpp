@@ -48,13 +48,15 @@ namespace Framework
   //debug draw after postdraw message received
   void SheepPhysics::ReceiveMessage(Message& msg)
   {
-    if (!debugOn)
-      return;
+    
 
-    GRAPHICS->SetWireframe(true);
+   
 
     if (msg.MessageId == Message::PostDraw)
     {
+      if (!debugOn)
+        return;
+
       //go through all the game spaces
       std::vector<GameSpace*>& gspaces = ENGINE->Spaces();
 
@@ -162,7 +164,9 @@ namespace Framework
   void SheepPhysics::SetDebug(bool on)
   {
     debugOn = on;
+    GRAPHICS->SetWireframe(on);
   }
+
   bool SheepPhysics::IsDebugOn(void)
   {
     return debugOn;
@@ -223,6 +227,9 @@ namespace Framework
 		m_materials.insert(std::pair<std::string, SheepFizz::Material>("Fluff", Fluff));
 		m_materials.insert(std::pair<std::string, SheepFizz::Material>("Bounce", Bounce));
 		m_materials.insert(std::pair<std::string, SheepFizz::Material>("Static", Static));
+
+
+    
 
     debugOn = false;
 	}//end of Initialize

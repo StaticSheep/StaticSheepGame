@@ -24,7 +24,7 @@ function table.Merge(dest, source)
 end
 
 function gui.Inherit( meta, base )
-  meta.BasePanel = base
+  meta.baseClass = base
 end
 
 function gui.Create( classname, parent, name, ...)
@@ -42,14 +42,15 @@ function gui.Make( classname, parent, name, ...)
   if PanelFactory[classname] ~= nil then
 
     local metatable = PanelFactory[classname]
-    local panel = gui.Make( metatable.BasePanel, parent, name )
+    local panel = gui.Make( metatable.baseClass, parent, name )
     if ( not panel ) then
-      Error( "Tried to create panel with invalid base '"..metatable.BasePanel.."'\n" );
+      Error( "Tried to create panel with invalid base '"
+        ..metatable.baseClass.."'\n" );
     end
 
     table.Merge( panel, metatable )
-    panel.BaseClass = PanelFactory[ metatable.BasePanel ]
-    panel.ClassName = classname
+    panel.baseClass = metatable.baseClass
+    panel.className = classname
     
     -- Call the Init function if we have it
     if ( panel.Init ) then
@@ -79,7 +80,7 @@ function gui.Register( name, mtable, base )
   PANEL = nil
 
   -- Default base is Panel
-  mtable.BasePanel = base or "Panel"
+  mtable.baseClass = base or "Panel"
   
   PanelFactory[ name ] = mtable
 
@@ -124,5 +125,24 @@ function gui.Draw()
     if v.visible then
       v:Paint()
     end
+  end
+end
+
+local function RefreshMeta(panel)
+  local metatable = PanelFactory[panel.className]
+  local basetable = PanelFactory[panel.baseClass]
+
+  if basetable ~= nil then
+    table.Merge( panel, metatable )
+  end
+
+  if metatable ~= nil then
+    table.Merge( panel, metatable )
+  end
+end
+
+function gui.Reloaded()
+  for k,v in pairs(gui.panels) do
+    RefreshMeta(v)
   end
 end

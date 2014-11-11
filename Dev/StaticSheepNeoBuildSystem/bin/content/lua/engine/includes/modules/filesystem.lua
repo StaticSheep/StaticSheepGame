@@ -7,8 +7,6 @@ local print = print
 local string = string
 local lfs = lfs
 local dofile = dofile
-local ReloadComponents = ReloadComponents
-local ReloadObjects = ReloadObjects
 local hook = hook
 
 local PrintTable = PrintTable
@@ -119,7 +117,7 @@ function LoadSingleLuaFile(file, canReload)
   end
 end
 
-function UpdateOldFiles()
+function UpdateOldFiles(reloadFunc)
   for _, file in pairs(Files) do
     local attr = lfs.attributes(file[1])
 
@@ -134,8 +132,8 @@ function UpdateOldFiles()
       file[2] = attr.modification
       dofile(file[1])
 
-      ReloadObjects()
-      ReloadComponents()
+      reloadFunc()
+      
 
       hook.Call("ScriptFinishReload")
     end

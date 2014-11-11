@@ -541,8 +541,15 @@ namespace Framework
 
     void CreateNewGTable(lua_State* L, const char* name)
     {
-      lua_newtable(L);
-      lua_setglobal(L, name);
+      lua_getglobal(L, name);
+      if (lua_isnil(L, 1))
+      {
+        lua_newtable(L);
+        lua_setglobal(L, name);
+      }
+      else
+        lua_pop(L, 1);
+      
     }
 
     int SetPath(lua_State* L, const char* path)
