@@ -321,10 +321,10 @@ FMOD_RESULT F_CALLBACK mycallback(FMOD_CHANNELCONTROL *chanControl, FMOD_CHANNEL
     SoundInstance* instance;
 
     // try and grab any instance data if it was given
-    if(ErrorCheck(channel->getUserData((void**)&instance)) == FMOD_OK)
+    /*if(ErrorCheck(channel->getUserData((void**)&instance)) == FMOD_OK)
     {
       instance->active = false;
-    }
+    }*/
 
     ErrorCheck(channel->stop());
 

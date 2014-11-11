@@ -58,6 +58,6 @@ namespace Framework
     }
 
     SoundEmitter *se = player->GetComponent<SoundEmitter>(eSoundEmitter);
-    se->Play("gunshot", &SoundInstance(0.125f));
+    se->Play("Shotgun_Shot", &SoundInstance(0.150f));
   }
 }

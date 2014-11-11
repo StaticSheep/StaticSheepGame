@@ -64,6 +64,8 @@ namespace Framework
     bc->SetGravityOff();
     weapon = (Pistol*)GET_TYPE(Pistol)->New();
     shotDelay = weapon->delay;
+    SoundEmitter *se = space->GetHandles().GetAs<SoundEmitter>(playerSound);
+    se->Play("robot_startup", &SoundInstance(0.25f));
 	}
 
 	//************************************
@@ -206,10 +208,13 @@ namespace Framework
 	//************************************
 	void PlayerController::OnCollision(Handle otherObject, SheepFizz::ExternalManifold manifold)
 	{
+    SoundEmitter *se = space->GetHandles().GetAs<SoundEmitter>(playerSound);
     GameObject *OtherObject = space->GetHandles().GetAs<GameObject>(otherObject);
     if (OtherObject->name == "Bullet" && !hasRespawned)
     {
       health -= OtherObject->GetComponent<Bullet_Default>(eBullet_Default)->damage;
+      
+      se->Play("energy_hit", &SoundInstance(0.25f));
       return;
     }
     if ((OtherObject->name == "KillBox" || OtherObject->name == "KillBoxBig") && !hasRespawned)
@@ -217,6 +222,8 @@ namespace Framework
 
     if ((OtherObject->name == "Grinder") && !hasRespawned)
       health -= 10;
+    if (OtherObject->name == "WeaponPickup")
+      se->Play("weapon_pickup", &SoundInstance(0.5f));
 
 		isSnapped = true;
 		//get the thing we are colliding with
