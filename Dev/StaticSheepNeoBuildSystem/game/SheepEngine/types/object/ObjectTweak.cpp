@@ -61,6 +61,8 @@ namespace Framework
     obj.tweakDeleteComponent = false;
     obj.tweakDeleteObject = false;
     objectBar->SetIconify(false);
+    objectBar->SetSize(250, 350);
+    objectBar->SetValueWidth(100);
 
     int r = rand() % (5 - 1);
     int r2 = rand() % (8 - 1);

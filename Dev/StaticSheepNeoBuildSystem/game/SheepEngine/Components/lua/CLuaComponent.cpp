@@ -18,17 +18,17 @@ namespace Framework
 
   void LuaComponent::Initialize()
   {
-    Lua::CallFunc(ENGINE->Lua(), "AttachComponentToObject", space->GetName().c_str(), owner.operator size_t(), self.operator size_t(), name.c_str());
+    Lua::CallFunc(ENGINE->Lua(), "AttachComponentToObject", space->GetName().c_str(), owner.operator unsigned(), self.operator unsigned(), name.c_str());
 
     if (loadCommand.length() > 0)
     {
-      Lua::CallFunc(ENGINE->Lua(), "DeserializeComponent", space->GetName().c_str(), owner.operator size_t(), self.operator size_t(), loadCommand.c_str());
+      Lua::CallFunc(ENGINE->Lua(), "DeserializeComponent", space->GetName().c_str(), owner.operator unsigned(), self.operator unsigned(), loadCommand.c_str());
     }
   }
 
   void LuaComponent::QueryLoadCommand()
   {
-    Lua::CallFunc(ENGINE->Lua(), "SerializeComponent", space->GetName().c_str(), owner.operator size_t(), self.operator size_t(), this);
+    Lua::CallFunc(ENGINE->Lua(), "SerializeComponent", space->GetName().c_str(), owner.operator unsigned(), self.operator unsigned(), this);
   }
 
   void LuaComponent::ReceiveLoadCommend(const char* command)

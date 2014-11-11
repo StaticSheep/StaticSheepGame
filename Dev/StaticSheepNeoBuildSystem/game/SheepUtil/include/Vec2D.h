@@ -56,6 +56,9 @@ namespace Framework
       float x;
       float x_;
       float X;
+
+      float r;
+      float R;
     };
     
     union
@@ -63,6 +66,9 @@ namespace Framework
       float y;
       float y_;
       float Y;
+
+      float g;
+      float G;
     };
   };
   

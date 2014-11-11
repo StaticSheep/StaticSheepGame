@@ -403,6 +403,14 @@ namespace Framework
 #endif
   }
 
+  // Sets the width of the value fields
+  void AntTweak::TBar::SetValueWidth(int w)
+  {
+#if USE_ANTTWEAKBAR
+    TwSetParam((TwBar*)antTweakBar, NULL, "valueswidth", TW_PARAM_INT32, 1, &w);
+#endif
+  }
+
   /*-----------------------------------------------------------------------------------
   
   Generic Callbacks:

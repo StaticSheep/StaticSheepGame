@@ -10,6 +10,7 @@ end
 
 function META:Paint()
   -- Do the painting yeah
+  surface.DrawRect(0,0,100,100)
 end
 
 gui.Register( "TestPanel", META, "Panel" )

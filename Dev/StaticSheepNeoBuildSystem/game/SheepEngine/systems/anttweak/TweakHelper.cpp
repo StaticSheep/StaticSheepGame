@@ -98,12 +98,17 @@ namespace Framework
               if (tweakMember->TweakGetCB())
                 tweakGetCB = tweakMember->TweakGetCB();
             }
+            else
+            {
+              tweakSetCB.Clear();
+              tweakGetCB.Clear();
+            }
             
             // Set which member we are tweaking on the Tweaker
             tweakMember = m;
 
             // If the next member is POD we stick it in a group
-            if (m->Type()->IsPOD() || m->Type() == GET_TYPE(std::string))
+            if (m->Type()->IsPOD() || m->Type()->GetAType() == TW_TYPE_STDSTRING || m->Type()->GetAType() == TW_TYPE_COLOR4F)
               if (label)
                 bar->DefineGroup(label);
               else
@@ -115,7 +120,7 @@ namespace Framework
 
             mVar.Tweak(bar, uniqueName.c_str(), m->TweakLabel());
 
-            if (!m->Type()->IsPOD() && m->Type() != GET_TYPE(std::string))
+            if (!m->Type()->IsPOD() && m->Type()->GetAType() != TW_TYPE_STDSTRING && m->Type()->GetAType() != TW_TYPE_COLOR4F)
             {
               std::string groupName;
 
@@ -136,8 +141,8 @@ namespace Framework
                   bar->SetGroupParent(uniqueName.c_str(), tempLabel);
             }
 
-            tweakSetCB = Function();
-            tweakGetCB = Function();
+            tweakMember = nullptr;
+
 
             // Subtract the current member offset from the tweakOffset
             tweakOffset -= currentOffset;

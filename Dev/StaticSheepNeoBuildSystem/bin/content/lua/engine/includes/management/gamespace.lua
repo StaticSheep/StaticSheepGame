@@ -130,12 +130,5 @@ function SerializeComponent(space, owner, cid, CLComp)
 
   string = string .. "end"
 
-  --string = "asdfasdfasdfffffffaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaafffffaaaaafffffaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaafffffaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaafffffaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaafffffaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-
-  --print("send back")
-  --PrintTable(getmetatable(CLComp))
-
   CLComp:SendLoadCommand(string)
-
-  --return string
 end

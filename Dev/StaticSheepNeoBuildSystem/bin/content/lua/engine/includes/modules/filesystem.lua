@@ -44,7 +44,7 @@ function LoadLuaFiles( path )
         local name = string.match( file, "[^.]+" )
 
         if(ext == "lua" and FileBlacklist[name] == nil) then
-          print("Loading File: "..filePath)
+          -- print("Loading File: "..filePath)
           Files[#Files + 1] = {filePath, attr.modification}
           -- Load this file into the global environment
           dofile( filePath )
@@ -77,7 +77,7 @@ function LoadLuaFile(path, needle, canReload)
         if(ext == "lua" and file == needle) then
 
           if (canReload ~= nil) then
-            print("Loading File: "..filePath)
+            -- print("Loading File: "..filePath)
             Files[#Files + 1] = {filePath, attr.modification}
           end
 

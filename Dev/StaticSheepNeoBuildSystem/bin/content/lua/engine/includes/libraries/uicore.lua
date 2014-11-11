@@ -101,19 +101,27 @@ end
 
 function gui.Update()
   local removeList = {}
+
+
   for k,v in pairs(gui.panels) do
-    v:Think()
+    v:Think() --Frame Update
+    
     if not v.valid then
+      -- Needs to be removed
       removeList[#removeList] = v
     end
   end
+
   for k,v in pairs(removeList) do
+    --Delete all the bad objects
     v:Delete()
     gui.panels[v.id] = nil
   end
+
 end
 
 function gui.Draw()
+  --Draw stuff
   for k,v in pairs(gui.panels) do
     if v.visible then
       v:Paint()

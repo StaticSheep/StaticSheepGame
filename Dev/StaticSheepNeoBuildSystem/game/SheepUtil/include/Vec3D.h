@@ -61,6 +61,9 @@ namespace Framework
       float z;
       float z_;
       float Z;
+
+      float b;
+      float B;
     };
   };
   

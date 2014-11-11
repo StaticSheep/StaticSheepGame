@@ -34,6 +34,11 @@ namespace Framework
     return GRAPHICS->GetTextureID(texString);
   }
 
+  Vec2 Draw::GetTextSize(const char* text, const char* font)
+  {
+    return Vec2(32, 32);
+  }
+
   void Draw::SetRotation(float theta)
   {
     GRAPHICS->SetRotation(theta);

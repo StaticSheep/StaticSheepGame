@@ -1,12 +1,10 @@
 --[[--------------------------------------------------------------------
                   Static Sheep Lua Interface       
-                  Lua spaces                    
+                  Lua Level Loading                    
 ----------------------------------------------------------------------]]
 
-local META = GetMeta("LuaSpace")
-
-function META:CreateObject(type, name)
-  CreateLuaObject(self._name, type, name)
+function LoadLuaLevel(path)
+  filesystem.LoadSingleLuaFile(path, true)
 end
 
 function ReloadObjects()
@@ -53,9 +51,3 @@ function CreateLuaObject(space, type, name)
 
   return object
 end
-
-
---  name std::string "Bob Junior"
---ach_test_type2
---  name std::string "Bob Junior2"
-
