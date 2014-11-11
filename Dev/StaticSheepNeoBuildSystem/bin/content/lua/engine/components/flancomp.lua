@@ -20,7 +20,7 @@ end
 
 function META:Update(deltaTime)
   --print(self.boomboom)
-  --print("UPDATE")
+  print("UPDATE")
   --print("Update! SPACE: "..self._space.." CID="..self._cid)
 end
 

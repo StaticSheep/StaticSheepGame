@@ -19,7 +19,7 @@ namespace Framework
   {
     file = NULL;
     TRACELOG = this;
-    _level = ERR;
+    _level = DEBUG;
 
     Log(INFO, "TraceLog Started\n");
   }

@@ -90,6 +90,7 @@ namespace Framework
     }
 
     Lua::CallFunc(ENGINE->Lua(), "hook.Call", "LogicUpdate", dt);
+    Lua::CallFunc(ENGINE->Lua(), "gui.Update");
 
     for (auto it = ENGINE->m_spaces.begin(); it != ENGINE->m_spaces.end(); ++it)
     {
@@ -101,6 +102,12 @@ namespace Framework
       space->Cleanup();
     }
 
+  }
+
+  void GameLogic::ReceiveMessage(Message& msg)
+  {
+    if (msg.MessageId == Message::PostDraw)
+      Lua::CallFunc(ENGINE->Lua(), "gui.Draw");
   }
 
   const void* GameLogic::GetDebugData()

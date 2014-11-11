@@ -109,12 +109,9 @@ function SetupMetatable(name, meta)
 
   meta.__name = name;
   meta.__metaName = "__"..name.."_MT";
+  meta.__base = nil
 
   function meta.__index(self, key, ...)
-    if type(self) == "table" then
-      return rawget(self, key)
-    end
-
     _R.METAVALUES[tostring(self)] = _R.METAVALUES[tostring(self)] or {}
 
     if _R.METAVALUES[tostring(self)][key] then
@@ -123,6 +120,7 @@ function SetupMetatable(name, meta)
     end
 
     if meta[key] == nil and meta.__base ~= nil and meta.__base[key] ~= nil then
+      print("Using base object for key: "..key)
       return meta.__base[key]
     end
 
@@ -145,9 +143,20 @@ function SetupMetatable(name, meta)
     -- end
 
     if meta.__members ~= nil and meta.__members[key] ~= nil then
+      print("Auto getter?")
       return meta["Get"..key](self)
     end
 
+    
+
+    if meta[key] == nil then
+      if type(self) == "table" then
+        print("using rawget")
+        return rawget(self, key)
+      end
+    end
+
+    print("key found: "..key)
     return meta[key]
   end
 

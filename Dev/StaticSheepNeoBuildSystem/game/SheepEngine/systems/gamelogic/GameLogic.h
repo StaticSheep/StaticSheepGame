@@ -36,6 +36,8 @@ namespace Framework
     // Initialization call
     virtual void Initialize(void);
 
+    virtual void ReceiveMessage(Message& msg);
+
     // Update per frame
     virtual void Update(float dt);
 

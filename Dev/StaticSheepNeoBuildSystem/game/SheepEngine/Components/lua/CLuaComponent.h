@@ -21,6 +21,7 @@ namespace Framework
     virtual void QueryLoadCommand();
     void ReceiveLoadCommend(const char* command);
 
+    // Name of the Lua components metatable
     std::string name;
     std::string loadCommand;
 

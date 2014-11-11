@@ -52,6 +52,7 @@ include("util.lua")
 include("components.lua")
 include("level.lua")
 include("gamespace.lua")
+include("uicore.lua")
 
 
 require("hook")

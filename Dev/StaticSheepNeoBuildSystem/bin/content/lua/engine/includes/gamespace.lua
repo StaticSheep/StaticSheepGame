@@ -77,15 +77,18 @@ function AttachComponentToObject(space, owner, cid, cname)
   object[cid] = {}
 
   local component = object[cid]
+  local meta = GetMeta(cname)
 
-  setmetatable(component, GetMeta(cname))
+  PrintTable(meta)
+
+  setmetatable(component, meta)
 
   component._owner = owner
   component._space = space
   component._cid = cid
   component._type = cname
 
-  print("[GameSpace: "..space.."] Attached LuaComponent ("..cid..") to C++ GameObject: "..owner)
+  print("[GameSpace: "..space.."] Attached LuaComponent: "..cname.." ["..cid.."] to C++ GameObject: "..owner)
 
   component:Init()
 end
