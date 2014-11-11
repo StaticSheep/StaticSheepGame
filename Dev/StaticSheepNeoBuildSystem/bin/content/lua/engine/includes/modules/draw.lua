@@ -75,7 +75,7 @@ function DrawText(text, font, x, y, size, color, xalign )
   local curString = ""
   
   --surface.SetFont(font)
-  local sizeX, lineHeight = GetTextSize("\n")
+  local sizeX, lineHeight = 32 --GetTextSize("\n")
   local tabWidth = 50
   
   for str in gmatch( text, "[^\n]*" ) do
