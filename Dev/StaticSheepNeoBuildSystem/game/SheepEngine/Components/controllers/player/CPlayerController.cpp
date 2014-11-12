@@ -65,7 +65,7 @@ namespace Framework
     weapon = (Pistol*)GET_TYPE(Pistol)->New();
     shotDelay = weapon->delay;
     SoundEmitter *se = space->GetHandles().GetAs<SoundEmitter>(playerSound);
-    se->Play("robot_startup", &SoundInstance(0.25f));
+    se->Play("robot_startup", &SoundInstance(0.50f));
 	}
 
 	//************************************
@@ -214,7 +214,7 @@ namespace Framework
     {
       health -= OtherObject->GetComponent<Bullet_Default>(eBullet_Default)->damage;
       
-      se->Play("energy_hit", &SoundInstance(0.25f));
+      se->Play("energy_hit", &SoundInstance(0.50f));
       return;
     }
     if ((OtherObject->name == "KillBox" || OtherObject->name == "KillBoxBig") && !hasRespawned)
@@ -380,7 +380,7 @@ namespace Framework
   //************************************
   void PlayerController::PlayerDeath(SoundEmitter *se, Transform *ps)
   {
-    se->Play("explosion", &SoundInstance(0.5f));
+    se->Play("explosion", &SoundInstance(0.75f));
     Handle explosion = (FACTORY->LoadObjectFromArchetype(space, "explosion"))->self;
     Transform *exT = space->GetGameObject(explosion)->GetComponent<Transform>(eTransform);
     exT->SetTranslation(ps->GetTranslation());
