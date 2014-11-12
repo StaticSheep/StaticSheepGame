@@ -29,6 +29,11 @@ namespace Framework
 
   SoundPlayer::~SoundPlayer()
   {
+    for(auto it = instanceList.begin(); it != instanceList.end(); ++it)
+    {
+      _soundSystem->Stop(&it->second);
+    }
+
   }
   
 /*****************************************************************************/
