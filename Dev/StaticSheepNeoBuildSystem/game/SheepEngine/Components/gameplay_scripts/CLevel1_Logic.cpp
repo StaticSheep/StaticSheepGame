@@ -98,7 +98,7 @@ namespace Framework
       timeLimit = 60;
     }
 
-    /*
+    
     if(!playing)
     {
       SoundPlayer *sp = space->GetHandles().GetAs<SoundPlayer>(levelSound);
@@ -112,10 +112,11 @@ namespace Framework
 
       SoundInstance instance;
       instance.volume = 0.5f;
+      instance.mode = PLAY_LOOP;
 
-      sp->Play("space_brawl", &instance);
+      sp->Play("Main Music", &instance);
       playing = true;
-    } */
+    } 
     SoundPlayer *sp = space->GetHandles().GetAs<SoundPlayer>(levelSound);
     sp->SetVolume(0.25f);
 
