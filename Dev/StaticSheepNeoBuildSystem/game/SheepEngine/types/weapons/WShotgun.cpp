@@ -33,7 +33,7 @@ namespace Framework
     {
       if (i != 0)
       {
-        AimDir = Mat3D(PI / 12) * AimDir;
+        AimDir = Mat3D((float)PI / 12.0f) * AimDir;
         NegAimDir = (Mat3D(5.7596f)) * AimDir;
       }
       {
