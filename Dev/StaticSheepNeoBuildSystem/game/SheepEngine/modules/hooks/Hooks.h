@@ -78,44 +78,56 @@ namespace Framework
     HookManager() : HookCollections(sizeof(HookCollection), 10) {};
     ~HookManager();
 
-    void Add(std::string eventName, Handle owner, const Function& func);
-    void Remove(std::string eventName, Handle owner);
+    void Add(std::string hook, Handle owner, const Function& func);
+    void Remove(std::string hook, Handle owner);
 
-    void Call(std::string eventName);
+    void Call(std::string hook);
 
     template <typename Arg1>
-    void Call(std::string eventName, Arg1 arg1);
+    void Call(std::string hook, Arg1 arg1);
 
     template <typename Arg1, typename Arg2>
-    void Call(std::string eventName, Arg1 arg1, Arg2 arg2);
+    void Call(std::string hook, Arg1 arg1, Arg2 arg2);
 
-    void Clear(std::string eventName);
+    template <typename Arg1, typename Arg2, typename Arg3>
+    void Call(std::string hook, Arg1 arg1, Arg2 arg2, Arg3 arg3);
+
+    void Clear(std::string hook);
     void ClearAll();
 
     GameSpace* space;
 
   private:
-    void Verify(std::string eventName);
+    void Verify(std::string hook);
 
     ObjectAllocator HookCollections;
     boost::unordered::unordered_map<std::string, HookCollection*> HookMap;
   };
 
   template <typename Arg1>
-  void HookManager::Call(std::string eventName, Arg1 arg1)
+  void HookManager::Call(std::string hook, Arg1 arg1)
   {
-    if (HookMap.find(eventName) != HookMap.end())
+    if (HookMap.find(hook) != HookMap.end())
     {
-      HookMap.at(eventName)->Trigger(arg1);
+      HookMap.at(hook)->Trigger(arg1);
     }
   }
 
   template <typename Arg1, typename Arg2>
-  void HookManager::Call(std::string eventName, Arg1 arg1, Arg2 arg2)
+  void HookManager::Call(std::string hook, Arg1 arg1, Arg2 arg2)
   {
-    if (HookMap.find(eventName) != HookMap.end())
+    if (HookMap.find(hook) != HookMap.end())
     {
-      HookMap.at(eventName)->Trigger(arg1, arg2);
+      HookMap.at(hook)->Trigger(arg1, arg2);
+    }
+  }
+
+  template <typename Arg1, typename Arg2, typename Arg3>
+  void HookManager::Call(std::string hook, Arg1 arg1, Arg2 arg2, Arg3 arg3)
+  {
+    if (HookMap.find(hook) != HookMap.end())
+    {
+      HookMap.at(hook)->Trigger(arg1, arg2, arg3);
     }
   }
 }

@@ -7,8 +7,6 @@ local print = print
 local string = string
 local lfs = lfs
 local dofile = dofile
-local ReloadComponents = ReloadComponents
-local ReloadObjects = ReloadObjects
 local hook = hook
 
 local PrintTable = PrintTable
@@ -44,7 +42,7 @@ function LoadLuaFiles( path )
         local name = string.match( file, "[^.]+" )
 
         if(ext == "lua" and FileBlacklist[name] == nil) then
-          print("Loading File: "..filePath)
+          -- print("Loading File: "..filePath)
           Files[#Files + 1] = {filePath, attr.modification}
           -- Load this file into the global environment
           dofile( filePath )
@@ -77,7 +75,7 @@ function LoadLuaFile(path, needle, canReload)
         if(ext == "lua" and file == needle) then
 
           if (canReload ~= nil) then
-            print("Loading File: "..filePath)
+            -- print("Loading File: "..filePath)
             Files[#Files + 1] = {filePath, attr.modification}
           end
 
@@ -119,7 +117,7 @@ function LoadSingleLuaFile(file, canReload)
   end
 end
 
-function UpdateOldFiles()
+function UpdateOldFiles(reloadFunc)
   for _, file in pairs(Files) do
     local attr = lfs.attributes(file[1])
 
@@ -134,8 +132,8 @@ function UpdateOldFiles()
       file[2] = attr.modification
       dofile(file[1])
 
-      ReloadObjects()
-      ReloadComponents()
+      reloadFunc()
+      
 
       hook.Call("ScriptFinishReload")
     end

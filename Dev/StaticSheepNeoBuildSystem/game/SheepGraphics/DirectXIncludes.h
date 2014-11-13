@@ -17,6 +17,5 @@
 #include <FW1FontWrapper.h>
 #include <DirectXPackedVector.h>
 #include "SpriteBatch.h"
-#include "SimpleMath.h"
 
 

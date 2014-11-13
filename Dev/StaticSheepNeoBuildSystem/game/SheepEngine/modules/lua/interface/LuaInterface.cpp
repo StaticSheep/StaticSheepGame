@@ -22,7 +22,9 @@ namespace Framework
     {
       if (luaL_dofile(L, name) && CrashOnLuaError)
       {
-        ErrorIf(true, "Lua Interface", "Error loading file:\n%s", lua_tostring(L, -1));
+        //ENGINE->LuaError(lua_tostring(L, -1));
+        ErrorIf(true, "Lua Interface", "Error loading file:\n%s",
+          lua_tostring(L, -1));
       }
     }
 
@@ -35,7 +37,8 @@ namespace Framework
       // Get the meta table
       luaL_getmetatable(L, var.GetTypeInfo()->LuaMetaTable());
 
-      ErrorIf(lua_type(L, -1) != LUA_TTABLE, "Lua Interface", "META TABLE DOES NOT EXIST!");
+      ErrorIf(lua_type(L, -1) != LUA_TTABLE, "Lua Interface",
+        "META TABLE DOES NOT EXIST!");
  
       lua_setmetatable(L, -2);
     }
@@ -44,7 +47,8 @@ namespace Framework
     {
       //StackDump(L);
 
-      ErrorIf(!lua_isuserdata(L, index), "Lua Interface", "Couldn't find self, try using :Func() and not .Func()");
+      ErrorIf(!lua_isuserdata(L, index), "Lua Interface",
+        "Couldn't find self, try using :Func() and not .Func()");
       *var = *((Variable*)lua_touserdata(L, index));
     }
 
@@ -57,13 +61,16 @@ namespace Framework
 
     static void SetupTypeMembers(lua_State* L)
     {
-      for (auto it = IntrospectionManager::Get()->GetTypeMap().begin(); it != IntrospectionManager::Get()->GetTypeMap().end(); ++it)
+      for (auto it = IntrospectionManager::Get()->GetTypeMap().begin();
+        it != IntrospectionManager::Get()->GetTypeMap().end(); ++it)
       {
-        // First check if the metatable already exists in lua (It shouldn't! but just incase)
+        // First check if the metatable already exists in lua
+        // (It shouldn't! but just incase)
         luaL_getmetatable(L, it->second->LuaMetaTable());
         if (lua_isnil(L, 1))
         {
-          // If we got a nil on the top of the stack then the meta table doesnt exist and we pop the nil
+          // If we got a nil on the top of the stack then the meta table
+          //doesnt exist and we pop the nil
           lua_pop(L, 1);
 
           // We are done with everything so we clear the stack
@@ -83,21 +90,27 @@ namespace Framework
           lua_settable(L, -3); // 1[2] = 3
           //StackDump(L);
 
-          // If this type has a special lua callback then we are going to ignore
-          // automating the serialization of it's members because we virtualize
-          // the data type inside of lua to cut back on the number of back and forth
-          // calls to and from lua. An example of this is the Vector#D types. We have a
-          // C++ math library for C++ vectors, and a lua math library for lua vectors.
-          // Whenever we send a vector to/from lua we convert it into the matching type
-          // Example: C++ Vec2D -> Lua Vec2D
+          /* If this type has a special lua callback then we are going to ignore
+           automating the serialization of it's members because we virtualize
+           the data type inside of lua to cut back on the number of
+           back and forth calls to and from lua.
+           
+           An example of this is the Vector#D types.
+           We have a C++ math library for C++ vectors,
+           and a lua math library for lua vectors.
+
+           Whenever we send a vector to/from lua we convert it
+           into the matching type.
+           Example: C++ Vec2D -> Lua Vec2D */
           if (!it->second->HasToLuaCB())
           {
-            // Get the value of the key "__members" on the metatable, which is a table
+            // Get the value of the key "__members" on the metatable,
+            // which is a table
             lua_getfield(L, -1, "__members"); // index 2
             //StackDump(L);
 
-            // Iterate through each member, if it is a member we want to create a setter/getter
-            // for then we do some stuff
+            // Iterate through each member, if it is a member
+            // we want to create a setter/getter for then we do some stuff
             for (size_t i = 0; i < it->second->GetMembers().size(); ++i)
             {
               const Member* mem = &it->second->GetMembers()[i];
@@ -106,8 +119,8 @@ namespace Framework
               {
                 // This member needs to have an automatic setter/getter
                 // We want to create an entry in the __members table:
-                // First we push the name of the member onto the stack to be the key
-                // Then we push a constant member pointer onto the stack to be the value
+                // First we push the name of the member as the key
+                // Then we push a constant member pointer as the value
                 lua_pushstring(L, mem->Name()); // index 3
                 it->second->ToLua(L, mem); // index 4
                 //StackDump(L);
@@ -159,13 +172,16 @@ namespace Framework
       LoadFile(L, "content/lua/engine/includes/interface.lua");
 
       // Setup the lua-side stuff for all of our types
-      for (auto it = IntrospectionManager::Get()->GetTypeMap().begin(); it != IntrospectionManager::Get()->GetTypeMap().end(); ++it)
+      for (auto it = IntrospectionManager::Get()->GetTypeMap().begin();
+        it != IntrospectionManager::Get()->GetTypeMap().end(); ++it)
       {
-        // First check if the metatable already exists in lua (It shouldn't! but just incase)
+        // First check if the metatable already exists in lua
+        // (It shouldn't! but just incase)
         luaL_getmetatable(L, it->second->LuaMetaTable());
         if (lua_isnil(L, 1))
         {
-          // If we got a nil on the top of the stack then the meta table doesnt exist and we pop the nil
+          // If we got a nil on the top of the stack then the meta-table
+          // doesnt exist and we pop the nil
           lua_pop(L, 1);
 
           // Get the global table: _R [Index 1 on stack]
@@ -188,7 +204,8 @@ namespace Framework
         }
         else
         {
-          // The meta table exists, this probably shouldn't happen, pop the table
+          // The meta table exists, this probably shouldn't happen,
+          // pop the table
           lua_pop(L, 1);
         }
       }
@@ -212,13 +229,15 @@ namespace Framework
 
     void GenerateComponentTable(lua_State* L)
     {
-      // Creates a new table on the global table to act as a database of components
+      // Creates a new table on the global table to act as a
+      // database of components
       lua_newtable(L);
       lua_setglobal(L, "ComponentDB");
 
       // Gets the global table we just made
       lua_getglobal(L, "ComponentDB");
-      // Iterate through each component type and push the name of each component on and the ID
+      // Iterate through each component type and push the name of
+      // each component on and the ID
       for (unsigned i = 0; i < ecountComponents; ++i)
       {
         lua_pushstring(L, EnumComponent.m_literals[i].c_str());
@@ -233,7 +252,8 @@ namespace Framework
       CallMemberFuncFinal(L, var, funcName, nullptr, 0);
     }
 
-    void CallMemberFuncFinal(lua_State* L, Variable& member, const char* funcName, Variable* args, size_t argCount)
+    void CallMemberFuncFinal(lua_State* L, Variable& member,
+      const char* funcName, Variable* args, size_t argCount)
     {
       lua_pushcfunction(L, ErrorFunc); // Stack 1
       luaL_getmetatable(L, member.GetTypeInfo()->LuaMetaTable()); // Stack 2
@@ -271,12 +291,14 @@ namespace Framework
       CallStaticFuncFinal(L, funcName, nullptr, 0);
     }
 
-    void CallStaticFuncFinal(lua_State* L, const char* funcName, Variable* args, size_t argCount)
+    void CallStaticFuncFinal(lua_State* L, const char* funcName,
+      Variable* args, size_t argCount)
     {
       std::string module = funcName;
       std::string function;
 
-      function = module.substr(module.find('.') + 1, module.length() - module.find('.') - 1);
+      function = module.substr(module.find('.') + 1,
+        module.length() - module.find('.') - 1);
       module = module.substr(0, module.find('.'));
 
 
@@ -337,7 +359,8 @@ namespace Framework
     {
       int top = lua_gettop(L);
 
-      std::cout << "\n=== Lua Stack Dump ===\n" << "   Sizeof stack: " << top << "\n";
+      std::cout << "\n=== Lua Stack Dump ===\n" << "   Sizeof stack: "
+        << top << "\n";
 
       for (int i = 1; i <= top; ++i)
       {
@@ -376,11 +399,13 @@ namespace Framework
 
       if (fn->IsMethod())
       {
-        ErrorIf(fn->Signature()->ArgCount() + 1 != argCount, "Lua Interface", "Argument count wrong!");
+        ErrorIf(fn->Signature()->ArgCount() + 1 != argCount,
+          "Lua Interface", "Argument count wrong!");
       }
       else
       {
-        ErrorIf(fn->Signature()->ArgCount() != argCount, "Lua Interface", "Argument count wrong!");
+        ErrorIf(fn->Signature()->ArgCount() != argCount,
+          "Lua Interface", "Argument count wrong!");
       }
 
       // Lets check to see if the function is going to return anything
@@ -392,19 +417,22 @@ namespace Framework
       if (returns)
       {
         // Allocate some space for the return value
-        ret = Variable(fn->Signature()->GetRet(), alloca(fn->Signature()->GetRet()->Size()));
+        ret = Variable(fn->Signature()->GetRet(),
+          alloca(fn->Signature()->GetRet()->Size()));
         // Run the default constructor on the return type
         ret.PlacementNew();
       }
 
       // Allocate space for the arguments and placement new on each one
-      Variable* stackArgs = (Variable*)alloca(sizeof(Variable) * fn->Signature()->ArgCount());
+      Variable* stackArgs = (Variable*)alloca(sizeof(Variable)
+        * fn->Signature()->ArgCount());
 
       // iterate through all of them, placement new
       for (size_t i = 0; i < fn->Signature()->ArgCount(); ++i)
       {
         // Todo research
-        new (stackArgs + i) Variable(fn->Signature()->GetArg(i), alloca(fn->Signature()->GetArg(i)->Size()));
+        new (stackArgs + i) Variable(fn->Signature()->GetArg(i),
+          alloca(fn->Signature()->GetArg(i)->Size()));
         stackArgs[i].PlacementNew();
       }
 
@@ -414,7 +442,9 @@ namespace Framework
         fn->Signature()->GetContext()->FromLua(L, 1, &fn->Context());
 
         // Ensure we are using a valid context
-        ErrorIf(!fn->Context().IsValid(), "Lua Interface", "Invalid binding: meta does not match for type %s", fn->Signature()->GetContext()->Name());
+        ErrorIf(!fn->Context().IsValid(), "Lua Interface",
+          "Invalid binding: meta does not match for type %s",
+          fn->Signature()->GetContext()->Name());
 
         // Load all the arguments from the stack
         for (size_t i = 0; i < fn->Signature()->ArgCount(); ++i)
@@ -464,7 +494,8 @@ namespace Framework
       return 1; //;
     }
 
-    void BindFunctionToLua(lua_State* L, Function* fn, const char* name, const char* table)
+    void BindFunctionToLua(lua_State* L, Function* fn,
+      const char* name, const char* table)
     {
       if (table != nullptr)
       {
@@ -510,20 +541,30 @@ namespace Framework
 
     void CreateNewGTable(lua_State* L, const char* name)
     {
-      lua_newtable(L);
-      lua_setglobal(L, name);
+      lua_getglobal(L, name);
+      if (lua_isnil(L, 1))
+      {
+        lua_newtable(L);
+        lua_setglobal(L, name);
+      }
+      else
+        lua_pop(L, 1);
+      
     }
 
     int SetPath(lua_State* L, const char* path)
     {
       lua_getglobal(L, "package"); // -1
-      lua_getfield(L, -1, "path"); // Gets the path field from the top of the stack -2
-      std::string cur_path = lua_tostring(L, -1); // Grab the string from the stack
+      // Gets the path field from the top of the stack -2
+      lua_getfield(L, -1, "path"); 
+      // Grab the string from the stack
+      std::string cur_path = lua_tostring(L, -1); 
       //cur_path.append(1,';');
       //cur_path.append(path);
       lua_pop(L, 1); // Get rid of the string on the stack -1
       lua_pushstring(L, path); // push the string -2
-      lua_setfield(L, -2, "path"); // Set the field "path" in the table at -2 with the value at the top
+      // Set the field "path" in the table at -2 with the value at the top
+      lua_setfield(L, -2, "path"); 
       lua_pop(L,1); // Pop off the package table from the stack
       return 0;
     }

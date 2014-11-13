@@ -8,32 +8,16 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 #pragma once
 
+#include "Vec3D.h"
+
 namespace Framework
 {
-  class Vec2
+  class Vec2 : public Vec2D
   {
   public:
-    Vec2::Vec2(float _x = 0, float _y = 0)
-    {
-      X = _x;
-      Y = _y;
-    }
-
+    Vec2(float x = 0, float y = 0) : Vec2D(x, y) { }
+    Vec2(Vec2D rhs) :Vec2D(rhs) {}
     static void ToLua(lua_State* L, Variable& var);
     static void FromLua(lua_State* L, int index, Variable* var);
-
-
-    union
-    {
-      float x_;
-      float X;
-    };
-
-    union
-    {
-      float y_;
-      float Y;
-    };
-
   };
 }

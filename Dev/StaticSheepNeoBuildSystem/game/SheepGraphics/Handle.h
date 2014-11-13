@@ -22,13 +22,18 @@ class Handle
    GFX_API bool operator!=(const Handle& rhs) const;
    GFX_API bool operator<(const Handle& rhs) const; // For STL comparisons
    GFX_API Handle(ObjectType type, int index);
+   Handle(ObjectType type, void* ptr);
   private:
 
     ObjectType type;
-    int index;
+
+    union
+    {
+      int index;
+      void* ptr;
+    };
 
     friend class RenderContext;
-    friend class GraphicsManager;
 };
 
-} //namespace Graphics
+}

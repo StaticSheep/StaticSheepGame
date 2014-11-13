@@ -43,13 +43,7 @@ namespace Framework
       
   }
 
-  /// <summary>
-  /// Marks the object for deletion
-  /// </summary>
-  void GameObject::Destroy()
-  {
-    m_active = false;
-  }
+  
 
   GameObject::GameObject()
     : Generic(eGameObject),
@@ -67,9 +61,6 @@ namespace Framework
     
   }
 
-  
-
-
   /// <summary>
   /// Removes all components from the game object
   /// </summary>
@@ -78,7 +69,6 @@ namespace Framework
     // If the object is not active, time to destroy it
     for (unsigned int j = 0; j < ecountComponents; ++j)
     {
-      // Get the enum type of the component
       EComponent type = (EComponent)j;
 
       // Check to see if the Object has that type of component
@@ -86,24 +76,20 @@ namespace Framework
       {
         RemoveComponent(type);
       }
-    } // End component loop
+    }
 
     // If the object is not active, time to destroy it
     for (unsigned int j = 0; j < ecountComponents; ++j)
     {
-      // Get the enum type of the component
       EComponent type = (EComponent)j;
-
-      // Check to see if the Object has that type of component
       if (HasComponent(type) && type != eLuaComponent)
       {
         DetatchComponent(type);
       }
-    } // End component loop
+    }
 
     for (unsigned int j = 0; j < m_luaComponents.size(); ++j)
     {
-      // Get the component
       LuaComponent* comp = GetLuaComponent(j);
       comp->Remove(); // Call the remove routine
 
@@ -111,11 +97,15 @@ namespace Framework
       space->GetHandles().Remove(comp->self);
 
       // Free the component and update any handles
-      GameComponent* moved = (GameComponent*)space->GetComponents(eLuaComponent)->Free(comp);
+      GameComponent* moved =
+        (GameComponent*)space->GetComponents(eLuaComponent)->Free(comp);
+
       if (moved)
         space->GetHandles().Update(moved, moved->self);
 
-    } // End component loop
+    }
+
+
 
     if (tweakHandle != Handle::null)
     {
@@ -124,11 +114,15 @@ namespace Framework
       tweakHandle = Handle::null;
     }
 
+
+
     if (tweakLookup)
     {
       delete tweakLookup;
       tweakLookup = nullptr;
     }
+
+
 
     if (tweakCCompCallbacks)
     {
@@ -144,6 +138,11 @@ namespace Framework
     m_allocated = false;
   }
 
+  void GameObject::Destroy()
+  {
+    m_active = false;
+  }
+
   void GameObject::Copy(GameObject& rhs)
   {
     archetype = rhs.archetype;
@@ -157,10 +156,8 @@ namespace Framework
     {
       if (rhs.HasComponent(EComponent(i)) && i != eLuaComponent)
       {
-        // Create the component that is needed
+        // Create the component that is needed and add it
         GameComponent* comp = space->CreateComponent(EComponent(i));
-
-        // Add the component to the object
         AddComponent(comp);
 
         // Get the type info relating to this component
@@ -191,14 +188,17 @@ namespace Framework
       LuaComponent* comp = (LuaComponent*)space->CreateComponent(eLuaComponent);
       AddComponent(comp);
 
-      // Iterate through all members in the component that are registered to be serialized
+      // Iterate through all members in the component that are registered
+      // to be serialized
       for (unsigned int m = 0; m < typeInfo->GetMembers().size(); ++m)
       {
-        // Get the actual member
         const Member member = typeInfo->GetMembers()[m];
+
+
         // Copy over the member data from the archetype into the object
         Variable LVar = Variable(member.Type(), (char*)comp + member.Offset());
-        Variable RVar = Variable(member.Type(), (char*)(rhs.GetLuaComponent(i)) + member.Offset());
+        Variable RVar = Variable(member.Type(),
+          (char*)(rhs.GetLuaComponent(i)) + member.Offset());
 
         member.Type()->PlacementDelete(LVar.GetData());
         member.Type()->PlacementCopy(LVar.GetData(), RVar.GetData());
@@ -264,6 +264,10 @@ namespace Framework
   /// <param name="type">The type of component.</param>
   void GameObject::DetatchComponent(EComponent type)
   {
+
+    if (type == eLuaComponent)
+      return; //silly
+
     // Get the component
     GameComponent* comp = GetComponent(type);
 
@@ -277,7 +281,10 @@ namespace Framework
     comp->~GameComponent();
 
     // Free the component and update any handles
-    GameComponent* moved = (GameComponent*)space->GetComponents(type)->Free(comp);
+    GameComponent* moved =
+      (GameComponent*)space->GetComponents(type)->Free(comp);
+
+
     if (moved)
       space->GetHandles().Update(moved, moved->self);
 
@@ -285,7 +292,7 @@ namespace Framework
   }
 
   /// <summary>
-  /// Runs the remove routine for a component.
+  /// Prepares a component to be detached.
   /// </summary>
   /// <param name="type">The type of component.</param>
   void GameObject::RemoveComponent(EComponent type)
@@ -306,11 +313,6 @@ namespace Framework
     comp->m_toDelete = true;
   }
 
-  /// <summary>
-  /// Gets the child.
-  /// </summary>
-  /// <param name="uid">The uid.</param>
-  /// <returns></returns>
   GameObject* GameObject::GetChild(size_t uid)
   {
     if (!fastChildSearch)
@@ -319,10 +321,6 @@ namespace Framework
     return BinaryChildSearch(space, m_children, uid);
   }
 
-  /// <summary>
-  /// Adds the child.
-  /// </summary>
-  /// <param name="obj">The object.</param>
   void GameObject::AddChild(Handle obj)
   {
     m_children.push_back(obj);
@@ -333,10 +331,6 @@ namespace Framework
     std::sort(m_children.begin(), m_children.end(), std::bind(&GameObject::ObjectSorter, this, std::placeholders::_1, std::placeholders::_2) );
   }
 
-  /// <summary>
-  /// Sets the parent.
-  /// </summary>
-  /// <param name="obj">The object.</param>
   void GameObject::SetParent(Handle obj)
   {
     // Set the parent
@@ -347,34 +341,18 @@ namespace Framework
   }
 
 
-
-  /// <summary>
-  /// Determines whether the specified object has component.
-  /// </summary>
-  /// <param name="type">The type.</param>
-  /// <returns></returns>
   bool GameObject::HasComponent( EComponent type ) const
   {
     return m_components[type] != Handle::null;
   }
 
 
-  /// <summary>
-  /// Determines whether the specified object has component.
-  /// </summary>
-  /// <param name="type">The type.</param>
-  /// <returns></returns>
   bool GameObject::HasComponent( size_t type ) const
   {
     return m_components[type] != Handle::null;
   }
 
 
-  /// <summary>
-  /// Gets the component handle of a type from the object
-  /// </summary>
-  /// <param name="type">The type.</param>
-  /// <returns></returns>
   Handle GameObject::GetComponentHandle(const char* type)
   {
     if (GET_ENUM(Component)->IsAnEntry(type))
@@ -387,21 +365,12 @@ namespace Framework
   }
 
 
-  /// <summary>
-  /// Gets the component handle of a type from the object
-  /// </summary>
-  /// <param name="type">The type.</param>
-  /// <returns></returns>
   Handle GameObject::GetComponentHandle(EComponent type)
   {
     return m_components[type];
   }
 
-  /// <summary>
-  /// Gets a component
-  /// </summary>
-  /// <param name="type">The type.</param>
-  /// <returns></returns>
+
   GameComponent* GameObject::GetComponent(const char *type)
   {
     if (GET_ENUM(Component)->IsAnEntry(type))
@@ -413,25 +382,42 @@ namespace Framework
     return NULL;
   }
 
-  /// <summary>
-  /// Gets a component.
-  /// </summary>
-  /// <param name="type">The type.</param>
-  /// <returns></returns>
+
   GameComponent* GameObject::GetComponent(unsigned int type)
   {
     return space->GetHandles().GetAs<GameComponent>(m_components[type]);
   }
 
-  /// <summary>
-  /// Gets a component. [LUA BIND]
-  /// </summary>
-  /// <param name="index">The index.</param>
-  /// <returns></returns>
   LuaComponent* GameObject::GetLuaComponent(unsigned int index)
   {
     return space->GetHandles().GetAs<LuaComponent>(m_luaComponents[index]);
   }
+
+  LuaComponent* GameObject::GetLuaComponent(const char* name)
+  {
+    int lcIndex = HasLuaComponent(name);
+    if (lcIndex != -1)
+    {
+      return GetLuaComponent(lcIndex);
+    }
+
+    return nullptr;
+  }
+
+  int GameObject::HasLuaComponent(const char* name) const
+  {
+    for (unsigned i = 0; i < m_luaComponents.size(); ++i)
+    {
+      if (strcmp(
+        space->GetHandles().GetAs<LuaComponent>(m_luaComponents[i])->name.c_str(),
+        name) == 0)
+      {
+        return i;
+      }
+    }
+  }
+
+  
 
 
   /*--------------------------------------------------------------------------
@@ -440,11 +426,6 @@ namespace Framework
 
   --------------------------------------------------------------------------*/
 
-  /// <summary>
-  /// Serializes the object
-  /// </summary>
-  /// <param name="file">The file.</param>
-  /// <param name="var">The variable.</param>
   void GameObject::Serialize(File& file, Variable var)
   {
     GameObject *o = &var.GetValue<GameObject>( );
@@ -503,7 +484,8 @@ namespace Framework
     info = GET_TYPE(LuaComponent);
     for (unsigned int i = 0; i < o->m_luaComponents.size(); ++i)
     {
-      LuaComponent* LC = o->space->GetHandles().GetAs<LuaComponent>(o->m_luaComponents[i]);
+      LuaComponent* LC =
+        o->space->GetHandles().GetAs<LuaComponent>(o->m_luaComponents[i]);
 
       LC->QueryLoadCommand();
 
@@ -526,11 +508,6 @@ namespace Framework
   }
 
 
-  /// <summary>
-  /// Deserializes a file into an object
-  /// </summary>
-  /// <param name="file">The file.</param>
-  /// <param name="var">The variable.</param>
   void GameObject::Deserialize(File& file, Variable var)
   {
     Serializer* s = Serializer::Get();
@@ -541,9 +518,11 @@ namespace Framework
     const TypeInfo* info = Serializer::Get()->PeekType(file);
 
     // Make sure it is indeed an object
-    ErrorIf(var.GetTypeInfo( ) != info, "GameObject deserialization", "Invalid type found");
+    ErrorIf(var.GetTypeInfo( ) != info, "GameObject deserialization",
+      "Invalid type found");
 
-    // Our peek function was nice enough to figure out the starting level for us
+    // Our peek function was nice enough to figure out
+    // the starting level for us
     int startLevel = Serializer::Get()->GetPadLevel();
 
     for (unsigned int i = 0; i < info->GetMembers().size(); ++i)
@@ -554,9 +533,10 @@ namespace Framework
       // deserialize that variable into to data we can use
       if (mem)
       {
-        // Create a Variable out of the member we found, we need to offset the
-        // start position of the variable by the start of our current variable
-        // by the offset from the member and the start of the current variable
+        // Create a Variable out of the member we found,
+        // we need to offset the start position of the variable by the start
+        // of our current variable by the offset from the member and
+        // the start of the current variable
         Variable member( mem->Type(), PTR_ADD(var.GetData(), mem->Offset()) );
 
         // Now that we have the Variable, lets deserialize it
@@ -615,8 +595,11 @@ namespace Framework
       return;
     }
     // If the component exists then we create a Variable representing the component
-    Variable var(GET_STR_TYPE(EnumComponent.m_literals[type].c_str()), space->GetHandles().Get(m_components[type]));
-    // And then manually pass it to lua
+    Variable var(GET_STR_TYPE(EnumComponent.m_literals[type].c_str()),
+      space->GetHandles().Get(m_components[type]));
+
+
+    // And then manually pass it to Lua
     Lua::GenericToLua(ENGINE->Lua(), var);
 
     return;

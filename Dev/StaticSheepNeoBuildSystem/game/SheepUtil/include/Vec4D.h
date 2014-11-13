@@ -48,6 +48,10 @@ namespace Framework
       float w;
       float w_;
       float W;
+
+      float a;
+      float a_;
+      float A;
     };
   };
   

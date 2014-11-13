@@ -12,6 +12,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include <functional>
 #include <iterator>
 
+#include "components/lua/CLuaComponent.h"
+
 #include "systems/anttweak/AntTweakModule.h"
 
 namespace Framework
@@ -59,6 +61,8 @@ namespace Framework
     obj.tweakDeleteComponent = false;
     obj.tweakDeleteObject = false;
     objectBar->SetIconify(false);
+    objectBar->SetSize(250, 350);
+    objectBar->SetValueWidth(100);
 
     int r = rand() % (5 - 1);
     int r2 = rand() % (8 - 1);
@@ -104,8 +108,22 @@ namespace Framework
         obj->tweakCCompCallbacks->push_back(userdata);
       }
 
-      // Load up the Lua component callback tables
-      //TODO
+      obj->tweakLuaCompCallbacks = DBG_NEW std::vector<TweakObjComp*>();
+
+      // Load up the Lua Component callback tables
+      const std::vector<std::string>& compList = ENGINE->LuaComponentList();
+
+      for (unsigned i = 0; i < compList.size(); ++i)
+      {
+        TweakObjComp* userdata = DBG_NEW TweakObjComp();
+        userdata->gl.self = obj->self;
+        userdata->gl.space = obj->space;
+        userdata->compType = eLuaComponent;
+        userdata->luaCompName = compList[i];
+
+        obj->tweakLuaCompCallbacks->push_back(userdata);
+      }
+
     }
   }
 
@@ -167,7 +185,12 @@ namespace Framework
     }
     else
     {
-
+      LuaComponent* nComp =(LuaComponent*)
+        oc->gl.space->CreateComponent(eLuaComponent);
+      nComp->name = luaType;
+      obj->AddComponent(nComp);
+      nComp->owner = obj->self;
+      nComp->Initialize();
     }
 
     
@@ -196,7 +219,11 @@ namespace Framework
     }
     else
     {
-
+      int luaIndex = obj->HasLuaComponent(luaType.c_str());
+      if (luaIndex != -1)
+      {
+        // Detach Lua component
+      }
     }
 
     //obj->Initialize(); //This may or may not be needed?
@@ -292,12 +319,15 @@ namespace Framework
 
         if (member->TweakSetCB())
         {
-          objectBar->AddGenericVarCB(member->Name(), member->Type()->GetAType(), member, 0, this, member->TweakSetCB(), Function());
+          objectBar->AddGenericVarCB(member->Name(), member->Type()->GetAType(),
+            member, 0, this, member->TweakSetCB(), Function());
         }
         else
         {
-          // Since this is an object member variable we are tweaking we have to use the generic tweak
-          objectBar->AddGenericVarRW(member->Name(), member->Type()->GetAType(), member, 0, this);
+          // Since this is an object member variable we are tweaking
+          // we have to use the generic tweak
+          objectBar->AddGenericVarRW(member->Name(),
+            member->Type()->GetAType(), member, 0, this);
         }
         
       }
@@ -319,31 +349,39 @@ namespace Framework
       if (tweakDeleteComponent)
       {
         objectBar->DefineKeyShortcut("CTRL+r");
-        objectBar->AddButton("RemoveComponent", ShowRemoveComponentList, this->tweakLookup);
+        objectBar->AddButton("RemoveComponent", ShowRemoveComponentList,
+          this->tweakLookup);
       }
       else
       {
         objectBar->DefineKeyShortcut("CTRL+a");
-        objectBar->AddButton("AddComponent", ShowAddComponentList, this->tweakLookup);
+        objectBar->AddButton("AddComponent", ShowAddComponentList,
+          this->tweakLookup);
       }
     }
     else
     {
       objectBar->DefineKeyShortcut("CTRL+a");
       objectBar->DefineLabel("Add Component");
-      objectBar->AddButton("AddComponent", ShowAddComponentList, this->tweakLookup);
+      objectBar->AddButton("AddComponent", ShowAddComponentList,
+        this->tweakLookup);
+
       objectBar->DefineKeyShortcut("CTRL+r");
       objectBar->DefineLabel("Remove Component");
-      objectBar->AddButton("RemoveComponent", ShowRemoveComponentList, this->tweakLookup);
+
+      objectBar->AddButton("RemoveComponent", ShowRemoveComponentList,
+        this->tweakLookup);
     }
 
     objectBar->AddSeparator("PropertySeperator");
 
     if (tweakListComponents)
     {
-
+      
       if (tweakDeleteComponent)
       {
+        // ====================== REMOVE COMPONENTS ==================== //
+
         objectBar->DefineLabel("Delete a component");
         objectBar->AddButton("ChooseComponent", nullptr, nullptr);
 
@@ -357,7 +395,9 @@ namespace Framework
             bName += EnumComponent.m_literals[i];
 
             objectBar->DefineLabel(EnumComponent.m_literals[i].c_str());
-            objectBar->AddButton(bName.c_str(), TweakRemoveComponent,(*tweakCCompCallbacks)[i]);
+
+            objectBar->AddButton(bName.c_str(), TweakRemoveComponent,
+              (*tweakCCompCallbacks)[i]);
           }
         }
 
@@ -367,11 +407,15 @@ namespace Framework
       }
       else
       {
+        // ====================== ADD COMPONENTS ==================== //
+
         objectBar->DefineLabel("Add a component");
         objectBar->AddButton("ChooseComponent", nullptr, nullptr);
 
         std::string bName;
 
+
+        /* ------- C++ Components ------- */
         for (size_t i = 0; i < ecountComponents - 1; ++i)
         {
           if (!HasComponent(i))
@@ -380,13 +424,32 @@ namespace Framework
             bName += EnumComponent.m_literals[i];
 
             objectBar->DefineLabel(EnumComponent.m_literals[i].c_str());
-            objectBar->AddButton(bName.c_str(), TweakAddComponent,(*tweakCCompCallbacks)[i]);
+
+            objectBar->AddButton(bName.c_str(), TweakAddComponent,
+              (*tweakCCompCallbacks)[i]);
           }
         }
 
-        // Lua Component stuff
+        /* ------- Lua Components ------- */
+        objectBar->AddSeparator("Lua Components");
 
-        // End Add
+        for (unsigned i = 0; i < tweakLuaCompCallbacks->size(); ++i)
+        {
+          TweakObjComp* lc = (*tweakLuaCompCallbacks)[i];
+          
+          if (!HasLuaComponent(lc->luaCompName.c_str()))
+          {
+            bName = "Add";
+            bName += lc->luaCompName;
+
+            objectBar->DefineLabel(lc->luaCompName.c_str());
+
+            objectBar->AddButton(bName.c_str(), TweakAddComponent,
+              (*tweakLuaCompCallbacks)[i]);
+          }
+
+        }
+
       }
 
       objectBar->AddSeparator("NewComponentSeperator");

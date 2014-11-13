@@ -77,6 +77,8 @@ namespace Framework
       void SetMovable(bool canMove);
       // Sets whether the bar is re-sizable
       void SetResizable(bool canResize);
+      // Sets the size of the value fields
+      void SetValueWidth(int w);
       
 
       //============================================== Content ====================================================//

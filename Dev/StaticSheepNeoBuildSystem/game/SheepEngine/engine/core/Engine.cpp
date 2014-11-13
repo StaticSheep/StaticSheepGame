@@ -113,6 +113,11 @@ namespace Framework
       m_systems[i]->ReceiveMessage(msg);
   }
 
+  const std::vector<std::string>& Engine::LuaComponentList(void) const
+  {
+    return m_luaComponentList;
+  }
+
 
   void Engine::Step(void)
   {

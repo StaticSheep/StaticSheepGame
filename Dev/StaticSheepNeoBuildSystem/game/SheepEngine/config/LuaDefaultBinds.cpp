@@ -67,6 +67,7 @@ namespace Framework
       BIND_FUNCTION_TABLE(L, Draw::SetTexture, SetTexture, surface);
       BIND_FUNCTION_TABLE(L, Draw::SetUseCamera, SetUseCamera, surface);
       BIND_FUNCTION_TABLE(L, Draw::GetTextureID, GetTextureID, surface);
+      BIND_FUNCTION_TABLE(L, Draw::GetTextSize, GetTextSize, surface);
       BIND_FUNCTION_TABLE(L, Draw::DrawRect, DrawRect, surface);
       BIND_FUNCTION_TABLE(L, Draw::DrawTexturedRect, DrawTexturedRect, surface);
       BIND_FUNCTION_TABLE(L, Draw::DrawLine, DrawLine, surface);

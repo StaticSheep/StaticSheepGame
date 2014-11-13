@@ -68,8 +68,6 @@ namespace Framework
     DirectSheep::Handle SetVShader(const std::string& Shader);
     DirectSheep::Handle SetPShader(const std::string& Shader);
 
-    void UpdateCamera(void);
-
     void RawDraw(void);
 
     void BindTexture(int ID);
