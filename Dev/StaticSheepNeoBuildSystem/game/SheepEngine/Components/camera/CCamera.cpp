@@ -25,6 +25,9 @@ namespace Framework
 
     m_CamHandle = GRAPHICS->m_renderContext->NewCamera();
 
+    if(m_active)
+      SetActive(true);
+
     UpdatePosition();
 
   }
@@ -46,6 +49,10 @@ namespace Framework
   void Camera::SetActive(bool isActive)
   {
     m_active = isActive;
+
+    if(space->m_edit)
+      return;
+
     GRAPHICS->CurrentCamera = m_CamHandle;
 
     GRAPHICS->m_renderContext->SetCamActive(m_CamHandle);

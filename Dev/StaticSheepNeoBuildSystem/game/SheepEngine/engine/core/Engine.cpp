@@ -138,6 +138,9 @@ namespace Framework
     if (m_loadLuaLevels)
       LoadLuaLevels();
 
+    if (m_enteringPIE)
+      StartPIE();
+
     if (m_returnFromPIE)
       ReloadEditor();
 
@@ -312,7 +315,7 @@ namespace Framework
 
     if (play)
     {
-      TRACELOG->Log(INFO, "Entering PIE mode.");
+      TRACELOG->Log(INFO, "Prepping PIE mode.");
 
       std::vector<GameSpace*>& gameSpaces = ENGINE->Spaces();
 
@@ -337,11 +340,11 @@ namespace Framework
       }
 
       for (size_t i = 0; i < gameSpaces.size(); ++i)
-      {
-        gameSpaces[i]->SetPaused(false);
-        gameSpaces[i]->m_edit = false;
-		    gameSpaces[i]->tweakHandle = Handle::null;
-      }
+        gameSpaces[i]->Destroy();
+      
+      ENGINE->m_enteringPIE = true;
+
+      
     }
     else
     {
@@ -355,9 +358,31 @@ namespace Framework
       
       ENGINE->m_PIE = false;
       ENGINE->m_returnFromPIE = true;
+
+      /***************************************************************/
+      // GRAPHICS->SetDefaultCamera(parameters)
+      /***************************************************************/
+
     }
   }
   
+  void Engine::StartPIE()
+  {
+    TRACELOG->Log(INFO, "Starting PIE mode.");
 
+    std::string filePath = "cache\\spaces\\";
+
+    boost::filesystem::directory_iterator it(filePath), eod;
+
+    m_enteringPIE = false;
+
+    BOOST_FOREACH(boost::filesystem::path const &p, std::make_pair(it, eod))
+    {
+      if (is_regular(p))
+      {
+        GameSpace* sp = FACTORY->LoadSpaceFilePath(p.string().c_str());
+      }
+    }
+  }
 
 }

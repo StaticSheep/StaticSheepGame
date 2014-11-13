@@ -174,8 +174,10 @@ namespace Framework
     // Play in editor fun stuff
     bool m_PIE = false;
     bool m_returnFromPIE = false;
+    bool m_enteringPIE = false;
     void ReloadEditor(void);
     void CheckReturnFromPIE(void);
+    void StartPIE(void);
 
     /*---------- Friends ----------*/
 
