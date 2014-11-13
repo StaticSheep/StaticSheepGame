@@ -1,7 +1,8 @@
 /*****************************************************************
-Filename: GraphicsInterface.h
+Filename: SheepGraphics.h
 Project: 
-Author(s): Zachary Nawar
+Author(s): Scott Nelson 
+           Zachary Nawar
 
 All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 *****************************************************************/
@@ -69,18 +70,16 @@ namespace Framework
     DirectSheep::Handle SetPShader(const std::string& Shader);
 
     void RawDraw(void);
+    void DrawSprite(Sprite *sprite);
+    void DrawSpriteText(const char * text, float size, const char * font);
 
+    int GetTextureID(const std::string& texture);
+    Vec2 GetTextureDim(DirectSheep::Handle texture);
     void BindTexture(int ID);
 
     void SetWireframe(bool iswired);
     void SetUseCamera(bool useCam);
-    void DrawSprite(Sprite *sprite);
-    int GetTextureID(const std::string& texture);
-    Vec2 GetTextureDim(DirectSheep::Handle texture);
-    void DrawSpriteText(const char * text, float size, const char * font);
 
-
-    bool LoadAssets(std::string& filepath);
     void ReceiveMessage(Message& msg);
     void* GetDevice(void);
 
@@ -89,9 +88,7 @@ namespace Framework
     // Initialization call
 		void Initialize(void);
 
-    void InitGeometry();
-
-    void LoadAssets();
+    bool LoadAssets(std::string& filepath);
 
     void StartFrame(void);
 
@@ -118,7 +115,7 @@ namespace Framework
 
   public:
 
-    Handle CurrentCamera;
+    DirectSheep::Handle CurrentCamera;
     HWND _HWnd;
     int _ScreenWidth;
     int _ScreenHeight;

@@ -71,7 +71,7 @@ namespace DirectSheep
   // getters and setters for camera fov
   void Camera::SetFov(float fov)
   {
-    m_Fov;
+    m_Fov = fov;
     BuildPerspective();
     m_viewProj = m_View * m_Projection;
   }

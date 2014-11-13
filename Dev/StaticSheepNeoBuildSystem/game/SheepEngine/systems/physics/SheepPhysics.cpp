@@ -46,7 +46,7 @@ namespace Framework
   
   void SheepPhysics::ReceiveMessage(Message& msg)
   {
-    if (msg.MessageId == Message::PostDraw)
+    if (0)
     {
       std::vector<GameSpace*>& gspaces = ENGINE->Spaces();
 

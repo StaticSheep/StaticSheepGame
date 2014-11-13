@@ -56,6 +56,7 @@ namespace Framework
       TYPE_ADD_MEMBER( Transform, m_rotation );
     }
 
+    bool m_useDirtyHook;
   private:
 
     bool m_hasPhysics;
