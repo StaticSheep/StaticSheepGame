@@ -13,6 +13,7 @@ namespace Framework
   {
     delay = 2;
     damage = 10;
+    semi = false;
   }
 
   Automatic::~Automatic()

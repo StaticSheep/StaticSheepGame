@@ -10,5 +10,6 @@ namespace Framework
 
     int delay;  //delay between shots
     int damage; //damage caused by weapon
+    bool semi; //is the weapon semi-auto or automatic
   };
 }

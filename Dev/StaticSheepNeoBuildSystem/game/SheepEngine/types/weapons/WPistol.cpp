@@ -11,6 +11,7 @@ namespace Framework
   {
     delay = 10;
     damage = 10;
+    semi = true;
   }
 
   Pistol::~Pistol()

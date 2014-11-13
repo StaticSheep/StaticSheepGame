@@ -100,7 +100,7 @@ namespace Framework
 			hasFired = true;
 			onFire();
 		}
-    else
+    else if (weapon->semi == false)
     {
       --shotDelay;
       if(shotDelay < 0)
@@ -110,7 +110,7 @@ namespace Framework
       }
     }
 		//if the trigger is released, reset the bool
-		if (!gp->RightTrigger())
+		if (!gp->RightTrigger() && weapon->semi)
     {
 			hasFired = false;
       shotDelay = weapon->delay;
