@@ -134,7 +134,7 @@ GameObject
     {
       x_ float -570.000000
       y_ float 0.000000
-      z_ float 0.000000
+      z_ float 1.000000
     }
     Rotation float 1.570700
     Scale Vec3
@@ -178,7 +178,7 @@ GameObject
     {
       x_ float 570.000000
       y_ float 0.000000
-      z_ float 0.000000
+      z_ float 1.000000
     }
     Rotation float 1.570700
     Scale Vec3
@@ -237,7 +237,7 @@ GameObject
   }
   Level1_Logic
   {
-    timeLimit float 2.000000
+    timeLimit float 60.000000
     numOfPlayers int 4
   }
 }
