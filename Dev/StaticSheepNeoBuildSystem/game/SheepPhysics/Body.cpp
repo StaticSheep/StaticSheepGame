@@ -16,7 +16,6 @@ namespace SheepFizz
 		{ 
 			shape_->Initialize();
 			ComputeMass();
-      position_.z = 0.0f;
 		}
 
 	void Body::ComputeMass(void)

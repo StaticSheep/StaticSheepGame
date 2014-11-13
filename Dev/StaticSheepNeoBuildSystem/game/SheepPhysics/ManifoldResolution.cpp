@@ -66,6 +66,7 @@ namespace SheepFizz
       //A's impulse is negative because the normal is
       //from B to A;
       Vec3D impulse = j * normal;
+      impulse.z = 0;
       A->ApplyImpulse(-impulse, aRepulsionVec);
       B->ApplyImpulse(impulse, bRepulsionVec);
 
@@ -103,6 +104,7 @@ namespace SheepFizz
         frictionImpulse = tangent * -j * mDynamicFriction;
 
       //apply friction impulse
+      frictionImpulse.z = 0;
       A->ApplyImpulse(-frictionImpulse, aRepulsionVec);
       B->ApplyImpulse(frictionImpulse, bRepulsionVec);
     }
