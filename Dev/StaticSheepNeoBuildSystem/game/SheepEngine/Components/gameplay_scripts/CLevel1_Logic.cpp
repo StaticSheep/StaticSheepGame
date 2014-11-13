@@ -94,7 +94,7 @@ namespace Framework
       GameObject *eGiantPlat = (FACTORY->LoadObjectFromArchetype(space, "KillBoxBig"));
       Transform *GPT = eGiantPlat->GetComponent<Transform>(eTransform);
       //BoxCollider *gaintPlatC = eGiantPlat->GetComponent <BoxCollider>(eBoxCollider);
-      GPT->SetTranslation(Vec3(400.0, 0.0, 0.0));
+      GPT->SetTranslation(Vec3(600.0, 0.0, 0.0));
       timeLimit = 60;
     }
 

@@ -23,27 +23,49 @@ namespace Framework
 
     kbTransfrom = space->GetGameObject(owner)->GetComponentHandle(eTransform);
     kbCollider = space->GetGameObject(owner)->GetComponentHandle(eBoxCollider);
+    GrindSpawn = false;
 	}
 
   void GiantKillBox::Remove()
 	{
 		space->hooks.Remove("LogicUpdate", self);
+
 	}
 
   void GiantKillBox::LogicUpdate(float dt)
 	{
     Transform *pt = space->GetHandles().GetAs<Transform>(kbTransfrom);
     BoxCollider *pc = space->GetHandles().GetAs <BoxCollider>(kbCollider);
-    if (pt->GetTranslation().x > 500 || pt->GetTranslation().x < -500)
-      space->GetGameObject(owner)->Destroy();
+    if (pt->GetTranslation().x > 700 || pt->GetTranslation().x < -700)
+    {
+      for (int i = 7; i < 7; ++i)
+        space->GetGameObject(Grinders[i])->Destroy();
 
+      GrindSpawn = false;
+      space->GetGameObject(owner)->Destroy();
+    }
+    if (!GrindSpawn)
+    {
+      for (int i = 0; i < 7; ++i)
+      {
+        Grinders[i] = (FACTORY->LoadObjectFromArchetype(space, "GrinderBig"))->self;
+      }
+      GrindSpawn = true;
+    }
     if (direction)
     {
       pt->SetTranslation(pt->GetTranslation() + Vec3(-1.0, 0.0, 0.0));
+      for (int i = 0; i < 7; ++i)
+      {
+        GT[i] = (space->GetGameObject(Grinders[i])->GetComponent<Transform>(eTransform));
+        GT[i]->SetTranslation(pt->GetTranslation() + Vec3(0.0, ((float)i * 64.0f -192.0f), 0.0));
+      }
     }
     else
     {
-      pt->SetTranslation(pt->GetTranslation() + Vec3(1.0, 0.0, 0.0));
+      /*pt->SetTranslation(pt->GetTranslation() + Vec3(1.0, 0.0, 0.0));
+      for (int i = 0; i < 15; ++i)
+        GT[i]->SetTranslation(pt->GetTranslation() + Vec3(1.0, 0.0, 0.0));*/
     }
 	}
 

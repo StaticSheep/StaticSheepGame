@@ -237,7 +237,7 @@ GameObject
   }
   Level1_Logic
   {
-    timeLimit float 60.000000
+    timeLimit float 2.000000
     numOfPlayers int 4
   }
 }
