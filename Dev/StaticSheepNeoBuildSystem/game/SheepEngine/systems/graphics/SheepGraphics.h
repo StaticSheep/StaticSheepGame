@@ -115,7 +115,7 @@ namespace Framework
 
   public:
 
-    DirectSheep::Handle CurrentCamera;
+    Handle CurrentCamera;
     HWND _HWnd;
     int _ScreenWidth;
     int _ScreenHeight;

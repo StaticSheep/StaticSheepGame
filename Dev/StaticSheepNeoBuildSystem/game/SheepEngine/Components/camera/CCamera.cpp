@@ -50,12 +50,18 @@ namespace Framework
   {
     m_active = isActive;
 
-    if(space->m_edit)
+    Camera* currCam = space->GetHandles().GetAs<Camera>(GRAPHICS->CurrentCamera);
+
+    if (currCam && !IsActive())
+      currCam->m_active = false;
+
+    GRAPHICS->CurrentCamera = this->GetOwner()->GetComponentHandle(Framework::eCamera);
+
+    if (space->m_edit)
       return;
 
-    GRAPHICS->CurrentCamera = m_CamHandle;
-
-    GRAPHICS->m_renderContext->SetCamActive(m_CamHandle);
+    if (m_active)
+      GRAPHICS->m_renderContext->SetCamActive(m_CamHandle);
   }
 
   void Camera::TweakSetActive(void * isActive)
@@ -65,7 +71,7 @@ namespace Framework
 
   bool Camera::IsActive()
   {
-    if (m_CamHandle == GRAPHICS->CurrentCamera)
+    if (this->GetOwner()->GetComponentHandle(Framework::eCamera) == GRAPHICS->CurrentCamera)
       return true;
     else
       return false;

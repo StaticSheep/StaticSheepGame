@@ -56,6 +56,7 @@ class RenderContext
    GFX_API void SetCamScale(Handle Camera, float width, float height);
    GFX_API void SetCamFOV(Handle Camera, float FOV);
    GFX_API void SetCamActive(Handle Camera);
+   GFX_API void SetCamDefault();
    GFX_API Handle GetCamActive();
 
     /////////////////////////////////////////////////////////////
@@ -233,6 +234,7 @@ class RenderContext
     Handle                                   m_camera;
     Handle                                   m_Perspective;
     Handle                                   m_Ortho;
+    Handle                                   m_editor;
     bool                                     m_camUse;
 
     RastStates                               m_currentRast = RastStates::Fill;

@@ -36,8 +36,6 @@ namespace Framework
 		GRAPHICS = this;
 
     m_renderContext = (DirectSheep::RenderContext*)rc;
-
-    CurrentCamera = DirectSheep::Handle(DirectSheep::CAMERA,0);
 	}
 
   void SheepGraphics::RegisterComponents()
