@@ -27,13 +27,21 @@ namespace Framework
     _pitch = 1.0f;
   }
 
+/*****************************************************************************/
+/*!
+  \brief
+    Destructor. If any sounds are active, stop them now.
+*/
+/*****************************************************************************/
   SoundPlayer::~SoundPlayer()
   {
+    // iterate through all of the instances
     for(auto it = instanceList.begin(); it != instanceList.end(); ++it)
     {
-      _soundSystem->Stop(&it->second);
+      // and stop them
+      if(it->second.active)
+        _soundSystem->Stop(&it->second);
     }
-
   }
   
 /*****************************************************************************/
@@ -52,11 +60,15 @@ namespace Framework
 /*****************************************************************************/
   void SoundPlayer::Play(const std::string &name, SoundInstance* instance)
   {
-    if(instanceList[name].active)
-      return;
+    // if the instance exists, and is active
+    if(instanceList.find(name) != instanceList.end() && instanceList[name].active)
+      return; // don't try and play it again
 
+    // otherwise, make a new instance
     instanceList[name] = *instance;
     instanceList[name].active = true;
+
+    // and play it
     _soundSystem->Play(name, &instanceList[name]);
   }
   
@@ -74,8 +86,14 @@ namespace Framework
 /*****************************************************************************/
   void SoundPlayer::Stop(std::string name, FadeOut mode)
   {
-    _soundSystem->Stop(&instanceList[name]);
-    instanceList[name].active = false;
+    // if the instance exists
+    if(instanceList.find(name) != instanceList.end())
+    {
+      // tell it to stop
+      _soundSystem->Stop(&instanceList[name]);
+      // and set the active flag to false
+      instanceList[name].active = false;
+    }
   }
 
 /*****************************************************************************/
@@ -92,7 +110,9 @@ namespace Framework
 /*****************************************************************************/  
   void SoundPlayer::Pause(std::string name, bool flag)
   {
-    _soundSystem->Pause(&instanceList[name], flag);
+    // make sure the instance exists first
+    if(instanceList.find(name) != instanceList.end())
+      _soundSystem->Pause(&instanceList[name], flag);
   }
   
 /*****************************************************************************/
