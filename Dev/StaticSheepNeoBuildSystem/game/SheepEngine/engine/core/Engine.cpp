@@ -22,6 +22,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "engine/window/Window32.h"
 #include "components/transform/CTransform.h"
 #include "systems/input/Input.h"
+#include "systems/graphics/SheepGraphics.h"
 
 #include <boost/filesystem.hpp>
 #include <boost/foreach.hpp>
@@ -142,6 +143,9 @@ namespace Framework
 
     if (m_loadLuaLevels)
       LoadLuaLevels();
+
+    if (m_enteringPIE)
+      StartPIE();
 
     if (m_returnFromPIE)
       ReloadEditor();
@@ -303,6 +307,8 @@ namespace Framework
       }
     }
 
+    GRAPHICS->SetDefaultCam();
+
   }
 
   bool Engine::PlayingInEditor()
@@ -317,7 +323,7 @@ namespace Framework
 
     if (play)
     {
-      TRACELOG->Log(INFO, "Entering PIE mode.");
+      TRACELOG->Log(INFO, "Prepping PIE mode.");
 
       std::vector<GameSpace*>& gameSpaces = ENGINE->Spaces();
 
@@ -342,11 +348,11 @@ namespace Framework
       }
 
       for (size_t i = 0; i < gameSpaces.size(); ++i)
-      {
-        gameSpaces[i]->SetPaused(false);
-        gameSpaces[i]->m_edit = false;
-		    gameSpaces[i]->tweakHandle = Handle::null;
-      }
+        gameSpaces[i]->Destroy();
+      
+      ENGINE->m_enteringPIE = true;
+
+      
     }
     else
     {
@@ -360,9 +366,29 @@ namespace Framework
       
       ENGINE->m_PIE = false;
       ENGINE->m_returnFromPIE = true;
+
+      
+
     }
   }
   
+  void Engine::StartPIE()
+  {
+    TRACELOG->Log(INFO, "Starting PIE mode.");
 
+    std::string filePath = "cache\\spaces\\";
+
+    boost::filesystem::directory_iterator it(filePath), eod;
+
+    m_enteringPIE = false;
+
+    BOOST_FOREACH(boost::filesystem::path const &p, std::make_pair(it, eod))
+    {
+      if (is_regular(p))
+      {
+        GameSpace* sp = FACTORY->LoadSpaceFilePath(p.string().c_str());
+      }
+    }
+  }
 
 }

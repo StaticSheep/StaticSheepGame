@@ -18,7 +18,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 namespace Framework
 {
   Transform::Transform()
-    :m_translation(0, 0, 0), m_rotation(0), m_scale(1,1), m_hasPhysics(false), m_pBody(Handle::null)
+    :m_translation(0, 0, 0), m_rotation(0), m_scale(1, 1), m_hasPhysics(false), m_pBody(Handle::null), m_useDirtyHook(false)
   {
   }
 
@@ -45,6 +45,8 @@ namespace Framework
 
   void Transform::SetTranslation(Vec3 newTr)
   {
+    if (m_useDirtyHook)
+      this->GetOwner()->hooks.Call("TransformDirty");
     if (m_hasPhysics)
     {
       reinterpret_cast<SheepFizz::PhysicsSpace*>(space->m_pSpace)->SetBodyPos(m_pBody, newTr);
@@ -67,6 +69,9 @@ namespace Framework
 
   void Transform::SetRotation(float rot)
   {
+    if (m_useDirtyHook)
+      this->GetOwner()->hooks.Call("TransformDirty");
+
     if (m_hasPhysics)
     {
       reinterpret_cast<SheepFizz::PhysicsSpace*>(space->m_pSpace)->SetBodyRot(m_pBody, rot);

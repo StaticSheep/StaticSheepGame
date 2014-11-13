@@ -42,12 +42,19 @@ namespace DirectSheep
 
   GFX_API void RenderContext::SetCamActive(Handle Camera)
   {
-    if (Camera.type == CAMERA)
+    if (Camera.type == CAMERA && Camera.ptr)
       m_Perspective.ptr = Camera.ptr;
+    else
+      SetCamDefault();
   }
 
   GFX_API Handle RenderContext::GetCamActive()
   {
     return m_Perspective;
+  }
+
+  GFX_API void RenderContext::SetCamDefault()
+  {
+    m_Perspective.ptr = m_editor.ptr;
   }
 }

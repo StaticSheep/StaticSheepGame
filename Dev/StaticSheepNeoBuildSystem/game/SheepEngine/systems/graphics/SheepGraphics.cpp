@@ -36,8 +36,6 @@ namespace Framework
 		GRAPHICS = this;
 
     m_renderContext = (DirectSheep::RenderContext*)rc;
-
-    CurrentCamera = NULL;
 	}
 
   void SheepGraphics::RegisterComponents()
@@ -101,6 +99,11 @@ namespace Framework
     Draw();
     FinishFrame();
 	}
+  
+  void SheepGraphics::SetDefaultCam(void)
+  {
+    m_renderContext->SetCamDefault();
+  }
 
   void SheepGraphics::ReceiveMessage(Message& msg)
   {

@@ -59,6 +59,9 @@ namespace Framework
 	template <typename T>
 	T* HandleManager::GetAs(Handle handle) const
 	{
+    if (handle == Handle::null)
+      return nullptr;
+
 		// Get the handle entry from the array
 		const HandleEntry* entry = m_array + handle.m_index;
 

@@ -28,6 +28,7 @@ namespace Framework
       WindowResize,
       WindowMinimize,
       WindowRestore,
+      CameraChange,
       Pause,
       Quit,
     };

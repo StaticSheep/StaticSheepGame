@@ -15,6 +15,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/sound/CSoundPlayer.h"
 #include "components/sprites/CSprite.h"
 #include "components/sprites/CAniSprite.h"
+#include "Components/camera/CCamera.h"
 #include "components/rigidbody/CRigidBody.h"
 #include "components/transform/CTransform.h"
 #include "components/colliders/CBoxCollider.h"
@@ -237,6 +238,11 @@ namespace Framework
     TYPE_ADD_MEMBER( AniSprite, Size, false, true, "Scale");
     TYPE_SET_TWEAK_TYPE( AniSprite, AntTweak::TW_TYPE_COMPONENT );
     TYPE_SET_FROM_LUA( AniSprite, Lua::GenericObjectFromLua );
+
+    TYPE_REGISTER(Camera);
+    TYPE_ADD_MEMBER(Camera, m_active, false, true, "Active", BUILD_FUNCTION(Camera::TweakSetActive));
+    TYPE_ADD_MEMBER(Camera, m_FOV, false, true, "FOV", BUILD_FUNCTION(Camera::TweakSetFov));
+    TYPE_SET_TWEAK_TYPE(Camera, AntTweak::TW_TYPE_COMPONENT);
 
     TYPE_REGISTER( SoundEmitter );
     TYPE_SET_FROM_LUA(SoundEmitter, Lua::GenericObjectFromLua );
