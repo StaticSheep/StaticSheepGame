@@ -22,6 +22,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "engine/window/Window32.h"
 #include "components/transform/CTransform.h"
 #include "systems/input/Input.h"
+#include "systems/graphics/SheepGraphics.h"
 
 #include <boost/filesystem.hpp>
 #include <boost/foreach.hpp>
@@ -301,6 +302,8 @@ namespace Framework
       }
     }
 
+    GRAPHICS->SetDefaultCam();
+
   }
 
   bool Engine::PlayingInEditor()
@@ -359,9 +362,7 @@ namespace Framework
       ENGINE->m_PIE = false;
       ENGINE->m_returnFromPIE = true;
 
-      /***************************************************************/
-      // GRAPHICS->SetDefaultCamera(parameters)
-      /***************************************************************/
+      
 
     }
   }

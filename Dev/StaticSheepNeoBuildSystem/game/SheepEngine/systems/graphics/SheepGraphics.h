@@ -83,6 +83,8 @@ namespace Framework
     void ReceiveMessage(Message& msg);
     void* GetDevice(void);
 
+    void SetDefaultCam(void);
+
 	private:
 
     // Initialization call

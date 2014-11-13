@@ -25,7 +25,7 @@ namespace Framework
 
     m_CamHandle = GRAPHICS->m_renderContext->NewCamera();
 
-    if(m_active)
+    if(m_active || !space->m_edit)
       SetActive(true);
 
     UpdatePosition();

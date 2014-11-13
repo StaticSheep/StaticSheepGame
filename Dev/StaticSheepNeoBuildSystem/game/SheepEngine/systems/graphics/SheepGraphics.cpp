@@ -99,6 +99,11 @@ namespace Framework
     Draw();
     FinishFrame();
 	}
+  
+  void SheepGraphics::SetDefaultCam(void)
+  {
+    m_renderContext->SetCamDefault();
+  }
 
   void SheepGraphics::ReceiveMessage(Message& msg)
   {
