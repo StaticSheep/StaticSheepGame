@@ -15,4 +15,8 @@ function META:Update(deltaTime)
 
 end
 
+function META:Remove()
+  self.MyPanel:Destroy()
+end
+
 RegisterComponent(META)

@@ -39,6 +39,17 @@ function RemoveGameObject(space, handle)
   print("[GameSpace: "..space.."] Removed C++ GameObject: "..handle)
 
   if GameSpaces[space] == nil then return end
+  if GameSpaces[space][handle] == nil then return end
+
+  local object = GameSpaces[space][handle]
+
+  for k, comp in pairs(object) do
+    if type(comp) == "table" then
+      if comp.Remove then
+        comp:Remove()
+      end
+    end
+  end
 
   GameSpaces[space][handle] = nil
 end
@@ -79,7 +90,7 @@ function AttachComponentToObject(space, owner, cid, cname)
   local component = object[cid]
   local meta = GetMeta(cname)
 
-  PrintTable(meta)
+  --PrintTable(meta)
 
   setmetatable(component, meta)
 
