@@ -19,6 +19,12 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 namespace Framework
 {
 
+  struct DebugPhysics
+  {
+    unsigned int bodies;
+    unsigned int manifolds;
+  };
+
 	class SheepPhysics : public ISystem
 	{
 		public:
@@ -68,6 +74,9 @@ namespace Framework
 
       Vec3D GetBodyGravityNormal(GameSpace* space, SheepFizz::Handle handle);
 
+      //debug
+      const void* SheepPhysics::GetDebugData(void);
+
       //collision
       Vec3D GetCollisionNormal(GameSpace* space, Framework::Handle ownerHandle , SheepFizz::ExternalManifold manifold);
       Vec3D GetCollisionPoint(GameSpace* space, SheepFizz::ExternalManifold manifold);
@@ -112,6 +121,7 @@ namespace Framework
 		private:
 			std::unordered_map<std::string, SheepFizz::Material> m_materials;      
       bool debugOn;
+      DebugPhysics debugPhys;
 
 	};
 

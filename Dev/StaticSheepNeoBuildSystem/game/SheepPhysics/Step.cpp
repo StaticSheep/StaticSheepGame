@@ -380,6 +380,9 @@ namespace SheepFizz
 			  cb_(manifolds_[i].A->userData, manifolds_[i].B->userData, userData_, &manifolds_[i]);
 		}
 
+    //debug data
+    manifoldNumber_ = manifolds_.size();
+
 		//empty manifold list
 		manifolds_.clear();
 
@@ -423,4 +426,17 @@ namespace SheepFizz
 	{
 		cb_ = cb;
 	}//end of SetCollisionCallback
+
+  //debug functions
+  unsigned int PhysicsSpace::GetDebugBodyNumber(void)
+  {
+    return bodies_.Size();
+  }//end of GetDebugData
+
+  //debug functions
+  unsigned int PhysicsSpace::GetDebugManifoldNumber(void)
+  {
+    return manifoldNumber_;
+  }//end of GetDebugData
+  
 }

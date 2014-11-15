@@ -25,6 +25,10 @@ namespace Framework
 	{
 		// Initialize physics object list
 		PHYSICS = this;
+
+    //initialize debug info
+    debugPhys.bodies = 0;
+    debugPhys.manifolds = 0;
 	}
 
 	SheepPhysics::~SheepPhysics()
@@ -49,9 +53,6 @@ namespace Framework
   void SheepPhysics::ReceiveMessage(Message& msg)
   {
     
-
-   
-
     if (msg.MessageId == Message::PostDraw)
     {
       if (!debugOn)
@@ -65,6 +66,9 @@ namespace Framework
         //skip if the gamespace is not ready for some reason
         if (!gspaces[i]->Ready())
           return;
+
+        debugPhys.bodies = ((SheepFizz::PhysicsSpace*)(gspaces[i]->m_pSpace))->GetDebugBodyNumber();
+        debugPhys.manifolds = ((SheepFizz::PhysicsSpace*)(gspaces[i]->m_pSpace))->GetDebugManifoldNumber();
 
         //******************************
         //go through box colliders first
@@ -170,6 +174,12 @@ namespace Framework
   bool SheepPhysics::IsDebugOn(void)
   {
     return debugOn;
+  }
+
+  //debug information struct
+  const void* SheepPhysics::GetDebugData(void)
+  {
+    return (void*)(&debugPhys);
   }
 
   //end of Debug
