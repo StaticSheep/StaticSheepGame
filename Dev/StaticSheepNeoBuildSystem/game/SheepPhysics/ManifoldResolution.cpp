@@ -61,12 +61,12 @@ namespace SheepFizz
       //divide by number of contact points
       j /= contactCount;
 
-
       //calculate impulse and apply to bodies
       //A's impulse is negative because the normal is
       //from B to A;
       Vec3D impulse = j * normal;
       impulse.z = 0;
+
       A->ApplyImpulse(-impulse, aRepulsionVec);
       B->ApplyImpulse(impulse, bRepulsionVec);
 
@@ -105,6 +105,10 @@ namespace SheepFizz
 
       //apply friction impulse
       frictionImpulse.z = 0;
+
+      if (contactCount == 2 && i < 1)
+        continue;
+
       A->ApplyImpulse(-frictionImpulse, aRepulsionVec);
       B->ApplyImpulse(frictionImpulse, bRepulsionVec);
     }

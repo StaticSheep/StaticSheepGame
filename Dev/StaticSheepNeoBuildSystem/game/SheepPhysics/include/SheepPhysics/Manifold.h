@@ -33,15 +33,15 @@ namespace SheepFizz
 		Body *A;
 		Body *B;
 
-		Vec3D normal;				//the normal from A to B
-		Vec3D contacts[2];			//the contact points
+		Vec3D normal;				        //the normal from A to B
+		Vec3D contacts[2];			    //the contact points
 
-		float penetration;			//depth of penetration between objects along normal
-		float mResitution;			//the restitution for the two objects
-		float mDynamicFriction;		//the dynamic friction of the two objects
-		float mStaticFriction;		//the static friction of the two objects
+		float penetration;			    //depth of penetration between objects along normal
+		float mResitution;			    //the restitution for the two objects
+		float mDynamicFriction;		  //the dynamic friction of the two objects
+		float mStaticFriction;		  //the static friction of the two objects
 
-		unsigned int contactCount;	//the number of contacts in the manifold
+		unsigned int contactCount;	    //the number of contacts in the manifold
 	
 	};
 
