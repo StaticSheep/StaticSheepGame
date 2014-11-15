@@ -35,8 +35,8 @@ namespace Framework
 
   void Explosion::LogicUpdate(float dt)
 	{
-    Transform *pt = space->GetHandles().GetAs<Transform>(eTransfrom);
-    AniSprite *ea = space->GetHandles().GetAs <AniSprite>(eAnSprite);
+    //Transform *pt = space->GetHandles().GetAs<Transform>(eTransfrom);
+    //AniSprite *ea = space->GetHandles().GetAs <AniSprite>(eAnSprite);
 
 	}
 
