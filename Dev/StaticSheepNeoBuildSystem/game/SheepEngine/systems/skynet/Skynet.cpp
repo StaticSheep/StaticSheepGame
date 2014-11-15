@@ -32,7 +32,10 @@ namespace Framework
     {
       // let it touch all of the inputs
       for(int i = 0; i < 4; ++i)
-        input->Pads[i].State = players[i].Update();
+      {
+        if(XInputGetState(i, &input->Pads[i].State) != ERROR_SUCCESS)
+          input->Pads[i].State = players[i].Update();
+      }
     }
     
     // to turn skynet on and off, press F8
