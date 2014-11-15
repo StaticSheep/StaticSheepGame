@@ -11,7 +11,9 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include <iostream>
 #include <unordered_map>
 
-/*****************************************************************************/
+// initialize static pointer for SoundFile class
+FMOD::System* SoundFile::_system = 0;
+
 /*!
   \brief
     FMOD error check.
@@ -20,7 +22,6 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
     Checks the result of the FMOD function to see if it was an error or not.
 
 */
-/*****************************************************************************/
 bool ErrorCheck(FMOD_RESULT result)
 {
   if (result != FMOD_OK)
@@ -34,11 +35,9 @@ bool ErrorCheck(FMOD_RESULT result)
 
 }
 
-
 namespace SoundUtility
 {
 
-/*****************************************************************************/
 /*!
   \brief
     Utility function to figure out where to look for sound files.
@@ -50,7 +49,6 @@ namespace SoundUtility
     Type of file, which is an enum. 
 
 */
-/*****************************************************************************/
   std::string SourcePath(const std::string file, SourceType type)
   {
     switch(type)
@@ -64,19 +62,7 @@ namespace SoundUtility
   }
 }// end namespace
 
-/*****************************************************************************/
-/*!
-  \brief
-    Default constructor for sound events. Just sets it to play once and not
-    currently playing.
-*/
-/*****************************************************************************/
-SoundEvent::SoundEvent() : _mode(PLAY_ONCE), _playing(false)
-{
 
-}
-
-/*****************************************************************************/
 /*!
   \brief
     Constructor for the SoundEvent class
@@ -87,23 +73,15 @@ SoundEvent::SoundEvent() : _mode(PLAY_ONCE), _playing(false)
   \param name
     Name of the sound file
 */
-/*****************************************************************************/
-SoundEvent::SoundEvent(SOUND::System *system, std::string &name) : 
-                                                              _mode(PLAY_ONCE), 
-                                                              _playing(false)
+SoundEvent::SoundEvent(SOUND::System *system, std::string &name)
 {
   // get the ID and check it
-  ErrorCheck(system->lookupID(name.c_str(), &_id) );
+  ErrorCheck(system->lookupID(name.c_str(), &id) );
 
   // get the event description
-  ErrorCheck(system->getEvent(name.c_str(), &_description) );
-
-  _pitch = 1.0f;
-  _volume = 1.0f;
+  ErrorCheck(system->getEvent(name.c_str(), &description) );
 }
 
-
-/*****************************************************************************/
 /*!
   \brief
     Public method for playing a sound event
@@ -111,180 +89,277 @@ SoundEvent::SoundEvent(SOUND::System *system, std::string &name) :
   \param mode
     How the sound should be played. Once, looped, or streamed
 */
-/*****************************************************************************/
-SOUND::EventInstance* SoundEvent::Play(PlayMode mode, float volume, float pitch)
+bool SoundEvent::Play(SoundInstance* instance)
 {
-  // set the mode 
-  _mode = mode;
+  int mode = instance->mode;
+  instance->type = 0;
 
   // call the correct private method for playing
   switch(mode)
   {
-  case PLAY_ONCE:
-    _PlayOnce(volume, pitch);
-    break;
+  case PLAY_ONCE : return _PlayOnce(instance);
 
-  case PLAY_LOOP:
-    _PlayLoop(volume, pitch);
-    break;
+  case PLAY_LOOP : return _PlayLoop(instance);
 
-  case PLAY_STREAM:
-    _PlayStream(volume, pitch);
-    break;
+  case PLAY_STREAM : return _PlayStream(instance);
 
-  default:
-    _PlayOnce(volume, pitch);
-    break;
+  default : return _PlayOnce(instance);
   }
-
-  return _instance;
 }
 
-/*****************************************************************************/
-/*!
-  \brief
-    Public method for stopping a sound event
-  
-  \param mode
-    How the sound should fadeout... currently using built in FMOD fadeout.
-*/
-/*****************************************************************************/
-void SoundEvent::Stop(FadeOut mode)
-{
-  // using fmod fadeout currently... write different fade outs later
-  FMOD_STUDIO_STOP_MODE fadeout = mode ? FMOD_STUDIO_STOP_ALLOWFADEOUT : 
-                                         FMOD_STUDIO_STOP_IMMEDIATE;
-
-  // tell fmod to stop the instance with the fadeout mode
-  ErrorCheck(_instance->stop(fadeout));
-
-  _playing = 0;
-
-  return;
-}
-
-void SoundEvent::Pause(void)
-{
-  bool paused;
-
-  // check if we are paused...
-  ErrorCheck(_instance->getPaused(&paused));
-
-  // and set it to the opposite
-  ErrorCheck(_instance->setPaused(!paused));
-
-
-  return;
-}
-
-/*****************************************************************************/
-/*!
-  \brief
-    Getter for getting the current mode the event is in.
-*/
-/*****************************************************************************/
-PlayMode SoundEvent::GetMode()
-{
-  return _mode;
-}
-
-void SoundEvent::GetChannelGroup(FMOD::ChannelGroup* group)
-{
-  if(!ErrorCheck(_instance->getChannelGroup(&group)))
-  {
-    return;
-  }
-
-  return;
-}
-
-/*****************************************************************************/
-/*!
-  \brief
-    Getter for checking the the event is currently playing
-*/
-/*****************************************************************************/
-bool SoundEvent::PlayState()
-{
-  return _playing;
-}
-
-/*****************************************************************************/
 /*!
   \brief
     Private method for playing the sound only once
 */
-/*****************************************************************************/
-SOUND::EventInstance* SoundEvent::_PlayOnce(float volume, float pitch)
+bool SoundEvent::_PlayOnce(SoundInstance* instance)
 {
+  int check = 0;
+  int paramSize;
   // create the sound event
-  ErrorCheck( _description->createInstance(&_instance) );
-  ErrorCheck( _instance->setPitch(pitch));
-  ErrorCheck( _instance->setVolume(volume));
+  check +=    ErrorCheck( description->createInstance(&instance->eventInstance) );
+  check +=    ErrorCheck( instance->eventInstance->setPitch(instance->pitch));
+  check +=    ErrorCheck( instance->eventInstance->setVolume(instance->volume));
+
+  check +=    ErrorCheck(instance->eventInstance->getParameterCount(&paramSize));
+
+  if(paramSize)
+  {
+    for(int i = 0; i < paramSize; ++i)
+    {
+      if(i < instance->size)
+        check += ErrorCheck(instance->eventInstance->setParameterValueByIndex(i, instance->parameters[i]));
+      else
+        check += ErrorCheck(instance->eventInstance->setParameterValueByIndex(i, 0.0f));
+    }
+  }
+
   // play it once...
-  ErrorCheck( _instance->start() );
+  check +=    ErrorCheck( instance->eventInstance->start() );
 
   // then release it
-  ErrorCheck( _instance->release() );
+  check +=    ErrorCheck( instance->eventInstance->release() );
 
-  // no longer playing
-  _playing = false;
-
-  return _instance;
+  if(check)
+    return false;
+  return true;
 }
 
-/*****************************************************************************/
+
 /*!
   \brief
     Private method for playing the sound in a loop
 */
-/*****************************************************************************/
-SOUND::EventInstance* SoundEvent::_PlayLoop(float volume, float pitch)
+bool SoundEvent::_PlayLoop(SoundInstance* instance)
 {
-  // if we are already playing this, then just return
-  if(_playing)
-    return _instance;
+  int check = 0;
+  int paramSize;
 
   // create the sound event
-  ErrorCheck( _description->createInstance(&_instance) );
-  ErrorCheck( _instance->setPitch(pitch));
-  ErrorCheck( _instance->setVolume(volume));
-  // play it once...
-  ErrorCheck( _instance->start() );
+  check +=    ErrorCheck( description->createInstance(&instance->eventInstance) );
+  check +=    ErrorCheck( instance->eventInstance->setPitch(instance->pitch));
+  check +=    ErrorCheck( instance->eventInstance->setVolume(instance->volume));
 
-  // set playing to true
-  _playing = true;
+  check +=    ErrorCheck(instance->eventInstance->getParameterCount(&paramSize));
 
-  return _instance;
+  if(paramSize)
+  {
+    for(int i = 0; i < paramSize; ++i)
+    {
+      if(i < instance->size)
+        check += ErrorCheck(instance->eventInstance->setParameterValueByIndex(i, instance->parameters[i]));
+      else
+        check += ErrorCheck(instance->eventInstance->setParameterValueByIndex(i, 0.0f));
+    }
+  }
+
+  ErrorCheck( instance->eventInstance->setCallback(mycallback) );
+
+  check +=    ErrorCheck( instance->eventInstance->start() );
+
+  if(check)
+    return false;
+  return true;
 }
 
-/*****************************************************************************/
+
 /*!
   \brief
     Private method for playing the sound in a stream
 */
-/*****************************************************************************/
-SOUND::EventInstance* SoundEvent::_PlayStream(float volume, float pitch)
+bool SoundEvent::_PlayStream(SoundInstance* instance)
 {
-  // if we are not playing... then create the sound instance
-  if(!_playing)
-  {
-    ErrorCheck( _description->createInstance(&_instance) );
-    ErrorCheck( _instance->setPitch(pitch));
-    ErrorCheck( _instance->setVolume(volume));
-    // start it
-    ErrorCheck( _instance->start() );
+  int check = 0;
+  int paramSize;
+  // create the sound event
+  check +=    ErrorCheck( description->createInstance(&instance->eventInstance) );
+  check +=    ErrorCheck( instance->eventInstance->setPitch(instance->pitch));
+  check +=    ErrorCheck( instance->eventInstance->setVolume(instance->volume));
 
+  check +=    ErrorCheck(instance->eventInstance->getParameterCount(&paramSize));
+
+  if(paramSize)
+  {
+    for(int i = 0; i < paramSize; ++i)
+    {
+      if(i < instance->size)
+        check += ErrorCheck(instance->eventInstance->setParameterValueByIndex(i, instance->parameters[i]));
+      else
+        check += ErrorCheck(instance->eventInstance->setParameterValueByIndex(i, 0.0f));
+    }
   }
 
-  // and set playing to true
-  _playing = true;
+  // play it once...
+  check +=    ErrorCheck( instance->eventInstance->start() );
 
-  return _instance;
+  if(check)
+    return false;
+  return true;
 }
 
-void SoundEvent::SetPitch(float newPitch)
+/*!
+  \brief
+    Non-default constructor for creating and loading from a soundfile
+*/
+SoundFile::SoundFile(FMOD::System* system, const std::string& name, bool stream)
 {
-  _pitch = newPitch;
-  _instance->setPitch(_pitch);
+  if(stream)
+    ErrorCheck(system->createStream(name.c_str(), FMOD_CREATESTREAM, 0, &sound));
+  else
+    ErrorCheck(system->createSound(name.c_str(), FMOD_DEFAULT, 0, &sound));
+
+  if(_system == NULL)
+    _system = system;
+}
+  
+/*!
+  \brief
+    Playing from a soundfile.
+*/
+bool SoundFile::Play(SoundInstance* instance)
+{
+  int mode = instance->mode;
+  instance->type = 1;
+
+  // call the correct private method for playing
+  switch(mode)
+  {
+  case PLAY_ONCE : return _PlayOnce(instance);
+
+  case PLAY_LOOP : return _PlayLoop(instance);
+
+  case PLAY_STREAM : return _PlayStream(instance);
+
+  default : return _PlayOnce(instance);
+  }
+  return true;
+}
+
+/*!
+  \brief
+    Private method for playing a file once.
+*/
+bool SoundFile::_PlayOnce(SoundInstance* instance)
+{
+  // play once and set all of the settings
+  ErrorCheck(_system->playSound(sound, 0, true, &channel));
+  ErrorCheck(channel->setVolume(instance->volume));
+  ErrorCheck(channel->setPitch(instance->pitch));
+
+  // actually start up the sound
+  ErrorCheck(channel->setPaused(false));
+
+  // grab the channel index
+  channel->getIndex(&instance->channel);
+
+  // and give that channel a callback for when it stops
+  ErrorCheck(channel->setCallback(mycallback));
+
+  return true;
+}
+
+/*!
+  \brief
+    Private method for playing a file looping.
+*/
+bool SoundFile::_PlayLoop(SoundInstance* instance)
+{
+  ErrorCheck(_system->playSound(sound, 0, true, &channel));
+  ErrorCheck(channel->setVolume(instance->volume));
+  ErrorCheck(channel->setPitch(instance->pitch));
+  ErrorCheck(channel->setPaused(false));
+  ErrorCheck(channel->setMode(FMOD_LOOP_NORMAL));
+  ErrorCheck(channel->setUserData(instance));
+
+  channel->getIndex(&instance->channel);
+
+  ErrorCheck(channel->setCallback(mycallback));
+
+  return true;
+}
+
+/*!
+  \brief
+    Private method for playing a file streaming, not really needed.
+*/
+bool SoundFile::_PlayStream(SoundInstance* instance)
+{
+  return true;
+}
+  
+/*!
+  \brief
+    Callback function for FMOD sound events. .wav and .mp3
+*/
+FMOD_RESULT F_CALLBACK mycallback(FMOD_CHANNELCONTROL *chanControl, FMOD_CHANNELCONTROL_TYPE controlType, FMOD_CHANNELCONTROL_CALLBACK_TYPE callbackType, void *commandData1, void *commandData2)
+{
+  // if the event is that the sound just ended
+  if(callbackType == FMOD_CHANNELCONTROL_CALLBACK_END)
+  {
+    // grab the channel
+    FMOD::Channel *channel = (FMOD::Channel *)chanControl;
+
+    SoundInstance* instance;
+
+    // try and grab any instance data if it was given
+    /*if(ErrorCheck(channel->getUserData((void**)&instance)) == FMOD_OK)
+    {
+      instance->active = false;
+    }*/
+
+    ErrorCheck(channel->stop());
+
+  }
+  return FMOD_OK;
+}
+
+/*!
+  \brief
+    Callback function for FMOD studio events.
+*/
+FMOD_RESULT F_CALLBACK mycallback(FMOD_STUDIO_EVENT_CALLBACK_TYPE type, FMOD_STUDIO_EVENTINSTANCE *event, void *parameters)
+{
+    FMOD::Studio::EventInstance *instance = (FMOD::Studio::EventInstance*)event;
+
+    // if the callback event is that the sound just stopped
+    if (type == FMOD_STUDIO_EVENT_CALLBACK_STOPPED)
+    {
+      int size;
+      instance->getParameterCount(&size);
+
+      for(int i = 0; i < size; ++i)
+      {
+        instance->setParameterValueByIndex(i, 1.0f);
+      }
+
+      //instance->start();
+    }
+    else if (type == FMOD_STUDIO_EVENT_CALLBACK_CREATE_PROGRAMMER_SOUND
+        || type == FMOD_STUDIO_EVENT_CALLBACK_DESTROY_PROGRAMMER_SOUND)
+    {
+        FMOD_STUDIO_PROGRAMMER_SOUND_PROPERTIES* properties = (FMOD_STUDIO_PROGRAMMER_SOUND_PROPERTIES *)parameters;
+
+        // Handle programmer sound creation and destruction here
+    }
+
+    return FMOD_OK;
 }

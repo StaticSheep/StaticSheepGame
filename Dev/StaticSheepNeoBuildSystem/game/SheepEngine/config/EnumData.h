@@ -26,6 +26,14 @@ E_NAME(Generics)
   E_ENTRY(Abstract)
 E_END(Generics)
 
+E_NAME(Weapons)
+  E_ENTRY(Pistol)
+  E_ENTRY(Automatic)
+  E_ENTRY(Shotgun)
+  E_ENTRY(NoWeapon) //keep this at the end
+E_END(Weapons)
+
+
 E_NAME(Component)
   E_ENTRY(Transform)
   E_ENTRY(Tester)
@@ -44,6 +52,7 @@ E_NAME(Component)
   E_ENTRY(GiantKillBox)
   E_ENTRY(Grinder)
   E_ENTRY(Explosion)
+  E_ENTRY(WeaponPickup)
   E_ENTRY(LuaComponent)
-  E_ENTRY(countComponents)
+  E_ENTRY(countComponents) //keep this at the end
 E_END(Component)

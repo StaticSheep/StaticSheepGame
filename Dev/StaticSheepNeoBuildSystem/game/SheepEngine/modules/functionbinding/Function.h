@@ -185,6 +185,8 @@ namespace Framework
       return m_callHelper != nullptr;
     }
 
+    void Clear(void);
+
     
     // Get the context (owner) of the function
     Variable& Context();

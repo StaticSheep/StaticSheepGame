@@ -109,26 +109,27 @@ namespace Framework
   {
     lua_State* L = ENGINE->Lua();
     ENGINE->m_luaComponentList.clear();
-    Lua::StackDump(L);
+    //Lua::StackDump(L);
 
     std::string entry;
     for (int i = 1; i <= count; ++i)
     {
       lua_pushinteger(L, i);
       lua_gettable(L, -2);
-      Lua::StackDump(L);
+      //Lua::StackDump(L);
       entry = lua_tostring(L, -1);
       ENGINE->m_luaComponentList.push_back(entry);
-      Lua::StackDump(L);
+      //Lua::StackDump(L);
       lua_pop(L, 1);
     }
 
     lua_settop(L, 0);
-    Lua::StackDump(L);
+    //Lua::StackDump(L);
   }
 
   void Engine::LuaError(const char* msg)
   {
-    FORCEERROR("LuaError", "%s", msg);
+    TRACELOG->Log(WARNING, "LuaError: %s\n", msg);
+    //FORCEERROR("LuaError", "%s", msg);
   }
 }

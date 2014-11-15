@@ -48,4 +48,5 @@ namespace Framework
   float     CatSpline(double, float, float, float, float);
   float     Minimum(float a, float b);
   float     Maximum(float a, float b);
+  float     Clamp(float a, float min, float max);
 }

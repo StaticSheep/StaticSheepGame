@@ -1,8 +1,5 @@
-{4fc7e413-0388-4c69-a3eb-0552e433dbf7} event:/explosion
-{4e5d2314-e36b-4fdf-bf59-8f814befc7ed} event:/gunshot
-{6fcd7ca6-3336-4462-91a4-95f8daf23786} event:/space_brawl
-{ecf24d27-ff56-492f-bfb5-85063aa91c78} bus:/
-{5c3919f9-0ab5-444f-9679-758f3fe82712} bus:/Reverb
-{55042e98-7a75-46ce-b7b5-fa04840a933f} bank:/sfx
-{1e0bff68-0b7c-4df0-a5b1-7f5a32a5aac8} bank:/Master Bank
-{1a978ca9-e24a-4bd1-bd62-2351e45e5b74} bank:/music
+{54ebb294-6057-4397-9967-43dd9db7cc7f} event:/Main Music
+{0abbb313-ed3a-4f7a-b479-89fb47f5e7ce} bus:/
+{79072c27-777c-433b-90dc-2ed271863053} bus:/Reverb
+{fb880aa6-d56d-4f20-999d-d46ed855fa0d} bank:/Master Bank
+{ea26c3f2-911a-4a37-8b5a-22508dfd4fe6} bank:/Music

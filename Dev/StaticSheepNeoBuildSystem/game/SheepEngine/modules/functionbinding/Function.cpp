@@ -19,6 +19,13 @@ namespace Framework
 
   }
 
+  void Function::Clear()
+  {
+    m_callHelper = nullptr;
+    m_sig = FunctionSignature();
+    m_context = Variable();
+  }
+
   // Get the owner
   Variable& Function::Context()
   {

@@ -8,7 +8,7 @@ namespace Framework
 {
 	Bullet_Default::Bullet_Default()
 	{
-
+    damage = 10;
 	}
 
 	Bullet_Default::~Bullet_Default()
@@ -43,7 +43,11 @@ namespace Framework
 
   void Bullet_Default::OnCollision(Handle otherObject, SheepFizz::ExternalManifold manifold)
 	{
-		space->GetGameObject(owner)->Destroy();
+    GameObject *OtherObject = space->GetHandles().GetAs<GameObject>(otherObject);
+    if (OtherObject->name != "Bullet")
+    {
+      space->GetGameObject(owner)->Destroy();
+    }
 	}
 
 

@@ -22,6 +22,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/gameplay_scripts/CGrinder.h"
 #include "components/gameplay_scripts/CExplosion.h"
 #include "Components/sound/CSoundEmitter.h"
+#include "components/gameplay_scripts/CWeaponPickup.h"
 
 namespace Framework
 {
@@ -52,6 +53,7 @@ namespace Framework
     REGISTER_COMPONENT(GiantKillBox);
     REGISTER_COMPONENT(Grinder);
     REGISTER_COMPONENT(Explosion);
+    REGISTER_COMPONENT(WeaponPickup);
   }
 
   void GameLogic::Initialize()
@@ -88,6 +90,7 @@ namespace Framework
     }
 
     Lua::CallFunc(ENGINE->Lua(), "hook.Call", "LogicUpdate", dt);
+    Lua::CallFunc(ENGINE->Lua(), "gui.Update");
 
     for (auto it = ENGINE->m_spaces.begin(); it != ENGINE->m_spaces.end(); ++it)
     {
@@ -99,6 +102,12 @@ namespace Framework
       space->Cleanup();
     }
 
+  }
+
+  void GameLogic::ReceiveMessage(Message& msg)
+  {
+    if (msg.MessageId == Message::PostDraw)
+      Lua::CallFunc(ENGINE->Lua(), "gui.Draw");
   }
 
   const void* GameLogic::GetDebugData()

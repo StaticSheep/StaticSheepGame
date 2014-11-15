@@ -2,6 +2,7 @@
 
 #include "components/base/Component.h"
 #include "types/handle/Handle.h"
+#include "../transform/CTransform.h"
 
 namespace Framework
 {
@@ -15,8 +16,10 @@ namespace Framework
 		void Remove();
 
 		//member variables
+    Handle Grinders[7];
+    Transform *GT[7];
     Handle kbTransfrom;
     Handle kbCollider;
-    bool direction;
+    bool direction, GrindSpawn;
 	};
 }

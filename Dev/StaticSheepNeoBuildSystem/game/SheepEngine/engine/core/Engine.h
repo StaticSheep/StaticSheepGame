@@ -52,7 +52,11 @@ namespace Framework
     // Sends a message to all systems in the engine
     void SystemMessage(Message& msg);
 
-    // ==================================== LEVELS ==================================== //
+    /* ------- Lua ------ */
+
+    const std::vector<std::string>& LuaComponentList(void) const;
+
+    // ============================== LEVELS ============================== //
 
     // Loads a lua level
     void LoadLuaLevel(const char* path);
@@ -61,7 +65,7 @@ namespace Framework
     void ChangeLevel(const char* name);
 
     
-    // ==================================== SPACES ==================================== //
+    // =============================== SPACES ============================== //
 
     // Returns a list of GameSpaces in the engine
     std::vector<GameSpace*>& Spaces(void);
@@ -75,7 +79,7 @@ namespace Framework
     // Retrieves a game space of a corresponding name
     GameSpace* GetSpace(const char* name);
 
-    // ==================================== EDITOR ==================================== //
+    // =============================== EDITOR =============================== //
 
     static void PlayInEditor(bool play);
     static bool PlayingInEditor(void);
@@ -84,7 +88,7 @@ namespace Framework
     // Returns the lua environment
     lua_State* Lua(void) const;
 
-    // ==================================== ENGINE LUA BINDS ==================================== //
+    // ============================== ENGINE LUA BINDS ====================== //
     static GameSpace* LuaCreateSpace(const char* name);
     static GameSpace* LuaGetSpace(const char* name);
     static GameComponent* LuaGetComponent(const char* name, unsigned int handle, const char* type);
@@ -100,7 +104,7 @@ namespace Framework
     static void LuaError(const char* msg);
 
 
-    // =========================== PUBLIC MEMBERS ========================== //
+    // ============================== PUBLIC MEMBERS ======================== //
     
     // Object factory of the engine
     Factory ObjectFactory;
@@ -117,7 +121,7 @@ namespace Framework
     bool m_editorAcitve = false;
   private:
 
-    // ========================== PRIVATE FUNCTIONS ===================== //
+    // ============================== PRIVATE FUNCTIONS ===================== //
 
     /*---------- Cleanup -----------*/
 
@@ -135,7 +139,7 @@ namespace Framework
     // Loads any new lua levels
     void LoadLuaLevels(void);
 
-    // =========================== PRIVATE MEMBERS =========================== //
+    // ========================== PRIVATE MEMBERS =========================== //
 
 
     /*---------- Level Data -----------*/

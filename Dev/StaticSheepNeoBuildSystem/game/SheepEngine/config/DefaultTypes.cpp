@@ -29,6 +29,10 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/gameplay_scripts/CGiantKillBox.h"
 #include "components/gameplay_scripts/CGrinder.h"
 #include "components/gameplay_scripts/CExplosion.h"
+#include "components/gameplay_scripts/CWeaponPickup.h"
+#include "types/weapons/WPistol.h"
+#include "types/weapons/WShotgun.h"
+#include "types/weapons/WAutomatic.h"
 
 namespace Framework
 {
@@ -188,6 +192,15 @@ namespace Framework
     TYPE_REGISTER(Explosion);
     TYPE_SET_TWEAK_TYPE(Explosion, AntTweak::TW_TYPE_COMPONENT);
 
+    TYPE_REGISTER(WeaponPickup);
+    TYPE_SET_TWEAK_TYPE(WeaponPickup, AntTweak::TW_TYPE_COMPONENT);
+    TYPE_ADD_MEMBER(WeaponPickup, weaponID, false, true, "Weapon Type");
+    TYPE_ADD_MEMBER(WeaponPickup, weaponNum, false, true, "Weapon Num");
+
+    TYPE_REGISTER(Pistol);
+    TYPE_REGISTER(Shotgun);
+    TYPE_REGISTER(Automatic);
+
     TYPE_REGISTER( BoxCollider );
     TYPE_ADD_MEMBER( BoxCollider, m_width, false, true, "Width");
     TYPE_ADD_MEMBER( BoxCollider, m_height, false, true, "Height");
@@ -209,7 +222,7 @@ namespace Framework
     TYPE_REGISTER( Sprite );
     TYPE_ADD_MEMBER(Sprite, m_spriteName, false, true, "Texture", BUILD_FUNCTION(Sprite::TweakSetTexture));
     TYPE_ADD_MEMBER(Sprite, Color, false, true, "Color");
-    TYPE_ADD_MEMBER( Sprite, Size, false, true, "Scale");
+    TYPE_ADD_MEMBER( Sprite, Size, false, true, "Size");
     TYPE_SET_TWEAK_TYPE( Sprite, AntTweak::TW_TYPE_COMPONENT );
     TYPE_SET_FROM_LUA( Sprite, Lua::GenericObjectFromLua );
 

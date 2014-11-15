@@ -13,14 +13,21 @@ GameObject
     Rotation float 0.000000
     Scale Vec3
     {
-      x_ float 0.250000
-      y_ float 1.000000
+      x_ float 0.500000
+      y_ float 0.500000
       z_ float 0.000000
     }
   }
   Sprite
   {
-    m_spriteName std::string "platform.png"
+    m_spriteName std::string "cart refined.png"
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
     Size Vec2
     {
       X float 1.000000
@@ -29,8 +36,8 @@ GameObject
   }
   BoxCollider
   {
-    m_width float 128.000000
-    m_height float 32.000000
+    m_width float 157.500000
+    m_height float 64.599998
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
   }

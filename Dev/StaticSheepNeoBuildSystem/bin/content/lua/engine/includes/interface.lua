@@ -38,6 +38,8 @@ function include(file)
 end
 
 AddPath("/lua/engine/includes/modules/")
+AddPath("/lua/engine/includes/libraries/")
+AddPath("/lua/engine/includes/management/")
 AddPath("/lua/engine/includes/")
 AddPath("/lua/")
 
@@ -47,16 +49,11 @@ GameSpaces = {}
 LuaSpaces = {} -- Pure lua objects
 LuaComponents = {}
 
-
 include("util.lua")
-include("components.lua")
-include("level.lua")
-include("gamespace.lua")
-
+include("meta.lua")
 
 require("hook")
 require("filesystem")
-
 
 -- Initialize all of the modules
 for k,v in pairs(SheepModules) do
@@ -66,17 +63,31 @@ for k,v in pairs(SheepModules) do
 end
 
 filesystem.BlacklistFolder("includes")
-filesystem.BlacklistFolder("levels")
+filesystem.BlacklistFolder("lua_levels")
 
-hook.Add("LogicUpdate", "CheckFiles", filesystem.UpdateOldFiles)
+filesystem.LoadLuaFiles("content/lua/engine/includes/libraries/")
+filesystem.LoadLuaFiles("content/lua/engine/includes/management/")
+
+
+
+local function FileReloaded()
+  ReloadObjects()
+  ReloadComponents()
+  gui.Reloaded()
+end
+
+function CheckOldFiles()
+  filesystem.UpdateOldFiles(FileReloaded)
+end
 
 function LuaLoaded()
-  include("luaspace.lua")
 end
 
 function PostInit()
   QueryComponents()
-  
 end
+
+
+hook.Add("LogicUpdate", "CheckFiles", CheckOldFiles)
 
 

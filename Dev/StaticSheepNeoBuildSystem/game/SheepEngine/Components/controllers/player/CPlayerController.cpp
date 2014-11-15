@@ -5,6 +5,8 @@
 #include "types/vectors/Vec3.h"
 #include "../../colliders/CCircleCollider.h"
 #include "../../sprites/CSprite.h"
+#include "types/weapons/WPistol.h"
+#include "../../gameplay_scripts/CBullet_default.h"
 
 namespace Framework
 {
@@ -19,15 +21,15 @@ namespace Framework
     health = 100;
     snappedTo = Handle::null;
     respawnTimer = 2.0f;
-    shotDelay = delay;
     hasRespawned = false;
     blink = false;
-    delay = 10;
+    weapon = nullptr;
+
 	}
 
 	PlayerController::~PlayerController() //4
 	{
-		//release dynamic memory
+
 	}
 
 
@@ -44,6 +46,8 @@ namespace Framework
 		space->hooks.Add("LogicUpdate", self, BUILD_FUNCTION(PlayerController::LogicUpdate));
 		space->GetGameObject(owner)->hooks.Add("OnCollision", self, BUILD_FUNCTION(PlayerController::OnCollision));
 
+    //Generic* gobj = space->GetHandles().GetAs<Generic>(owner);
+
 		playerGamePad = space->GetGameObject(owner)->GetComponentHandle(eGamePad); //gets the handle to the gamepad
 		playerCollider = space->GetGameObject(owner)->GetComponentHandle(eBoxCollider);
 		playerTransform = space->GetGameObject(owner)->GetComponentHandle(eTransform);
@@ -58,6 +62,10 @@ namespace Framework
 
     BoxCollider *bc = space->GetHandles().GetAs<BoxCollider>(playerCollider);
     bc->SetGravityOff();
+    weapon = (Pistol*)GET_TYPE(Pistol)->New();
+    shotDelay = weapon->delay;
+    SoundEmitter *se = space->GetHandles().GetAs<SoundEmitter>(playerSound);
+    se->Play("robot_startup", &SoundInstance(0.50f));
 	}
 
 	//************************************
@@ -92,25 +100,25 @@ namespace Framework
 			hasFired = true;
 			onFire();
 		}
-    else
+    else if (weapon->semi == false)
     {
       --shotDelay;
       if(shotDelay < 0)
       {
         hasFired = false;
-        shotDelay = delay;
+        shotDelay = weapon->delay;
       }
     }
 		//if the trigger is released, reset the bool
-		if (!gp->RightTrigger())
+		if (!gp->RightTrigger() && weapon->semi)
     {
 			hasFired = false;
-      shotDelay = delay;
+      shotDelay = weapon->delay;
     }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
     if (isSnapped)
     {
-      bc->SetVelocity(snappedNormal * 50);
+      bc->SetVelocity(snappedNormal * 100);
       bc->SetAngVelocity(0.0);
       if (snappedTo != Handle::null)
       {
@@ -123,7 +131,7 @@ namespace Framework
         }
       }
       //left stick move
-      if (gp->LeftStick_X() > 0.2 && snappedNormal.y != 0)
+      if (gp->LeftStick_X() > 0.2 && snappedNormal.x == 0)
       {
         //bc->SetVelocity(Vec3(0.0f, 0.0f, 0.0f));
         if (snappedNormal.y > 0)
@@ -131,7 +139,7 @@ namespace Framework
         else if (snappedNormal.y < 0)
           bc->AddToVelocity(-(snappedNormal.CalculateNormal() * 250));
       }
-      else if (gp->LeftStick_X() < -0.2 && snappedNormal.y != 0)
+      else if (gp->LeftStick_X() < -0.2 && snappedNormal.x == 0)
       {
         //bc->SetVelocity(Vec3(0.0f, 0.0f, 0.0f));
         if (snappedNormal.y > 0)
@@ -185,7 +193,7 @@ namespace Framework
 		}
 
     isSnapped = false;
-		
+    //snappedNormal = Vec3(0.0, 0.0, 0.0);
 	}
 
 
@@ -200,10 +208,13 @@ namespace Framework
 	//************************************
 	void PlayerController::OnCollision(Handle otherObject, SheepFizz::ExternalManifold manifold)
 	{
+    SoundEmitter *se = space->GetHandles().GetAs<SoundEmitter>(playerSound);
     GameObject *OtherObject = space->GetHandles().GetAs<GameObject>(otherObject);
     if (OtherObject->name == "Bullet" && !hasRespawned)
     {
-      health -= 10;
+      health -= OtherObject->GetComponent<Bullet_Default>(eBullet_Default)->damage;
+      
+      se->Play("energy_hit", &SoundInstance(0.50f));
       return;
     }
     if ((OtherObject->name == "KillBox" || OtherObject->name == "KillBoxBig") && !hasRespawned)
@@ -211,6 +222,8 @@ namespace Framework
 
     if ((OtherObject->name == "Grinder") && !hasRespawned)
       health -= 10;
+    if (OtherObject->name == "WeaponPickup")
+      se->Play("weapon_pickup", &SoundInstance(0.5f));
 
 		isSnapped = true;
 		//get the thing we are colliding with
@@ -221,10 +234,14 @@ namespace Framework
 		if (!OOT)
 			return;
 
-		if (OtherObject->HasComponent(eBoxCollider))
+		if (OtherObject->HasComponent(eBoxCollider) && OtherObject->name != "Player")
 		{
       BoxCollider *OOBc = OtherObject->GetComponent<BoxCollider>(eBoxCollider);
+      Transform *ps = space->GetHandles().GetAs<Transform>(playerTransform);
+      if (snappedNormal.x != OOBc->GetCollisionNormals(manifold).x && snappedNormal.y != OOBc->GetCollisionNormals(manifold).y)
+        ps->SetTranslation(ps->GetTranslation() + -(snappedNormal * 1.5));
       snappedNormal = OOBc->GetCollisionNormals(manifold);
+      ps->SetRotation(OOT->GetRotation());
 		}
 		else if (OtherObject->HasComponent(eCircleCollider))
 		{
@@ -245,6 +262,12 @@ namespace Framework
 	{
 		//opposite of init
 		space->hooks.Remove("LogicUpdate", self);
+
+    if (weapon != nullptr)
+    {
+      free(weapon); //release dynamic memory
+      weapon = nullptr;
+    }
 	}
 
 	//************************************
@@ -256,15 +279,7 @@ namespace Framework
 	//************************************
 	void PlayerController::onFire()
 	{
-		GameObject *bullet = (FACTORY->LoadObjectFromArchetype(space, "Bullet"));
-		Transform *BT = bullet->GetComponent<Transform>(eTransform);
-		CircleCollider *bulletC = bullet->GetComponent <CircleCollider>(eCircleCollider);
-		Transform *playerTrans = space->GetHandles().GetAs<Transform>(playerTransform);
-		BT->SetTranslation(playerTrans->GetTranslation() + aimDir * 25);
-		bulletC->AddToVelocity(aimDir * 1000);
-
-    SoundEmitter *se = space->GetHandles().GetAs<SoundEmitter>(playerSound);
-    se->PlayEx("gunshot", 0.125f);
+    weapon->Fire(space->GetHandles().GetAs<GameObject>(owner));
 
     if (!isSnapped)
     {
@@ -365,7 +380,7 @@ namespace Framework
   //************************************
   void PlayerController::PlayerDeath(SoundEmitter *se, Transform *ps)
   {
-    se->PlayEx("explosion", 1.0f);
+    se->Play("explosion", &SoundInstance(0.75f));
     Handle explosion = (FACTORY->LoadObjectFromArchetype(space, "explosion"))->self;
     Transform *exT = space->GetGameObject(explosion)->GetComponent<Transform>(eTransform);
     exT->SetTranslation(ps->GetTranslation());
