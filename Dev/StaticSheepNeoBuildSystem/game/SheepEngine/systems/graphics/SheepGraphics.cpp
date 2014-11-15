@@ -74,17 +74,11 @@ namespace Framework
     Message m(Message::GFXDeviceInit);
     ENGINE->SystemMessage(m);
 
-    spritepShader = SetPShader("Generic.hlsl");
-
-    spritevShader = SetVShader("Generic.hlsl");
-
     m_renderContext->CreateConstantBuffer(spriteContext, 160);
 
     m_renderContext->CreateVertexBuffer(spriteQuad, 120);
 
     ErrorIf(!LoadAssets(std::string("content")), "AssetLoad", "SheepGraphics.cpp");
-
-    
 	}
 
 	void SheepGraphics::Update(float dt)
@@ -135,6 +129,9 @@ namespace Framework
 	{
     // Draw Hooks
     GameSpace* space;
+    SetUseCamera(true);
+    SetRotation(0);
+    Draw::DrawCircle(0, 0, 100);
     m_renderContext->StartBatch();
     // Regular Draw
     for (auto it = ENGINE->Spaces().begin(); it != ENGINE->Spaces().end(); ++it)
@@ -291,14 +288,7 @@ namespace Framework
 
   void SheepGraphics::RawDraw(void)
   {
-    m_renderContext->BindVertexShader(spritevShader);
-
-    m_renderContext->BindPixelShader(spritepShader);
-
     m_renderContext->BindVertexBuffer(spriteQuad,20,0);
-
-    m_renderContext->BindConstantBuffer(0, spriteContext, DirectSheep::VERTEX_SHADER);
-    m_renderContext->BindConstantBuffer(0, spriteContext, DirectSheep::PIXEL_SHADER);
 
     m_renderContext->Draw(6,0);
 

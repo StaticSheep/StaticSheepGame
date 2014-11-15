@@ -45,9 +45,9 @@ namespace DirectSheep
 
     SetBlendMode(BLEND_MODE_ALPHA);
 
-    m_deviceContext->UpdateSubresource(m_constBufferRes[0], 0, 0, &buffer, 0, 0);
-
-    m_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+    m_genericEffect->bind(m_deviceContext);
+    m_genericEffect->bindPosUV(m_deviceContext, ((Camera*)m_camera.ptr)->getProj(), ((Camera*)m_camera.ptr)->getView(), scaleMat, m_spriteTrans.uvBegin, m_spriteTrans.uvEnd);
+    m_genericEffect->bindAmbient (m_deviceContext, Vec4(1,0,0,1), 1);
 
     m_deviceContext->Draw(vertexCount, vertexStart);
   }

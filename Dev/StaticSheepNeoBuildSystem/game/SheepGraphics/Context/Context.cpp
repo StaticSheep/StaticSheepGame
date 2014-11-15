@@ -77,7 +77,7 @@ namespace DirectSheep
     m_editor = Handle(CAMERA, new Camera(1920, 1080, true));
     m_camera = m_Perspective;
 
-    //m_genericEffect = new GenEffect(m_device);
+    m_genericEffect = new GenEffect(m_device);
     //m_PointLight = new PointLight(m_device);
 
     m_initialized = true;

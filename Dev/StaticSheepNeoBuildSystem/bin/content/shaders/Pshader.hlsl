@@ -1,13 +1,20 @@
-cbuffer perFrame: register(b1)
+cbuffer perFrame: register(b0)
 {
   float4 cAmbientColor;
-  float cAmbientIntensity;
+  float4 cAmbientIntensity;
 }
+
+struct PSInput
+{
+  float4 position : SV_POSITION;
+  float2 texCoord : TEXCOORD0;    // texture coordinates
+};
+
 Texture2D    g_txDiffuse : register(t0);
 SamplerState g_samLinear : register(s0);
 
-float4 PSMain(float4 color : COLOR0, float2 texCoord : TEXCOORD0) : SV_TARGET0
+float4 PSMain(PSInput input) : SV_TARGET0
 {
-  float4 vDiffuse = g_txDiffuse.Sample(g_samLinear, texCoord);
-  return cAmbientColor * cAmbientIntensity * color * vDiffuse;
+  float4 vDiffuse = g_txDiffuse.Sample(g_samLinear, input.texCoord);
+  return cAmbientColor * cAmbientIntensity.r * vDiffuse;
 }

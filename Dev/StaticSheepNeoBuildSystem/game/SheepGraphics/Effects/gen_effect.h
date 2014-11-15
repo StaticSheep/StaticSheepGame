@@ -13,13 +13,15 @@ namespace DirectSheep
 
     void bind(ID3D11DeviceContext* pContext);
 
-    void bindMatrices(ID3D11DeviceContext* pContext,
+    void bindPosUV(ID3D11DeviceContext* pContext,
       const Mat4& proj,
       const Mat4& view,
-      const Mat4& world);
+      const Mat4& world,
+      const Vec2& uvBegin,
+      const Vec2& uvEnd);
 
-    void bindUVCOL(ID3D11DeviceContext* pContext,
-      const Vec2 uvBegin, Vec2 uvEnd, Vec4 Color);
+    void bindAmbient(ID3D11DeviceContext* pContext,
+      const Vec4 Ambience, float intesity);
 
     GenEffect(ID3D11Device* pDevice);
 
@@ -28,8 +30,8 @@ namespace DirectSheep
 
 
   private:
-    CBuffer<UV_ColBuffer>* m_uvColBuffer;
-    CBuffer<MatBuffer>*   m_matBuffer;
+    CBuffer<PosUV>*       m_posUV;
+    CBuffer<Ambient>*     m_ambient;
 
   };
 }
