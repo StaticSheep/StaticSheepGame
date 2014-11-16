@@ -16,8 +16,7 @@ namespace SheepFizz
 		}
 
 		//any other material
-		Material::Material(float density, float restitution, float staticFriction, float dynamicFriction,
-			float momentOfInertia): 
+		Material::Material(float density, float restitution, float staticFriction, float dynamicFriction): 
 			density_(density), restitution_(restitution), staticFriction_(staticFriction),
 			dynamicFriction_(dynamicFriction) {};
 		

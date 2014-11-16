@@ -18,6 +18,9 @@ namespace SheepFizz
 	{
 		if (stickOn)
 		{
+      Framework::Vec3D norm;
+      norm = normal;
+      norm = norm;
 			//ActivateGravity();
 			//SetGravityNormal(normal);
 		}
