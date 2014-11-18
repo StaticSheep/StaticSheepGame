@@ -129,9 +129,6 @@ namespace Framework
 	{
     // Draw Hooks
     GameSpace* space;
-    SetUseCamera(true);
-    SetRotation(0);
-    Draw::DrawCircle(0, 0, 100);
     m_renderContext->StartBatch();
     // Regular Draw
     for (auto it = ENGINE->Spaces().begin(); it != ENGINE->Spaces().end(); ++it)
