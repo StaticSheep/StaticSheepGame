@@ -238,8 +238,11 @@ namespace Framework
 		m_materials.insert(std::pair<std::string, SheepFizz::Material>("Bounce", Bounce));
 		m_materials.insert(std::pair<std::string, SheepFizz::Material>("Static", Static));
 
-
-    
+    m_collisionGroup.insert(std::pair<std::string, unsigned int>("NonCollide", 0));
+    m_collisionGroup.insert(std::pair<std::string, unsigned int>("Collide", 1));
+    m_collisionGroup.insert(std::pair<std::string, unsigned int>("Resolve", 2));
+    m_collisionGroup.insert(std::pair<std::string, unsigned int>("Player", 3));
+    m_collisionGroup.insert(std::pair<std::string, unsigned int>("Static", 4));
 
     debugOn = false;
 	}//end of Initialize
@@ -422,6 +425,12 @@ namespace Framework
 	{
 		((SheepFizz::PhysicsSpace*)(space->m_pSpace))->ChangeMaterials(handle, material);
 	}
+
+  void SheepPhysics::ChangeCollisionGroup(GameSpace* space, SheepFizz::Handle handle, std::string name)
+  {
+    unsigned int group = m_collisionGroup.at(name);
+    ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->SetBodyCollisionGroup(handle, group);
+  }
 
 	//remove bodies from space
 	void SheepPhysics::RemoveBodies(GameSpace* space, SheepFizz::Handle handle)

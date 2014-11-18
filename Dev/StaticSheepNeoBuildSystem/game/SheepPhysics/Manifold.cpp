@@ -35,8 +35,6 @@ namespace SheepFizz
 	//uses enums for instant access to the array values
 	void Manifold::ManifoldInteraction(void)
 	{
-		//check collision group
-		if(A->collisionGroup_ == B->collisionGroup_)
 			manifold[A->shape_->GetShape()][B->shape_->GetShape()](*this);
 	}//end of ManifoldInteraction
 

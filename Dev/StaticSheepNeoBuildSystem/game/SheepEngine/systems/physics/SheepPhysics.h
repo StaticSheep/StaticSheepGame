@@ -63,6 +63,7 @@ namespace Framework
 			//access to bodies for changing the bodies
 			void ChangePhysBodies(GameSpace* space, SheepFizz::Handle handle, float xradius, float y);
 			void ChangePhysMaterials(GameSpace* space, SheepFizz::Handle handle, SheepFizz::Material& material);
+      void ChangeCollisionGroup(GameSpace* space, SheepFizz::Handle handle, std::string name);
 
 			//gettors
 			Vec3D GetBodyPosition(GameSpace* space, SheepFizz::Handle handle);
@@ -120,7 +121,8 @@ namespace Framework
 			void Shutdown(void);
 
 		private:
-			std::unordered_map<std::string, SheepFizz::Material> m_materials;      
+			std::unordered_map<std::string, SheepFizz::Material> m_materials;
+      std::unordered_map<std::string, unsigned int> m_collisionGroup;
       bool debugOn;
       DebugPhysics debugPhys;
 

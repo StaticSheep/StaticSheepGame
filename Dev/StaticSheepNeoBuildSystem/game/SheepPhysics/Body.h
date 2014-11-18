@@ -18,12 +18,11 @@ namespace SheepFizz
 
   enum CollisionGroup{
 	  NonCollide,
-    Collidable,
+    Collide,
     Resolve,
 	  Player,
     Static,
 	  CollGroupLength
-
   };
 
   enum Collision

@@ -89,6 +89,12 @@ namespace SheepFizz
     body->gravityNormal_ = normal;
   }//end of SetBodyGravityNormal
 
+  void PhysicsSpace::SetBodyCollisionGroup(Handle handle, CollisionGroup group)
+  {
+    Body* body = handles_.GetAs<Body>(handle);
+    body->collisionGroup_ = group;
+  }//end of SetBodyCollisionNormal
+
 	//end of settors
 	//*************
 
@@ -174,8 +180,14 @@ namespace SheepFizz
     return Vec3D();
   }//end of GetBodyUpNormal
 
+  CollisionGroup PhysicsSpace::GetBodyCollisionGroup(Handle handle)
+  {
+    Body* body = handles_.GetAs<Body>(handle);
+    return body->collisionGroup_;
+  }
+
 	//get the time for the engine
-	float PhysicsSpace::GetTime(void) {return dt_;}
+	float PhysicsSpace::GetTime(void) {return dt_;}//end of GetTime
 
   Vec3D PhysicsSpace::GetCollisionNorm(void* handle, ExternalManifold manifold)
   {
@@ -193,7 +205,6 @@ namespace SheepFizz
   {
     return ((Manifold*)manifold)->contacts[0];
   }//end of GetCollisionPoint
-
 
   unsigned int PhysicsSpace::GetBodyVertexNumber(Handle handle)
   {
@@ -215,7 +226,7 @@ namespace SheepFizz
         break;
     }
 
-  }
+  }//end of GetBodyVertexNumber
 
   Vec3D PhysicsSpace::GetBodyVertex(Handle handle, unsigned int vertex)
   {
@@ -237,7 +248,7 @@ namespace SheepFizz
       break;
     }
 
-  }
+  }//end of GetBodyVertex
 
 	//*************end of gettors
 
@@ -368,7 +379,7 @@ namespace SheepFizz
       if (Collisions[manifolds_[i].A->collisionGroup_][manifolds_[i].B->collisionGroup_] != 2)
         continue;
 
-			manifolds_[i].PositionalCorrection();
+      manifolds_[i].PositionalCorrection();
 			manifolds_[i].ApplyForces();
 		}
 
