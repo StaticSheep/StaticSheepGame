@@ -10,10 +10,10 @@ end
 
 function META:Paint()
   -- Do the painting yeah
-  surface.SetColor(255, 0, 0, 255)
-  surface.DrawRect(0,0,1100,100)
-  surface.SetPos(-300, 0)
-  surface.DrawString("Monkey Dickbutt", 80, "Arial")
+  surface.SetUseCamera(true)
+  surface.DrawRect(0, 0, 256, 256)
+  draw.RoundedBox(16, 50, 50, 250, 250, Color(255, 255, 255, 255))
+  surface.SetUseCamera(true)
 end
 
 gui.Register( "TestPanel", META, "Panel" )

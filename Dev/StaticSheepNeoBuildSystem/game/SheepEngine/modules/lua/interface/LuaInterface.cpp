@@ -158,7 +158,6 @@ namespace Framework
 
       // Creates a new lua environment
       lua_State* L = luaL_newstate();
-
       
 
       // Initialization routine
@@ -168,6 +167,8 @@ namespace Framework
       lua_pop(L, -1); // Pop the stack
       SetPath(L, lDirectory.c_str());
       //SetPath(L, Directory);
+
+      BindLibraryFunctions(L);
       
       LoadFile(L, "content/lua/engine/includes/interface.lua");
 
@@ -223,6 +224,8 @@ namespace Framework
       Lua::CallFunc(L, "filesystem.LoadLuaFiles", "content/lua/");
 
       Lua::CallFunc(L, "LuaLoaded");
+
+      BindDefaultFunctions(L);
 
       return L;
     }

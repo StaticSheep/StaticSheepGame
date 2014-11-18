@@ -65,8 +65,6 @@ namespace Framework
   {
     L = Lua::CreateEnvironment();
 
-    Lua::BindDefaultFunctions();
-
     Lua::CallFunc(L, "PostInit");
 
     //Lua::CallFunc(L, "filesystem.UpdateOldFiles");

@@ -415,6 +415,8 @@ namespace Framework
         return i;
       }
     }
+
+    return -1;
   }
 
   

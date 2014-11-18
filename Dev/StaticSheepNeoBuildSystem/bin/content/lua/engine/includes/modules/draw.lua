@@ -8,6 +8,7 @@ local math = math
 local setmetatable = setmetatable
 local Color = Color
 local tostring = tostring
+local surface = surface
 
 module( "draw" )
 
@@ -16,6 +17,14 @@ TEXT_ALIGN_CENTER = 1
 TEXT_ALIGN_RIGHT = 2
 TEXT_ALIGN_TOP = 3
 TEXT_ALIGN_BOTTOM = 4
+
+local Corner8   = nil 
+local Corner16  = nil 
+
+function UpdateCorners()
+  Corner8 = surface.GetTextureID("gui/corner8.png")
+  Corner16 = surface.GetTextureID("gui/corner16.png")
+end
 
 function SimpleText(text, font, x, y, size, color, xalign, yalign)
 
@@ -99,4 +108,59 @@ function DrawText(text, font, x, y, size, color, xalign )
       curY = curY + (lineHeight/2)
     end
   end
+end
+
+function RoundedBox( bordersize, x, y, w, h, color )
+
+  return RoundedBoxEx( bordersize, x, y, w, h, color, true, true, true, true )
+
+end
+
+function RoundedBoxEx( bordersize, x, y, w, h, color, a, b, c, d )
+
+  x = math.Round( x )
+  y = math.Round( y )
+  w = math.Round( w )
+  h = math.Round( h )
+
+  surface.SetColor( color.r, color.g, color.b, color.a )
+  
+  -- Draw as much of the rect as we can without textures
+  surface.DrawRect( x+bordersize, y, w-bordersize*2, h )
+  surface.DrawRect( x, y+bordersize, bordersize, h-bordersize*2 )
+  surface.DrawRect( x+w-bordersize, y+bordersize, bordersize, h-bordersize*2 )
+  
+  if Corner8 == nil then
+    UpdateCorners()
+  end
+
+  local tex = Corner8
+  if ( bordersize > 8 ) then tex = Corner16 end
+  
+  surface.SetTexture( tex )
+  
+  if ( a ) then
+    surface.DrawTexturedRectRotated( x + bordersize/2 , y + bordersize/2, bordersize, bordersize, 0 ) 
+  else
+    surface.DrawRect( x, y, bordersize, bordersize )
+  end
+  
+  if ( b ) then
+    surface.DrawTexturedRectRotated( x + w - bordersize/2 , y + bordersize/2, bordersize, bordersize, math.pi * 1.5 ) 
+  else
+    surface.DrawRect( x + w - bordersize, y, bordersize, bordersize )
+  end
+ 
+  if ( c ) then
+    surface.DrawTexturedRectRotated( x + bordersize/2 , y + h -bordersize/2, bordersize, bordersize, math.pi * 0.5 )
+  else
+    surface.DrawRect( x, y + h - bordersize, bordersize, bordersize )
+  end
+ 
+  if ( d ) then
+    surface.DrawTexturedRectRotated( x + w - bordersize/2 , y + h - bordersize/2, bordersize, bordersize, math.pi )
+  else
+    surface.DrawRect( x + w - bordersize, y + h - bordersize, bordersize, bordersize )
+  end
+  
 end

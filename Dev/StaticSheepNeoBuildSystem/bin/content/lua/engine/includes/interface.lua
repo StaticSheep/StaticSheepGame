@@ -54,6 +54,7 @@ include("meta.lua")
 
 require("hook")
 require("filesystem")
+require("draw")
 
 -- Initialize all of the modules
 for k,v in pairs(SheepModules) do
