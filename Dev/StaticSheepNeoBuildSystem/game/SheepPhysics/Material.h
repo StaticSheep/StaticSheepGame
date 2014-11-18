@@ -10,7 +10,7 @@ namespace SheepFizz
 			PHY_API Material();
 
 			//any other material
-			PHY_API Material(float density, float restitution, float staticFriction, float dynamicFriction, float momentOfInertia = 0);
+			PHY_API Material(float density, float restitution, float staticFriction, float dynamicFriction);
 		
 			//gettors
 			PHY_API float GetMaterialDensity(void) const;
