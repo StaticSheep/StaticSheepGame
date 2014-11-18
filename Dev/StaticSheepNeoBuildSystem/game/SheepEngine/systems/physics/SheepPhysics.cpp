@@ -61,7 +61,7 @@ namespace Framework
       //go through all the game spaces
       std::vector<GameSpace*>& gspaces = ENGINE->Spaces();
 
-      for (int i = 0; i < gspaces.size(); ++i)
+      for (unsigned int i = 0; i < gspaces.size(); ++i)
       {
         //skip if the gamespace is not ready for some reason
         if (!gspaces[i]->Ready())
@@ -74,7 +74,7 @@ namespace Framework
         //go through box colliders first
         ObjectAllocator* boxes = gspaces[i]->GetComponents(eBoxCollider);
         
-        for (int j = 0; j < boxes->Size(); ++j)
+        for (unsigned int j = 0; j < boxes->Size(); ++j)
         {
           Vec3D bodyPosition = ((BoxCollider*)(*boxes)[j])->GetBodyPosition();
           Vec3D bodyVelocity = ((BoxCollider*)(*boxes)[j])->GetCurrentVelocity();
@@ -88,7 +88,7 @@ namespace Framework
           Vec3D normal;
           Vec3D location;
 
-          for (int k = 0; k < ((BoxCollider*)(*boxes)[j])->normals_.size(); k += 2)
+          for (unsigned int k = 0; k < ((BoxCollider*)(*boxes)[j])->normals_.size(); k += 2)
           {
             normal = ((BoxCollider*)(*boxes)[j])->normals_[k];
             location = ((BoxCollider*)(*boxes)[j])->normals_[k + 1];
@@ -120,7 +120,7 @@ namespace Framework
           Vec3D vertex2;
 
           //draw outside edge of box
-          for (int i = 0; i < vertexTotal; ++i)
+          for (unsigned int i = 0; i < vertexTotal; ++i)
           {
             nextVertex = ((i + 1) < vertexTotal) ? (i + 1) : 0;
 
@@ -148,7 +148,7 @@ namespace Framework
         //now go through circle colliders
         ObjectAllocator* circles = gspaces[i]->GetComponents(eCircleCollider);
 
-        for (int j = 0; j < circles->Size(); ++j)
+        for (unsigned int j = 0; j < circles->Size(); ++j)
         {
           Vec3D bodyPosition = ((CircleCollider*)(*circles)[j])->GetBodyPosition();
           Vec3D bodyVelocity = ((CircleCollider*)(*circles)[j])->GetCurrentVelocity();
@@ -305,6 +305,11 @@ namespace Framework
   Vec3D SheepPhysics::GetBodyGravityNormal(GameSpace* space, SheepFizz::Handle handle)
   {
     return ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->GetBodyGravityNormal(handle);
+  }
+
+  Vec3D SheepPhysics::GetBodyUpNormal(GameSpace* space, SheepFizz::Handle handle)
+  {
+    return ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->GetBodyUpNormal(handle);
   }
 
   Vec3D SheepPhysics::GetCollisionPoint(GameSpace* space, SheepFizz::ExternalManifold manifold)

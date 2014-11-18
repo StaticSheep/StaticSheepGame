@@ -70,6 +70,7 @@ namespace SheepFizz
 		PHY_API float GetBodyRot(Handle handle);
 		PHY_API float GetBodyAngVeloc(Handle handle);
 		PHY_API float GetBodyTorque(Handle handle);
+    PHY_API Vec3D GetBodyUpNormal(Handle handle);
 
     //gravity gettors
     PHY_API Vec3D GetBodyGravityNormal(Handle handle);

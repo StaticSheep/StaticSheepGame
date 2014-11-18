@@ -73,6 +73,7 @@ namespace Framework
 			float GetBodyTorques(GameSpace* space, SheepFizz::Handle handle);
 
       Vec3D GetBodyGravityNormal(GameSpace* space, SheepFizz::Handle handle);
+      Vec3D GetBodyUpNormal(GameSpace* space, SheepFizz::Handle handle);
 
       //debug
       const void* SheepPhysics::GetDebugData(void);
