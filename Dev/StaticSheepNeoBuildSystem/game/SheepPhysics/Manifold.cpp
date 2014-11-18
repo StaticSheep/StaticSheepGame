@@ -165,8 +165,8 @@ namespace SheepFizz
 	//determines if two polygons are colliding
 	void RectangleRectangleManifold(Manifold& m)
 	{
-	  //preset the contact count to 0;
-	  m.contactCount = 0;
+    //preset the contact count to 0;
+    m.contactCount = 0;
 
 	  //create shortcut pointers to each shape
 	  Rectangle* a = (Rectangle*)(m.A->shape_);
