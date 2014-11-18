@@ -26,7 +26,7 @@ namespace DirectSheep
     rotMat = DirectX::XMMatrixRotationZ(m_spriteTrans.theta);
     scaleMat = DirectX::XMMatrixMultiply(scaleMat, rotMat);
 
-    transMat = DirectX::XMMatrixTranslation(m_spriteTrans.x, m_spriteTrans.y, 0.0f);
+    transMat = DirectX::XMMatrixTranslation(m_spriteTrans.x, m_camUse ? m_spriteTrans.y : -m_spriteTrans.y, 0.0f);
 
     scaleMat = DirectX::XMMatrixMultiply(scaleMat, transMat);
 
@@ -45,9 +45,9 @@ namespace DirectSheep
 
     SetBlendMode(BLEND_MODE_ALPHA);
 
-    m_deviceContext->UpdateSubresource(m_constBufferRes[0], 0, 0, &buffer, 0, 0);
-
-    m_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+    m_genericEffect->bind(m_deviceContext);
+    m_genericEffect->bindPosUV(m_deviceContext, ((Camera*)m_camera.ptr)->getProj(), ((Camera*)m_camera.ptr)->getView(), scaleMat, m_spriteTrans.uvBegin, m_spriteTrans.uvEnd);
+    m_genericEffect->bindAmbient (m_deviceContext, m_spriteBlend, 1);
 
     m_deviceContext->Draw(vertexCount, vertexStart);
   }
@@ -62,9 +62,13 @@ namespace DirectSheep
     rotMat = XMMatrixIdentity();
     transMat = XMMatrixIdentity();
 
+//<<<<<<< HEAD
     rotMat = XMMatrixRotationRollPitchYaw(DirectX::XM_PI, 0.0f, m_spriteTrans.theta);
+//=======
+    rotMat = XMMatrixRotationRollPitchYaw(m_camUse ? 0.0f : -DirectX::XM_PI, 0.0f, m_spriteTrans.theta);
+//>>>>>>> origin/NeoGraphics
 
-    transMat = XMMatrixTranslation(m_spriteTrans.x, m_spriteTrans.y, 0.0f);
+    transMat = XMMatrixTranslation(m_spriteTrans.x, m_camUse ? m_spriteTrans.y : -m_spriteTrans.y, 0.0f);
 
     rotMat = XMMatrixMultiply(rotMat, transMat);
 

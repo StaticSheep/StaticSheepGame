@@ -57,6 +57,11 @@ namespace Framework
 
     void Test(void* value);
 
+    void UpdateFramePosition();
+
+    void TweakStartFrame(const void* start);
+    void TweakEndFrame(const void* end);
+
     Vec2 m_frames;
 
     float m_frameRate;
