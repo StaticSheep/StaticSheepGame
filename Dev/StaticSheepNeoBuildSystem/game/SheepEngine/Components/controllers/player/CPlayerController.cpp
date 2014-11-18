@@ -242,10 +242,10 @@ namespace Framework
       if (snappedNormal.x != OOBc->GetCollisionNormals(manifold).x && snappedNormal.y != OOBc->GetCollisionNormals(manifold).y)
         ps->SetTranslation(ps->GetTranslation() + -(snappedNormal * 1.5));
       snappedNormal = OOBc->GetCollisionNormals(manifold);
-      //BoxCollider *bc = space->GetHandles().GetAs<BoxCollider>(playerCollider);
-      //float rotation = (snappedNormal.DotProduct(/*my normal*/)) / (snappedNormal.Length() * /*my normal */.Length());
-      //rotation = std::acosf(rotation);
-      //ps->SetRotation(rotation);
+      BoxCollider *bc = space->GetHandles().GetAs<BoxCollider>(playerCollider);
+      float rotation = (snappedNormal.DotProduct(bc->GetBodyUpNormal())) / (snappedNormal.Length() * bc->GetBodyUpNormal().Length());
+      rotation = std::acosf(rotation);
+      ps->SetRotation(rotation);
 		}
 		else if (OtherObject->HasComponent(eCircleCollider))
 		{
