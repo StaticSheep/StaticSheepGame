@@ -5,6 +5,7 @@
 #include "../../sound/CSoundEmitter.h"
 #include "../../transform/CTransform.h"
 #include "types/weapons/WBase.h"
+#include "AnimationController.h"
 
 namespace Framework
 {
@@ -22,6 +23,7 @@ namespace Framework
     void Melee();
     void RespawnBlink(float dt);
     void PlayerDeath(SoundEmitter *se, Transform *pt);
+    void SetAnimations();
 
 		//member variables
 		int playerNum; //the player number, i.e. 1, 2, 3, 4
@@ -29,6 +31,7 @@ namespace Framework
 		bool hasFired, isSnapped, hasRespawned, blink; //has fired is a flag to prevent fully auto fire, is snapped is a bool to see if the player is snapped to something
     int shotDelay;
     float respawnTimer;
+    AnimationController animCont;
     Weapon *weapon;
 		Vec3 aimDir;  //the direction the player is currently aiming
     Vec3 snappedNormal; //the normal of the thing we are currently snapped to
@@ -38,5 +41,6 @@ namespace Framework
 		Handle snappedTo; //the thing we are currently "snapped" to
     Handle playerSound; //to play sound from the player
     Handle playerSprite; //to adjust the sprite colors and alpha
+    Handle playerAnimation;
 	};
 }

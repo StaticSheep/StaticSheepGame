@@ -13,14 +13,31 @@ GameObject
     Rotation float 0.000000
     Scale Vec3
     {
-      x_ float 1.000000
-      y_ float 1.000000
+      x_ float 0.125000
+      y_ float 0.125000
       z_ float 0.000000
     }
   }
-  Sprite
+  AniSprite
   {
-    m_spriteName std::string "blue.png"
+    m_spriteName std::string "ruiser_sprite_sheet.png"
+    m_frames Vec2
+    {
+      X float 12.000000
+      Y float 4.000000
+    }
+    m_startFrame unsignedint 0
+    m_endFrame unsignedint 0
+    m_frameRate float 20.000000
+    m_loop int -1
+    m_paused bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
     Size Vec2
     {
       X float 1.000000
