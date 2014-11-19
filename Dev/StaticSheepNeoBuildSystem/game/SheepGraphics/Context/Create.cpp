@@ -249,19 +249,6 @@ namespace DirectSheep
     return true;
   }
 
-  /////////////////////////////////////////////////////////////
-  //              PRIVATE INITIALIZE FUNCTIONS               //
-  /////////////////////////////////////////////////////////////
-
-  void RenderContext::InitializeDXGI(void)
-  {
-
-  }
-
-  void RenderContext::InitializeDisplayModes(void)
-  {
-  }
-
   void RenderContext::InitializeDeviceAndSwapChain(void)
   {
     HRESULT hr = S_OK; // Error check, remains S_OK if no problems
@@ -354,7 +341,7 @@ namespace DirectSheep
     rd.FrontCounterClockwise = FALSE;
     rd.DepthClipEnable = TRUE;
     rd.ScissorEnable = FALSE;
-    rd.AntialiasedLineEnable = TRUE;
+    rd.AntialiasedLineEnable = FALSE;
     rd.MultisampleEnable = TRUE;
     rd.DepthBias = 0;
     rd.DepthBiasClamp = 0.0f;
@@ -402,9 +389,9 @@ namespace DirectSheep
     D3D11_SAMPLER_DESC sd;
     sd.Filter = D3D11_FILTER_ANISOTROPIC;
     sd.MaxAnisotropy = 16;
-    sd.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
-    sd.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
-    sd.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+    sd.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
+    sd.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
+    sd.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
     sd.BorderColor[0] = 0.0f;
     sd.BorderColor[1] = 0.0f;
     sd.BorderColor[2] = 0.0f;

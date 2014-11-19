@@ -26,6 +26,7 @@ namespace DirectSheep
     rotMat = DirectX::XMMatrixRotationZ(m_spriteTrans.theta);
     scaleMat = DirectX::XMMatrixMultiply(scaleMat, rotMat);
 
+
     transMat = DirectX::XMMatrixTranslation(m_camUse ? m_spriteTrans.x :
       m_spriteTrans.x + m_spriteTrans.w / 2,
       m_camUse ? m_spriteTrans.y : -m_spriteTrans.y - m_spriteTrans.h / 2, 0.0f);
@@ -34,13 +35,6 @@ namespace DirectSheep
 
     matFinal = scaleMat * ((Camera*)m_camera.ptr)->getViewProj();
 
-    DefaultBuffer buffer;
-    buffer.Final = matFinal;
-    buffer.World = scaleMat;
-    buffer.BlendColor = m_spriteBlend;
-    buffer.uvBegin = m_spriteTrans.uvBegin;
-    buffer.uvEnd = m_spriteTrans.uvEnd;
-
     m_deviceContext->RSSetState(m_rastState[m_currentRast]);
 
     m_deviceContext->PSSetSamplers(0, 1, &m_sampleStates[0]);
@@ -48,7 +42,7 @@ namespace DirectSheep
     SetBlendMode(BLEND_MODE_ALPHA);
 
     m_genericEffect->bind(m_deviceContext);
-    m_genericEffect->bindPosUV(m_deviceContext, ((Camera*)m_camera.ptr)->getProj(), ((Camera*)m_camera.ptr)->getView(), scaleMat, m_spriteTrans.uvBegin, m_spriteTrans.uvEnd);
+    m_genericEffect->bindPosUV(m_deviceContext, ((Camera*)m_camera.ptr)->getProj(), ((Camera*)m_camera.ptr)->getView(), scaleMat, Vec2(0,0), Vec2(1,1));
     m_genericEffect->bindAmbient (m_deviceContext, m_spriteBlend, 1);
 
     m_deviceContext->Draw(vertexCount, vertexStart);
@@ -64,7 +58,9 @@ namespace DirectSheep
     rotMat = XMMatrixIdentity();
     transMat = XMMatrixIdentity();
 
+
     rotMat = XMMatrixRotationRollPitchYaw(m_camUse ? 0.0f : -DirectX::XM_PI, 0.0f, m_spriteTrans.theta);
+
 
     transMat = XMMatrixTranslation(m_spriteTrans.x, m_camUse ? m_spriteTrans.y : -m_spriteTrans.y, 0.0f);
 
@@ -91,7 +87,7 @@ namespace DirectSheep
       (UINT32)0xFFFFFFFF,
       //RGBTOBGR(Vec3(m_spriteBlend.z, m_spriteBlend.y, m_spriteBlend.x, m_spriteBlend.w)),// Text color, 0xAaBbGgRr
       NULL,
-      (float*)((Mat4*)(&matFinal))->m,
+      (float*)(&matFinal)->m,
       FW1_RESTORESTATE | FW1_LEFT | FW1_VCENTER | FW1_NOWORDWRAP
       );// Flags (for example FW1_RESTORESTATE to keep context states 
 
