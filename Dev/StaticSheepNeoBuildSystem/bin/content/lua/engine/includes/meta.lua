@@ -51,7 +51,7 @@ function SetupMetatable(name, meta)
       end
     end
 
-    print("key found: "..key)
+    --print(rawget(meta, "__name") .. "::"..key)
     return meta[key]
   end
 

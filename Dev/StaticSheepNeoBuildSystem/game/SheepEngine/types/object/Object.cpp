@@ -292,6 +292,28 @@ namespace Framework
   }
 
   /// <summary>
+  /// Detaches a lua component.
+  /// </summary>
+  /// <param name="index">The index to the componet.</param>
+  void GameObject::DetatchLuaComponent(unsigned index)
+  {
+    // Get a pointer to the actual component
+    LuaComponent* comp = GetLuaComponent(index);
+
+    // We need to replace the entry in the array with the furthest right
+    // entry (back of the vector) or if it is the back, just pop it
+    if (index != m_luaComponents.back())
+      m_luaComponents[index] = m_luaComponents.back();
+    m_luaComponents.pop_back();
+
+    comp->Remove();
+    space->GetHandles().Remove(comp->self);
+
+    GameComponent* moved =
+      (GameComponent*)space->GetComponents(eLuaComponent)->Free(comp);
+  }
+
+  /// <summary>
   /// Prepares a component to be detached.
   /// </summary>
   /// <param name="type">The type of component.</param>

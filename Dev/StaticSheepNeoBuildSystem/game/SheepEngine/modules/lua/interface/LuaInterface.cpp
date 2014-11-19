@@ -54,7 +54,8 @@ namespace Framework
 
     int ErrorFunc(lua_State* L)
     {
-      ErrorIf(true, "Lua Interface", "Lua error! %s", lua_tostring(L, -1));
+      ENGINE->TraceLog.Log(TraceLevel::ERR, "Lua error: %s\n", lua_tostring(L, -1));
+      //ErrorIf(true, "Lua Interface", "Lua error! %s", lua_tostring(L, -1));
       lua_pop(L, 1); // Pop off the stack
       return 0;
     }
@@ -144,33 +145,10 @@ namespace Framework
       
     }
 
-    lua_State* CreateEnvironment(void)
+    static void SetupCTypes(lua_State* L)
     {
-      char cDirectory[512]; // buffer
-      std::string lDirectory;
-      _getcwd(cDirectory, sizeof(cDirectory));
-
-      //lDirectory = "LUA_PATH=";
-      lDirectory = cDirectory;
-      lDirectory += "\\content";
-
-      //_putenv(lDirectory.c_str());
-
-      // Creates a new lua environment
-      lua_State* L = luaL_newstate();
-      
-
-      // Initialization routine
-      luaL_openlibs(L);
-      luaopen_lfs(L); // Opens the file system
-
-      lua_pop(L, -1); // Pop the stack
-      SetPath(L, lDirectory.c_str());
-      //SetPath(L, Directory);
-
-      BindLibraryFunctions(L);
-      
-      LoadFile(L, "content/lua/engine/includes/interface.lua");
+      lua_newtable(L);
+      lua_setglobal(L, "_R");
 
       // Setup the lua-side stuff for all of our types
       for (auto it = IntrospectionManager::Get()->GetTypeMap().begin();
@@ -210,27 +188,9 @@ namespace Framework
           lua_pop(L, 1);
         }
       }
-
-      // Generates a list of all components inside of lua
-      GenerateComponentTable(L);
-
-      // Generate stuff
-      SetupTypeMembers(L);
-
-      // Runs the lua function for setting up meta tables
-      Lua::CallFunc(L, "SetupCMetatables");
-
-      // Tells the lua file system to load <all> the files in content/lua/
-      Lua::CallFunc(L, "filesystem.LoadLuaFiles", "content/lua/");
-
-      Lua::CallFunc(L, "LuaLoaded");
-
-      BindDefaultFunctions(L);
-
-      return L;
     }
 
-    void GenerateComponentTable(lua_State* L)
+    static void GenerateComponentTable(lua_State* L)
     {
       // Creates a new table on the global table to act as a
       // database of components
@@ -249,6 +209,59 @@ namespace Framework
       }
       lua_pop(L, 1);
     }
+
+    lua_State* CreateEnvironment(void)
+    {
+      char cDirectory[512]; // buffer
+      std::string lDirectory;
+      _getcwd(cDirectory, sizeof(cDirectory));
+
+      //lDirectory = "LUA_PATH=";
+      lDirectory = cDirectory;
+      lDirectory += "\\content";
+
+      // Creates a new lua environment
+      lua_State* L = luaL_newstate();
+      
+      // Push basic C++ meta table data
+      SetupCTypes(L);
+
+      // Initialization routine
+      luaL_openlibs(L);
+      luaopen_lfs(L); // Opens the file system
+
+      // Set the working directory for lua
+      lua_pop(L, -1); // Pop the stack
+      SetPath(L, lDirectory.c_str());
+
+      // Bind C++ library functions
+      BindLibraryFunctions(L);
+
+      // Initialize the Lua side interface
+      LoadFile(L, "content/lua/engine/includes/interface.lua");
+
+      // Generates a list of all components inside of lua
+      GenerateComponentTable(L);
+
+      // Tell Lua about the member variables and functions of C++ functions
+      SetupTypeMembers(L);
+
+      // Actually sets up the meta tables for C++ types
+      Lua::CallFunc(L, "SetupCMetatables");
+
+      // Tells the lua file system to load <all> the files in content/lua/
+      Lua::CallFunc(L, "filesystem.LoadLuaFiles", "content/lua/");
+
+      // Runs any post-initialization logic
+      Lua::CallFunc(L, "LuaLoaded");
+
+      // Binds C++ functions to lua
+      BindDefaultFunctions(L);
+
+      return L;
+    }
+
+    
 
     void CallMemberFunc(lua_State* L, Variable& var, const char* funcName)
     {

@@ -26,7 +26,9 @@ namespace DirectSheep
     rotMat = DirectX::XMMatrixRotationZ(m_spriteTrans.theta);
     scaleMat = DirectX::XMMatrixMultiply(scaleMat, rotMat);
 
-    transMat = DirectX::XMMatrixTranslation(m_spriteTrans.x, m_camUse ? m_spriteTrans.y : -m_spriteTrans.y, 0.0f);
+    transMat = DirectX::XMMatrixTranslation(m_camUse ? m_spriteTrans.x :
+      m_spriteTrans.x + m_spriteTrans.w / 2,
+      m_camUse ? m_spriteTrans.y : -m_spriteTrans.y - m_spriteTrans.h / 2, 0.0f);
 
     scaleMat = DirectX::XMMatrixMultiply(scaleMat, transMat);
 

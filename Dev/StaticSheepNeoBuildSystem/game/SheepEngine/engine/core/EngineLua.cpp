@@ -129,7 +129,7 @@ namespace Framework
 
   void Engine::LuaError(const char* msg)
   {
-    TRACELOG->Log(WARNING, "LuaError: %s\n", msg);
+    TRACELOG->Log(TraceLevel::ERR, "LuaError: %s\n", msg);
     //FORCEERROR("LuaError", "%s", msg);
   }
 }

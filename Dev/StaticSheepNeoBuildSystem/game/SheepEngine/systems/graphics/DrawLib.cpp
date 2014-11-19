@@ -68,9 +68,8 @@ namespace Framework
     GRAPHICS->SetSize(width, height);
 
     GRAPHICS->SetPosition(x, y, 0.0f);
-
+    
     GRAPHICS->BindTexture(m_TextureID);
-
     GRAPHICS->RawDraw();
 
   }

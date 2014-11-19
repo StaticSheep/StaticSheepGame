@@ -285,7 +285,7 @@ namespace Framework
     if (m_spaces.size() > 0)
       return;
 
-    TRACELOG->Log(INFO, "Reloading the editor.");
+    TRACELOG->Log(TraceLevel::DEBUG, "Reloading the editor.");
 
     std::string filePath = "cache\\spaces\\";
 
@@ -321,7 +321,7 @@ namespace Framework
 
     if (play)
     {
-      TRACELOG->Log(INFO, "Prepping PIE mode.");
+      TRACELOG->Log(TraceLevel::DEBUG, "Prepping PIE mode.");
 
       std::vector<GameSpace*>& gameSpaces = ENGINE->Spaces();
 
@@ -354,7 +354,7 @@ namespace Framework
     }
     else
     {
-      TRACELOG->Log(INFO, "PIE mode ended.");
+      TRACELOG->Log(TraceLevel::DEBUG, "PIE mode ended.");
 
       std::vector<GameSpace*>& gameSpaces = ENGINE->Spaces();
 
@@ -372,7 +372,7 @@ namespace Framework
   
   void Engine::StartPIE()
   {
-    TRACELOG->Log(INFO, "Starting PIE mode.");
+    TRACELOG->Log(TraceLevel::DEBUG, "Starting PIE mode.");
 
     std::string filePath = "cache\\spaces\\";
 
