@@ -128,12 +128,6 @@ namespace Framework
 	void SheepGraphics::Draw()
 	{
     // Draw Hooks
-
-    SetUseCamera(true);
-    SetColor(Vec4(1, 0, 0, 1));
-    Draw::DrawRect(0, 0, 50, 50);
-    SetColor(Vec4(0, 1, 0, 1));
-    Draw::DrawRect(0, 0, 50, 50);
     
     GameSpace* space;
     m_renderContext->StartBatch();
