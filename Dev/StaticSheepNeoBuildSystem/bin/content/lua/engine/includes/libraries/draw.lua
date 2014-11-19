@@ -10,7 +10,7 @@ local Color = Color
 local tostring = tostring
 local surface = surface
 
-module( "draw" )
+if not draw then draw = {} end
 
 TEXT_ALIGN_LEFT = 0
 TEXT_ALIGN_CENTER = 1
@@ -21,12 +21,12 @@ TEXT_ALIGN_BOTTOM = 4
 local Corner8   = nil 
 local Corner16  = nil 
 
-function UpdateCorners()
+function draw.UpdateCorners()
   Corner8 = surface.GetTextureID("gui/corner8.png")
   Corner16 = surface.GetTextureID("gui/corner16.png")
 end
 
-function SimpleText(text, font, x, y, size, color, xalign, yalign)
+function draw.SimpleText(text, font, x, y, size, color, xalign, yalign)
 
   text = tostring( text )
   font = font or "Arial"
@@ -72,7 +72,7 @@ local find = string.find
 local ceil = math.ceil
 local GetTextSize = surface.GetTextSize
 local max = math.max
-function DrawText(text, font, x, y, size, color, xalign )
+function draw.DrawText(text, font, x, y, size, color, xalign )
 
   if (font == nil) then font = "Arial" end
   if (text != nil) then text = tostring( text ) end
@@ -110,13 +110,13 @@ function DrawText(text, font, x, y, size, color, xalign )
   end
 end
 
-function RoundedBox( bordersize, x, y, w, h, color )
+function draw.RoundedBox( bordersize, x, y, w, h, color )
 
-  return RoundedBoxEx( bordersize, x, y, w, h, color, true, true, true, true )
+  return draw.RoundedBoxEx( bordersize, x, y, w, h, color, true, true, true, true )
 
 end
 
-function RoundedBoxEx( bordersize, x, y, w, h, color, a, b, c, d )
+function draw.RoundedBoxEx( bordersize, x, y, w, h, color, a, b, c, d )
 
   x = math.Round( x )
   y = math.Round( y )
@@ -131,7 +131,7 @@ function RoundedBoxEx( bordersize, x, y, w, h, color, a, b, c, d )
   surface.DrawRect( x+w-bordersize, y+bordersize, bordersize, h-bordersize*2 )
   
   if Corner8 == nil then
-    UpdateCorners()
+    draw.UpdateCorners()
   end
 
   local tex = Corner8
@@ -140,25 +140,25 @@ function RoundedBoxEx( bordersize, x, y, w, h, color, a, b, c, d )
   surface.SetTexture( tex )
   
   if ( a ) then
-    surface.DrawTexturedRectRotated( x + bordersize/2 , y + bordersize/2, bordersize, bordersize, 0 ) 
+    surface.DrawTexturedRectRotated( x , y, bordersize, bordersize, 0 ) 
   else
     surface.DrawRect( x, y, bordersize, bordersize )
   end
   
   if ( b ) then
-    surface.DrawTexturedRectRotated( x + w - bordersize/2 , y + bordersize/2, bordersize, bordersize, math.pi * 1.5 ) 
+    surface.DrawTexturedRectRotated( x + w - bordersize, y, bordersize, bordersize, math.pi * 1.5 ) 
   else
     surface.DrawRect( x + w - bordersize, y, bordersize, bordersize )
   end
  
   if ( c ) then
-    surface.DrawTexturedRectRotated( x + bordersize/2 , y + h -bordersize/2, bordersize, bordersize, math.pi * 0.5 )
+    surface.DrawTexturedRectRotated( x , y + h - bordersize, bordersize, bordersize, math.pi * 0.5 )
   else
     surface.DrawRect( x, y + h - bordersize, bordersize, bordersize )
   end
  
   if ( d ) then
-    surface.DrawTexturedRectRotated( x + w - bordersize/2 , y + h - bordersize/2, bordersize, bordersize, math.pi )
+    surface.DrawTexturedRectRotated( x + w - bordersize, y + h - bordersize, bordersize, bordersize, math.pi )
   else
     surface.DrawRect( x + w - bordersize, y + h - bordersize, bordersize, bordersize )
   end
