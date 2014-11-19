@@ -95,6 +95,9 @@ namespace Framework
       // Properly detaches a component from the object
       void DetatchComponent(EComponent type);
 
+      // Properly detaches a Lua Component from the object
+      void DetatchLuaComponent(unsigned index);
+
       /* ----------- Safety Checking ---------- */
 
       // Checks to see if the object owns a specific component type

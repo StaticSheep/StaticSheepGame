@@ -7,10 +7,13 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 *****************************************************************/
 #pragma once
 
+
+
 namespace Framework
 {
   namespace Lua
   {
-    void BindDefaultFunctions();
+    void BindLibraryFunctions(lua_State*);
+    void BindDefaultFunctions(lua_State*);
   }
 }

@@ -68,11 +68,21 @@ namespace Framework
     GRAPHICS->SetSize(width, height);
 
     GRAPHICS->SetPosition(x, y, 0.0f);
-
+    
     GRAPHICS->BindTexture(m_TextureID);
-
     GRAPHICS->RawDraw();
 
+  }
+
+  void Draw::DrawTexturedRectRotated(float x, float y, float width, float height, float theta)
+  {
+    GRAPHICS->SetSize(width, height);
+    GRAPHICS->SetPosition(x, y, 0.0f);
+    GRAPHICS->BindTexture(m_TextureID);
+    GRAPHICS->SetRotation(theta);
+    GRAPHICS->RawDraw();
+    
+    GRAPHICS->SetRotation(0);
   }
 
   void Draw::DrawLine(float sX, float sY, float eX, float eY, float width/* =1 */)

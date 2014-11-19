@@ -17,6 +17,7 @@ namespace Framework
     void FloatToLua(lua_State* L, Variable& var);
     void CharPToLua(lua_State* L, Variable& var);
     void StringToLua(lua_State* L, Variable& var);
+    void BoolToLua(lua_State* L, Variable& var);
 
     // All these really do is convert pointer -> solid data
     void GameComponentToLua(lua_State* L, Variable& var);
@@ -27,6 +28,7 @@ namespace Framework
     void FloatFromLua(lua_State* L, int index, Variable* ref);
     void CharPFromLua(lua_State* L, int index, Variable* ref);
     void StringFromLua(lua_State* L, int index, Variable* ref);
+    void BoolFromLua(lua_State* L, int index, Variable* ref);
 
     void GenericObjectFromLua(lua_State* L, int index, Variable* ref);
 

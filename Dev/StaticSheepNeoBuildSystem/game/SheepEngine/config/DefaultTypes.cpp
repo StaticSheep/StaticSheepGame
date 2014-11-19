@@ -75,6 +75,8 @@ namespace Framework
     TYPE_REGISTER_POD( bool );
     TYPE_SET_SERIALIZER( bool, SerializePOD<bool> );
     TYPE_SET_DESERIALIZER( bool, DeserializePOD<bool> );
+    TYPE_SET_TO_LUA(bool, Lua::BoolToLua);
+    TYPE_SET_FROM_LUA(bool, Lua::BoolFromLua);
     TYPE_SET_TWEAK_TYPE( bool, AntTweak::TW_TYPE_BOOLCPP );
 
 

@@ -167,7 +167,9 @@ namespace SheepFizz
     Body* body = handles_.GetAs<Body>(handle);
     if (body->shape_->GetShape() == Rec)
       return ((Rectangle*)body->shape_)->GetNormal(2);
-  }//end of GetBodyUpNormal
+
+    return Vec3D(4, 2, 0);
+  }
 
 	//get the time for the engine
 	float PhysicsSpace::GetTime(void) {return dt_;}

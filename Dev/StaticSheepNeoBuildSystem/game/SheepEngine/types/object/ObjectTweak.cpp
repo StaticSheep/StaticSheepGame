@@ -223,6 +223,7 @@ namespace Framework
       if (luaIndex != -1)
       {
         // Detach Lua component
+        obj->DetatchLuaComponent(luaIndex);
       }
     }
 
@@ -387,6 +388,7 @@ namespace Framework
 
         std::string bName;
 
+        /* ------- C++ Components ------- */
         for (size_t i = 0; i < ecountComponents - 1; ++i)
         {
           if (HasComponent(i) && i != eTransform)
@@ -401,7 +403,25 @@ namespace Framework
           }
         }
 
-        // Lua Component stuff
+        /* ------- Lua Components ------- */
+        objectBar->AddSeparator("Lua Components");
+
+        for (unsigned i = 0; i < tweakLuaCompCallbacks->size(); ++i)
+        {
+          TweakObjComp* lc = (*tweakLuaCompCallbacks)[i];
+
+          if (HasLuaComponent(lc->luaCompName.c_str()) != -1)
+          {
+            bName = "Remove";
+            bName += lc->luaCompName;
+
+            objectBar->DefineLabel(lc->luaCompName.c_str());
+
+            objectBar->AddButton(bName.c_str(), TweakRemoveComponent,
+              (*tweakLuaCompCallbacks)[i]);
+          }
+
+        }
 
         // End Delete
       }
@@ -437,7 +457,7 @@ namespace Framework
         {
           TweakObjComp* lc = (*tweakLuaCompCallbacks)[i];
           
-          if (!HasLuaComponent(lc->luaCompName.c_str()))
+          if (HasLuaComponent(lc->luaCompName.c_str()) == -1)
           {
             bName = "Add";
             bName += lc->luaCompName;
