@@ -119,9 +119,14 @@ namespace Framework
 		//if the trigger is released, reset the bool
 		if (!gp->RightTrigger() && weapon->semi)
     {
-			hasFired = false;
-      shotDelay = weapon->delay;
+      if (shotDelay <= 0)
+      {
+			  hasFired = false;
+        shotDelay = weapon->delay;
+      }
+      
     }
+    shotDelay -= dt;
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
     if (isSnapped)
     {
@@ -294,7 +299,7 @@ namespace Framework
     if (!isSnapped)
     {
       BoxCollider *bc = space->GetHandles().GetAs<BoxCollider>(playerCollider);
-      bc->AddToVelocity(-aimDir * 25);
+      bc->AddToVelocity(-aimDir * (weapon->knockback));
     }
 	}
 
@@ -398,6 +403,13 @@ namespace Framework
     space->GetGameObject(owner)->Destroy();
   }
 
+  //************************************
+  // Method:    SetAnimations
+  // FullName:  Framework::PlayerController::SetAnimations
+  // Access:    public 
+  // Returns:   void
+  // Qualifier:
+  //************************************
   void PlayerController::SetAnimations()
   {
     GamePad *gp = space->GetHandles().GetAs<GamePad>(playerGamePad);

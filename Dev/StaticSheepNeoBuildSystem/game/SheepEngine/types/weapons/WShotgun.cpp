@@ -10,8 +10,9 @@ namespace Framework
 {
   Shotgun::Shotgun()
   {
-    delay = 20;
+    delay = 40;
     damage = 34;
+    knockback = 120;
     semi = true;
   }
 

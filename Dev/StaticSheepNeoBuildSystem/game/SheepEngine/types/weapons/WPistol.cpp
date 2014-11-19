@@ -9,8 +9,9 @@ namespace Framework
 {
   Pistol::Pistol()
   {
-    delay = 10;
+    delay = 0;
     damage = 10;
+    knockback = 30;
     semi = true;
   }
 

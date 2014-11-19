@@ -232,6 +232,11 @@ GameObject
       z_ float 0.000000
     }
   }
+  Camera
+  {
+    m_active bool true
+    m_FOV float 110.000000
+  }
   SoundPlayer
   {
   }

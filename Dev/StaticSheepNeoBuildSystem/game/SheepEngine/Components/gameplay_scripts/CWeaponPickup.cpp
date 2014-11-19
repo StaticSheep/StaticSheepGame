@@ -69,7 +69,7 @@ namespace Framework
 	{
     Transform *bt = space->GetHandles().GetAs<Transform>(wpTransfrom);
 
-    if (bt->GetTranslation().x > 700 || bt->GetTranslation().x < -700 || bt->GetTranslation().y > 700 || bt->GetTranslation().y < -700)
+    if (bt->GetTranslation().x > 700 || bt->GetTranslation().x < -700 || bt->GetTranslation().y > 500 || bt->GetTranslation().y < -500)
       space->GetGameObject(owner)->Destroy();
 	}
 
