@@ -2,6 +2,7 @@
 #include "Material.h"
 #include "Shape.h"
 #include "BodyProperties.h"
+#include "CollisionGroups.h"
 
 namespace SheepFizz
 {
@@ -14,23 +15,6 @@ namespace SheepFizz
 
 		  float inertia;			//used for angular calculations
 		  float inverseInertia;
-  };
-
-  enum CollisionGroup{
-	  NonCollide,
-    Collide,
-    Resolve,
-	  Player,
-    Static,
-	  CollGroupLength
-  };
-
-  enum Collision
-  {
-    NOCOLLIDE,
-    COLLIDE,
-    RESOLVE,
-    COLLNUMBER
   };
 
   class Body

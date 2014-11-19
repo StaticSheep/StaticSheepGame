@@ -80,8 +80,9 @@ namespace Framework
       const void* SheepPhysics::GetDebugData(void);
 
       //collision
-      Vec3D GetCollisionNormal(GameSpace* space, Framework::Handle ownerHandle , SheepFizz::ExternalManifold manifold);
+      Vec3D GetCollisionNormal(GameSpace* space, Framework::Handle ownerHandle, SheepFizz::ExternalManifold manifold);
       Vec3D GetCollisionPoint(GameSpace* space, SheepFizz::ExternalManifold manifold);
+      std::string GetCollisionGroup(GameSpace* space, SheepFizz::Handle handle);
 
 			//settors
 			void SetBodyPosition(GameSpace* space, SheepFizz::Handle handle, Vec3D position);
@@ -122,7 +123,8 @@ namespace Framework
 
 		private:
 			std::unordered_map<std::string, SheepFizz::Material> m_materials;
-      std::unordered_map<std::string, unsigned int> m_collisionGroup;
+      std::unordered_map<std::string, CollisionGroup> m_collisionGroup;
+      std::unordered_map<CollisionGroup, std::string> m_collisionGroupNames;
       bool debugOn;
       DebugPhysics debugPhys;
 

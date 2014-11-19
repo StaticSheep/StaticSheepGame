@@ -4,6 +4,7 @@
 #include "Manifold.h"
 #endif
 
+#include "CollisionGroups.h"
 #include "Material.h"
 #include "Shape.h"
 #include "Vec3D.h"
