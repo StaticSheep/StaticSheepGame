@@ -16,7 +16,7 @@ namespace Framework
   class Draw
   {
   public:
-    static void SetUseCamera(bool useCam);
+    static void SetCamState(int camState);
     static void SetTexture(unsigned texID);
     static int  GetTextureID(const char* texName);
     static Vec2 GetTextSize(const char* text, const char* font);

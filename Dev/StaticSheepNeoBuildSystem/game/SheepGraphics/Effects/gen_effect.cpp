@@ -1,10 +1,9 @@
 #pragma once
-
+#include "precompiled.h"
 #include "CBuffer.h"
 #include "CBuffer_types.h"
 #include "Effect.h"
 #include "Light.h"
-#include "precompiled.h"
 #include "gen_effect.h"
 namespace DirectSheep
 {
