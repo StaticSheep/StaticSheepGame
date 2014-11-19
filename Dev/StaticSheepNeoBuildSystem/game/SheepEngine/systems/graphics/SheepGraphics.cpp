@@ -130,8 +130,6 @@ namespace Framework
     // Draw Hooks
     GameSpace* space;
 
-    SetCamState(2);
-    Draw::DrawRect(0, 0, 256, 256);
     m_renderContext->StartBatch();
     // Regular Draw
     for (auto it = ENGINE->Spaces().begin(); it != ENGINE->Spaces().end(); ++it)
