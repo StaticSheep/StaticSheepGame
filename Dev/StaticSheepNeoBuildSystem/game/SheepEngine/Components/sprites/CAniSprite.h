@@ -57,6 +57,18 @@ namespace Framework
 
     void Test(void* value);
 
+    void UpdateFramePosition();
+
+    void TweakStartFrame(const void* start);
+    void TweakEndFrame(const void* end);
+
+
+    void SetFlipX(bool isFlipped);
+    void SetFlipY(bool isFlipped);
+
+    bool GetFlipX(void);
+    bool GetFlipY(void);
+
     Vec2 m_frames;
 
     float m_frameRate;
@@ -69,6 +81,9 @@ namespace Framework
 
     Vec2 uvBegin;
     Vec2 uvEnd;
+
+    bool m_flipX = false;
+    bool m_flipY = false;
 
   private:
     float m_time;

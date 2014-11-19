@@ -14,6 +14,10 @@ function META:CanUpdate(deltatime)
   return true
 end
 
+function META:Remove()
+
+end
+
 function META:Init()
   self:SetupHooks()
 end

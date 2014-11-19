@@ -59,7 +59,6 @@ namespace Framework
     void StackDump(lua_State* L);
 
     void CreateNewGTable(lua_State* L, const char* name);
-    void GenerateComponentTable(lua_State* L);
 
     template<typename A1>
     void CallFunc(lua_State* L, const char* funcName, A1 arg1)

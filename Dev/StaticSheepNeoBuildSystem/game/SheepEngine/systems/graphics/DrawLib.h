@@ -26,6 +26,7 @@ namespace Framework
 
     static void DrawRect(float x, float y, float width, float height);
     static void DrawTexturedRect(float x, float y, float width, float height);
+    static void DrawTexturedRectRotated(float x, float y, float width, float height, float theta);
     static void DrawLine(float sX, float sY, float eX, float eY, float width=1);
     static void DrawCircle(float x, float y, float radius);
     static void DrawString(const char* text, float size, const char* font);

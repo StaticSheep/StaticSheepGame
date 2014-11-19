@@ -28,6 +28,35 @@ namespace Framework
     void Initialize(){};
     void Update();
 
+    /* -------------- Helper Functions -------------- */
+
+    /* -- thumb stick functions -- */
+
+    // Checks if the stick is in the dead zone
+    // true if right stick, false if left stick
+    // Returns true/false if it is dead zone
+    bool InDeadzone(bool right);
+
+    // Returns the position of the sticks
+    Vec2 LeftStick();
+    Vec2 RightStick();
+
+    /* -- button / trigger functions -- */
+
+    float LeftTrigger();  //return value of the left trigger
+    float RightTrigger(); //return value of the right trigger
+
+    bool ButtonPressed(int a_iButton); //return true if button is pressed
+    bool ButtonDown(int a_iButton);
+
+    /* -- Misc -- */
+
+    void Rumble(float a_fLeftMotor = 0.0f, float a_fRightMotor = 0.0f);
+
+    bool Connected(); // Is it plugged in?
+
+    /* -------------- Member Variables -------------- */
+
     int padIndex;
     XINPUT_STATE State;
 
@@ -129,6 +158,9 @@ namespace Framework
     void Update(float dt);
     void GetGamePadState(int index, XINPUT_STATE* state);
     const void* GetDebugData();
+
+    /*----- LUA BINDS -----*/
+    static GamePadInput* GetGamePad(int index);
 
     // we have one mouse...
     MouseInput Mouse;

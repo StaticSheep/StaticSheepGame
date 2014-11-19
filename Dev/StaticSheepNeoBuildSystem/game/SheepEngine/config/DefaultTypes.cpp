@@ -75,6 +75,8 @@ namespace Framework
     TYPE_REGISTER_POD( bool );
     TYPE_SET_SERIALIZER( bool, SerializePOD<bool> );
     TYPE_SET_DESERIALIZER( bool, DeserializePOD<bool> );
+    TYPE_SET_TO_LUA(bool, Lua::BoolToLua);
+    TYPE_SET_FROM_LUA(bool, Lua::BoolFromLua);
     TYPE_SET_TWEAK_TYPE( bool, AntTweak::TW_TYPE_BOOLCPP );
 
 
@@ -231,8 +233,8 @@ namespace Framework
     TYPE_REGISTER( AniSprite );
     TYPE_ADD_MEMBER(AniSprite, m_spriteName, false, true, "Texture", BUILD_FUNCTION(Sprite::TweakSetTexture));
     TYPE_ADD_MEMBER(AniSprite, m_frames, false, true, "Frames", BUILD_FUNCTION(AniSprite::Test));
-    TYPE_ADD_MEMBER(AniSprite, m_startFrame, false, true, "StartFrame");
-    TYPE_ADD_MEMBER(AniSprite, m_endFrame, false, true, "EndFrame");
+    TYPE_ADD_MEMBER(AniSprite, m_startFrame, false, true, "StartFrame", BUILD_FUNCTION(AniSprite::TweakStartFrame));
+    TYPE_ADD_MEMBER(AniSprite, m_endFrame, false, true, "EndFrame", BUILD_FUNCTION(AniSprite::TweakEndFrame));
     TYPE_ADD_MEMBER(AniSprite, m_frameRate, false, true, "FrameRate");
     TYPE_ADD_MEMBER(AniSprite, m_loop, false, true, "Animation Loops");
     TYPE_ADD_MEMBER(AniSprite, m_paused, false, true, "Pause");

@@ -37,6 +37,11 @@ namespace Framework
       lua_pushstring(L, var.GetValue<std::string>().c_str());
     }
 
+    void BoolToLua(lua_State* L, Variable& var)
+    {
+      lua_pushboolean(L, var.GetValue<bool>());
+    }
+
     void GameComponentToLua(lua_State* L, Variable& var)
     {
       GameComponent* comp = (GameComponent*)var.GetData();
@@ -63,7 +68,6 @@ namespace Framework
       Generic* obj = var->GetValue<Generic*>();
 
       new (ref) Variable(var->GetTypeInfo(), obj->space->GetHandles().Get(obj->self));
-      
     }
 
 
@@ -100,6 +104,11 @@ namespace Framework
       var->GetTypeInfo()->Copy(var->GetData(), &temp);
     }
 
+    void BoolFromLua(lua_State* L, int index, Variable* var)
+    {
+      int b = lua_toboolean(L, index);
+      var->GetTypeInfo()->Copy(var->GetData(), &b);
+    }
 
 
   }

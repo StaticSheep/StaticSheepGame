@@ -7,6 +7,7 @@
 #include "../../sprites/CSprite.h"
 #include "types/weapons/WPistol.h"
 #include "../../gameplay_scripts/CBullet_default.h"
+#include "../../sprites/CAniSprite.h"
 
 namespace Framework
 {
@@ -53,6 +54,10 @@ namespace Framework
 		playerTransform = space->GetGameObject(owner)->GetComponentHandle(eTransform);
     playerSound = space->GetGameObject(owner)->GetComponentHandle(eSoundEmitter);
     playerSprite = space->GetGameObject(owner)->GetComponentHandle(eSprite);
+    playerAnimation = space->GetGameObject(owner)->GetComponentHandle(eAniSprite);
+
+    Transform *ps = space->GetHandles().GetAs<Transform>(playerTransform);
+    ps->SetScale(Vec3(0.18f, 0.18f, 0.0));
 
 		GamePad *gp = space->GetHandles().GetAs<GamePad>(playerGamePad); //actually gets the gamepad
 		gp->SetPad(playerNum); //setting pad number
@@ -66,6 +71,8 @@ namespace Framework
     shotDelay = weapon->delay;
     SoundEmitter *se = space->GetHandles().GetAs<SoundEmitter>(playerSound);
     se->Play("robot_startup", &SoundInstance(0.50f));
+    animCont = AnimationController(playerNum);
+    animCont.AnimState = IDLE;
 	}
 
 	//************************************
@@ -171,10 +178,7 @@ namespace Framework
         bc->AddToVelocity(-(snappedNormal * 300));
         isSnapped = false;
       }
-      else if (!gp->ButtonPressed(XButtons.A))
-      {
-        //isSnapped = true;
-      }
+      
     }
     else
     {
@@ -192,8 +196,9 @@ namespace Framework
 			//bc->AddToAngVelocity(.5f);
 		}
 
+    SetAnimations();
+
     isSnapped = false;
-    //snappedNormal = Vec3(0.0, 0.0, 0.0);
 	}
 
 
@@ -214,7 +219,7 @@ namespace Framework
     {
       health -= OtherObject->GetComponent<Bullet_Default>(eBullet_Default)->damage;
       
-      se->Play("energy_hit", &SoundInstance(0.50f));
+      se->Play("hit1", &SoundInstance(0.75f));
       return;
     }
     if ((OtherObject->name == "KillBox" || OtherObject->name == "KillBoxBig") && !hasRespawned)
@@ -230,7 +235,7 @@ namespace Framework
     snappedTo = otherObject;
 		//get the transform of the thing we are colliding with
 		Transform *OOT = OtherObject->GetComponent<Transform>(eTransform);
-		//if that thing we collided with's transform is missing, get the fuck otta here, i mean what are you even doing?
+		//if that thing we collided with's transform is missing, get the fuck outta here, i mean what are you even doing?
 		if (!OOT)
 			return;
 
@@ -241,7 +246,12 @@ namespace Framework
       if (snappedNormal.x != OOBc->GetCollisionNormals(manifold).x && snappedNormal.y != OOBc->GetCollisionNormals(manifold).y)
         ps->SetTranslation(ps->GetTranslation() + -(snappedNormal * 1.5));
       snappedNormal = OOBc->GetCollisionNormals(manifold);
-      ps->SetRotation(OOT->GetRotation());
+      BoxCollider *bc = space->GetHandles().GetAs<BoxCollider>(playerCollider);
+      float rotation = (snappedNormal.DotProduct(bc->GetBodyUpNormal())) / (snappedNormal.Length() * bc->GetBodyUpNormal().Length());
+      rotation = std::acosf(rotation);
+      if (snappedNormal.x == -1.0f)
+        rotation = rotation + (float)PI;
+      ps->SetRotation(rotation);
 		}
 		else if (OtherObject->HasComponent(eCircleCollider))
 		{
@@ -344,7 +354,7 @@ namespace Framework
   //************************************
   void PlayerController::RespawnBlink(float dt)
   {
-    Sprite *ps = space->GetHandles().GetAs<Sprite>(playerSprite);
+    AniSprite *ps = space->GetHandles().GetAs<AniSprite>(playerAnimation);
 
     if (respawnTimer > 0.0f)
     {
@@ -380,11 +390,47 @@ namespace Framework
   //************************************
   void PlayerController::PlayerDeath(SoundEmitter *se, Transform *ps)
   {
-    se->Play("explosion", &SoundInstance(0.75f));
+    se->Play("death_explosion", &SoundInstance(1.0f));
     Handle explosion = (FACTORY->LoadObjectFromArchetype(space, "explosion"))->self;
     Transform *exT = space->GetGameObject(explosion)->GetComponent<Transform>(eTransform);
     exT->SetTranslation(ps->GetTranslation());
     space->hooks.Call("PlayerDied", playerNum); //calling an event called player died
     space->GetGameObject(owner)->Destroy();
+  }
+
+  void PlayerController::SetAnimations()
+  {
+    GamePad *gp = space->GetHandles().GetAs<GamePad>(playerGamePad);
+    //get animated sprite component
+    AniSprite *pa = space->GetHandles().GetAs<AniSprite>(playerAnimation);
+
+    if (isSnapped && !(gp->LStick_InDeadZone()))
+    {
+      //set animated sprite to run
+      if (animCont.AnimState != RUN)
+      {
+        pa->SetRange(Vec2(animCont.run.beginFrame, animCont.run.endFrame));
+        animCont.AnimState = RUN;
+      }
+    }
+    else if (!isSnapped)
+    {
+      if (animCont.AnimState != JUMP)
+      {
+        //set animated sprite to jump
+        pa->SetRange(Vec2(animCont.jump.beginFrame, animCont.jump.endFrame));
+        animCont.AnimState = JUMP;
+      }
+    }
+    else
+    {
+      if (animCont.AnimState != IDLE)
+      {
+        //set animated sprite to idle
+        pa->SetRange(Vec2(animCont.idle.beginFrame, animCont.idle.endFrame));
+        animCont.AnimState = IDLE;
+      }
+    }
+    
   }
 }

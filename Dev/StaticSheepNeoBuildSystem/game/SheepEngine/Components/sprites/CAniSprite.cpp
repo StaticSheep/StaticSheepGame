@@ -57,6 +57,8 @@ namespace Framework
     else
       SetTexture(m_spriteName.c_str());
     
+    UpdateFramePosition();
+
     //TODO not sure if we have a GetOwner()->has working
     space->hooks.Add("Draw", self, BUILD_FUNCTION(AniSprite::Draw));
   }
@@ -131,6 +133,7 @@ namespace Framework
   {
     m_startFrame = start;
     m_endFrame = end;
+    UpdateFramePosition();
   }
 
   /*****************************************************************************/
@@ -143,6 +146,18 @@ namespace Framework
   {
     m_startFrame = (unsigned)range.X;
     m_endFrame = (unsigned)range.Y;
+    UpdateFramePosition();
+  }
+
+  void AniSprite::TweakStartFrame(const void* start)
+  {
+    m_startFrame = *(int*)start;
+    UpdateFramePosition();
+  }
+  void AniSprite::TweakEndFrame(const void* end)
+  {
+    m_endFrame = *(int*)end;
+    UpdateFramePosition();
   }
 
   /*****************************************************************************/
@@ -203,6 +218,44 @@ namespace Framework
 
     uvBegin = Vec2(offsetX, offsetY);
     uvEnd = Vec2(offsetX + m_frameWidth, offsetY + m_frameHeight);
+
+    if (m_flipX)
+    {
+      uvBegin.x *= -1;
+      uvEnd.x *= -1;
+    }
+    if (m_flipY)
+    {
+      uvBegin.y *= -1;
+      uvEnd.y *= -1;
+    }
+  }
+
+  void AniSprite::SetFlipX(bool isFlipped)
+  {
+    m_flipX = isFlipped;
+  }
+
+  void AniSprite::SetFlipY(bool isFlipped)
+  {
+    m_flipY = isFlipped;
+  }
+
+  bool AniSprite::GetFlipX(void)
+  {
+    return m_flipX;
+  }
+
+  bool AniSprite::GetFlipY(void)
+  {
+    return m_flipY;
+  }
+
+  void AniSprite::UpdateFramePosition()
+  {
+    m_currFrame = m_startFrame;
+    m_startFramePos = Vec2(m_currFrame % (int)m_frames.x, m_currFrame / (int)m_frames.x);
+    m_framePos = m_startFramePos;
   }
 
   /*****************************************************************************/

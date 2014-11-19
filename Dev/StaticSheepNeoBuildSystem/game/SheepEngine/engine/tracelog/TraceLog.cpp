@@ -8,7 +8,7 @@ namespace Framework
 {
   Tracelog* TRACELOG = NULL;
 
-
+  using namespace TraceLevel;
 /*****************************************************************************/
 /*!
   \brief
