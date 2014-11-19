@@ -72,7 +72,7 @@ namespace Framework
     GRAPHICS->SetSize(trans->GetScale().X * Size.X, trans->GetScale().Y * Size.Y);
     GRAPHICS->SetColor(Color);
     GRAPHICS->SetUV(Vec2(0,0), Vec2(1,1));
-    GRAPHICS->SetUseCamera(true);
+    GRAPHICS->SetCamState(0);
 
     GRAPHICS->DrawSprite(this);
     

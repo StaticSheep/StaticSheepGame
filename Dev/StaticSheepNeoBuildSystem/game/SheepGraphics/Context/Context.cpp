@@ -124,6 +124,7 @@ namespace DirectSheep
 
     // Initialize Camera's
     m_Ortho = Handle(CAMERA, new Camera(1920, 1080, false));
+    m_orthoScreen = Handle(CAMERA, new Camera(1920, 1080, false));
     m_Perspective = Handle(CAMERA, new Camera(1920, 1080, true));
     m_editor = Handle(CAMERA, new Camera(1920, 1080, true));
     m_camera = m_Perspective;

@@ -50,7 +50,7 @@ class RenderContext
    //                     CAMERA FUNCTIONS                     //
    //////////////////////////////////////////////////////////////
    GFX_API Handle NewCamera();
-   GFX_API void SetUseCam(bool camUse);
+   GFX_API void SetCamState(int camState);
    GFX_API void SetCamPosition(Handle Camera, float x, float y);
    GFX_API void SetCamPosition(Handle Camera, float x, float y, float z);
    GFX_API void SetCamScale(Handle Camera, float width, float height);
@@ -234,6 +234,7 @@ class RenderContext
     Handle                                   m_camera;
     Handle                                   m_Perspective;
     Handle                                   m_Ortho;
+    Handle                                   m_orthoScreen;
     Handle                                   m_editor;
     bool                                     m_camUse;
 

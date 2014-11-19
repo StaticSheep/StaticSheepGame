@@ -7,13 +7,27 @@ namespace DirectSheep
     return Handle(CAMERA, new Camera(1920, 1080, true));
   }
 
-  GFX_API void RenderContext::SetUseCam(bool camUse)
+  GFX_API void RenderContext::SetCamState(int camState)
   {
-    m_camUse = camUse;
-    if (m_camUse)
+    switch (camState)
+    {
+    case 0:
       m_camera.ptr = m_Perspective.ptr;
-    else
+      m_camUse = true;
+      break;
+    case 1:
       m_camera.ptr = m_Ortho.ptr;
+      m_camUse = false;
+      break;
+    case 2:
+      m_camera.ptr = m_orthoScreen.ptr;
+      m_camUse = false;
+      break;
+    default:
+      m_camera.ptr = m_Ortho.ptr;
+      m_camUse = false;
+      break;
+    }
   }
 
   GFX_API void RenderContext::SetCamPosition(Handle Camera, float x, float y)

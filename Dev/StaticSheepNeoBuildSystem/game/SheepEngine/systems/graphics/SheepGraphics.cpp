@@ -128,8 +128,10 @@ namespace Framework
 	void SheepGraphics::Draw()
 	{
     // Draw Hooks
-    
     GameSpace* space;
+
+    SetCamState(2);
+    Draw::DrawRect(0, 0, 256, 256);
     m_renderContext->StartBatch();
     // Regular Draw
     for (auto it = ENGINE->Spaces().begin(); it != ENGINE->Spaces().end(); ++it)
@@ -305,9 +307,9 @@ namespace Framework
      return (SetTexture(texture)).GetIndex();
   }
 
-  void SheepGraphics::SetUseCamera(bool useCam)
+  void SheepGraphics::SetCamState(int camState)
   {
-    m_renderContext->SetUseCam(useCam);
+    m_renderContext->SetCamState(camState);
   }
 
   void SheepGraphics::DrawSpriteText(const char * text, float size, const char * font)

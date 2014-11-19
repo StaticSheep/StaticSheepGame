@@ -17,10 +17,10 @@ namespace Framework
   Vec2 Draw::m_TextPos;
   unsigned Draw::m_TextureID;
 
-  void Draw::SetUseCamera(bool useCam)
+  void Draw::SetCamState(int camState)
   {
-    Draw::m_useCamera = useCam;
-    GRAPHICS->SetUseCamera(useCam);
+    Draw::m_useCamera = camState;
+    GRAPHICS->SetCamState(camState);
   }
 
   void Draw::SetTexture(unsigned texID)
