@@ -16,6 +16,8 @@ namespace Framework
     int endFrame;
   };
 
+  enum AnimationState {IDLE, RUN, JUMP, ATTACK};
+
 	class AnimationController
 	{
 	public:
@@ -29,5 +31,6 @@ namespace Framework
     AnimFrames run;
     AnimFrames jump;
     AnimFrames attack;
+    AnimationState AnimState;
 	};
 }

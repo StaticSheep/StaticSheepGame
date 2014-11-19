@@ -56,6 +56,9 @@ namespace Framework
     playerSprite = space->GetGameObject(owner)->GetComponentHandle(eSprite);
     playerAnimation = space->GetGameObject(owner)->GetComponentHandle(eAniSprite);
 
+    Transform *ps = space->GetHandles().GetAs<Transform>(playerTransform);
+    ps->SetScale(Vec3(0.18f, 0.18f, 0.0));
+
 		GamePad *gp = space->GetHandles().GetAs<GamePad>(playerGamePad); //actually gets the gamepad
 		gp->SetPad(playerNum); //setting pad number
 
@@ -69,6 +72,7 @@ namespace Framework
     SoundEmitter *se = space->GetHandles().GetAs<SoundEmitter>(playerSound);
     se->Play("robot_startup", &SoundInstance(0.50f));
     animCont = AnimationController(playerNum);
+    animCont.AnimState = IDLE;
 	}
 
 	//************************************
@@ -245,6 +249,8 @@ namespace Framework
       BoxCollider *bc = space->GetHandles().GetAs<BoxCollider>(playerCollider);
       float rotation = (snappedNormal.DotProduct(bc->GetBodyUpNormal())) / (snappedNormal.Length() * bc->GetBodyUpNormal().Length());
       rotation = std::acosf(rotation);
+      if (snappedNormal.x == -1.0f)
+        rotation = rotation + (float)PI;
       ps->SetRotation(rotation);
 		}
 		else if (OtherObject->HasComponent(eCircleCollider))
@@ -401,17 +407,29 @@ namespace Framework
     if (isSnapped && !(gp->LStick_InDeadZone()))
     {
       //set animated sprite to run
-      pa->SetRange(Vec2(animCont.run.beginFrame, animCont.run.endFrame));
+      if (animCont.AnimState != RUN)
+      {
+        pa->SetRange(Vec2(animCont.run.beginFrame, animCont.run.endFrame));
+        animCont.AnimState = RUN;
+      }
     }
     else if (!isSnapped)
     {
-      //set animated sprite to jump
-      pa->SetRange(Vec2(animCont.jump.beginFrame, animCont.jump.endFrame));
+      if (animCont.AnimState != JUMP)
+      {
+        //set animated sprite to jump
+        pa->SetRange(Vec2(animCont.jump.beginFrame, animCont.jump.endFrame));
+        animCont.AnimState = JUMP;
+      }
     }
     else
     {
-      //set animated sprite to idle
-      pa->SetRange(Vec2(animCont.idle.beginFrame, animCont.idle.endFrame));
+      if (animCont.AnimState != IDLE)
+      {
+        //set animated sprite to idle
+        pa->SetRange(Vec2(animCont.idle.beginFrame, animCont.idle.endFrame));
+        animCont.AnimState = IDLE;
+      }
     }
     
   }
