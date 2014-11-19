@@ -62,11 +62,7 @@ namespace DirectSheep
     rotMat = XMMatrixIdentity();
     transMat = XMMatrixIdentity();
 
-//<<<<<<< HEAD
-    rotMat = XMMatrixRotationRollPitchYaw(DirectX::XM_PI, 0.0f, m_spriteTrans.theta);
-//=======
     rotMat = XMMatrixRotationRollPitchYaw(m_camUse ? 0.0f : -DirectX::XM_PI, 0.0f, m_spriteTrans.theta);
-//>>>>>>> origin/NeoGraphics
 
     transMat = XMMatrixTranslation(m_spriteTrans.x, m_camUse ? m_spriteTrans.y : -m_spriteTrans.y, 0.0f);
 
