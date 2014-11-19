@@ -130,6 +130,9 @@ namespace Framework
     void GetGamePadState(int index, XINPUT_STATE* state);
     const void* GetDebugData();
 
+    /*----- LUA BINDS -----*/
+    static GamePadInput* GetGamePad(int index);
+
     // we have one mouse...
     MouseInput Mouse;
     // and one keyboard...

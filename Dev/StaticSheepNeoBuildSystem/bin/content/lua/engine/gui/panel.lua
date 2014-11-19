@@ -20,6 +20,10 @@ function META:Prepare()
 
 end
 
+function META:Hovered()
+
+end
+
 function META:Think()
 
 end
