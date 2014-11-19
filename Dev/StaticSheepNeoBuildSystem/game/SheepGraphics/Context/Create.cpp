@@ -144,7 +144,7 @@ namespace DirectSheep
     };
 
     D3D11_MAPPED_SUBRESOURCE ms;
-    m_deviceContext->Map(tempBuffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);    // map the buffer
+    m_deviceContext->Map(tempBuffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);         // map the buffer
     memcpy(ms.pData, QuadVertices, sizeof(QuadVertices));                               // copy the data
     m_deviceContext->Unmap(tempBuffer, NULL);
     m_vertexBufferRes.push_back(tempBuffer);
@@ -355,7 +355,7 @@ namespace DirectSheep
     rd.DepthClipEnable = TRUE;
     rd.ScissorEnable = FALSE;
     rd.AntialiasedLineEnable = TRUE;
-    rd.MultisampleEnable = FALSE;
+    rd.MultisampleEnable = TRUE;
     rd.DepthBias = 0;
     rd.DepthBiasClamp = 0.0f;
     rd.SlopeScaledDepthBias = 0.0f;
