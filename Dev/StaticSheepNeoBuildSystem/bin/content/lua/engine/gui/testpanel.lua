@@ -11,11 +11,11 @@ end
 function META:Paint()
   -- Do the painting yeah
   surface.SetUseCamera(false)
-  -- local tex = surface.GetTextureID("ruiserjump.png")
-  -- surface.SetTexture(tex)
-  -- surface.SetRotation(0)
-  -- surface.DrawTexturedRect(50, 50, 150, 150)
-  draw.RoundedBox(32, 10, 10, 250, 250, Color(255, 255, 255, 255))
+   local tex = surface.GetTextureID("gui/corner16.png")
+   surface.SetTexture(tex)
+   surface.SetRotation(5)
+   surface.DrawTexturedRect(60, 50, 32, 32)
+  --draw.RoundedBox(32, 10, 10, 250, 250, Color(255, 255, 255, 255))
   surface.SetUseCamera(true)
 end
 
