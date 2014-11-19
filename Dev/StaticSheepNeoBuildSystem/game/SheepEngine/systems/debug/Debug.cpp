@@ -13,6 +13,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "engine/tracelog/TraceLog.h"
 #include "systems/audio/SheepAudio.h"
 #include "systems/graphics/SheepGraphics.h"
+#include "systems/physics/SheepPhysics.h"
 //#include "systems/input/Input.h"
 #include "systems/skynet/Skynet.h"
 #include "engine/framerate/FramerateController.h"
@@ -80,6 +81,10 @@ namespace Framework
       input = (DebugInput*)SHEEPINPUT->GetDebugData();
     }
 
+    if (PHYSICS)
+    {
+      physics = (DebugPhysics*)PHYSICS->GetDebugData();
+    }
     
     framerate = (DebugFramerate*)ENGINE->Framerate.GetDebugData();
     TRACELOG->Log(DEBUG, "Linked to Framerate Controller\n");
@@ -194,8 +199,20 @@ namespace Framework
 
         case DEBUG_GRAPHICS:
           GRAPHICS->GetDebugData();
-          
           break;
+
+        case DEBUG_PHYSICS:
+          PHYSICS->GetDebugData();
+          FormatString(currentState);
+          Draw::SetUseCamera(false);
+          Draw::SetColor(1.0f, 1.0f, 1.0f, 1.0f);
+          Draw::SetRotation(0.0f);
+          Draw::SetPosition(ENGINE->Window->GetWidth() / 2.0f, ENGINE->Window->GetHeight() / 2.0f - 100.0f);
+          Draw::DrawString(string.c_str(), 15.0f, "Helvetica");
+          Draw::SetUseCamera(true);
+          break;
+          
+          
         }
       }
 
@@ -276,6 +293,15 @@ namespace Framework
 
       string += format1;
 
+      break;
+
+
+    case DEBUG_PHYSICS:
+      format1 = std::to_string(physics->bodies);
+      format2 = std::to_string(physics->manifolds);
+
+      string = "Bodies: " + format1; 
+      string += "\n Manifolds: " + format2;
       break;
 
     default:
@@ -452,6 +478,14 @@ namespace Framework
         currentState = 0;
       else
         currentState = DEBUG_INPUT;
+    }
+
+    if (SHEEPINPUT->Keyboard.KeyIsPressed(VK_F11))
+    {
+      if (currentState == DEBUG_PHYSICS)
+        currentState = 0;
+      else
+        currentState = DEBUG_PHYSICS;
     }
 
     // Add more states here.

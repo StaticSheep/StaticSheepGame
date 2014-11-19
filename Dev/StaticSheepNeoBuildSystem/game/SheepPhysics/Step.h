@@ -70,6 +70,7 @@ namespace SheepFizz
 		PHY_API float GetBodyRot(Handle handle);
 		PHY_API float GetBodyAngVeloc(Handle handle);
 		PHY_API float GetBodyTorque(Handle handle);
+    PHY_API Vec3D GetBodyUpNormal(Handle handle);
 
     //gravity gettors
     PHY_API Vec3D GetBodyGravityNormal(Handle handle);
@@ -118,6 +119,10 @@ namespace SheepFizz
     PHY_API void SetCollisionCallback(CollisionCB cb);
 		PHY_API void SetUserData(void* userData);
 
+    //debug
+    PHY_API unsigned int PhysicsSpace::GetDebugBodyNumber(void);
+    PHY_API unsigned int PhysicsSpace::GetDebugManifoldNumber(void);
+
 		#ifdef SHEEPPHYSICS
 
 		private:
@@ -140,6 +145,9 @@ namespace SheepFizz
 			HandleManager handles_;
 
 			std::vector<Manifold> manifolds_;
+
+      //debug info
+      unsigned int manifoldNumber_;
 
 		#endif
 

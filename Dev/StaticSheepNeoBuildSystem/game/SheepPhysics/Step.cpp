@@ -162,6 +162,13 @@ namespace SheepFizz
     return body->gravityNormal_;
   }//end of GetBodyGravityNormal
 
+  Vec3D PhysicsSpace::GetBodyUpNormal(Handle handle)
+  {
+    Body* body = handles_.GetAs<Body>(handle);
+    if (body->shape_->GetShape() == Rec)
+      return ((Rectangle*)body->shape_)->GetNormal(2);
+  }//end of GetBodyUpNormal
+
 	//get the time for the engine
 	float PhysicsSpace::GetTime(void) {return dt_;}
 
@@ -380,6 +387,9 @@ namespace SheepFizz
 			  cb_(manifolds_[i].A->userData, manifolds_[i].B->userData, userData_, &manifolds_[i]);
 		}
 
+    //debug data
+    manifoldNumber_ = manifolds_.size();
+
 		//empty manifold list
 		manifolds_.clear();
 
@@ -423,4 +433,17 @@ namespace SheepFizz
 	{
 		cb_ = cb;
 	}//end of SetCollisionCallback
+
+  //debug functions
+  unsigned int PhysicsSpace::GetDebugBodyNumber(void)
+  {
+    return bodies_.Size();
+  }//end of GetDebugData
+
+  //debug functions
+  unsigned int PhysicsSpace::GetDebugManifoldNumber(void)
+  {
+    return manifoldNumber_;
+  }//end of GetDebugData
+  
 }

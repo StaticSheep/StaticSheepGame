@@ -20,7 +20,7 @@ namespace SheepFizz
 	//settors
 	void Shape::SetArea(float area) {area_ = area;}
 
-	void Shape::ChangeShape(float x, float y) {}
+	void Shape::ChangeShape(float, float) {}
 
 	//primary functions - sets up shape - calculates area
 	void Shape::Initialize(void) {}
@@ -96,7 +96,7 @@ namespace SheepFizz
 	}
 
 	//set the shape after creation
-	void Circle::ChangeShape(float r, float y)
+	void Circle::ChangeShape(float r, float)
 	{
 		radius_ = r;
 		Initialize();
@@ -126,21 +126,19 @@ namespace SheepFizz
     float moment = 1.0f / 2.0f * width_ * width_ * width_ * height_;
     SetMomentOfInertia(moment);
 
-    SetShape(Rec);
+    SetShape(Poly);
 
-    vertexNumber_ = MAXVERTICES;
+    vertexNumber_ = size;
 
     //vertices oriented counterclockwise
-    vertices_[0] = Vec3D(width_ / 2, height_ / 2);
-    vertices_[1] = Vec3D(-width_ / 2, height_ / 2);
-    vertices_[2] = Vec3D(-width_ / 2, -height_ / 2);
-    vertices_[3] = Vec3D(width_ / 2, -height_ / 2);
+    for (unsigned int i = 0; i < size; ++i)
+      vertices_[i] = vertices[i];
 
     //calculate side normals - starting with vertices 0 and 1
-    for (int i = 0; i < 4; i++)
+    for (unsigned int i = 0; i < size; i++)
     {
       //calculate next vertices after this one
-      int nextVertice = i + 1 < 4 ? i + 1 : 0;
+      unsigned int nextVertice = i + 1 < size ? i + 1 : 0;
 
       //subtract two vertices for vector and transform into normal
       normals_[i] = (vertices_[nextVertice] - vertices_[i]).CalculateNormal();

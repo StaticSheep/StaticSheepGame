@@ -13,6 +13,8 @@ namespace SheepFizz
 	};
 
 	class BodyProperties
+	{
+	public:
 	};
 
 	class StickyProperty: public BodyProperties

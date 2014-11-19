@@ -7,13 +7,15 @@ namespace Framework
   struct DebugGraphics;
   struct DebugFramerate;
   struct DebugInput;
+  struct DebugPhysics;
 
   enum DebugState
   {
     DEBUG_AUDIO = 1,
     DEBUG_GRAPHICS,
     DEBUG_PERFORMANCE,
-    DEBUG_INPUT
+    DEBUG_INPUT,
+    DEBUG_PHYSICS
   };
 
   struct PerformanceData
@@ -55,6 +57,7 @@ namespace Framework
     DebugGraphics*  graphics;
     DebugFramerate* framerate;
     DebugInput*     input;
+    DebugPhysics*   physics;
 
   };
 }

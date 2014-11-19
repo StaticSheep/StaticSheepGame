@@ -138,11 +138,11 @@ namespace DirectSheep
 
   void Camera::BuildPerspective()
   {
-    m_Projection = DirectX::XMMatrixPerspectiveFovLH((FLOAT)DirectX::XMConvertToRadians(m_Fov), m_width / m_height, 1.0f, 1000.0f);
+    m_Projection = DirectX::XMMatrixPerspectiveFovLH(DirectX::XMConvertToRadians(m_Fov), m_width / m_height, 1.0f, 1000.0f);
   }
 
   void Camera::BuildOrthographic()
   {
-    m_Projection = DirectX::XMMatrixOrthographicOffCenterLH(0, m_width, m_height, 0, 1.0f, 1000.0f);
+    m_Projection = DirectX::XMMatrixOrthographicOffCenterLH(0, m_width, -m_height, 0, 0.0f, 1000.0f);
   }
 }

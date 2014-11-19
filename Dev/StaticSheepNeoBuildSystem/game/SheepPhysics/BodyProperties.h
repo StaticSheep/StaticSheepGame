@@ -15,8 +15,8 @@ namespace SheepFizz
 	class BodyProperties
 	{
 	public:
-		virtual void PropertyCollision(unsigned int specifier) {}
-		virtual void PropertyResolution(Framework::Vec3D& normal) {}
+    virtual void PropertyCollision(unsigned int specifier);
+    virtual void PropertyResolution(Framework::Vec3D& normal);
 	};
 
 	class StickyProperty: public BodyProperties
