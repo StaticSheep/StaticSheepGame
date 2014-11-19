@@ -81,6 +81,21 @@ function gui.Register( name, mtable, base )
 
   -- Default base is Panel
   mtable.baseClass = base or "Panel"
+  -- mtable.__oldIndex = mtable.__index
+  -- mtable.__index = function (t, k)
+  --   print("test")
+  --   if PanelFactory[mtable.baseClass] and
+  --     PanelFactory[mtable.baseClass][k] then
+  --     return PanelFactory[mtable.baseClass][k] end
+
+  --   if k == "super" then
+  --     print("Super?")
+  --     return PanelFactory[mtable.baseClass]
+  --   end
+
+  --   return t.__oldIndex(t, k)
+  -- end
+
   
   PanelFactory[ name ] = mtable
 
