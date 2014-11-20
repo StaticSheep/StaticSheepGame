@@ -107,10 +107,9 @@ namespace Framework
 			hasFired = true;
 			onFire();
 		}
-    else if (weapon->semi == false)
+    if (weapon->semi == false)
     {
-      --shotDelay;
-      if(shotDelay < 0)
+      if(shotDelay <= 0)
       {
         hasFired = false;
         shotDelay = weapon->delay;
@@ -224,16 +223,16 @@ namespace Framework
     {
       health -= OtherObject->GetComponent<Bullet_Default>(eBullet_Default)->damage;
       
-      se->Play("hit1", &SoundInstance(0.75f));
+      se->Play("hit1", &SoundInstance(1.0f));
       return;
     }
-    if ((OtherObject->name == "KillBox" || OtherObject->name == "KillBoxBig") && !hasRespawned)
+    if (OtherObject->name == "KillBox" || OtherObject->name == "KillBoxBig")
       health = 0;
 
     if ((OtherObject->name == "Grinder") && !hasRespawned)
       health -= 10;
     if (OtherObject->name == "WeaponPickup")
-      se->Play("weapon_pickup", &SoundInstance(0.5f));
+      se->Play("weapon_pickup", &SoundInstance(0.75f));
 
 		isSnapped = true;
 		//get the thing we are colliding with
@@ -246,12 +245,25 @@ namespace Framework
 
 		if (OtherObject->HasComponent(eBoxCollider) && OtherObject->name != "Player")
 		{
+      float dotNormals;
+      Vec3 nextSnappedNormal;
+      Vec3 oldSnappedNormal = snappedNormal;
       BoxCollider *OOBc = OtherObject->GetComponent<BoxCollider>(eBoxCollider);
-      Transform *ps = space->GetHandles().GetAs<Transform>(playerTransform);
-      if (snappedNormal.x != OOBc->GetCollisionNormals(manifold).x && snappedNormal.y != OOBc->GetCollisionNormals(manifold).y)
-        ps->SetTranslation(ps->GetTranslation() + -(snappedNormal * 1.5));
-      snappedNormal = OOBc->GetCollisionNormals(manifold);
       BoxCollider *bc = space->GetHandles().GetAs<BoxCollider>(playerCollider);
+      Transform *ps = space->GetHandles().GetAs<Transform>(playerTransform);
+      if (oldSnappedNormal.x != OOBc->GetCollisionNormals(manifold).x && oldSnappedNormal.y != OOBc->GetCollisionNormals(manifold).y &&
+        snappedNormal.x != OOBc->GetCollisionNormals(manifold).x && snappedNormal.y != OOBc->GetCollisionNormals(manifold).y)
+      {
+        nextSnappedNormal = OOBc->GetCollisionNormals(manifold);
+        nextSnappedNormal.Rotate(PI / 2);
+        dotNormals = snappedNormal.DotProduct(nextSnappedNormal);
+        if (dotNormals > 0)
+          bc->AddToVelocity((nextSnappedNormal * 10));
+        else
+          bc->AddToVelocity(-(nextSnappedNormal * 10));
+      }
+      snappedNormal = OOBc->GetCollisionNormals(manifold);
+      
       float rotation = (snappedNormal.DotProduct(bc->GetBodyUpNormal())) / (snappedNormal.Length() * bc->GetBodyUpNormal().Length());
       rotation = std::acosf(rotation);
       if (snappedNormal.x == -1.0f)

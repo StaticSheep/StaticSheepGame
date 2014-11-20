@@ -34,7 +34,7 @@ GameObject
     Color Vec4
     {
       R float 1.000000
-      G float 1.000000
+      G float 0.000000
       B float 1.000000
       A float 1.000000
     }

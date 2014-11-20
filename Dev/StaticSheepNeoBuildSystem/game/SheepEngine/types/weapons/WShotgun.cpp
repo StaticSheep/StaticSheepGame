@@ -12,7 +12,7 @@ namespace Framework
   {
     delay = 40;
     damage = 34;
-    knockback = 120;
+    knockback = 200;
     semi = true;
   }
 
@@ -44,7 +44,7 @@ namespace Framework
         bullet->GetComponent<Bullet_Default>(eBullet_Default)->damage = damage;
         BT = bullet->GetComponent<Transform>(eTransform);
         bulletC = bullet->GetComponent <CircleCollider>(eCircleCollider);
-        BT->SetTranslation(playerTrans->GetTranslation() + PlayerAimDir * 50);
+        BT->SetTranslation(playerTrans->GetTranslation() + PlayerAimDir * 35);
         bulletC->AddToVelocity(AimDir * 1000);
       }
       if (i != 0)
@@ -54,7 +54,7 @@ namespace Framework
         bullet->GetComponent<Bullet_Default>(eBullet_Default)->damage = damage;
         BT = bullet->GetComponent<Transform>(eTransform);
         bulletC = bullet->GetComponent <CircleCollider>(eCircleCollider);
-        BT->SetTranslation(playerTrans->GetTranslation() + PlayerAimDir * 50);
+        BT->SetTranslation(playerTrans->GetTranslation() + PlayerAimDir * 35);
         bulletC->AddToVelocity(NegAimDir * 1000);
       }
     }

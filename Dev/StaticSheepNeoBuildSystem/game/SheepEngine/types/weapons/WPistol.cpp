@@ -29,7 +29,7 @@ namespace Framework
     CircleCollider *bulletC = bullet->GetComponent <CircleCollider>(eCircleCollider);
     Transform *playerTrans = player->GetComponent <Transform>(eTransform);
     Vec3 AimDir = player->GetComponent<PlayerController>(ePlayerController)->aimDir;
-    BT->SetTranslation(playerTrans->GetTranslation() + AimDir * 25);
+    BT->SetTranslation(playerTrans->GetTranslation() + AimDir * 35);
     bulletC->AddToVelocity(AimDir * 1000);
 
     SoundEmitter *se = player->GetComponent<SoundEmitter>(eSoundEmitter);

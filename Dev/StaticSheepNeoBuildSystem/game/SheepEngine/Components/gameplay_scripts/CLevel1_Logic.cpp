@@ -16,7 +16,7 @@ namespace Framework
 	{
     timeLimit = 60;
     spawnTimer = 2;
-    numOfPlayers = 2;
+    numOfPlayers = 1;
     spawnPos[0] = Vec3(-490.0f, -266.0f, 0.0f);
     spawnPos[1] = Vec3(490.0f, -266.0f, 0.0f);
     spawnPos[2] = Vec3(490.0f, 266.0f, 0.0f);
