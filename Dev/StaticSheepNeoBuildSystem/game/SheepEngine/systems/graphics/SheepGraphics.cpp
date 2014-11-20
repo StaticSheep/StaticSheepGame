@@ -129,6 +129,7 @@ namespace Framework
 	{
     // Draw Hooks
     GameSpace* space;
+    
 
     m_renderContext->StartBatch();
     // Regular Draw

@@ -111,7 +111,7 @@ namespace DirectSheep
                XMLoadFloat4(&m_spriteBlend),
                m_spriteTrans.theta,
                Vec2((sourcePos.right - sourcePos.left) / 2.0f, (sourcePos.bottom - sourcePos.top) / 2.0f),
-               Vec2(m_spriteTrans.w, -m_spriteTrans.h), DirectX::SpriteEffects_None,-m_spriteTrans.z);
+               Vec2(m_spriteTrans.w, -m_spriteTrans.h), DirectX::SpriteEffects_None, m_spriteTrans.z);
   }
 
 
