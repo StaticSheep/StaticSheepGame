@@ -24,6 +24,12 @@ namespace SheepFizz
 
 		mDynamicFriction = Minimum(A->material_.GetMaterialDynamicFriction(), 
 			B->material_.GetMaterialDynamicFriction());
+    
+    accumulatedImpulse[0] = 0;
+    accumulatedImpulse[1] = 0;
+    accumulatedTanImpulse[0] = 0;
+    accumulatedTanImpulse[1] = 0;
+
 	}//end of Initialize
 
 	//complex declaration - 2D array of function pointers that take a pointer to a manifold and returns a void

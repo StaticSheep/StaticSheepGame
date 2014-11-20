@@ -20,6 +20,7 @@ namespace SheepFizz
  
 
 	#define GRAVITY -100.0f
+  #define MAX_ITERATIONS 10
 
 	class PhysicsSpace
 	{

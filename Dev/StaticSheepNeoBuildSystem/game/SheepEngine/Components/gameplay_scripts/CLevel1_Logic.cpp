@@ -38,6 +38,7 @@ namespace Framework
     startFlag = true;
     for (int i = 0; i < 4; ++i)
       spawnTimers[i] = 2.0f;
+    numOfPlayers = 1;
 	}
 
   void Level1_Logic::Remove()
@@ -64,12 +65,12 @@ namespace Framework
       ePlat->GetComponent<ElevatorPlat>(eElevatorPlat)->direction = true;
       PT->SetTranslation(Vec3(242.0,-320.0,0.0));
 
-      if (randomDrop == 0)
+      /*if (randomDrop == 0)
       {
         GameObject *weap = (FACTORY->LoadObjectFromArchetype(space, "ShotgunPickup"));
         Transform *WT = weap->GetComponent<Transform>(eTransform);
         WT->SetTranslation(PT->GetTranslation() + Vec3(0.0, 16.0, 0.0));
-      }
+      }*/
 
       randomDrop = GetRandom(0, 2);
 
@@ -79,12 +80,12 @@ namespace Framework
       ePlat2->GetComponent<ElevatorPlat>(eElevatorPlat)->direction = false;
       PT2->SetTranslation(Vec3(-235.0, 320.0, 0.0));
 
-      if (randomDrop == 0)
+      /*if (randomDrop == 0)
       {
         GameObject *weap = (FACTORY->LoadObjectFromArchetype(space, "AutoPickup"));
         Transform *WT = weap->GetComponent<Transform>(eTransform);
         WT->SetTranslation(PT2->GetTranslation() + Vec3(0.0, -16.0, 0.0));
-      }
+      }*/
 
       spawnTimer = 2;
     }

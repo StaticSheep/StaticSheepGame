@@ -42,6 +42,10 @@ namespace SheepFizz
 		float mStaticFriction;		  //the static friction of the two objects
 
 		unsigned int contactCount;	    //the number of contacts in the manifold
+
+    //accumulated impulses for Legragian
+    float accumulatedImpulse[2];    
+    float accumulatedTanImpulse[2];
 	
 	};
 

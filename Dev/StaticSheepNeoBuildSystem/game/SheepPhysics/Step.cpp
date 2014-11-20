@@ -372,23 +372,26 @@ namespace SheepFizz
 			}
 		}
 
-		//apply forces for all manifolds - positional correction first
-		for(unsigned i = 0; i < manifolds_.size(); ++i)
-		{
-      //check collision groups
-      if (Collisions[manifolds_[i].A->collisionGroup_][manifolds_[i].B->collisionGroup_] != 2)
-        continue;
+    for (unsigned int k = 0; k < MAX_ITERATIONS; ++k)
+    {
+      //apply forces for all manifolds - positional correction first
+      for (unsigned int i = 0; i < manifolds_.size(); ++i)
+      {
+        //check collision groups
+        if (Collisions[manifolds_[i].A->collisionGroup_][manifolds_[i].B->collisionGroup_] != 2)
+          continue;
 
-      manifolds_[i].PositionalCorrection();
-			manifolds_[i].ApplyForces();
-		}
+        //manifolds_[i].PositionalCorrection();
+        manifolds_[i].ApplyForces();
+      }
+    }
 
 		//apply forces and velocity to all bodies
-		for(unsigned i = 0; i < bodies_.Size(); ++i)
+		for(unsigned int i = 0; i < bodies_.Size(); ++i)
 			SymplecticEuler(*((Body*)bodies_[i]));
 
 		//clean up forces so no interference with next loop
-		for(unsigned i = 0; i < bodies_.Size(); ++i)
+		for(unsigned int i = 0; i < bodies_.Size(); ++i)
 		{
 			((Body*)bodies_[i])->force_.x_ = 0.0f;
 			((Body*)bodies_[i])->force_.y_ = 0.0f;
