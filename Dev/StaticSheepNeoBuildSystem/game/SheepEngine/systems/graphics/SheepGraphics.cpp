@@ -130,6 +130,17 @@ namespace Framework
     // Draw Hooks
     GameSpace* space;
 
+    //Vec2 size = m_renderContext->MeasureString("TEST THIS\nSHIT BOOM", 32, "Arial");
+
+    //Draw::SetCamState(0);
+    //Draw::SetColor(1, 0, 0, 1);
+    //Draw::DrawRect(0, -size.y / 2, size.x, size.y);
+    //Draw::SetColor(1, 1, 1, 1);
+    //Draw::SetPosition(0 - size.x / 2, 0);
+    //Draw::SetRotation(0);
+    //Draw::DrawString("TEST THIS\nSHIT BOOM", 32, "Arial");
+    //Draw::SetCamState(0);
+
     m_renderContext->StartBatch();
     // Regular Draw
     for (auto it = ENGINE->Spaces().begin(); it != ENGINE->Spaces().end(); ++it)
@@ -349,4 +360,11 @@ namespace Framework
     return false;
   }
   
+
+  Vec2 SheepGraphics::MeasureString(const char* text, float size,
+    const char* font)
+  {
+    return m_renderContext->MeasureString(text, size, font);
+  }
+
 }

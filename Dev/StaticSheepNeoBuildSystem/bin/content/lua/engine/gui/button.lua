@@ -1,25 +1,39 @@
 local META = GetMeta("Button")
 
 function META:Init()
+  self.hoverColor = Color(200, 150, 150, 200)
+  self.bgHoverColor = Color(150, 250, 150, 200)
+  self.OnPressed = nil
 end
 
 function META:Think()
 
 end
 
-function META:Paint()
-  surface.SetCamState(2)
+function META:Pressed()
+  if self.OnPressed then
+    self:OnPressed()
+  end
+end
 
-  local border = 12
+function META:SetOnPressed(func)
+  self.OnPressed = func
+end
+
+function META:Paint()
+  local border = 4
   local pos = self:DrawPos()
+
+
+  self:SetBGColor(Color(100, 100, 100, 200))
+  self:SetColor(Color(180, 180, 180, 200))
+  self:SetSize(Vec2(256, 64))
 
   draw.RoundedBox(4, pos.x, pos.y,
     self.size.x, self.size.y, self.bgColor)
 
   draw.RoundedBox(4, border + pos.x, border + pos.y,
     self.size.x - border * 2, self.size.y - border * 2, self.color)
-
-  surface.SetCamState(0)
 end
 
 gui.Register( "Button", META, "Panel" )

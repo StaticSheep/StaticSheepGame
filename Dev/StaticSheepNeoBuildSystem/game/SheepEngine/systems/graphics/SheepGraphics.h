@@ -85,6 +85,8 @@ namespace Framework
 
     void SetDefaultCam(void);
 
+    Vec2 MeasureString(const char* text, float size, const char* font);
+
 	private:
 
     // Initialization call

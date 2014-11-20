@@ -51,6 +51,9 @@ namespace Framework
       BIND_FUNCTION_TABLE(L, Draw::DrawString, DrawString, surface);
       BIND_FUNCTION_TABLE(L, Draw::SetPosition, SetPos, surface);
 
+      BIND_FUNCTION_EX(L, Draw::ScreenWidth, ScrW);
+      BIND_FUNCTION_EX(L, Draw::ScreenHeight, ScrH);
+
       CREATE_TABLE(L, factory);
       BIND_FUNCTION_TABLE(L, Factory::LuaLoadObjectFromArchetype, CreateObjectFromType, factory);
 

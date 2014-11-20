@@ -553,4 +553,30 @@ namespace DirectSheep
     }
   }
 
+  GFX_API Framework::Vec2D RenderContext::MeasureString(const char* text,
+    float size, const char* font)
+  {
+    std::string tempText = text;
+    std::wstring wcText(tempText.begin(), tempText.end());
+
+    std::string tempFont = font;
+    std::wstring wcFont(tempFont.begin(), tempFont.end());
+
+    FW1_RECTF rect;
+    rect.Left = 0.0f;
+    rect.Right = 0.0f;
+    rect.Top = 0.0f;
+    rect.Bottom = 0.0f;
+
+    FW1_RECTF res = m_font.m_fontWrapper->MeasureString(wcText.c_str(),
+      wcFont.c_str(), size, &rect, FW1_ANALYZEONLY
+      | FW1_RESTORESTATE | FW1_LEFT | FW1_TOP | FW1_NOWORDWRAP);
+
+    float width = res.Right;
+    float height = abs(res.Top) + abs(res.Bottom);
+    //m_font->m_fontWrapper->MeasureString;
+
+    return Framework::Vec2D(width, height);
+  }
+
 }

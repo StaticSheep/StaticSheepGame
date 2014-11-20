@@ -54,7 +54,6 @@ include("meta.lua")
 
 require("hook")
 require("filesystem")
-require("draw")
 
 -- Initialize all of the modules
 for k,v in pairs(SheepModules) do
@@ -66,6 +65,8 @@ end
 filesystem.BlacklistFolder("includes")
 filesystem.BlacklistFolder("lua_levels")
 
+filesystem.LoadSingleLuaFile("content/lua/engine/includes/util.lua", true)
+filesystem.LoadSingleLuaFile("content/lua/engine/includes/meta.lua", true)
 filesystem.LoadLuaFiles("content/lua/engine/includes/libraries/")
 filesystem.LoadLuaFiles("content/lua/engine/includes/management/")
 

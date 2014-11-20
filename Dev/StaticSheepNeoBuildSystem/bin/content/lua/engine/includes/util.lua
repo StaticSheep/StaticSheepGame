@@ -9,6 +9,11 @@ local function Pad()
 end
 
 function PrintTable(tbl)
+  printed = {}
+  PrintTableStep(tbl)
+end
+
+function PrintTableStep(tbl)
   if not padding then padding = 0 end
 
   Pad()
@@ -19,9 +24,15 @@ function PrintTable(tbl)
   for k,v in pairs(tbl) do
 
     if (type(v) == "table") then
-      Pad()
-      io.write(tostring(k)..":".."\n")
-      PrintTable(v)
+      if printed[tostring(v)] == nil then
+        printed[tostring(v)] = true
+        Pad()
+        io.write(tostring(k)..":".."\n")
+        PrintTableStep(v)
+      else
+        Pad()
+        io.write(tostring(k)..": "..tostring(v).."\n")
+      end
     else
       Pad()
       io.write(tostring(k)..": "..tostring(v).. "\n")

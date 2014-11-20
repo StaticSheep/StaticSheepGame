@@ -19,7 +19,7 @@ namespace Framework
 
   void Draw::SetCamState(int camState)
   {
-    Draw::m_useCamera = camState;
+    Draw::m_useCamera = camState != 0;
     GRAPHICS->SetCamState(camState);
   }
 
@@ -140,4 +140,21 @@ namespace Framework
   {
     GRAPHICS->DrawSpriteText(text, size, font);
   }
+
+
+  int Draw::ScreenHeight(void)
+  {
+    return GRAPHICS->_ScreenHeight;
+  }
+
+  int Draw::ScreenWidth(void)
+  {
+    return GRAPHICS->_ScreenWidth;
+  }
+
+  Vec2 Draw::MeasureString(const char* text, float size, const char* font)
+  {
+    return GRAPHICS->MeasureString(text, size, font);
+  }
+  
 }

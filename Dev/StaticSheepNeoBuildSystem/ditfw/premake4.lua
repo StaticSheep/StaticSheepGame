@@ -64,6 +64,7 @@ project "ditfw"
 		, depsdir .. "/wxwidgets/include"
 		, depsdir .. "/miniformat"
 		, srcdir .. "/../game/SheepGraphics/include"
+		, srcdir .. "/../game/SheepUtil/include"
 	}
 
 	Core.deps = 

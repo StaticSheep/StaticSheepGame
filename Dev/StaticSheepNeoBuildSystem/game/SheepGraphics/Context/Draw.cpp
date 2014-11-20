@@ -59,7 +59,7 @@ namespace DirectSheep
     transMat = XMMatrixIdentity();
 
 
-    rotMat = XMMatrixRotationRollPitchYaw(m_camUse ? 0.0f : -DirectX::XM_PI, 0.0f, m_spriteTrans.theta);
+    rotMat = XMMatrixRotationRollPitchYaw(-DirectX::XM_PI, 0.0f, m_spriteTrans.theta);
 
 
     transMat = XMMatrixTranslation(m_spriteTrans.x, m_camUse ? m_spriteTrans.y : -m_spriteTrans.y, 0.0f);
@@ -88,7 +88,7 @@ namespace DirectSheep
       //RGBTOBGR(Vec3(m_spriteBlend.z, m_spriteBlend.y, m_spriteBlend.x, m_spriteBlend.w)),// Text color, 0xAaBbGgRr
       NULL,
       (float*)(&matFinal)->m,
-      FW1_RESTORESTATE | FW1_LEFT | FW1_VCENTER | FW1_NOWORDWRAP
+      FW1_RESTORESTATE | FW1_LEFT | FW1_TOP | FW1_NOWORDWRAP
       );// Flags (for example FW1_RESTORESTATE to keep context states 
 
   }

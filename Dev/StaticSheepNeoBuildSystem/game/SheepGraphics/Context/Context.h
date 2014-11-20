@@ -1,6 +1,7 @@
 #pragma once
 
 #include "DataTypes.h"
+#include "Vec2D.h"
 
 namespace DirectSheep
 {
@@ -134,9 +135,12 @@ class RenderContext
     /////////////////////////////////////////////////////////////
 
     void CopyData(const Handle& handle, const void *data, size_t size = 0);
-   GFX_API void ClearRenderTarget(const Handle& handle, float r, float g, float b, float a);
+   GFX_API void ClearRenderTarget(const Handle& handle,
+     float r, float g, float b, float a);
    GFX_API void ClearBackBuffer(void);
    GFX_API void ClearDepthBuffer(void);
+   GFX_API Framework::Vec2D MeasureString(const char* text, float size,
+     const char* font);
 
     /////////////////////////////////////////////////////////////
     //                 PUBLIC RELEASE FUCNTION                 //
