@@ -13,7 +13,7 @@ namespace Framework
   {
     delay = 5;
     damage = 10;
-    knockback = 20;
+    knockback = 50;
     semi = false;
   }
 

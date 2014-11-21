@@ -33,6 +33,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "types/weapons/WPistol.h"
 #include "types/weapons/WShotgun.h"
 #include "types/weapons/WAutomatic.h"
+#include "components/gameplay_scripts/CWarningText.h"
 
 namespace Framework
 {
@@ -193,6 +194,9 @@ namespace Framework
 
     TYPE_REGISTER(Explosion);
     TYPE_SET_TWEAK_TYPE(Explosion, AntTweak::TW_TYPE_COMPONENT);
+
+    TYPE_REGISTER(WarningText);
+    TYPE_SET_TWEAK_TYPE(WarningText, AntTweak::TW_TYPE_COMPONENT);
 
     TYPE_REGISTER(WeaponPickup);
     TYPE_SET_TWEAK_TYPE(WeaponPickup, AntTweak::TW_TYPE_COMPONENT);

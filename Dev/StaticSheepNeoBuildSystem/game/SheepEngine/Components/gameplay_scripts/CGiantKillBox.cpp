@@ -54,7 +54,7 @@ namespace Framework
     }
     if (direction)
     {
-      pt->SetTranslation(pt->GetTranslation() + Vec3(-1.0, 0.0, 0.0));
+      pt->SetTranslation(pt->GetTranslation() + Vec3(-3.0, 0.0, 0.0));
       for (int i = 0; i < 7; ++i)
       {
         GT[i] = (space->GetGameObject(Grinders[i])->GetComponent<Transform>(eTransform));
@@ -63,9 +63,12 @@ namespace Framework
     }
     else
     {
-      /*pt->SetTranslation(pt->GetTranslation() + Vec3(1.0, 0.0, 0.0));
-      for (int i = 0; i < 15; ++i)
-        GT[i]->SetTranslation(pt->GetTranslation() + Vec3(1.0, 0.0, 0.0));*/
+      pt->SetTranslation(pt->GetTranslation() + Vec3(3.0, 0.0, 0.0));
+      for (int i = 0; i < 7; ++i)
+      {
+        GT[i] = (space->GetGameObject(Grinders[i])->GetComponent<Transform>(eTransform));
+        GT[i]->SetTranslation(pt->GetTranslation() + Vec3(0.0, ((float)i * 64.0f - 192.0f), 0.0));
+      }
     }
 	}
 

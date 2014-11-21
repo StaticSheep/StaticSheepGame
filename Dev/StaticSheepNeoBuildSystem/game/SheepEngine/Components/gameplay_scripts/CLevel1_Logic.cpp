@@ -7,9 +7,10 @@
 #include "CElevatorPlat.h"
 #include "../controllers/player/CPlayerController.h"
 #include "../SheepUtil/include/SheepMath.h"
+#include "CGiantKillBox.h"
 
 static const char *playerNames[] = { "Player1", "Player2", "Player3", "Player4" };
-
+static bool warning;
 namespace Framework
 {
   Level1_Logic::Level1_Logic()
@@ -21,6 +22,7 @@ namespace Framework
     spawnPos[1] = Vec3(490.0f, -266.0f, 0.0f);
     spawnPos[2] = Vec3(490.0f, 266.0f, 0.0f);
     spawnPos[3] = Vec3(-490.0f, 266.0f, 0.0f);
+    warning = false;
 	}
 
   Level1_Logic::~Level1_Logic()
@@ -34,7 +36,7 @@ namespace Framework
 		space->hooks.Add("LogicUpdate", self, BUILD_FUNCTION(Level1_Logic::LogicUpdate));
     space->hooks.Add("PlayerDied", self, BUILD_FUNCTION(Level1_Logic::PlayerDied));
     levelSound = space->GetGameObject(owner)->GetComponentHandle(eSoundPlayer);
-    timeLimit = 60;
+    timeLimit = 35;
     startFlag = true;
     for (int i = 0; i < 4; ++i)
       spawnTimers[i] = 2.0f;
@@ -94,10 +96,24 @@ namespace Framework
       GameObject *eGiantPlat = (FACTORY->LoadObjectFromArchetype(space, "KillBoxBig"));
       Transform *GPT = eGiantPlat->GetComponent<Transform>(eTransform);
       //BoxCollider *gaintPlatC = eGiantPlat->GetComponent <BoxCollider>(eBoxCollider);
-      GPT->SetTranslation(Vec3(600.0, 0.0, 0.0));
-      timeLimit = 60;
+      if (GetRandom(0, 1))
+      {
+        eGiantPlat->GetComponent<GiantKillBox>(eGiantKillBox)->direction = true;
+        GPT->SetTranslation(Vec3(600.0, 0.0, 0.0));
+      }
+      else
+      {
+        eGiantPlat->GetComponent<GiantKillBox>(eGiantKillBox)->direction = false;
+        GPT->SetTranslation(Vec3(-600.0, 0.0, 0.0));
+      }
+      timeLimit = GetRandom(30, 60);
+      warning = false;
     }
-
+    else if (timeLimit > 0.0f && timeLimit < 2.0f && warning == false)
+    {
+      (FACTORY->LoadObjectFromArchetype(space, "WarnText"));
+      warning = true;
+    }
     
     if(!playing)
     {
