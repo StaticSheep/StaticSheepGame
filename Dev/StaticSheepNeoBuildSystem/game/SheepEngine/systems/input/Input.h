@@ -1,3 +1,5 @@
+
+#pragma once
 #ifndef SHEEP_INPUT_H
 #define SHEEP_INPUT_H
 

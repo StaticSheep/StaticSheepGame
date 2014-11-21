@@ -17,6 +17,9 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/sprites/CSprite.h"
 #include "components/lua/CLuaComponent.h"
 
+#include "systems/input/devices/GamepadInput.h"
+#include "systems/input/Input.h"
+
 namespace Framework
 {
   namespace Lua
@@ -52,6 +55,8 @@ namespace Framework
       BIND_FUNCTION_TABLE(L, Draw::SetPosition, SetPos, surface);
       BIND_FUNCTION_TABLE(L, Draw::MeasureString, MeasureString, surface);
 
+      BIND_FUNCTION_EX(L, InputManager::GetGamePad, GamePad);
+
       BIND_FUNCTION_EX(L, Draw::ScreenWidth, ScrW);
       BIND_FUNCTION_EX(L, Draw::ScreenHeight, ScrH);
 
@@ -79,6 +84,16 @@ namespace Framework
       BIND_FUNCTION_EX(L, GameSpace::CreateObjectFromArchetype, CreateObject);
       BIND_FUNCTION_EX(L, GameSpace::GetGameObject, GetObject);
       BIND_FUNCTION_EX(L, GameSpace::Clear, Clear);
+
+      BIND_FUNCTION_EX(L, GamePadInput::ButtonDown, ButtonDown);
+      BIND_FUNCTION_EX(L, GamePadInput::ButtonPressed, ButtonPressed);
+      BIND_FUNCTION_EX(L, GamePadInput::LeftStick, LeftStick);
+      BIND_FUNCTION_EX(L, GamePadInput::RightStick, RightStick);
+      BIND_FUNCTION_EX(L, GamePadInput::Connected, Connected);
+      BIND_FUNCTION_EX(L, GamePadInput::LeftTrigger, LeftTrigger);
+      BIND_FUNCTION_EX(L, GamePadInput::RightTrigger, RightTrigger);
+      BIND_FUNCTION_EX(L, GamePadInput::Rumble, Rumble);
+      BIND_FUNCTION_EX(L, GamePadInput::InDeadzone, InDeadzone);
 
       BIND_FUNCTION_EX(L, SoundEmitter::Play, Play);
 

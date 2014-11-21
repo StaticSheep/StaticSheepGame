@@ -45,8 +45,8 @@ namespace Framework
     if(right)
     {
       //obtain the X and Y axes of the stick
-      short sX = State.Gamepad.sThumbLX;
-      short sY = State.Gamepad.sThumbLY;
+      short sX = State.Gamepad.sThumbRX;
+      short sY = State.Gamepad.sThumbRY;
 
       if(sX > XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE ||
          sY > XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE ||
@@ -61,8 +61,8 @@ namespace Framework
     else
     {
       //obtain the X and Y axes of the stick
-      short sX = State.Gamepad.sThumbRX;
-      short sY = State.Gamepad.sThumbRY;
+      short sX = State.Gamepad.sThumbLX;
+      short sY = State.Gamepad.sThumbLY;
 
       if(sX > XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE ||
          sY > XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE ||
@@ -90,8 +90,8 @@ namespace Framework
   {
     Vec2 rightStick;
     //obtain the x and y axis of the right stick
-    rightStick.x = (static_cast<float>(State.Gamepad.sThumbLX) / 32768.0f);
-    rightStick.y = (static_cast<float>(State.Gamepad.sThumbLY) / 32768.0f);
+    rightStick.x = (static_cast<float>(State.Gamepad.sThumbRX) / 32768.0f);
+    rightStick.y = (static_cast<float>(State.Gamepad.sThumbRY) / 32768.0f);
 
     return rightStick;
   }

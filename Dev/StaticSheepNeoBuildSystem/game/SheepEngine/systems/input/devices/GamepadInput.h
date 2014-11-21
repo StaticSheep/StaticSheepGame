@@ -1,4 +1,6 @@
 
+#pragma once
+
 
 #include "systems/System.h"
 #include <Windows.h>

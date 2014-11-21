@@ -10,6 +10,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 #include "systems/anttweak/AntTweakModule.h"
 #include "systems/anttweak/TweakHelper.h"
+#include "systems/input/devices/GamepadInput.h"
 
 #include "components/sound/CSoundEmitter.h"
 #include "components/sound/CSoundPlayer.h"
@@ -33,6 +34,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "types/weapons/WPistol.h"
 #include "types/weapons/WShotgun.h"
 #include "types/weapons/WAutomatic.h"
+
 
 namespace Framework
 {
@@ -262,6 +264,9 @@ namespace Framework
 
     TYPE_REGISTER( AntTweak::TBar );
     TYPE_REGISTER_PTR( AntTweak::TBar* );
+
+    TYPE_REGISTER(GamePadInput);
+    TYPE_REGISTER_PTR(GamePadInput*);
 
     RegisterEnums();
   }

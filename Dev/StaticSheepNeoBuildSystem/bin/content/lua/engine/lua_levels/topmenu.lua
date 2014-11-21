@@ -39,8 +39,34 @@ local function MakeMenu()
   title:SetFont("Arial")
   title:SetXAlignment(TEXT_ALIGN_CENTER)
 
-  TopMenu.menu = menu.Create(1,1, {0})
+  local menu = CreateMenu(1, 1, {0})
+  TopMenu.menu = menu
 
+  local btn = gui.Create("Button", base)
+  Register(btn)
+  menu:Add(btn)
+  btn:SetSize(200, 50)
+  btn:SetPos(base:GetSize().x / 2 - btn:GetSize().x / 2, 100)
+
+  btn = gui.Create("Button", base)
+  Register(btn)
+  menu:Add(btn)
+  btn:SetSize(200, 50)
+  btn:SetPos(base:GetSize().x / 2 - btn:GetSize().x / 2, 200)
+
+  btn = gui.Create("Button", base)
+  Register(btn)
+  menu:Add(btn)
+  btn:SetSize(200, 50)
+  btn:SetPos(base:GetSize().x / 2 - btn:GetSize().x / 2, 300)
+
+  btn = gui.Create("Button", base)
+  Register(btn)
+  menu:Add(btn)
+  btn:SetSize(200, 50)
+  btn:SetPos(base:GetSize().x / 2 - btn:GetSize().x / 2, 400)
+
+  print(GamePad(0):Connected())
 
 end
 

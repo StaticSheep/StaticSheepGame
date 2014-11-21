@@ -1,10 +1,10 @@
-if not menu then
-  menu = {}
-  menu.list = {}
-  menu.meta = {}
+if not uimenu then
+  uimenu = {}
+  uimenu.list = {}
+  uimenu.meta = {}
 end
 
-function menu.Create(vStep, hStep, gamepads)
+function uimenu.Create(vStep, hStep, gamepads)
   -- Initialize button table
   print("Created menu")
 
@@ -12,57 +12,61 @@ function menu.Create(vStep, hStep, gamepads)
   newMenu.buttons = {}
 
   newMenu.numButtons = 0
-  newMenu.selected = 0
+  newMenu.selected = 1
   newMenu.verticalStep = vStep or 1
   newMenu.horizontalStep = hStep or 1
-  newMenu.validGamePads = gamepads or {}
+  newMenu.gamepads = gamepads or {}
+  newMenu.gamepadInputCD = {0,0,0,0}
+  newMenu.inputCD = 0
 
-  table.Merge(newMenu, menu.meta)
+  table.Merge(newMenu, uimenu.meta)
 
-  table.insert(menu.list, newMenu)
+  table.insert(uimenu.list, newMenu)
 
-  newMenu.menuID = #menu.list
+  newMenu.menuID = #uimenu.list
 
   return newMenu
 end
 
-function menu.Update()
-  for id, realMenu in pairs(menu.list) do
+CreateMenu = uimenu.Create
+
+function uimenu.Update()
+  for id, realMenu in pairs(uimenu.list) do
     realMenu:Update()
   end
 end
 
-function menu.Delete(realMenu)
+function uimenu.Delete(realMenu)
   local id = realMenu.menuID
 
   print("Deleted menu: "..id)
 
-  menu.list[id].buttons = {}
+  uimenu.list[id].buttons = {}
 
-  table.remove(menu.list, id)
+  table.remove(uimenu.list, id)
 end
 
-function menu.UpdateMeta()
-  for k,v in pairs(menu.list) do
-    table.Merge(v, menu.meta)
+function uimenu.UpdateMeta()
+  for k,v in pairs(uimenu.list) do
+    table.Merge(v, uimenu.meta)
   end
 end
 
 
 
-function menu.meta:SetHStep(step)
+function uimenu.meta:SetHStep(step)
   self.horizontalStep = step
 end
 
-function menu.meta:SetVStep(step)
+function uimenu.meta:SetVStep(step)
   self.verticalStep = step
 end
 
-function menu.meta:Destroy()
-  menu.Delete(self)
+function uimenu.meta:Destroy()
+  uimenu.Delete(self)
 end
 
-function menu.meta:RegisterButton(btn)
+function uimenu.meta:RegisterButton(btn)
   -- Insert button into menu
   table.insert(self.buttons, btn)
 
@@ -77,10 +81,11 @@ function menu.meta:RegisterButton(btn)
     self.buttons[1]:SetHovered(true)
   end
 
-  print("Registered button into menu at index: "..#menu.buttons)
+  print("Registered button into menu at index: "..#self.buttons)
 end
+uimenu.meta.Add = uimenu.meta.RegisterButton
 
-function menu.meta:InsertButton(btn, index)
+function uimenu.meta:InsertButton(btn, index)
   -- Insert our button at the index in the menu
   table.insert(self.buttons, index, btn)
 
@@ -97,7 +102,7 @@ function menu.meta:InsertButton(btn, index)
   print("Registered button into menu at index: "..index)
 end
 
-function menu.meta:RemoveButton(btn, index)
+function uimenu.meta:RemoveButton(btn, index)
   -- Take out the removed button
   table.remove(self.button, index)
 
@@ -113,7 +118,7 @@ function menu.meta:RemoveButton(btn, index)
   print("Removed button from menu at index: "..index)
 end
 
-function menu.meta:FindButtonIndex(btn)
+function uimenu.meta:FindButtonIndex(btn)
   for index, button in pairs(self.buttons) do
     if button == btn then
       return index
@@ -123,15 +128,92 @@ function menu.meta:FindButtonIndex(btn)
   return -1
 end
 
-function menu.meta:Update()
+function uimenu.meta:Update()
 
   local clicked = false
   local hMove = 0
   local vMove = 0
+  local stick, dPad, gamePad
+  local pads = {}
+
+  --if self.numButtons == 0 then return end
+
+  -- Interpret movement
+  for i, pad in pairs(self.gamepads) do
+    gamePad = GamePad(pad)
+
+    pads[i] = gamePad
+
+    if not gamePad:InDeadzone(false) then
+      stick = gamePad:LeftStick()
+
+      if stick.y > 0.7 then
+        vMove = -1
+      elseif stick.y < -0.7 then
+        vMove = 1
+      end
+
+      if stick.x > 0.7 then
+        hMove = -1
+      elseif stick.x < -0.7 then
+        hMove = 1
+      end
+
+      if (hMove ~= 0 and self.horizontalStep ~= 0) or
+        (vMove ~= 0 and self.verticalStep ~= 0) then
+        break
+      end
+
+    end
+
+    if gamePad:ButtonDown(GAMEPAD_DPAD_LEFT) then
+      hMove = 1
+    end
+
+    if gamePad:ButtonDown(GAMEPAD_DPAD_RIGHT) then
+      hMove = -1
+    end
+
+    if gamePad:ButtonDown(GAMEPAD_DPAD_UP) then
+      vMove = -1
+    end
+
+    if gamePad:ButtonDown(GAMEPAD_DPAD_DOWN) then
+      vMove = 1
+    end
+
+    if (hMove ~= 0 and self.horizontalStep ~= 0) or
+      (vMove ~= 0 and self.verticalStep ~= 0) then
+      break
+    end
+
+  end
+
+  -- Interpret clicking
+  for i, pad in pairs(pads) do
+    gamePad = pad -- We already stored the gamepad
+
+    if gamePad:ButtonDown(GAMEPAD_A) then
+      clicked = true
+    end
+  end
+
+
+
+  -- if hMove ~= 0 then
+  --   print("hortizontal movement: "..hMove)
+  -- end
+  -- if vMove ~= 0 then
+  --   print("vertical movement: "..vMove)
+  -- end
+
+  -- if self.numButtons == 0 then return end
 
   local newSelection = self.selected
 
-  if hMove ~= 0 then
+  if hMove ~= 0 and self.horizontalStep ~= 0 then
+    --print("hortizontal movement: "..hMove)
+
     hMove = hMove * self.horizontalStep
     newSelection = newSelection + hMove
 
@@ -152,7 +234,9 @@ function menu.meta:Update()
     self.buttons[self.selected]:SetHovered(true)
   end
 
-  if vMove ~= 0 then
+  if vMove ~= 0 and self.verticalStep ~= 0 then
+    --print("vertical movement: "..vMove)
+
     vMove = vMove * self.verticalStep
     newSelection = newSelection + vMove
 

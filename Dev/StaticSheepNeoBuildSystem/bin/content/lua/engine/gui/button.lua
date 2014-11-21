@@ -18,11 +18,11 @@ function META:SetYAlignment(y)
   self.alignY = y
 end
 
-function SetHovered(isHovered)
+function META:SetHovered(isHovered)
   self.hovered = isHovered
 end
 
-function IsHovered()
+function META:IsHovered()
   return self.hovered
 end
 
@@ -44,16 +44,21 @@ function META:Paint()
   local border = 4
   local pos = self:DrawPos()
 
+  local bgColor = self.bgColor
+  local fgColor = self.color
 
-  self:SetBGColor(Color(100, 100, 100, 200))
-  self:SetColor(Color(180, 180, 180, 200))
-  self:SetSize(Vec2(256, 64))
+  if self.hovered then
+    bgColor = self.bgHoverColor
+    fgColor = self.hoverColor
+  end
+
+  --print(self.size.x.."x"..self.size.y)
 
   draw.RoundedBox(4, pos.x, pos.y,
-    self.size.x, self.size.y, self.bgColor)
+    self.size.x, self.size.y, bgColor)
 
   draw.RoundedBox(4, border + pos.x, border + pos.y,
-    self.size.x - border * 2, self.size.y - border * 2, self.color)
+    self.size.x - border * 2, self.size.y - border * 2, fgColor)
 end
 
 gui.Register( "Button", META, "Panel" )
