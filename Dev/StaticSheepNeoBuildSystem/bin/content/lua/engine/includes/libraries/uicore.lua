@@ -23,18 +23,29 @@ function table.Merge(dest, source)
   return dest
 end
 
-function gui.Inherit( meta, base )
-  meta.baseClass = base
+function gui.GetPanelMeta(name)
+  return PanelFactory[name]
 end
+
 
 function gui.Create( classname, parent, name, ...)
   local panel = gui.Make(classname, parent, name, ...)
-  panel.id = gui.panelcounter
 
-  gui.panels[gui.panelcounter] = panel
+  if parent then
+    local parentTable = gui.panels[parent.id]
+    parentTable[#parentTable + 1] = panel
+    panel.id = -(#parentTable)
+    parent.children[#parent.children + 1] = panel
+  else
+    panel.id = gui.panelcounter
+    gui.panels[gui.panelcounter] = {}
+    gui.panels[gui.panelcounter][1] = panel
+    gui.panelcounter = gui.panelcounter + 1
+    panel.children = {}
+  end
 
-  gui.panelcounter = gui.panelcounter + 1
-
+  panel.parent = parent
+  
   return panel
 end
 
@@ -42,15 +53,18 @@ function gui.Make( classname, parent, name, ...)
   if PanelFactory[classname] ~= nil then
 
     local metatable = PanelFactory[classname]
-    local panel = gui.Make( metatable.baseClass, parent, name )
+    local panel = gui.Make( metatable.basePanelClass, parent, name )
     if ( not panel ) then
       Error( "Tried to create panel with invalid base '"
-        ..metatable.baseClass.."'\n" );
+        ..metatable.basePanelClass.."'\n" );
     end
 
     table.Merge( panel, metatable )
-    panel.baseClass = metatable.baseClass
+
+    panel.basePanelClass = metatable.basePanelClass
     panel.className = classname
+
+
     
     -- Call the Init function if we have it
     if ( panel.Init ) then
@@ -77,10 +91,24 @@ end
 function gui.Register( name, mtable, base )
 
   -- Remove the global
-  PANEL = nil
+  --PANEL = nil
+  mtable.basePanelClass = base or "Panel"
 
-  -- Default base is Panel
-  mtable.baseClass = base or "Panel"
+  -- mtable.__oldIndex = mtable.__index
+  -- mtable.__index = function (t, k)
+  --   print("test")
+  --   if PanelFactory[mtable.baseClass] and
+  --     PanelFactory[mtable.baseClass][k] then
+  --     return PanelFactory[mtable.baseClass][k] end
+
+  --   if k == "super" then
+  --     print("Super?")
+  --     return PanelFactory[mtable.baseClass]
+  --   end
+
+  --   return t.__oldIndex(t, k)
+  -- end
+
   
   PanelFactory[ name ] = mtable
 
@@ -103,18 +131,32 @@ function gui.Update()
 
 
   for k,v in pairs(gui.panels) do
-    v:Think() --Frame Update
-    
-    if not v.valid then
-      -- Needs to be removed
-      removeList[#removeList] = v
+
+    for _, p in pairs(v) do
+      p:Think()
+      if not p.valid then
+        -- Needs to be removed
+        removeList[#removeList + 1] = p
+      end
     end
+
   end
 
   for k,v in pairs(removeList) do
     --Delete all the bad objects
     v:Delete()
-    gui.panels[v.id] = nil
+    if v.id >= 0 then
+      print("Deleting top level panel")
+      gui.panels[v.id] = nil
+    else
+      print("Deleting sup panel")
+      if v.parent then
+        local parent = gui.panels[v.parent.id]
+        if parent then
+          parent[-v.id] = nil
+        end
+      end
+    end
   end
 
 end
@@ -122,15 +164,19 @@ end
 function gui.Draw()
   --Draw stuff
   for k,v in pairs(gui.panels) do
-    if v.visible then
-      v:Paint()
+    if v[1].visible then
+      for _, p in pairs(v) do
+        if p.visible then
+          p:Paint()
+        end
+      end
     end
   end
 end
 
 local function RefreshMeta(panel)
   local metatable = PanelFactory[panel.className]
-  local basetable = PanelFactory[panel.baseClass]
+  local basetable = PanelFactory[panel.basePanelClass]
 
   if basetable ~= nil then
     table.Merge( panel, metatable )
@@ -143,6 +189,8 @@ end
 
 function gui.Reloaded()
   for k,v in pairs(gui.panels) do
-    RefreshMeta(v)
+    for _, p in pairs(v) do
+      RefreshMeta(p)
+    end
   end
 end

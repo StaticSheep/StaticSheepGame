@@ -58,6 +58,26 @@ namespace Framework
     return m_texture;
   }
 
+  void Sprite::SetFlipX(bool isFlipped)
+  {
+    m_flipX = isFlipped;
+  }
+
+  void Sprite::SetFlipY(bool isFlipped)
+  {
+    m_flipY = isFlipped;
+  }
+
+  bool Sprite::GetFlipX(void)
+  {
+    return m_flipX;
+  }
+
+  bool Sprite::GetFlipY(void)
+  {
+    return m_flipY;
+  }
+
   void Sprite::Remove()
   {
     space->hooks.Remove("Draw", self);
@@ -72,7 +92,8 @@ namespace Framework
     GRAPHICS->SetSize(trans->GetScale().X * Size.X, trans->GetScale().Y * Size.Y);
     GRAPHICS->SetColor(Color);
     GRAPHICS->SetUV(Vec2(0,0), Vec2(1,1));
-    GRAPHICS->SetUseCamera(true);
+    GRAPHICS->FlipSprite(m_flipX, m_flipY);
+    GRAPHICS->SetCamState(0);
 
     GRAPHICS->DrawSprite(this);
     

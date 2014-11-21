@@ -15,6 +15,7 @@ SamplerState g_samLinear : register(s0);
 
 float4 PSMain(PSInput input) : SV_TARGET0
 {
+  //input.texCoord.x = 1 - input.texCoord.x;
   float4 vDiffuse = g_txDiffuse.Sample(g_samLinear, input.texCoord);
   return cAmbientColor * cAmbientIntensity.r * vDiffuse;
 }

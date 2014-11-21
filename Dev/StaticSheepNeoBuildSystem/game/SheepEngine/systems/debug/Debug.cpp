@@ -138,13 +138,13 @@ namespace Framework
 
         if(SHEEPINPUT->Keyboard.KeyIsDown(VK_RIGHT))
           currentX += 1.0f;
-
+        
         Draw::SetRotation(0);
-        Draw::SetUseCamera(false);
+        Draw::SetCamState(1);
         Draw::SetPosition( 200.0f, 400.0f);
         Draw::SetColor(1.0f,1.0f,1.0f,1.0f);
         Draw::DrawString(fps_string.c_str(), 15.0f, "Helvetica");
-        Draw::SetUseCamera(true);
+        Draw::SetCamState(0);
       }
 
       if(performanceFlag)
@@ -165,7 +165,7 @@ namespace Framework
           }
 
           //channels = (*(FMOD_DSP_PARAMETER_FFT*)audio->data).numchannels;
-          Draw::SetUseCamera(false);
+          Draw::SetCamState(1);
           /*for(int i = 0; i < 1; ++i)
           {
             for(int j = 0; j < 128; ++j)
@@ -180,7 +180,7 @@ namespace Framework
           Draw::SetRotation(0.0f);
           Draw::SetPosition(ENGINE->Window->GetWidth() / -4.0f, ENGINE->Window->GetHeight() / 2.0f - 100.0f);
           Draw::DrawString(string.c_str(), 15.0f, "Helvetica");
-          Draw::SetUseCamera(true);
+          Draw::SetCamState(0);
 
           
 
@@ -189,12 +189,12 @@ namespace Framework
         case DEBUG_INPUT:
           SHEEPINPUT->GetDebugData();
           FormatString(currentState);
-          Draw::SetUseCamera(false);
+          Draw::SetCamState(1);
           Draw::SetColor(1.0f, 1.0f, 1.0f, 1.0f);
           Draw::SetRotation(3.14159f);
           Draw::SetPosition(ENGINE->Window->GetWidth() / -4.0f, ENGINE->Window->GetHeight() / 2.0f - 100.0f);
           Draw::DrawString(string.c_str(), 15.0f, "Helvetica");
-          Draw::SetUseCamera(true);
+          Draw::SetCamState(0);
           break;
 
         case DEBUG_GRAPHICS:
@@ -204,12 +204,12 @@ namespace Framework
         case DEBUG_PHYSICS:
           PHYSICS->GetDebugData();
           FormatString(currentState);
-          Draw::SetUseCamera(false);
+          Draw::SetCamState(1);
           Draw::SetColor(1.0f, 1.0f, 1.0f, 1.0f);
           Draw::SetRotation(0.0f);
           Draw::SetPosition(ENGINE->Window->GetWidth() / 2.0f, ENGINE->Window->GetHeight() / 2.0f - 100.0f);
           Draw::DrawString(string.c_str(), 15.0f, "Helvetica");
-          Draw::SetUseCamera(true);
+          Draw::SetCamState(0);
           break;
           
           
@@ -317,7 +317,7 @@ namespace Framework
     float offsetX = 0.0f;
     int color = 0;
     int i = 0;
-    Draw::SetUseCamera(false);
+    Draw::SetCamState(1);
 
     if(performanceCounter > 30)
     {
@@ -429,7 +429,7 @@ namespace Framework
     std::string stringTime = std::to_string(previousTime).erase(4,std::string::npos) + "ms";
     Draw::DrawString(stringTime.c_str(), 15.0f, "Helvetica");
 
-    Draw::SetUseCamera(true);
+    Draw::SetCamState(0);
     ++performanceCounter;
 
   }

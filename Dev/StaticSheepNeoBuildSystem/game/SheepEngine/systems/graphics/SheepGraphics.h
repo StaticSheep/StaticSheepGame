@@ -78,7 +78,8 @@ namespace Framework
     void BindTexture(int ID);
 
     void SetWireframe(bool iswired);
-    void SetUseCamera(bool useCam);
+    void SetCamState(int camState);
+    void FlipSprite(bool x, bool y);
 
     void ReceiveMessage(Message& msg);
     void* GetDevice(void);
