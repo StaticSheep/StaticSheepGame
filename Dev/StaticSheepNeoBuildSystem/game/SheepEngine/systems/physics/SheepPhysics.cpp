@@ -238,8 +238,17 @@ namespace Framework
 		m_materials.insert(std::pair<std::string, SheepFizz::Material>("Bounce", Bounce));
 		m_materials.insert(std::pair<std::string, SheepFizz::Material>("Static", Static));
 
+    m_collisionGroup.insert(std::pair<std::string, CollisionGroup>("NonCollide", NonCollide));
+    m_collisionGroup.insert(std::pair<std::string, CollisionGroup>("Collide", Collide));
+    m_collisionGroup.insert(std::pair<std::string, CollisionGroup>("Resolve", Resolve));
+    m_collisionGroup.insert(std::pair<std::string, CollisionGroup>("Player", Player));
+    m_collisionGroup.insert(std::pair<std::string, CollisionGroup>("Static", CollisionGroup::Static));
 
-    
+    m_collisionGroupNames.insert(std::pair<CollisionGroup, std::string>(NonCollide, "NonCollide"));
+    m_collisionGroupNames.insert(std::pair<CollisionGroup, std::string>(Collide, "Collide"));
+    m_collisionGroupNames.insert(std::pair<CollisionGroup, std::string>(Resolve, "Resolve"));
+    m_collisionGroupNames.insert(std::pair<CollisionGroup, std::string>(Player, "Player"));
+    m_collisionGroupNames.insert(std::pair<CollisionGroup, std::string>(CollisionGroup::Static, "Static"));
 
     debugOn = false;
 	}//end of Initialize
@@ -315,6 +324,12 @@ namespace Framework
   Vec3D SheepPhysics::GetCollisionPoint(GameSpace* space, SheepFizz::ExternalManifold manifold)
   {
     return ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->GetCollisionPoint(manifold);
+  }
+
+  std::string SheepPhysics::GetCollisionGroup(GameSpace* space, SheepFizz::Handle handle)
+  {
+    CollisionGroup group = ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->GetBodyCollisionGroup(handle);
+    return m_collisionGroupNames[group];
   }
 
   //shape
@@ -422,6 +437,15 @@ namespace Framework
 	{
 		((SheepFizz::PhysicsSpace*)(space->m_pSpace))->ChangeMaterials(handle, material);
 	}
+
+  void SheepPhysics::ChangeCollisionGroup(GameSpace* space, SheepFizz::Handle handle, std::string name)
+  {
+    if (m_collisionGroup.find(name) != m_collisionGroup.end())
+    {
+      CollisionGroup group = m_collisionGroup[name];
+      ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->SetBodyCollisionGroup(handle, group);
+    }
+  }
 
 	//remove bodies from space
 	void SheepPhysics::RemoveBodies(GameSpace* space, SheepFizz::Handle handle)

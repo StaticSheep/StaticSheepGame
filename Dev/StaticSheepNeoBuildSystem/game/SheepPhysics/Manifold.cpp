@@ -35,8 +35,6 @@ namespace SheepFizz
 	//uses enums for instant access to the array values
 	void Manifold::ManifoldInteraction(void)
 	{
-		//check collision group
-		if(A->collisionGroup_ == B->collisionGroup_)
 			manifold[A->shape_->GetShape()][B->shape_->GetShape()](*this);
 	}//end of ManifoldInteraction
 
@@ -165,8 +163,8 @@ namespace SheepFizz
 	//determines if two polygons are colliding
 	void RectangleRectangleManifold(Manifold& m)
 	{
-	  //preset the contact count to 0;
-	  m.contactCount = 0;
+    //preset the contact count to 0;
+    m.contactCount = 0;
 
 	  //create shortcut pointers to each shape
 	  Rectangle* a = (Rectangle*)(m.A->shape_);
