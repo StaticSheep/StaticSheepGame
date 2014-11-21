@@ -225,6 +225,8 @@ namespace Framework
     TYPE_ADD_MEMBER(Sprite, m_spriteName, false, true, "Texture", BUILD_FUNCTION(Sprite::TweakSetTexture));
     TYPE_ADD_MEMBER(Sprite, Color, false, true, "Color");
     TYPE_ADD_MEMBER( Sprite, Size, false, true, "Size");
+    TYPE_ADD_MEMBER(Sprite, m_flipX, false, true, "FlipX");
+    TYPE_ADD_MEMBER(Sprite, m_flipY, false, true, "FlipY");
     TYPE_SET_TWEAK_TYPE( Sprite, AntTweak::TW_TYPE_COMPONENT );
     TYPE_SET_FROM_LUA( Sprite, Lua::GenericObjectFromLua );
 
@@ -236,6 +238,8 @@ namespace Framework
     TYPE_ADD_MEMBER(AniSprite, m_frameRate, false, true, "FrameRate");
     TYPE_ADD_MEMBER(AniSprite, m_loop, false, true, "Animation Loops");
     TYPE_ADD_MEMBER(AniSprite, m_paused, false, true, "Pause");
+    TYPE_ADD_MEMBER(AniSprite, m_flipX, false, true, "FlipX");
+    TYPE_ADD_MEMBER(AniSprite, m_flipY, false, true, "FlipY");
     TYPE_ADD_MEMBER(AniSprite, Color, false, true, "Color");
     TYPE_ADD_MEMBER( AniSprite, Size, false, true, "Scale");
     TYPE_SET_TWEAK_TYPE( AniSprite, AntTweak::TW_TYPE_COMPONENT );

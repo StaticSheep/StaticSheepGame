@@ -96,6 +96,7 @@ class RenderContext
     /////////////////////////////////////////////////////////////
 
    GFX_API void setWireFrame(bool isWired);
+   GFX_API void SetSpriteFlip(bool xFlip, bool yFlip);
    GFX_API void Resize(float width, float height);
    GFX_API void SetClearColor(const float r, const float g, const float b, const float a);
    GFX_API void SetTargetWindow(const HWND& hwnd);
@@ -298,6 +299,7 @@ class RenderContext
     /////////////
     
     std::unique_ptr<DirectX::SpriteBatch> m_batcher;
+    DirectX::SpriteEffects                m_flip = DirectX::SpriteEffects_None;
 
     /////////////
     // Effects //

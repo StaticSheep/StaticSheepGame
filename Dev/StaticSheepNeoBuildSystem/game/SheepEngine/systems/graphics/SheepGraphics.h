@@ -79,6 +79,7 @@ namespace Framework
 
     void SetWireframe(bool iswired);
     void SetCamState(int camState);
+    void FlipSprite(bool x, bool y);
 
     void ReceiveMessage(Message& msg);
     void* GetDevice(void);

@@ -8,7 +8,7 @@ namespace Framework
 {
   Camera::Camera() : m_viewPort(1920, 1080), m_active(false)
   {
-    // Calculates camera Fov based off it's default size
+    // Calculates camera Fov based off it's default size4
     // This gives pixel to viewport match for near plane (z = 0)
     m_FOV = 2.0f * (atan(m_viewPort.y / (2.0f * 100)));
     transform = NULL;

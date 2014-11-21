@@ -8,6 +8,17 @@ namespace DirectSheep
   /////////////////////////////////////////////////////////////
   //                    BIND FUNCTIONS                       //
   /////////////////////////////////////////////////////////////
+  void RenderContext::SetSpriteFlip(bool xFlip, bool yFlip)
+  {
+    if (xFlip && yFlip)
+      m_flip = DirectX::SpriteEffects_FlipBoth;
+    else if (xFlip)
+      m_flip = DirectX::SpriteEffects_FlipHorizontally;
+    else if (yFlip)
+      m_flip = DirectX::SpriteEffects_FlipVertically;
+    else
+      m_flip = DirectX::SpriteEffects_None;
+  }
 
   void RenderContext::setWireFrame(bool isWired)
   {

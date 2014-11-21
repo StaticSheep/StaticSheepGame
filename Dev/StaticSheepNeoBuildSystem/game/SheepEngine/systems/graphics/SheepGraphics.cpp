@@ -204,6 +204,11 @@ namespace Framework
     m_renderContext->setWireFrame(iswired);
   }
 
+  void SheepGraphics::FlipSprite(bool x, bool y)
+  {
+    m_renderContext->SetSpriteFlip(x, y);
+  }
+
   DirectSheep::Handle SheepGraphics::SetTexture(const std::string& Texture)
   {
     for(auto it : m_textureMap)
