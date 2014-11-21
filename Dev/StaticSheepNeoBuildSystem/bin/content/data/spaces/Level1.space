@@ -8,7 +8,7 @@ GameObject
     Translation Vec3
     {
       x_ float 0.000000
-      y_ float 0.000000
+      y_ float 100.000000
       z_ float -50.000000
     }
     Rotation float 0.000000
@@ -34,6 +34,9 @@ GameObject
       X float 1.000000
       Y float 1.000000
     }
+  }
+  BackgroundPan
+  {
   }
 }
 GameObject
@@ -78,6 +81,7 @@ GameObject
     m_height float 32.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
   }
 }
 GameObject
@@ -122,6 +126,7 @@ GameObject
     m_height float 32.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
   }
 }
 GameObject
@@ -166,6 +171,7 @@ GameObject
     m_height float 32.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
   }
 }
 GameObject
@@ -210,6 +216,7 @@ GameObject
     m_height float 32.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
   }
 }
 GameObject
@@ -237,15 +244,15 @@ GameObject
     m_active bool true
     m_FOV float 77.000000
   }
-  SoundPlayer
+  SoundEmitter
   {
   }
-  SoundEmitter
+  SoundPlayer
   {
   }
   Level1_Logic
   {
-    timeLimit float 60.000000
+    timeLimit float 6.000000
     numOfPlayers int 4
   }
 }
@@ -291,6 +298,7 @@ GameObject
     m_height float 32.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
   }
 }
 GameObject
@@ -335,6 +343,7 @@ GameObject
     m_height float 32.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
   }
 }
 GameObject
@@ -379,6 +388,7 @@ GameObject
     m_height float 32.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
   }
 }
 GameObject
@@ -423,6 +433,7 @@ GameObject
     m_height float 32.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
   }
 }
 GameObject
@@ -467,6 +478,7 @@ GameObject
     m_height float 32.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
   }
 }
 GameObject
@@ -511,6 +523,7 @@ GameObject
     m_height float 32.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
   }
 }
 GameObject
@@ -555,6 +568,7 @@ GameObject
     m_height float 32.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
   }
 }
 GameObject
@@ -599,6 +613,7 @@ GameObject
     m_height float 32.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
   }
 }
 GameObject
@@ -643,6 +658,7 @@ GameObject
     m_height float 32.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
   }
   Grinder
   {
@@ -690,6 +706,7 @@ GameObject
     m_height float 32.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
   }
   Grinder
   {
@@ -737,6 +754,7 @@ GameObject
     m_height float 32.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
   }
   Grinder
   {
@@ -784,6 +802,7 @@ GameObject
     m_height float 32.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
   }
   Grinder
   {
@@ -831,6 +850,7 @@ GameObject
     m_height float 32.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
   }
   Grinder
   {
@@ -878,6 +898,7 @@ GameObject
     m_height float 32.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
   }
   Grinder
   {
@@ -925,6 +946,7 @@ GameObject
     m_height float 32.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
   }
   Grinder
   {
@@ -972,6 +994,7 @@ GameObject
     m_height float 32.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
   }
   Grinder
   {
@@ -1019,6 +1042,7 @@ GameObject
     m_height float 32.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
   }
   Grinder
   {
@@ -1066,6 +1090,7 @@ GameObject
     m_height float 32.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
   }
   Grinder
   {
@@ -1113,6 +1138,7 @@ GameObject
     m_height float 32.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
   }
   Grinder
   {
@@ -1160,6 +1186,7 @@ GameObject
     m_height float 32.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
   }
   Grinder
   {
@@ -1207,6 +1234,7 @@ GameObject
     m_height float 32.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
   }
   Grinder
   {
@@ -1254,6 +1282,7 @@ GameObject
     m_height float 32.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
   }
   Grinder
   {
@@ -1301,6 +1330,7 @@ GameObject
     m_height float 32.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
   }
   Grinder
   {
@@ -1348,6 +1378,7 @@ GameObject
     m_height float 32.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
   }
   Grinder
   {
@@ -1432,5 +1463,6 @@ GameObject
     m_height float 16.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
   }
 }

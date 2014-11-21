@@ -34,6 +34,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "types/weapons/WShotgun.h"
 #include "types/weapons/WAutomatic.h"
 #include "components/gameplay_scripts/CWarningText.h"
+#include "components/gameplay_scripts/CBackgroundPan.h"
 
 namespace Framework
 {
@@ -197,6 +198,9 @@ namespace Framework
 
     TYPE_REGISTER(WarningText);
     TYPE_SET_TWEAK_TYPE(WarningText, AntTweak::TW_TYPE_COMPONENT);
+
+    TYPE_REGISTER(BackgroundPan);
+    TYPE_SET_TWEAK_TYPE(BackgroundPan, AntTweak::TW_TYPE_COMPONENT);
 
     TYPE_REGISTER(WeaponPickup);
     TYPE_SET_TWEAK_TYPE(WeaponPickup, AntTweak::TW_TYPE_COMPONENT);

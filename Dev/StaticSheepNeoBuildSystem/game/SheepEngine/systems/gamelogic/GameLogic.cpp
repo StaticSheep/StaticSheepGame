@@ -24,6 +24,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "Components/sound/CSoundEmitter.h"
 #include "components/gameplay_scripts/CWeaponPickup.h"
 #include "components/gameplay_scripts/CWarningText.h"
+#include "components/gameplay_scripts/CBackgroundPan.h"
 
 namespace Framework
 {
@@ -56,6 +57,7 @@ namespace Framework
     REGISTER_COMPONENT(Explosion);
     REGISTER_COMPONENT(WeaponPickup);
     REGISTER_COMPONENT(WarningText);
+    REGISTER_COMPONENT(BackgroundPan);
   }
 
   void GameLogic::Initialize()
