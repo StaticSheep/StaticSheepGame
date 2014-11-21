@@ -81,6 +81,8 @@ namespace SheepFizz
       relativevelocity = B->velocity_ + (Vec3D(0, 0, B->angularVelocity_) ^ bRepulsionVec)
         - A->velocity_ - (Vec3D(0, 0, A->angularVelocity_) ^ aRepulsionVec);
 
+      //contactVelocity = relativevelocity.DotProduct(normal);
+
       //calculate the normalized tangent vector
       //by removing the relative velocity component along the normal, only
       //the tangent remains (non-normalized)
