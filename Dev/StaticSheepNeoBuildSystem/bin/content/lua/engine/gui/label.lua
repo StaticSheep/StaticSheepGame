@@ -4,6 +4,8 @@ function META:Init()
   self.text = ""
   self.font = "Arial"
   self.fontSize = 12
+  self.alignX = TEXT_ALIGN_LEFT
+  self.alignY = TEXT_ALIGN_TOP
 end
 
 function META:SetSize(x, y)
@@ -12,6 +14,14 @@ function META:SetSize(x, y)
   else
     self.fontSize = x
   end
+end
+
+function META:SetXAlignment(x)
+  self.alignX = x
+end
+
+function META:SetYAlignment(y)
+  self.alignY = y
 end
 
 function META:SetText(text)
@@ -56,7 +66,7 @@ function META:Paint()
   local pos = self:DrawPos()
 
   draw.SimpleText(self.text, self.font, pos.x, pos.y,
-   self.fontSize, self.color, 0, 0)
+   self.fontSize, self.color, self.alignX, self.alignY)
 end
 
 gui.Register( "Label", META, "Panel" )

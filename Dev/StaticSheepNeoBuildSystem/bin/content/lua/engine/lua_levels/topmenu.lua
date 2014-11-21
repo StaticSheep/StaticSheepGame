@@ -19,17 +19,19 @@ end
 local function MakeMenu()
   CleanUp()
 
-  local base = gui.Create("Panel")
+  local base = gui.Create("Frame")
   Register(base)
   base:SetSize(ScrW() / 2, ScrH())
   base:SetPos(ScrW() / 4, 0)
+  base:SetCamMode(2)
 
   local title = gui.Create("Label", base)
   Register(title)
-  title:SetPos(60, 40)
+  title:SetPos(base:GetSize().x / 2, 0)
   title:SetText("GIGA GRAVITY GAMES")
-  title:SetFontSize(86)
+  title:SetFontSize(48)
   title:SetFont("Arial")
+  title:SetXAlignment(TEXT_ALIGN_CENTER)
 
 
 end

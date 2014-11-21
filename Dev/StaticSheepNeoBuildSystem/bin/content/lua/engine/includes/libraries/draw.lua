@@ -36,19 +36,19 @@ function draw.SimpleText(text, font, x, y, size, color, xalign, yalign)
   yalign = yalign or TEXT_ALIGN_TOP
 
 
-  -- local w, h = surface.GetTextSize( text )
+  local stringSize = surface.MeasureString(text, size, font)
 
-  -- if (xalign == TEXT_ALIGN_CENTER) then
-  --   x = x - w/2
-  -- elseif (xalign == TEXT_ALIGN_RIGHT) then
-  --   x = x - w
-  -- end
+  if (xalign == TEXT_ALIGN_CENTER) then
+    x = x - stringSize.x/2
+  elseif (xalign == TEXT_ALIGN_RIGHT) then
+    x = x - stringSize.x
+  end
   
-  -- if (yalign == TEXT_ALIGN_CENTER) then
-  --   y = y - h/2
-  -- elseif ( yalign == TEXT_ALIGN_BOTTOM ) then
-  --   y = y - h
-  -- end
+  if (yalign == TEXT_ALIGN_CENTER) then
+    y = y - stringSize.y/2
+  elseif ( yalign == TEXT_ALIGN_BOTTOM ) then
+    y = y - stringSize.y
+  end
   
   surface.SetPos( math.ceil( x ), math.ceil( y ) );
   
@@ -70,7 +70,6 @@ end
 local gmatch = string.gmatch
 local find = string.find
 local ceil = math.ceil
-local GetTextSize = surface.GetTextSize
 local max = math.max
 function draw.DrawText(text, font, x, y, size, color, xalign )
 
@@ -84,20 +83,22 @@ function draw.DrawText(text, font, x, y, size, color, xalign )
   local curString = ""
   
   --surface.SetFont(font)
-  local sizeX, lineHeight = 32 --GetTextSize("\n")
+  local stringSize = surface.MeasureString("\n", size, font)
+  local lineHeight = stringSize.y
   local tabWidth = 50
   
   for str in gmatch( text, "[^\n]*" ) do
     if #str > 0 then
       if find( str, "\t" ) then -- there's tabs, some more calculations required
         for tabs, str2 in gmatch( str, "(\t*)([^\t]*)" ) do
-          curX = ceil( (curX + tabWidth * max(#tabs-1,0)) / tabWidth ) * tabWidth
+          curX = ceil( (curX + tabWidth * max(#tabs-1,0)) / tabWidth )
+          * tabWidth
           
           if #str2 > 0 then
             SimpleText( str2, font, curX, curY, color, xalign )
           
-            local w, _ = GetTextSize( str2 )
-            curX = curX + w
+            local str2Size = surface.MeasureString(str2, size, font)
+            curX = curX + str2Size.x
           end
         end
       else -- there's no tabs, this is easy
