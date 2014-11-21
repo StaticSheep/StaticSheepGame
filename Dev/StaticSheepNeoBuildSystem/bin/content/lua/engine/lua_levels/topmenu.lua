@@ -2,6 +2,7 @@
 if not TopMenu then
   TopMenu = {}
   TopMenu.panels = {}
+  TopMenu.menu = nil
 end
 
 local function CleanUp()
@@ -10,6 +11,11 @@ local function CleanUp()
   end
 
   TopMenu.panels = {}
+
+  if TopMenu.menu ~= nil then
+    TopMenu.menu:Destroy()
+    TopMenu.menu = nil
+  end
 end
 
 local function Register(pnl)
@@ -32,6 +38,8 @@ local function MakeMenu()
   title:SetFontSize(48)
   title:SetFont("Arial")
   title:SetXAlignment(TEXT_ALIGN_CENTER)
+
+  TopMenu.menu = menu.Create(1,1, {0})
 
 
 end

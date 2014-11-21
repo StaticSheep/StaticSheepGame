@@ -91,6 +91,7 @@ namespace Framework
 
     Lua::CallFunc(ENGINE->Lua(), "hook.Call", "LogicUpdate", dt);
     Lua::CallFunc(ENGINE->Lua(), "gui.Update");
+    Lua::CallFunc(ENGINE->Lua(), "menu.Update");
 
     for (auto it = ENGINE->m_spaces.begin(); it != ENGINE->m_spaces.end(); ++it)
     {

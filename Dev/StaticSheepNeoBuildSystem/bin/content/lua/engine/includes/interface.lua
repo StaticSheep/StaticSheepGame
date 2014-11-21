@@ -76,6 +76,7 @@ local function FileReloaded()
   ReloadObjects()
   ReloadComponents()
   gui.Reloaded()
+  menu.UpdateMeta()
 end
 
 function CheckOldFiles()

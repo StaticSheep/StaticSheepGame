@@ -17,7 +17,7 @@ function menu.Create(vStep, hStep, gamepads)
   newMenu.horizontalStep = hStep or 1
   newMenu.validGamePads = gamepads or {}
 
-  table.merge(menu.meta, newMenu)
+  table.Merge(newMenu, menu.meta)
 
   table.insert(menu.list, newMenu)
 
@@ -34,14 +34,19 @@ end
 
 function menu.Delete(realMenu)
   local id = realMenu.menuID
-  
+
   print("Deleted menu: "..id)
 
-  menu.list[id]:Delete()
+  menu.list[id].buttons = {}
 
   table.remove(menu.list, id)
 end
 
+function menu.UpdateMeta()
+  for k,v in pairs(menu.list) do
+    table.Merge(v, menu.meta)
+  end
+end
 
 
 
@@ -53,8 +58,8 @@ function menu.meta:SetVStep(step)
   self.verticalStep = step
 end
 
-function menu.meta:Delete()
-  self.buttons = {}
+function menu.meta:Destroy()
+  menu.Delete(self)
 end
 
 function menu.meta:RegisterButton(btn)
@@ -68,7 +73,7 @@ function menu.meta:RegisterButton(btn)
   btn.menuID = self.menuID
 
   -- If that was the first button to be added set it to hovered
-  if self.numButtons == 1
+  if self.numButtons == 1 then
     self.buttons[1]:SetHovered(true)
   end
 
