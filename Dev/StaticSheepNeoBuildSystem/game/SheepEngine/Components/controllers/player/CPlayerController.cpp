@@ -181,6 +181,10 @@ namespace Framework
       {
         bc->AddToVelocity(-(snappedNormal * 300));
         isSnapped = false;
+        if (GetRandom(0, 1))
+          se->Play("jump2", &SoundInstance(0.75f));
+        else
+          se->Play("jump1", &SoundInstance(0.75f));
       }
       
     }
@@ -239,21 +243,20 @@ namespace Framework
       health -= 100;
     }
 
-		isSnapped = true;
-		//get the thing we are colliding with
-    snappedTo = otherObject;
+		
 		//get the transform of the thing we are colliding with
 		Transform *OOT = OtherObject->GetComponent<Transform>(eTransform);
 		//if that thing we collided with's transform is missing, get the fuck outta here, i mean what are you even doing?
 		if (!OOT)
 			return;
 
-		if (OtherObject->HasComponent(eBoxCollider) && OtherObject->name != "Player")
+    if (OtherObject->HasComponent(eBoxCollider) && OtherObject->name != "Player" && OtherObject->name != "WeaponPickup" && OtherObject->name != "Grinder")
 		{
       float dotNormals;
       Vec3 nextSnappedNormal;
       Vec3 oldSnappedNormal = snappedNormal;
       BoxCollider *OOBc = OtherObject->GetComponent<BoxCollider>(eBoxCollider);
+      
       BoxCollider *bc = space->GetHandles().GetAs<BoxCollider>(playerCollider);
       Transform *ps = space->GetHandles().GetAs<Transform>(playerTransform);
       if (oldSnappedNormal.x != OOBc->GetCollisionNormals(manifold).x && oldSnappedNormal.y != OOBc->GetCollisionNormals(manifold).y &&
@@ -274,6 +277,10 @@ namespace Framework
       if (snappedNormal.x == -1.0f)
         rotation = rotation + (float)PI;
       ps->SetRotation(rotation);
+
+      isSnapped = true;
+      //get the thing we are colliding with
+      snappedTo = otherObject;
 		}
 		else if (OtherObject->HasComponent(eCircleCollider))
 		{
@@ -350,8 +357,12 @@ namespace Framework
     if (returnVec.y < -1.0)
       returnVec.y = -1.0;
 
-		return returnVec;
+    if (returnVec.x < 0)
+    {
+      //flip sprite 
+    }
 
+		return returnVec;
 	}
 
   //************************************
