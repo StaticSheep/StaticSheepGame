@@ -234,6 +234,11 @@ namespace Framework
     if (OtherObject->name == "WeaponPickup")
       se->Play("weapon_pickup", &SoundInstance(0.75f));
 
+    if (OtherObject->name == "GrinderBig")
+    {
+      health -= 100;
+    }
+
 		isSnapped = true;
 		//get the thing we are colliding with
     snappedTo = otherObject;

@@ -8,9 +8,12 @@
 #include "../controllers/player/CPlayerController.h"
 #include "../SheepUtil/include/SheepMath.h"
 #include "CGiantKillBox.h"
+#include "../camera/CCamera.h"
 
 static const char *playerNames[] = { "Player1", "Player2", "Player3", "Player4" };
 static bool warning;
+static float camShakeTime;
+static float camShakeMagnitude;
 namespace Framework
 {
   Level1_Logic::Level1_Logic()
@@ -23,6 +26,10 @@ namespace Framework
     spawnPos[2] = Vec3(490.0f, 266.0f, 0.0f);
     spawnPos[3] = Vec3(-490.0f, 266.0f, 0.0f);
     warning = false;
+    camShake = false;
+    shake = true;
+    camShakeTime = 0.25f;
+    camShakeMagnitude = 10;
 	}
 
   Level1_Logic::~Level1_Logic()
@@ -36,6 +43,8 @@ namespace Framework
 		space->hooks.Add("LogicUpdate", self, BUILD_FUNCTION(Level1_Logic::LogicUpdate));
     space->hooks.Add("PlayerDied", self, BUILD_FUNCTION(Level1_Logic::PlayerDied));
     levelSound = space->GetGameObject(owner)->GetComponentHandle(eSoundPlayer);
+    levelCamera = space->GetGameObject(owner)->GetComponentHandle(eCamera);
+    levelTransform = space->GetGameObject(owner)->GetComponentHandle(eTransform);
     timeLimit = 35;
     startFlag = true;
     for (int i = 0; i < 4; ++i)
@@ -49,6 +58,9 @@ namespace Framework
 
   void Level1_Logic::LogicUpdate(float dt)
 	{
+    
+    if (camShake)
+      CameraShake(dt, camShakeTime, camShakeMagnitude);
 
     SpawnPlayers(dt);
     
@@ -177,6 +189,35 @@ namespace Framework
       return;
     
     Players[ply] = Handle::null;
+    if (!camShake)
+    {
+      camShakeTime = 0.25f;
+      camShakeMagnitude = 10;
+      camShake = true;
+    }
   }
 
+  void Level1_Logic::CameraShake(float dt, float shakeDuration, float magnitude)
+  {
+    Transform *lc = space->GetHandles().GetAs<Transform>(levelTransform);
+    if (shake)
+    {
+      float distanceX = GetRandom(-magnitude, magnitude);
+      float distanceY = GetRandom(-magnitude, magnitude);
+      lc->SetTranslation(lc->GetTranslation() + Vec3(distanceX, distanceY, 0.0));
+      shake = false;
+    }
+    else
+    {
+      lc->SetTranslation(Vec3(0, 0, 0));
+      shake = true;
+    }
+    if (camShakeTime <= 0)
+    {
+      camShake = false;
+      lc->SetTranslation(Vec3(0, 0, 0));
+    }
+
+    camShakeTime -= dt;
+  }
 }

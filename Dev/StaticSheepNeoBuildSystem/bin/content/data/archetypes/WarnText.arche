@@ -8,7 +8,7 @@ GameObject
     {
       x_ float 0.000000
       y_ float 0.000000
-      z_ float 0.000000
+      z_ float 2.000000
     }
     Rotation float 0.000000
     Scale Vec3
