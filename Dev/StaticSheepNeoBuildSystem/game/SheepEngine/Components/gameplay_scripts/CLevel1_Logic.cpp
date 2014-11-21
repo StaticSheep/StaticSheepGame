@@ -45,7 +45,8 @@ namespace Framework
     levelSound = space->GetGameObject(owner)->GetComponentHandle(eSoundPlayer);
     levelCamera = space->GetGameObject(owner)->GetComponentHandle(eCamera);
     levelTransform = space->GetGameObject(owner)->GetComponentHandle(eTransform);
-    timeLimit = 35;
+    levelEmitter = space->GetGameObject(owner)->GetComponentHandle(eSoundEmitter);
+    timeLimit = 6;
     startFlag = true;
     for (int i = 0; i < 4; ++i)
       spawnTimers[i] = 2.0f;
@@ -120,11 +121,15 @@ namespace Framework
       }
       timeLimit = GetRandom(30, 60);
       warning = false;
+      camShakeTime = 6.5f;
+      camShakeMagnitude = 2;
+      camShake = true;
     }
     else if (timeLimit > 0.0f && timeLimit < 2.0f && warning == false)
     {
-      (FACTORY->LoadObjectFromArchetype(space, "WarnText"));
+      (FACTORY->LoadObjectFromArchetype(space, "WarnText"))->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(0.0,0.0,2.0));
       warning = true;
+      space->GetHandles().GetAs<SoundEmitter>(levelEmitter)->Play("warning");
     }
     
     if(!playing)
@@ -146,7 +151,7 @@ namespace Framework
       playing = true;
     } 
     SoundPlayer *sp = space->GetHandles().GetAs<SoundPlayer>(levelSound);
-    sp->SetVolume(0.25f);
+    sp->SetVolume(0.35f);
 
 	}
 

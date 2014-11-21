@@ -175,7 +175,7 @@ namespace SheepFizz
   {
     Body* body = handles_.GetAs<Body>(handle);
     if (body->shape_->GetShape() == Rec)
-      return ((Rectangle*)body->shape_)->GetNormal(1);
+      return ((Rectangle*)body->shape_)->GetNormal(2);
 
     return Vec3D();
   }//end of GetBodyUpNormal

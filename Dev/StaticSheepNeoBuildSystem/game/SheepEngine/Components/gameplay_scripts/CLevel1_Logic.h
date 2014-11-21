@@ -25,6 +25,7 @@ namespace Framework
     Handle levelSound;
     Handle levelCamera;
     Handle levelTransform;
+    Handle levelEmitter;
     Vec3 spawnPos[4];
     Handle Players[4];
     float spawnTimers[4];
