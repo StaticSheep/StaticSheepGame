@@ -36,7 +36,7 @@ namespace Framework
 	{
     Transform *pt = space->GetHandles().GetAs<Transform>(kbTransfrom);
     BoxCollider *pc = space->GetHandles().GetAs <BoxCollider>(kbCollider);
-    if (pt->GetTranslation().x > 700 || pt->GetTranslation().x < -700)
+    if (pt->GetTranslation().x > 1010 || pt->GetTranslation().x < -1010)
     {
       for (int i = 7; i < 7; ++i)
         space->GetGameObject(Grinders[i])->Destroy();

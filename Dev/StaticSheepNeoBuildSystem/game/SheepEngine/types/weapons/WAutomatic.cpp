@@ -34,7 +34,8 @@ namespace Framework
     CircleCollider *bulletC = bullet->GetComponent <CircleCollider>(eCircleCollider);
     Transform *playerTrans = player->GetComponent <Transform>(eTransform);
     Vec3 AimDir = player->GetComponent<PlayerController>(ePlayerController)->aimDir;
-    BT->SetTranslation(playerTrans->GetTranslation() + AimDir * 25);
+    bulletC->SetBodyCollisionGroup(player->archetype);
+    BT->SetTranslation(playerTrans->GetTranslation() + AimDir * 45);
     
     //set the cone of 5 degrees for firing.
     float FireAngle = -5.0f + (randomNumber/100.0f) * 10.0f;

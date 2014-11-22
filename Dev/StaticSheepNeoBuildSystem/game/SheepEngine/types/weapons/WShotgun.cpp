@@ -44,7 +44,8 @@ namespace Framework
         bullet->GetComponent<Bullet_Default>(eBullet_Default)->damage = damage;
         BT = bullet->GetComponent<Transform>(eTransform);
         bulletC = bullet->GetComponent <CircleCollider>(eCircleCollider);
-        BT->SetTranslation(playerTrans->GetTranslation() + PlayerAimDir * 35);
+        bulletC->SetBodyCollisionGroup(player->archetype);
+        BT->SetTranslation(playerTrans->GetTranslation() + PlayerAimDir * 45);
         bulletC->AddToVelocity(AimDir * 1000);
       }
       if (i != 0)
@@ -54,7 +55,8 @@ namespace Framework
         bullet->GetComponent<Bullet_Default>(eBullet_Default)->damage = damage;
         BT = bullet->GetComponent<Transform>(eTransform);
         bulletC = bullet->GetComponent <CircleCollider>(eCircleCollider);
-        BT->SetTranslation(playerTrans->GetTranslation() + PlayerAimDir * 35);
+        bulletC->SetBodyCollisionGroup(player->archetype);
+        BT->SetTranslation(playerTrans->GetTranslation() + PlayerAimDir * 45);
         bulletC->AddToVelocity(NegAimDir * 1000);
       }
     }

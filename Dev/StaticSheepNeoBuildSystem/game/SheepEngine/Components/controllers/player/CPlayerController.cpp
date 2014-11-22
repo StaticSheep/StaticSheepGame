@@ -57,7 +57,7 @@ namespace Framework
     playerAnimation = space->GetGameObject(owner)->GetComponentHandle(eAniSprite);
 
     Transform *ps = space->GetHandles().GetAs<Transform>(playerTransform);
-    ps->SetScale(Vec3(0.18f, 0.18f, 0.0));
+    ps->SetScale(Vec3(0.25f, 0.25f, 0.0));
 
 		GamePad *gp = space->GetHandles().GetAs<GamePad>(playerGamePad); //actually gets the gamepad
 		gp->SetPad(playerNum); //setting pad number
@@ -146,36 +146,58 @@ namespace Framework
       {
         //bc->SetVelocity(Vec3(0.0f, 0.0f, 0.0f));
         if (snappedNormal.y > 0)
-          bc->AddToVelocity((snappedNormal.CalculateNormal() * 250));
+          bc->AddToVelocity((snappedNormal.CalculateNormal() * 450));
         else if (snappedNormal.y < 0)
-          bc->AddToVelocity(-(snappedNormal.CalculateNormal() * 250));
+          bc->AddToVelocity(-(snappedNormal.CalculateNormal() * 450));
+        AniSprite *ps = space->GetHandles().GetAs<AniSprite>(playerAnimation);
+        if (snappedNormal.y > 0)
+          ps->SetFlipX(true);
+        else
+          ps->SetFlipX(false);
       }
       else if (gp->LeftStick_X() < -0.2 && snappedNormal.x == 0)
       {
         //bc->SetVelocity(Vec3(0.0f, 0.0f, 0.0f));
         if (snappedNormal.y > 0)
-          bc->AddToVelocity(-(snappedNormal.CalculateNormal() * 250));
+          bc->AddToVelocity(-(snappedNormal.CalculateNormal() * 450));
         if (snappedNormal.y < 0)
-          bc->AddToVelocity((snappedNormal.CalculateNormal() * 250));
+          bc->AddToVelocity((snappedNormal.CalculateNormal() * 450));
+        AniSprite *ps = space->GetHandles().GetAs<AniSprite>(playerAnimation);
+        if (snappedNormal.y > 0)
+          ps->SetFlipX(false);
+        else
+          ps->SetFlipX(true);
       }
-      ////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////
       if (gp->LeftStick_Y() > 0.2 && snappedNormal.x != 0)
       {
         //bc->SetVelocity(Vec3(0.0f, 0.0f, 0.0f));
         if (snappedNormal.x > 0)
-          bc->AddToVelocity(-(snappedNormal.CalculateNormal() * 250));
+          bc->AddToVelocity(-(snappedNormal.CalculateNormal() * 450));
         else if (snappedNormal.x < 0)
-          bc->AddToVelocity((snappedNormal.CalculateNormal() * 250));
+          bc->AddToVelocity((snappedNormal.CalculateNormal() * 450));
+        AniSprite *ps = space->GetHandles().GetAs<AniSprite>(playerAnimation);
+        if (snappedNormal.x > 0)
+          ps->SetFlipX(false);
+        else
+          ps->SetFlipX(true);
       }
       else if (gp->LeftStick_Y() < -0.2 && snappedNormal.x != 0)
       {
         //bc->SetVelocity(Vec3(0.0f, 0.0f, 0.0f));
         if (snappedNormal.x > 0)
-          bc->AddToVelocity((snappedNormal.CalculateNormal() * 250));
+          bc->AddToVelocity((snappedNormal.CalculateNormal() * 450));
         if (snappedNormal.x < 0)
-          bc->AddToVelocity(-(snappedNormal.CalculateNormal() * 250));
+          bc->AddToVelocity(-(snappedNormal.CalculateNormal() * 450));
+        AniSprite *ps = space->GetHandles().GetAs<AniSprite>(playerAnimation);
+        if (snappedNormal.x > 0)
+          ps->SetFlipX(true);
+        else
+          ps->SetFlipX(false);
       }
-
+////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////
       //jump
       if ((gp->ButtonPressed(XButtons.A) || gp->ButtonPressed(XButtons.LShoulder)) && isSnapped)
       {

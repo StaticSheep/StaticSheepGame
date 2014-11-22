@@ -71,13 +71,13 @@ namespace Framework
 
     if (spawnTimer <= 0)
     {
-      int randomDrop = GetRandom(0, 2);
+      int randomDrop = GetRandom(0, 3);
 
       GameObject *ePlat = (FACTORY->LoadObjectFromArchetype(space, "SmallPlat"));
       Transform *PT = ePlat->GetComponent<Transform>(eTransform);
       //BoxCollider *platC = ePlat->GetComponent <BoxCollider>(eBoxCollider);
       ePlat->GetComponent<ElevatorPlat>(eElevatorPlat)->direction = true;
-      PT->SetTranslation(Vec3(242.0,-320.0,0.0));
+      PT->SetTranslation(Vec3(320.0,-520.0,0.9));
 
       if (randomDrop == 0)
       {
@@ -86,13 +86,13 @@ namespace Framework
         WT->SetTranslation(PT->GetTranslation() + Vec3(0.0, 16.0, 0.0));
       }
 
-      randomDrop = GetRandom(0, 2);
+      randomDrop = GetRandom(0, 3);
 
       GameObject *ePlat2 = (FACTORY->LoadObjectFromArchetype(space, "SmallPlat"));
       Transform *PT2 = ePlat2->GetComponent<Transform>(eTransform);
       //BoxCollider *platC2 = ePlat2->GetComponent <BoxCollider>(eBoxCollider);
       ePlat2->GetComponent<ElevatorPlat>(eElevatorPlat)->direction = false;
-      PT2->SetTranslation(Vec3(-235.0, 320.0, 0.0));
+      PT2->SetTranslation(Vec3(-320.0, 520.0, 0.9));
 
       if (randomDrop == 0)
       {
@@ -112,12 +112,12 @@ namespace Framework
       if (GetRandom(0, 1))
       {
         eGiantPlat->GetComponent<GiantKillBox>(eGiantKillBox)->direction = true;
-        GPT->SetTranslation(Vec3(600.0, 0.0, 0.0));
+        GPT->SetTranslation(Vec3(1000.0, 0.0, 0.0));
       }
       else
       {
         eGiantPlat->GetComponent<GiantKillBox>(eGiantKillBox)->direction = false;
-        GPT->SetTranslation(Vec3(-600.0, 0.0, 0.0));
+        GPT->SetTranslation(Vec3(-1000.0, 0.0, 0.0));
       }
       timeLimit = GetRandom(30, 60);
       warning = false;
@@ -127,7 +127,7 @@ namespace Framework
     }
     else if (timeLimit > 0.0f && timeLimit < 2.0f && warning == false)
     {
-      (FACTORY->LoadObjectFromArchetype(space, "WarnText"))->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(0.0,0.0,2.0));
+      (FACTORY->LoadObjectFromArchetype(space, "WarnText"))->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(0.0,0.0,-2.0));
       warning = true;
       space->GetHandles().GetAs<SoundEmitter>(levelEmitter)->Play("warning");
     }

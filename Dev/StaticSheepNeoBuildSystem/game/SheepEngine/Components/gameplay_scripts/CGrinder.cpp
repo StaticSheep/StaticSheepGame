@@ -40,7 +40,7 @@ namespace Framework
     if (pt->GetRotation() > 2 * PI)
       pt->SetRotation(0);
 
-    if (pt->GetTranslation().x > 700 || pt->GetTranslation().x < -700 || pt->GetTranslation().y > 500 || pt->GetTranslation().y < -500)
+    if (pt->GetTranslation().x > 1010 || pt->GetTranslation().x < -1010 || pt->GetTranslation().y > 600 || pt->GetTranslation().y < -600)
       space->GetGameObject(owner)->Destroy();
 
 	}
