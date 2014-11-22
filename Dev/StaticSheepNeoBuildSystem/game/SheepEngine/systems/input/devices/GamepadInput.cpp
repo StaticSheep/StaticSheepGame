@@ -42,7 +42,7 @@ namespace Framework
   bool GamePadInput::InDeadzone(bool right)
   {
 
-    if(right)
+    if(!right)
     {
       //obtain the X and Y axes of the stick
       short sX = State.Gamepad.sThumbLX;
@@ -90,8 +90,8 @@ namespace Framework
   {
     Vec2 rightStick;
     //obtain the x and y axis of the right stick
-    rightStick.x = (static_cast<float>(State.Gamepad.sThumbLX) / 32768.0f);
-    rightStick.y = (static_cast<float>(State.Gamepad.sThumbLY) / 32768.0f);
+    rightStick.x = (static_cast<float>(State.Gamepad.sThumbRX) / 32768.0f);
+    rightStick.y = (static_cast<float>(State.Gamepad.sThumbRY) / 32768.0f);
 
     return rightStick;
   }
