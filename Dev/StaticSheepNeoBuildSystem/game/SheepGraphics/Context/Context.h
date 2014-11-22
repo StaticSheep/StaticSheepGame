@@ -66,8 +66,6 @@ class RenderContext
     //                    CREATE FUNCTIONS                     //
     /////////////////////////////////////////////////////////////
     
-   GFX_API bool CreateVertexShader(Handle& handle, const std::string& filename, const InputLayout& inputLayout, const std::string& entryFunc = "VShader");
-   GFX_API bool CreatePixelShader(Handle& handle, const std::string& filename, const std::string& entryFunc = "PShader");
    GFX_API bool CreateTexture(Handle& handle, const std::string& filename);
    GFX_API bool CreateVertexBuffer(Handle& handle, size_t size);
            bool CreateIndexBuffer(Handle& handle, size_t size);
@@ -97,6 +95,7 @@ class RenderContext
     /////////////////////////////////////////////////////////////
 
    GFX_API void setWireFrame(bool isWired);
+   GFX_API void SetSpriteFlip(bool xFlip, bool yFlip);
    GFX_API void Resize(float width, float height);
    GFX_API void SetClearColor(const float r, const float g, const float b, const float a);
    GFX_API void SetTargetWindow(const HWND& hwnd);
@@ -302,6 +301,7 @@ class RenderContext
     /////////////
     
     std::unique_ptr<DirectX::SpriteBatch> m_batcher;
+    DirectX::SpriteEffects                m_flip = DirectX::SpriteEffects_None;
 
     /////////////
     // Effects //

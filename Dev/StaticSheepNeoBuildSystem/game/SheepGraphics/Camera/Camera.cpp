@@ -2,13 +2,15 @@
 #include "Camera.h"
 namespace DirectSheep
 {
-  Camera::Camera(float screenWidth, float screenHeight, bool isPerspective) : m_perspective(isPerspective),
+  Camera::Camera(float screenWidth, float screenHeight, bool isPerspective) : 
+    m_perspective(isPerspective),
     m_width(screenWidth),
     m_height(screenHeight),
-    m_Fov(75),
-    m_position(Vec3(0, 0, -400.0f)), 
+    m_position(Vec3(0, 0, -100.0f)),
     m_Theta(0)
   {
+    // Calculation to determine Pixel Perfect Near Plane
+    m_Fov = 2.0f * (atan(screenHeight / (2.0f * abs(m_position.z))));
     BuildView();
     if (m_perspective)
       BuildPerspective();
@@ -127,18 +129,18 @@ namespace DirectSheep
 
   void Camera::BuildView()
   {
-    Vec4 eyepoint(m_position.x, m_position.y, m_position.z, 0);
+    Vec4 eyepoint(m_position.x, m_position.y, m_position.z, 0.0f);
 
-    Vec4 lootAtPoint(m_position.x, m_position.y, 0.0f, 1.0f);
+    Vec4 lootAtPoint(m_position.x, m_position.y, 0.0f, 0.0f);
 
-    Vec4 upVector(0.0f, 1.0f, 0.0f, 0);
+    Vec4 upVector(0.0f, 1.0f, 0.0f, 0.0f);
 
     m_View = DirectX::XMMatrixLookAtLH(eyepoint, lootAtPoint, upVector);
   }
 
   void Camera::BuildPerspective()
   {
-    m_Projection = DirectX::XMMatrixPerspectiveFovLH(DirectX::XMConvertToRadians(m_Fov), m_width / m_height, 1.0f, 1000.0f);
+    m_Projection = DirectX::XMMatrixPerspectiveFovLH(m_Fov, m_width / m_height, abs(m_position.z) - 10, abs(m_position.z) + 1000.0f);
   }
 
   void Camera::BuildOrthographic()

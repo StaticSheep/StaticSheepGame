@@ -218,37 +218,6 @@ namespace Framework
 
     uvBegin = Vec2(offsetX, offsetY);
     uvEnd = Vec2(offsetX + m_frameWidth, offsetY + m_frameHeight);
-
-    if (m_flipX)
-    {
-      uvBegin.x *= -1;
-      uvEnd.x *= -1;
-    }
-    if (m_flipY)
-    {
-      uvBegin.y *= -1;
-      uvEnd.y *= -1;
-    }
-  }
-
-  void AniSprite::SetFlipX(bool isFlipped)
-  {
-    m_flipX = isFlipped;
-  }
-
-  void AniSprite::SetFlipY(bool isFlipped)
-  {
-    m_flipY = isFlipped;
-  }
-
-  bool AniSprite::GetFlipX(void)
-  {
-    return m_flipX;
-  }
-
-  bool AniSprite::GetFlipY(void)
-  {
-    return m_flipY;
   }
 
   void AniSprite::UpdateFramePosition()
@@ -347,7 +316,7 @@ namespace Framework
     GRAPHICS->SetColor(Color);
     GRAPHICS->SetUV(uvBegin, uvEnd);
     GRAPHICS->SetCamState(0);
-
+    GRAPHICS->FlipSprite(m_flipX, m_flipY);
     GRAPHICS->DrawSprite(this);
 
     CheckNextFrame();

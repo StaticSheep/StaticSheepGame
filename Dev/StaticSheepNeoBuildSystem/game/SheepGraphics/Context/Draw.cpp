@@ -98,20 +98,21 @@ namespace DirectSheep
     unsigned width = GetTextureSize(texture).width;
     unsigned height = GetTextureSize(texture).height;
 
+    DirectX::SpriteEffects effect = DirectX::SpriteEffects_None;
+
     RECT sourcePos;
-    sourcePos.left = (long)(width * m_spriteTrans.uvBegin.x);
-    sourcePos.right = (long)(width * m_spriteTrans.uvEnd.x);
+    sourcePos.left = (long)(width * (m_spriteTrans.uvBegin.x));
+    sourcePos.right = (long)(width * (m_spriteTrans.uvEnd.x));
     sourcePos.top = (long)(height * m_spriteTrans.uvBegin.y);
     sourcePos.bottom = (long)(height * m_spriteTrans.uvEnd.y);
 
-    Transform boop = m_spriteTrans;
     m_batcher->Draw(m_textureRes[texture.index].m_ShaderRes,
                Vec2(m_spriteTrans.x, m_spriteTrans.y),
                &sourcePos,
                XMLoadFloat4(&m_spriteBlend),
                m_spriteTrans.theta,
                Vec2((sourcePos.right - sourcePos.left) / 2.0f, (sourcePos.bottom - sourcePos.top) / 2.0f),
-               Vec2(m_spriteTrans.w, -m_spriteTrans.h), DirectX::SpriteEffects_None,-m_spriteTrans.z);
+               Vec2(m_spriteTrans.w, -m_spriteTrans.h), m_flip, m_spriteTrans.z);
   }
 
 

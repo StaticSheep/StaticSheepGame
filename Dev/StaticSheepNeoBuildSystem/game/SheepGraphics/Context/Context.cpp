@@ -13,7 +13,6 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include <direct.h>
 
 #pragma comment (lib, "d3d11.lib")
-#pragma comment (lib, "d3dcompiler.lib")
 
 using namespace DirectX;
 
@@ -131,7 +130,6 @@ namespace DirectSheep
 
     // Initialize Effects
     m_genericEffect = new GenEffect(m_device);
-    m_PointLight = new PointLight(m_device);
 
     // RenderContext is now initialized
     m_initialized = true;

@@ -66,8 +66,6 @@ namespace Framework
     void SetUV(Vec2 uvBegin, Vec2 uvEnd);
 
     DirectSheep::Handle SetTexture(const std::string& Texture);
-    DirectSheep::Handle SetVShader(const std::string& Shader);
-    DirectSheep::Handle SetPShader(const std::string& Shader);
 
     void RawDraw(void);
     void DrawSprite(Sprite *sprite);
@@ -79,6 +77,7 @@ namespace Framework
 
     void SetWireframe(bool iswired);
     void SetCamState(int camState);
+    void FlipSprite(bool x, bool y);
 
     void ReceiveMessage(Message& msg);
     void* GetDevice(void);
@@ -101,14 +100,6 @@ namespace Framework
 		void Draw(void);
 
     std::unordered_map<std::string, DirectSheep::Handle> m_textureMap;
-
-    std::unordered_map<std::string, DirectSheep::Handle> m_vshaderMap;
-
-    std::unordered_map<std::string, DirectSheep::Handle> m_pshaderMap;
-
-    DirectSheep::Handle spritepShader;
-
-    DirectSheep::Handle spritevShader;
 
     DirectSheep::Handle spriteQuad;
 

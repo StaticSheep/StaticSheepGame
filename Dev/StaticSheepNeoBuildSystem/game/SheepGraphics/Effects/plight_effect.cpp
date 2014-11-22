@@ -40,7 +40,7 @@ namespace DirectSheep
     m_lightBuffer->setData(pContext, buf);
   }
 
-  PointLight::PointLight(ID3D11Device* pDevice) : Effect(pDevice, "content/shaders/light_vs.hlsl", "VSMain", "vs_5_0", "content/shaders/light_ps.hlsl", "PSMain", "ps_5_0")
+  PointLight::PointLight(ID3D11Device* pDevice) : Effect(pDevice, "content/shaders/light_vs.cso", "content/shaders/light_ps.cso")
   {
     m_lightBuffer = new CBuffer<LightBuffer>(pDevice);
 
@@ -56,6 +56,6 @@ namespace DirectSheep
       { "POSITION", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 }
     };
 
-    DXVerify(pDevice->CreateInputLayout(layout, 1, m_vShaderBlob->GetBufferPointer(), m_vShaderBlob->GetBufferSize(), &m_inputLayout));
+    DXVerify(pDevice->CreateInputLayout(layout, 1, m_vShaderData, m_vShaderSize, &m_inputLayout));
   }
 }
