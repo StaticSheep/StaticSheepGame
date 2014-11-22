@@ -4,6 +4,7 @@
 #include "Manifold.h"
 #endif
 
+#include "CollisionGroups.h"
 #include "Material.h"
 #include "Shape.h"
 #include "Vec3D.h"
@@ -34,6 +35,7 @@ namespace SheepFizz
 		PHY_API void SetBodyRot(Handle handle, float rot);
 		PHY_API void SetBodyAngVeloc(Handle handle, float angveloc);
 		PHY_API void SetBodyTorque(Handle handle, float torque);
+    PHY_API void SetBodyCollisionGroup(Handle handle, CollisionGroup group);
 
     //gravity
     PHY_API void SetBodyGravityOn(Handle handle);
@@ -56,7 +58,9 @@ namespace SheepFizz
 		PHY_API float GetBodyRot(Handle handle);
 		PHY_API float GetBodyAngVeloc(Handle handle);
 		PHY_API float GetBodyTorque(Handle handle);
+
     PHY_API Vec3D GetBodyUpNormal(Handle handle);
+    PHY_API CollisionGroup GetBodyCollisionGroup(Handle handle);
 
     //gravity gettors
     PHY_API Vec3D GetBodyGravityNormal(Handle handle);

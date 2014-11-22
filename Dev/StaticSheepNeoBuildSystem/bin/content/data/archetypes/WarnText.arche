@@ -1,26 +1,26 @@
 GameObject
 {
-  name std::string "GrinderBig"
-  archetype std::string "GrinderBig"
+  name std::string "WarnText"
+  archetype std::string "WarnText"
   Transform
   {
     Translation Vec3
     {
       x_ float 0.000000
       y_ float 0.000000
-      z_ float 0.000000
+      z_ float 2.000000
     }
     Rotation float 0.000000
     Scale Vec3
     {
-      x_ float 2.000000
-      y_ float 2.000000
+      x_ float 1.000000
+      y_ float 1.000000
       z_ float 0.000000
     }
   }
   Sprite
   {
-    m_spriteName std::string "Grinder.png"
+    m_spriteName std::string "warning_text.png"
     Color Vec4
     {
       R float 1.000000
@@ -34,14 +34,7 @@ GameObject
       Y float 1.000000
     }
   }
-  BoxCollider
-  {
-    m_width float 64.000000
-    m_height float 64.000000
-    m_materialName std::string "Static"
-    m_hasCollisionCallback bool false
-  }
-  Grinder
+  WarningText
   {
   }
 }

@@ -33,8 +33,8 @@ GameObject
     m_paused bool false
     Color Vec4
     {
-      R float 1.000000
-      G float 1.000000
+      R float 0.000000
+      G float 0.000000
       B float 1.000000
       A float 1.000000
     }
@@ -50,10 +50,11 @@ GameObject
   }
   BoxCollider
   {
-    m_width float 32.000000
-    m_height float 32.000000
+    m_width float 64.000000
+    m_height float 64.000000
     m_materialName std::string "Wood"
     m_hasCollisionCallback bool true
+    m_CollisionGroup std::string "Player4"
   }
   SoundEmitter
   {

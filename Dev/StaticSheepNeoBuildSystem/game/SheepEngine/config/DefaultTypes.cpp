@@ -34,6 +34,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "types/weapons/WPistol.h"
 #include "types/weapons/WShotgun.h"
 #include "types/weapons/WAutomatic.h"
+#include "components/gameplay_scripts/CWarningText.h"
+#include "components/gameplay_scripts/CBackgroundPan.h"
 
 
 namespace Framework
@@ -196,6 +198,12 @@ namespace Framework
     TYPE_REGISTER(Explosion);
     TYPE_SET_TWEAK_TYPE(Explosion, AntTweak::TW_TYPE_COMPONENT);
 
+    TYPE_REGISTER(WarningText);
+    TYPE_SET_TWEAK_TYPE(WarningText, AntTweak::TW_TYPE_COMPONENT);
+
+    TYPE_REGISTER(BackgroundPan);
+    TYPE_SET_TWEAK_TYPE(BackgroundPan, AntTweak::TW_TYPE_COMPONENT);
+
     TYPE_REGISTER(WeaponPickup);
     TYPE_SET_TWEAK_TYPE(WeaponPickup, AntTweak::TW_TYPE_COMPONENT);
     TYPE_ADD_MEMBER(WeaponPickup, weaponID, false, true, "Weapon Type");
@@ -210,12 +218,14 @@ namespace Framework
     TYPE_ADD_MEMBER( BoxCollider, m_height, false, true, "Height");
     TYPE_ADD_MEMBER(BoxCollider, m_materialName, false, true, "Material"); 
     TYPE_ADD_MEMBER(BoxCollider, m_hasCollisionCallback, false, true, "UsesCallback");
+    TYPE_ADD_MEMBER(BoxCollider, m_CollisionGroup, false, true, "CollisionGroup");
     TYPE_SET_TWEAK_TYPE(BoxCollider, AntTweak::TW_TYPE_COMPONENT);
 
     TYPE_REGISTER(CircleCollider);
     TYPE_ADD_MEMBER(CircleCollider, m_radius, false, true, "Radius");
     TYPE_ADD_MEMBER(CircleCollider, m_materialName, false, true, "Material");
     TYPE_ADD_MEMBER(CircleCollider, m_hasCollisionCallback, false, true, "UsesCallback");
+    TYPE_ADD_MEMBER(CircleCollider, m_CollisionGroup, false, true, "CollisionGroup");
     TYPE_SET_TWEAK_TYPE(CircleCollider, AntTweak::TW_TYPE_COMPONENT);
 
     TYPE_REGISTER(GamePad);

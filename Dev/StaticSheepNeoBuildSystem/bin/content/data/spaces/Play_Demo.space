@@ -1,4 +1,4 @@
-Level1
+Play_Demo
 GameObject
 {
   name std::string "Background"
@@ -8,8 +8,8 @@ GameObject
     Translation Vec3
     {
       x_ float 0.000000
-      y_ float 100.000000
-      z_ float 2.000000
+      y_ float 0.000000
+      z_ float -50.000000
     }
     Rotation float 0.000000
     Scale Vec3
@@ -32,13 +32,8 @@ GameObject
     Size Vec2
     {
       X float 1.000000
-      Y float 1.150000
+      Y float 1.000000
     }
-    m_flipX bool false
-    m_flipY bool false
-  }
-  BackgroundPan
-  {
   }
 }
 GameObject
@@ -49,14 +44,14 @@ GameObject
   {
     Translation Vec3
     {
-      x_ float -685.000000
-      y_ float -500.000000
+      x_ float -440.000000
+      y_ float -295.000000
       z_ float 0.000000
     }
     Rotation float 0.000000
     Scale Vec3
     {
-      x_ float 0.950000
+      x_ float 0.500000
       y_ float 1.000000
       z_ float 0.000000
     }
@@ -76,16 +71,13 @@ GameObject
       X float 1.000000
       Y float 1.000000
     }
-    m_flipX bool false
-    m_flipY bool false
   }
   BoxCollider
   {
-    m_width float 486.399994
+    m_width float 256.000000
     m_height float 32.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
-    m_CollisionGroup std::string ""
   }
 }
 GameObject
@@ -96,14 +88,14 @@ GameObject
   {
     Translation Vec3
     {
-      x_ float 0.000000
-      y_ float -500.000000
+      x_ float 2.000000
+      y_ float -295.000000
       z_ float 0.000000
     }
     Rotation float 0.000000
     Scale Vec3
     {
-      x_ float 0.750000
+      x_ float 0.620000
       y_ float 1.000000
       z_ float 0.000000
     }
@@ -123,16 +115,13 @@ GameObject
       X float 1.000000
       Y float 1.000000
     }
-    m_flipX bool false
-    m_flipY bool false
   }
   BoxCollider
   {
-    m_width float 384.000000
+    m_width float 317.440002
     m_height float 32.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
-    m_CollisionGroup std::string ""
   }
 }
 GameObject
@@ -143,14 +132,14 @@ GameObject
   {
     Translation Vec3
     {
-      x_ float -950.000000
+      x_ float -570.000000
       y_ float 0.000000
       z_ float 1.000000
     }
     Rotation float 1.570700
     Scale Vec3
     {
-      x_ float 2.100000
+      x_ float 1.220000
       y_ float 1.000000
       z_ float 0.000000
     }
@@ -170,16 +159,13 @@ GameObject
       X float 1.000000
       Y float 1.000000
     }
-    m_flipX bool false
-    m_flipY bool false
   }
   BoxCollider
   {
-    m_width float 1075.199951
+    m_width float 624.640015
     m_height float 32.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
-    m_CollisionGroup std::string ""
   }
 }
 GameObject
@@ -190,14 +176,14 @@ GameObject
   {
     Translation Vec3
     {
-      x_ float 950.000000
+      x_ float 570.000000
       y_ float 0.000000
       z_ float 1.000000
     }
     Rotation float 1.570700
     Scale Vec3
     {
-      x_ float 2.100000
+      x_ float 1.220000
       y_ float 1.000000
       z_ float 0.000000
     }
@@ -217,16 +203,13 @@ GameObject
       X float 1.000000
       Y float 1.000000
     }
-    m_flipX bool false
-    m_flipY bool false
   }
   BoxCollider
   {
-    m_width float 1072.199951
+    m_width float 624.640015
     m_height float 32.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
-    m_CollisionGroup std::string ""
   }
 }
 GameObject
@@ -252,17 +235,14 @@ GameObject
   Camera
   {
     m_active bool true
-    m_FOV float 2.775371
-  }
-  SoundEmitter
-  {
+    m_FOV float 77.000000
   }
   SoundPlayer
   {
   }
   Level1_Logic
   {
-    timeLimit float 6.000000
+    timeLimit float 60.000000
     numOfPlayers int 4
   }
 }
@@ -274,14 +254,14 @@ GameObject
   {
     Translation Vec3
     {
-      x_ float 685.000000
-      y_ float -500.000000
+      x_ float 440.000000
+      y_ float -295.000000
       z_ float 0.000000
     }
     Rotation float 0.000000
     Scale Vec3
     {
-      x_ float 0.950000
+      x_ float 0.500000
       y_ float 1.000000
       z_ float 0.000000
     }
@@ -301,16 +281,13 @@ GameObject
       X float 1.000000
       Y float 1.000000
     }
-    m_flipX bool false
-    m_flipY bool false
   }
   BoxCollider
   {
-    m_width float 486.399994
+    m_width float 256.000000
     m_height float 32.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
-    m_CollisionGroup std::string ""
   }
 }
 GameObject
@@ -321,14 +298,14 @@ GameObject
   {
     Translation Vec3
     {
-      x_ float -685.000000
-      y_ float 500.000000
+      x_ float -440.000000
+      y_ float 295.000000
       z_ float 0.000000
     }
     Rotation float 0.000000
     Scale Vec3
     {
-      x_ float 0.950000
+      x_ float 0.500000
       y_ float 1.000000
       z_ float 0.000000
     }
@@ -348,16 +325,13 @@ GameObject
       X float 1.000000
       Y float 1.000000
     }
-    m_flipX bool false
-    m_flipY bool false
   }
   BoxCollider
   {
-    m_width float 486.399994
+    m_width float 256.000000
     m_height float 32.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
-    m_CollisionGroup std::string ""
   }
 }
 GameObject
@@ -368,14 +342,14 @@ GameObject
   {
     Translation Vec3
     {
-      x_ float 685.000000
-      y_ float 500.000000
+      x_ float 440.000000
+      y_ float 295.000000
       z_ float 0.000000
     }
     Rotation float 0.000000
     Scale Vec3
     {
-      x_ float 0.950000
+      x_ float 0.500000
       y_ float 1.000000
       z_ float 0.000000
     }
@@ -395,16 +369,13 @@ GameObject
       X float 1.000000
       Y float 1.000000
     }
-    m_flipX bool false
-    m_flipY bool false
   }
   BoxCollider
   {
-    m_width float 486.399994
+    m_width float 256.000000
     m_height float 32.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
-    m_CollisionGroup std::string ""
   }
 }
 GameObject
@@ -415,14 +386,14 @@ GameObject
   {
     Translation Vec3
     {
-      x_ float 0.000000
-      y_ float 500.000000
+      x_ float 2.000000
+      y_ float 295.000000
       z_ float 0.000000
     }
     Rotation float 0.000000
     Scale Vec3
     {
-      x_ float 0.750000
+      x_ float 0.620000
       y_ float 1.000000
       z_ float 0.000000
     }
@@ -442,16 +413,13 @@ GameObject
       X float 1.000000
       Y float 1.000000
     }
-    m_flipX bool false
-    m_flipY bool false
   }
   BoxCollider
   {
-    m_width float 384.000000
+    m_width float 317.440002
     m_height float 32.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
-    m_CollisionGroup std::string ""
   }
 }
 GameObject
@@ -462,14 +430,14 @@ GameObject
   {
     Translation Vec3
     {
-      x_ float 320.000000
-      y_ float -500.000000
+      x_ float 235.000000
+      y_ float -310.000000
       z_ float 1.000000
     }
     Rotation float 0.000000
     Scale Vec3
     {
-      x_ float 2.000000
+      x_ float 1.250000
       y_ float 1.000000
       z_ float 0.000000
     }
@@ -489,16 +457,13 @@ GameObject
       X float 1.000000
       Y float 1.000000
     }
-    m_flipX bool false
-    m_flipY bool false
   }
   BoxCollider
   {
-    m_width float 256.000000
+    m_width float 130.880005
     m_height float 32.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
-    m_CollisionGroup std::string ""
   }
 }
 GameObject
@@ -509,14 +474,14 @@ GameObject
   {
     Translation Vec3
     {
-      x_ float -320.000000
-      y_ float -500.000000
-      z_ float 0.000000
+      x_ float -235.000000
+      y_ float -310.209991
+      z_ float 1.000000
     }
     Rotation float 0.000000
     Scale Vec3
     {
-      x_ float 2.000000
+      x_ float 1.250000
       y_ float 1.000000
       z_ float 0.000000
     }
@@ -536,16 +501,13 @@ GameObject
       X float 1.000000
       Y float 1.000000
     }
-    m_flipX bool false
-    m_flipY bool false
   }
   BoxCollider
   {
-    m_width float 256.000000
+    m_width float 130.880005
     m_height float 32.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
-    m_CollisionGroup std::string ""
   }
 }
 GameObject
@@ -556,14 +518,14 @@ GameObject
   {
     Translation Vec3
     {
-      x_ float -320.000000
-      y_ float 500.000000
+      x_ float -235.000000
+      y_ float 310.209991
       z_ float 1.000000
     }
     Rotation float 3.140000
     Scale Vec3
     {
-      x_ float 2.000000
+      x_ float 1.250000
       y_ float 1.000000
       z_ float 0.000000
     }
@@ -583,16 +545,13 @@ GameObject
       X float 1.000000
       Y float 1.000000
     }
-    m_flipX bool false
-    m_flipY bool false
   }
   BoxCollider
   {
-    m_width float 256.000000
+    m_width float 130.880005
     m_height float 32.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
-    m_CollisionGroup std::string ""
   }
 }
 GameObject
@@ -603,14 +562,14 @@ GameObject
   {
     Translation Vec3
     {
-      x_ float 320.000000
-      y_ float 500.000000
+      x_ float 235.000000
+      y_ float 310.209991
       z_ float 1.000000
     }
     Rotation float 3.140000
     Scale Vec3
     {
-      x_ float 2.000000
+      x_ float 1.250000
       y_ float 1.000000
       z_ float 0.000000
     }
@@ -630,16 +589,13 @@ GameObject
       X float 1.000000
       Y float 1.000000
     }
-    m_flipX bool false
-    m_flipY bool false
   }
   BoxCollider
   {
-    m_width float 256.000000
+    m_width float 130.880005
     m_height float 32.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
-    m_CollisionGroup std::string ""
   }
 }
 GameObject
@@ -650,15 +606,15 @@ GameObject
   {
     Translation Vec3
     {
-      x_ float -412.000000
-      y_ float -485.000000
+      x_ float -290.000000
+      y_ float -295.000000
       z_ float 0.000000
     }
     Rotation float 0.000000
     Scale Vec3
     {
-      x_ float 2.000000
-      y_ float 2.000000
+      x_ float 1.000000
+      y_ float 1.000000
       z_ float 0.000000
     }
   }
@@ -677,16 +633,13 @@ GameObject
       X float 1.000000
       Y float 1.000000
     }
-    m_flipX bool false
-    m_flipY bool false
   }
   BoxCollider
   {
-    m_width float 64.000000
-    m_height float 64.000000
+    m_width float 32.000000
+    m_height float 32.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
-    m_CollisionGroup std::string ""
   }
   Grinder
   {
@@ -700,15 +653,15 @@ GameObject
   {
     Translation Vec3
     {
-      x_ float -348.000000
-      y_ float -485.000000
+      x_ float -250.000000
+      y_ float -295.000000
       z_ float 0.000000
     }
     Rotation float 0.000000
     Scale Vec3
     {
-      x_ float 2.000000
-      y_ float 2.000000
+      x_ float 1.000000
+      y_ float 1.000000
       z_ float 0.000000
     }
   }
@@ -727,16 +680,13 @@ GameObject
       X float 1.000000
       Y float 1.000000
     }
-    m_flipX bool false
-    m_flipY bool false
   }
   BoxCollider
   {
-    m_width float 64.000000
-    m_height float 64.000000
+    m_width float 32.000000
+    m_height float 32.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
-    m_CollisionGroup std::string ""
   }
   Grinder
   {
@@ -750,15 +700,15 @@ GameObject
   {
     Translation Vec3
     {
-      x_ float -285.000000
-      y_ float -485.000000
+      x_ float -210.000000
+      y_ float -295.000000
       z_ float 0.000000
     }
     Rotation float 0.000000
     Scale Vec3
     {
-      x_ float 2.000000
-      y_ float 2.000000
+      x_ float 1.000000
+      y_ float 1.000000
       z_ float 0.000000
     }
   }
@@ -777,16 +727,13 @@ GameObject
       X float 1.000000
       Y float 1.000000
     }
-    m_flipX bool false
-    m_flipY bool false
   }
   BoxCollider
   {
-    m_width float 64.000000
-    m_height float 64.000000
+    m_width float 32.000000
+    m_height float 32.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
-    m_CollisionGroup std::string ""
   }
   Grinder
   {
@@ -800,15 +747,15 @@ GameObject
   {
     Translation Vec3
     {
-      x_ float -220.000000
-      y_ float -485.000000
+      x_ float -170.000000
+      y_ float -295.000000
       z_ float 0.000000
     }
     Rotation float 0.000000
     Scale Vec3
     {
-      x_ float 2.000000
-      y_ float 2.000000
+      x_ float 1.000000
+      y_ float 1.000000
       z_ float 0.000000
     }
   }
@@ -827,16 +774,13 @@ GameObject
       X float 1.000000
       Y float 1.000000
     }
-    m_flipX bool false
-    m_flipY bool false
   }
   BoxCollider
   {
-    m_width float 64.000000
-    m_height float 64.000000
+    m_width float 32.000000
+    m_height float 32.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
-    m_CollisionGroup std::string ""
   }
   Grinder
   {
@@ -850,15 +794,15 @@ GameObject
   {
     Translation Vec3
     {
-      x_ float -285.000000
-      y_ float 480.000000
-      z_ float 1.000000
+      x_ float -290.000000
+      y_ float 295.000000
+      z_ float 0.000000
     }
     Rotation float 0.000000
     Scale Vec3
     {
-      x_ float 2.000000
-      y_ float 2.000000
+      x_ float 1.000000
+      y_ float 1.000000
       z_ float 0.000000
     }
   }
@@ -877,16 +821,13 @@ GameObject
       X float 1.000000
       Y float 1.000000
     }
-    m_flipX bool false
-    m_flipY bool false
   }
   BoxCollider
   {
-    m_width float 64.000000
-    m_height float 64.000000
+    m_width float 32.000000
+    m_height float 32.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
-    m_CollisionGroup std::string ""
   }
   Grinder
   {
@@ -900,15 +841,15 @@ GameObject
   {
     Translation Vec3
     {
-      x_ float -220.000000
-      y_ float 480.000000
-      z_ float 1.000000
+      x_ float -250.000000
+      y_ float 295.000000
+      z_ float 0.000000
     }
     Rotation float 0.000000
     Scale Vec3
     {
-      x_ float 2.000000
-      y_ float 2.000000
+      x_ float 1.000000
+      y_ float 1.000000
       z_ float 0.000000
     }
   }
@@ -927,16 +868,13 @@ GameObject
       X float 1.000000
       Y float 1.000000
     }
-    m_flipX bool false
-    m_flipY bool false
   }
   BoxCollider
   {
-    m_width float 64.000000
-    m_height float 64.000000
+    m_width float 32.000000
+    m_height float 32.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
-    m_CollisionGroup std::string ""
   }
   Grinder
   {
@@ -950,15 +888,15 @@ GameObject
   {
     Translation Vec3
     {
-      x_ float -412.000000
-      y_ float 485.000000
-      z_ float 1.000000
+      x_ float -210.000000
+      y_ float 295.000000
+      z_ float 0.000000
     }
     Rotation float 0.000000
     Scale Vec3
     {
-      x_ float 2.000000
-      y_ float 2.000000
+      x_ float 1.000000
+      y_ float 1.000000
       z_ float 0.000000
     }
   }
@@ -977,16 +915,13 @@ GameObject
       X float 1.000000
       Y float 1.000000
     }
-    m_flipX bool false
-    m_flipY bool false
   }
   BoxCollider
   {
-    m_width float 64.000000
-    m_height float 64.000000
+    m_width float 32.000000
+    m_height float 32.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
-    m_CollisionGroup std::string ""
   }
   Grinder
   {
@@ -1000,15 +935,15 @@ GameObject
   {
     Translation Vec3
     {
-      x_ float -348.000000
-      y_ float 485.000000
-      z_ float 1.000000
+      x_ float -170.000000
+      y_ float 295.000000
+      z_ float 0.000000
     }
     Rotation float 0.000000
     Scale Vec3
     {
-      x_ float 2.000000
-      y_ float 2.000000
+      x_ float 1.000000
+      y_ float 1.000000
       z_ float 0.000000
     }
   }
@@ -1027,16 +962,13 @@ GameObject
       X float 1.000000
       Y float 1.000000
     }
-    m_flipX bool false
-    m_flipY bool false
   }
   BoxCollider
   {
-    m_width float 64.000000
-    m_height float 64.000000
+    m_width float 32.000000
+    m_height float 32.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
-    m_CollisionGroup std::string ""
   }
   Grinder
   {
@@ -1050,15 +982,15 @@ GameObject
   {
     Translation Vec3
     {
-      x_ float 220.000000
-      y_ float 480.000000
-      z_ float 1.000000
+      x_ float 290.000000
+      y_ float 295.000000
+      z_ float 0.000000
     }
     Rotation float 0.000000
     Scale Vec3
     {
-      x_ float 2.000000
-      y_ float 2.000000
+      x_ float 1.000000
+      y_ float 1.000000
       z_ float 0.000000
     }
   }
@@ -1077,16 +1009,13 @@ GameObject
       X float 1.000000
       Y float 1.000000
     }
-    m_flipX bool false
-    m_flipY bool false
   }
   BoxCollider
   {
-    m_width float 64.000000
-    m_height float 64.000000
+    m_width float 32.000000
+    m_height float 32.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
-    m_CollisionGroup std::string ""
   }
   Grinder
   {
@@ -1100,15 +1029,15 @@ GameObject
   {
     Translation Vec3
     {
-      x_ float 412.000000
-      y_ float 480.000000
-      z_ float 1.000000
+      x_ float 250.000000
+      y_ float 295.000000
+      z_ float 0.000000
     }
     Rotation float 0.000000
     Scale Vec3
     {
-      x_ float 2.000000
-      y_ float 2.000000
+      x_ float 1.000000
+      y_ float 1.000000
       z_ float 0.000000
     }
   }
@@ -1127,16 +1056,13 @@ GameObject
       X float 1.000000
       Y float 1.000000
     }
-    m_flipX bool false
-    m_flipY bool false
   }
   BoxCollider
   {
-    m_width float 64.000000
-    m_height float 64.000000
+    m_width float 32.000000
+    m_height float 32.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
-    m_CollisionGroup std::string ""
   }
   Grinder
   {
@@ -1150,15 +1076,15 @@ GameObject
   {
     Translation Vec3
     {
-      x_ float 285.000000
-      y_ float 480.000000
-      z_ float 1.000000
+      x_ float 210.000000
+      y_ float 295.000000
+      z_ float 0.000000
     }
     Rotation float 0.000000
     Scale Vec3
     {
-      x_ float 2.000000
-      y_ float 2.000000
+      x_ float 1.000000
+      y_ float 1.000000
       z_ float 0.000000
     }
   }
@@ -1177,16 +1103,13 @@ GameObject
       X float 1.000000
       Y float 1.000000
     }
-    m_flipX bool false
-    m_flipY bool false
   }
   BoxCollider
   {
-    m_width float 64.000000
-    m_height float 64.000000
+    m_width float 32.000000
+    m_height float 32.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
-    m_CollisionGroup std::string ""
   }
   Grinder
   {
@@ -1200,15 +1123,15 @@ GameObject
   {
     Translation Vec3
     {
-      x_ float 348.000000
-      y_ float 480.000000
-      z_ float 1.000000
+      x_ float 170.000000
+      y_ float 295.000000
+      z_ float 0.000000
     }
     Rotation float 0.000000
     Scale Vec3
     {
-      x_ float 2.000000
-      y_ float 2.000000
+      x_ float 1.000000
+      y_ float 1.000000
       z_ float 0.000000
     }
   }
@@ -1227,16 +1150,13 @@ GameObject
       X float 1.000000
       Y float 1.000000
     }
-    m_flipX bool false
-    m_flipY bool false
   }
   BoxCollider
   {
-    m_width float 64.000000
-    m_height float 64.000000
+    m_width float 32.000000
+    m_height float 32.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
-    m_CollisionGroup std::string ""
   }
   Grinder
   {
@@ -1250,15 +1170,15 @@ GameObject
   {
     Translation Vec3
     {
-      x_ float 220.000000
-      y_ float -480.000000
-      z_ float 1.000000
+      x_ float 290.000000
+      y_ float -295.000000
+      z_ float 0.000000
     }
     Rotation float 0.000000
     Scale Vec3
     {
-      x_ float 2.000000
-      y_ float 2.000000
+      x_ float 1.000000
+      y_ float 1.000000
       z_ float 0.000000
     }
   }
@@ -1277,16 +1197,13 @@ GameObject
       X float 1.000000
       Y float 1.000000
     }
-    m_flipX bool false
-    m_flipY bool false
   }
   BoxCollider
   {
-    m_width float 64.000000
-    m_height float 64.000000
+    m_width float 32.000000
+    m_height float 32.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
-    m_CollisionGroup std::string ""
   }
   Grinder
   {
@@ -1300,15 +1217,15 @@ GameObject
   {
     Translation Vec3
     {
-      x_ float 285.000000
-      y_ float -480.000000
-      z_ float 1.000000
+      x_ float 250.000000
+      y_ float -295.000000
+      z_ float 0.000000
     }
     Rotation float 0.000000
     Scale Vec3
     {
-      x_ float 2.000000
-      y_ float 2.000000
+      x_ float 1.000000
+      y_ float 1.000000
       z_ float 0.000000
     }
   }
@@ -1327,16 +1244,13 @@ GameObject
       X float 1.000000
       Y float 1.000000
     }
-    m_flipX bool false
-    m_flipY bool false
   }
   BoxCollider
   {
-    m_width float 64.000000
-    m_height float 64.000000
+    m_width float 32.000000
+    m_height float 32.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
-    m_CollisionGroup std::string ""
   }
   Grinder
   {
@@ -1350,15 +1264,15 @@ GameObject
   {
     Translation Vec3
     {
-      x_ float 348.000000
-      y_ float -480.000000
-      z_ float 1.000000
+      x_ float 210.000000
+      y_ float -295.000000
+      z_ float 0.000000
     }
     Rotation float 0.000000
     Scale Vec3
     {
-      x_ float 2.000000
-      y_ float 2.000000
+      x_ float 1.000000
+      y_ float 1.000000
       z_ float 0.000000
     }
   }
@@ -1377,16 +1291,13 @@ GameObject
       X float 1.000000
       Y float 1.000000
     }
-    m_flipX bool false
-    m_flipY bool false
   }
   BoxCollider
   {
-    m_width float 64.000000
-    m_height float 64.000000
+    m_width float 32.000000
+    m_height float 32.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
-    m_CollisionGroup std::string ""
   }
   Grinder
   {
@@ -1400,15 +1311,15 @@ GameObject
   {
     Translation Vec3
     {
-      x_ float 412.000000
-      y_ float -480.000000
-      z_ float 1.000000
+      x_ float 170.000000
+      y_ float -295.000000
+      z_ float 0.000000
     }
     Rotation float 0.000000
     Scale Vec3
     {
-      x_ float 2.000000
-      y_ float 2.000000
+      x_ float 1.000000
+      y_ float 1.000000
       z_ float 0.000000
     }
   }
@@ -1427,16 +1338,13 @@ GameObject
       X float 1.000000
       Y float 1.000000
     }
-    m_flipX bool false
-    m_flipY bool false
   }
   BoxCollider
   {
-    m_width float 64.000000
-    m_height float 64.000000
+    m_width float 32.000000
+    m_height float 32.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
-    m_CollisionGroup std::string ""
   }
   Grinder
   {
@@ -1452,13 +1360,13 @@ GameObject
     {
       x_ float 0.000000
       y_ float 0.000000
-      z_ float 1.900000
+      z_ float -40.000000
     }
     Rotation float 0.000000
     Scale Vec3
     {
-      x_ float 1.000000
-      y_ float 1.000000
+      x_ float 0.680000
+      y_ float 0.660000
       z_ float 0.000000
     }
   }
@@ -1475,9 +1383,7 @@ GameObject
     Size Vec2
     {
       X float 1.000000
-      Y float 1.100000
+      Y float 1.000000
     }
-    m_flipX bool false
-    m_flipY bool false
   }
 }

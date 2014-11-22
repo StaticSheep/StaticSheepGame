@@ -35,8 +35,6 @@ namespace SheepFizz
 	//uses enums for instant access to the array values
 	void Manifold::ManifoldInteraction(void)
 	{
-		//check collision group
-		if(A->collisionGroup_ == B->collisionGroup_)
 			manifold[A->shape_->GetShape()][B->shape_->GetShape()](*this);
 	}//end of ManifoldInteraction
 
@@ -53,6 +51,8 @@ namespace SheepFizz
 		Vec3D correction = (Maximum(penetration - POSSLACK, 0.0f) /
 			(A->massData_.inverseMass + B->massData_.inverseMass)) * POSCORRECT
 			* normal;
+
+    correction.z = 0;
 
 		A->position_ -= A->massData_.inverseMass * correction;
 		B->position_ += B->massData_.inverseMass * correction;
@@ -165,8 +165,8 @@ namespace SheepFizz
 	//determines if two polygons are colliding
 	void RectangleRectangleManifold(Manifold& m)
 	{
-	  //preset the contact count to 0;
-	  m.contactCount = 0;
+    //preset the contact count to 0;
+    m.contactCount = 0;
 
 	  //create shortcut pointers to each shape
 	  Rectangle* a = (Rectangle*)(m.A->shape_);
@@ -400,6 +400,7 @@ namespace SheepFizz
 	{
 		if(m.A->massData_.mass == 0 && m.B->massData_.mass == 0)
 			return;
+
 		//set contacts to zero
 		m.contactCount = 0;
 
@@ -512,6 +513,7 @@ namespace SheepFizz
 			m.contacts[0] = m.B->position_ + bRotation * m.contacts[0];
 			m.contactCount = 1;
 		}
+
 	}//end of CircleRectangleManifold
 
 

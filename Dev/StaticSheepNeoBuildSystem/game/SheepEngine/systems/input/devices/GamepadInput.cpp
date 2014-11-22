@@ -42,7 +42,7 @@ namespace Framework
   bool GamePadInput::InDeadzone(bool right)
   {
 
-    if(right)
+    if(!right)
     {
       //obtain the X and Y axes of the stick
       short sX = State.Gamepad.sThumbRX;

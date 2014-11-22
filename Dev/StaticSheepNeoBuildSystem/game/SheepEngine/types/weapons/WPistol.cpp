@@ -9,8 +9,9 @@ namespace Framework
 {
   Pistol::Pistol()
   {
-    delay = 10;
-    damage = 10;
+    delay = 0;
+    damage = 20;
+    knockback = 30;
     semi = true;
   }
 
@@ -28,7 +29,8 @@ namespace Framework
     CircleCollider *bulletC = bullet->GetComponent <CircleCollider>(eCircleCollider);
     Transform *playerTrans = player->GetComponent <Transform>(eTransform);
     Vec3 AimDir = player->GetComponent<PlayerController>(ePlayerController)->aimDir;
-    BT->SetTranslation(playerTrans->GetTranslation() + AimDir * 25);
+    bulletC->SetBodyCollisionGroup(player->archetype);
+    BT->SetTranslation(playerTrans->GetTranslation() + AimDir * 45);
     bulletC->AddToVelocity(AimDir * 1000);
 
     SoundEmitter *se = player->GetComponent<SoundEmitter>(eSoundEmitter);

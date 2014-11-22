@@ -56,6 +56,9 @@ namespace Framework
     playerSprite = space->GetGameObject(owner)->GetComponentHandle(eSprite);
     playerAnimation = space->GetGameObject(owner)->GetComponentHandle(eAniSprite);
 
+    Transform *ps = space->GetHandles().GetAs<Transform>(playerTransform);
+    ps->SetScale(Vec3(0.25f, 0.25f, 0.0));
+
 		GamePad *gp = space->GetHandles().GetAs<GamePad>(playerGamePad); //actually gets the gamepad
 		gp->SetPad(playerNum); //setting pad number
 
@@ -69,6 +72,8 @@ namespace Framework
     SoundEmitter *se = space->GetHandles().GetAs<SoundEmitter>(playerSound);
     se->Play("robot_startup", &SoundInstance(0.50f));
     animCont = AnimationController(playerNum);
+    animCont.AnimState = IDLE;
+    bc->SetBodyCollisionGroup("Player1");
 	}
 
 	//************************************
@@ -103,10 +108,9 @@ namespace Framework
 			hasFired = true;
 			onFire();
 		}
-    else if (weapon->semi == false)
+    if (weapon->semi == false)
     {
-      --shotDelay;
-      if(shotDelay < 0)
+      if(shotDelay <= 0)
       {
         hasFired = false;
         shotDelay = weapon->delay;
@@ -115,9 +119,14 @@ namespace Framework
 		//if the trigger is released, reset the bool
 		if (!gp->RightTrigger() && weapon->semi)
     {
-			hasFired = false;
-      shotDelay = weapon->delay;
+      if (shotDelay <= 0)
+      {
+			  hasFired = false;
+        shotDelay = weapon->delay;
+      }
+      
     }
+    shotDelay -= dt;
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
     if (isSnapped)
     {
@@ -138,41 +147,67 @@ namespace Framework
       {
         //bc->SetVelocity(Vec3(0.0f, 0.0f, 0.0f));
         if (snappedNormal.y > 0)
-          bc->AddToVelocity((snappedNormal.CalculateNormal() * 250));
+          bc->AddToVelocity((snappedNormal.CalculateNormal() * 450));
         else if (snappedNormal.y < 0)
-          bc->AddToVelocity(-(snappedNormal.CalculateNormal() * 250));
+          bc->AddToVelocity(-(snappedNormal.CalculateNormal() * 450));
+        AniSprite *ps = space->GetHandles().GetAs<AniSprite>(playerAnimation);
+        if (snappedNormal.y > 0)
+          ps->SetFlipX(true);
+        else
+          ps->SetFlipX(false);
       }
       else if (gp->LeftStick_X() < -0.2 && snappedNormal.x == 0)
       {
         //bc->SetVelocity(Vec3(0.0f, 0.0f, 0.0f));
         if (snappedNormal.y > 0)
-          bc->AddToVelocity(-(snappedNormal.CalculateNormal() * 250));
+          bc->AddToVelocity(-(snappedNormal.CalculateNormal() * 450));
         if (snappedNormal.y < 0)
-          bc->AddToVelocity((snappedNormal.CalculateNormal() * 250));
+          bc->AddToVelocity((snappedNormal.CalculateNormal() * 450));
+        AniSprite *ps = space->GetHandles().GetAs<AniSprite>(playerAnimation);
+        if (snappedNormal.y > 0)
+          ps->SetFlipX(false);
+        else
+          ps->SetFlipX(true);
       }
-      ////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////
       if (gp->LeftStick_Y() > 0.2 && snappedNormal.x != 0)
       {
         //bc->SetVelocity(Vec3(0.0f, 0.0f, 0.0f));
         if (snappedNormal.x > 0)
-          bc->AddToVelocity(-(snappedNormal.CalculateNormal() * 250));
+          bc->AddToVelocity(-(snappedNormal.CalculateNormal() * 450));
         else if (snappedNormal.x < 0)
-          bc->AddToVelocity((snappedNormal.CalculateNormal() * 250));
+          bc->AddToVelocity((snappedNormal.CalculateNormal() * 450));
+        AniSprite *ps = space->GetHandles().GetAs<AniSprite>(playerAnimation);
+        if (snappedNormal.x > 0)
+          ps->SetFlipX(false);
+        else
+          ps->SetFlipX(true);
       }
       else if (gp->LeftStick_Y() < -0.2 && snappedNormal.x != 0)
       {
         //bc->SetVelocity(Vec3(0.0f, 0.0f, 0.0f));
         if (snappedNormal.x > 0)
-          bc->AddToVelocity((snappedNormal.CalculateNormal() * 250));
+          bc->AddToVelocity((snappedNormal.CalculateNormal() * 450));
         if (snappedNormal.x < 0)
-          bc->AddToVelocity(-(snappedNormal.CalculateNormal() * 250));
+          bc->AddToVelocity(-(snappedNormal.CalculateNormal() * 450));
+        AniSprite *ps = space->GetHandles().GetAs<AniSprite>(playerAnimation);
+        if (snappedNormal.x > 0)
+          ps->SetFlipX(true);
+        else
+          ps->SetFlipX(false);
       }
-
+////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////
       //jump
       if ((gp->ButtonPressed(XButtons.A) || gp->ButtonPressed(XButtons.LShoulder)) && isSnapped)
       {
         bc->AddToVelocity(-(snappedNormal * 300));
         isSnapped = false;
+        if (GetRandom(0, 1))
+          se->Play("jump2", &SoundInstance(0.75f));
+        else
+          se->Play("jump1", &SoundInstance(0.75f));
       }
       
     }
@@ -215,37 +250,60 @@ namespace Framework
     {
       health -= OtherObject->GetComponent<Bullet_Default>(eBullet_Default)->damage;
       
-      se->Play("hit1", &SoundInstance(0.75f));
+      se->Play("hit1", &SoundInstance(1.0f));
       return;
     }
-    if ((OtherObject->name == "KillBox" || OtherObject->name == "KillBoxBig") && !hasRespawned)
+    if (OtherObject->name == "KillBox" || OtherObject->name == "KillBoxBig")
       health = 0;
 
     if ((OtherObject->name == "Grinder") && !hasRespawned)
       health -= 10;
     if (OtherObject->name == "WeaponPickup")
-      se->Play("weapon_pickup", &SoundInstance(0.5f));
+      se->Play("weapon_pickup", &SoundInstance(0.75f));
 
-		isSnapped = true;
-		//get the thing we are colliding with
-    snappedTo = otherObject;
+    if (OtherObject->name == "GrinderBig")
+    {
+      health -= 100;
+    }
+
+		
 		//get the transform of the thing we are colliding with
 		Transform *OOT = OtherObject->GetComponent<Transform>(eTransform);
 		//if that thing we collided with's transform is missing, get the fuck outta here, i mean what are you even doing?
 		if (!OOT)
 			return;
 
-		if (OtherObject->HasComponent(eBoxCollider) && OtherObject->name != "Player")
+    if (OtherObject->HasComponent(eBoxCollider) && OtherObject->name != "Player" && OtherObject->name != "WeaponPickup" && OtherObject->name != "Grinder")
 		{
+      float dotNormals;
+      Vec3 nextSnappedNormal;
+      Vec3 oldSnappedNormal = snappedNormal;
       BoxCollider *OOBc = OtherObject->GetComponent<BoxCollider>(eBoxCollider);
-      Transform *ps = space->GetHandles().GetAs<Transform>(playerTransform);
-      if (snappedNormal.x != OOBc->GetCollisionNormals(manifold).x && snappedNormal.y != OOBc->GetCollisionNormals(manifold).y)
-        ps->SetTranslation(ps->GetTranslation() + -(snappedNormal * 1.5));
-      snappedNormal = OOBc->GetCollisionNormals(manifold);
+      
       BoxCollider *bc = space->GetHandles().GetAs<BoxCollider>(playerCollider);
+      Transform *ps = space->GetHandles().GetAs<Transform>(playerTransform);
+      if (oldSnappedNormal.x != OOBc->GetCollisionNormals(manifold).x && oldSnappedNormal.y != OOBc->GetCollisionNormals(manifold).y &&
+        snappedNormal.x != OOBc->GetCollisionNormals(manifold).x && snappedNormal.y != OOBc->GetCollisionNormals(manifold).y)
+      {
+        nextSnappedNormal = OOBc->GetCollisionNormals(manifold);
+        nextSnappedNormal.Rotate(PI / 2);
+        dotNormals = snappedNormal.DotProduct(nextSnappedNormal);
+        if (dotNormals > 0)
+          bc->AddToVelocity((nextSnappedNormal * 10));
+        else
+          bc->AddToVelocity(-(nextSnappedNormal * 10));
+      }
+      snappedNormal = OOBc->GetCollisionNormals(manifold);
+      
       float rotation = (snappedNormal.DotProduct(bc->GetBodyUpNormal())) / (snappedNormal.Length() * bc->GetBodyUpNormal().Length());
       rotation = std::acosf(rotation);
+      if (snappedNormal.x == -1.0f)
+        rotation = rotation + (float)PI;
       ps->SetRotation(rotation);
+
+      isSnapped = true;
+      //get the thing we are colliding with
+      snappedTo = otherObject;
 		}
 		else if (OtherObject->HasComponent(eCircleCollider))
 		{
@@ -288,7 +346,7 @@ namespace Framework
     if (!isSnapped)
     {
       BoxCollider *bc = space->GetHandles().GetAs<BoxCollider>(playerCollider);
-      bc->AddToVelocity(-aimDir * 25);
+      bc->AddToVelocity(-aimDir * (weapon->knockback));
     }
 	}
 
@@ -322,8 +380,12 @@ namespace Framework
     if (returnVec.y < -1.0)
       returnVec.y = -1.0;
 
-		return returnVec;
+    if (returnVec.x < 0)
+    {
+      //flip sprite 
+    }
 
+		return returnVec;
 	}
 
   //************************************
@@ -392,6 +454,13 @@ namespace Framework
     space->GetGameObject(owner)->Destroy();
   }
 
+  //************************************
+  // Method:    SetAnimations
+  // FullName:  Framework::PlayerController::SetAnimations
+  // Access:    public 
+  // Returns:   void
+  // Qualifier:
+  //************************************
   void PlayerController::SetAnimations()
   {
     GamePad *gp = space->GetHandles().GetAs<GamePad>(playerGamePad);
@@ -401,17 +470,29 @@ namespace Framework
     if (isSnapped && !(gp->LStick_InDeadZone()))
     {
       //set animated sprite to run
-      pa->SetRange(Vec2(animCont.run.beginFrame, animCont.run.endFrame));
+      if (animCont.AnimState != RUN)
+      {
+        pa->SetRange(Vec2(animCont.run.beginFrame, animCont.run.endFrame));
+        animCont.AnimState = RUN;
+      }
     }
     else if (!isSnapped)
     {
-      //set animated sprite to jump
-      pa->SetRange(Vec2(animCont.jump.beginFrame, animCont.jump.endFrame));
+      if (animCont.AnimState != JUMP)
+      {
+        //set animated sprite to jump
+        pa->SetRange(Vec2(animCont.jump.beginFrame, animCont.jump.endFrame));
+        animCont.AnimState = JUMP;
+      }
     }
     else
     {
-      //set animated sprite to idle
-      pa->SetRange(Vec2(animCont.idle.beginFrame, animCont.idle.endFrame));
+      if (animCont.AnimState != IDLE)
+      {
+        //set animated sprite to idle
+        pa->SetRange(Vec2(animCont.idle.beginFrame, animCont.idle.endFrame));
+        animCont.AnimState = IDLE;
+      }
     }
     
   }

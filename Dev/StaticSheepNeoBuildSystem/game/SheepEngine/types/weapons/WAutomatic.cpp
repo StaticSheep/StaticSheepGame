@@ -11,8 +11,9 @@ namespace Framework
 {
   Automatic::Automatic()
   {
-    delay = 2;
+    delay = 5;
     damage = 10;
+    knockback = 50;
     semi = false;
   }
 
@@ -33,10 +34,11 @@ namespace Framework
     CircleCollider *bulletC = bullet->GetComponent <CircleCollider>(eCircleCollider);
     Transform *playerTrans = player->GetComponent <Transform>(eTransform);
     Vec3 AimDir = player->GetComponent<PlayerController>(ePlayerController)->aimDir;
-    BT->SetTranslation(playerTrans->GetTranslation() + AimDir * 25);
+    bulletC->SetBodyCollisionGroup(player->archetype);
+    BT->SetTranslation(playerTrans->GetTranslation() + AimDir * 45);
     
     //set the cone of 5 degrees for firing.
-    float FireAngle = -15.0f + (randomNumber/100.0f) * 30.0f;
+    float FireAngle = -5.0f + (randomNumber/100.0f) * 10.0f;
     AimDir = Mat3D((FireAngle * PI) / 180) * AimDir;
 
     bulletC->AddToVelocity(AimDir * 1000);

@@ -2,109 +2,101 @@
 #include "Material.h"
 #include "Shape.h"
 #include "BodyProperties.h"
+#include "CollisionGroups.h"
 
 namespace SheepFizz
 {
 
-class MassData
-{
-	public:
-		float mass;
-		float inverseMass;
+  class MassData
+  {
+	  public:
+		  float mass;
+		  float inverseMass;
 
-		float inertia;			//used for angular calculations
-		float inverseInertia;
-};
+		  float inertia;			//used for angular calculations
+		  float inverseInertia;
+  };
 
-enum CollisionGroup{
+  class Body
+  {
+	  public:
+		  //body requires a shape* to be passed - all others default to base constructors
+		  Body(Shape* shape,								//a pointer to the shape created
+			  Material& material,							//material of the specific body
+        bool collisionCallback,         //activates collisionCallback
+			  Vec3D position = Vec3D(0,0,0),
+			  Vec3D velocity = Vec3D(0,0,0),
+			  Vec3D force = Vec3D(0,0,0),
+			  void* userData = NULL,
+			  float orientation = PI,
+			  float angularVelocity = 0,
+			  float torque = 0,
+			  CollisionGroup collisionGroup = Resolve, //used for determining collision groups
+			  unsigned int bodyGroup = 0,					//used for certain collisions/resolutions 
+			  float gravityScale = 1,						//used to modify gravity
+			  unsigned int gravityOn = 1					//used to turn gravity on and off
+			  );					
 
-	CollGroup1,
-	CollGroup2,
-	CollGroupLength
+		  //used in initialization of body - computes mass
+		  void ComputeMass(void);
 
-};
+		  //function used to identify type of body
+		  //and apply special functions to player
+		  void GetBodyProperties(void);
 
+		  //turn gravity on and off in a direction
+		  void ActivateGravity(void);
+		  void DeactivateGravity(void);
+		  void SetGravityNormal(Vec3D& normal) { gravityNormal_ = normal; }
 
-class Body
-{
-	public:
-		//body requires a shape* to be passed - all others default to base constructors
-		Body(Shape* shape,								//a pointer to the shape created
-			Material& material,							//material of the specific body
-      bool collisionCallback,         //activates collisionCallback
-			Vec3D position = Vec3D(0,0,0),
-			Vec3D velocity = Vec3D(0,0,0),
-			Vec3D force = Vec3D(0,0,0),
-			void* userData = NULL,
-			float orientation = PI,
-			float angularVelocity = 0,
-			float torque = 0,
-			CollisionGroup collisionGroup = CollGroup1, //used for determining collision groups
-			unsigned int bodyGroup = 0,					//used for certain collisions/resolutions 
-			float gravityScale = 1,						//used to modify gravity
-			unsigned int gravityOn = 1					//used to turn gravity on and off
-			);					
+		  //used for expansion for other collisions
+		  void ObjectCollision(unsigned int rectangleSide);
+		  void ResolveNormal(Vec3D& normal);
 
-		//used in initialization of body - computes mass
-		void ComputeMass(void);
+		  //apply forces directly to the body - an impulse is an
+		  //instantaneous force application, so no dt is applied
+		  void ApplyImpulse(Vec3D& impulse, Vec3D& contactvector);
 
-		//function used to identify type of body
-		//and apply special functions to player
-		void GetBodyProperties(void);
+		  //scale and change the body
+		  void ChangeBody(float x, float y = 0);
 
-		//turn gravity on and off in a direction
-		void ActivateGravity(void);
-		void DeactivateGravity(void);
-		void SetGravityNormal(Vec3D& normal) { gravityNormal_ = normal; }
+		  void ChangeMaterial(Material& material);
 
-		//used for expansion for other collisions
-		void ObjectCollision(unsigned int rectangleSide);
-		void ResolveNormal(Vec3D& normal);
+		  //shape and material used to calculate MassData;
+		  //shape and material are defined by the game object
+		  Shape *shape_;
+		  Material material_;
+		  MassData massData_;
 
-		//apply forces directly to the body - an impulse is an
-		//instantaneous force application, so no dt is applied
-		void ApplyImpulse(Vec3D& impulse, Vec3D& contactvector);
+		  //used to tweak values on a specific object;
+		  float gravityScale_;
 
-		//scale and change the body
-		void ChangeBody(float x, float y = 0);
+		  //turns gravity on and off for a specific body;
+		  unsigned int gravityOn_;
+		  Vec3D gravityNormal_;
 
-		void ChangeMaterial(Material& material);
+		  //body group - used for different groups of objects
+		  //e.g. can be used to turn off gravity for all of one type of object - *not implemented*
+		  unsigned int bodyGroup_;
 
-		//shape and material used to calculate MassData;
-		//shape and material are defined by the game object
-		Shape *shape_;
-		Material material_;
-		MassData massData_;
+		  //collisiongroup - used to ignore collision for various types of objects;
+		  CollisionGroup collisionGroup_;
 
-		//used to tweak values on a specific object;
-		float gravityScale_;
+		  bool collisionCallback_;
 
-		//turns gravity on and off for a specific body;
-		unsigned int gravityOn_;
-		Vec3D gravityNormal_;
+		  //key forces and values for body
+		  Vec3D velocity_;
+		  Vec3D position_;
+		  Vec3D force_;
 
-		//body group - used for different groups of objects
-		//e.g. can be used to turn off gravity for all of one type of object - *not implemented*
-		unsigned int bodyGroup_;
+		  //rotation values
+		  float orientation_;
+		  float angularVelocity_;
+		  float torque_;
 
-		//collisiongroup - used to ignore collision for various types of objects;
-		CollisionGroup collisionGroup_;
+		  Handle self;
 
-		bool collisionCallback_;
-
-		//key forces and values for body
-		Vec3D velocity_;
-		Vec3D position_;
-		Vec3D force_;
-
-		//rotation values
-		float orientation_;
-		float angularVelocity_;
-		float torque_;
-
-		Handle self;
-
-		void* userData;
-};
+		  void* userData;
+  };
 
 }
