@@ -36,9 +36,9 @@ namespace Framework
 	{
     Transform *pt = space->GetHandles().GetAs<Transform>(kbTransfrom);
     BoxCollider *pc = space->GetHandles().GetAs <BoxCollider>(kbCollider);
-    if (pt->GetTranslation().x > 1010 || pt->GetTranslation().x < -1010)
+    if (pt->GetTranslation().x > 1008 || pt->GetTranslation().x < -1008)
     {
-      for (int i = 7; i < 7; ++i)
+      for (int i = 0; i < 12; ++i)
         space->GetGameObject(Grinders[i])->Destroy();
 
       GrindSpawn = false;
@@ -46,7 +46,7 @@ namespace Framework
     }
     if (!GrindSpawn)
     {
-      for (int i = 0; i < 7; ++i)
+      for (int i = 0; i < 12; ++i)
       {
         Grinders[i] = (FACTORY->LoadObjectFromArchetype(space, "GrinderBig"))->self;
       }
@@ -55,19 +55,19 @@ namespace Framework
     if (direction)
     {
       pt->SetTranslation(pt->GetTranslation() + Vec3(-3.0, 0.0, 0.0));
-      for (int i = 0; i < 7; ++i)
+      for (int i = 0; i < 12; ++i)
       {
         GT[i] = (space->GetGameObject(Grinders[i])->GetComponent<Transform>(eTransform));
-        GT[i]->SetTranslation(pt->GetTranslation() + Vec3(0.0, ((float)i * 64.0f -192.0f), 0.0));
+        GT[i]->SetTranslation(pt->GetTranslation() + Vec3(0.0, ((float)i * 64.0f -352.0f), 0.0));
       }
     }
     else
     {
       pt->SetTranslation(pt->GetTranslation() + Vec3(3.0, 0.0, 0.0));
-      for (int i = 0; i < 7; ++i)
+      for (int i = 0; i < 12; ++i)
       {
         GT[i] = (space->GetGameObject(Grinders[i])->GetComponent<Transform>(eTransform));
-        GT[i]->SetTranslation(pt->GetTranslation() + Vec3(0.0, ((float)i * 64.0f - 192.0f), 0.0));
+        GT[i]->SetTranslation(pt->GetTranslation() + Vec3(0.0, ((float)i * 64.0f - 352.0f), 0.0));
       }
     }
 	}
