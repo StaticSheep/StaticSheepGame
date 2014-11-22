@@ -29,9 +29,9 @@ namespace SheepFizz
       //determine the relative velocity to determine opposite impulse force
       //calculate as if A is stationary and B is moving
       //equation is relveloc = velocity + Cross(angularvelocity, relative vec)
-	  Vec3D relativevelocity = B->velocity_ +
-		  (Vec3D(0, 0, B->angularVelocity_) ^ bRepulsionVec)
-		  - A->velocity_ - (Vec3D(0, 0, A->angularVelocity_) ^ aRepulsionVec);
+	    Vec3D relativevelocity = B->velocity_ +
+		    (Vec3D(0, 0, B->angularVelocity_) ^ bRepulsionVec)
+		    - A->velocity_ - (Vec3D(0, 0, A->angularVelocity_) ^ aRepulsionVec);
 
       //determine the contact velocity - the relative velocity along the 
       //collision normal
@@ -65,6 +65,7 @@ namespace SheepFizz
       //A's impulse is negative because the normal is
       //from B to A;
       Vec3D impulse = j * normal;
+
       impulse.z = 0;
 
       A->ApplyImpulse(-impulse, aRepulsionVec);
@@ -95,7 +96,6 @@ namespace SheepFizz
       //calculate friction scalar
       float jFriction = frictionContactVelocity / inverseMassSum;
       jFriction /= contactCount;
-
 
       //calculate friction impulse - use Coulomb's Law of Friction
       //friction force cannot exceed normal impulse

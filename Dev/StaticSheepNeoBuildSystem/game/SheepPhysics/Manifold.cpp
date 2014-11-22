@@ -52,6 +52,8 @@ namespace SheepFizz
 			(A->massData_.inverseMass + B->massData_.inverseMass)) * POSCORRECT
 			* normal;
 
+    correction.z = 0;
+
 		A->position_ -= A->massData_.inverseMass * correction;
 		B->position_ += B->massData_.inverseMass * correction;
 
@@ -398,6 +400,7 @@ namespace SheepFizz
 	{
 		if(m.A->massData_.mass == 0 && m.B->massData_.mass == 0)
 			return;
+
 		//set contacts to zero
 		m.contactCount = 0;
 
@@ -510,6 +513,7 @@ namespace SheepFizz
 			m.contacts[0] = m.B->position_ + bRotation * m.contacts[0];
 			m.contactCount = 1;
 		}
+
 	}//end of CircleRectangleManifold
 
 
