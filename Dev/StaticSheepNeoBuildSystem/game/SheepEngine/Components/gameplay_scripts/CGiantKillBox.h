@@ -16,8 +16,8 @@ namespace Framework
 		void Remove();
 
 		//member variables
-    Handle Grinders[7];
-    Transform *GT[7];
+    Handle Grinders[12];
+    Transform *GT[12];
     Handle kbTransfrom;
     Handle kbCollider;
     bool direction, GrindSpawn;
