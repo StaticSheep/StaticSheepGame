@@ -32,7 +32,7 @@ namespace Framework
   Engine* ENGINE = NULL;
 
   Engine::Engine()
-    : m_running(true), L(nullptr)
+    : m_running(true), L(nullptr), m_time(0)
   {
     EngineTypeRegistration();
 
@@ -122,6 +122,8 @@ namespace Framework
   {
     Window->Update();
 
+    m_time += Framerate.GetDT() * 1000;
+
     for (auto it = m_spaces.begin(); it != m_spaces.end(); ++it)
       if (!(*it)->m_ready)
         (*it)->m_ready = true;
@@ -170,7 +172,10 @@ namespace Framework
     m_running = false;
   }
 
-
+  unsigned int Engine::CurrentTime()
+  {
+    return ENGINE->m_time;
+  }
 
 
 

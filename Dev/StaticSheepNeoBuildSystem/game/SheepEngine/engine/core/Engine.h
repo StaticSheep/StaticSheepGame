@@ -52,6 +52,8 @@ namespace Framework
     // Sends a message to all systems in the engine
     void SystemMessage(Message& msg);
 
+    static unsigned CurrentTime(void);
+
     /* ------- Lua ------ */
 
     const std::vector<std::string>& LuaComponentList(void) const;
@@ -160,6 +162,8 @@ namespace Framework
     std::hash_map<std::string, GameSpace*> m_spaceMap;
     std::vector<GameSpace*> m_spaces;
     std::vector<GameSpace*> m_spaceRemoveList;
+
+    unsigned int m_time;
 
     /*---------- Lua Data ----------*/
 

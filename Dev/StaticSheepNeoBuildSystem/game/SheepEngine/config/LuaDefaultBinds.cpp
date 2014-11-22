@@ -60,6 +60,8 @@ namespace Framework
       BIND_FUNCTION_EX(L, Draw::ScreenWidth, ScrW);
       BIND_FUNCTION_EX(L, Draw::ScreenHeight, ScrH);
 
+      BIND_FUNCTION_EX(L, Engine::CurrentTime, CurTime);
+
       CREATE_TABLE(L, factory);
       BIND_FUNCTION_TABLE(L, Factory::LuaLoadObjectFromArchetype, CreateObjectFromType, factory);
 

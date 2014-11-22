@@ -16,8 +16,9 @@ function uimenu.Create(vStep, hStep, gamepads)
   newMenu.verticalStep = vStep or 1
   newMenu.horizontalStep = hStep or 1
   newMenu.gamepads = gamepads or {}
-  newMenu.gamepadInputCD = {0,0,0,0}
-  newMenu.inputCD = 0
+  newMenu.padMoveCD = {0,0,0,0}
+  newMenu.padClickCD = {0,0,0,0}
+  newMenu.inputCD = 500
 
   table.Merge(newMenu, uimenu.meta)
 
@@ -128,73 +129,87 @@ function uimenu.meta:FindButtonIndex(btn)
   return -1
 end
 
+function uimenu.meta:MoveCooldown(padnum)
+  self.padMoveCD[padnum] = CurTime() + self.inputCD
+end
+
+function uimenu.meta:ClickCooldown(padnum)
+  self.padClickCD[padnum] = CurTime() + self.inputCD
+end
+
 function uimenu.meta:Update()
 
   local clicked = false
   local hMove = 0
   local vMove = 0
   local stick, dPad, gamePad
-  local pads = {}
+
+  local cTime = CurTime()
 
   --if self.numButtons == 0 then return end
 
   -- Interpret movement
   for i, pad in pairs(self.gamepads) do
-    gamePad = GamePad(pad)
+    if cTime > self.padMoveCD[pad + 1] then
+      gamePad = GamePad(pad)
 
-    pads[i] = gamePad
+      if not gamePad:InDeadzone(false) then
+        stick = gamePad:LeftStick()
 
-    if not gamePad:InDeadzone(false) then
-      stick = gamePad:LeftStick()
+        if stick.y > 0.7 then
+          vMove = -1
+        elseif stick.y < -0.7 then
+          vMove = 1
+        end
 
-      if stick.y > 0.7 then
-        vMove = -1
-      elseif stick.y < -0.7 then
-        vMove = 1
+        if stick.x > 0.7 then
+          hMove = -1
+        elseif stick.x < -0.7 then
+          hMove = 1
+        end
+
+        if (hMove ~= 0 and self.horizontalStep ~= 0) or
+          (vMove ~= 0 and self.verticalStep ~= 0) then
+          self:MoveCooldown(pad + 1)
+          break
+        end
+
       end
 
-      if stick.x > 0.7 then
-        hMove = -1
-      elseif stick.x < -0.7 then
+      if gamePad:ButtonDown(GAMEPAD_DPAD_LEFT) then
         hMove = 1
+      end
+
+      if gamePad:ButtonDown(GAMEPAD_DPAD_RIGHT) then
+        hMove = -1
+      end
+
+      if gamePad:ButtonDown(GAMEPAD_DPAD_UP) then
+        vMove = -1
+      end
+
+      if gamePad:ButtonDown(GAMEPAD_DPAD_DOWN) then
+        vMove = 1
       end
 
       if (hMove ~= 0 and self.horizontalStep ~= 0) or
         (vMove ~= 0 and self.verticalStep ~= 0) then
+        self:MoveCooldown(pad + 1)
         break
       end
 
     end
-
-    if gamePad:ButtonDown(GAMEPAD_DPAD_LEFT) then
-      hMove = 1
-    end
-
-    if gamePad:ButtonDown(GAMEPAD_DPAD_RIGHT) then
-      hMove = -1
-    end
-
-    if gamePad:ButtonDown(GAMEPAD_DPAD_UP) then
-      vMove = -1
-    end
-
-    if gamePad:ButtonDown(GAMEPAD_DPAD_DOWN) then
-      vMove = 1
-    end
-
-    if (hMove ~= 0 and self.horizontalStep ~= 0) or
-      (vMove ~= 0 and self.verticalStep ~= 0) then
-      break
-    end
-
   end
 
   -- Interpret clicking
-  for i, pad in pairs(pads) do
-    gamePad = pad -- We already stored the gamepad
+  for i, pad in pairs(self.gamepads) do
+    if cTime > self.padClickCD[pad + 1] then
+      gamePad = GamePad(pad)
 
-    if gamePad:ButtonDown(GAMEPAD_A) then
-      clicked = true
+      if gamePad:ButtonDown(GAMEPAD_A) then
+        clicked = true
+        self:ClickCooldown(pad + 1)
+      end
     end
   end
 

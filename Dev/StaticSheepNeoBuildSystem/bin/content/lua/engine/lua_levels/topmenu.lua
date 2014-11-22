@@ -22,6 +22,10 @@ local function Register(pnl)
   TopMenu.panels[#TopMenu.panels + 1] = pnl
 end
 
+local function DoSomething()
+  print("loading level")
+end
+
 local function MakeMenu()
   CleanUp()
 
@@ -47,6 +51,14 @@ local function MakeMenu()
   menu:Add(btn)
   btn:SetSize(200, 50)
   btn:SetPos(base:GetSize().x / 2 - btn:GetSize().x / 2, 100)
+  btn:SetOnPressed(DoSomething)
+
+
+  btn = gui.Create("Button", base)
+  Register(btn)
+  menu:Add(btn)
+  btn:SetSize(200, 50)
+  btn:SetPos(base:GetSize().x / 2 - btn:GetSize().x / 2, 150)
 
   btn = gui.Create("Button", base)
   Register(btn)
@@ -58,13 +70,8 @@ local function MakeMenu()
   Register(btn)
   menu:Add(btn)
   btn:SetSize(200, 50)
-  btn:SetPos(base:GetSize().x / 2 - btn:GetSize().x / 2, 300)
+  btn:SetPos(base:GetSize().x / 2 - btn:GetSize().x / 2, 250)
 
-  btn = gui.Create("Button", base)
-  Register(btn)
-  menu:Add(btn)
-  btn:SetSize(200, 50)
-  btn:SetPos(base:GetSize().x / 2 - btn:GetSize().x / 2, 400)
 
   print(GamePad(0):Connected())
 
