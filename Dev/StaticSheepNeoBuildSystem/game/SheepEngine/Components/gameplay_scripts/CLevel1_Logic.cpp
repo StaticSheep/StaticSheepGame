@@ -21,10 +21,10 @@ namespace Framework
     timeLimit = 60;
     spawnTimer = 2;
     numOfPlayers = 1;
-    spawnPos[0] = Vec3(-490.0f, -266.0f, 0.0f);
-    spawnPos[1] = Vec3(490.0f, -266.0f, 0.0f);
-    spawnPos[2] = Vec3(490.0f, 266.0f, 0.0f);
-    spawnPos[3] = Vec3(-490.0f, 266.0f, 0.0f);
+    spawnPos[0] = Vec3(-700.0f, -480.0f, 0.0f);
+    spawnPos[1] = Vec3(700.0f, -480.0f, 0.0f);
+    spawnPos[2] = Vec3(700.0f, 480.0f, 0.0f);
+    spawnPos[3] = Vec3(-700.0f, 480.0f, 0.0f);
     warning = false;
     camShake = false;
     shake = true;
