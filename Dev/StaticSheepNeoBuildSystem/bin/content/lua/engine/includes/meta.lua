@@ -10,17 +10,19 @@ function SetupMetatable(name, meta)
     _R.METAVALUES[tostring(self)] = _R.METAVALUES[tostring(self)] or {}
 
     if _R.METAVALUES[tostring(self)][key] then
-      print("Found meta value: ".. key)
+      --print("Found meta value: ".. key)
       return _R.METAVALUES[tostring(self)][key]
     end
 
     if meta[key] == nil and meta.__base ~= nil and meta.__base[key] ~= nil then
-      print("Using base object for key: "..key)
+      --print("Using base object for key: "..key)
       return meta.__base[key]
     end
 
     if key == "super" then
-      return meta.__base
+      if meta.__base then
+        return meta.__base
+      end
     end
 
     local compID = ComponentDB[key]
@@ -38,7 +40,7 @@ function SetupMetatable(name, meta)
     -- end
 
     if meta.__members ~= nil and meta.__members[key] ~= nil then
-      print("Auto getter?")
+      --print("Auto getter?")
       return meta["Get"..key](self)
     end
 
@@ -46,7 +48,7 @@ function SetupMetatable(name, meta)
 
     if meta[key] == nil then
       if type(self) == "table" then
-        print("using rawget")
+        --print("using rawget")
         return rawget(self, key)
       end
     end
@@ -143,4 +145,5 @@ function InheritMeta(meta, name)
   local imeta = GetMeta(name)
 
   meta.__base = imeta;
+  --setmetatable(meta, {__index = imeta})
 end

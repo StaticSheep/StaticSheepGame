@@ -129,6 +129,8 @@ namespace Framework
 	{
     // Draw Hooks
     GameSpace* space;
+    
+
     m_renderContext->StartBatch();
     // Regular Draw
     for (auto it = ENGINE->Spaces().begin(); it != ENGINE->Spaces().end(); ++it)
@@ -200,6 +202,11 @@ namespace Framework
   void SheepGraphics::SetWireframe(bool iswired)
   {
     m_renderContext->setWireFrame(iswired);
+  }
+
+  void SheepGraphics::FlipSprite(bool x, bool y)
+  {
+    m_renderContext->SetSpriteFlip(x, y);
   }
 
   DirectSheep::Handle SheepGraphics::SetTexture(const std::string& Texture)
@@ -304,9 +311,9 @@ namespace Framework
      return (SetTexture(texture)).GetIndex();
   }
 
-  void SheepGraphics::SetUseCamera(bool useCam)
+  void SheepGraphics::SetCamState(int camState)
   {
-    m_renderContext->SetUseCam(useCam);
+    m_renderContext->SetCamState(camState);
   }
 
   void SheepGraphics::DrawSpriteText(const char * text, float size, const char * font)

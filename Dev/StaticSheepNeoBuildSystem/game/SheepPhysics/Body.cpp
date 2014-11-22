@@ -4,7 +4,6 @@
 
 namespace SheepFizz
 {
-
 	//body requires a shape* to be passed - all others default to base constructors
   Body::Body(Shape* shape, Material& material, bool collisionCallback, Vec3D position, Vec3D velocity,
 		Vec3D force, void* userData, float orientation, float angularVelocity, float torque, 
@@ -16,6 +15,8 @@ namespace SheepFizz
 		{ 
 			shape_->Initialize();
 			ComputeMass();
+      if (massData_.mass == 0)
+        collisionGroup_ = Static;
 		}
 
 	void Body::ComputeMass(void)

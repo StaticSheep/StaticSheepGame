@@ -15,7 +15,7 @@ namespace Framework
 		void Remove();
     void SpawnPlayers(float dt);
     void PlayerDied(int ply);
-
+    void CameraShake(float dt, float shakeDuration, float magnitude);
 		//member variables
     //Handle bTransfrom;
     float timeLimit;
@@ -23,9 +23,14 @@ namespace Framework
     bool playing;
     bool startFlag;
     Handle levelSound;
+    Handle levelCamera;
+    Handle levelTransform;
+    Handle levelEmitter;
     Vec3 spawnPos[4];
     Handle Players[4];
     float spawnTimers[4];
     int numOfPlayers;
+    bool camShake, shake;
+    float shakeTime;
 	};
 }

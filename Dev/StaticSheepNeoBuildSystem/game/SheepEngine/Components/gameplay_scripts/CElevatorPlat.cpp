@@ -36,7 +36,7 @@ namespace Framework
 	{
     Transform *pt = space->GetHandles().GetAs<Transform>(pTransfrom);
     BoxCollider *pc = space->GetHandles().GetAs <BoxCollider>(pCollider);
-    if (pt->GetTranslation().y > 500 || pt->GetTranslation().y < -500)
+    if (pt->GetTranslation().y > 600 || pt->GetTranslation().y < -600)
       space->GetGameObject(owner)->Destroy();
 
     if (direction)

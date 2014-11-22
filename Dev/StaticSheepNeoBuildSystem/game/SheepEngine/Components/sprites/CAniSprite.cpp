@@ -223,7 +223,7 @@ namespace Framework
   void AniSprite::UpdateFramePosition()
   {
     m_currFrame = m_startFrame;
-    m_startFramePos = Vec2(m_currFrame % (int)m_frames.x, m_currFrame / (int)m_frames.x);
+    m_startFramePos = Vec2(float(m_currFrame % (int)m_frames.x), float(m_currFrame / (int)m_frames.x));
     m_framePos = m_startFramePos;
   }
 
@@ -315,8 +315,8 @@ namespace Framework
     GRAPHICS->SetSize(trans->GetScale().X * Size.X, trans->GetScale().Y * Size.Y);
     GRAPHICS->SetColor(Color);
     GRAPHICS->SetUV(uvBegin, uvEnd);
-    GRAPHICS->SetUseCamera(true);
-
+    GRAPHICS->SetCamState(0);
+    GRAPHICS->FlipSprite(m_flipX, m_flipY);
     GRAPHICS->DrawSprite(this);
 
     CheckNextFrame();

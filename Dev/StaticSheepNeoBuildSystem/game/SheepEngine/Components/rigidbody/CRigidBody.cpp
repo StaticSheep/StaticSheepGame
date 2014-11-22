@@ -96,6 +96,11 @@ namespace Framework
     PHYSICS->SetBodyCollisionCallback(space, m_handle, collisionCallback);
   }
 
+  void RigidBody::SetBodyCollisionGroup(std::string group)
+  {
+    PHYSICS->ChangeCollisionGroup(space, m_handle, group);
+  }
+
 	void RigidBody::AddToVelocity(Vec3D& velocity)
 	{
     PHYSICS->AddToBodyVelocity(space, m_handle, velocity);
@@ -159,6 +164,11 @@ namespace Framework
   Vec3D RigidBody::GetBodyVertex(unsigned int vertex)
   {
     return PHYSICS->GetBodyVertex(space, m_handle, vertex);
+  }
+
+  std::string RigidBody::GetBodyCollisionGroup(void)
+  {
+    return PHYSICS->GetCollisionGroup(space, m_handle);
   }
 
   void RigidBody::OnCollision(Handle otherObject, SheepFizz::ExternalManifold manifold)

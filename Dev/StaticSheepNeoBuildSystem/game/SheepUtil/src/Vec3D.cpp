@@ -68,8 +68,11 @@ namespace Framework
 /*****************************************************************************/
   Vec3D& Vec3D::Rotate(float radians)
   {
-    x = x * cos(radians) - y * sin(radians);
-    y = x * sin(radians) + y * cos(radians);
+    Vec3D temp(0,0);
+    temp.x = x * cosf(radians) - y * sinf(radians);
+    temp.y = x * sinf(radians) + y * cosf(radians);
+    x = temp.x;
+    y = temp.y;
     return *this;
   }
   

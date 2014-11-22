@@ -42,7 +42,7 @@ namespace Framework
 			virtual void AddToForce(Vec3D& force);
 			virtual void AddToAngVelocity(float angularvelocity);
 			virtual void AddToTorque(float torque);
-
+     
       //gravity
       virtual void SetGravityOn(void);
       virtual void SetGravityOff(void);
@@ -50,8 +50,11 @@ namespace Framework
 
       //collision
       virtual void SetBodyCollisionCallback(bool collisionCallback);
+      virtual void SetBodyCollisionGroup(std::string);
+
       virtual Vec3D GetCollisionNormals(SheepFizz::ExternalManifold manifold);
       virtual Vec3D GetCollisionPoint(SheepFizz::ExternalManifold manifold);
+      virtual std::string GetBodyCollisionGroup(void);
 
       //gettors
       virtual Vec3D GetCurrentVelocity(void);
@@ -77,6 +80,8 @@ namespace Framework
 		std::string m_materialName;
 
     bool m_hasCollisionCallback;
+
+    std::string m_CollisionGroup;
 
     //debug - stores normal as first index, collision point as second
     //normals_[0] - normal, normals_[1] - point, normals_[2] - normal, etc.

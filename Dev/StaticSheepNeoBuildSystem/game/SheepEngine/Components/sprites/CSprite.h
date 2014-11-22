@@ -29,12 +29,21 @@ namespace Framework
     void SetTexture(const char * Texture);
     DirectSheep::Handle& GetTexture();
 
+    void SetFlipX(bool isFlipped);
+    void SetFlipY(bool isFlipped);
+
+    bool GetFlipX(void);
+    bool GetFlipY(void);
+
     Vec2 Size;
     Vec2 TextureSize;
 
     Vec4 Color;
 
     Handle transform;
+
+    bool m_flipX = false;
+    bool m_flipY = false;
 
     void TweakSetTexture(const void * Texture);
 

@@ -33,6 +33,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "types/weapons/WPistol.h"
 #include "types/weapons/WShotgun.h"
 #include "types/weapons/WAutomatic.h"
+#include "components/gameplay_scripts/CWarningText.h"
+#include "components/gameplay_scripts/CBackgroundPan.h"
 
 namespace Framework
 {
@@ -194,6 +196,12 @@ namespace Framework
     TYPE_REGISTER(Explosion);
     TYPE_SET_TWEAK_TYPE(Explosion, AntTweak::TW_TYPE_COMPONENT);
 
+    TYPE_REGISTER(WarningText);
+    TYPE_SET_TWEAK_TYPE(WarningText, AntTweak::TW_TYPE_COMPONENT);
+
+    TYPE_REGISTER(BackgroundPan);
+    TYPE_SET_TWEAK_TYPE(BackgroundPan, AntTweak::TW_TYPE_COMPONENT);
+
     TYPE_REGISTER(WeaponPickup);
     TYPE_SET_TWEAK_TYPE(WeaponPickup, AntTweak::TW_TYPE_COMPONENT);
     TYPE_ADD_MEMBER(WeaponPickup, weaponID, false, true, "Weapon Type");
@@ -208,12 +216,14 @@ namespace Framework
     TYPE_ADD_MEMBER( BoxCollider, m_height, false, true, "Height");
     TYPE_ADD_MEMBER(BoxCollider, m_materialName, false, true, "Material"); 
     TYPE_ADD_MEMBER(BoxCollider, m_hasCollisionCallback, false, true, "UsesCallback");
+    TYPE_ADD_MEMBER(BoxCollider, m_CollisionGroup, false, true, "CollisionGroup");
     TYPE_SET_TWEAK_TYPE(BoxCollider, AntTweak::TW_TYPE_COMPONENT);
 
     TYPE_REGISTER(CircleCollider);
     TYPE_ADD_MEMBER(CircleCollider, m_radius, false, true, "Radius");
     TYPE_ADD_MEMBER(CircleCollider, m_materialName, false, true, "Material");
     TYPE_ADD_MEMBER(CircleCollider, m_hasCollisionCallback, false, true, "UsesCallback");
+    TYPE_ADD_MEMBER(CircleCollider, m_CollisionGroup, false, true, "CollisionGroup");
     TYPE_SET_TWEAK_TYPE(CircleCollider, AntTweak::TW_TYPE_COMPONENT);
 
     TYPE_REGISTER(GamePad);
@@ -225,6 +235,8 @@ namespace Framework
     TYPE_ADD_MEMBER(Sprite, m_spriteName, false, true, "Texture", BUILD_FUNCTION(Sprite::TweakSetTexture));
     TYPE_ADD_MEMBER(Sprite, Color, false, true, "Color");
     TYPE_ADD_MEMBER( Sprite, Size, false, true, "Size");
+    TYPE_ADD_MEMBER(Sprite, m_flipX, false, true, "FlipX");
+    TYPE_ADD_MEMBER(Sprite, m_flipY, false, true, "FlipY");
     TYPE_SET_TWEAK_TYPE( Sprite, AntTweak::TW_TYPE_COMPONENT );
     TYPE_SET_FROM_LUA( Sprite, Lua::GenericObjectFromLua );
 
@@ -236,6 +248,8 @@ namespace Framework
     TYPE_ADD_MEMBER(AniSprite, m_frameRate, false, true, "FrameRate");
     TYPE_ADD_MEMBER(AniSprite, m_loop, false, true, "Animation Loops");
     TYPE_ADD_MEMBER(AniSprite, m_paused, false, true, "Pause");
+    TYPE_ADD_MEMBER(AniSprite, m_flipX, false, true, "FlipX");
+    TYPE_ADD_MEMBER(AniSprite, m_flipY, false, true, "FlipY");
     TYPE_ADD_MEMBER(AniSprite, Color, false, true, "Color");
     TYPE_ADD_MEMBER( AniSprite, Size, false, true, "Scale");
     TYPE_SET_TWEAK_TYPE( AniSprite, AntTweak::TW_TYPE_COMPONENT );
