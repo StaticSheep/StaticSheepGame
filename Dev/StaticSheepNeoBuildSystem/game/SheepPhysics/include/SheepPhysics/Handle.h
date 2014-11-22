@@ -17,7 +17,8 @@ namespace SheepFizz
     PHY_API Handle(unsigned handle); // conversion
 
 
-    PHY_API inline operator unsigned(void) const;
+    PHY_API operator unsigned(void) const { return m_counter << 16 | m_index; }
+
 
     unsigned m_index : 16;
     unsigned m_counter : 16;

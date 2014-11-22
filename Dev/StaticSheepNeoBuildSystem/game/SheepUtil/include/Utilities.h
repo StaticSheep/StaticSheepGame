@@ -56,6 +56,15 @@ void PrintError( const char *exp, const char *file, int line, const char *msg, .
 END_DISABLE();
 
 #else
-#define Error(...)
-#define ErrorIf(...)
+#define ErrorIf( EXP, MODULE, FORMAT, ... )                                \
+  DISABLE_WARNING(4127); \
+do                                                       \
+{                                                        \
+if (EXP)                                                \
+{                                                      \
+  PrintError(#EXP, __FILE__, __LINE__, FORMAT, __VA_ARGS__); \
+  _CrtDbgBreak(); \
+}                                                      \
+} while (0) \
+  END_DISABLE();
 #endif

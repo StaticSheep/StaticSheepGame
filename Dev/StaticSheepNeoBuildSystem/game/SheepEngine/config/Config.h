@@ -4,7 +4,9 @@
 #define USE_ANTTWEAKBAR 1
 #define SHEEP_DEBUG 1
 
-
+#pragma comment(lib, "SheepGraphics.lib")
+#pragma comment(lib, "SheepPhysics.lib")
+#pragma comment(lib, "SheepUtil.lib")
 
 namespace Framework
 {

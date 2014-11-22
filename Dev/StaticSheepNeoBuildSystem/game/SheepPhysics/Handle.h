@@ -22,7 +22,8 @@ namespace SheepFizz
 
     //static void Serialize(File& file, Variable var);
 
-    PHY_API inline operator unsigned(void) const;
+    PHY_API operator unsigned(void) const { return m_counter << 16 | m_index; }
+
 
     unsigned m_index : 16;
     unsigned m_counter : 16;
@@ -30,9 +31,9 @@ namespace SheepFizz
     static const Handle null;
   };
 
-  Handle::operator unsigned( void ) const
-  {
-    return m_counter << 16 | m_index;
-  }
+  //Handle::operator unsigned(void) const
+  //{
+  //  return m_counter << 16 | m_index;
+  //}
 
 }
