@@ -65,8 +65,6 @@ class RenderContext
     //                    CREATE FUNCTIONS                     //
     /////////////////////////////////////////////////////////////
     
-   GFX_API bool CreateVertexShader(Handle& handle, const std::string& filename, const InputLayout& inputLayout, const std::string& entryFunc = "VShader");
-   GFX_API bool CreatePixelShader(Handle& handle, const std::string& filename, const std::string& entryFunc = "PShader");
    GFX_API bool CreateTexture(Handle& handle, const std::string& filename);
    GFX_API bool CreateVertexBuffer(Handle& handle, size_t size);
            bool CreateIndexBuffer(Handle& handle, size_t size);

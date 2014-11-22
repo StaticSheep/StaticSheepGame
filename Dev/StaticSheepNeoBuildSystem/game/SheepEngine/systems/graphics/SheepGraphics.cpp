@@ -237,45 +237,6 @@ namespace Framework
     m_renderContext->BindTexture(0,DirectSheep::Handle(DirectSheep::TEXTURE, ID));
   }
 
-  DirectSheep::Handle SheepGraphics::SetPShader(const std::string& Shader)
-  {
-    for(auto it : m_pshaderMap)
-    {
-      if(it.first == Shader)
-        return it.second;
-    }
-
-    DirectSheep::Handle temp;
-
-    m_renderContext->CreatePixelShader(temp, Shader);
-
-#if SHEEP_DEBUG
-    ++(m_debugData.numShaders);
-#endif
-
-    m_pshaderMap[Shader] = temp;
-
-    return m_pshaderMap[Shader];
-    }
-
-  DirectSheep::Handle SheepGraphics::SetVShader(const std::string& Shader)
-  {
-    for(auto it : m_vshaderMap)
-    {
-      if(it.first == Shader)
-        return it.second;
-    }
-
-    DirectSheep::InputLayout layout;
-    layout.push_back(DirectSheep::InputElement("POSITION",(DirectSheep::Format)DXGI_FORMAT_R32G32B32_FLOAT));
-    layout.push_back(DirectSheep::InputElement("TEXCOORD",(DirectSheep::Format)DXGI_FORMAT_R32G32_FLOAT));
-    DirectSheep::Handle temp;
-    m_renderContext->CreateVertexShader(temp, Shader, layout);
-    
-    m_vshaderMap[Shader] = temp;
-    return m_vshaderMap[Shader];
-  }
-
   void SheepGraphics::SetColor(Vec4 Color)
   {
     m_renderContext->SetBlendCol(Color.R, Color.G, Color.B, Color.A);

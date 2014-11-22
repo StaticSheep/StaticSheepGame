@@ -45,7 +45,7 @@ namespace DirectSheep
     m_ambient->setData(pContext, buf);
   }
 
-  GenEffect::GenEffect(ID3D11Device* pDevice) : Effect(pDevice, "content/shaders/VShader.hlsl", "VSMain", "vs_5_0", "content/shaders/PShader.hlsl", "PSMain", "ps_5_0")
+  GenEffect::GenEffect(ID3D11Device* pDevice) : Effect(pDevice, "content/shaders/VShader.cso", "content/shaders/PShader.cso")
   {
     m_posUV = new CBuffer<PosUV>(pDevice);
 
@@ -62,6 +62,6 @@ namespace DirectSheep
       { "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
     };
 
-    DXVerify(pDevice->CreateInputLayout(layout, 2, m_vShaderBlob->GetBufferPointer(), m_vShaderBlob->GetBufferSize(), &m_inputLayout));
+    DXVerify(pDevice->CreateInputLayout(layout, 2, m_vShaderData, m_vShaderSize, &m_inputLayout));
   }
 }
