@@ -57,7 +57,7 @@ namespace Framework
     playerAnimation = space->GetGameObject(owner)->GetComponentHandle(eAniSprite);
 
     Transform *ps = space->GetHandles().GetAs<Transform>(playerTransform);
-    ps->SetScale(Vec3(0.25f, 0.25f, 0.0));
+    ps->SetScale(Vec3(0.35f, 0.365f, 0.0));
 
 		GamePad *gp = space->GetHandles().GetAs<GamePad>(playerGamePad); //actually gets the gamepad
 		gp->SetPad(playerNum); //setting pad number
@@ -202,7 +202,7 @@ namespace Framework
       //jump
       if ((gp->ButtonPressed(XButtons.A) || gp->ButtonPressed(XButtons.LShoulder)) && isSnapped)
       {
-        bc->AddToVelocity(-(snappedNormal * 300));
+        bc->AddToVelocity(-(snappedNormal * 600));
         isSnapped = false;
         if (GetRandom(0, 1))
           se->Play("jump2", &SoundInstance(0.75f));
@@ -249,8 +249,13 @@ namespace Framework
     if (OtherObject->name == "Bullet" && !hasRespawned)
     {
       health -= OtherObject->GetComponent<Bullet_Default>(eBullet_Default)->damage;
-      
+      float randomX = GetRandom(-25, 25);
+      float randomY = GetRandom(-25, 25);
       se->Play("hit1", &SoundInstance(1.0f));
+      Transform *ps = space->GetHandles().GetAs<Transform>(playerTransform);
+      Handle hit = (FACTORY->LoadObjectFromArchetype(space, "hit"))->self;
+      Transform *exT = space->GetGameObject(hit)->GetComponent<Transform>(eTransform);
+      exT->SetTranslation(ps->GetTranslation() + Vec3(randomX,randomY,-1.0f));
       return;
     }
     if (OtherObject->name == "KillBox" || OtherObject->name == "KillBoxBig")
@@ -450,6 +455,7 @@ namespace Framework
     Handle explosion = (FACTORY->LoadObjectFromArchetype(space, "explosion"))->self;
     Transform *exT = space->GetGameObject(explosion)->GetComponent<Transform>(eTransform);
     exT->SetTranslation(ps->GetTranslation());
+    exT->SetRotation(GetRandom(0, 2 * (float)PI));
     space->hooks.Call("PlayerDied", playerNum); //calling an event called player died
     space->GetGameObject(owner)->Destroy();
   }

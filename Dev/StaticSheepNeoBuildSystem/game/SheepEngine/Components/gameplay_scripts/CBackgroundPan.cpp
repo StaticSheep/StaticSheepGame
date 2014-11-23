@@ -33,7 +33,7 @@ namespace Framework
 	{
     Transform *pt = space->GetHandles().GetAs<Transform>(bTransfrom);
 
-    pt->SetRotation(pt->GetRotation() + (dt / 5));
+    pt->SetRotation(pt->GetRotation() + (dt / 20));
     if (pt->GetRotation() > 2 * PI)
       pt->SetRotation(0);
 	}

@@ -51,7 +51,7 @@ namespace Framework
       attack.endFrame = 36;
       break;
     case 3:
-      spriteSheet = "ninja_sprite_sheet.png";
+      spriteSheet = "us_sprite_sheet.png";
       idle.beginFrame = 0;
       idle.endFrame = 0;
       run.beginFrame = 12;
