@@ -381,9 +381,13 @@ namespace SheepFizz
         if (Collisions[manifolds_[i].A->collisionGroup_][manifolds_[i].B->collisionGroup_] != 2)
           continue;
 
-        //manifolds_[i].PositionalCorrection();
         manifolds_[i].ApplyForces();
       }
+    }
+
+    for (unsigned int i = 0; i < manifolds_.size(); ++i)
+    {
+      manifolds_[i].PositionalCorrection();
     }
 
 		//apply forces and velocity to all bodies
