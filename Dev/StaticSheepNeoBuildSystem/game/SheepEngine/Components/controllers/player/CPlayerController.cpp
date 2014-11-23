@@ -73,7 +73,7 @@ namespace Framework
     se->Play("robot_startup", &SoundInstance(0.50f));
     animCont = AnimationController(playerNum);
     animCont.AnimState = IDLE;
-    bc->SetBodyCollisionGroup("Player1");
+    bc->SetBodyCollisionGroup(space->GetGameObject(owner)->archetype);
 	}
 
 	//************************************

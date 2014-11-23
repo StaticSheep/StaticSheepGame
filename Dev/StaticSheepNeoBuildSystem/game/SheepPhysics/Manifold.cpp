@@ -24,6 +24,13 @@ namespace SheepFizz
 
 		mDynamicFriction = Minimum(A->material_.GetMaterialDynamicFriction(), 
 			B->material_.GetMaterialDynamicFriction());
+    
+    for (unsigned int i = 0; i < 2; ++i)
+    {
+      accumulatedImpulse[i] = 0;
+      accumulatedTanImpulse[i] = 0;
+    }
+    
 	}//end of Initialize
 
 	//complex declaration - 2D array of function pointers that take a pointer to a manifold and returns a void
@@ -334,6 +341,15 @@ namespace SheepFizz
 	  //set the normal for the manifold
 	  m.normal = ((Rectangle*)referenceBody->shape_)->GetNormal(referenceBodyVertex);
 
+    if (m.normal.x < EPSILON && m.normal.x > -EPSILON)
+      m.normal.x = 0;
+
+    if (m.normal.y < EPSILON && m.normal.y > -EPSILON)
+      m.normal.y = 0;
+
+    if (m.normal.z < EPSILON && m.normal.z > -EPSILON)
+      m.normal.z = 0;
+
 	  //get the rotation matrix for the orientation
 	  Matrix2D refRotation(referenceBody->orientation_);
 
@@ -359,8 +375,8 @@ namespace SheepFizz
 	  if(flip)
 	  m.normal = -(m.normal);
 
-	  if(m.penetration > 20)
-	  m.contactCount = 0;
+	  if(m.penetration > 2)
+	    m.penetration = 10;
 
 	  m.penetration /= m.contactCount;
 

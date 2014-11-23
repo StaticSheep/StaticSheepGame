@@ -29,18 +29,13 @@ namespace SheepFizz
       //determine the relative velocity to determine opposite impulse force
       //calculate as if A is stationary and B is moving
       //equation is relveloc = velocity + Cross(angularvelocity, relative vec)
-	    Vec3D relativevelocity = B->velocity_ +
-		    (Vec3D(0, 0, B->angularVelocity_) ^ bRepulsionVec)
-		    - A->velocity_ - (Vec3D(0, 0, A->angularVelocity_) ^ aRepulsionVec);
+      Vec3D relativevelocity = B->velocity_ +
+        (Vec3D(0, 0, B->angularVelocity_) ^ bRepulsionVec)
+        - A->velocity_ - (Vec3D(0, 0, A->angularVelocity_) ^ aRepulsionVec);
 
       //determine the contact velocity - the relative velocity along the 
       //collision normal
       float contactVelocity = relativevelocity.DotProduct(normal);
-
-      //if contactVelocity is greater than 0, it means that the objects are
-      //seperating and we don't want to screw it up
-      if (contactVelocity > 0)
-        return;
 
       //determine the angular vectors - cross the aRepVec with norm
       //will give only z value - equivalent to scalar
@@ -58,8 +53,9 @@ namespace SheepFizz
       //calculate impulse scalar : "j"
       float j = -(1.0f + mResitution) * contactVelocity / inverseMassSum;
 
-      //divide by number of contact points
-      j /= contactCount;
+      float accumulatedPrev = accumulatedImpulse[i];
+      accumulatedImpulse[i] = Maximum(j + accumulatedImpulse[i], 0);
+      j = accumulatedImpulse[i] - accumulatedPrev;
 
       //calculate impulse and apply to bodies
       //A's impulse is negative because the normal is
@@ -82,12 +78,12 @@ namespace SheepFizz
       relativevelocity = B->velocity_ + (Vec3D(0, 0, B->angularVelocity_) ^ bRepulsionVec)
         - A->velocity_ - (Vec3D(0, 0, A->angularVelocity_) ^ aRepulsionVec);
 
-      //contactVelocity = relativevelocity.DotProduct(normal);
+      contactVelocity = relativevelocity.DotProduct(normal);
 
       //calculate the normalized tangent vector
       //by removing the relative velocity component along the normal, only
       //the tangent remains (non-normalized)
-      Vec3D tangent = relativevelocity - (normal * contactVelocity);
+      Vec3D tangent = normal ^ (relativevelocity - (normal * contactVelocity));
       tangent.Normalize();
 
       //calculate friction contact velocity - negative to tangentVector
@@ -95,24 +91,22 @@ namespace SheepFizz
 
       //calculate friction scalar
       float jFriction = frictionContactVelocity / inverseMassSum;
-      jFriction /= contactCount;
 
-      //calculate friction impulse - use Coulomb's Law of Friction
       //friction force cannot exceed normal impulse
+      float accumulatedTanPrev = accumulatedTanImpulse[i];
+      accumulatedTanImpulse[i] = Maximum(jFriction + accumulatedTanImpulse[i], -j * mStaticFriction);
+      accumulatedTanImpulse[i] = Minimum(accumulatedTanImpulse[i], j * mStaticFriction);
+      jFriction = accumulatedTanImpulse[i] - accumulatedTanPrev;
+
       Vec3D frictionImpulse;
-      if (std::abs(jFriction) < j * mStaticFriction)
-        frictionImpulse = jFriction * tangent;
-      else
-        frictionImpulse = tangent * -j * mDynamicFriction;
+      frictionImpulse = jFriction * tangent;
 
       //apply friction impulse
       frictionImpulse.z = 0;
 
-      if (contactCount == 2 && i < 1)
-        continue;
-
       A->ApplyImpulse(-frictionImpulse, aRepulsionVec);
       B->ApplyImpulse(frictionImpulse, bRepulsionVec);
+
     }
 
   }//end of ApplyForces
