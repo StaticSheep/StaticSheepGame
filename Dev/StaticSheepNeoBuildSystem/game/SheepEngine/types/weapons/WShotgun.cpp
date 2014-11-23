@@ -45,7 +45,7 @@ namespace Framework
         BT = bullet->GetComponent<Transform>(eTransform);
         bulletC = bullet->GetComponent <CircleCollider>(eCircleCollider);
         bulletC->SetBodyCollisionGroup(player->archetype);
-        BT->SetTranslation(playerTrans->GetTranslation() + PlayerAimDir * 45);
+        BT->SetTranslation(playerTrans->GetTranslation() + PlayerAimDir * 25);
         bulletC->AddToVelocity(AimDir * 1000);
       }
       if (i != 0)
@@ -56,7 +56,7 @@ namespace Framework
         BT = bullet->GetComponent<Transform>(eTransform);
         bulletC = bullet->GetComponent <CircleCollider>(eCircleCollider);
         bulletC->SetBodyCollisionGroup(player->archetype);
-        BT->SetTranslation(playerTrans->GetTranslation() + PlayerAimDir * 45);
+        BT->SetTranslation(playerTrans->GetTranslation() + PlayerAimDir * 25);
         bulletC->AddToVelocity(NegAimDir * 1000);
       }
     }

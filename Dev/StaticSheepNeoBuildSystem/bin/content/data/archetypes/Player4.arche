@@ -13,14 +13,14 @@ GameObject
     Rotation float 0.000000
     Scale Vec3
     {
-      x_ float 0.125000
-      y_ float 0.125000
+      x_ float 0.250000
+      y_ float 0.250000
       z_ float 0.000000
     }
   }
   AniSprite
   {
-    m_spriteName std::string "ninja_sprite_sheet.png"
+    m_spriteName std::string "us_sprite_sheet.png"
     m_frames Vec2
     {
       X float 12.000000
@@ -31,6 +31,8 @@ GameObject
     m_frameRate float 20.000000
     m_loop int -1
     m_paused bool false
+    m_flipX bool false
+    m_flipY bool false
     Color Vec4
     {
       R float 0.000000
@@ -50,8 +52,8 @@ GameObject
   }
   BoxCollider
   {
-    m_width float 64.000000
-    m_height float 64.000000
+    m_width float 76.000000
+    m_height float 76.000000
     m_materialName std::string "Wood"
     m_hasCollisionCallback bool true
     m_CollisionGroup std::string "Player4"

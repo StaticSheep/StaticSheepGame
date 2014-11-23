@@ -144,7 +144,7 @@ namespace Framework
       // you can do sp->Stop("space_brawl") and it'll stop.
 
       SoundInstance instance;
-      instance.volume = 0.25f;
+      instance.volume = 0.50f;
       instance.mode = PLAY_LOOP;
 
       sp->Play("Main Music", &instance);
