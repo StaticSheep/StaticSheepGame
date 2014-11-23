@@ -4,8 +4,24 @@ function META:Init()
   self.text = ""
   self.font = "Arial"
   self.fontSize = 12
+
+  self.outlineWidth = 0
+  self.outlineColor = Color(0, 0, 0, 255)
+
   self.alignX = TEXT_ALIGN_LEFT
   self.alignY = TEXT_ALIGN_TOP
+end
+
+function META:SetOutlineWidth(w)
+  self.outlineWidth = w
+end
+
+function META:SetOutlineColor(col)
+  self.outlineColor = col
+end
+
+function META:SetFontColor(col)
+  self.color = col
 end
 
 function META:SetSize(x, y)
@@ -62,11 +78,22 @@ function META:SetOnPressed(func)
   self.OnPressed = func
 end
 
+function META:DrawSize()
+  return surface.MeasureString(self.text, self.fontSize, self.font)
+end
+
 function META:Paint()
   local pos = self:DrawPos()
 
-  draw.SimpleText(self.text, self.font, pos.x, pos.y,
-   self.fontSize, self.color, self.alignX, self.alignY)
+  if self.outlineWidth > 0 then
+    draw.SimpleTextOutlined(self.text, self.font, pos.x, pos.y,
+     self.fontSize, self.color, self.alignX, self.alignY,
+     self.outlineWidth, self.outlineColor)
+  else
+    draw.SimpleText(self.text, self.font, pos.x, pos.y,
+     self.fontSize, self.color, self.alignX, self.alignY)
+  end
+
 end
 
 gui.Register( "Label", META, "Panel" )

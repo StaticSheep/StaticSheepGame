@@ -1,4 +1,4 @@
-local META = GetMeta("Frame")
+local META = GetMeta("FlatPane")
 
 function META:Init()
 end
@@ -12,11 +12,8 @@ function META:Paint()
 
   local pos = self:DrawPos()
 
-  draw.RoundedBox(4, pos.x, pos.y,
-    self.size.x, self.size.y, self.bgColor)
-
   draw.RoundedBox(4, border + pos.x, border + pos.y,
     self.size.x - border * 2, self.size.y - border * 2, self.color)
 end
 
-gui.Register( "Frame", META, "Panel" )
+gui.Register( "FlatPane", META, "Panel" )

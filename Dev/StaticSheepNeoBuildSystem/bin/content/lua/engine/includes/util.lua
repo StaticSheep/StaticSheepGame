@@ -8,6 +8,24 @@ local function Pad()
   end
 end
 
+ERROR = 0
+WARNING = 1
+DEBUG = 3
+INFO = 4
+
+local levelNames = {"Error", "Warning", "Debug", "Info"}
+
+LogLevel = DEBUG
+function Log(level, message)
+  if level <= LogLevel then
+    print("["..levelNames[level].."] "..message)
+  end
+end
+
+function ScreenScale(size)
+  return size * (ScrW() / 640.0)
+end
+
 function PrintTable(tbl)
   printed = {}
   PrintTableStep(tbl)
