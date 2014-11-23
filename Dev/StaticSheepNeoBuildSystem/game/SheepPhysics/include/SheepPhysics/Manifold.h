@@ -4,9 +4,10 @@
 namespace SheepFizz
 {
 
-	#define POSCORRECT	0.4f	//the percent for positional correction
-	#define POSSLACK	0.05f	//the penetration needed to start positional correction
+	#define POSCORRECT	0.00395f	//the percent for positional correction
+	#define POSSLACK	0.15f	//the penetration needed to start positional correction
 	#define MAXVALUE	3.402823466e+38F  //the max value of a float, used in rec collision
+  #define EPSILON   5.0e-04
 
 	//manifold struct is used for collisions
 	//it gives the collision normal and depth of penetration for
@@ -43,6 +44,10 @@ namespace SheepFizz
 
 		unsigned int contactCount;	    //the number of contacts in the manifold
 	
+    //accumulated impulses for Legragian
+    float accumulatedImpulse[2];
+    float accumulatedTanImpulse[2];
+
 	};
 
 	//collision resolution functions

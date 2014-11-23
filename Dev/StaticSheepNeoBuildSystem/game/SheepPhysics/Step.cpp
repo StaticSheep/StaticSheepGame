@@ -371,23 +371,46 @@ namespace SheepFizz
 				m.Initialize();
 				m.ManifoldInteraction();
 
+        if (m.normal.x < EPSILON && m.normal.x > -EPSILON)
+          m.normal.x = 0;
+
+        if (m.normal.y < EPSILON && m.normal.y > -EPSILON)
+          m.normal.y = 0;
+
+        if (m.normal.z < EPSILON && m.normal.z > -EPSILON)
+          m.normal.z = 0;
+
 				//if there is an interaction, add the manifold to the list
 				//to iterate through
 				if(m.contactCount > 0)
 					manifolds_.push_back(m);
+
 			}
 		}
 
 		//apply forces for all manifolds - positional correction first
-		for(unsigned i = 0; i < manifolds_.size(); ++i)
-		{
+    for (unsigned int k = 0; k < MAX_ITERATIONS; ++k)
+    {
+      //apply forces for all manifolds - positional correction first
+      for (unsigned int i = 0; i < manifolds_.size(); ++i)
+      {
+        //check collision groups
+        if (Collisions[manifolds_[i].A->collisionGroup_][manifolds_[i].B->collisionGroup_] != 2)
+          continue;
+
+        manifolds_[i].ApplyForces();
+      }
+    }
+
+    for (unsigned int i = 0; i < manifolds_.size(); ++i)
+    {
       //check collision groups
       if (Collisions[manifolds_[i].A->collisionGroup_][manifolds_[i].B->collisionGroup_] != 2)
         continue;
-
+        
       manifolds_[i].PositionalCorrection();
-			manifolds_[i].ApplyForces();
-		}
+    }
+
 
 		//apply forces and velocity to all bodies
 		for(unsigned i = 0; i < bodies_.Size(); ++i)
