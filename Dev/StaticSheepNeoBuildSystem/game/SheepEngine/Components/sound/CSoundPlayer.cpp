@@ -40,7 +40,10 @@ namespace Framework
     {
       // and stop them
       if(it->second.active)
+      {
         _soundSystem->Stop(&it->second);
+        it->second.active = false;
+      }
     }
   }
   

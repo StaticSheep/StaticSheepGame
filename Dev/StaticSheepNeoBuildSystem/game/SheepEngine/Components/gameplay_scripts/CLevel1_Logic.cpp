@@ -14,6 +14,8 @@ static const char *playerNames[] = { "Player1", "Player2", "Player3", "Player4" 
 static bool warning;
 static float camShakeTime;
 static float camShakeMagnitude;
+static bool playing;
+
 namespace Framework
 {
   Level1_Logic::Level1_Logic()
@@ -34,7 +36,6 @@ namespace Framework
 
   Level1_Logic::~Level1_Logic()
 	{
-
 	}
 
   void Level1_Logic::Initialize()
@@ -48,6 +49,8 @@ namespace Framework
     levelEmitter = space->GetGameObject(owner)->GetComponentHandle(eSoundEmitter);
     timeLimit = 6;
     startFlag = true;
+    playing = false;
+
     for (int i = 0; i < 4; ++i)
       spawnTimers[i] = 2.0f;
 	}
@@ -65,7 +68,7 @@ namespace Framework
 
     SpawnPlayers(dt);
     
-    static bool playing = false;
+    
     spawnTimer -= dt;
     timeLimit -= dt;
 
