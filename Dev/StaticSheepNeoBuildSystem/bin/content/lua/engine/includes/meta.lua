@@ -91,6 +91,9 @@ function SetupMetatable(name, meta)
   function meta:SetupHooks()
   end
 
+  function meta:Refresh()
+  end
+
   function meta:Init()
     self:SetupHooks()
   end

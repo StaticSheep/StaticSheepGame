@@ -108,11 +108,13 @@ namespace Framework
     {
       // in which case, print into it
       check = vfprintf(file, format, args);
+      fprintf(file, "\n");
     }
     else // otherwise
     {
       // print to the console
       check = vprintf(format, args);
+      printf("\n");
     }
 
     // remove the args

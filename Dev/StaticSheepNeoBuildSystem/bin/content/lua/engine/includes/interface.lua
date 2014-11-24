@@ -51,6 +51,7 @@ LuaComponents = {}
 
 include("util.lua")
 include("meta.lua")
+include("keys.lua")
 
 require("hook")
 require("filesystem")

@@ -67,13 +67,13 @@ namespace Framework
     if(AUDIO)
     {
       audio = (DebugAudio*)AUDIO->GetDebugData();
-      TRACELOG->Log(TraceLevel::DEBUG, "Debugger linked to Audio system\n");
+      TRACELOG->Log(TraceLevel::DEBUG, "Debugger linked to Audio system");
     }
 
     if(GRAPHICS)
     {
       graphics = (DebugGraphics*)GRAPHICS->GetDebugData();
-      TRACELOG->Log(TraceLevel::DEBUG, "Debugger linked to Graphics system\n");
+      TRACELOG->Log(TraceLevel::DEBUG, "Debugger linked to Graphics system");
     }
     
     if (SHEEPINPUT)
@@ -87,7 +87,7 @@ namespace Framework
     }
     
     framerate = (DebugFramerate*)ENGINE->Framerate.GetDebugData();
-    TRACELOG->Log(TraceLevel::DEBUG, "Debugger linked to Framerate Controller\n");
+    TRACELOG->Log(TraceLevel::DEBUG, "Debugger linked to Framerate Controller");
   }
 
 /*****************************************************************************/

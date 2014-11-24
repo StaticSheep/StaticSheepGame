@@ -12,13 +12,14 @@ ERROR = 0
 WARNING = 1
 DEBUG = 3
 INFO = 4
+VERBOSE = 5
 
-local levelNames = {"Error", "Warning", "Debug", "Info"}
+local levelNames = {"ERROR", "WARNING", "DEBUG", "INFO", "VERBOSE"}
 
 LogLevel = DEBUG
 function Log(level, message)
   if level <= LogLevel then
-    print("["..levelNames[level].."] "..message)
+    print(engine.DateTime().." ["..levelNames[level].."]    "..message.." (Lua)")
   end
 end
 

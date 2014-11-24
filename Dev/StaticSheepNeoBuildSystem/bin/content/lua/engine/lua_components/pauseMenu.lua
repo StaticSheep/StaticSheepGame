@@ -1,8 +1,6 @@
-if not PauseMenu then
-  PauseMenu = {}
-  PauseMenu.panels = {}
-  PauseMenu.menu = nil
-end
+local PauseMenu = GetMeta("PauseMenu")
+
+InheritMeta(PauseMenu, "LuaComponent")
 
 function PauseMenu:CleanUp()
   for k,v in pairs(self.panels) do
@@ -15,10 +13,13 @@ function PauseMenu:CleanUp()
     self.menu:Destroy()
     self.menu = nil
   end
+
+  self.base = nil
+  self.opened = false
 end
 
 function PauseMenu:Register(pnl)
-  self.panels[#self.panels + 1] = pnl
+  table.insert(self.panels, pnl)
 end
 
 function PauseMenu:AddButton(text)
@@ -52,9 +53,8 @@ function PauseMenu:AddButton(text)
 end
 
 function PauseMenu:MakeMenu()
-  self:CleanUp()
-
   self.opened = true
+  self.ypos = 0
 
   self.menu = CreateMenu(1, 0, {0, 1, 2, 3})
 
@@ -76,10 +76,7 @@ function PauseMenu:MakeMenu()
 
   self.ypos = title:GetPos().y + title:DrawSize().y
 
-  
-
   local btn
-
   btn = self:AddButton("Resume")
   btn:SetOnPressed(function()
     self.opened = false
@@ -98,24 +95,72 @@ function PauseMenu:MakeMenu()
   end)
 end
 
-function PauseMenu:Update()
+function PauseMenu:Init()
+  self.panels = {}
+  self.menu = nil
+  self.opened = false
 
+  self.super.Init(self)
+end
+
+function PauseMenu:Refresh()
+  self:CleanUp()
+  self:PauseSpace(false)
+  --self:MakeMenu()
+end
+
+function PauseMenu:Remove()
+  self:CleanUp()
+end
+
+function PauseMenu:SetupHooks()
+  hook.Add("FrameUpdate", self, self.FrameUpdate)
+  hook.Add("LogicUpdate", self, self.LogicUpdate)
+end
+
+function PauseMenu:PauseSpace(paused)
+  gamespace.Get(self._space)._pointer:SetPaused(paused)
+end
+
+function PauseMenu:LogicUpdate(deltaTime)
+  if not self.opened and not self.base then
+    if KeyIsPressed(KEY_ESCAPE) or
+      gamepad.ButtonPressed(nil, GAMEPAD_START) then
+
+      Log(DEBUG, "Pausing space")
+      self:PauseSpace(true)
+
+      self:MakeMenu()
+    end
+  end
+end
+
+function PauseMenu:FrameUpdate(deltaTime)
   if self.opened then
     if self.base.pos.x < 0 then
       self.base.pos.x = self.base.pos.x + 20
+    else
+      if KeyIsPressed(KEY_ESCAPE) or
+        gamepad.ButtonPressed(nil, GAMEPAD_START) then
+
+        self.opened = false
+        self.menu:SetActive(false)
+      end
+
     end
   else
-    if self.base.pos.x > -self.base.size.x then
-      self.base.pos.x = self.base.pos.x - 30
-      if not (self.base.pos.x > -self.base.size.x) then
-        Log(DEBUG, "Resuming game")
+    if self.base then
+      if self.base.pos.x > -self.base.size.x then
+        self.base.pos.x = self.base.pos.x - 30
+        if not (self.base.pos.x > -self.base.size.x) then
+          Log(DEBUG, "Resuming game")
+
+          self:CleanUp()
+          self:PauseSpace(false)
+        end
       end
     end
   end
 end
 
-PauseMenu:MakeMenu()
-
-hook.Add("LogicUpdate", PauseMenu, PauseMenu.Update)
-
-
+RegisterComponent(PauseMenu)

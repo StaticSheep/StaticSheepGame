@@ -128,7 +128,7 @@ namespace Framework
     // Removes all components
     object->~GameObject();
 
-    Lua::CallFunc(ENGINE->Lua(), "RemoveGameObject", m_name, object->self.operator size_t());
+    Lua::CallFunc(ENGINE->Lua(), "gamespace.RemoveGameObject", m_name, object->self.operator size_t());
 
     // Remove the object from the handle manager
     GetHandles().Remove(object->self);
@@ -359,7 +359,7 @@ namespace Framework
     else
       PHYSICS->SetDT(this, 0.0167f);
 
-    Lua::CallFunc(ENGINE->Lua(), "PauseGameSpace", m_name, paused);
+    Lua::CallFunc(ENGINE->Lua(), "gamespace.PauseGameSpace", m_name, paused);
   }
 
   bool GameSpace::Paused()

@@ -120,7 +120,8 @@ namespace Framework
 
   bool GamePadInput::ButtonPressed(int a_iButton)
   {
-    if(State.Gamepad.wButtons & XINPUT_Buttons[a_iButton])
+    
+    if (State.Gamepad.wButtons & XINPUT_Buttons[a_iButton] && !bPrev_ButtonStates[a_iButton])
     {
       return true; //the button is pressed
     }

@@ -39,6 +39,9 @@ namespace Framework
 
     /*----- LUA BINDS -----*/
     static GamePadInput* GetGamePad(int index);
+    static bool KeyIsPressed(unsigned key);
+    static bool KeyIsDown(unsigned key);
+    static bool KeyIsReleased(unsigned key);
 
     // we have one mouse...
     MouseInput Mouse;

@@ -18,7 +18,8 @@ function uimenu.Create(vStep, hStep, gamepads)
   newMenu.gamepads = gamepads or {}
   newMenu.padMoveCD = {0,0,0,0}
   newMenu.padClickCD = {0,0,0,0}
-  newMenu.inputCD = 80
+  newMenu.inputCD = 100
+  newMenu.active = true
 
   table.Merge(newMenu, uimenu.meta)
 
@@ -33,7 +34,9 @@ CreateMenu = uimenu.Create
 
 function uimenu.Update()
   for id, realMenu in pairs(uimenu.list) do
-    realMenu:Update()
+    if realMenu.active then
+      realMenu:Update()
+    end
   end
 end
 
@@ -67,6 +70,10 @@ function uimenu.meta:Destroy()
   uimenu.Delete(self)
 end
 
+function uimenu.meta:SetActive(active)
+  self.active = active
+end
+
 function uimenu.meta:RegisterButton(btn)
   -- Insert button into menu
   table.insert(self.buttons, btn)
@@ -82,7 +89,7 @@ function uimenu.meta:RegisterButton(btn)
     self.buttons[1]:SetHovered(true)
   end
 
-  Log(DEBUG, "Registered button into menu at index: "..#self.buttons)
+  Log(INFO, "Registered button into menu at index: "..#self.buttons)
 end
 uimenu.meta.Add = uimenu.meta.RegisterButton
 
@@ -100,7 +107,7 @@ function uimenu.meta:InsertButton(btn, index)
     self.selected = self.selected + 1
   end
 
-  Log(DEBUG, "Registered button into menu at index: "..index)
+  Log(INFO, "Registered button into menu at index: "..index)
 end
 
 function uimenu.meta:RemoveButton(btn, index)
@@ -116,7 +123,7 @@ function uimenu.meta:RemoveButton(btn, index)
     self.selected = self.selected - 1
   end
 
-  Log(DEBUG, "Removed button from menu at index: "..index)
+  Log(INFO, "Removed button from menu at index: "..index)
 end
 
 function uimenu.meta:FindButtonIndex(btn)
@@ -176,19 +183,19 @@ function uimenu.meta:Update()
 
       end
 
-      if gamePad:ButtonDown(GAMEPAD_DPAD_LEFT) then
+      if gamePad:ButtonDown(GAMEPAD_DPAD_LEFT) or KeyIsPressed(KEY_A) then
         hMove = 1
       end
 
-      if gamePad:ButtonDown(GAMEPAD_DPAD_RIGHT) then
+      if gamePad:ButtonDown(GAMEPAD_DPAD_RIGHT) or KeyIsPressed(KEY_D) then
         hMove = -1
       end
 
-      if gamePad:ButtonDown(GAMEPAD_DPAD_UP) then
+      if gamePad:ButtonDown(GAMEPAD_DPAD_UP) or KeyIsPressed(KEY_W) then
         vMove = -1
       end
 
-      if gamePad:ButtonDown(GAMEPAD_DPAD_DOWN) then
+      if gamePad:ButtonDown(GAMEPAD_DPAD_DOWN) or KeyIsPressed(KEY_S) then
         vMove = 1
       end
 

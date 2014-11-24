@@ -101,6 +101,7 @@ namespace Framework
     static void LuaClearSpaces();
     static void LuaRemoveSpace(const char* name);
     static void LuaGetComponentList(int count, int dummy);
+    static const char* DateTime();
 
     // Function used by lua for printing errors
     static void LuaError(const char* msg);

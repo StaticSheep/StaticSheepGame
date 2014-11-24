@@ -119,4 +119,20 @@ namespace Framework
     return;
   }
 
+  bool InputManager::KeyIsPressed(unsigned key)
+  {
+    return SHEEPINPUT->Keyboard.KeyIsPressed(key);
+  }
+
+  bool InputManager::KeyIsDown(unsigned key)
+  {
+    return SHEEPINPUT->Keyboard.KeyIsDown(key);
+  }
+
+  bool InputManager::KeyIsReleased(unsigned key)
+  {
+    return SHEEPINPUT->Keyboard.KeyIsReleased(key);
+  }
+
+
 }// end namespace

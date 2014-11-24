@@ -39,6 +39,7 @@ namespace Framework
       BIND_FUNCTION_TABLE(L, Engine::LuaSetVariable, SetVariable, engine);
       BIND_FUNCTION_TABLE(L, Engine::LuaGetVariable, GetVariable, engine);
       BIND_FUNCTION_TABLE(L, Engine::LuaGetComponentList, SendComponentList, engine);
+      BIND_FUNCTION_TABLE(L, Engine::DateTime, DateTime, engine);
 
       CREATE_TABLE(L, surface);
       BIND_FUNCTION_TABLE(L, Draw::SetColor, SetColorEx, surface);
@@ -56,6 +57,10 @@ namespace Framework
       BIND_FUNCTION_TABLE(L, Draw::MeasureString, MeasureString, surface);
 
       BIND_FUNCTION_EX(L, InputManager::GetGamePad, GamePad);
+
+      BIND_FUNCTION_EX(L, InputManager::KeyIsDown, KeyIsDown);
+      BIND_FUNCTION_EX(L, InputManager::KeyIsPressed, KeyIsPressed);
+      BIND_FUNCTION_EX(L, InputManager::KeyIsReleased, KeyIsReleased);
 
       BIND_FUNCTION_EX(L, Draw::ScreenWidth, ScrW);
       BIND_FUNCTION_EX(L, Draw::ScreenHeight, ScrH);
@@ -85,6 +90,7 @@ namespace Framework
       BIND_FUNCTION_EX(L, GameSpace::CopyGameSpace, MakeCopy);
       BIND_FUNCTION_EX(L, GameSpace::CreateObjectFromArchetype, CreateObject);
       BIND_FUNCTION_EX(L, GameSpace::GetGameObject, GetObject);
+      BIND_FUNCTION_EX(L, GameSpace::SetPaused, SetPaused);
       BIND_FUNCTION_EX(L, GameSpace::Clear, Clear);
 
       BIND_FUNCTION_EX(L, GamePadInput::ButtonDown, ButtonDown);

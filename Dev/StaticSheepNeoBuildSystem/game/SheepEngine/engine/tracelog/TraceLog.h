@@ -20,7 +20,8 @@ namespace Framework
       ERR = 0,
       WARNING,
       DEBUG,
-      INFO
+      INFO,
+      VERBOSE
     };
   }
   

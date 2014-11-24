@@ -93,7 +93,7 @@ namespace Framework
       space->m_shuttingDown = true;
       space->Cleanup();
 
-      Lua::CallFunc(ENGINE->Lua(), "RemoveGameSpace", space->m_name);
+      Lua::CallFunc(ENGINE->Lua(), "gamespace.RemoveGameSpace", space->m_name);
 
       delete space;
     }
@@ -194,7 +194,7 @@ namespace Framework
     m_spaceMap[space->m_name] = space;
     m_spaces.push_back(space);
 
-    Lua::CallFunc(L, "AddGameSpace", name);
+    Lua::CallFunc(L, "gamespace.AddGameSpace", name, space);
 
     return space;
   }
@@ -225,7 +225,7 @@ namespace Framework
     space->m_shuttingDown = true;
     space->Cleanup();
 
-    Lua::CallFunc(ENGINE->Lua(), "RemoveGameSpace", space->m_name);
+    Lua::CallFunc(ENGINE->Lua(), "gamespace.RemoveGameSpace", space->m_name);
 
     delete space;
   }

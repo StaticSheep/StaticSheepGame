@@ -19,6 +19,7 @@ function META:Init()
 
   self.hovered = false
   self.clicked = false
+  self.clickColor = 0
 end
 
 function META:SetFontColor(col)
@@ -82,6 +83,11 @@ function META:IsHovered()
 end
 
 function META:Think()
+  if self.clicked then
+    if self.clickedOn + 100 < CurTime() then
+      self.clicked = false
+    end
+  end
 
 end
 
@@ -89,6 +95,9 @@ function META:Press()
   if self.OnPressed then
     self:OnPressed()
   end
+
+  self.clicked = true
+  self.clickedOn = CurTime()
 end
 
 function META:SetOnPressed(func)
@@ -107,6 +116,12 @@ function META:Paint()
     bgColor = self.hoverBGColor
     fgColor = self.hoverColor
     fntColor = self.hoverfontColor
+  end
+
+  if self.clicked then
+    bgColor = self.clickBGColor
+    fgColor = self.clickColor
+    fntColor = self.clickFontColor
   end
 
   --print(self.size.x.."x"..self.size.y)

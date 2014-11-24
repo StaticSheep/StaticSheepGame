@@ -1,4 +1,3 @@
-
 function RegisterComponent(meta)
   print("Registered LuaComponent: "..meta.__name)
   if LuaComponents[meta.__name] == nil then

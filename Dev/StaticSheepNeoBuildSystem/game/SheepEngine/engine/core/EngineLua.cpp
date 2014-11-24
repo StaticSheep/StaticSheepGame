@@ -2,6 +2,7 @@
 
 #include "engine/core/Engine.h"
 #include "types/space/Space.h"
+#include <time.h>
 
 namespace Framework
 {
@@ -129,7 +130,58 @@ namespace Framework
 
   void Engine::LuaError(const char* msg)
   {
-    TRACELOG->Log(TraceLevel::ERR, "LuaError: %s\n", msg);
+    TRACELOG->Log(TraceLevel::ERR, "LuaError: %s", msg);
     //FORCEERROR("LuaError", "%s", msg);
+  }
+
+  const char* Engine::DateTime()
+  {
+    // get the current time in seconds since 1970
+    time_t currentTime;
+    time(&currentTime);
+
+    struct tm* dateTime;
+
+    // convert it into local time
+    dateTime = localtime(&currentTime);
+
+    // convert that into ascii
+    char* theTime = asctime(dateTime);
+
+    // then get some char* to alter the output
+    char* reader = theTime;
+    char* begin;
+    char* last;
+
+    // keeps track of the amount of spaces
+    int count = 0;
+
+    // iterate through theTime 
+    while (reader++)
+    {
+      // we are looking for the \n because we want to get rid of it
+      if (*reader == '\n')
+      {
+        *reader = '\0';
+        break;
+      }
+
+      // also if we find a space...
+      if (*reader == ' ')
+      {
+        ++count;
+
+        // keep track of the last space
+        last = reader;
+
+        // to get rid of the month and day
+        if (count == 3)
+          begin = reader + 1;
+      }
+    }
+    // to get rid of the year
+    *last = '\0';
+
+    return begin;
   }
 }

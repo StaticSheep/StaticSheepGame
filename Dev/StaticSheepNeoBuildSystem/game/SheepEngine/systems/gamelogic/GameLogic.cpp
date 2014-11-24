@@ -94,6 +94,8 @@ namespace Framework
     }
 
     Lua::CallFunc(ENGINE->Lua(), "hook.Call", "LogicUpdate", dt);
+    Lua::CallFunc(ENGINE->Lua(), "hook.Call", "FrameUpdate", dt);
+
     Lua::CallFunc(ENGINE->Lua(), "gui.Update");
     Lua::CallFunc(ENGINE->Lua(), "uimenu.Update");
 
