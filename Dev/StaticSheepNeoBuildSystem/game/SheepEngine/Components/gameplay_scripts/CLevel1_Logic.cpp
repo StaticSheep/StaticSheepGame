@@ -121,8 +121,8 @@ namespace Framework
       }
       timeLimit = GetRandom(30, 60);
       warning = false;
-      camShakeTime = 6.5f;
-      camShakeMagnitude = 2;
+      camShakeTime = 8.5f;
+      camShakeMagnitude = 4;
       camShake = true;
     }
     else if (timeLimit > 0.0f && timeLimit < 2.0f && warning == false)
