@@ -200,7 +200,7 @@ namespace Framework
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
       //jump
-      if ((gp->ButtonPressed(XButtons.A) || gp->ButtonPressed(XButtons.LShoulder)) && isSnapped)
+      if ((gp->ButtonDown(XButtons.A) || gp->ButtonDown(XButtons.LShoulder)) && isSnapped)
       {
         bc->AddToVelocity(-(snappedNormal * 600));
         isSnapped = false;

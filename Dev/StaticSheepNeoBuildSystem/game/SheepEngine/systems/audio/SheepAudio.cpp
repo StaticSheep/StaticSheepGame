@@ -1,10 +1,10 @@
-/*****************************************************************
+/******************************************************************************
 Filename: SheepAudio.cpp
 Project: 
 Author(s): Zakary Wilson
 
 All content © 2014 DigiPen (USA) Corporation, all rights reserved.
-*****************************************************************/
+******************************************************************************/
 
 #include "pch/precompiled.h"
 
@@ -19,10 +19,10 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include <fstream>
 #include <iostream>
 
-// lets call this a sound map
+// lets just call this a SoundMap
 typedef std::unordered_map<std::string, Sound*> SoundMap;
 
-// lets call this a bank vector
+// and this a vector of banks... bank pointers really
 typedef std::vector<SOUND::Bank*> BankVector;
 
 // static prototypes
@@ -39,10 +39,14 @@ using namespace boost::filesystem;
 
 namespace Framework
 {
-	// Global pointer to the audio system
+	// Global pointer
 	SheepAudio* AUDIO = NULL;
 
-	SheepAudio::SheepAudio() : GUID("GUIDs.txt")
+/*!
+  \brief
+    Default constructor for the SheepAudio class
+*/
+	SheepAudio::SheepAudio() : GUID("GUIDs.txt") // need to find the GUIDs file
 	{
     // set the global pointer 
 		AUDIO = this;
@@ -51,47 +55,56 @@ namespace Framework
     masterPitch = 1.0f;
 	}
 
+/*!
+  \brief
+    Destructor for the SheepAudio class, all it does is release the FMOD
+    system.
+*/
 	SheepAudio::~SheepAudio()
 	{
-		TRACELOG->Log(TraceLevel::INFO,"Releasing FMOD Studio");
+		// Release the FMOD system
     system->release();
 	}
 
+/*!
+  \brief
+    Destructor for the SheepAudio class, all it does is release the FMOD
+    system.
+*/
   void SheepAudio::Shutdown()
   {
-    TRACELOG->Log(TraceLevel::INFO,"Releasing all Sounds");
+    // kill all sound objects
     for(auto it = soundMap.begin(); it != soundMap.end(); ++it)
     {
       delete it->second;
       it->second = 0;
     }
 
+    // delete the debug struct
     delete debug;
   }
 
+/*!
+  \brief
+    Initializes the audio system. Loads all of the banks and events.
+*/
 	void SheepAudio::Initialize()
 	{
-    TRACELOG->Log(TraceLevel::INFO,"Creating FMOD Studio System");
+    // create the sound system
     ErrorCheck(SOUND::System::create(&system));
 
-    TRACELOG->Log(TraceLevel::VERBOSE, "Initializing FMOD Studio System");
+    // initialize the sound system, with 512 channels... NEVER RUN OUT
     ErrorCheck(system->initialize(256, FMOD_STUDIO_INIT_NORMAL, 
                       FMOD_INIT_NORMAL, 0));
-
-    TRACELOG->Log(TraceLevel::VERBOSE, "Getting FMOD Low Level System");
     ErrorCheck(system->getLowLevelSystem(&lowLevelSystem));
 
     int driver;
 
-    TRACELOG->Log(TraceLevel::INFO, "Checking Current Sound Drivers");
     ErrorCheck(lowLevelSystem->getNumDrivers(&driver));
 
     // if there is no soundcard/driver, tell FMOD to not even bother
     if(driver == 0)
-    {
-      TRACELOG->Log(TraceLevel::WARNING, "No Soundcard/Driver found! Setting FMOD to no output.");
-      ErrorCheck(lowLevelSystem->setOutput(FMOD_OUTPUTTYPE_NOSOUND));
-    }
+     ErrorCheck(lowLevelSystem->setOutput(FMOD_OUTPUTTYPE_NOSOUND));
 
     // open the GUID file
     std::ifstream infile(SoundUtility::SourcePath(GUID, SoundUtility::TYPE_GUIDs).c_str());
@@ -101,16 +114,13 @@ namespace Framework
      throw std::invalid_argument("Invalid File"); // replace with event handling system
 
     // parse through the GUID file and load the banks and events
-    TRACELOG->Log(TraceLevel::VERBOSE, "Parsing Bank Files");
     ParseBanks(system, infile, banks);
-
-    TRACELOG->Log(TraceLevel::VERBOSE, "Parsing Sound Events");
     ParseEvents(system, infile, soundMap);
 
-    TRACELOG->Log(TraceLevel::VERBOSE, "Parsing Sound Files");
+    // parse through the content directory and load sound files
     ParseFiles(lowLevelSystem, soundMap);;
 
-    TRACELOG->Log(TraceLevel::VERBOSE, "Getting Master Channel Group");
+    // grab the master channel group for pausing, stopping, and altering volume
     ErrorCheck(lowLevelSystem->getMasterChannelGroup(&masterGroup));
 
     // create a dsp, and add it to the masterGroup for debug information right now
@@ -121,12 +131,20 @@ namespace Framework
     debug = new DebugAudio;
 	}
 
+/*!
+  \brief
+    Registers the two sound components related to audio.
+*/
   void SheepAudio::RegisterComponents(void)
   {
     REGISTER_COMPONENT(SoundEmitter);
     REGISTER_COMPONENT(SoundPlayer);
   }
 
+/*!
+  \brief
+    Updates the audio system. All it does it update FMOD.
+*/
 	void SheepAudio::Update(float dt)
 	{
     float temp = dt; // get rid of warning
@@ -136,18 +154,35 @@ namespace Framework
     return;
 	}
 
-  // Looks for the sound, and plays it based on the SoundInstance parameters if it was found.
+/*!
+  \brief
+    Plays a sound!
+
+  \param event_name
+    The event name that we want to play. This is a string.
+
+  \param mode
+    How we want to play the sound. Single-shot, looped, or streamed.
+*/
   bool SheepAudio::Play(const std::string &event_name, SoundInstance* instance)
   {
     auto it = soundMap.find(event_name);
-
-    // if found, tell this event to play
+    // tell this event to play
     if(it != soundMap.end())
       return soundMap[event_name]->Play(instance);
     return false;
   }
 
-  // Stops a specific instance of a sound
+/*!
+  \brief
+    Tells and event to stop playing.
+
+  \param event_name
+    The event that we want to stop playing.
+
+  \param mode
+    How we want to fade out when we stop... currently only use 0 or 1.
+*/
   bool SheepAudio::Stop(SoundInstance* instance)
   {
     // tell this event to stop
@@ -166,7 +201,16 @@ namespace Framework
     return true;
   }
 
-  // Pauses a specific instance of a sound
+/*!
+  \brief
+    Pauses or unpauses a sound instance that is playing.
+
+  \param instance
+    Struct that contains the sound instance
+
+  \param status
+    Flag to tell it to either be paused or unpaused
+*/
   void SheepAudio::Pause(SoundInstance* instance, bool status)
   {
     if(instance->type == 0)
@@ -180,46 +224,67 @@ namespace Framework
     }
   }
 
-  // Pauses all sounds
-  void SheepAudio::PauseAll(bool status)
-  {
-    masterGroup->setPaused(status);
-  }
+/*!
+  \brief
+    Tells all events to stop playing.
 
-  // Stops all sounds from playing
+  \param mode
+    How we want to fade out. Use either 0 or 1 for now...
+*/
   void SheepAudio::StopAll()
   {
+    // iterate through all events and stop all of them
     masterGroup->stop();
     return;
   }
 
-  // Sets master volume. Gets clamped between 0.0 and 1.0
+  void SheepAudio::PauseAll(bool paused)
+  {
+    masterGroup->setPaused(paused);
+  }
+
+/*!
+  \brief
+    Sets the master volume. Clamps it between 0 and 1.
+*/
   void SheepAudio::SetMasterVolume(float volume)
   {
     masterVolume = Clamp(volume, 0.0f, 1.0f);
     masterGroup->setVolume(masterVolume);
   }
-  
-  // Get the master volume
+
+/*!
+  \brief
+    Gets the current master volume.
+*/
   float SheepAudio::GetMasterVolume()
   {
     return masterVolume;
   }
 
-  // Sets master pitch. Gets clamped between 0.0 and 1.0
+/*!
+  \brief
+    Sets the master pitch. Clamps it between 0 and 2.
+*/
   void SheepAudio::SetMasterPitch(float pitch)
   {
     masterPitch = Clamp(pitch, 0.0f, 2.0f);
     masterGroup->setPitch(masterPitch);
   }
 
-  // Gets the master pitch
+/*!
+  \brief
+    Gets the master pitch.
+*/
   float SheepAudio::GetMasterPitch()
   {
     return masterPitch;
   }
 
-  // Checks FMOD to see if it done loading. Returns true if done, false if not.
+/*!
+  \brief
+    This function checks to see if the FMOD system is done loading banks.
+*/
   bool SheepAudio::GetLoadState() const
   {
     for(auto it = banks.begin(); it != banks.end(); ++it)
@@ -235,7 +300,10 @@ namespace Framework
     return true;
   }
 
-  // Gets relevant data from FMOD and returns a void* to the data.
+/*!
+  \brief
+    This function grabs relevant debug data for the debug system.
+*/
   const void* SheepAudio::GetDebugData()
   {
     ErrorCheck(system->getCPUUsage(&debug->cpuLoad));
@@ -248,12 +316,31 @@ namespace Framework
     return (void*)debug;
   }
 
+  void SheepAudio::LuaPauseAll(bool paused)
+  {
+    AUDIO->PauseAll(paused);
+  }
+
 } // end namespace
 
+/*****************************************************************************/
+//        END NAMESPACE... ENTER STATIC FUNCTIONS
+/*****************************************************************************/
 
-// ============================ STATIC FUNCTIONS =========================== //
+/*!
+  \brief
+    Opens up the guid.txt file, parses through the file to find the location
+    of the .bank and .event files to load them.
 
-// Parses through the GUID and looks for bank files to load
+  \param system
+    Pointer to the FMOD system
+
+  \param file
+    Reference to the guid.txt file
+
+  \param bank
+    Reference to the vector of bank files. (All of the sound files)
+*/
 void ParseBanks(SOUND::System *system, std::ifstream &file, BankVector &bank)
 {
   // string for extraction
@@ -277,7 +364,6 @@ void ParseBanks(SOUND::System *system, std::ifstream &file, BankVector &bank)
       std::size_t endPos = str.length() - startPos;
 
       // loading the bank (substring)
-      Framework::TRACELOG->Log(Framework::TraceLevel::VERBOSE, "Loading %s", str.substr(startPos, endPos).append(".bank"));
       LoadBank(system, str.substr(startPos, endPos).append(".bank"), bank);
     }
   }
@@ -286,7 +372,20 @@ void ParseBanks(SOUND::System *system, std::ifstream &file, BankVector &bank)
   LoadBank(system, str = "Master Bank.strings.bank", bank);
 }
 
-// Parses through the GUID for events to load.
+/*!
+  \brief
+    Parses through the guid.txt file to find the event files to load later.
+
+  \param system
+    Pointer to the FMOD system
+
+  \param file
+    Reference to the guid.txt file
+
+  \param event
+    Reference to an unordered map of events that we will be loading the events
+    into.
+*/
 void ParseEvents(SOUND::System *system, std::ifstream &file, SoundMap &soundMap)
 {
   // string for extraction
@@ -306,13 +405,22 @@ void ParseEvents(SOUND::System *system, std::ifstream &file, SoundMap &soundMap)
       // finding the substrings end
       std::size_t endPos = str.length() - position;
 
-      Framework::TRACELOG->Log(Framework::TraceLevel::VERBOSE, "Loading %s", str.substr(position, endPos));
+      // loading the event (substring)
       LoadEvent(system, str.substr(position, endPos), soundMap);
     }
   }
 }
 
-// Parses through the content folder for .wav, .mp3, and .aif files to load.
+/*!
+  \brief
+    Parses through the audio directory for .wav and .mp3 files and loads them
+
+  \param system
+    Pointer to the FMOD system
+
+  \param soundMap
+    Map that contains all of the loaded sound objects
+*/
 void ParseFiles(FMOD::System* system, SoundMap& soundMap)
 {
   path p("content\\Audio\\");
@@ -347,7 +455,6 @@ void ParseFiles(FMOD::System* system, SoundMap& soundMap)
           std::size_t end = name.find_last_of(".") - start;
 
           // cut out the directories and the extension for putting into the map
-          Framework::TRACELOG->Log(Framework::TraceLevel::VERBOSE, "Loading %s", name.substr(start + 1,std::string::npos));
           soundMap[name.substr(start + 1,end - 1)] = new SoundFile(system, it->path().generic_string(), flag);
         }
       }
@@ -356,7 +463,19 @@ void ParseFiles(FMOD::System* system, SoundMap& soundMap)
   return;
 }
 
-// Loads the bank into FMOD and stores the pointer in a vector
+/*!
+  \brief
+    Loads the vector of bank files.
+
+  \param system
+    Pointer to the FMOD system
+
+  \param name
+    Name of the .bank file to load
+
+  \param bank
+    Reference to the vector of bank files. (Really just pointers...)
+*/
 void LoadBank(SOUND::System *system, std::string &name, BankVector &bank)
 {
   SOUND::Bank *newBank = NULL;
@@ -372,7 +491,19 @@ void LoadBank(SOUND::System *system, std::string &name, BankVector &bank)
   return;
 }
 
-// Creates an event and stores it in the sound map
+/*!
+  \brief
+    Loads an event into the EventMap
+
+  \param system
+    Pointer to the FMOD system.
+
+  \param name
+    Name of the event... this will also be the key to access the event.
+
+  \param events
+    Reference to the unordered map of events to load into.
+*/
 void LoadEvent(SOUND::System *system, std::string &name, SoundMap &sounds)
 {
   // create a new event...
@@ -387,5 +518,9 @@ void LoadEvent(SOUND::System *system, std::string &name, SoundMap &sounds)
   // and shove it into the map with the string name..
   sounds[newName] = newEvent;
 
+  // we can now access the event by "Folder/Event
+  // example... Music/TopGun... or with the EventString defines... MUSIC_TOPGUN
+
+  // then gtfo
   return;
 }

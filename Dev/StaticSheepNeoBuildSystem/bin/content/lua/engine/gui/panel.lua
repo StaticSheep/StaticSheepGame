@@ -109,13 +109,13 @@ function META:Think()
 end
 
 function META:_PreDraw()
-  if not parent then
+  if not self.parent then
     surface.SetCamState(self.camMode)
   end
 end
 
 function META:_PostDraw()
-  if not parent then
+  if not self.parent then
     surface.SetCamState(0)
   end
 end

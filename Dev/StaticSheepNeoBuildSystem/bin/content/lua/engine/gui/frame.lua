@@ -1,6 +1,15 @@
 local META = GetMeta("Frame")
 
 function META:Init()
+  self.border = 4
+end
+
+function META:SetBorder(b)
+  self.border = b
+end
+
+function META:GetBorder()
+  return self.border
 end
 
 function META:Think()
@@ -8,7 +17,7 @@ function META:Think()
 end
 
 function META:Paint()
-  local border = 4
+  local border = self.border
 
   local pos = self:DrawPos()
 

@@ -56,6 +56,9 @@ namespace Framework
       BIND_FUNCTION_TABLE(L, Draw::SetPosition, SetPos, surface);
       BIND_FUNCTION_TABLE(L, Draw::MeasureString, MeasureString, surface);
 
+      CREATE_TABLE(L, audio);
+      BIND_FUNCTION_TABLE(L, SheepAudio::LuaPauseAll, PauseAll, audio);
+
       BIND_FUNCTION_EX(L, InputManager::GetGamePad, GamePad);
 
       BIND_FUNCTION_EX(L, InputManager::KeyIsDown, KeyIsDown);

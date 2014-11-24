@@ -119,6 +119,7 @@ function PauseMenu:SetupHooks()
 end
 
 function PauseMenu:PauseSpace(paused)
+  audio.PauseAll(paused)
   gamespace.Get(self._space)._pointer:SetPaused(paused)
 end
 
