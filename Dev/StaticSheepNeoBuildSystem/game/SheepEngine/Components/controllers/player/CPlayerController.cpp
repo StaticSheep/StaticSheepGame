@@ -229,6 +229,9 @@ namespace Framework
 
     SetAnimations();
 
+    if (ps->GetTranslation().x > 1000 || ps->GetTranslation().x < -1000 || ps->GetTranslation().y > 500 || ps->GetTranslation().y < -500)
+      PlayerDeath(se, ps);
+
     isSnapped = false;
 	}
 
@@ -291,7 +294,7 @@ namespace Framework
         snappedNormal.x != OOBc->GetCollisionNormals(manifold).x && snappedNormal.y != OOBc->GetCollisionNormals(manifold).y)
       {
         nextSnappedNormal = OOBc->GetCollisionNormals(manifold);
-        nextSnappedNormal.Rotate(PI / 2);
+        nextSnappedNormal.Rotate((float)PI / 2);
         dotNormals = snappedNormal.DotProduct(nextSnappedNormal);
         if (dotNormals > 0)
           bc->AddToVelocity((nextSnappedNormal * 10));
@@ -351,7 +354,7 @@ namespace Framework
     if (!isSnapped)
     {
       BoxCollider *bc = space->GetHandles().GetAs<BoxCollider>(playerCollider);
-      bc->AddToVelocity(-aimDir * (weapon->knockback));
+      bc->AddToVelocity(-aimDir * (float)(weapon->knockback));
     }
 	}
 

@@ -265,6 +265,11 @@ GameObject
     timeLimit float 6.000000
     numOfPlayers int 4
   }
+  LuaComponent
+  {
+    name std::string "PauseMenu"
+    loadCommand std::string "return function(self) self.opened = false end"
+  }
 }
 GameObject
 {

@@ -11,7 +11,7 @@ namespace Framework
 {
   Automatic::Automatic()
   {
-    delay = 5;
+    delay = 0.075f;
     damage = 10;
     knockback = 50;
     semi = false;
@@ -39,7 +39,7 @@ namespace Framework
     
     //set the cone of 5 degrees for firing.
     float FireAngle = -5.0f + (randomNumber/100.0f) * 10.0f;
-    AimDir = Mat3D((FireAngle * PI) / 180) * AimDir;
+    AimDir = Mat3D((FireAngle * (float)PI) / 180) * AimDir;
 
     bulletC->AddToVelocity(AimDir * 1000);
 

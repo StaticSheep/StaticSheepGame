@@ -29,7 +29,7 @@ namespace Framework
 		int playerNum; //the player number, i.e. 1, 2, 3, 4
     int health; //players health
 		bool hasFired, isSnapped, hasRespawned, blink; //has fired is a flag to prevent fully auto fire, is snapped is a bool to see if the player is snapped to something
-    int shotDelay;
+    float shotDelay;
     float respawnTimer;
     AnimationController animCont;
     Weapon *weapon;
