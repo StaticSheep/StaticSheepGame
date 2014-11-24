@@ -26,22 +26,38 @@ enum FadeOut
   BEES
 };
 
+// Holds all data for how to play a particular sound.
 struct SoundInstance
 {
   int type;
+
+  // Once, Looped
   PlayMode mode;
+
   float volume;
   float pitch;
+
+  // Untested, do not use yet
   float* parameters = nullptr;
+
+  // Used with parameters, does nothing now
   int size = 0;
+
+  // The FMOD channel this instance is playing in. Do not set.
   int channel;
+
+  // If the sound is currently active
   bool active;
   
-  void SetParameters(int size, ...); // variadic function ftw
+  // Not implemented. Do not use.
+  void SetParameters(int size, ...);
   
   union
   {
+    // For events from banks.
     SOUND::EventInstance* eventInstance;
+
+    // For objects from sound files.
     FMOD::Sound* soundInstance;
   };
   
@@ -70,6 +86,7 @@ private:
   
 };
 
+// Sound event for playing events from FMOD Studio. High level API
 class SoundEvent : public Sound
 {
 public:
@@ -92,13 +109,12 @@ private:
   SoundEvent(const SoundEvent&);
   SoundEvent& operator=(const SoundEvent&);
 
-  // private methods for playing things
   bool _PlayOnce(SoundInstance*);
   bool _PlayLoop(SoundInstance*);
-  bool _PlayStream(SoundInstance*);
   
   // description of the event from the bank files
   SOUND::EventDescription* description;
+
   // the id of the event
   SOUND::ID id;
 
@@ -107,11 +123,14 @@ private:
 
 };
 
+// Sound object for playing sounds from files. Low level FMOD API
 class SoundFile : public Sound
 {
 public:
   
   SoundFile(FMOD::System* system, const std::string& name, bool stream);
+
+  // Plays the sound with the low level API
   bool Play(SoundInstance* instance);
   std::string GetName(){return name;};
   
@@ -124,12 +143,12 @@ private:
   
   bool _PlayOnce(SoundInstance*);
   bool _PlayLoop(SoundInstance*);
-  bool _PlayStream(SoundInstance*);
 
   FMOD::Sound* sound;
   std::string name;
   FMOD::Channel* channel;
   
+  // The pointer to the low level FMOD system
   static FMOD::System* _system;
   
 };

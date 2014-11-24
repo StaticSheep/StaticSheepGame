@@ -1,10 +1,10 @@
-/******************************************************************************
+/*****************************************************************
 Filename: SheepFMOD.h
 Project: 
 Author(s): Zakary Wilson
 
 All content © 2014 DigiPen (USA) Corporation, all rights reserved.
-******************************************************************************/
+*****************************************************************/
 
 #ifndef SHEEP_FMOD_H
 #define SHEEP_FMOD_H
@@ -17,6 +17,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 namespace SOUND = FMOD::Studio;
 
+// Checks for FMOD errors
 bool ErrorCheck(FMOD_RESULT result);
 
 // callback function for sound files

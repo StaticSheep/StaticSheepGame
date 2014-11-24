@@ -1,10 +1,10 @@
-/******************************************************************************
+/*****************************************************************
 Filename: SheepSoundEvent.cpp
 Project: 
 Author(s): Zakary Wilson
 
 All content © 2014 DigiPen (USA) Corporation, all rights reserved.
-******************************************************************************/
+*****************************************************************/
 
 #include "pch/precompiled.h"
 #include "SheepSoundEvent.h"
@@ -14,41 +14,30 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 // initialize static pointer for SoundFile class
 FMOD::System* SoundFile::_system = 0;
 
-/*!
-  \brief
-    FMOD error check.
-  
-  \param result
-    Checks the result of the FMOD function to see if it was an error or not.
+static int lastErr;
 
-*/
+// If the result of an FMOD function was not OK, TraceLog it
 bool ErrorCheck(FMOD_RESULT result)
 {
   if (result != FMOD_OK)
   {
-    // need to replace with exception handling from the engine
-    printf("FMOD error! (%d)  %s\n", result, FMOD_ErrorString(result));
-    return 1;
+    // prevents spamming the same error every frame, not useful to see that
+    if(lastErr == result)
+      return true;
+
+    lastErr = result;
+
+    Framework::TRACELOG->Log(Framework::TraceLevel::ERR, "FMOD error! (%d)  %s", result, FMOD_ErrorString(result));
+    return true;
   }
   else
-    return 0;
+    return false;
 
 }
 
 namespace SoundUtility
 {
-
-/*!
-  \brief
-    Utility function to figure out where to look for sound files.
-  
-  \param file
-    Name of the file
-
-  \param type
-    Type of file, which is an enum. 
-
-*/
+  // helper function to get the sourcepath of the content directory
   std::string SourcePath(const std::string file, SourceType type)
   {
     switch(type)
@@ -60,19 +49,9 @@ namespace SoundUtility
     }
     return "";
   }
-}// end namespace
+}
 
-
-/*!
-  \brief
-    Constructor for the SoundEvent class
-  
-  \param system
-    Pointer to the FMOD System
-
-  \param name
-    Name of the sound file
-*/
+// Constructs a sound event, throws errors in the tracelog if something bad happens
 SoundEvent::SoundEvent(SOUND::System *system, std::string &name)
 {
   // get the ID and check it
@@ -82,13 +61,7 @@ SoundEvent::SoundEvent(SOUND::System *system, std::string &name)
   ErrorCheck(system->getEvent(name.c_str(), &description) );
 }
 
-/*!
-  \brief
-    Public method for playing a sound event
-  
-  \param mode
-    How the sound should be played. Once, looped, or streamed
-*/
+// Creates an instance of a sound, plays it, and stores the pointer in instance
 bool SoundEvent::Play(SoundInstance* instance)
 {
   int mode = instance->mode;
@@ -101,20 +74,16 @@ bool SoundEvent::Play(SoundInstance* instance)
 
   case PLAY_LOOP : return _PlayLoop(instance);
 
-  case PLAY_STREAM : return _PlayStream(instance);
-
   default : return _PlayOnce(instance);
   }
 }
 
-/*!
-  \brief
-    Private method for playing the sound only once
-*/
+// Tells a sound to play once, and releases it. Use for short SFX
 bool SoundEvent::_PlayOnce(SoundInstance* instance)
 {
   int check = 0;
   int paramSize;
+
   // create the sound event
   check +=    ErrorCheck( description->createInstance(&instance->eventInstance) );
   check +=    ErrorCheck( instance->eventInstance->setPitch(instance->pitch));
@@ -144,11 +113,7 @@ bool SoundEvent::_PlayOnce(SoundInstance* instance)
   return true;
 }
 
-
-/*!
-  \brief
-    Private method for playing the sound in a loop
-*/
+// Creates a sound and tells it to loop. Use for Music. Keeps track of the instance*
 bool SoundEvent::_PlayLoop(SoundInstance* instance)
 {
   int check = 0;
@@ -181,47 +146,10 @@ bool SoundEvent::_PlayLoop(SoundInstance* instance)
   return true;
 }
 
-
-/*!
-  \brief
-    Private method for playing the sound in a stream
-*/
-bool SoundEvent::_PlayStream(SoundInstance* instance)
-{
-  int check = 0;
-  int paramSize;
-  // create the sound event
-  check +=    ErrorCheck( description->createInstance(&instance->eventInstance) );
-  check +=    ErrorCheck( instance->eventInstance->setPitch(instance->pitch));
-  check +=    ErrorCheck( instance->eventInstance->setVolume(instance->volume));
-
-  check +=    ErrorCheck(instance->eventInstance->getParameterCount(&paramSize));
-
-  if(paramSize)
-  {
-    for(int i = 0; i < paramSize; ++i)
-    {
-      if(i < instance->size)
-        check += ErrorCheck(instance->eventInstance->setParameterValueByIndex(i, instance->parameters[i]));
-      else
-        check += ErrorCheck(instance->eventInstance->setParameterValueByIndex(i, 0.0f));
-    }
-  }
-
-  // play it once...
-  check +=    ErrorCheck( instance->eventInstance->start() );
-
-  if(check)
-    return false;
-  return true;
-}
-
-/*!
-  \brief
-    Non-default constructor for creating and loading from a soundfile
-*/
+// Creates a sound object from a sound file.
 SoundFile::SoundFile(FMOD::System* system, const std::string& name, bool stream)
 {
+  // if the file is too big, load it as streaming
   if(stream)
     ErrorCheck(system->createStream(name.c_str(), FMOD_CREATESTREAM, 0, &sound));
   else
@@ -231,10 +159,7 @@ SoundFile::SoundFile(FMOD::System* system, const std::string& name, bool stream)
     _system = system;
 }
   
-/*!
-  \brief
-    Playing from a soundfile.
-*/
+// Plays the sound object with the low level API
 bool SoundFile::Play(SoundInstance* instance)
 {
   int mode = instance->mode;
@@ -247,17 +172,11 @@ bool SoundFile::Play(SoundInstance* instance)
 
   case PLAY_LOOP : return _PlayLoop(instance);
 
-  case PLAY_STREAM : return _PlayStream(instance);
-
   default : return _PlayOnce(instance);
   }
-  return true;
 }
 
-/*!
-  \brief
-    Private method for playing a file once.
-*/
+// Plays the sound once, and sets a callback for clean up
 bool SoundFile::_PlayOnce(SoundInstance* instance)
 {
   // play once and set all of the settings
@@ -277,10 +196,7 @@ bool SoundFile::_PlayOnce(SoundInstance* instance)
   return true;
 }
 
-/*!
-  \brief
-    Private method for playing a file looping.
-*/
+// Plays the sound in looping mode. Will not stop unless explicitely told to.
 bool SoundFile::_PlayLoop(SoundInstance* instance)
 {
   ErrorCheck(_system->playSound(sound, 0, true, &channel));
@@ -296,20 +212,8 @@ bool SoundFile::_PlayLoop(SoundInstance* instance)
 
   return true;
 }
-
-/*!
-  \brief
-    Private method for playing a file streaming, not really needed.
-*/
-bool SoundFile::_PlayStream(SoundInstance* instance)
-{
-  return true;
-}
   
-/*!
-  \brief
-    Callback function for FMOD sound events. .wav and .mp3
-*/
+// Callback function specifically for sound objects. Low level api.
 FMOD_RESULT F_CALLBACK mycallback(FMOD_CHANNELCONTROL *chanControl, FMOD_CHANNELCONTROL_TYPE controlType, FMOD_CHANNELCONTROL_CALLBACK_TYPE callbackType, void *commandData1, void *commandData2)
 {
   // if the event is that the sound just ended
@@ -318,24 +222,14 @@ FMOD_RESULT F_CALLBACK mycallback(FMOD_CHANNELCONTROL *chanControl, FMOD_CHANNEL
     // grab the channel
     FMOD::Channel *channel = (FMOD::Channel *)chanControl;
 
-    SoundInstance* instance;
-
-    // try and grab any instance data if it was given
-    /*if(ErrorCheck(channel->getUserData((void**)&instance)) == FMOD_OK)
-    {
-      instance->active = false;
-    }*/
-
+    // tell FMOD the channel is free to use
     ErrorCheck(channel->stop());
 
   }
   return FMOD_OK;
 }
 
-/*!
-  \brief
-    Callback function for FMOD studio events.
-*/
+// Callback function specifically for sound events. FMOD Studio
 FMOD_RESULT F_CALLBACK mycallback(FMOD_STUDIO_EVENT_CALLBACK_TYPE type, FMOD_STUDIO_EVENTINSTANCE *event, void *parameters)
 {
     FMOD::Studio::EventInstance *instance = (FMOD::Studio::EventInstance*)event;
@@ -350,8 +244,6 @@ FMOD_RESULT F_CALLBACK mycallback(FMOD_STUDIO_EVENT_CALLBACK_TYPE type, FMOD_STU
       {
         instance->setParameterValueByIndex(i, 1.0f);
       }
-
-      //instance->start();
     }
     else if (type == FMOD_STUDIO_EVENT_CALLBACK_CREATE_PROGRAMMER_SOUND
         || type == FMOD_STUDIO_EVENT_CALLBACK_DESTROY_PROGRAMMER_SOUND)

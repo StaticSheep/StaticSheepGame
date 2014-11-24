@@ -1,10 +1,10 @@
-/******************************************************************************
+/*****************************************************************
 Filename: SoundEmitter.h
 Project: 
 Author(s): Zakary Wilson
 
 All content © 2014 DigiPen (USA) Corporation, all rights reserved.
-******************************************************************************/
+*****************************************************************/
 
 #pragma once
 #include "systems/audio/SheepAudio.h"
@@ -13,7 +13,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 namespace Framework
 {
   
-  // plays only one type of sound... one off sounds
+  // Used for playing short SFX. Does not keep track of sounds it plays
   class SoundEmitter : public GameComponent
   {
   public:
@@ -22,6 +22,7 @@ namespace Framework
 
     void Initialize();
     
+    // Plays the requested sound with the parameters in instance. instance is defaulted if not provided.
     void Play(std::string name, SoundInstance* instance = &SoundInstance());
     
     void SetPitch(float pitch);

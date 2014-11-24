@@ -53,13 +53,13 @@ namespace Framework
 
 	SheepAudio::~SheepAudio()
 	{
-		// Release the FMOD system
+		TRACELOG->Log(TraceLevel::INFO,"Releasing FMOD Studio");
     system->release();
 	}
 
   void SheepAudio::Shutdown()
   {
-    // kill all sound objects
+    TRACELOG->Log(TraceLevel::INFO,"Releasing all Sounds");
     for(auto it = soundMap.begin(); it != soundMap.end(); ++it)
     {
       delete it->second;
@@ -71,21 +71,27 @@ namespace Framework
 
 	void SheepAudio::Initialize()
 	{
-    // create the sound system
+    TRACELOG->Log(TraceLevel::INFO,"Creating FMOD Studio System");
     ErrorCheck(SOUND::System::create(&system));
 
-    // initialize the sound system, with 512 channels... NEVER RUN OUT
+    TRACELOG->Log(TraceLevel::VERBOSE, "Initializing FMOD Studio System");
     ErrorCheck(system->initialize(256, FMOD_STUDIO_INIT_NORMAL, 
                       FMOD_INIT_NORMAL, 0));
+
+    TRACELOG->Log(TraceLevel::VERBOSE, "Getting FMOD Low Level System");
     ErrorCheck(system->getLowLevelSystem(&lowLevelSystem));
 
     int driver;
 
+    TRACELOG->Log(TraceLevel::INFO, "Checking Current Sound Drivers");
     ErrorCheck(lowLevelSystem->getNumDrivers(&driver));
 
     // if there is no soundcard/driver, tell FMOD to not even bother
     if(driver == 0)
-     ErrorCheck(lowLevelSystem->setOutput(FMOD_OUTPUTTYPE_NOSOUND));
+    {
+      TRACELOG->Log(TraceLevel::WARNING, "No Soundcard/Driver found");
+      ErrorCheck(lowLevelSystem->setOutput(FMOD_OUTPUTTYPE_NOSOUND));
+    }
 
     // open the GUID file
     std::ifstream infile(SoundUtility::SourcePath(GUID, SoundUtility::TYPE_GUIDs).c_str());
@@ -95,13 +101,16 @@ namespace Framework
      throw std::invalid_argument("Invalid File"); // replace with event handling system
 
     // parse through the GUID file and load the banks and events
+    TRACELOG->Log(TraceLevel::VERBOSE, "Parsing Bank Files");
     ParseBanks(system, infile, banks);
+
+    TRACELOG->Log(TraceLevel::VERBOSE, "Parsing Sound Events");
     ParseEvents(system, infile, soundMap);
 
-    // parse through the content directory and load sound files
+    TRACELOG->Log(TraceLevel::VERBOSE, "Parsing Sound Files");
     ParseFiles(lowLevelSystem, soundMap);;
 
-    // grab the master channel group for pausing, stopping, and altering volume
+    TRACELOG->Log(TraceLevel::VERBOSE, "Getting Master Channel Group");
     ErrorCheck(lowLevelSystem->getMasterChannelGroup(&masterGroup));
 
     // create a dsp, and add it to the masterGroup for debug information right now
@@ -268,6 +277,7 @@ void ParseBanks(SOUND::System *system, std::ifstream &file, BankVector &bank)
       std::size_t endPos = str.length() - startPos;
 
       // loading the bank (substring)
+      Framework::TRACELOG->Log(Framework::TraceLevel::VERBOSE, "Loading %s", str.substr(startPos, endPos).append(".bank"));
       LoadBank(system, str.substr(startPos, endPos).append(".bank"), bank);
     }
   }
@@ -296,7 +306,7 @@ void ParseEvents(SOUND::System *system, std::ifstream &file, SoundMap &soundMap)
       // finding the substrings end
       std::size_t endPos = str.length() - position;
 
-      // loading the event (substring)
+      Framework::TRACELOG->Log(Framework::TraceLevel::VERBOSE, "Loading %s", str.substr(position, endPos));
       LoadEvent(system, str.substr(position, endPos), soundMap);
     }
   }
@@ -337,6 +347,7 @@ void ParseFiles(FMOD::System* system, SoundMap& soundMap)
           std::size_t end = name.find_last_of(".") - start;
 
           // cut out the directories and the extension for putting into the map
+          Framework::TRACELOG->Log(Framework::TraceLevel::VERBOSE, "Loading %s", name.substr(start + 1,std::string::npos));
           soundMap[name.substr(start + 1,end - 1)] = new SoundFile(system, it->path().generic_string(), flag);
         }
       }

@@ -1,10 +1,10 @@
-/******************************************************************************
+/*****************************************************************
 Filename: SoundPlayer.cpp
 Project: 
 Author(s): Zakary Wilson
 
 All content © 2014 DigiPen (USA) Corporation, all rights reserved.
-******************************************************************************/
+*****************************************************************/
 
 #include "pch/precompiled.h"
 #include "CSoundPlayer.h"
@@ -13,12 +13,6 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 namespace Framework
 {
 
-/*****************************************************************************/
-/*!
-  \brief
-    Default constructor for the SoundPlayer component
-*/
-/*****************************************************************************/
   SoundPlayer::SoundPlayer()
   {
     // connect to the FMOD system
@@ -27,12 +21,6 @@ namespace Framework
     _pitch = 1.0f;
   }
 
-/*****************************************************************************/
-/*!
-  \brief
-    Destructor. If any sounds are active, stop them now.
-*/
-/*****************************************************************************/
   SoundPlayer::~SoundPlayer()
   {
     // iterate through all of the instances
@@ -47,20 +35,7 @@ namespace Framework
     }
   }
   
-/*****************************************************************************/
-/*!
-  \brief
-    Plays an event! Creates an instance that the SoundPlayer keeps track of
-    so that the sound can be stopped or paused later. 
-
-  \param name
-    Name of the event to play
-
-  \param mode
-    How to play the sound. PLAY_ONCE or PLAY_LOOP (PLAY_STREAM is pretty much
-    PLAY_LOOP in disguise...)
-*/
-/*****************************************************************************/
+  // Plays the requested sound with the parameters in instance. instance is defaulted if not provided
   void SoundPlayer::Play(const std::string &name, SoundInstance* instance)
   {
     // if the instance exists, and is active
@@ -75,18 +50,7 @@ namespace Framework
     _soundSystem->Play(name, &instanceList[name]);
   }
   
-/*****************************************************************************/
-/*!
-  \brief
-    Stops an instance of an event that is playing.
-
-  \param name
-    Name of the event to stop
-
-  \param mode
-    How to stop the instance. Immedate or faded
-*/
-/*****************************************************************************/
+  // Stops a specific instance. FadeOut currently does nothing.
   void SoundPlayer::Stop(std::string name, FadeOut mode)
   {
     // if the instance exists
@@ -99,18 +63,7 @@ namespace Framework
     }
   }
 
-/*****************************************************************************/
-/*!
-  \brief
-    Pauses an event, so it can be picked back up and played again.
-
-  \param name
-    Name of the event to pause
-
-  \param flag
-    True means it will pause, false means it will unpause
-*/
-/*****************************************************************************/  
+  // Pauses a specific instance. Pause = true, Unpause = false
   void SoundPlayer::Pause(std::string name, bool flag)
   {
     // make sure the instance exists first
@@ -118,16 +71,6 @@ namespace Framework
       _soundSystem->Pause(&instanceList[name], flag);
   }
   
-/*****************************************************************************/
-/*!
-  \brief
-    Sets the pitch of the player. Currently does now update the currently
-    playing instances.
-
-  \param pitch
-    What to reset the pitch to
-*/
-/*****************************************************************************/
   void SoundPlayer::SetPitch(float pitch)
   {
     _pitch = pitch;
