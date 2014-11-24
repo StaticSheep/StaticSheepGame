@@ -324,7 +324,10 @@ namespace Framework
       {
         lua_getglobal(L, module.c_str()); // Stack 2
 
-        lua_getfield(L, 2, function.c_str()); // Stack 3
+        //if (module == "gamespace" && function == "PauseGameSpace")
+        //  StackDump(L);
+
+        lua_getfield(L, -1, function.c_str()); // Stack 3
 
 
         for (size_t i = 0; i < argCount; ++i)

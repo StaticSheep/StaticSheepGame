@@ -115,7 +115,7 @@ end
 
 function PauseMenu:SetupHooks()
   hook.Add("FrameUpdate", self, self.FrameUpdate)
-  hook.Add("LogicUpdate", self, self.LogicUpdate)
+  hook.Add("LogicUpdate", self, self.LogicUpdate, self.CanUpdate)
 end
 
 function PauseMenu:PauseSpace(paused)

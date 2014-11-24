@@ -142,6 +142,8 @@ function draw.RoundedBoxEx( bordersize, x, y, w, h, color, a, b, c, d )
   h = math.Round( h )
 
   surface.SetColor( color.r, color.g, color.b, color.a )
+
+  surface.SetRotation(0)
   
   -- Draw as much of the rect as we can without textures
   surface.DrawRect( x+bordersize, y, w-bordersize*2, h )

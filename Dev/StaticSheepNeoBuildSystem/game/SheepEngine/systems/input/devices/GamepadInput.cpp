@@ -131,7 +131,7 @@ namespace Framework
 
   bool GamePadInput::ButtonDown(int a_iButton)
   {
-    return bGamepad_ButtonsDown[a_iButton];
+    return State.Gamepad.wButtons & XINPUT_Buttons[a_iButton];
   }
 
   void GamePadInput::Rumble(float a_fLeftMotor, float a_fRightMotor)

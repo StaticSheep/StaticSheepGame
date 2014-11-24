@@ -19,12 +19,11 @@ using namespace DirectX;
 namespace DirectSheep
 {
 
-  /*****************************************************************************/
+  
   /*!
       \brief
       Allocates Graphics Engine
   */
-  /*****************************************************************************/
   RenderContext * RenderContext::Allocate(void)
   {
     // Get an alligned malloc to keep directx matrices aligned
@@ -33,12 +32,11 @@ namespace DirectSheep
     return rc;
   }
 
-  /*****************************************************************************/
+  
   /*!
       \brief
       Constructor for RenderContext
   */
-  /*****************************************************************************/
   RenderContext::RenderContext(void) :
     m_initialized(false),                // Is not initialized yet
     m_hwnd(NULL),                        // Handle to game window
@@ -58,33 +56,30 @@ namespace DirectSheep
     m_rastState[1] = NULL;
   }
 
-  /*****************************************************************************/
+  
   /*!
       \brief
       Destructor for RenderContext
   */
-  /*****************************************************************************/
   RenderContext::~RenderContext(void)
   {
   }
 
-  /*****************************************************************************/
+  
   /*!
       \brief
       Returns true if renderContext has been initialized
   */
-  /*****************************************************************************/
   bool RenderContext::IsInitialized(void) const
   {
     return m_initialized;
   }
 
-  /*****************************************************************************/
+  
   /*!
       \brief
       Initializes RenderContext and DirectX device
   */
-  /*****************************************************************************/
   bool RenderContext::Initialize(HWND hwnd, float width, float height)
   {
     // Start viewport at window dimensions
@@ -136,12 +131,11 @@ namespace DirectSheep
     return true;
   }
 
-  /*****************************************************************************/
+  
   /*!
       \brief
       Uninitialized RenderContext and clean up memory
   */
-  /*****************************************************************************/
   void RenderContext::Uninitialize(RenderContext * rCon)
   {
     Handle toRelease(VERTEX_SHADER, 0);
@@ -176,6 +170,11 @@ namespace DirectSheep
       SafeRelease(it.second);
     }
 
+    delete m_Ortho.ptr;
+    delete m_orthoScreen.ptr;
+    delete m_Perspective.ptr;
+    delete m_editor.ptr;
+
     rCon->~RenderContext();
     _aligned_free(rCon);
   }
@@ -184,68 +183,62 @@ namespace DirectSheep
     //                    SETTER FUNCTIONS                     //
     /////////////////////////////////////////////////////////////
     
-  /*****************************************************************************/
+  
   /*!
       \brief
       Sets clear color for backbuffer
   */
-  /*****************************************************************************/
     void RenderContext::SetClearColor(const float r, const float g, const float b, const float a)
     {
       m_clearColor = Color(r, g, b, a);
     }
 
-  /*****************************************************************************/
+  
   /*!
       \brief
       Set's target window (currently not used as game is one window)
   */
-  /*****************************************************************************/
     void RenderContext::SetTargetWindow(const HWND& hwnd)
     {
       m_hwnd = hwnd;
     }
 
-  /*****************************************************************************/
+  
   /*!
       \brief
       Toggles fullscreen (can also press alt + Enter)
   */
-  /*****************************************************************************/
     void RenderContext::SetFullscreen(const bool fullscreen)
     {
       m_fullscreen = fullscreen;
       m_swapChain->SetFullscreenState(fullscreen, 0);
     }
 
-  /*****************************************************************************/
+  
   /*!
       \brief
       Update what type of draw primitive DirectX uses
   */
-  /*****************************************************************************/
     void RenderContext::SetPrimitiveTopology(const PrimitiveTopology primitiveTopology)
     {
       m_primative = primitiveTopology;
     }
 
-  /*****************************************************************************/
+  
   /*!
       \brief
       Set Blend Mode I.E alpha, additive
   */
-  /*****************************************************************************/
     void RenderContext::SetBlendMode(const BlendMode blendMode)
     {
       m_deviceContext->OMSetBlendState(m_blendStateMap[blendMode],0, 0xffffffff);
     }
 
-  /*****************************************************************************/
+  
   /*!
       \brief
       Set DirectX viewport
   */
-  /*****************************************************************************/
     void RenderContext::SetViewport(int xOffset, int yOffset, Dimension dim)
     {
         // Init viewport
@@ -263,12 +256,12 @@ namespace DirectSheep
       m_deviceContext->RSSetViewports(1, &viewport);
     }
 
-  /*****************************************************************************/
+  
   /*!
       \brief
       Set DirectX vieport using Viewport class
   */
-  /*****************************************************************************/
+  
     void RenderContext::SetViewport(const Viewport& viewport)
     {
       D3D11_VIEWPORT tempVP;
@@ -285,24 +278,24 @@ namespace DirectSheep
       m_deviceContext->RSSetViewports(1, &tempVP);
     }
 
-  /*****************************************************************************/
+  
   /*!
       \brief
       Toggles VSync
   */
-  /*****************************************************************************/
+  
     void RenderContext::SetVSync(bool vsync)
     {
       m_vsync = vsync;
     }
 
 
-  /*****************************************************************************/
+  
   /*!
       \brief
       Sets position for next Draw Call
   */
-  /*****************************************************************************/
+  
    void RenderContext::SetPosition(const float x, const float y, float z)
    {
      m_spriteTrans.x = x;
@@ -310,46 +303,46 @@ namespace DirectSheep
      m_spriteTrans.z = z;
    }
 
-  /*****************************************************************************/
+  
   /*!
       \brief
       Sets orientation for next Draw Call
   */
-  /*****************************************************************************/
+  
    void RenderContext::SetRotation(const float theta)
    {
      m_spriteTrans.theta = theta;
    }
 
-  /*****************************************************************************/
+  
   /*!
       \brief
       Sets scale for next Draw Call
   */
-  /*****************************************************************************/
+  
    void RenderContext::SetDimensions(const float w, const float h)
    {
      m_spriteTrans.w = w;
      m_spriteTrans.h = h;
    }
 
-  /*****************************************************************************/
+  
   /*!
       \brief
       Sets blend color for next draw call
   */
-  /*****************************************************************************/
+  
    void RenderContext::SetBlendCol(const float r, const float g, const float b, const float a)
    {
      m_spriteBlend = Vec4(r,g,b,a);
    }
 
-  /*****************************************************************************/
+  
   /*!
       \brief
       Sets uv scope for next draw call (used in animator)
   */
-  /*****************************************************************************/
+  
    void RenderContext::SetUV(float x1, float y1, float x2, float y2)
    {
      m_spriteTrans.uvBegin = Vec2(x1, y1);
@@ -359,92 +352,87 @@ namespace DirectSheep
     //                    GETTER FUNCTIONS                     //
     /////////////////////////////////////////////////////////////
 
-  /*****************************************************************************/
+  
   /*!
       \brief
       Getter for fullscreen state
   */
-  /*****************************************************************************/
+  
     bool RenderContext::GetFullscreen(void) const
     {
       return m_fullscreen;
     }
 
-  /*****************************************************************************/
+  
   /*!
       \brief
       Get DirectX device (used by AntTweak)
   */
-  /*****************************************************************************/
     void* RenderContext::ExternalGetDevice(void) const
     {
       return m_device;
     }
 
-  /*****************************************************************************/
+  
   /*!
       \brief
       Get Device within engine
   */
-  /*****************************************************************************/
     ID3D11Device* RenderContext::GetDevice(void) const
     {
       return m_device;
     }
 
-  /*****************************************************************************/
+  
   /*!
       \brief
       Get device Context within engine
   */
-  /*****************************************************************************/
     ID3D11DeviceContext* RenderContext::GetDeviceContext(void) const
     {
       return m_deviceContext;
     }
 
-  /*****************************************************************************/
+  
   /*!
       \brief
       Get current viewport being used
   */
-  /*****************************************************************************/
     const Viewport& RenderContext::GetViewport(void) const
     {
       return m_viewport;
     }
 
-  /*****************************************************************************/
+  
   /*!
       \brief
       Get dimensions of Texture by Handle
   */
-  /*****************************************************************************/
     const Dimension RenderContext::GetTextureSize(const Handle& texHandle) const
     {
       return Dimension(m_textureRes[texHandle.index].getWidth(), m_textureRes[texHandle.index].getHeight());
     }
+
+
     /////////////////////////////////////////////////////////////
     //                    UTILITY FUNCTIONS                    //
     /////////////////////////////////////////////////////////////
 
-  /*****************************************************************************/
+  
   /*!
       \brief
       Clear back buffer for next frame
   */
-  /*****************************************************************************/
     void RenderContext::ClearBackBuffer(void)
     {
       m_deviceContext->ClearRenderTargetView(m_backBuffer, (float*)&Vec4(m_clearColor.R(), m_clearColor.G(), m_clearColor.B(), 1.0f));
     }
 
-  /*****************************************************************************/
+  
   /*!
       \brief
       Clear depth buffer for next Frame
   */
-  /*****************************************************************************/
     void RenderContext::ClearDepthBuffer(void)
     {
       m_deviceContext->ClearDepthStencilView(m_depthBuffer.m_depthBuffer, D3D11_CLEAR_DEPTH, 1.0f, 0);
@@ -454,12 +442,11 @@ namespace DirectSheep
     //                 PUBLIC RELEASE FUCNTION                 //
     /////////////////////////////////////////////////////////////
 
-  /*****************************************************************************/
+  
   /*!
       \brief
       Release handles of different types
   */
-  /*****************************************************************************/
     void RenderContext::Release(const Handle &handle)
     {
       switch (handle.type)

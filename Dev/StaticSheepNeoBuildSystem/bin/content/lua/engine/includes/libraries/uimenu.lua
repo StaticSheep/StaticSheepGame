@@ -18,7 +18,7 @@ function uimenu.Create(vStep, hStep, gamepads)
   newMenu.gamepads = gamepads or {}
   newMenu.padMoveCD = {0,0,0,0}
   newMenu.padClickCD = {0,0,0,0}
-  newMenu.inputCD = 100
+  newMenu.inputCD = 200
   newMenu.active = true
 
   table.Merge(newMenu, uimenu.meta)
@@ -144,6 +144,9 @@ function uimenu.meta:ClickCooldown(padnum)
   self.padClickCD[padnum] = CurTime() + self.inputCD
 end
 
+
+local stickThreshold = 0.5
+
 function uimenu.meta:Update()
 
   local clicked = false
@@ -163,15 +166,15 @@ function uimenu.meta:Update()
       if not gamePad:InDeadzone(false) then
         stick = gamePad:LeftStick()
 
-        if stick.y > 0.7 then
+        if stick.y > stickThreshold then
           vMove = -1
-        elseif stick.y < -0.7 then
+        elseif stick.y < -stickThreshold then
           vMove = 1
         end
 
-        if stick.x > 0.7 then
+        if stick.x > stickThreshold then
           hMove = -1
-        elseif stick.x < -0.7 then
+        elseif stick.x < -stickThreshold then
           hMove = 1
         end
 
