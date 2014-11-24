@@ -1,4 +1,10 @@
+/*****************************************************************
+Filename: MouseInput.cpp
+Project: 
+Author(s): Zakary Wilson
 
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+*****************************************************************/
 
 #include "pch/precompiled.h"
 #include "engine/window/Window32.h"
@@ -11,34 +17,14 @@
 namespace Framework
 {
 
-/*****************************************************************************/
-/*!
-  \brief
-    Default constructor for mouseinput
-*/
-/*****************************************************************************/
   MouseInput::MouseInput()
   {
-
   }
 
-/*****************************************************************************/
-/*!
-  \brief
-    Default destructor for mouseinput
-*/
-/*****************************************************************************/
   MouseInput::~MouseInput()
   {
-
   }
 
-/*****************************************************************************/
-/*!
-  \brief
-    Initialize function. Set all of the buttons to 0. (not pressed)
-*/
-/*****************************************************************************/
   void MouseInput::Initialize()
   {
     // only doing left, right, and middle buttons
@@ -48,16 +34,7 @@ namespace Framework
     }
   }
 
-/*****************************************************************************/
-/*!
-  \brief
-    Gets passed a msg from peekmessage, and if it is a mouse message, it 
-    filters out which one and updates the mouse accordingly.
-
-  \param msg
-    Pointer the MSG struct that contains the data for the message.
-*/
-/*****************************************************************************/
+  // Updates the mouse states from winproc
   void MouseInput::GetMsg(void* pmsg)
   {
     MSG* msg = (MSG*)pmsg;
@@ -97,12 +74,6 @@ namespace Framework
     }
   }
 
-/*****************************************************************************/
-/*!
-  \brief
-    Updates the mouse. Sets the previous state to the current state.
-*/
-/*****************************************************************************/
   void MouseInput::Update()
   {
     for(int i = 0; i < 3; ++i)
@@ -111,12 +82,8 @@ namespace Framework
     }
   }
 
-/*****************************************************************************/
-/*!
-  \brief
-    Checks to see if a specific button has been pressed.
-*/
-/*****************************************************************************/
+  /*---------- Button Press ----------*/
+
   bool MouseInput::ButtonPressed(unsigned int button) const
   {
     if(_previousState[button] == 0 && _currentState[button] == 1)
@@ -127,12 +94,8 @@ namespace Framework
       return false;
   }
 
-/*****************************************************************************/
-/*!
-  \brief
-    Checks to see if a specific button is down.
-*/
-/*****************************************************************************/
+  /*---------- Button Down ----------*/
+
   bool MouseInput::ButtonDown(unsigned int button) const
   {
     if(_previousState[button] == 1 && _currentState[button] == 1)
@@ -141,12 +104,8 @@ namespace Framework
       return false;
   }
 
-/*****************************************************************************/
-/*!
-  \brief
-    Checks to see if a specific button has been released this frame.
-*/
-/*****************************************************************************/
+  /*---------- Button Released ----------*/
+
   bool MouseInput::ButtonReleased(unsigned int button) const
   {
     if(_previousState[button] == 1 && _currentState[button] == 0)
@@ -155,50 +114,22 @@ namespace Framework
       return false;
   }
 
-/*****************************************************************************/
-/*!
-  \brief
-    Gets the current world position of the mouse.
-*/
-/*****************************************************************************/
   Vec2 MouseInput::GetWorldPosition(void)
   {
     return _worldPosition;
   }
 
-/*****************************************************************************/
-/*!
-  \brief
-    Gets the current screen position of the mouse.
-*/
-/*****************************************************************************/
   Vec2 MouseInput::GetScreenPosition(void)
   {
     return _screenPosition;
   }
 
-/*****************************************************************************/
-/*!
-  \brief
-    Updates a specific button depending on whether it was pressed or released.
-*/
-/*****************************************************************************/
   void MouseInput::_UpdateButton(unsigned int button, bool state)
   {
     _previousState[button] = _currentState[button];
     _currentState[button] = state;
   }
 
-/*****************************************************************************/
-/*!
-  \brief
-    Anytime the mouse is moved in the window, it sets the screen position
-    of the mouse, then updates the world position of the mouse.
-
-  \param msg
-    Pointer to the message that contains positional data.
-*/
-/*****************************************************************************/
   void MouseInput::_UpdateMove(void* msg)
   {
     POINT window;
@@ -215,12 +146,7 @@ namespace Framework
     return;
   }
 
-/*****************************************************************************/
-/*!
-  \brief
-    Converts the screen coordinates of the mouse to world coordinates.
-*/
-/*****************************************************************************/
+  // Not implemented yet. Probably not needed.
   void MouseInput::_ScreenToWorld()
   {
     return; // not doing this yet.

@@ -1,8 +1,16 @@
+/*****************************************************************
+Filename: Debug.h
+Project: 
+Author(s): Zakary Wilson
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+*****************************************************************/
 
 #include "systems/System.h"
 
 namespace Framework
 {
+  // prototypes for defining pointers
   struct DebugAudio;
   struct DebugGraphics;
   struct DebugFramerate;
@@ -18,6 +26,7 @@ namespace Framework
     DEBUG_PHYSICS
   };
 
+  // Holds performance information to draw to the screen.
   struct PerformanceData
   {
     float pos[16];
@@ -42,8 +51,6 @@ namespace Framework
     void Initialize(void);
     void Update(float dt);
 
-    //void* GetDebugData(void);
-
   private:
 
     int GetState();
@@ -52,6 +59,8 @@ namespace Framework
     std::string string;
 
     int currentState;
+
+    /*---------- Debug Data Structs ----------*/
 
     DebugAudio*     audio;
     DebugGraphics*  graphics;

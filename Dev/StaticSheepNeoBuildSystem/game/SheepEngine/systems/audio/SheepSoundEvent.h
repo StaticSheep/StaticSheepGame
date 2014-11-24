@@ -1,10 +1,10 @@
-/******************************************************************************
+/*****************************************************************
 Filename: SheepSoundEvent.h
 Project: 
 Author(s): Zakary Wilson
 
 All content © 2014 DigiPen (USA) Corporation, all rights reserved.
-******************************************************************************/
+*****************************************************************/
 
 #ifndef SHEEP_SOUND_H
 #define SHEEP_SOUND_H
@@ -15,7 +15,6 @@ enum PlayMode
 {
   PLAY_ONCE = 0,
   PLAY_LOOP,
-  PLAY_STREAM
 };
 
 enum FadeOut
@@ -23,12 +22,12 @@ enum FadeOut
   INSTANT = 0,
   FADE_SLOW,
   FADE_FAST,
-  BEES
 };
 
 // Holds all data for how to play a particular sound.
 struct SoundInstance
 {
+  // Internal, do not set. Differentiates between Studio and low level sounds
   int type;
 
   // Once, Looped

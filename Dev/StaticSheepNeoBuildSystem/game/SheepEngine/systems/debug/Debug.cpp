@@ -1,10 +1,10 @@
-/******************************************************************************
+/*****************************************************************
 Filename: Debug.cpp
 Project: 
 Author(s): Zakary Wilson
 
 All content © 2014 DigiPen (USA) Corporation, all rights reserved.
-******************************************************************************/
+*****************************************************************/
 
 // debug needs to know about all of the systems.... sigh...
 #include "pch/precompiled.h"
@@ -32,38 +32,21 @@ namespace Framework
 {
   static PerformanceData performance;
 
-/*****************************************************************************/
-/*!
-  \brief
-    Default constructor for the Debug class. Doesn't do anything yet...
-*/
-/*****************************************************************************/
   Debug::Debug()
   {
 
   }
 
-/*****************************************************************************/
-/*!
-  \brief
-    Destructor for the Debug class. Doesn't do anything yet...
-*/
-/*****************************************************************************/
   Debug::~Debug()
   {
 
   }
 
-/*****************************************************************************/
-/*!
-  \brief
-    Sets the pointers to the systems' debug data on initialize.
-    GetDebugData returns a void*, so we cast it correctly depending on the
-    system. That way custom structs can be passed to the Debug class.
-*/
-/*****************************************************************************/
+
+  // Sets the pointers to the systems' debug data on initialize.
   void Debug::Initialize()
   {
+    // make sure the systems exist first
     if(AUDIO)
     {
       audio = (DebugAudio*)AUDIO->GetDebugData();
@@ -90,27 +73,12 @@ namespace Framework
     TRACELOG->Log(TraceLevel::DEBUG, "Debugger linked to Framerate Controller");
   }
 
-/*****************************************************************************/
-/*!
-  \brief
-    Placeholder for update. Otherwise the engine gets sad.
-*/
-/*****************************************************************************/
   void Debug::Update(float dt)
   {
 
   }
 
-/*****************************************************************************/
-/*!
-  \brief
-    Grabs messages from the engine. If PostDraw is passed, then we might need
-    to draw some things.
-
-  \param hamster
-    The message hamster!
-*/
-/*****************************************************************************/
+  // Listens for PostDraw and draws debug data if requested
   void Debug::ReceiveMessage(Message& hamster)
   {
     if (hamster.MessageId == Message::PostDraw)
@@ -163,18 +131,7 @@ namespace Framework
             FormatString(currentState);
             systemCounter = 0;
           }
-
-          //channels = (*(FMOD_DSP_PARAMETER_FFT*)audio->data).numchannels;
           Draw::SetCamState(1);
-          /*for(int i = 0; i < 1; ++i)
-          {
-            for(int j = 0; j < 128; ++j)
-            {
-              float height = ((*(FMOD_DSP_PARAMETER_FFT*)audio->data).spectrum[i][j]);
-              Draw::SetColor(1.0f,0.0f,0.0f,1.0f);
-              Draw::DrawRect(-128.0f + j * 2.0f, ENGINE->Window->GetHeight() / -3.0f, 2.0f, height * 1000.0f);
-            }
-          }*/
           
           Draw::SetColor(1.0f,1.0f,1.0f,1.0f);
           Draw::SetRotation(0.0f);
@@ -222,16 +179,7 @@ namespace Framework
     }
   }
 
-/*****************************************************************************/
-/*!
-  \brief
-    Formats the string according to which type of debug data we need to print
-    out.
-
-  \param type
-    The type of debug info to print out. Passing in an enum.
-*/
-/*****************************************************************************/
+  // Helper function to format strings for drawing to the screen
   void Debug::FormatString(int type)
   {
     // these are for formatting floats/doubles
@@ -311,6 +259,7 @@ namespace Framework
 
   }
 
+  // Uses the PerformanceData struct to display system metrics.
   void Debug::DrawPerformance()
   {
     double totalTime = 0.0;
@@ -435,12 +384,7 @@ namespace Framework
   }
 
 
-/*****************************************************************************/
-/*!
-  \brief
-    Gets the current keyboard state for which debug info to print out.
-*/
-/*****************************************************************************/
+  // Gets which state we are in for drawing debug. Need to change
   int Debug::GetState()
   {
     // F2 for FPS printing

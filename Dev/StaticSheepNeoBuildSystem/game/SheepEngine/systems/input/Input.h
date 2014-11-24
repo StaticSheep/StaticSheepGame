@@ -1,7 +1,12 @@
+/*****************************************************************
+Filename: Input.h
+Project: 
+Author(s): Zakary Wilson
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+*****************************************************************/
 
 #pragma once
-#ifndef SHEEP_INPUT_H
-#define SHEEP_INPUT_H
 
 #include "systems/System.h"
 #include <Windows.h>
@@ -23,6 +28,7 @@ namespace Framework
     GamePadInput* pads;
   };
 
+  // Manager for all input devices. Mouse, keyboard, and gamepads
   class InputManager  : public ISystem
   {
   public:
@@ -38,25 +44,24 @@ namespace Framework
     const void* GetDebugData();
 
     /*----- LUA BINDS -----*/
+
     static GamePadInput* GetGamePad(int index);
     static bool KeyIsPressed(unsigned key);
     static bool KeyIsDown(unsigned key);
     static bool KeyIsReleased(unsigned key);
 
-    // we have one mouse...
-    MouseInput Mouse;
-    // and one keyboard...
-    KeyboardInput Keyboard;
+    /*----- Input Devices -----*/
 
+    MouseInput Mouse;
+    KeyboardInput Keyboard;
     GamePadInput Pads[4];
+  
+    /*----- Debug -----*/
 
     bool Autoplay;
     DebugInput debug;
 
   };
 
-
   extern InputManager* SHEEPINPUT;
 }
-
-#endif

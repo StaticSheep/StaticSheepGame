@@ -1,17 +1,16 @@
-/******************************************************************************
+/*****************************************************************
 Filename: TraceLog.h
 Project: 
 Author(s): Zakary Wilson
 
 All content © 2014 DigiPen (USA) Corporation, all rights reserved.
-******************************************************************************/
+*****************************************************************/
 #include <stdio.h>
 
 #pragma once
 
 namespace Framework
 {
-  // for determining the levels of what to print
 
   namespace TraceLevel
   {
@@ -24,8 +23,6 @@ namespace Framework
       VERBOSE
     };
   }
-  
-
 
   class Tracelog
   {
@@ -52,7 +49,7 @@ namespace Framework
 
   };
 
-  // global pointer
+  // global pointer for the tracelog
   extern Tracelog* TRACELOG;
 
 }

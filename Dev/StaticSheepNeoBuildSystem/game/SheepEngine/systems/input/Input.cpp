@@ -1,10 +1,10 @@
-/******************************************************************************
+/*****************************************************************
 Filename: Input.cpp
 Project: 
 Author(s): Zakary Wilson
 
 All content © 2014 DigiPen (USA) Corporation, all rights reserved.
-******************************************************************************/
+*****************************************************************/
 
 #include "pch/precompiled.h"
 
@@ -21,14 +21,10 @@ namespace Framework
 {
   InputManager* SHEEPINPUT = NULL;
 
-/*****************************************************************************/
-/*!
-  \brief
-    Default constructor
-*/
-/*****************************************************************************/
   InputManager::InputManager()
   {
+    TRACELOG->Log(TraceLevel::INFO, "Initializing Game Pads");
+    // initialize all gamepads
     Pads[0] = GamePadInput(0);
     Pads[1] = GamePadInput(1);
     Pads[2] = GamePadInput(2);
@@ -37,26 +33,17 @@ namespace Framework
     SHEEPINPUT = this;
   }
 
-/*****************************************************************************/
-/*!
-  \brief
-    Default destructor
-*/
-/*****************************************************************************/
   InputManager::~InputManager()
   {
 
   }
-
-/*****************************************************************************/
-/*!
-  \brief
-    Initializes the mouse and keyboard.
-*/
-/*****************************************************************************/
+  
+  // Initialize devices
   void InputManager::Initialize()
   {
+    TRACELOG->Log(TraceLevel::INFO, "Initializing Mouse");
     Mouse.Initialize();
+    TRACELOG->Log(TraceLevel::INFO, "Initializing Keyboard");
     Keyboard.Initialize();
     Autoplay = false;
 
@@ -80,13 +67,7 @@ namespace Framework
     return &SHEEPINPUT->Pads[index];
   }
 
-/*****************************************************************************/
-/*!
-  \brief
-    Updates the mouse and keyboard. Then checks the messages in the queue and
-    sets the current state of the mouse and keyboard accordingly.
-*/
-/*****************************************************************************/
+  // Updates all of the input devices that are connected
   void InputManager::Update(float dt)
   {
     MSG msg = {0};
@@ -94,9 +75,9 @@ namespace Framework
     Mouse.Update();
     Keyboard.Update();
     
+    // update all of the game pads
     for (int i = 0; i < 4; ++i)
     {
-      //XInputGetState(i, &Pads[i].State);
       Pads[i].Update();
     }
 

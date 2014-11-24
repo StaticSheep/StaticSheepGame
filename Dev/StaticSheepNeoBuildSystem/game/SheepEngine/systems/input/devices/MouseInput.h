@@ -1,3 +1,10 @@
+/*****************************************************************
+Filename: MouseInput.h
+Project: 
+Author(s): Zakary Wilson
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+*****************************************************************/
 
 #pragma once
 
@@ -7,31 +14,32 @@ namespace Framework
   {
   public:
 
-    // default constructor/destructor
     MouseInput();
     ~MouseInput();
 
-    // basic functions
     void Initialize(void);
     void Update(void);
 
-    // getters
+    /*---------- Getters ----------*/
+
     Vec2 GetWorldPosition(void);
     Vec2 GetScreenPosition(void);
   
-    // checks the state of the buttons
+    /*---------- Button States ----------*/
+
     bool ButtonPressed(unsigned int button) const;
     bool ButtonDown(unsigned int button) const;
     bool ButtonReleased(unsigned int button) const;
 
   private:
 
-    // the previous frame's state
+    /*---------- States ----------*/
+
     bool _previousState[3];
-    // the current frame's state
     bool _currentState[3];
 
-    // positions
+    /*---------- Positions ----------*/
+
     Vec2 _screenPosition;
     Vec2 _worldPosition;
     void GetMsg(void* msg);

@@ -89,7 +89,7 @@ namespace Framework
     // if there is no soundcard/driver, tell FMOD to not even bother
     if(driver == 0)
     {
-      TRACELOG->Log(TraceLevel::WARNING, "No Soundcard/Driver found");
+      TRACELOG->Log(TraceLevel::WARNING, "No Soundcard/Driver found! Setting FMOD to no output.");
       ErrorCheck(lowLevelSystem->setOutput(FMOD_OUTPUTTYPE_NOSOUND));
     }
 

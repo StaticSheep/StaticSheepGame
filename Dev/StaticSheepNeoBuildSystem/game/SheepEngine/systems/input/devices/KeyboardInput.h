@@ -1,3 +1,10 @@
+/*****************************************************************
+Filename: KeyboardInput.h
+Project: 
+Author(s): Zakary Wilson
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+*****************************************************************/
 
 #pragma once
 
@@ -7,15 +14,14 @@ namespace Framework
   {
   public:
 
-    // constructors/destructors
     KeyboardInput();
     ~KeyboardInput();
 
-    // basic stuff
     void Initialize();
     void Update();
 
-    // check if things are being touched
+    /* ------- Getters ------ */
+
     bool KeyIsPressed(unsigned int key) const;
     bool KeyIsDown(unsigned int key) const;
     bool KeyIsReleased(unsigned int key) const;
@@ -29,6 +35,7 @@ namespace Framework
 
     void GetMsg(void*);
 
+    /* ------- States ------ */
     bool _active;
     bool _previousState[256];
     bool _currentState[256];

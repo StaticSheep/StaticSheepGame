@@ -1,4 +1,10 @@
+/*****************************************************************
+Filename: GamepadInput.cpp
+Project: 
+Author(s): Greg Walls
 
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+*****************************************************************/
 
 #include "pch/precompiled.h"
 #include "GamepadInput.h"

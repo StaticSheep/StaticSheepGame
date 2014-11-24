@@ -1,4 +1,10 @@
+/*****************************************************************
+Filename: Debug.cpp
+Project: 
+Author(s): Zakary Wilson
 
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+*****************************************************************/
 
 #include "pch/Precompiled.h"
 #include "TraceLog.h"
@@ -9,12 +15,7 @@ namespace Framework
   Tracelog* TRACELOG = NULL;
 
   using namespace TraceLevel;
-/*****************************************************************************/
-/*!
-  \brief
-    Default constructor for the TraceLog. Only writes errors to the console.
-*/
-/*****************************************************************************/
+
   Tracelog::Tracelog()
   {
     file = NULL;
@@ -24,14 +25,7 @@ namespace Framework
     Log(INFO, "TraceLog Started\n");
   }
 
-/*****************************************************************************/
-/*!
-  \brief
-    Nondefault constructor for TraceLog. Sets the level to print out to, and
-    opens the file name passed in. If it was invalid, it will default to 
-    writing to the console.
-*/
-/*****************************************************************************/
+  // Set the level of the TraceLog and open output file if given.
   Tracelog::Tracelog(TRACELOG_LEVEL level, const char* filename)
   {
     TRACELOG = this;
@@ -56,13 +50,6 @@ namespace Framework
     Log(INFO, "TraceLog Initialized\n");
   }
 
-/*****************************************************************************/
-/*!
-  \brief
-    Destructor for the TraceLog. Just closes the file when everything is done
-    if one was opened.
-*/
-/*****************************************************************************/
   Tracelog::~Tracelog()
   {
     Log(INFO, "TraceLog Ending\n");
@@ -71,19 +58,7 @@ namespace Framework
       fclose(file);
   }
 
-/*****************************************************************************/
-/*!
-  \brief
-    Variadic function for printing out to the console or a file. 
-
-  \param level
-    The level of the passed in string. ERR, WARNING, DEBUG, INFO are the 
-    possible types.
-
-  \param format
-    A pointer to the beginning of the string created.
-*/
-/*****************************************************************************/
+  // Set the level if severity of the message, then use like printf
   bool Tracelog::Log(TRACELOG_LEVEL level, const char* format, ...)
   {
     // if the level is too high, don't do anything
