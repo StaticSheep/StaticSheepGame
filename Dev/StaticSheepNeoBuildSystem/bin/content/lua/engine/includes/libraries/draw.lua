@@ -56,14 +56,31 @@ function draw.SimpleText(text, font, x, y, size, color, xalign, yalign)
     local alpha = 255
     if (color.a) then alpha = color.a end
 
-    surface.SetColor( color.r, color.g, color.b, alpha )
+    surface.SetColor( color.r / 255, color.g / 255,color.b / 255, alpha / 255)
   else
-    surface.SetColor(255, 255, 255, 255)
+    surface.SetColor(1, 1, 1, 1)
   end
   
   surface.DrawString(text, size, font)
   
   return w, h
+  
+end
+
+--text, font, x, y, size, color, xalign, yalign, outlinewidth, outlinecolor
+function draw.SimpleTextOutlined(text, font, x, y, size, color, xalign, yalign, outlinewidth, outlinecolor)
+
+  local steps = (outlinewidth*2) / 3
+  if ( steps < 1 )  then steps = 1 end
+  
+  for _x=-outlinewidth, outlinewidth, steps do
+    for _y=-outlinewidth, outlinewidth, steps do
+      draw.SimpleText(text, font, x + (_x), y + (_y), size,
+       outlinecolor, xalign, yalign)
+    end
+  end
+  
+  return draw.SimpleText(text, font, x, y, size, color, xalign, yalign)
   
 end
 

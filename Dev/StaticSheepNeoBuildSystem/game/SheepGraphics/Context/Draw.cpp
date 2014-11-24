@@ -84,8 +84,9 @@ namespace DirectSheep
       WFont.c_str(),
       size,
       &rect,
-      (UINT32)0xFFFFFFFF,
-      //RGBTOBGR(Vec3(m_spriteBlend.z, m_spriteBlend.y, m_spriteBlend.x, m_spriteBlend.w)),// Text color, 0xAaBbGgRr
+      //(UINT32)0xFFFFFFFF,
+      DirectX::PackedVector::XMCOLOR(m_spriteBlend.z * 255, m_spriteBlend.y * 255,
+      m_spriteBlend.x * 255, m_spriteBlend.w * 255),// Text color, 0xAaBbGgRr
       NULL,
       (float*)(&matFinal)->m,
       FW1_RESTORESTATE | FW1_LEFT | FW1_TOP | FW1_NOWORDWRAP

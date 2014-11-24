@@ -57,7 +57,7 @@ namespace Framework
 #if USE_EDITOR
 #else
 
-    //ENGINE->LoadLuaLevel("content/lua/engine/lua_levels/topmenu.lua");
+    //ENGINE->LoadLuaLevel("content/lua/engine/lua_levels/pausemenu.lua");
 	  ENGINE->OpenEditor();
 	  //ENGINE->LoadLevel("content/data/spaces/Level1.space");
 #endif

@@ -6,7 +6,7 @@ end
 
 function uimenu.Create(vStep, hStep, gamepads)
   -- Initialize button table
-  print("Created menu")
+  Log(INFO, "Created menu")
 
   local newMenu = {}
   newMenu.buttons = {}
@@ -18,7 +18,7 @@ function uimenu.Create(vStep, hStep, gamepads)
   newMenu.gamepads = gamepads or {}
   newMenu.padMoveCD = {0,0,0,0}
   newMenu.padClickCD = {0,0,0,0}
-  newMenu.inputCD = 500
+  newMenu.inputCD = 80
 
   table.Merge(newMenu, uimenu.meta)
 
@@ -40,7 +40,7 @@ end
 function uimenu.Delete(realMenu)
   local id = realMenu.menuID
 
-  print("Deleted menu: "..id)
+  Log(DEBUG, "Deleted menu: "..id)
 
   uimenu.list[id].buttons = {}
 
@@ -82,7 +82,7 @@ function uimenu.meta:RegisterButton(btn)
     self.buttons[1]:SetHovered(true)
   end
 
-  print("Registered button into menu at index: "..#self.buttons)
+  Log(DEBUG, "Registered button into menu at index: "..#self.buttons)
 end
 uimenu.meta.Add = uimenu.meta.RegisterButton
 
@@ -100,7 +100,7 @@ function uimenu.meta:InsertButton(btn, index)
     self.selected = self.selected + 1
   end
 
-  print("Registered button into menu at index: "..index)
+  Log(DEBUG, "Registered button into menu at index: "..index)
 end
 
 function uimenu.meta:RemoveButton(btn, index)
@@ -116,7 +116,7 @@ function uimenu.meta:RemoveButton(btn, index)
     self.selected = self.selected - 1
   end
 
-  print("Removed button from menu at index: "..index)
+  Log(DEBUG, "Removed button from menu at index: "..index)
 end
 
 function uimenu.meta:FindButtonIndex(btn)
@@ -212,6 +212,8 @@ function uimenu.meta:Update()
       end
     end
   end
+
+  -- Keyboard input
 
 
 

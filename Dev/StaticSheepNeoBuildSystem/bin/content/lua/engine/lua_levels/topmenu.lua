@@ -37,40 +37,48 @@ local function MakeMenu()
 
   local title = gui.Create("Label", base)
   Register(title)
-  title:SetPos(base:GetSize().x / 2, 0)
+  title:SetPos(base:GetSize().x / 2, 5)
   title:SetText("GIGA GRAVITY GAMES")
-  title:SetFontSize(48)
+  title:SetFontSize(ScreenScale(24))
   title:SetFont("Arial")
   title:SetXAlignment(TEXT_ALIGN_CENTER)
 
   local menu = CreateMenu(1, 1, {0})
   TopMenu.menu = menu
 
+  local ypos = 30
+
   local btn = gui.Create("Button", base)
   Register(btn)
   menu:Add(btn)
-  btn:SetSize(200, 50)
-  btn:SetPos(base:GetSize().x / 2 - btn:GetSize().x / 2, 100)
+  btn:SetText("Play")
+  btn:SetFontSize(ScreenScale(12))
+  btn:SetSize(200, ScreenScale(18))
+  btn:SetPos(base:GetSize().x / 2 - btn:GetSize().x / 2,
+    ScreenScale(ypos))
   btn:SetOnPressed(DoSomething)
 
+  ypos = ypos + 20
 
   btn = gui.Create("Button", base)
   Register(btn)
   menu:Add(btn)
-  btn:SetSize(200, 50)
-  btn:SetPos(base:GetSize().x / 2 - btn:GetSize().x / 2, 150)
+  btn:SetFontSize(ScreenScale(12))
+  btn:SetText("Load")
+  btn:SetSize(200, ScreenScale(18))
+  btn:SetPos(base:GetSize().x / 2 - btn:GetSize().x / 2,
+   ScreenScale(ypos))
+  ypos = ypos + 20
 
   btn = gui.Create("Button", base)
   Register(btn)
   menu:Add(btn)
-  btn:SetSize(200, 50)
-  btn:SetPos(base:GetSize().x / 2 - btn:GetSize().x / 2, 200)
-
-  btn = gui.Create("Button", base)
-  Register(btn)
-  menu:Add(btn)
-  btn:SetSize(200, 50)
-  btn:SetPos(base:GetSize().x / 2 - btn:GetSize().x / 2, 250)
+  btn:SetFontSize(ScreenScale(12))
+  btn:SetText("Report me")
+  btn:SetSize(200, ScreenScale(18))
+  btn:SetPos(base:GetSize().x / 2 - btn:GetSize().x / 2,
+   ScreenScale(ypos))
+  ypos = ypos + 20
 
 
   print(GamePad(0):Connected())
