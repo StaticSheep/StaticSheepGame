@@ -25,11 +25,7 @@ function META:SetFontColor(col)
 end
 
 function META:SetSize(x, y)
-  if x.x then
-    self.fontSize = x.x
-  else
-    self.fontSize = x
-  end
+  self.fontSize = x
 end
 
 function META:SetXAlignment(x)

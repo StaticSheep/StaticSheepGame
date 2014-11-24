@@ -46,7 +46,7 @@ namespace Framework
     bool Stop(SoundInstance* instance);
     void StopAll();
     void Pause(SoundInstance* instance, bool status);
-    void PauseAll(){};
+    void PauseAll(bool paused);
 
     void SetMasterVolume(float volume);
     float GetMasterVolume();
@@ -55,6 +55,10 @@ namespace Framework
     float GetMasterPitch();
 
     bool GetLoadState() const;
+
+    /* ----- Lua Binds ----- */
+    static void LuaPauseAll(bool paused);
+
 
     DebugAudio* debug;
   

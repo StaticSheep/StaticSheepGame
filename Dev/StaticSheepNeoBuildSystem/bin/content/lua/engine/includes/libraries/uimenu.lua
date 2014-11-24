@@ -163,19 +163,45 @@ function uimenu.meta:Update()
     if cTime > self.padMoveCD[pad + 1] then
       gamePad = GamePad(pad)
 
-      if not gamePad:InDeadzone(false) then
-        stick = gamePad:LeftStick()
+      if gamePad:Connected() then
 
-        if stick.y > stickThreshold then
-          vMove = -1
-        elseif stick.y < -stickThreshold then
-          vMove = 1
+        if not gamePad:InDeadzone(false) then
+          stick = gamePad:LeftStick()
+
+          if stick.y > stickThreshold then
+            vMove = -1
+          elseif stick.y < -stickThreshold then
+            vMove = 1
+          end
+
+          if stick.x > stickThreshold then
+            hMove = -1
+          elseif stick.x < -stickThreshold then
+            hMove = 1
+          end
+
+          if (hMove ~= 0 and self.horizontalStep ~= 0) or
+            (vMove ~= 0 and self.verticalStep ~= 0) then
+            self:MoveCooldown(pad + 1)
+            break
+          end
+
         end
 
-        if stick.x > stickThreshold then
-          hMove = -1
-        elseif stick.x < -stickThreshold then
+        if gamePad:ButtonDown(GAMEPAD_DPAD_LEFT) or KeyIsPressed(KEY_A) then
           hMove = 1
+        end
+
+        if gamePad:ButtonDown(GAMEPAD_DPAD_RIGHT) or KeyIsPressed(KEY_D) then
+          hMove = -1
+        end
+
+        if gamePad:ButtonDown(GAMEPAD_DPAD_UP) or KeyIsPressed(KEY_W) then
+          vMove = -1
+        end
+
+        if gamePad:ButtonDown(GAMEPAD_DPAD_DOWN) or KeyIsPressed(KEY_S) then
+          vMove = 1
         end
 
         if (hMove ~= 0 and self.horizontalStep ~= 0) or
@@ -185,29 +211,6 @@ function uimenu.meta:Update()
         end
 
       end
-
-      if gamePad:ButtonDown(GAMEPAD_DPAD_LEFT) or KeyIsPressed(KEY_A) then
-        hMove = 1
-      end
-
-      if gamePad:ButtonDown(GAMEPAD_DPAD_RIGHT) or KeyIsPressed(KEY_D) then
-        hMove = -1
-      end
-
-      if gamePad:ButtonDown(GAMEPAD_DPAD_UP) or KeyIsPressed(KEY_W) then
-        vMove = -1
-      end
-
-      if gamePad:ButtonDown(GAMEPAD_DPAD_DOWN) or KeyIsPressed(KEY_S) then
-        vMove = 1
-      end
-
-      if (hMove ~= 0 and self.horizontalStep ~= 0) or
-        (vMove ~= 0 and self.verticalStep ~= 0) then
-        self:MoveCooldown(pad + 1)
-        break
-      end
-
     end
   end
 
@@ -216,7 +219,7 @@ function uimenu.meta:Update()
     if cTime > self.padClickCD[pad + 1] then
       gamePad = GamePad(pad)
 
-      if gamePad:ButtonDown(GAMEPAD_A) then
+      if gamePad:ButtonDown(GAMEPAD_A) and gamePad:Connected() then
         clicked = true
         self:ClickCooldown(pad + 1)
       end

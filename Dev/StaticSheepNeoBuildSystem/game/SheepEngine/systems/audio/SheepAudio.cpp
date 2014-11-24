@@ -238,6 +238,11 @@ namespace Framework
     return;
   }
 
+  void SheepAudio::PauseAll(bool paused)
+  {
+    masterGroup->setPaused(paused);
+  }
+
 /*!
   \brief
     Sets the master volume. Clamps it between 0 and 1.
@@ -309,6 +314,11 @@ namespace Framework
     //ErrorCheck(dsp->getParameterData(2, &debug->data, &debug->block, NULL, 0));
 
     return (void*)debug;
+  }
+
+  void SheepAudio::LuaPauseAll(bool paused)
+  {
+    AUDIO->PauseAll(paused);
   }
 
 } // end namespace
