@@ -22,6 +22,8 @@ namespace DirectSheep
 
     Tex2D(ID3D11Device* dev, const std::string& filename);
 
+    void Release(void);
+
 
   private:
     ID3D11Texture2D* m_rawTex;

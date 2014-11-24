@@ -5,7 +5,20 @@
 
 namespace DirectSheep
 {
-  Effect::~Effect() {}
+  Effect::~Effect() 
+  {
+    SafeRelease(m_pShader);
+
+    if (m_pShaderData)
+      delete m_pShaderData;
+
+    SafeRelease(m_vShader);
+
+    if (m_vShaderData)
+      delete m_vShaderData;
+
+    SafeRelease(m_inputLayout);
+  }
 
   Effect::Effect(ID3D11Device* pDevice,
     std::string vShaderName,
@@ -20,28 +33,6 @@ namespace DirectSheep
     std::string& vShaderName,
     std::string& pShaderName)
   {
-    /*ID3DBlob* error = NULL;
-    std::wstring wvShader(vShaderName.begin(), vShaderName.end());
-    std::wstring wpShader(pShaderName.begin(), pShaderName.end());
-    int compFlags = D3DCOMPILE_ENABLE_STRICTNESS | D3DCOMPILE_OPTIMIZATION_LEVEL3;
-#if defined (_DEBUG)
-    compFlags |= D3DCOMPILE_DEBUG;
-#endif
-
-    D3DCompileFromFile(wvShader.c_str(), NULL, D3D_COMPILE_STANDARD_FILE_INCLUDE, vShaderEntry.c_str(), vShaderTarget.c_str(), compFlags, NULL, &m_vShaderBlob, &error);
-
-    ErrorIf(error, "VShader", "Failed to compile shader: %s", (const char *)error->GetBufferPointer());
-
-    DXVerify(pDevice->CreateVertexShader(m_vShaderBlob->GetBufferPointer(), m_vShaderBlob->GetBufferSize(),
-      NULL, &m_vShader));
-
-    D3DCompileFromFile(wpShader.c_str(), NULL, D3D_COMPILE_STANDARD_FILE_INCLUDE, pShaderEntry.c_str(), pShaderTarget.c_str(), compFlags, NULL, &m_pShaderBlob, &error);
-
-    ErrorIf(error, "PShader", "Failed to compile shader: %s", (const char *)error->GetBufferPointer());
-
-    DXVerify(pDevice->CreatePixelShader(m_pShaderBlob->GetBufferPointer(), m_pShaderBlob->GetBufferSize(),
-      NULL, &m_pShader));*/
-
     std::ifstream s_stream;
 
     s_stream.open(vShaderName, std::ifstream::in | std::ifstream::binary);

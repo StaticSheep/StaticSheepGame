@@ -239,6 +239,7 @@ class RenderContext
     Handle                                   m_Ortho;
     Handle                                   m_orthoScreen;
     Handle                                   m_editor;
+    std::vector<DirectSheep::Camera*>         m_CameraPool;
     bool                                     m_camUse;
 
     RastStates                               m_currentRast = RastStates::Fill;
@@ -246,8 +247,6 @@ class RenderContext
     ///////////////
     // Resources //
     ///////////////
-    std::vector<VertexShader>                m_vertexShaderRes;
-    std::vector<ID3D11PixelShader*>          m_pixelShaderRes;
     std::vector<Tex2D>                       m_textureRes;
     std::vector<ID3D11Buffer*>               m_vertexBufferRes;
     std::vector<ID3D11Buffer*>               m_indexBufferRes;

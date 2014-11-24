@@ -35,7 +35,10 @@ namespace DirectSheep
       pDeviceContext->Unmap(m_CBufferRaw, 0);
     }
 
-    ~CBuffer() {}
+    ~CBuffer() 
+    {
+      SafeRelease(m_CBufferRaw);
+    }
 
   private:
 
