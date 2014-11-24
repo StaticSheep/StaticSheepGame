@@ -1,10 +1,3 @@
-/*****************************************************************
-Filename: Skynet.h
-Project: 
-Author(s): Zakary Wilson
-
-All content © 2014 DigiPen (USA) Corporation, all rights reserved.
-*****************************************************************/
 
 #pragma once
 
@@ -28,7 +21,6 @@ namespace Framework
     // file shit
   };
   
-  // Really random and stupid AI
   class AI
   {
   public:
@@ -55,16 +47,13 @@ namespace Framework
     virtual std::string GetName() {return "Skynet";};
     
     void Initialize();
-    void Update(float dt);
+    void Update(float dt); // if active then do things
     
-    // Disables skynet from modifying anything
-    void Disable(){mode = Sky_Deactivated;};
+    void Disable(){mode = Sky_Deactivated;}; // disable skynet
     
-    // Sets skynet to play any unused gamepads
-    void AutoPlay(){mode = Sky_Active;};
+    void AutoPlay(){mode = Sky_Active;}; // set it to play
     
-    // Sets skynet to replay. Not implemented
-    void Replay(){mode = Sky_Replay;};
+    void Replay(){mode = Sky_Replay;}; // fill in later for reading in a file
     
     const void* GetDebugData();
     
