@@ -51,7 +51,7 @@ namespace SheepFizz
         (bRepulsionCrossNorm.z_ * bRepulsionCrossNorm.z_ * B->massData_.inverseInertia);
 
       //calculate impulse scalar : "j"
-      float j = -(1.0f + mResitution) * contactVelocity / inverseMassSum;
+      float j = -(1.0f + (mResitution * .5)) * contactVelocity / inverseMassSum;
 
       float accumulatedPrev = accumulatedImpulse[i];
       accumulatedImpulse[i] = Maximum(j + accumulatedImpulse[i], 0);
@@ -61,6 +61,9 @@ namespace SheepFizz
       //A's impulse is negative because the normal is
       //from B to A;
       Vec3D impulse = j * normal;
+      
+      if (penetration > 2)
+        impulse *= penetration;
 
       impulse.z = 0;
 

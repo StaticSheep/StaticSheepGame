@@ -376,7 +376,7 @@ namespace SheepFizz
 	  m.normal = -(m.normal);
 
 	  if(m.penetration > 2)
-	    m.penetration = 10;
+	    m.penetration = 4;
 
 	  m.penetration /= m.contactCount;
 
