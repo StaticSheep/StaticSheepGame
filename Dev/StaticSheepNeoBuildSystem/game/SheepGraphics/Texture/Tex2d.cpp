@@ -66,4 +66,11 @@ namespace DirectSheep
         DXVerify(hr);
     }
   }
+
+  void Tex2D::Release(void)
+  {
+    SafeRelease(m_rawTex);
+    SafeRelease(m_renderTarget);
+    SafeRelease(m_ShaderRes);
+  }
 }

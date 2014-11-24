@@ -118,9 +118,17 @@ namespace DirectSheep
 
     // Initialize Camera's
     m_Ortho = Handle(CAMERA, new Camera(1920, 1080, false));
+    m_CameraPool.push_back((Camera*)m_Ortho.ptr);
+
     m_orthoScreen = Handle(CAMERA, new Camera(width, height, false));
+    m_CameraPool.push_back((Camera*)m_orthoScreen.ptr);
+
     m_Perspective = Handle(CAMERA, new Camera(1920, 1080, true));
+    m_CameraPool.push_back((Camera*)m_Perspective.ptr);
+
     m_editor = Handle(CAMERA, new Camera(1920, 1080, true));
+    m_CameraPool.push_back((Camera*)m_editor.ptr);
+
     m_camera = m_Perspective;
 
     // Initialize Effects
@@ -138,8 +146,6 @@ namespace DirectSheep
   */
   void RenderContext::Uninitialize(RenderContext * rCon)
   {
-    Handle toRelease(VERTEX_SHADER, 0);
-
     m_swapChain->SetFullscreenState(FALSE, NULL);
 
     for (size_t i = 0; i < m_handles.size(); ++i)
@@ -170,10 +176,17 @@ namespace DirectSheep
       SafeRelease(it.second);
     }
 
-    delete m_Ortho.ptr;
-    delete m_orthoScreen.ptr;
-    delete m_Perspective.ptr;
-    delete m_editor.ptr;
+    for (int i = 0; i < m_CameraPool.size(); ++i)
+    {
+      if (m_CameraPool[i])
+      {
+        delete m_CameraPool[i];
+        m_CameraPool[i] = NULL;
+      }
+    }
+
+    if (m_genericEffect)
+      delete m_genericEffect;
 
     rCon->~RenderContext();
     _aligned_free(rCon);
@@ -451,12 +464,6 @@ namespace DirectSheep
     {
       switch (handle.type)
       {
-      case VERTEX_SHADER    : ReleaseVertexShaderIntern(handle);
-        break;
-
-      case PIXEL_SHADER     : ReleasePixelShaderIntern(handle);
-        break;
-
       case TEXTURE          : ReleaseTextureIntern(handle);
         break;
 
@@ -484,25 +491,7 @@ namespace DirectSheep
   {
     if(texture.type == TEXTURE)
     {
-     SafeRelease(m_textureRes[texture.index].m_rawTex);
-     SafeRelease(m_textureRes[texture.index].m_renderTarget);
-     SafeRelease(m_textureRes[texture.index].m_ShaderRes);
-    }
-  }
-
-  void RenderContext::ReleaseVertexShaderIntern(const Handle& vertexShader)
-  {
-    if(vertexShader.type == VERTEX_SHADER)
-    {
-      m_vertexShaderRes[vertexShader.index].Release();
-    }
-  }
-
-  void RenderContext::ReleasePixelShaderIntern(const Handle& pixelShader)
-  {
-    if(pixelShader.type == PIXEL_SHADER)
-    {
-      SafeRelease(m_pixelShaderRes[pixelShader.index]);
+      m_textureRes[texture.index].Release();
     }
   }
 

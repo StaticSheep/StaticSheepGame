@@ -64,4 +64,13 @@ namespace DirectSheep
 
     DXVerify(pDevice->CreateInputLayout(layout, 2, m_vShaderData, m_vShaderSize, &m_inputLayout));
   }
+
+  GenEffect::~GenEffect()
+  {
+    if (m_posUV)
+      delete m_posUV;
+
+    if (m_ambient)
+      delete m_ambient;
+  }
 }

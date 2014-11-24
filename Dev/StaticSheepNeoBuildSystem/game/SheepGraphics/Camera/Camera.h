@@ -35,6 +35,7 @@ namespace DirectSheep
     void BuildView();
     void BuildPerspective();
     void BuildOrthographic();
+
     Mat4 m_View;
     Mat4 m_Projection;
     Mat4 m_viewProj;

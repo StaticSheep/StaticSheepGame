@@ -4,7 +4,9 @@ namespace DirectSheep
 {
   GFX_API Handle RenderContext::NewCamera()
   {
-    return Handle(CAMERA, new Camera(1920, 1080, true));
+    Handle newCam(CAMERA, new Camera(1920, 1080, true));
+    m_CameraPool.push_back((Camera*)newCam.ptr);
+    return newCam;
   }
 
   GFX_API void RenderContext::SetCamState(int camState)

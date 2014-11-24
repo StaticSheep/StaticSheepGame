@@ -24,6 +24,7 @@ namespace DirectSheep
       const Vec4 Ambience, float intesity);
 
     GenEffect(ID3D11Device* pDevice);
+    ~GenEffect();
 
   private:
     void createInputLayout(ID3D11Device* pDevice);
