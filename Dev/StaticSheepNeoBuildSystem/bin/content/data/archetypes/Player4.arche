@@ -52,8 +52,8 @@ GameObject
   }
   BoxCollider
   {
-    m_width float 76.000000
-    m_height float 76.000000
+    m_width float 89.000000
+    m_height float 89.000000
     m_materialName std::string "Wood"
     m_hasCollisionCallback bool true
     m_CollisionGroup std::string "Player4"
