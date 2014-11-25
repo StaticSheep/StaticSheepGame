@@ -225,7 +225,7 @@ namespace Framework
 		if (gp->ButtonPressed(XButtons.X))
 		{
 			//bc->AddToAngVelocity(.5f);
-		}
+		} 
 
     SetAnimations();
 
