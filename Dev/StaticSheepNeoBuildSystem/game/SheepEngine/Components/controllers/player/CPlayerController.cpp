@@ -505,4 +505,10 @@ namespace Framework
     }
     
   }
+
+
+  int PlayerController::CurrentHealth()
+  {
+    return health;
+  }
 }

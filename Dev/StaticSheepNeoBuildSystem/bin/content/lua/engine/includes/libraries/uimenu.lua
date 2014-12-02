@@ -214,6 +214,26 @@ function uimenu.meta:Update()
     end
   end
 
+  if KeyIsPressed(KEY_A) then
+    hMove = 1
+  end
+
+  if KeyIsPressed(KEY_D) then
+    hMove = -1
+  end
+
+  if KeyIsPressed(KEY_W) then
+    vMove = -1
+  end
+
+  if KeyIsPressed(KEY_S) then
+    vMove = 1
+  end
+
+  if KeyIsPressed(KEY_ENTER) then
+    clicked = true
+  end
+
   -- Interpret clicking
   for i, pad in pairs(self.gamepads) do
     if cTime > self.padClickCD[pad + 1] then
