@@ -65,4 +65,8 @@ GameObject
   {
     playerNum int 0
   }
+  Cheats
+  {
+    enabled bool true
+  }
 }

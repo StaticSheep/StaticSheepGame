@@ -55,6 +55,7 @@ E_NAME(Component)
   E_ENTRY(WeaponPickup)
   E_ENTRY(WarningText)
   E_ENTRY(BackgroundPan)
+  E_ENTRY(Cheats)
   E_ENTRY(LuaComponent)
   E_ENTRY(countComponents) //keep this at the end
 E_END(Component)
