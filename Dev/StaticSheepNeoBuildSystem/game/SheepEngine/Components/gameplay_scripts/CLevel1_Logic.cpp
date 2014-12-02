@@ -88,7 +88,7 @@ namespace Framework
       {
         GameObject *weap = (FACTORY->LoadObjectFromArchetype(space, "ShotgunPickup"));
         Transform *WT = weap->GetComponent<Transform>(eTransform);
-        WT->SetTranslation(PT->GetTranslation() + Vec3(0.0, 48.0, 0.0));
+        WT->SetTranslation(PT->GetTranslation() + Vec3(0.0, 68.0, 0.0));
       }
 
       randomDrop = GetRandom(0, 2);
@@ -103,7 +103,7 @@ namespace Framework
       {
         GameObject *weap = (FACTORY->LoadObjectFromArchetype(space, "AutoPickup"));
         Transform *WT = weap->GetComponent<Transform>(eTransform);
-        WT->SetTranslation(PT2->GetTranslation() + Vec3(0.0, -48.0, 0.0));
+        WT->SetTranslation(PT2->GetTranslation() + Vec3(0.0, -68.0, 0.0));
       }
 
       spawnTimer = 3;

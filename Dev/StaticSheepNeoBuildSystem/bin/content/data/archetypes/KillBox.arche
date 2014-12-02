@@ -32,6 +32,6 @@ GameObject
     m_width float 130.880005
     m_height float 32.000000
     m_materialName std::string "Static"
-    m_hasCollisionCallback bool false
+    m_hasCollisionCallback bool true
   }
 }

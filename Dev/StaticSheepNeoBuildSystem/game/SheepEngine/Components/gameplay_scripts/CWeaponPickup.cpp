@@ -84,6 +84,7 @@ namespace Framework
       playerController->weapon = (Weapon *)weaponType->New();
       space->GetGameObject(owner)->Destroy();
     }
+
     if (OtherObject->name == "KillBox" || OtherObject->name == "Grinder" || OtherObject->name == "KillBoxBig")
       space->GetGameObject(owner)->Destroy();
 
