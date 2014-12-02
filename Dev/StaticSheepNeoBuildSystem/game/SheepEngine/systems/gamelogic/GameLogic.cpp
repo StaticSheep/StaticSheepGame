@@ -25,6 +25,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/gameplay_scripts/CWeaponPickup.h"
 #include "components/gameplay_scripts/CWarningText.h"
 #include "components/gameplay_scripts/CBackgroundPan.h"
+#include "components/gameplay_scripts/CCheats.h"
 
 namespace Framework
 {
@@ -58,6 +59,7 @@ namespace Framework
     REGISTER_COMPONENT(WeaponPickup);
     REGISTER_COMPONENT(WarningText);
     REGISTER_COMPONENT(BackgroundPan);
+    REGISTER_COMPONENT(Cheats);
   }
 
   void GameLogic::Initialize()

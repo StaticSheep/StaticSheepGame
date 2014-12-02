@@ -45,28 +45,6 @@ namespace SheepFizz
 			manifold[A->shape_->GetShape()][B->shape_->GetShape()](*this);
 	}//end of ManifoldInteraction
 
-
-  //*******************
-	//positional correction is designed to prevent sinking of one
-	//object into another
-	void Manifold::PositionalCorrection(void)
-	{
-    //if both objects have infinite mass, skip calculations
-    if(A->massData_.mass == 0 && B->massData_.mass == 0)
-      return;
-
-		Vec3D correction = (Maximum(penetration - POSSLACK, 0.0f) /
-			(A->massData_.inverseMass + B->massData_.inverseMass)) * POSCORRECT
-			* normal;
-
-    correction.z = 0;
-
-		A->position_ -= A->massData_.inverseMass * correction;
-		B->position_ += B->massData_.inverseMass * correction;
-
-	}//end of PositionalCorrection
-
-
   //*******************
 	//determine the support point on body B relative to the face of body A
 	float SupportPoint(Body& A, Body& B, Vec3D vertex, Vec3D normal, unsigned int& supportPoint)
@@ -376,7 +354,7 @@ namespace SheepFizz
 	  m.normal = -(m.normal);
 
 	  if(m.penetration > 2)
-	    m.penetration = 10;
+	    m.penetration = 4;
 
 	  m.penetration /= m.contactCount;
 

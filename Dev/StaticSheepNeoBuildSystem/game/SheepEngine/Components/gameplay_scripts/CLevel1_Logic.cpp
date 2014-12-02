@@ -23,12 +23,12 @@ namespace Framework
     timeLimit = 60;
     spawnTimer = 3;
     numOfPlayers = 1;
-    spawnPos[0] = Vec3(-700.0f, -440.0f, 0.0f);
-    spawnPos[1] = Vec3(700.0f, -440.0f, 0.0f);
-    spawnPos[2] = Vec3(700.0f, 440.0f, 0.0f);
-    spawnPos[3] = Vec3(-700.0f, 440.0f, 0.0f);
-    spawnPos[4] = Vec3(0.0f, 440.0f, 0.0f);
-    spawnPos[5] = Vec3(0.0f, -440.0f, 0.0f);
+    spawnPos[0] = Vec3(-650.0f, -435.0f, 0.0f);
+    spawnPos[1] = Vec3(650.0f, -435.0f, 0.0f);
+    spawnPos[2] = Vec3(650.0f, 435.0f, 0.0f);
+    spawnPos[3] = Vec3(-650.0f, 435.0f, 0.0f);
+    spawnPos[4] = Vec3(0.0f, 435.0f, 0.0f);
+    spawnPos[5] = Vec3(0.0f, -435.0f, 0.0f);
     warning = false;
     camShake = false;
     shake = true;
@@ -88,7 +88,7 @@ namespace Framework
       {
         GameObject *weap = (FACTORY->LoadObjectFromArchetype(space, "ShotgunPickup"));
         Transform *WT = weap->GetComponent<Transform>(eTransform);
-        WT->SetTranslation(PT->GetTranslation() + Vec3(0.0, 48.0, 0.0));
+        WT->SetTranslation(PT->GetTranslation() + Vec3(0.0, 68.0, 0.0));
       }
 
       randomDrop = GetRandom(0, 2);
@@ -103,7 +103,7 @@ namespace Framework
       {
         GameObject *weap = (FACTORY->LoadObjectFromArchetype(space, "AutoPickup"));
         Transform *WT = weap->GetComponent<Transform>(eTransform);
-        WT->SetTranslation(PT2->GetTranslation() + Vec3(0.0, -48.0, 0.0));
+        WT->SetTranslation(PT2->GetTranslation() + Vec3(0.0, -68.0, 0.0));
       }
 
       spawnTimer = 3;
