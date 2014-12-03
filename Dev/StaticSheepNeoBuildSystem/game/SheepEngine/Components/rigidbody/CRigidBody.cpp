@@ -91,6 +91,11 @@ namespace Framework
     PHYSICS->SetBodyAngVelocity(space, m_handle, angularvelocity);
   }
 
+  void RigidBody::SetBodyRotation(Vec3D direction)
+  {
+    PHYSICS->SetBodyRotation(space, m_handle, direction);
+  }
+
   void RigidBody::SetBodyCollisionCallback(bool collisionCallback)
   {
     PHYSICS->SetBodyCollisionCallback(space, m_handle, collisionCallback);

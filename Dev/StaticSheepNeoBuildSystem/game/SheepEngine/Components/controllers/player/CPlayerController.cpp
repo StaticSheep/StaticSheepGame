@@ -331,11 +331,17 @@ namespace Framework
       }
       snappedNormal = OOBc->GetCollisionNormals(manifold);
       
-      float rotation = (snappedNormal.DotProduct(bc->GetBodyUpNormal())) / (snappedNormal.Length() * bc->GetBodyUpNormal().Length());
+      bc->SetBodyRotation(-snappedNormal);
+      /*float rotation = (snappedNormal.DotProduct(bc->GetBodyUpNormal())) / (snappedNormal.Length() * bc->GetBodyUpNormal().Length());
       rotation = std::acosf(rotation);
       if (snappedNormal.x == -1.0f)
         rotation = rotation + (float)PI;
-      ps->SetRotation(rotation);
+      if (snappedNormal.x < 0 && snappedNormal.y < 0)
+        rotation -= (float)PI / 2.0f;
+      else if (snappedNormal.x < 0 && snappedNormal.y > 0)
+        rotation += (float)PI / 2.0f;*/
+      //ps->SetRotation(rotation);
+
 
       isSnapped = true;
       //get the thing we are colliding with
