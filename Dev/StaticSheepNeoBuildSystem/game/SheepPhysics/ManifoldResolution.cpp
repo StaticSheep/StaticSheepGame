@@ -132,7 +132,7 @@ namespace SheepFizz
 
     correction.z = 0;
 
-    if (penetration > .1)
+    if (penetration > .08)
       correction *= 2;
 
     if (A->massData_.inverseMass == 0 || B->massData_.inverseMass == 0)

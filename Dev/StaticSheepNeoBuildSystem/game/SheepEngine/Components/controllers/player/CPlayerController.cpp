@@ -31,6 +31,7 @@ namespace Framework
     GoldenGun = false;
     PerfectMachine = false;
     normals.clear();
+    snappedLastFrame = false;
 	}
 
 	PlayerController::~PlayerController() //4
@@ -135,17 +136,27 @@ namespace Framework
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
     if (isSnapped)
     {
-      float avX = 0, avY = 0, avZ = 0;
-      for (int i = 0; i < normals.size(); ++i)
+      float avX = 0, avY = 0;
+      if (normals.size() != 0)
       {
-        avX += normals[i].x;
-        avY += normals[i].y;
-        avZ += normals[i].z;
+        for (int i = 0; i < normals.size(); ++i)
+        {
+          avX += normals[i].x;
+          avY += normals[i].y;
+        }
+        avX /= normals.size();
+        avY /= normals.size();
+        snappedNormal = Vec3(avX, avY, 0.0);
       }
-      avX /= normals.size();
-      avY /= normals.size();
-      avZ /= normals.size();
-      snappedNormal = Vec3(avX, avY, avZ);
+
+      float rotation = (snappedNormal.DotProduct(bc->GetBodyUpNormal())) / (snappedNormal.Length() * bc->GetBodyUpNormal().Length());
+      if (rotation >= 0 || rotation <= 0)
+      {
+        rotation = std::acosf(rotation);
+        if (snappedNormal.x == -1.0f)
+          rotation = rotation + (float)PI;
+        ps->SetRotation(rotation);
+      }
 
       bc->SetVelocity(snappedNormal * 100);
       bc->SetAngVelocity(0.0);
@@ -230,7 +241,7 @@ namespace Framework
         else if (gp->ButtonPressed(XButtons.LShoulder))
           space->GetGameObject(owner)->hooks.Call("ButtonPressed", Buttons::LB);
       }
-      
+      normals.clear();
     }
     else
     {
@@ -270,6 +281,7 @@ namespace Framework
       PlayerDeath(se, ps);
 
     isSnapped = false;
+
 	}
 
 
@@ -345,12 +357,6 @@ namespace Framework
       snappedNormal = OOBc->GetCollisionNormals(manifold);
 
       normals.push_back(Vec3(snappedNormal));
-
-      float rotation = (snappedNormal.DotProduct(bc->GetBodyUpNormal())) / (snappedNormal.Length() * bc->GetBodyUpNormal().Length());
-      rotation = std::acosf(rotation);
-      if (snappedNormal.x == -1.0f)
-        rotation = rotation + (float)PI;
-      ps->SetRotation(rotation);
 
       isSnapped = true;
       //get the thing we are colliding with
