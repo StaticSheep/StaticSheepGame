@@ -50,6 +50,7 @@ local headColors = {Color(0, 255, 0), Color(255, 0, 0), Color(255, 0, 255), Colo
 
 function PlayerHUD:Create(i)
   self.base[i] = gui.Create("Frame")
+  self.base[i]:SetPriority(1)
   self:Register(self.base[i])
   self.base[i]:SetColor(Color(50, 50, 50, 0))
   self.base[i]:SetBGColor(Color(100, 100, 100, 0))

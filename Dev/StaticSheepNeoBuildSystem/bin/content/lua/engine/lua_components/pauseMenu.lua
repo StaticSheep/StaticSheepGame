@@ -152,11 +152,12 @@ function PauseMenu:Init()
 end
 
 function PauseMenu:Refresh()
-  self:CleanUp()
-  self:PauseSpace(false)
+  --self:PauseSpace(true)
+  --self:CleanUp()
+  
 
-  self:PauseSpace(true)
-  self:MakeMenu()
+  --self:PauseSpace(true)
+  --self:MakeMenu()
   --self:MakeMenu()
 end
 

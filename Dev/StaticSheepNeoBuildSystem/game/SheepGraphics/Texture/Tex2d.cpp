@@ -14,18 +14,12 @@ namespace DirectSheep
 
   UINT Tex2D::getWidth() const
   {
-    D3D11_TEXTURE2D_DESC texDesc;
-    m_rawTex->GetDesc(&texDesc);
-
-    return texDesc.Width;
+    return m_width;
   }
 
   UINT Tex2D::getHeight() const
   {
-    D3D11_TEXTURE2D_DESC texDesc;
-    m_rawTex->GetDesc(&texDesc);
-
-    return texDesc.Height;
+    return m_height;
   }
 
   Tex2D::Tex2D(ID3D11Device* dev,
@@ -65,6 +59,12 @@ namespace DirectSheep
       if (FAILED(hr))
         DXVerify(hr);
     }
+    D3D11_TEXTURE2D_DESC texDesc;
+    m_rawTex->GetDesc(&texDesc);
+
+    m_width = texDesc.Width;
+    m_height = texDesc.Height;
+
   }
 
   void Tex2D::Release(void)

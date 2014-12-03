@@ -29,5 +29,8 @@ namespace DirectSheep
     ID3D11Texture2D* m_rawTex;
     ID3D11RenderTargetView* m_renderTarget;
     ID3D11ShaderResourceView* m_ShaderRes;
+
+    unsigned m_width;
+    unsigned m_height;
   };
 }

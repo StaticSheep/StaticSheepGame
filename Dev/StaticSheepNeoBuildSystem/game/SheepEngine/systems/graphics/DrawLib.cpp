@@ -48,7 +48,12 @@ namespace Framework
 
   void Draw::SetPosition(float x, float y)
   {
-    GRAPHICS->SetPosition(x, y, -1.0f);
+    GRAPHICS->SetPosition(x, y, 0.0f);
+  }
+
+  void Draw::SetPositionEX(float x, float y, float z)
+  {
+    GRAPHICS->SetPosition(x, y, z);
   }
 
   void Draw::SetColor(float r, float g, float b, float a)
@@ -67,7 +72,8 @@ namespace Framework
       m_whiteTextureID = GRAPHICS->GetTextureID("White.png");
       new (&m_whiteHandle) DirectSheep::Handle(DirectSheep::TEXTURE, m_whiteTextureID);
     }
-      
+    
+    GRAPHICS->SetUV(Vec2(0, 0), Vec2(1, 1));
     //GRAPHICS->BindTexture(m_whiteTextureID);
     GRAPHICS->DrawBatched(m_whiteHandle);
   }
@@ -125,6 +131,7 @@ namespace Framework
     GRAPHICS->SetRotation(rotation);
 
     GRAPHICS->SetPosition(sX + diffX / 2, sY + diffY / 2, 0.0f);
+    GRAPHICS->SetUV(Vec2(0, 0), Vec2(1, 1));
 
     GRAPHICS->DrawBatched(m_whiteHandle);
 

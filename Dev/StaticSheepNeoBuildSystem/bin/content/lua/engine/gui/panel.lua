@@ -8,7 +8,12 @@ function META:Init()
   self.visible = true
   self.valid = true
   self.camMode = 2
+  self.priority = 0
   self.children = {}
+end
+
+function META:SetPriority(p)
+  self.priority = p
 end
 
 function META:OnDestroy()
