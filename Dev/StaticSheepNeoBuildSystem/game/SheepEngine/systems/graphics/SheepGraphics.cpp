@@ -70,7 +70,7 @@ namespace Framework
       m_renderContext = DirectSheep::RenderContext::Allocate();
       m_renderContext->Initialize(ENGINE->Window->GetHandle(), (float)_ScreenWidth, (float)_ScreenHeight);
     }
-    
+
     Message m(Message::GFXDeviceInit);
     ENGINE->SystemMessage(m);
 
@@ -88,7 +88,6 @@ namespace Framework
     m_debugData.numBatchedCalls = 0;
     m_debugData.numTextDraws = 0;
 #endif
-
     StartFrame();
     Draw();
     FinishFrame();
@@ -101,6 +100,7 @@ namespace Framework
 
   void SheepGraphics::ReceiveMessage(Message& msg)
   {
+    
     if (msg.MessageId == Message::WindowResize)
     {
       if (m_renderContext)
@@ -111,36 +111,24 @@ namespace Framework
 
         m_renderContext->Resize((float)_ScreenWidth, (float)_ScreenHeight);
       }
+    }
 
       if (msg.MessageId == Message::WindowMinimize)
       {
-
+        m_renderContext->SetFullscreen(false);
       }
 
       if (msg.MessageId == Message::WindowRestore)
       {
-
+        m_renderContext->SetFullscreen(true);
       }
       
     }
-  }
 
 	void SheepGraphics::Draw()
 	{
     // Draw Hooks
     GameSpace* space;
-    
-
-    //Vec2 size = m_renderContext->MeasureString("TEST THIS\nSHIT BOOM", 32, "Arial");
-
-    //Draw::SetCamState(0);
-    //Draw::SetColor(1, 0, 0, 1);
-    //Draw::DrawRect(0, -size.y / 2, size.x, size.y);
-    //Draw::SetColor(1, 1, 1, 1);
-    //Draw::SetPosition(0 - size.x / 2, 0);
-    //Draw::SetRotation(0);
-    //Draw::DrawString("TEST THIS\nSHIT BOOM", 32, "Arial");
-    //Draw::SetCamState(0);
 
     m_renderContext->StartBatch();
     // Regular Draw
