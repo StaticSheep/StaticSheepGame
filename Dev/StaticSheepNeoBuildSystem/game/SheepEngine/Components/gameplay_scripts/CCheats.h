@@ -48,7 +48,7 @@ namespace Framework
 		void Initialize();
 		void Remove();
     void RecordButtonPress(Buttons button);
-    Handle playerController;
+    Handle playerController; //to get a hold of the player and change its cheat bools
     PlayerController *pc;
 		//member variables
     bool enabled;     //are cheats turned on?
