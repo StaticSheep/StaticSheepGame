@@ -31,7 +31,7 @@ namespace Framework
     GoldenGun = false;
     PerfectMachine = false;
     normals.clear();
-    snappedLastFrame = false;
+    lastRotation = 0.0f;
 	}
 
 	PlayerController::~PlayerController() //4
@@ -136,26 +136,15 @@ namespace Framework
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
     if (isSnapped)
     {
-      float avX = 0, avY = 0;
-      if (normals.size() != 0)
-      {
-        for (int i = 0; i < normals.size(); ++i)
-        {
-          avX += normals[i].x;
-          avY += normals[i].y;
-        }
-        avX /= normals.size();
-        avY /= normals.size();
-        snappedNormal = Vec3(avX, avY, 0.0);
-      }
+      rotation = (snappedNormal.DotProduct(bc->GetBodyUpNormal())) / (snappedNormal.Length() * bc->GetBodyUpNormal().Length());
+      rotation = std::acosf(rotation);
 
-      float rotation = (snappedNormal.DotProduct(bc->GetBodyUpNormal())) / (snappedNormal.Length() * bc->GetBodyUpNormal().Length());
-      if (rotation >= 0 || rotation <= 0)
+      if (snappedNormal.x == -1.0f)
+        rotation = rotation + (float)PI;
+
+      if (normals.size() < 2 && rotation >=0 || rotation <=0)
       {
-        rotation = std::acosf(rotation);
-        if (snappedNormal.x == -1.0f)
-          rotation = rotation + (float)PI;
-        ps->SetRotation(rotation);
+         ps->SetRotation(rotation);
       }
 
       bc->SetVelocity(snappedNormal * 100);
