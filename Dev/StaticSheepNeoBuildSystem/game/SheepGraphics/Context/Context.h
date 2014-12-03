@@ -1,7 +1,13 @@
 #pragma once
 
+
+#include <map>
+#include "Vertices.h"
 #include "DataTypes.h"
 #include "Vec2D.h"
+#include "Texture/Tex2d.h"
+#include "SafeRelease.h"
+#include "Handle.h"
 
 namespace DirectSheep
 {
@@ -11,6 +17,10 @@ namespace DirectSheep
 
 namespace DirectSheep
 {
+
+  class Camera;
+  class GenEffect;
+  class PointLight;
 
     struct Viewport
     {
@@ -173,6 +183,8 @@ class RenderContext
     void ReleaseIndexBufferIntern(const Handle& indexBuffer);
     void ReleaseConstantBufferIntern(const Handle& constantBuffer);
     void ReleaseRenderTargetIntern(const Handle& renderTarget);
+
+    int test;
 
 
 #if SHEEPGRAPHICS

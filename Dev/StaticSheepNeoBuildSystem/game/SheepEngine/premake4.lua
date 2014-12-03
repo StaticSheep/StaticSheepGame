@@ -32,6 +32,7 @@ project "SheepEngine"
     "../SheepGraphics/include",
     "../SheepPhysics/include",
     "../SheepUtil/include",
+    "../SheepGraphics",
 		--"../cs350hw1"
 
 		-- collapse header dir structure

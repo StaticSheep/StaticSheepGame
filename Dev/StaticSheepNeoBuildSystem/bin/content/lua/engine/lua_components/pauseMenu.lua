@@ -16,7 +16,7 @@ function PauseMenu:CleanUp()
 
   self.base = nil
   self.helpMenu = nil
-  self.opened = false
+  self._opened = false
 end
 
 function PauseMenu:Register(pnl)
@@ -54,7 +54,7 @@ function PauseMenu:AddButton(text)
 end
 
 function PauseMenu:MakeMenu()
-  self.opened = true
+  self._opened = true
   self.ypos = 0
 
   self.menu = CreateMenu(1, 0, {0, 1, 2, 3})
@@ -139,14 +139,14 @@ end
 
 function PauseMenu:CloseMenu()
   self:HideHelpMenu()
-  self.opened = false
+  self._opened = false
   self.menu:SetActive(false)
 end
 
 function PauseMenu:Init()
   self.panels = {}
   self.menu = nil
-  self.opened = false
+  self._opened = false
 
   self.super.Init(self)
 end
@@ -175,7 +175,7 @@ function PauseMenu:PauseSpace(paused)
 end
 
 function PauseMenu:LogicUpdate(deltaTime)
-  if not self.opened and not self.base then
+  if not self._opened and not self.base then
     if KeyIsPressed(KEY_ESCAPE) or
       gamepad.ButtonPressed(nil, GAMEPAD_START) then
 
@@ -188,7 +188,7 @@ function PauseMenu:LogicUpdate(deltaTime)
 end
 
 function PauseMenu:FrameUpdate(deltaTime)
-  if self.opened then
+  if self._opened then
     if self.base.pos.x < 0 then
       self.base.pos.x = self.base.pos.x + 20
     else

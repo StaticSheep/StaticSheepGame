@@ -63,8 +63,10 @@ project "ditfw"
 		-- , depsdir .. "/glsdk/glm"
 		, depsdir .. "/wxwidgets/include"
 		, depsdir .. "/miniformat"
+		, depsdir .. "/FW1FontWrapper/include"
 		, srcdir .. "/../game/SheepGraphics/include"
 		, srcdir .. "/../game/SheepUtil/include"
+		, srcdir .. "/../game/SheepGraphics"
 	}
 
 	Core.deps = 
@@ -75,9 +77,11 @@ project "ditfw"
 		-- , "glload"
 		-- , "glmesh"
 		-- , "glutil"
+		, "dxtk"
 		, "wxWidgets"
 		, "zlib"
 		, "SheepGraphics"
+		, "FW1FontWrapper"
 	}
 
 	Core.libdirs = 

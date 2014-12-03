@@ -11,6 +11,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 #include "types/vectors/Vec2.h"
 #include "types/vectors/Vec4.h"
+#include "Handle.h"
 
 namespace Framework
 {
@@ -44,5 +45,7 @@ namespace Framework
     static Vec2 m_TextPos;
     static bool m_useCamera;
     static int m_whiteTextureID;
+    static DirectSheep::Handle m_whiteHandle;
+    
   };
 }

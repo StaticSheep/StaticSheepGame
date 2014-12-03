@@ -11,7 +11,7 @@ namespace Framework
   {
     delay = 0;
     damage = 20;
-    knockback = 30;
+    knockback = 60;
     semi = true;
   }
 

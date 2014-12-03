@@ -110,13 +110,13 @@ end
 
 function META:_PreDraw()
   if not self.parent then
-    surface.SetCamState(self.camMode)
+    --surface.SetCamState(self.camMode)
   end
 end
 
 function META:_PostDraw()
   if not self.parent then
-    surface.SetCamState(0)
+    --surface.SetCamState(0)
   end
 end
 

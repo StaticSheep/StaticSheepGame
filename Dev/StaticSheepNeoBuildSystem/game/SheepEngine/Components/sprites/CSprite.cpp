@@ -8,7 +8,6 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "pch/precompiled.h"
 #include "CSprite.h"
 #include "systems/graphics/SheepGraphics.h"
-#include "SheepGraphics\api.h"
 
 namespace Framework
 {

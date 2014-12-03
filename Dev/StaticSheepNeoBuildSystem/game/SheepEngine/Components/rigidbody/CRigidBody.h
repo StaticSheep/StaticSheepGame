@@ -67,7 +67,10 @@ namespace Framework
       virtual unsigned int GetBodyVertexNumber(void);
       virtual Vec3D GetBodyVertex(unsigned int vertex);
       void OnCollision(Handle otherObject, SheepFizz::ExternalManifold manifold);
+      
 
+      virtual void UpdateWidth(const void* value);
+      virtual void UpdateHeight(const void* value);
 		// Properties
 		union
 		{

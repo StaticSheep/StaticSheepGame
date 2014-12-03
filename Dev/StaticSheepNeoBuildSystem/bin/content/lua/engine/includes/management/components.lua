@@ -82,6 +82,7 @@ function DeserializeComponent(space, owner, cid, command)
 end
 
 function SerializeComponent(space, owner, cid, CLComp)
+  --print("Serialize Comoonent: "..space.." "..owner.." "..cid)
   local object = GameSpaces[space][owner]
 
   if not object then return end
@@ -107,6 +108,8 @@ function SerializeComponent(space, owner, cid, CLComp)
   end
 
   string = string .. "end"
+
+  --print(string)
 
   CLComp:SendLoadCommand(string)
 end
