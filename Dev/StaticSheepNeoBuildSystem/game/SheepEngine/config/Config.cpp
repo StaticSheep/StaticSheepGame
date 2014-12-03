@@ -26,7 +26,10 @@ namespace Framework
   Engine* AllocateEngine(int argc, char** argv)
   {
     Engine* Core = new Engine();
-
+    
+#ifdef _DEBUG
+    editor = true;
+#else
     if(argc > 1)
     {
       for(int i = 1; i < argc; ++i)
@@ -35,6 +38,7 @@ namespace Framework
           editor = true;
       }
     }
+#endif
 
     Core->AddSystem(new InputManager());
     Core->AddSystem(new Skynet());
