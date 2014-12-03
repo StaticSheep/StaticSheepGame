@@ -111,14 +111,20 @@ namespace Framework
       }
     }
 
-      if (msg.MessageId == Message::WindowMinimize)
+      if (msg.MessageId == Message::WindowMinimize && m_renderContext)
       {
         m_renderContext->SetFullscreen(false);
       }
 
-      if (msg.MessageId == Message::WindowRestore)
+      if (msg.MessageId == Message::WindowRestore && m_renderContext)
       {
         m_renderContext->SetFullscreen(true);
+      }
+
+      if (msg.MessageId == Message::EngineReady)
+      {
+        if (!ENGINE->m_editorAcitve)
+          m_renderContext->SetFullscreen(true);
       }
       
     }

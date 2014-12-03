@@ -48,7 +48,12 @@ namespace Framework
 
   void Draw::SetPosition(float x, float y)
   {
-    GRAPHICS->SetPosition(x, y, -1.0f);
+    GRAPHICS->SetPosition(x, y, 0.0f);
+  }
+
+  void Draw::SetPositionEX(float x, float y, float z)
+  {
+    GRAPHICS->SetPosition(x, y, z);
   }
 
   void Draw::SetColor(float r, float g, float b, float a)
