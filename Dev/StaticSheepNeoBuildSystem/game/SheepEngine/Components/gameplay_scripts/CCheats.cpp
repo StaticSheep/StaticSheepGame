@@ -5,6 +5,7 @@
 #include "../colliders/CBoxCollider.h"
 #include "../sprites/CAniSprite.h"
 #include "../controllers/player/CPlayerController.h"
+#include "../sound/CSoundEmitter.h"
 
 namespace Framework
 {
@@ -51,7 +52,8 @@ namespace Framework
 
   void Cheats::RecordButtonPress(Buttons button)
   {
-    pc = space->GetHandles().GetAs<PlayerController>(playerController);
+    pc = space->GetHandles().GetAs<PlayerController>(playerController); //get the player controller
+
     //if you make a new cheat sequence add it here with the rest to check its update
     GM.CheatUpdate(button);
     GG.CheatUpdate(button);
@@ -89,19 +91,23 @@ namespace Framework
       //check where in the sequence we are
       if (activateSequence[i])
       {
-        if (i == 5)
-        {
-          activated = !activated;
-          ClearSequence();
-          return;
-        }
         continue;
       }
       else
         break;
     }
     if (button == buttonSequence[i])
+    {
       activateSequence[i] = true;
+      if (i == 5)
+      {
+        activated = !activated;
+        AUDIO->Play("weapon_pickup", new SoundInstance(1.0f));
+        ClearSequence();
+        return;
+      }
+    }
+
     else
       ClearSequence();
 

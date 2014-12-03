@@ -115,7 +115,7 @@ namespace Framework
 
   void GameLogic::ReceiveMessage(Message& msg)
   {
-    if (msg.MessageId == Message::PostDraw)
+    if (msg.MessageId == Message::GUIDraw)
       Lua::CallFunc(ENGINE->Lua(), "gui.Draw");
   }
 

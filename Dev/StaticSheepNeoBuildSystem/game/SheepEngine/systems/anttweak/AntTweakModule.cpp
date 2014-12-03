@@ -45,7 +45,7 @@ namespace Framework
   void AntTweakModule::ReceiveMessage(Message& msg)
   {
 #if USE_ANTTWEAKBAR
-    if (msg.MessageId == Message::PostDraw)
+    if (msg.MessageId == Message::PostGUIDraw)
     {
       RemoveBars();
       TwDraw();

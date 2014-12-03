@@ -56,6 +56,7 @@ namespace Framework
       BIND_FUNCTION_TABLE(L, Draw::DrawLine, DrawLine, surface);
       BIND_FUNCTION_TABLE(L, Draw::DrawString, DrawString, surface);
       BIND_FUNCTION_TABLE(L, Draw::SetPosition, SetPos, surface);
+      BIND_FUNCTION_TABLE(L, Draw::SetPositionEX, SetPosEX, surface);
       BIND_FUNCTION_TABLE(L, Draw::MeasureString, MeasureString, surface);
 
       CREATE_TABLE(L, audio);

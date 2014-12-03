@@ -62,8 +62,8 @@ namespace SheepFizz
       //from B to A;
       Vec3D impulse = j * normal;
       
-      if (penetration > 2)
-        impulse *= penetration;
+      if (penetration > .11)
+        impulse *= 1 + penetration;
 
       impulse.z = 0;
 
@@ -123,11 +123,20 @@ namespace SheepFizz
     if (A->massData_.mass == 0 && B->massData_.mass == 0)
       return;
 
+    if (A->massData_.mass > 0 && B->massData_.mass > 0)
+      return;
+
     Vec3D correction = (Maximum(penetration - POSSLACK, 0.0f) /
       (A->massData_.inverseMass + B->massData_.inverseMass)) * POSCORRECT
       * normal;
 
     correction.z = 0;
+
+    if (penetration > .1)
+      correction *= 2;
+
+    if (A->massData_.inverseMass == 0 || B->massData_.inverseMass == 0)
+      correction *= 2;
 
     A->position_ -= A->massData_.inverseMass * correction;
     B->position_ += B->massData_.inverseMass * correction;

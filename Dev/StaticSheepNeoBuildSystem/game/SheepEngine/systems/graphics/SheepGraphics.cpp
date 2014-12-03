@@ -10,9 +10,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include <Windows.h>
 #include "SheepGraphics.h"
 
-#include "SheepGraphics\api.h"
-#include "SheepGraphics\Handle.h"
-#include "SheepGraphics\Context.h"
+#include "systems/graphics/Debug.h"
 
 #include "engine/window/Window32.h"
 
@@ -122,6 +120,12 @@ namespace Framework
       {
         m_renderContext->SetFullscreen(true);
       }
+
+      if (msg.MessageId == Message::EngineReady)
+      {
+        if (!ENGINE->m_editorAcitve)
+          m_renderContext->SetFullscreen(true);
+      }
       
     }
 
@@ -130,6 +134,7 @@ namespace Framework
     // Draw Hooks
     GameSpace* space;
 
+    m_renderContext->SetCamState(0);
     m_renderContext->StartBatch();
     // Regular Draw
     for (auto it = ENGINE->Spaces().begin(); it != ENGINE->Spaces().end(); ++it)
@@ -164,8 +169,19 @@ namespace Framework
 
     m_renderContext->EndBatch();
 
-    Message m(Message::PostDraw);
-    ENGINE->SystemMessage(m);
+    m_renderContext->StartBatch();
+    ENGINE->SystemMessage(Message(Message::PostDraw));
+
+    m_renderContext->EndBatch();
+
+    m_renderContext->SetCamState(2);
+    m_renderContext->StartBatch();
+
+    ENGINE->SystemMessage(Message(Message::GUIDraw));
+    ENGINE->SystemMessage(Message(Message::PostGUIDraw));
+
+    m_renderContext->EndBatch();
+    
 	}
 
   void SheepGraphics::StartFrame()
@@ -244,6 +260,15 @@ namespace Framework
   void SheepGraphics::DrawSprite(Sprite *sprite)
   {
     m_renderContext->DrawBatched(sprite->GetTexture());
+
+#if SHEEP_DEBUG
+    ++(m_debugData.numBatchedCalls);
+#endif
+  }
+
+  void SheepGraphics::DrawBatched(DirectSheep::Handle texture)
+  {
+    m_renderContext->DrawBatched(texture);
 
 #if SHEEP_DEBUG
     ++(m_debugData.numBatchedCalls);

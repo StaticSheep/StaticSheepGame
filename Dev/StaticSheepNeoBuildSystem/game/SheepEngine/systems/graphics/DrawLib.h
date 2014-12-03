@@ -11,6 +11,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 #include "types/vectors/Vec2.h"
 #include "types/vectors/Vec4.h"
+#include "Handle.h"
 
 namespace Framework
 {
@@ -23,6 +24,7 @@ namespace Framework
     static Vec2 GetTextSize(const char* text, const char* font);
     static void SetRotation(float theta);
     static void SetPosition(float x, float y);
+    static void SetPositionEX(float x, float y, float z);
     static void SetColor(float r, float g, float b, float a);
 
     static void DrawRect(float x, float y, float width, float height);
@@ -44,5 +46,7 @@ namespace Framework
     static Vec2 m_TextPos;
     static bool m_useCamera;
     static int m_whiteTextureID;
+    static DirectSheep::Handle m_whiteHandle;
+    
   };
 }

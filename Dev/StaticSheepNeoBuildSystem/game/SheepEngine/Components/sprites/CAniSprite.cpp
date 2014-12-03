@@ -9,8 +9,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "CAniSprite.h"
 
 #include "systems/graphics/SheepGraphics.h"
-#include "SheepGraphics\api.h"
-#include "SheepGraphics\Handle.h"
+#include "Handle.h"
 
 #include "systems\anttweak\TweakHelper.h"
 

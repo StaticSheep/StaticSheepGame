@@ -30,6 +30,7 @@ namespace Framework
     GodMode = false;
     GoldenGun = false;
     PerfectMachine = false;
+    normals.clear();
 	}
 
 	PlayerController::~PlayerController() //4
@@ -134,6 +135,18 @@ namespace Framework
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
     if (isSnapped)
     {
+      /*float avX = 0, avY = 0, avZ = 0;
+      for (int i = 0; i < normals.size(); ++i)
+      {
+        avX += normals[i].x;
+        avY += normals[i].y;
+        avZ += normals[i].z;
+      }
+      avX /= normals.size();
+      avY /= normals.size();
+      avZ /= normals.size();
+      snappedNormal = Vec3(avX, avY, avZ);*/
+
       bc->SetVelocity(snappedNormal * 100);
       bc->SetAngVelocity(0.0);
       if (snappedTo != Handle::null)
@@ -285,10 +298,12 @@ namespace Framework
       exT->SetTranslation(ps->GetTranslation() + Vec3(randomX,randomY,-1.0f));
       return;
     }
-    if ((OtherObject->name == "KillBox" || OtherObject->name == "KillBoxBig") && !GodMode && !PerfectMachine)
+    if ((OtherObject->archetype == "KillBox" ||
+      OtherObject->archetype == "KillBoxBig") && !GodMode && !PerfectMachine)
       health = 0;
 
-    if ((OtherObject->name == "Grinder") && !hasRespawned && !GodMode && !PerfectMachine)
+    if ((OtherObject->GetComponentHandle(eGrinder) != Handle::null)
+      && !hasRespawned && !GodMode && !PerfectMachine)
       health -= 10;
 
     if (OtherObject->name == "WeaponPickup")
@@ -315,6 +330,7 @@ namespace Framework
       
       BoxCollider *bc = space->GetHandles().GetAs<BoxCollider>(playerCollider);
       Transform *ps = space->GetHandles().GetAs<Transform>(playerTransform);
+
       if (oldSnappedNormal.x != OOBc->GetCollisionNormals(manifold).x && oldSnappedNormal.y != OOBc->GetCollisionNormals(manifold).y &&
         snappedNormal.x != OOBc->GetCollisionNormals(manifold).x && snappedNormal.y != OOBc->GetCollisionNormals(manifold).y)
       {
@@ -327,7 +343,9 @@ namespace Framework
           bc->AddToVelocity(-(nextSnappedNormal * 10));
       }
       snappedNormal = OOBc->GetCollisionNormals(manifold);
-      
+
+      normals.push_back(Vec3(snappedNormal));
+
       float rotation = (snappedNormal.DotProduct(bc->GetBodyUpNormal())) / (snappedNormal.Length() * bc->GetBodyUpNormal().Length());
       rotation = std::acosf(rotation);
       if (snappedNormal.x == -1.0f)

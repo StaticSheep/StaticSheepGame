@@ -197,4 +197,16 @@ namespace Framework
     normals_.push_back(normal);
     normals_.push_back(location);
   }
+
+  void RigidBody::UpdateWidth(const void* value)
+  {
+    m_width = *(float*)value;
+    PHYSICS->ChangePhysBodies(space, m_handle, m_width, m_height);
+  }
+
+  void RigidBody::UpdateHeight(const void* value)
+  {
+    m_height = *(float*)value;
+    PHYSICS->ChangePhysBodies(space, m_handle, m_width, m_height);
+  }
 }

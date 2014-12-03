@@ -16,9 +16,10 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 using namespace DirectX;
 
+
+
 namespace DirectSheep
 {
-
   
   /*!
       \brief
