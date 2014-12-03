@@ -11,6 +11,11 @@ function gui.GetPanelMeta(name)
   return PanelFactory[name]
 end
 
+local function SortPanels(p1, p2)
+  if not p2 then return nil end
+  if not p1 then return nil end
+  return p1.priority > p2.priority
+end
 
 function gui.Create( classname, parent, name, ...)
   local panel = gui.Make(classname, parent, name, ...)
@@ -23,6 +28,8 @@ function gui.Create( classname, parent, name, ...)
   else
     panel.id = #gui.panels + 1
     gui.panels[#gui.panels + 1] = panel
+    table.sort(gui.panels, SortPanels)
+    
     --gui.panelcounter = gui.panelcounter + 1
     panel.children = {}
   end
@@ -143,6 +150,9 @@ function gui.Update()
     gui.panels[panel] = nil
   end
 
+  if #removeList > 0 then
+    table.sort(gui.panels, SortPanels)
+  end
 end
 
 function gui.Draw()
