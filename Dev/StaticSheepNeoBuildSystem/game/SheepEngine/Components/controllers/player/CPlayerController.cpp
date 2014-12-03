@@ -32,6 +32,8 @@ namespace Framework
     PerfectMachine = false;
     normals.clear();
     lastRotation = 0.0f;
+    frameSkip = false;
+    frameSkip2 = false;
 	}
 
 	PlayerController::~PlayerController() //4
@@ -136,12 +138,17 @@ namespace Framework
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
     if (isSnapped)
     {
-
-      if (normals.size() < 2 && rotation >=0 || rotation <=0)
+      if (frameSkip)
       {
-        bc->SetBodyRotation(-snappedNormal);
-      }
+        if (frameSkip2)
+        {
+          bc->SetBodyRotation(-snappedNormal);
 
+          normals.clear();
+        }
+        frameSkip2 = !frameSkip2;
+      }
+      frameSkip = !frameSkip;
       bc->SetVelocity(snappedNormal * 100);
       bc->SetAngVelocity(0.0);
       if (snappedTo != Handle::null)
@@ -216,6 +223,7 @@ namespace Framework
       {
         bc->AddToVelocity(-(snappedNormal * 600));
         isSnapped = false;
+        normals.clear();
         if (GetRandom(0, 1))
           se->Play("jump2", &SoundInstance(0.75f));
         else
@@ -225,11 +233,10 @@ namespace Framework
         else if (gp->ButtonPressed(XButtons.LShoulder))
           space->GetGameObject(owner)->hooks.Call("ButtonPressed", Buttons::LB);
       }
-      normals.clear();
     }
     else
     {
-
+      normals.clear();
     }
 ////////////////////////////////////////////////////////////////
 		//melee
@@ -340,11 +347,35 @@ namespace Framework
       }
       snappedNormal = OOBc->GetCollisionNormals(manifold);
 
-      normals.push_back(Vec3(snappedNormal));
+      //i have to set up a bool flag here for finding a matching vector
+      bool dublicate = false;
+      for (int i = 0; i < normals.size(); ++i)
+      {
+        if (snappedNormal.x == normals[i].x && snappedNormal.y == normals[i].y)
+          dublicate = true;
+      }
+      if (dublicate == false)
+        normals.push_back(Vec3(snappedNormal));
+
+      if (normals.size() == 0)
+        normals.push_back(Vec3(snappedNormal));
 
       isSnapped = true;
       //get the thing we are colliding with
       snappedTo = otherObject;
+      float avX = 0, avY = 0;
+      for (int i = 0; i < normals.size(); ++i)
+      {
+        avX += normals[i].x;
+        avY += normals[i].y;
+      }
+      if (normals.size() != 0)
+      {
+        avX /= normals.size();
+        avY /= normals.size();
+        Vec3 averaged(avX, avY, 0.0f);
+        snappedNormal = averaged;
+      }
 		}
 		else if (OtherObject->HasComponent(eCircleCollider))
 		{
