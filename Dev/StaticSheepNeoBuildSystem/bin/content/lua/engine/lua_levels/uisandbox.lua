@@ -32,14 +32,14 @@ function Sandbox:Create()
 
   self.base = gui.Create("Frame")
   self:Register(self.base)
-  self.base:SetColor(Color(50, 50, 50, 100))
+  self.base:SetColor(Color(50, 50, 50, 200))
   self.base:SetBGColor(Color(100, 100, 100, 100))
   self.base:SetBorder(2)
-  self.base:SetSize(150, 150)
-  self.base:SetPos(ScrW() / 2, 70)
+  self.base:SetSize(ScrW(), ScrH())
+  self.base:SetPos(0, 0)
 end
 
 function Sandbox:Update()
 end
 
-Sandbox:Create()
+--Sandbox:Create()
