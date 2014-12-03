@@ -98,16 +98,15 @@ namespace Framework
     case WM_ACTIVATE:
       if (wParam == WA_INACTIVE && !ENGINE->m_editorAcitve)
       {
-        ShowWindow(hWnd, SW_MINIMIZE);
-
         ENGINE->SystemMessage(Message(Message::WindowMinimize));
+
+        ShowWindow(hWnd, SW_MINIMIZE);
       }
-
-      else if (wParam == WA_CLICKACTIVE && !ENGINE->m_editorAcitve)
+      else if (wParam == WA_CLICKACTIVE || wParam == WA_ACTIVE && !ENGINE->m_editorAcitve)
       {
-        ShowWindow(hWnd, SW_RESTORE);
-
         ENGINE->SystemMessage(Message(Message::WindowRestore));
+
+        ShowWindow(hWnd, SW_RESTORE);
       }
       break;
 

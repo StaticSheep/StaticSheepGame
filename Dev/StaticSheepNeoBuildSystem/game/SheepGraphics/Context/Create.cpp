@@ -203,10 +203,8 @@ namespace DirectSheep
     swapDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;     // use buffer as render target
     swapDesc.OutputWindow = m_hwnd;                             // attach to window
     swapDesc.SampleDesc.Count = 4;                              // # of multisamples
-    swapDesc.Windowed = true;                           // windowed/full-screen mode
+    swapDesc.Windowed = !m_fullscreen;                          // windowed/full-screen mode
     swapDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;    // allow full-screen switching
-    //swapDesc.BufferDesc.RefreshRate.Numerator = 60;
-    //swapDesc.BufferDesc.RefreshRate.Denominator	= 1;
 
     // create DirectX device, it's context, and swapchain using swapDesc
 
