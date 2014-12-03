@@ -16,6 +16,7 @@ namespace Framework
   Vec4 Draw::m_Color;
   Vec2 Draw::m_TextPos;
   unsigned Draw::m_TextureID;
+  int Draw::m_whiteTextureID = -1;
 
   void Draw::SetCamState(int camState)
   {
@@ -59,7 +60,10 @@ namespace Framework
   {
     GRAPHICS->SetSize(width, height);
     GRAPHICS->SetPosition(x, y, 0.0f);
-    GRAPHICS->BindTexture(GRAPHICS->GetTextureID("White.png"));
+
+    if (m_whiteTextureID == -1)
+      m_whiteTextureID = GRAPHICS->GetTextureID("White.png");
+    GRAPHICS->BindTexture(m_whiteTextureID);
     GRAPHICS->RawDraw();
   }
 

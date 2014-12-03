@@ -26,11 +26,14 @@ namespace Framework
     Handle levelCamera;
     Handle levelTransform;
     Handle levelEmitter;
-    Vec3 spawnPos[4];
+    Vec3 spawnPos[6];
     Handle Players[4];
     float spawnTimers[4];
     int numOfPlayers;
     bool camShake, shake;
     float shakeTime;
+
+    int GetPlayerHealth(int);
+    int GetPlayerLives(int);
 	};
 }

@@ -8,7 +8,7 @@ namespace Framework
     virtual ~Weapon() {};
     virtual void Fire(GameObject*) = 0;
 
-    int delay;  //delay between shots
+    float delay;  //delay between shots
     int damage; //damage caused by weapon
     int knockback; //how much the weapon knocks the player back in zero gravity
     bool semi; //is the weapon semi-auto or automatic

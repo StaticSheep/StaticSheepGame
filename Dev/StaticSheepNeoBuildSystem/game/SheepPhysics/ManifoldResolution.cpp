@@ -51,7 +51,7 @@ namespace SheepFizz
         (bRepulsionCrossNorm.z_ * bRepulsionCrossNorm.z_ * B->massData_.inverseInertia);
 
       //calculate impulse scalar : "j"
-      float j = -(1.0f + mResitution) * contactVelocity / inverseMassSum;
+      float j = -(1.0f + (mResitution * .5)) * contactVelocity / inverseMassSum;
 
       float accumulatedPrev = accumulatedImpulse[i];
       accumulatedImpulse[i] = Maximum(j + accumulatedImpulse[i], 0);
@@ -61,6 +61,9 @@ namespace SheepFizz
       //A's impulse is negative because the normal is
       //from B to A;
       Vec3D impulse = j * normal;
+      
+      if (penetration > 2)
+        impulse *= penetration;
 
       impulse.z = 0;
 
@@ -110,4 +113,25 @@ namespace SheepFizz
     }
 
   }//end of ApplyForces
+
+
+  //positional correction is designed to prevent sinking of one
+  //object into another
+  void Manifold::PositionalCorrection(void)
+  {
+    //if both objects have infinite mass, skip calculations
+    if (A->massData_.mass == 0 && B->massData_.mass == 0)
+      return;
+
+    Vec3D correction = (Maximum(penetration - POSSLACK, 0.0f) /
+      (A->massData_.inverseMass + B->massData_.inverseMass)) * POSCORRECT
+      * normal;
+
+    correction.z = 0;
+
+    A->position_ -= A->massData_.inverseMass * correction;
+    B->position_ += B->massData_.inverseMass * correction;
+
+  }//end of PositionalCorrection
+
 }

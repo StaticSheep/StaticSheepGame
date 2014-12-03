@@ -23,10 +23,12 @@ namespace Framework
     timeLimit = 60;
     spawnTimer = 3;
     numOfPlayers = 1;
-    spawnPos[0] = Vec3(-700.0f, -450.0f, 0.0f);
-    spawnPos[1] = Vec3(700.0f, -450.0f, 0.0f);
-    spawnPos[2] = Vec3(700.0f, 450.0f, 0.0f);
-    spawnPos[3] = Vec3(-700.0f, 450.0f, 0.0f);
+    spawnPos[0] = Vec3(-650.0f, -435.0f, 0.0f);
+    spawnPos[1] = Vec3(650.0f, -435.0f, 0.0f);
+    spawnPos[2] = Vec3(650.0f, 435.0f, 0.0f);
+    spawnPos[3] = Vec3(-650.0f, 435.0f, 0.0f);
+    spawnPos[4] = Vec3(0.0f, 435.0f, 0.0f);
+    spawnPos[5] = Vec3(0.0f, -435.0f, 0.0f);
     warning = false;
     camShake = false;
     shake = true;
@@ -80,13 +82,13 @@ namespace Framework
       Transform *PT = ePlat->GetComponent<Transform>(eTransform);
       //BoxCollider *platC = ePlat->GetComponent <BoxCollider>(eBoxCollider);
       ePlat->GetComponent<ElevatorPlat>(eElevatorPlat)->direction = true;
-      PT->SetTranslation(Vec3(320.0,-520.0,0.9));
+      PT->SetTranslation(Vec3(320.0f,-520.0f,0.9f));
 
       if (randomDrop == 0)
       {
         GameObject *weap = (FACTORY->LoadObjectFromArchetype(space, "ShotgunPickup"));
         Transform *WT = weap->GetComponent<Transform>(eTransform);
-        WT->SetTranslation(PT->GetTranslation() + Vec3(0.0, 48.0, 0.0));
+        WT->SetTranslation(PT->GetTranslation() + Vec3(0.0, 68.0, 0.0));
       }
 
       randomDrop = GetRandom(0, 2);
@@ -95,13 +97,13 @@ namespace Framework
       Transform *PT2 = ePlat2->GetComponent<Transform>(eTransform);
       //BoxCollider *platC2 = ePlat2->GetComponent <BoxCollider>(eBoxCollider);
       ePlat2->GetComponent<ElevatorPlat>(eElevatorPlat)->direction = false;
-      PT2->SetTranslation(Vec3(-320.0, 520.0, 0.9));
+      PT2->SetTranslation(Vec3(-320.0f, 520.0f, 0.9f));
 
       if (randomDrop == 0)
       {
         GameObject *weap = (FACTORY->LoadObjectFromArchetype(space, "AutoPickup"));
         Transform *WT = weap->GetComponent<Transform>(eTransform);
-        WT->SetTranslation(PT2->GetTranslation() + Vec3(0.0, -48.0, 0.0));
+        WT->SetTranslation(PT2->GetTranslation() + Vec3(0.0, -68.0, 0.0));
       }
 
       spawnTimer = 3;
@@ -122,7 +124,7 @@ namespace Framework
         eGiantPlat->GetComponent<GiantKillBox>(eGiantKillBox)->direction = false;
         GPT->SetTranslation(Vec3(-1000.0, 0.0, 0.0));
       }
-      timeLimit = GetRandom(30, 60);
+      timeLimit = (float)GetRandom(30, 60);
       warning = false;
       camShakeTime = 8.5f;
       camShakeMagnitude = 4;
@@ -172,21 +174,23 @@ namespace Framework
       }
       startFlag = false;
     }
-
-    for (int i = 0; i < numOfPlayers; ++i)
+    else
     {
-      if (Players[i] == Handle::null && spawnTimers[i] <= 0)
+      for (int i = 0; i < numOfPlayers; ++i)
       {
-        Players[i] = (FACTORY->LoadObjectFromArchetype(space, playerNames[i]))->self;
+        int ranStart = GetRandom(0, 5);
+        if (Players[i] == Handle::null && spawnTimers[i] <= 0)
+        {
+          Players[i] = (FACTORY->LoadObjectFromArchetype(space, playerNames[i]))->self;
 
-        playTrans = space->GetGameObject(Players[i])->GetComponent<Transform>(eTransform);
-        playTrans->SetTranslation(spawnPos[i]);
-        spawnTimers[i] = 2.0f;
-        space->GetGameObject(Players[i])->GetComponent<PlayerController>(ePlayerController)->hasRespawned = true;
+          playTrans = space->GetGameObject(Players[i])->GetComponent<Transform>(eTransform);
+          playTrans->SetTranslation(spawnPos[ranStart]);
+          spawnTimers[i] = 2.0f;
+          space->GetGameObject(Players[i])->GetComponent<PlayerController>(ePlayerController)->hasRespawned = true;
+        }
+        else if (Players[i] == Handle::null && spawnTimers[i] > 0)
+          spawnTimers[i] -= dt;
       }
-      else if (Players[i] == Handle::null && spawnTimers[i] > 0)
-        spawnTimers[i] -= dt;
-      
     }
 
   }
@@ -210,8 +214,8 @@ namespace Framework
     Transform *lc = space->GetHandles().GetAs<Transform>(levelTransform);
     if (shake)
     {
-      float distanceX = GetRandom(-magnitude, magnitude);
-      float distanceY = GetRandom(-magnitude, magnitude);
+      float distanceX = (float)GetRandom(-magnitude, magnitude);
+      float distanceY = (float)GetRandom(-magnitude, magnitude);
       lc->SetTranslation(lc->GetTranslation() + Vec3(distanceX, distanceY, 0.0));
       shake = false;
     }
@@ -227,5 +231,20 @@ namespace Framework
     }
 
     camShakeTime -= dt;
+  }
+
+  int Level1_Logic::GetPlayerHealth(int ply)
+  {
+    if (Players[ply] == Handle::null)
+      return 0;
+    else
+    {
+      return space->GetGameObject(Players[ply])->GetComponent<PlayerController>(ePlayerController)->CurrentHealth();
+    }
+  }
+
+  int Level1_Logic::GetPlayerLives(int ply)
+  {
+    return 5;
   }
 }

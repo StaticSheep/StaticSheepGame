@@ -15,6 +15,7 @@ function PauseMenu:CleanUp()
   end
 
   self.base = nil
+  self.helpMenu = nil
   self.opened = false
 end
 
@@ -79,20 +80,67 @@ function PauseMenu:MakeMenu()
   local btn
   btn = self:AddButton("Resume")
   btn:SetOnPressed(function()
-    self.opened = false
-    self.menu:SetActive(false)
+    self:CloseMenu()
   end)
 
-  btn = self:AddButton("Options")
+  btn = self:AddButton("How to Play")
   btn:SetOnPressed(function()
-    print("Options menu")
+    self:MakeHelpMenu()
   end)
 
-  btn = self:AddButton("End Match")
+  btn = self:AddButton("Quit Game")
+  btn.firstPress = true
   btn:SetOnPressed(function()
-    print("End the match")
-
+    if btn.firstPress then
+      btn.firstPress = false
+      btn:SetText("Quit Game [CONFIRM]")
+    else
+      print("QUIT THE GAME")
+    end
   end)
+
+  local rights = gui.Create("Label", self.base)
+  self:Register(rights)
+  rights:SetPos(self.base:GetSize().x / 2, ScrH() - 100)
+  rights:SetText("All content (c) 2014 DigiPen (USA) Corporation, all rights reserved.\nFMOD Studio Copyright (c) 2005-2011 Firelight Technologies Pty, Ltd.")
+  rights:SetXAlignment(TEXT_ALIGN_CENTER)
+end
+
+function PauseMenu:MakeHelpMenu()
+  if not self.base then return end
+  if self.helpMenu then return end
+
+  local helpMenu = gui.Create("FlatPane", self.base)
+  self:Register(helpMenu)
+  helpMenu:SetColor(Color(0, 0, 0, 220))
+  helpMenu:SetSize(ScrW() * 3 / 4, ScrH())
+  helpMenu:SetPos(ScrW() / 4, 0)
+
+  self.helpMenu = helpMenu
+
+  local helpImage = gui.Create("Image", helpMenu)
+  self:Register(helpImage)
+  helpImage:SetSize(helpMenu:GetSize().x * 0.6, helpMenu:GetSize().y * 0.6)
+  helpImage:SetPos(helpMenu:GetSize().x * 0.2, helpMenu:GetSize().y * 0.1)
+  helpImage:SetTexture("Controller_Instructions2.png")
+
+  local helpText = gui.Create("Label", helpMenu)
+  self:Register(helpText)
+  helpText:SetText("Keyboard Controls:\nW,A,S,D - Menu Navigation\nENTER - Menu Selection")
+  helpText:SetPos(helpMenu:GetSize().x * 0.2, helpMenu:GetSize().y * 0.6 + helpMenu:GetSize().y * 0.1 + 10)
+  helpText:SetSize(24)
+end
+
+function PauseMenu:HideHelpMenu()
+  if self.helpMenu then
+    self.helpMenu.visible = false
+  end
+end
+
+function PauseMenu:CloseMenu()
+  self:HideHelpMenu()
+  self.opened = false
+  self.menu:SetActive(false)
 end
 
 function PauseMenu:Init()
@@ -106,6 +154,9 @@ end
 function PauseMenu:Refresh()
   self:CleanUp()
   self:PauseSpace(false)
+
+  self:PauseSpace(true)
+  self:MakeMenu()
   --self:MakeMenu()
 end
 
@@ -144,8 +195,7 @@ function PauseMenu:FrameUpdate(deltaTime)
       if KeyIsPressed(KEY_ESCAPE) or
         gamepad.ButtonPressed(nil, GAMEPAD_START) then
 
-        self.opened = false
-        self.menu:SetActive(false)
+        self:CloseMenu()
       end
 
     end

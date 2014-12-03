@@ -36,6 +36,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "types/weapons/WAutomatic.h"
 #include "components/gameplay_scripts/CWarningText.h"
 #include "components/gameplay_scripts/CBackgroundPan.h"
+#include "components/gameplay_scripts/CCheats.h"
 
 
 namespace Framework
@@ -208,6 +209,10 @@ namespace Framework
     TYPE_SET_TWEAK_TYPE(WeaponPickup, AntTweak::TW_TYPE_COMPONENT);
     TYPE_ADD_MEMBER(WeaponPickup, weaponID, false, true, "Weapon Type");
     TYPE_ADD_MEMBER(WeaponPickup, weaponNum, false, true, "Weapon Num");
+
+    TYPE_REGISTER(Cheats);
+    TYPE_SET_TWEAK_TYPE(Cheats, AntTweak::TW_TYPE_COMPONENT);
+    TYPE_ADD_MEMBER(Cheats, enabled, false, true, "Enable?");
 
     TYPE_REGISTER(Pistol);
     TYPE_REGISTER(Shotgun);

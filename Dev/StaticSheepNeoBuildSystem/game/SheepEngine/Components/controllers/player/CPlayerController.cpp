@@ -8,6 +8,8 @@
 #include "types/weapons/WPistol.h"
 #include "../../gameplay_scripts/CBullet_default.h"
 #include "../../sprites/CAniSprite.h"
+#include "../../gameplay_scripts/CCheats.h"
+
 
 namespace Framework
 {
@@ -25,7 +27,9 @@ namespace Framework
     hasRespawned = false;
     blink = false;
     weapon = nullptr;
-
+    GodMode = false;
+    GoldenGun = false;
+    PerfectMachine = false;
 	}
 
 	PlayerController::~PlayerController() //4
@@ -208,6 +212,10 @@ namespace Framework
           se->Play("jump2", &SoundInstance(0.75f));
         else
           se->Play("jump1", &SoundInstance(0.75f));
+        if (gp->ButtonPressed(XButtons.A))
+          space->GetGameObject(owner)->hooks.Call("ButtonPressed", Buttons::A);
+        else if (gp->ButtonPressed(XButtons.LShoulder))
+          space->GetGameObject(owner)->hooks.Call("ButtonPressed", Buttons::LB);
       }
       
     }
@@ -220,14 +228,33 @@ namespace Framework
 		if (gp->ButtonPressed(XButtons.B))
 		{
       Melee();
+      space->GetGameObject(owner)->hooks.Call("ButtonPressed", Buttons::B);
 		}
 
 		if (gp->ButtonPressed(XButtons.X))
 		{
 			//bc->AddToAngVelocity(.5f);
-		}
+      space->GetGameObject(owner)->hooks.Call("ButtonPressed", Buttons::X);
+		} 
+    /*if (gp->RightTrigger())
+      space->GetGameObject(owner)->hooks.Call("ButtonPressed", 9);
+      if (gp->LeftTrigger())
+      space->GetGameObject(owner)->hooks.Call("ButtonPressed", 8);*/
+    if (gp->ButtonPressed(XButtons.Y))
+      space->GetGameObject(owner)->hooks.Call("ButtonPressed", Buttons::Y);  
+    if (gp->ButtonPressed(XButtons.DPad.Up))
+      space->GetGameObject(owner)->hooks.Call("ButtonPressed", Buttons::UP);
+    if (gp->ButtonPressed(XButtons.DPad.Down))
+      space->GetGameObject(owner)->hooks.Call("ButtonPressed", Buttons::DOWN);
+    if (gp->ButtonPressed(XButtons.DPad.Left))
+      space->GetGameObject(owner)->hooks.Call("ButtonPressed", Buttons::LEFT);
+    if (gp->ButtonPressed(XButtons.DPad.Right))
+      space->GetGameObject(owner)->hooks.Call("ButtonPressed", Buttons::RIGHT);
 
     SetAnimations();
+
+    if (ps->GetTranslation().x > 1000 || ps->GetTranslation().x < -1000 || ps->GetTranslation().y > 500 || ps->GetTranslation().y < -500)
+      PlayerDeath(se, ps);
 
     isSnapped = false;
 	}
@@ -246,7 +273,7 @@ namespace Framework
 	{
     SoundEmitter *se = space->GetHandles().GetAs<SoundEmitter>(playerSound);
     GameObject *OtherObject = space->GetHandles().GetAs<GameObject>(otherObject);
-    if (OtherObject->name == "Bullet" && !hasRespawned)
+    if (OtherObject->name == "Bullet" && !hasRespawned && !GodMode && !PerfectMachine)
     {
       health -= OtherObject->GetComponent<Bullet_Default>(eBullet_Default)->damage;
       float randomX = GetRandom(-25, 25);
@@ -258,15 +285,16 @@ namespace Framework
       exT->SetTranslation(ps->GetTranslation() + Vec3(randomX,randomY,-1.0f));
       return;
     }
-    if (OtherObject->name == "KillBox" || OtherObject->name == "KillBoxBig")
+    if ((OtherObject->name == "KillBox" || OtherObject->name == "KillBoxBig") && !GodMode && !PerfectMachine)
       health = 0;
 
-    if ((OtherObject->name == "Grinder") && !hasRespawned)
+    if ((OtherObject->name == "Grinder") && !hasRespawned && !GodMode && !PerfectMachine)
       health -= 10;
+
     if (OtherObject->name == "WeaponPickup")
       se->Play("weapon_pickup", &SoundInstance(0.75f));
 
-    if (OtherObject->name == "GrinderBig")
+    if (OtherObject->name == "GrinderBig" && !GodMode && !PerfectMachine)
     {
       health -= 100;
     }
@@ -291,7 +319,7 @@ namespace Framework
         snappedNormal.x != OOBc->GetCollisionNormals(manifold).x && snappedNormal.y != OOBc->GetCollisionNormals(manifold).y)
       {
         nextSnappedNormal = OOBc->GetCollisionNormals(manifold);
-        nextSnappedNormal.Rotate(PI / 2);
+        nextSnappedNormal.Rotate((float)PI / 2);
         dotNormals = snappedNormal.DotProduct(nextSnappedNormal);
         if (dotNormals > 0)
           bc->AddToVelocity((nextSnappedNormal * 10));
@@ -346,12 +374,15 @@ namespace Framework
 	//************************************
 	void PlayerController::onFire()
 	{
+    if (GodMode == true || GoldenGun == true)
+      weapon->damage = 100;
+
     weapon->Fire(space->GetHandles().GetAs<GameObject>(owner));
 
     if (!isSnapped)
     {
       BoxCollider *bc = space->GetHandles().GetAs<BoxCollider>(playerCollider);
-      bc->AddToVelocity(-aimDir * (weapon->knockback));
+      bc->AddToVelocity(-aimDir * (float)(weapon->knockback));
     }
 	}
 
@@ -501,5 +532,11 @@ namespace Framework
       }
     }
     
+  }
+
+
+  int PlayerController::CurrentHealth()
+  {
+    return health;
   }
 }
