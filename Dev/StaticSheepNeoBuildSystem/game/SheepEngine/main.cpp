@@ -21,8 +21,8 @@
 #include <iostream>
 
 
-#include "wxeditor/App.h"
-#include "wx\app.h"
+//#include "wxeditor/App.h"
+//#include "wx\app.h"
 
 #pragma comment (lib, "SheepGraphics.lib")
 #pragma comment (lib, "SheepPhysics.lib")
@@ -60,7 +60,7 @@ int main(int argc, char** argv)
 
   OpenConsole();
 
-  Engine* Core = AllocateEngine();
+  Engine* Core = AllocateEngine(argc, argv);
   InitEngine();
 
   while (ENGINE->Running())

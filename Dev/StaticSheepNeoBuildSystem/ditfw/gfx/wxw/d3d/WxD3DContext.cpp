@@ -18,7 +18,8 @@
 
 #include "d3d/WxD3DCanvas.h"
 
-#include "SheepGraphics/Context.h"
+#define SHEEPGRAPHICS 1
+#include "Context/Context.h"
 
 #ifdef D3DGetContext
 #undef D3DGetContext

@@ -17,6 +17,7 @@ namespace Framework
   Vec2 Draw::m_TextPos;
   unsigned Draw::m_TextureID;
   int Draw::m_whiteTextureID = -1;
+  DirectSheep::Handle Draw::m_whiteHandle(DirectSheep::TEXTURE, 0);
 
   void Draw::SetCamState(int camState)
   {
@@ -62,9 +63,13 @@ namespace Framework
     GRAPHICS->SetPosition(x, y, 0.0f);
 
     if (m_whiteTextureID == -1)
+    {
       m_whiteTextureID = GRAPHICS->GetTextureID("White.png");
-    GRAPHICS->BindTexture(m_whiteTextureID);
-    GRAPHICS->RawDraw();
+      new (&m_whiteHandle) DirectSheep::Handle(DirectSheep::TEXTURE, m_whiteTextureID);
+    }
+      
+    //GRAPHICS->BindTexture(m_whiteTextureID);
+    GRAPHICS->DrawBatched(m_whiteHandle);
   }
 
   void Draw::DrawTexturedRect(float x, float y, float width, float height)
@@ -72,18 +77,22 @@ namespace Framework
     GRAPHICS->SetSize(width, height);
     GRAPHICS->SetPosition(x, y, 0.0f);
     
-    GRAPHICS->BindTexture(m_TextureID);
-    GRAPHICS->RawDraw();
-
+//     GRAPHICS->BindTexture(m_TextureID);
+//     GRAPHICS->RawDraw();
+    GRAPHICS->SetUV(Vec2(0, 0), Vec2(1, 1));
+    GRAPHICS->DrawBatched(DirectSheep::Handle(DirectSheep::TEXTURE, m_TextureID));
   }
 
   void Draw::DrawTexturedRectRotated(float x, float y, float width, float height, float theta)
   {
     GRAPHICS->SetSize(width, height);
     GRAPHICS->SetPosition(x, y, 0.0f);
-    GRAPHICS->BindTexture(m_TextureID);
+    //GRAPHICS->BindTexture(m_TextureID);
+
+
+    GRAPHICS->SetUV(Vec2(0, 0), Vec2(1, 1));
     GRAPHICS->SetRotation(theta);
-    GRAPHICS->RawDraw();
+    GRAPHICS->DrawBatched(DirectSheep::Handle(DirectSheep::TEXTURE, m_TextureID));
     
     GRAPHICS->SetRotation(0);
   }
@@ -92,8 +101,19 @@ namespace Framework
   {
     float diffX = eX - sX;
     float diffY = eY - sY;
+
+    if (m_whiteTextureID == -1)
+      m_whiteTextureID = GRAPHICS->GetTextureID("White.png");
+
     GRAPHICS->SetSize(sqrt(diffX * diffX + diffY * diffY), width);
-    GRAPHICS->BindTexture(GRAPHICS->GetTextureID("White.png"));
+
+    if (m_whiteTextureID == -1)
+    {
+      m_whiteTextureID = GRAPHICS->GetTextureID("White.png");
+      new (&m_whiteHandle) DirectSheep::Handle(DirectSheep::TEXTURE, m_whiteTextureID);
+    }
+
+    //GRAPHICS->BindTexture(m_whiteTextureID);
 
     float rotation = (float)Framework::PI / 2.0f;
     if (diffX != 0)
@@ -106,7 +126,7 @@ namespace Framework
 
     GRAPHICS->SetPosition(sX + diffX / 2, sY + diffY / 2, 0.0f);
 
-    GRAPHICS->RawDraw();
+    GRAPHICS->DrawBatched(m_whiteHandle);
 
   }
 

@@ -126,7 +126,7 @@ namespace Framework
     ofn.nFilterIndex =1;
     ofn.lpstrFileTitle = NULL ;
     ofn.nMaxFileTitle = 0 ;
-    ofn.lpstrInitialDir="content\\data\\spaces";
+    ofn.lpstrInitialDir="content\\data\\levels";
     ofn.Flags = OFN_PATHMUSTEXIST;
     GetSaveFileName(&ofn);
 

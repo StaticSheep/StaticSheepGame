@@ -122,7 +122,7 @@ namespace Framework
   {
     Window->Update();
 
-    m_time += Framerate.GetDT() * 1000;
+    m_time += Framerate.GetDT() * 1000.0f;
 
     for (auto it = m_spaces.begin(); it != m_spaces.end(); ++it)
       if (!(*it)->m_ready)

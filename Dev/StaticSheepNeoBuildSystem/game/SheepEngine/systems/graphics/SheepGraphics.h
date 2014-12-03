@@ -18,7 +18,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 #include "systems/System.h"
 
-#include "SheepGraphics/Handle.h"
+#include "Handle.h"
 
 #include "types/vectors/Vec2.h"
 #include "types/vectors/Vec4.h"
@@ -68,6 +68,7 @@ namespace Framework
     DirectSheep::Handle SetTexture(const std::string& Texture);
 
     void RawDraw(void);
+    void DrawBatched(DirectSheep::Handle texture);
     void DrawSprite(Sprite *sprite);
     void DrawSpriteText(const char * text, float size, const char * font);
 

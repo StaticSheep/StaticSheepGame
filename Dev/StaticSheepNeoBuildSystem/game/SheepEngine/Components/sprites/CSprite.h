@@ -10,7 +10,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "types/vectors/Vec2.h"
 #include "components/base/Component.h"
 #include "components/transform/CTransform.h"
-#include "SheepGraphics\Handle.h"
+#include "Handle.h"
 
 namespace Framework
 {
