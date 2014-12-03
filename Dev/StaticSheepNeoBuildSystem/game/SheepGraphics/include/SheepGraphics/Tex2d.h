@@ -17,6 +17,7 @@ namespace DirectSheep
 
 
 
+
   private:
     ID3D11Texture2D* m_rawTex;
     ID3D11RenderTargetView* m_renderTarget;

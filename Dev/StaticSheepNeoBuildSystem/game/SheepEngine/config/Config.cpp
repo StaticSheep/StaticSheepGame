@@ -2,7 +2,7 @@
 
 #include "Config.h"
 
-#include "wxeditor/App.h"
+//#include "wxeditor/App.h"
 
 #include "engine/core/Engine.h"
 
@@ -16,8 +16,8 @@
 #include "systems/skynet/Skynet.h"
 
 #include "WxWindow.h"
-#include "gfx/wxw/d3d/WxD3DCanvas.h"
-#include "gfx/wxw/d3d/WxD3DContext.h"
+//#include "gfx/wxw/d3d/WxD3DCanvas.h"
+//#include "gfx/wxw/d3d/WxD3DContext.h"
 
 
 namespace Framework

@@ -21,8 +21,8 @@
 #include <iostream>
 
 
-#include "wxeditor/App.h"
-#include "wx\app.h"
+//#include "wxeditor/App.h"
+//#include "wx\app.h"
 
 #pragma comment (lib, "SheepGraphics.lib")
 #pragma comment (lib, "SheepPhysics.lib")

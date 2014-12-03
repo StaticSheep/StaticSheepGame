@@ -27,3 +27,4 @@
 #define DXVerify(x) (x)
 #endif
 
+#include "SafeRelease.h"

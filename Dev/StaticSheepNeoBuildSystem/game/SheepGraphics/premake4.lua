@@ -67,7 +67,13 @@ project "SheepGraphics"
   {
   	"..\\..\\..\\tools\\AutoHeaderVS.exe $(SolutionDir)..\\..\\game\\SheepGraphics\\ $(SolutionDir)..\\..\\game\\SheepGraphics\\include\\SheepGraphics\\ GFX_API",
     "..\\..\\..\\tools\\AutoHeaderVS.exe $(SolutionDir)..\\..\\game\\SheepGraphics\\Context\\ $(SolutionDir)..\\..\\game\\SheepGraphics\\include\\SheepGraphics\\ GFX_API",
-	}
+	  "..\\..\\..\\tools\\AutoHeaderVS.exe $(SolutionDir)..\\..\\game\\SheepGraphics\\Texture\\ $(SolutionDir)..\\..\\game\\SheepGraphics\\include\\SheepGraphics\\ GFX_API",
+    "..\\..\\..\\tools\\AutoHeaderVS.exe $(SolutionDir)..\\..\\game\\SheepGraphics\\Camera\\ $(SolutionDir)..\\..\\game\\SheepGraphics\\include\\SheepGraphics\\ GFX_API",
+    "..\\..\\..\\tools\\AutoHeaderVS.exe $(SolutionDir)..\\..\\game\\SheepGraphics\\Effects\\ $(SolutionDir)..\\..\\game\\SheepGraphics\\include\\SheepGraphics\\ GFX_API",
+
+  }
+
+
 
 	libdirs
   {

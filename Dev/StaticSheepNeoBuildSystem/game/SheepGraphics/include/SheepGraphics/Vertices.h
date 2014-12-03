@@ -1,6 +1,6 @@
 #pragma once
-#include "SimpleMath.h"
 
+#include "SimpleMath.h"
 namespace DirectSheep
 {
   // Our Custom Vertex

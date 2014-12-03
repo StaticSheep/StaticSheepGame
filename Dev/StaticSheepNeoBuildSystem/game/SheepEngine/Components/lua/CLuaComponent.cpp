@@ -18,17 +18,20 @@ namespace Framework
 
   void LuaComponent::Initialize()
   {
-    Lua::CallFunc(ENGINE->Lua(), "AttachComponentToObject", space->GetName().c_str(), owner.operator unsigned(), self.operator unsigned(), name.c_str());
+    Lua::CallFunc(ENGINE->Lua(), "AttachComponentToObject", space->GetName().c_str(),
+      owner.operator unsigned(), self.operator unsigned(), name.c_str());
 
     if (loadCommand.length() > 0)
     {
-      Lua::CallFunc(ENGINE->Lua(), "DeserializeComponent", space->GetName().c_str(), owner.operator unsigned(), self.operator unsigned(), loadCommand.c_str());
+      Lua::CallFunc(ENGINE->Lua(), "DeserializeComponent", space->GetName().c_str(),
+        owner.operator unsigned(), self.operator unsigned(), loadCommand.c_str());
     }
   }
 
   void LuaComponent::QueryLoadCommand()
   {
-    Lua::CallFunc(ENGINE->Lua(), "SerializeComponent", space->GetName().c_str(), owner.operator unsigned(), self.operator unsigned(), this);
+    Lua::CallFunc(ENGINE->Lua(), "SerializeComponent", space->GetName().c_str(),
+      owner.operator unsigned(), self.operator unsigned(), this);
   }
 
   void LuaComponent::ReceiveLoadCommend(const char* command)
@@ -40,7 +43,8 @@ namespace Framework
   {
     // The object will do this for us so yeah who cares
     if (space != nullptr)
-      Lua::CallFunc(ENGINE->Lua(), "RemoveComponentFromGameObject", space->GetName().c_str(), owner.operator size_t(), self.operator size_t());
+      Lua::CallFunc(ENGINE->Lua(), "RemoveComponentFromGameObject",
+      space->GetName().c_str(), owner.operator size_t(), self.operator size_t());
 
     name.~basic_string();
     loadCommand.~basic_string();

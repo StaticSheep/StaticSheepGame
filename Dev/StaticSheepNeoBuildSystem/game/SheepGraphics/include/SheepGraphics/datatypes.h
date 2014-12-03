@@ -15,6 +15,9 @@
 #include "DirectXIncludes.h"
 #endif
 
+
+#ifndef DSHEEP_DATATYPES
+#define DSHEEP_DATATYPES
 namespace DirectSheep
 {
   enum ObjectType
@@ -95,4 +98,8 @@ namespace DirectSheep
   };
 
   typedef std::vector<InputElement> InputLayout;
+
+
 }
+
+#endif

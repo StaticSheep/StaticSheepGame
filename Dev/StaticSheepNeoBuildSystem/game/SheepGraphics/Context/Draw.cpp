@@ -94,12 +94,24 @@ namespace DirectSheep
 
   }
 
-  void RenderContext::DrawBatched(DirectSheep::Handle texture)
+  GFX_API void RenderContext::DrawBatched(DirectSheep::Handle texture)
   {
     unsigned width = GetTextureSize(texture).width;
     unsigned height = GetTextureSize(texture).height;
 
     DirectX::SpriteEffects effect = DirectX::SpriteEffects_None;
+
+    m_spriteTrans.x = m_camUse ? m_spriteTrans.x :
+      m_spriteTrans.x + m_spriteTrans.w / 2;
+
+    m_spriteTrans.y = m_camUse ? m_spriteTrans.y :
+      -m_spriteTrans.y - m_spriteTrans.h / 2;
+      
+    m_spriteTrans.w = m_camUse ? m_spriteTrans.w :
+      m_spriteTrans.w / width;
+
+    m_spriteTrans.h = m_camUse ? m_spriteTrans.h :
+      m_spriteTrans.h / height;
 
     RECT sourcePos;
     sourcePos.left = (long)(width * (m_spriteTrans.uvBegin.x));
@@ -112,7 +124,8 @@ namespace DirectSheep
                &sourcePos,
                XMLoadFloat4(&m_spriteBlend),
                m_spriteTrans.theta,
-               Vec2((sourcePos.right - sourcePos.left) / 2.0f, (sourcePos.bottom - sourcePos.top) / 2.0f),
+               Vec2((sourcePos.right - sourcePos.left) / 2.0f,
+               (sourcePos.bottom - sourcePos.top) / 2.0f),
                Vec2(m_spriteTrans.w, -m_spriteTrans.h), m_flip, m_spriteTrans.z);
   }
 
@@ -125,7 +138,10 @@ namespace DirectSheep
 
   void RenderContext::StartBatch()
   {
-    m_batcher->Begin(SpriteSortMode_Texture, m_blendStateMap[BLEND_MODE_ALPHA], m_sampleStates[0], m_depthBuffer.m_depthState, m_rastState[m_currentRast], nullptr, ((Camera*)m_camera.ptr)->getViewProj());
+    m_batcher->Begin(SpriteSortMode_Texture, m_blendStateMap[BLEND_MODE_ALPHA],
+      m_sampleStates[0], m_depthBuffer.m_depthState,
+      m_rastState[m_currentRast], nullptr,
+      ((Camera*)m_camera.ptr)->getViewProj());
   }
 
   void RenderContext::EndBatch()
