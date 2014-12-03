@@ -1,7 +1,8 @@
 /*****************************************************************
 Filename: DrawLib.h
 Project: 
-Author(s): Zachary Nawar
+Author(s): Scott Nelson
+           Zachary Nawar
 
 All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 *****************************************************************/

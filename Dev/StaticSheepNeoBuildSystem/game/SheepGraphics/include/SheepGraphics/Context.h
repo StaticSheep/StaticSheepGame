@@ -234,6 +234,10 @@ class RenderContext
     ID3D11RasterizerState                   *m_rastState[RastStates::NumStates];
     std::map<BlendMode, ID3D11BlendState *>  m_blendStateMap;
     DepthBuffer                              m_depthBuffer;
+
+    ////////////
+    // Camera //
+    ////////////
     Handle                                   m_camera;
     Handle                                   m_Perspective;
     Handle                                   m_Ortho;
