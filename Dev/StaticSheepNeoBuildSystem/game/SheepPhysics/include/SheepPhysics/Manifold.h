@@ -5,7 +5,7 @@ namespace SheepFizz
 {
 
 	#define POSCORRECT	0.0039f	//the percent for positional correction
-	#define POSSLACK	0.1f	//the penetration needed to start positional correction
+	#define POSSLACK	0.05f	//the penetration needed to start positional correction
 	#define MAXVALUE	3.402823466e+38F  //the max value of a float, used in rec collision
   #define EPSILON   5.0e-04
 

@@ -354,9 +354,9 @@ namespace SheepFizz
 	  m.normal = -(m.normal);
 
 	  if(m.penetration > 2)
-	    m.penetration = 4;
+	    m.penetration = 2;
 
-	  m.penetration /= m.contactCount;
+	  //m.penetration /= m.contactCount;
 
 	}//end of RectangleRectangleManifold
 
