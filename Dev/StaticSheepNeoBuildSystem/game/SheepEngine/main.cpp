@@ -60,7 +60,7 @@ int main(int argc, char** argv)
 
   OpenConsole();
 
-  Engine* Core = AllocateEngine();
+  Engine* Core = AllocateEngine(argc, argv);
   InitEngine();
 
   while (ENGINE->Running())

@@ -19,7 +19,7 @@ namespace Framework
 
   class Engine;
 
-  Engine* AllocateEngine(void);
+  Engine* AllocateEngine(int argc, char** argv);
 
   void InitEngine(void);
 }

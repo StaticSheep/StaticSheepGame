@@ -19,12 +19,23 @@
 #include "gfx/wxw/d3d/WxD3DCanvas.h"
 #include "gfx/wxw/d3d/WxD3DContext.h"
 
+static bool editor;
+
 
 namespace Framework
 {
-  Engine* AllocateEngine(void)
+  Engine* AllocateEngine(int argc, char** argv)
   {
     Engine* Core = new Engine();
+
+    if(argc > 1)
+    {
+      for(int i = 1; i < argc; ++i)
+      {
+        if(strcmp(argv[i], "-editor")  == 0)
+          editor = true;
+      }
+    }
 
     Core->AddSystem(new InputManager());
     Core->AddSystem(new Skynet());
@@ -39,8 +50,12 @@ namespace Framework
 #endif
 
     Core->AddSystem(new SheepGraphics());
-    Core->AddSystem(new AntTweakModule());
-    Core->AddSystem(new Debug());
+
+    if(editor)
+    {
+      Core->AddSystem(new AntTweakModule());
+      Core->AddSystem(new Debug());
+    }
 
 #if USE_EDITOR
 
@@ -57,8 +72,15 @@ namespace Framework
 #if USE_EDITOR
 #else
 
-    ENGINE->LoadLuaLevel("content/lua/engine/lua_levels/uisandbox.lua");
-	  ENGINE->OpenEditor();
+    if(editor)
+    {
+      ENGINE->LoadLuaLevel("content/lua/engine/lua_levels/uisandbox.lua");
+	    ENGINE->OpenEditor();
+    }
+    else
+    {
+      ENGINE->ChangeLevel("AMFA");
+    }
 	  //ENGINE->LoadLevel("content/data/spaces/Level1.space");
 #endif
     
