@@ -96,6 +96,20 @@ namespace Framework
     m_renderContext->SetCamDefault();
   }
 
+  static void GetDesktopResolution(int& horizontal, int& vertical)
+  {
+    RECT desktop;
+    // Get a handle to the desktop window
+    const HWND hDesktop = GetDesktopWindow();
+    // Get the size of screen to the variable desktop
+    GetWindowRect(hDesktop, &desktop);
+    // The top left corner will have coordinates (0,0)
+    // and the bottom right corner will have coordinates
+    // (horizontal, vertical)
+    horizontal = desktop.right;
+    vertical = desktop.bottom;
+  }
+
   void SheepGraphics::ReceiveMessage(Message& msg)
   {
     
@@ -124,7 +138,14 @@ namespace Framework
       if (msg.MessageId == Message::EngineReady)
       {
         if (!ENGINE->m_editorAcitve)
+        {
+          int width;
+          int height;
+          GetDesktopResolution(width, height);
+          SetWindowPos(ENGINE->Window->GetHandle(), NULL, 0, 0, width, height, 0);
           m_renderContext->SetFullscreen(true);
+        }
+          
       }
       
     }
