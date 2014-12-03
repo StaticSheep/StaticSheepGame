@@ -29,11 +29,14 @@ namespace Framework
     Vec3 spawnPos[6];
     Handle Players[4];
     float spawnTimers[4];
+    int playerLives[4];
+    int deadPlayers;
     int numOfPlayers;
     bool camShake, shake;
     float shakeTime;
 
     int GetPlayerHealth(int);
     int GetPlayerLives(int);
+    void EndMatch();
 	};
 }
