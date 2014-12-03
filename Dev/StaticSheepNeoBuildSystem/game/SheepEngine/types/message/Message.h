@@ -26,6 +26,7 @@ namespace Framework
       GFXDeviceInit,
       PostDraw,
       GUIDraw,
+      PostGUIDraw,
       WindowResize,
       WindowMinimize,
       WindowRestore,

@@ -175,19 +175,19 @@ namespace Framework
 
     m_renderContext->EndBatch();
 
+    m_renderContext->StartBatch();
+    ENGINE->SystemMessage(Message(Message::PostDraw));
+
+    m_renderContext->EndBatch();
+
     m_renderContext->SetCamState(2);
     m_renderContext->StartBatch();
 
     ENGINE->SystemMessage(Message(Message::GUIDraw));
+    ENGINE->SystemMessage(Message(Message::PostGUIDraw));
 
     m_renderContext->EndBatch();
     
-    m_renderContext->SetCamState(0);
-    m_renderContext->StartBatch();
-
-    ENGINE->SystemMessage(Message(Message::PostDraw));
-
-    m_renderContext->EndBatch();
 	}
 
   void SheepGraphics::StartFrame()

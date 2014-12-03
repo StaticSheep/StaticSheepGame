@@ -135,7 +135,7 @@ namespace Framework
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
     if (isSnapped)
     {
-      float avX = 0, avY = 0, avZ = 0;
+      /*float avX = 0, avY = 0, avZ = 0;
       for (int i = 0; i < normals.size(); ++i)
       {
         avX += normals[i].x;
@@ -145,7 +145,7 @@ namespace Framework
       avX /= normals.size();
       avY /= normals.size();
       avZ /= normals.size();
-      snappedNormal = Vec3(avX, avY, avZ);
+      snappedNormal = Vec3(avX, avY, avZ);*/
 
       bc->SetVelocity(snappedNormal * 100);
       bc->SetAngVelocity(0.0);

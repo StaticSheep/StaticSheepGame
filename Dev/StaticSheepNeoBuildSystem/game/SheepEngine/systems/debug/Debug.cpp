@@ -81,7 +81,7 @@ namespace Framework
   // Listens for PostDraw and draws debug data if requested
   void Debug::ReceiveMessage(Message& hamster)
   {
-    if (hamster.MessageId == Message::PostDraw)
+    if (hamster.MessageId == Message::PostGUIDraw)
     {
       // if F2 was pressed, lets display the FPS
       if(fpsFlag)
@@ -343,7 +343,7 @@ namespace Framework
         double percent = it->second->timeTaken / totalTime;
         performance.width[i] = (float)(300.0 * percent);
 
-        performance.pos[i] = (performance.width[i] / 2.0f) + offsetX;
+        performance.pos[i] = (performance.width[i]) + offsetX;
         offsetX += performance.width[i];
        
         
