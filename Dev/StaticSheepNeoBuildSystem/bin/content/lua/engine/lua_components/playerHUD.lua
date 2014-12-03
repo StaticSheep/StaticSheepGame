@@ -46,7 +46,7 @@ local function HealthPaint(self)
 end
 
 local headFiles = {"ninja_head.png", "ruiser_head.png", "europe_head.png", "america_head.png"}
-local headColors = {Color(0, 255, 0), Color(255, 0, 0), Color(200, 0, 200), Color(0, 120, 255)}
+local headColors = {Color(0, 255, 0), Color(255, 0, 0), Color(255, 0, 255), Color(0, 120, 255)}
 
 function PlayerHUD:Create(i)
   self.base[i] = gui.Create("Frame")
@@ -82,7 +82,7 @@ function PlayerHUD:Create(i)
 end
 
 function PlayerHUD:Make()
-  self.panelPositions = {Vec2(0, 0), Vec2(100, 100), Vec2(300, 300), Vec2(400, 400)}
+  self.panelPositions = {Vec2(0, 10), Vec2(0, ScrH() - 120), Vec2(ScrW() - 150, 10), Vec2(ScrW() - 150, ScrH() - 120)}
 
   for i=1,4 do
     self:Create(i)
