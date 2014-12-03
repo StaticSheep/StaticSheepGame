@@ -143,8 +143,8 @@ namespace Framework
         if (frameSkip2)
         {
           bc->SetBodyRotation(-snappedNormal);
-
           normals.clear();
+          normals.push_back(snappedNormal);
         }
         frameSkip2 = !frameSkip2;
       }
