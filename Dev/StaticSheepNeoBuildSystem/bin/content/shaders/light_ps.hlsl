@@ -1,3 +1,10 @@
+/*****************************************************************
+Filename: light_ps.hlsl
+Project:
+Author(s): Scott Nelson (Primary)
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+*****************************************************************/
 struct VSOutput
 {
   float4 position : SV_POSITION;

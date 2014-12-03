@@ -1,7 +1,7 @@
 /******************************************************************************
 Filename: CSprite.h
 Project:
-Author(s): Scott Nelson
+Author(s): Scott Nelson (primary)
 
 All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 ******************************************************************************/
