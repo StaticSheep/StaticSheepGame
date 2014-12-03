@@ -370,6 +370,11 @@ namespace Framework
 		((SheepFizz::PhysicsSpace*)(space->m_pSpace))->SetBodyRot(handle, rotation);
 	}
 
+  void SheepPhysics::SetBodyRotation(GameSpace* space, SheepFizz::Handle handle, Vec3D direction)
+  {
+    ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->SetBodyRot(handle, direction);
+  }
+
 	void SheepPhysics::SetBodyAngVelocity(GameSpace* space, SheepFizz::Handle handle, float angveloc)
 	{
 		((SheepFizz::PhysicsSpace*)(space->m_pSpace))->SetBodyAngVeloc(handle, angveloc);

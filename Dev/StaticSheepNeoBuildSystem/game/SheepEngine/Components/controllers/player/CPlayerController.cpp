@@ -136,15 +136,10 @@ namespace Framework
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
     if (isSnapped)
     {
-      rotation = (snappedNormal.DotProduct(bc->GetBodyUpNormal())) / (snappedNormal.Length() * bc->GetBodyUpNormal().Length());
-      rotation = std::acosf(rotation);
-
-      if (snappedNormal.x == -1.0f)
-        rotation = rotation + (float)PI;
 
       if (normals.size() < 2 && rotation >=0 || rotation <=0)
       {
-         ps->SetRotation(rotation);
+        bc->SetBodyRotation(-snappedNormal);
       }
 
       bc->SetVelocity(snappedNormal * 100);

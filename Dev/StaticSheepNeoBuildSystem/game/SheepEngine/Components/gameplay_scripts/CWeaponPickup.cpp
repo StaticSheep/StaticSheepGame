@@ -85,7 +85,7 @@ namespace Framework
       space->GetGameObject(owner)->Destroy();
     }
 
-    if (OtherObject->name == "KillBox" || OtherObject->name == "Grinder" || OtherObject->name == "KillBoxBig")
+    if (OtherObject->archetype == "KillBox" || OtherObject->archetype == "Grinder" || OtherObject->archetype == "KillBoxBig")
       space->GetGameObject(owner)->Destroy();
 
 	}

@@ -39,7 +39,7 @@ GameObject
     m_width float 32.000000
     m_height float 32.000000
     m_materialName std::string "Wood"
-    m_hasCollisionCallback bool false
+    m_hasCollisionCallback bool true
   }
   WeaponPickup
   {
