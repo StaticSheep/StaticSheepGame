@@ -164,7 +164,7 @@ namespace DirectSheep
     UINT deviceFlags = 0; // Flags for registering device
 
 #if defined (_DEBUG)
-    deviceFlags |= D3D11_CREATE_DEVICE_DEBUG; // If in debug mode set DirectX to debug mode
+    //deviceFlags |= D3D11_CREATE_DEVICE_DEBUG; // If in debug mode set DirectX to debug mode
 #endif
 
     // Array of driver types in order of most prefered to least
