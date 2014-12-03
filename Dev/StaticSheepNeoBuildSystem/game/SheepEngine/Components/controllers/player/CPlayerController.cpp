@@ -30,6 +30,7 @@ namespace Framework
     GodMode = false;
     GoldenGun = false;
     PerfectMachine = false;
+    normals.clear();
 	}
 
 	PlayerController::~PlayerController() //4
@@ -134,6 +135,7 @@ namespace Framework
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
     if (isSnapped)
     {
+
       bc->SetVelocity(snappedNormal * 100);
       bc->SetAngVelocity(0.0);
       if (snappedTo != Handle::null)

@@ -34,6 +34,7 @@ namespace Framework
     bool GodMode, GoldenGun, PerfectMachine;
     float shotDelay;
     float respawnTimer;
+    std::vector<Vec3> normals;
     AnimationController animCont;
     Weapon *weapon;
 		Vec3 aimDir;  //the direction the player is currently aiming

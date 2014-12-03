@@ -23,12 +23,16 @@ namespace Framework
     timeLimit = 60;
     spawnTimer = 3;
     numOfPlayers = 1;
-    spawnPos[0] = Vec3(-650.0f, -435.0f, 0.0f);
-    spawnPos[1] = Vec3(650.0f, -435.0f, 0.0f);
-    spawnPos[2] = Vec3(650.0f, 435.0f, 0.0f);
-    spawnPos[3] = Vec3(-650.0f, 435.0f, 0.0f);
+    spawnPos[0] = Vec3(-610.0f, -435.0f, 0.0f);
+    spawnPos[1] = Vec3(610.0f, -435.0f, 0.0f);
+    spawnPos[2] = Vec3(610.0f, 435.0f, 0.0f);
+    spawnPos[3] = Vec3(-610.0f, 435.0f, 0.0f);
     spawnPos[4] = Vec3(0.0f, 435.0f, 0.0f);
     spawnPos[5] = Vec3(0.0f, -435.0f, 0.0f);
+    deadPlayers = 0;
+    for (int i = 0; i < 4; ++i)
+      playerLives[i] = 5;
+
     warning = false;
     camShake = false;
     shake = true;
@@ -55,6 +59,8 @@ namespace Framework
 
     for (int i = 0; i < 4; ++i)
       spawnTimers[i] = 2.0f;
+
+    
 	}
 
   void Level1_Logic::Remove()
@@ -64,7 +70,9 @@ namespace Framework
 
   void Level1_Logic::LogicUpdate(float dt)
 	{
-    
+
+    if (deadPlayers == 3)
+      EndMatch();
     if (camShake)
       CameraShake(dt, camShakeTime, camShakeMagnitude);
 
@@ -178,6 +186,8 @@ namespace Framework
     {
       for (int i = 0; i < numOfPlayers; ++i)
       {
+        if (playerLives[i] <= 0)
+          continue;
         int ranStart = GetRandom(0, 5);
         if (Players[i] == Handle::null && spawnTimers[i] <= 0)
         {
@@ -207,6 +217,9 @@ namespace Framework
       camShakeMagnitude = 10;
       camShake = true;
     }
+    playerLives[ply] -= 1;
+    if (playerLives[ply] <= 0)
+      ++deadPlayers;
   }
 
   void Level1_Logic::CameraShake(float dt, float shakeDuration, float magnitude)
@@ -245,6 +258,18 @@ namespace Framework
 
   int Level1_Logic::GetPlayerLives(int ply)
   {
-    return 5;
+    return playerLives[ply];
+  }
+
+  void Level1_Logic::EndMatch()
+  {
+    for (int i = 0; i < 4; ++i)
+    {
+      if (playerLives[i] > 0)
+      {
+        //restart the level here
+        ENGINE->ChangeLevel("Asteroid");
+      }
+    }
   }
 }
