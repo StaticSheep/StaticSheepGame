@@ -30,6 +30,7 @@ namespace Framework
     GodMode = false;
     GoldenGun = false;
     PerfectMachine = false;
+    normals.clear();
 	}
 
 	PlayerController::~PlayerController() //4
@@ -134,6 +135,7 @@ namespace Framework
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
     if (isSnapped)
     {
+
       bc->SetVelocity(snappedNormal * 100);
       bc->SetAngVelocity(0.0);
       if (snappedTo != Handle::null)
@@ -317,6 +319,7 @@ namespace Framework
       
       BoxCollider *bc = space->GetHandles().GetAs<BoxCollider>(playerCollider);
       Transform *ps = space->GetHandles().GetAs<Transform>(playerTransform);
+
       if (oldSnappedNormal.x != OOBc->GetCollisionNormals(manifold).x && oldSnappedNormal.y != OOBc->GetCollisionNormals(manifold).y &&
         snappedNormal.x != OOBc->GetCollisionNormals(manifold).x && snappedNormal.y != OOBc->GetCollisionNormals(manifold).y)
       {

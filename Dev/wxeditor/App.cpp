@@ -179,7 +179,7 @@ namespace dit {
         // initialize all the things
         core->Init();
 
-        Framework::AllocateEngine();
+        //Framework::AllocateEngine();
 
         InitGfx();
         InitEvents();
