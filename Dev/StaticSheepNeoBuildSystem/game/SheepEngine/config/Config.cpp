@@ -21,7 +21,6 @@
 
 static bool editor;
 
-
 namespace Framework
 {
   Engine* AllocateEngine(int argc, char** argv)
@@ -79,7 +78,7 @@ namespace Framework
     }
     else
     {
-      ENGINE->ChangeLevel("AMFA");
+      ENGINE->ChangeLevel("Asteroid");
     }
 	  //ENGINE->LoadLevel("content/data/spaces/Level1.space");
 #endif
