@@ -142,7 +142,8 @@ namespace Framework
     //TYPE_SET_TO_LUA( GameComponent*, Lua::GameComponentToLua);
 
     TYPE_REGISTER( GameObject );
-    TYPE_ADD_MEMBER( GameObject, name, true, true, "Name", BUILD_FUNCTION(GameObject::TweakSetName));
+    TYPE_ADD_MEMBER( GameObject, name, true, true, "Name",
+      BUILD_FUNCTION(GameObject::TweakSetName));
     TYPE_ADD_MEMBER( GameObject, archetype, true, true, "Archetype");
     TYPE_SET_SERIALIZER( GameObject, GameObject::Serialize );
     TYPE_SET_DESERIALIZER( GameObject, GameObject::Deserialize );
@@ -219,8 +220,10 @@ namespace Framework
     TYPE_REGISTER(Automatic);
 
     TYPE_REGISTER( BoxCollider );
-    TYPE_ADD_MEMBER( BoxCollider, m_width, false, true, "Width");
-    TYPE_ADD_MEMBER( BoxCollider, m_height, false, true, "Height");
+    TYPE_ADD_MEMBER(BoxCollider, m_width, false, true, "Width",
+      BUILD_FUNCTION(RigidBody::UpdateWidth));
+    TYPE_ADD_MEMBER(BoxCollider, m_height, false, true, "Height",
+      BUILD_FUNCTION(RigidBody::UpdateHeight));
     TYPE_ADD_MEMBER(BoxCollider, m_materialName, false, true, "Material"); 
     TYPE_ADD_MEMBER(BoxCollider, m_hasCollisionCallback, false, true, "UsesCallback");
     TYPE_ADD_MEMBER(BoxCollider, m_CollisionGroup, false, true, "CollisionGroup");
@@ -234,12 +237,14 @@ namespace Framework
     TYPE_SET_TWEAK_TYPE(CircleCollider, AntTweak::TW_TYPE_COMPONENT);
 
     TYPE_REGISTER(GamePad);
-    TYPE_ADD_MEMBER(GamePad, GamepadIndex, false, true, "PadNumber", BUILD_FUNCTION(GamePad::EditorSetPad));
+    TYPE_ADD_MEMBER(GamePad, GamepadIndex, false, true, "PadNumber",
+      BUILD_FUNCTION(GamePad::EditorSetPad));
     TYPE_SET_TWEAK_TYPE(GamePad, AntTweak::TW_TYPE_COMPONENT);
 
 
     TYPE_REGISTER( Sprite );
-    TYPE_ADD_MEMBER(Sprite, m_spriteName, false, true, "Texture", BUILD_FUNCTION(Sprite::TweakSetTexture));
+    TYPE_ADD_MEMBER(Sprite, m_spriteName, false, true, "Texture",
+      BUILD_FUNCTION(Sprite::TweakSetTexture));
     TYPE_ADD_MEMBER(Sprite, Color, false, true, "Color");
     TYPE_ADD_MEMBER( Sprite, Size, false, true, "Size");
     TYPE_ADD_MEMBER(Sprite, m_flipX, false, true, "FlipX");
@@ -248,10 +253,14 @@ namespace Framework
     TYPE_SET_FROM_LUA( Sprite, Lua::GenericObjectFromLua );
 
     TYPE_REGISTER( AniSprite );
-    TYPE_ADD_MEMBER(AniSprite, m_spriteName, false, true, "Texture", BUILD_FUNCTION(Sprite::TweakSetTexture));
-    TYPE_ADD_MEMBER(AniSprite, m_frames, false, true, "Frames", BUILD_FUNCTION(AniSprite::Test));
-    TYPE_ADD_MEMBER(AniSprite, m_startFrame, false, true, "StartFrame", BUILD_FUNCTION(AniSprite::TweakStartFrame));
-    TYPE_ADD_MEMBER(AniSprite, m_endFrame, false, true, "EndFrame", BUILD_FUNCTION(AniSprite::TweakEndFrame));
+    TYPE_ADD_MEMBER(AniSprite, m_spriteName, false, true, "Texture",
+      BUILD_FUNCTION(Sprite::TweakSetTexture));
+    TYPE_ADD_MEMBER(AniSprite, m_frames, false, true, "Frames",
+      BUILD_FUNCTION(AniSprite::Test));
+    TYPE_ADD_MEMBER(AniSprite, m_startFrame, false, true, "StartFrame",
+      BUILD_FUNCTION(AniSprite::TweakStartFrame));
+    TYPE_ADD_MEMBER(AniSprite, m_endFrame, false, true, "EndFrame",
+      BUILD_FUNCTION(AniSprite::TweakEndFrame));
     TYPE_ADD_MEMBER(AniSprite, m_frameRate, false, true, "FrameRate");
     TYPE_ADD_MEMBER(AniSprite, m_loop, false, true, "Animation Loops");
     TYPE_ADD_MEMBER(AniSprite, m_paused, false, true, "Pause");
@@ -263,8 +272,10 @@ namespace Framework
     TYPE_SET_FROM_LUA( AniSprite, Lua::GenericObjectFromLua );
 
     TYPE_REGISTER(Camera);
-    TYPE_ADD_MEMBER(Camera, m_active, false, true, "Active", BUILD_FUNCTION(Camera::TweakSetActive));
-    TYPE_ADD_MEMBER(Camera, m_FOV, false, true, "FOV", BUILD_FUNCTION(Camera::TweakSetFov));
+    TYPE_ADD_MEMBER(Camera, m_active, false, true, "Active",
+      BUILD_FUNCTION(Camera::TweakSetActive));
+    TYPE_ADD_MEMBER(Camera, m_FOV, false, true, "FOV",
+      BUILD_FUNCTION(Camera::TweakSetFov));
     TYPE_SET_TWEAK_TYPE(Camera, AntTweak::TW_TYPE_COMPONENT);
 
     TYPE_REGISTER( SoundEmitter );

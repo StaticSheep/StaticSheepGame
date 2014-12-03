@@ -14,6 +14,10 @@ function META:CanUpdate(deltatime)
   return true
 end
 
+function META:Owner()
+  return GameSpaces[self._space]._pointer:GetObject(self._owner)
+end
+
 function META:Remove()
 
 end

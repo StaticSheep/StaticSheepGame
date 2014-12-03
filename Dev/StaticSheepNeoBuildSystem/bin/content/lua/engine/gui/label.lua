@@ -31,10 +31,12 @@ end
 function META:SetXAlignment(x)
   self.alignX = x
 end
+META.SetXAlign = META.SetXAlignment
 
 function META:SetYAlignment(y)
   self.alignY = y
 end
+META.SetYAlign = META.SetYAlignment
 
 function META:SetText(text)
   self.text = text

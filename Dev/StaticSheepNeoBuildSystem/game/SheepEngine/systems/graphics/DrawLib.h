@@ -42,5 +42,6 @@ namespace Framework
     static Vec4 m_Color;
     static Vec2 m_TextPos;
     static bool m_useCamera;
+    static int m_whiteTextureID;
   };
 }

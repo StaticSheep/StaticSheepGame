@@ -232,4 +232,19 @@ namespace Framework
 
     camShakeTime -= dt;
   }
+
+  int Level1_Logic::GetPlayerHealth(int ply)
+  {
+    if (Players[ply] == Handle::null)
+      return 0;
+    else
+    {
+      return space->GetGameObject(Players[ply])->GetComponent<PlayerController>(ePlayerController)->CurrentHealth();
+    }
+  }
+
+  int Level1_Logic::GetPlayerLives(int ply)
+  {
+    return 5;
+  }
 }

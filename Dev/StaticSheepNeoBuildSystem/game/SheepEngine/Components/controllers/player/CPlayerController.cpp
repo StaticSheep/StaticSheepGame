@@ -285,10 +285,12 @@ namespace Framework
       exT->SetTranslation(ps->GetTranslation() + Vec3(randomX,randomY,-1.0f));
       return;
     }
-    if ((OtherObject->name == "KillBox" || OtherObject->name == "KillBoxBig") && !GodMode && !PerfectMachine)
+    if ((OtherObject->archetype == "KillBox" ||
+      OtherObject->archetype == "KillBoxBig") && !GodMode && !PerfectMachine)
       health = 0;
 
-    if ((OtherObject->name == "Grinder") && !hasRespawned && !GodMode && !PerfectMachine)
+    if ((OtherObject->GetComponentHandle(eGrinder) != Handle::null)
+      && !hasRespawned && !GodMode && !PerfectMachine)
       health -= 10;
 
     if (OtherObject->name == "WeaponPickup")
@@ -533,5 +535,11 @@ namespace Framework
       }
     }
     
+  }
+
+
+  int PlayerController::CurrentHealth()
+  {
+    return health;
   }
 }

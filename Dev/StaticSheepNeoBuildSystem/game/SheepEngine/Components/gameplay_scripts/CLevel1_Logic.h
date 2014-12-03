@@ -32,5 +32,8 @@ namespace Framework
     int numOfPlayers;
     bool camShake, shake;
     float shakeTime;
+
+    int GetPlayerHealth(int);
+    int GetPlayerLives(int);
 	};
 }

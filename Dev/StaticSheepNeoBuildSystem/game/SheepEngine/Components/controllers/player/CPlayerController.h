@@ -25,6 +25,8 @@ namespace Framework
     void PlayerDeath(SoundEmitter *se, Transform *pt);
     void SetAnimations();
 
+    int CurrentHealth();
+
 		//member variables
 		int playerNum; //the player number, i.e. 1, 2, 3, 4
     int health; //players health

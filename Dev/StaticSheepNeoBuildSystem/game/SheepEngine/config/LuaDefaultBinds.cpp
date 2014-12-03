@@ -19,6 +19,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 #include "systems/input/devices/GamepadInput.h"
 #include "systems/input/Input.h"
+#include "components/controllers/player/CPlayerController.h"
+#include "components/gameplay_scripts/CLevel1_Logic.h"
 
 namespace Framework
 {
@@ -107,6 +109,10 @@ namespace Framework
       BIND_FUNCTION_EX(L, GamePadInput::InDeadzone, InDeadzone);
 
       BIND_FUNCTION_EX(L, SoundEmitter::Play, Play);
+
+      BIND_FUNCTION_EX(L, PlayerController::CurrentHealth, CurrentHealth);
+      BIND_FUNCTION_EX(L, Level1_Logic::GetPlayerHealth, GetPlayerHealth);
+      BIND_FUNCTION_EX(L, Level1_Logic::GetPlayerLives, GetPlayerLives);
 
       //BIND_FUNCTION_EX(L, BoxCollider::SetVelocity, SetVelocity);
     }
