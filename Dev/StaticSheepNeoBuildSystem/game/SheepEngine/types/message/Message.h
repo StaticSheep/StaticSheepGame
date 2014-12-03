@@ -31,6 +31,7 @@ namespace Framework
       WindowMinimize,
       WindowRestore,
       CameraChange,
+      EngineReady,
       Pause,
       Quit,
     };
