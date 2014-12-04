@@ -122,11 +122,11 @@ function PauseMenu:MakeHelpMenu()
   self:Register(helpImage)
   helpImage:SetSize(helpMenu:GetSize().x * 0.6, helpMenu:GetSize().y * 0.6)
   helpImage:SetPos(helpMenu:GetSize().x * 0.2, helpMenu:GetSize().y * 0.1)
-  helpImage:SetTexture("Controller_Instructions2.png")
+  helpImage:SetTexture("Controller_Instructions.png")
 
   local helpText = gui.Create("Label", helpMenu)
   self:Register(helpText)
-  helpText:SetText("Keyboard Controls:\nW,A,S,D - Menu Navigation\nENTER - Menu Selection")
+  helpText:SetText("Keyboard Controls:\nW,A,S,D - Menu Navigation & Movement\nArrow Keys - Aim\nENTER - Menu Selection\nQ - Jump\nSpace - Fire")
   helpText:SetPos(helpMenu:GetSize().x * 0.2, helpMenu:GetSize().y * 0.6 + helpMenu:GetSize().y * 0.1 + 10)
   helpText:SetSize(24)
 end
