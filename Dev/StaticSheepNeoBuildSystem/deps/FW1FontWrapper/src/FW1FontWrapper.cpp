@@ -9,7 +9,7 @@
 #endif
 
 #ifndef FW1_DELAYLOAD_D3DCOMPILER_XX_DLL
-	#pragma comment (lib, "DWrite.lib")
+	#pragma comment (lib, "d3dcompiler.lib")
 #endif
 
 #ifdef FW1_COMPILETODLL
