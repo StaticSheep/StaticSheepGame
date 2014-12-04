@@ -16,8 +16,11 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include <windowsx.h>
 #include "AntTweakBar.h"
 
+
 namespace Framework
 {
+
+  bool WINDOW_ACTIVE = true;
   static bool localATValid = false;
 
   LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
@@ -87,7 +90,11 @@ namespace Framework
       windowSize = lParam;
       width = LOWORD(windowSize);
       height = HIWORD(windowSize);
-      ENGINE->SystemMessage(ResizeMessage(width, height));
+      if (ENGINE != nullptr)
+      {
+        ENGINE->SystemMessage(ResizeMessage(width, height));
+      }
+      
       break;
 
     case WM_DESTROY:                    // Window has been requested to close
@@ -101,6 +108,8 @@ namespace Framework
         ENGINE->SystemMessage(Message(Message::WindowMinimize));
 
         ShowWindow(hWnd, SW_MINIMIZE);
+
+        WINDOW_ACTIVE = false;
       }
       else if ((wParam == WA_CLICKACTIVE || wParam == WA_ACTIVE) &&
         !ENGINE->m_editorAcitve)
@@ -108,6 +117,8 @@ namespace Framework
         ENGINE->SystemMessage(Message(Message::WindowRestore));
 
         ShowWindow(hWnd, SW_RESTORE);
+
+        WINDOW_ACTIVE = true;
       }
       break;
 

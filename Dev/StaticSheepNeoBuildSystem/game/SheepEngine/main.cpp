@@ -8,7 +8,7 @@
 //#include <wtypes.h>
 #include <Windows.h>
 
-//#include <vld.h>
+#include <vld.h>
 
 #include "systems/input/Input.h"
 #include "systems/debug/Debug.h"
@@ -58,7 +58,7 @@ int main(int argc, char** argv)
   //_CrtSetDbgFlag ( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
   //_CrtSetBreakAlloc(6295);
 
-  OpenConsole();
+  
 
   Engine* Core = AllocateEngine(argc, argv);
   InitEngine();

@@ -135,6 +135,30 @@ namespace Framework
     return false;
   }
 
+  void FramerateController::EndMainLoop()
+  {
+    LARGE_INTEGER currentTime, elapsedTime;
+
+    // get the current time
+    QueryPerformanceCounter(&currentTime);
+
+    // check how much time has elapsed since the last frame
+    elapsedTime.QuadPart = currentTime.QuadPart - ((LARGE_INTEGER*)frameTime)->QuadPart;
+    elapsedTime.QuadPart *= WILSONS_CONSTANT1; // for resolution of the number
+    elapsedTime.QuadPart /= ((LARGE_INTEGER*)frequency)->QuadPart;
+
+    double remainingTime = (double)elapsedTime.QuadPart / WILSONS_CONSTANT1;
+    remainingTime = fps - remainingTime;
+    remainingTime *= 1000;
+
+    if (remainingTime > 1)
+    {
+      //TRACELOG->Log(TraceLevel::DEBUG, "Sleeping for: %f milliseconds", remainingTime - 1);
+      Sleep(remainingTime - 1);
+    }
+
+  }
+
 /*****************************************************************************/
 /*!
   \brief

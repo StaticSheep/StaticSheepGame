@@ -10,7 +10,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 namespace Framework
 {
-
+  extern bool WINDOW_ACTIVE;
   class SheepWindow
   {
   public:

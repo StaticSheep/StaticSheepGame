@@ -123,6 +123,13 @@ namespace Framework
   {
     Window->Update();
 
+    if (!WINDOW_ACTIVE)
+    {
+      SHEEPINPUT->Update(0);
+      return;
+    }
+      
+
     m_time += Framerate.GetDT() * 1000.0f;
 
     for (auto it = m_spaces.begin(); it != m_spaces.end(); ++it)
@@ -160,6 +167,7 @@ namespace Framework
     if(Framerate.FramerateCheck())
     {
       Step();
+      Framerate.EndMainLoop();
     }
   }
 

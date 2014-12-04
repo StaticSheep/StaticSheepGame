@@ -38,6 +38,9 @@ namespace Framework
           editor = true;
       }
     }
+
+    if (editor)
+      OpenConsole();
 #endif
 
     Core->AddSystem(new InputManager());
@@ -58,7 +61,6 @@ namespace Framework
     if(editor)
     {
       Core->AddSystem(new AntTweakModule());
-      
     }
 
 #if USE_EDITOR

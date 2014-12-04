@@ -47,6 +47,8 @@ namespace Framework
     void StartFrame(void);
     double EndFrame(const char*);
 
+    void EndMainLoop();
+
     // get the current delta time
     float GetDT();
 

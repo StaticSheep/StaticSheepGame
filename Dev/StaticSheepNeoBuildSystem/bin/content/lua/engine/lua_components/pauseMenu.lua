@@ -95,7 +95,7 @@ function PauseMenu:MakeMenu()
       btn.firstPress = false
       btn:SetText("Quit Game [CONFIRM]")
     else
-      print("QUIT THE GAME")
+      engine.Quit()
     end
   end)
 
