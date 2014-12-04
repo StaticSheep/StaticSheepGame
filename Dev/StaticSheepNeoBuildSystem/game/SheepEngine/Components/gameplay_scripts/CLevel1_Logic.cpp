@@ -60,7 +60,6 @@ namespace Framework
     for (int i = 0; i < 4; ++i)
       spawnTimers[i] = 2.0f;
 
-    numOfPlayers = 1;
 	}
 
   void Level1_Logic::Remove()
@@ -71,7 +70,7 @@ namespace Framework
   void Level1_Logic::LogicUpdate(float dt)
 	{
 
-    if (deadPlayers == 3)
+    if (deadPlayers >= 3)
       EndMatch();
     if (camShake)
       CameraShake(dt, camShakeTime, camShakeMagnitude);
@@ -267,9 +266,12 @@ namespace Framework
     {
       if (playerLives[i] > 0)
       {
+        //the player who won is what 'i' is currently
         //restart the level here
         ENGINE->ChangeLevel("Asteroid");
       }
     }
+    //if we hit this point everyone is dead and it's a tie
+    ENGINE->ChangeLevel("Asteroid");
   }
 }
