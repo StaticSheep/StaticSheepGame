@@ -1,3 +1,10 @@
+/*****************************************************************
+Filename: Skynet.cpp
+Project: 
+Author(s): Zakary Wilson
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+*****************************************************************/
 
 #include "pch/precompiled.h"
 #include "systems/skynet/Skynet.h"

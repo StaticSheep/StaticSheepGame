@@ -1,14 +1,10 @@
-/******************************************************************************
-filename    Matrix4D.h
-project     Giga Gravity Games
-author      Zakary Wilson
-date        10/20/2014
-
-Brief Description:
-This header contains the 4x4 matrix class.
+/*****************************************************************
+Filename: Matrix4D.h
+Project: 
+Author(s): Zakary Wilson
 
 All content © 2014 DigiPen (USA) Corporation, all rights reserved.
-******************************************************************************/
+*****************************************************************/
 
 #pragma once
 
