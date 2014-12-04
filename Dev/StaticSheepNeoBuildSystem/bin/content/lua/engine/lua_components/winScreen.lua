@@ -134,7 +134,7 @@ function WinScreen:Create()
 
   local winnerLabel = gui.Create("Label", base)
   self:Register(winnerLabel)
-  winnerLabel:SetText("Player 1 press START to continue")
+  winnerLabel:SetText("Press START to continue")
   winnerLabel:SetPos(ScrW() / 2, ScrH() - 20)
   winnerLabel:SetXAlign(TEXT_ALIGN_CENTER)
   winnerLabel:SetYAlign(TEXT_ALIGN_BOTTOM)

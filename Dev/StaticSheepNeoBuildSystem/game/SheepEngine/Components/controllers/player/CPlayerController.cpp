@@ -85,6 +85,8 @@ namespace Framework
     bc->SetBodyCollisionGroup(space->GetGameObject(owner)->archetype);
 	}
 
+  static Vec2D aim(1.0f, 0.0f);
+
 	//************************************
 	// Method:    LogicUpdate
 	// FullName:  Framework::PlayerController::LogicUpdate
@@ -292,26 +294,26 @@ namespace Framework
 
     isSnapped = false;
 
-    static Vec2D aim(1.0f,0.0f);
+    
 
-    if(!gp->Connected())
+    if (gp->GetIndex() == 0 && !gp->Connected())
     {
-      if((SHEEPINPUT->KeyIsDown(VK_LEFT) && gp->GetIndex() == 0))
+      if ((SHEEPINPUT->KeyIsDown(VK_LEFT)))
       {
         aim += Vec2D(-1.0f, 0.0f);
       }
 
-      if((SHEEPINPUT->KeyIsDown(VK_RIGHT) && gp->GetIndex() == 0))
+      if ((SHEEPINPUT->KeyIsDown(VK_RIGHT)))
       {
         aim += Vec2D(1.0f, 0.0f);
       }
 
-      if((SHEEPINPUT->KeyIsDown(VK_UP) && gp->GetIndex() == 0))
+      if ((SHEEPINPUT->KeyIsDown(VK_UP)))
       {
         aim += Vec2D(0.0f, 1.0f);
       }
 
-      if((SHEEPINPUT->KeyIsDown(VK_DOWN) && gp->GetIndex() == 0))
+      if ((SHEEPINPUT->KeyIsDown(VK_DOWN)))
       {
         aim += Vec2D(0.0f, -1.0f);
       }
