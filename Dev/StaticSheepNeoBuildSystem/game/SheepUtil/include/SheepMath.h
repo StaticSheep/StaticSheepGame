@@ -1,15 +1,10 @@
-/******************************************************************************
-filename    math.h
-project     Go-Ninja, Road!
-author      Zakary Wilson
-date        01/23/2014
-
-Brief Description:
-This file contains math constants, prototypes for functions in math.c,
-and structure declarations used in math.c.
+/*****************************************************************
+Filename: SheepMath.h
+Project: 
+Author(s): Zakary Wilson
 
 All content © 2014 DigiPen (USA) Corporation, all rights reserved.
-******************************************************************************/
+*****************************************************************/
 #pragma once
 
 #include <math.h>

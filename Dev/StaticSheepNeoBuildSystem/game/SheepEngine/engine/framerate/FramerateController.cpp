@@ -1,10 +1,10 @@
-/******************************************************************************
+/*****************************************************************
 Filename: FramerateController.cpp
 Project: 
 Author(s): Zakary Wilson
 
 All content © 2014 DigiPen (USA) Corporation, all rights reserved.
-******************************************************************************/
+*****************************************************************/
 
 #include "pch/precompiled.h"
 
@@ -17,12 +17,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 namespace Framework
 {
-/*****************************************************************************/
-/*!
-  \brief
-    Default constructor for the FramerateController class. Sets FPS to 60.
-*/
-/*****************************************************************************/
+  // defaults to 60 frames per second
   FramerateController::FramerateController()
   {
     frameTime = new LARGE_INTEGER; // MAKE SOME BIG GODDAMN INTEGERS
@@ -36,13 +31,7 @@ namespace Framework
     QueryPerformanceFrequency((LARGE_INTEGER*)frequency);
   }
 
-/*****************************************************************************/
-/*!
-  \brief
-    Non-Default constructor for the FramerateController class. Sets FPS to the
-    passed in double.
-*/
-/*****************************************************************************/
+  // Sets fps to what is passed in
   FramerateController::FramerateController(double fps)
   {
     frameTime = new LARGE_INTEGER; // MAKE SOME BIG GODDAMN INTEGERS
@@ -56,13 +45,7 @@ namespace Framework
     QueryPerformanceFrequency((LARGE_INTEGER*)frequency);
   }
 
-/*****************************************************************************/
-/*!
-  \brief
-    Destructor for Framerate, just get right of some dynamically allocated
-    things.
-*/
-/*****************************************************************************/
+  // dtor
   FramerateController::~FramerateController()
   {
     for (auto it = debug.systems.begin(); it != debug.systems.end(); ++it)
@@ -77,13 +60,7 @@ namespace Framework
 
   }
 
-/*****************************************************************************/
-/*!
-  \brief
-    For setting up debug information about each system being added to the 
-    engine. This is later used to test how long each system takes to update.
-*/
-/*****************************************************************************/
+  
   void FramerateController::Initialize(void)
   {
     for (unsigned int i = 0; i < ENGINE->m_systems.size(); ++i)
@@ -92,25 +69,14 @@ namespace Framework
     }
   }
 
-/*****************************************************************************/
-/*!
-  \brief
-    Used by the Debug class to get the current fps.
-*/
-/*****************************************************************************/
+  // Gets debug data
   void* FramerateController::GetDebugData()
   {
     debug.currentFps = (float)currentFps;
     return (void*)&debug;
   }
 
-/*****************************************************************************/
-/*!
-  \brief
-    Checks to see if enough time has passed since the last frame to continue
-    another frame of update.
-*/
-/*****************************************************************************/
+  // returns true if enough time has passed, returns false if not
   bool FramerateController::FramerateCheck()
   {
     LARGE_INTEGER currentTime, elapsedTime;
@@ -159,24 +125,14 @@ namespace Framework
 
   }
 
-/*****************************************************************************/
-/*!
-  \brief
-    Used at the start of a system/module, sets the start time.
-*/
-/*****************************************************************************/
+
+  // For checking system update times
   void FramerateController::StartFrame()
   {
     QueryPerformanceCounter((LARGE_INTEGER*)systemTime);
   }
 
-/*****************************************************************************/
-/*!
-  \brief
-    Used at the end of a system/module, calculates how long the system/module
-    took to update.
-*/
-/*****************************************************************************/
+  // Calculates how long a system took to update
   double FramerateController::EndFrame(const char* name)
   {
     LARGE_INTEGER currentTime, elapsedTime;
@@ -192,23 +148,12 @@ namespace Framework
     return (double)elapsedTime.QuadPart / (double)WILSONS_CONSTANT1;
   }
 
-/*****************************************************************************/
-/*!
-  \brief
-    Gets the accurate and current delta time.
-*/
-/*****************************************************************************/
   float FramerateController::GetDT()
   {
     return 0.0167f; // deterministic dt
   }
 
-/*****************************************************************************/
-/*!
-  \brief
-    Gets the current fps of the system.
-*/
-/*****************************************************************************/
+  // gets the current frames per second
   float FramerateController::GetCurrentFPS()
   {
     return (float)currentFps;

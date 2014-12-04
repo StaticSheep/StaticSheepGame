@@ -1,14 +1,10 @@
-/******************************************************************************
-filename    Matrix3D.h
-project     Giga Gravity Games
-author      Zakary Wilson
-date        10/20/2014
-
-Brief Description:
-This header contains the 3x3 matrix class.
+/*****************************************************************
+Filename: Matrix3D.h
+Project: 
+Author(s): Zakary Wilson
 
 All content © 2014 DigiPen (USA) Corporation, all rights reserved.
-******************************************************************************/
+*****************************************************************/
 
 #pragma once
 
