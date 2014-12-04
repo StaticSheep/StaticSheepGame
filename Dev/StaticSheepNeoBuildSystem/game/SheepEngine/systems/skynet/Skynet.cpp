@@ -31,7 +31,7 @@ namespace Framework
     if(mode == Sky_Active)
     {
       // let it touch all of the inputs
-      for(int i = 0; i < 4; ++i)
+      for(int i = 1; i < 4; ++i)
       {
         if(!input->Pads[i].Connected())
           input->Pads[i].State = players[i].Update();

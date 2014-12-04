@@ -146,16 +146,7 @@ namespace Framework
     return (float)(((c4 * x + c3) * x + c2) * x + c1);
   }
   
-/*!
-    \brief
-      Gets a random number between min and max
-    
-    \param min
-      The minimum value
-
-    \param max
-      The maximum value
-*/
+  // 
   int GetRandom(int min, int max)
   {
     static boost::random::mt19937 rng((uint32_t)std::time(0));
