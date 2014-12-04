@@ -60,7 +60,6 @@ namespace Framework
     for (int i = 0; i < 4; ++i)
       spawnTimers[i] = 2.0f;
 
-    numOfPlayers = 4;
 	}
 
   void Level1_Logic::Remove()
@@ -71,8 +70,8 @@ namespace Framework
   void Level1_Logic::LogicUpdate(float dt)
 	{
 
-    if (deadPlayers == 3)
-      EndMatch();
+    //if (deadPlayers >= 3)
+    //  EndMatch();
     if (camShake)
       CameraShake(dt, camShakeTime, camShakeMagnitude);
 
@@ -261,15 +260,31 @@ namespace Framework
     return playerLives[ply];
   }
 
-  void Level1_Logic::EndMatch()
+  int Level1_Logic::GetWinner()
   {
+    int winner = 1;
+    int numAlive = 0;
+
     for (int i = 0; i < 4; ++i)
     {
       if (playerLives[i] > 0)
       {
         //restart the level here
-        ENGINE->ChangeLevel("Asteroid");
+        winner = i;
+        ++numAlive;
       }
     }
+
+    if (numAlive > 1)
+      return 0;
+    else
+      return winner;
   }
+
+  void Level1_Logic::EndMatch()
+  {
+    ENGINE->ChangeLevel("Asteroid");
+  }
+
+  
 }

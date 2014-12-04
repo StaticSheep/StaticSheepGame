@@ -37,6 +37,8 @@ namespace Framework
 
     int GetPlayerHealth(int);
     int GetPlayerLives(int);
+    int GetWinner();
     void EndMatch();
+
 	};
 }
