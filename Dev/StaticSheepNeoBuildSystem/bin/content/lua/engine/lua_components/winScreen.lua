@@ -1,38 +1,44 @@
-if not Sandbox then
-  Sandbox = {}
-  Sandbox.panels = {}
-  Sandbox.menu = nil
-end
+local WinScreen = GetMeta("WinScreen")
 
-function Sandbox:CleanUp()
+InheritMeta(WinScreen, "LuaComponent")
+
+
+function WinScreen:CleanUp()
   for k,v in pairs(self.panels) do
     v:Destroy()
   end
 
   self.panels = {}
-
-  if self.menu ~= nil then
-    self.menu:Destroy()
-    self.menu = nil
-  end
+  self.base = {}
 end
 
-function Sandbox:Register(pnl)
+function WinScreen:Register(pnl)
   table.insert(self.panels, pnl)
 end
 
 
+
+function WinScreen:Init()
+  self.panels = {}
+  self.base = {}
+  self._winner = 1
+  self._opened = false
+
+
+  self.super.Init(self)
+end
+
+function WinScreen:Refresh()
+  self:CleanUp()
+end
+
 local bodyFiles = {"ninjaBody.png", "ruiserBody.png",
  "europeBody.png", "americaBody.png"}
 
-local bodySizes = {Vec2(416, 716), Vec2(606, 736),
- Vec2(459, 736), Vec2(416, 736)}
-
-
-function Sandbox:Create()
+function WinScreen:Create()
   self:CleanUp()
 
-  local playerID = 1
+  self._opened = true
 
   local base = gui.Create("Frame")
   self.base = base
@@ -54,7 +60,7 @@ function Sandbox:Create()
   winLabel:SetXAlign(TEXT_ALIGN_CENTER)
   winLabel:SetColor(Color(255, 255, 255, 255))
 
-  local winner = 4
+  local winner = self._winner
 
   local char = gui.Create("Image", base)
   self:Register(char)
@@ -133,11 +139,20 @@ function Sandbox:Create()
   winnerLabel:SetYAlign(TEXT_ALIGN_BOTTOM)
   winnerLabel:SetSize(64)
   winnerLabel:SetColor(Color(255, 255, 255))
+end
+
+function WinScreen:Remove()
+  self:CleanUp()
+  hook.Remove("FrameUpdate", self)
+end
+
+
+function WinScreen:SetupHooks()
+  hook.Add("FrameUpdate", self, self.FrameUpdate)
+end
+
+function WinScreen:FrameUpdate(deltaTime)
 
 end
 
-function Sandbox:Update()
-
-end
-
---Sandbox:Create()
+RegisterComponent(WinScreen)
