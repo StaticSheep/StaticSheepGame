@@ -17,63 +17,93 @@ namespace DirectSheep
   /////////////////////////////////////////////////////////////
   //                     DRAW FUNCTIONS                      //
   /////////////////////////////////////////////////////////////
+
+ // Bitwise conversion from RGB format to BGR format
 #define RGBTOBGR(color) (color & 0xFF000000) | ((color & 0xFF0000) >> 16) | (color & 0x00ff00) | ((color & 0x0000ff) << 16)
 
+  /*!
+      \brief
+      Unbatched draw call
+  */
   void RenderContext::Draw(unsigned vertexCount, unsigned vertexStart)
   {
+    // Matrix used for final transformation
     Mat4 matFinal;
 
+    // Intermediates
     Mat4 scaleMat, rotMat, transMat;
 
+    // Set all to identity
     rotMat = DirectX::XMMatrixIdentity();
     transMat = DirectX::XMMatrixIdentity();
     scaleMat = DirectX::XMMatrixIdentity();
 
-    scaleMat = DirectX::XMMatrixScaling(m_spriteTrans.w, m_spriteTrans.h, 1.0f);
+    // Rotate
     rotMat = DirectX::XMMatrixRotationZ(m_spriteTrans.theta);
-    scaleMat = DirectX::XMMatrixMultiply(scaleMat, rotMat);
 
-
+    // Scale
+    scaleMat = DirectX::XMMatrixScaling(m_spriteTrans.w, m_spriteTrans.h, 1.0f);
+    
+    // Translate
     transMat = DirectX::XMMatrixTranslation(m_camUse ? m_spriteTrans.x :
       m_spriteTrans.x + m_spriteTrans.w / 2,
       m_camUse ? m_spriteTrans.y : -m_spriteTrans.y - m_spriteTrans.h / 2, 0.0f);
 
+    // Scale x Rotate
+    scaleMat = DirectX::XMMatrixMultiply(scaleMat, rotMat);
+
+    // Trans x scale
     scaleMat = DirectX::XMMatrixMultiply(scaleMat, transMat);
 
-    matFinal = scaleMat * ((Camera*)m_camera.ptr)->getViewProj();
+    // ObjectToWorld x ViewProj: TODO find out why this was working
+    matFinal = ((Camera*)m_camera.ptr)->getViewProj()  * scaleMat;
 
+    // Bind raster state
     m_deviceContext->RSSetState(m_rastState[m_currentRast]);
 
+    // Bind sampler state
     m_deviceContext->PSSetSamplers(0, 1, &m_sampleStates[0]);
 
+    // Alpha yay
     SetBlendMode(BLEND_MODE_ALPHA);
 
+    // Bind general case shader
     m_genericEffect->bind(m_deviceContext);
     m_genericEffect->bindPosUV(m_deviceContext, ((Camera*)m_camera.ptr)->getProj(), ((Camera*)m_camera.ptr)->getView(), scaleMat, Vec2(0,0), Vec2(1,1));
     m_genericEffect->bindAmbient (m_deviceContext, m_spriteBlend, 1);
 
+    // Draw
     m_deviceContext->Draw(vertexCount, vertexStart);
   }
 
+  /*!
+      \brief
+      Draw text to screen
+  */
   void RenderContext::DrawSpriteText(const char * text, float size, const char * font)
   {
+    // Resulting transformation matrix
     Mat4 matFinal;
 
+    // Intermediates
     Mat4 rotMat, transMat;
 
+    // Null out
     matFinal = XMMatrixIdentity();
     rotMat = XMMatrixIdentity();
     transMat = XMMatrixIdentity();
 
-
+    // Configure rotation
     rotMat = XMMatrixRotationRollPitchYaw(-DirectX::XM_PI, 0.0f, m_spriteTrans.theta);
 
-
+    // Translate
     transMat = XMMatrixTranslation(m_spriteTrans.x,
       m_camUse ? m_spriteTrans.y : -m_spriteTrans.y, 0.0f);
 
+    // Roatate
     rotMat = XMMatrixMultiply(rotMat, transMat);
 
+    // Merge with camera
     matFinal = rotMat * ((Camera*)m_camera.ptr)->getViewProj();
 
     FW1_RECTF rect;
@@ -86,6 +116,7 @@ namespace DirectSheep
     std::string sfont(font);
     std::wstring WFont(sfont.begin(), sfont.end());
 
+    // Draw the string
     m_font.m_fontWrapper->DrawString(
       m_deviceContext,
       test.c_str(),// String
@@ -102,6 +133,10 @@ namespace DirectSheep
 
   }
 
+  /*!
+      \brief
+      Batch a draw call
+  */
   GFX_API void RenderContext::DrawBatched(DirectSheep::Handle texture)
   {
     unsigned width = GetTextureSize(texture).width;

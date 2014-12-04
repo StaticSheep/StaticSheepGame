@@ -18,22 +18,36 @@ namespace DirectSheep
   //                    CREATE FUNCTIONS                     //
   /////////////////////////////////////////////////////////////
 
+  /*!
+      \brief
+      Instantiate a new tex2D and bind it to a handle
+  */
   bool RenderContext::CreateTexture(Handle& handle, const std::string& filename)
   {
+    // Construct new tex2D
     Tex2D temp(m_device, m_contentPath + filename);
 
+    // Push back to texture pool for access
     m_textureRes.push_back(temp);
+
+    // Create handle
     handle.type = TEXTURE;
     handle.index = m_textureRes.size() - 1;
+
+    // Insert handle into handle pool for cleanup
     m_handles.push_back(handle);
     return true;
   }
 
+  /*!
+      \brief
+      Generates a vertex buffer
+  */
   bool RenderContext::CreateVertexBuffer(Handle& handle, size_t size)
   {
-    ID3D11Buffer *tempBuffer;
-    D3D11_BUFFER_DESC bd;
-    ZeroMemory(&bd, sizeof(bd));
+    ID3D11Buffer *tempBuffer;   // Temporary for instantiation
+    D3D11_BUFFER_DESC bd;       // Description to fill out the little things
+    ZeroMemory(&bd, sizeof(bd));// Set everything to 0 or OFF
 
     bd.Usage = D3D11_USAGE_DYNAMIC;                 // write access by CPU and GPU
     bd.ByteWidth = size;                            // size is the VERTEX struct
@@ -42,6 +56,8 @@ namespace DirectSheep
 
     DXVerify(m_device->CreateBuffer(&bd, NULL, &tempBuffer));       // create the buffer
 
+    // Yes we currently are hardcoded to the unit square. If you are reading this Zach, I'm sorry.
+    //                                                    If you are reading this Zak, you're welcome.
     Vertex2D QuadVertices[] =
     {
       { Vec3(-0.5f, -0.5f, 0.0f),0.0f, 1.0f },
@@ -62,53 +78,76 @@ namespace DirectSheep
     handle.type = VERTEX_BUFFER;
     handle.index = m_vertexBufferRes.size() - 1;
 
+    // Put handle in handle pool for cleanup
     m_handles.push_back(handle);
     return true;
   }
 
+  /*!
+      \brief
+      Create an index buffer
+  */
   bool RenderContext::CreateIndexBuffer(Handle& handle, size_t size)
   {
-    D3D11_BUFFER_DESC bd;
-    ID3D11Buffer * tempIB;
+    D3D11_BUFFER_DESC bd;    // A description to be filled with the little things
+    ID3D11Buffer * tempIB;   // Temporary to create the buffer
     ZeroMemory(&bd, sizeof(bd));
 
+    // Fill out description
     bd.Usage = D3D11_USAGE_DYNAMIC;
     bd.ByteWidth = size;
     bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
     bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
     bd.MiscFlags = 0;
 
+    // Create the buffer
     DXVerify(m_device->CreateBuffer(&bd, NULL, &tempIB));
 
     m_indexBufferRes.push_back(tempIB);
 
     handle.type = INDEX_BUFFER;
     handle.index = m_indexBufferRes.size() - 1;
+
+    // Push handle into handle pool for cleanup
     m_handles.push_back(handle);
 
     return true;
   }
 
+  /*!
+      \brief
+      Create a generic constant buffer
+  */
   bool RenderContext::CreateConstantBuffer(Handle& handle, size_t size)
   {
+    // Temporary buffer pointer
     ID3D11Buffer* tempCB;
 
+    // Describes the buffer on creation
     D3D11_BUFFER_DESC bd;
     ZeroMemory(&bd, sizeof(bd));
 
+    // Fill out description
     bd.Usage = D3D11_USAGE_DEFAULT;
     bd.ByteWidth = size;
     bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 
+    // Create buffer
     DXVerify(m_device->CreateBuffer(&bd, NULL, &tempCB));
 
     m_constBufferRes.push_back(tempCB);
     handle.type = CONSTANT_BUFFER;
     handle.index = m_constBufferRes.size() - 1;
+
+    // Push back handle to handle pool for cleanup
     m_handles.push_back(handle);
     return true;
   }
 
+  /*!
+      \brief
+      Creates the engines depth buffer
+  */
   bool RenderContext::CreateDepthBuffer(void)
   {
     D3D11_TEXTURE2D_DESC texd;       // Description structure for depth buffer texture
@@ -122,6 +161,7 @@ namespace DirectSheep
     texd.Format = DXGI_FORMAT_D32_FLOAT;
     texd.BindFlags = D3D11_BIND_DEPTH_STENCIL; // This is a depth stencil
 
+    // Generate Depth buffers texture (functions as buffer to draw to)
     DXVerify(m_device->CreateTexture2D(&texd, NULL, &m_depthBuffer.texture2D));
 
     // create a depth buffer (z-sorting)
@@ -131,27 +171,36 @@ namespace DirectSheep
     dsvd.Format = DXGI_FORMAT_D32_FLOAT;
     dsvd.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2DMS;
 
+    // Create the depth buffer
     DXVerify(m_device->CreateDepthStencilView(m_depthBuffer.texture2D, &dsvd, &m_depthBuffer.m_depthBuffer));
 
     return true;
   }
 
+  /*!
+      \brief
+      Creates the engines font wrapper
+  */
   bool RenderContext::CreateFontWrapper(void)
   {
+    // Create the factory
     DXVerify(FW1CreateFactory(FW1_VERSION, &m_font.m_fontFactory));
 
+    // Describes how the wrapper will be created
     FW1_FONTWRAPPERCREATEPARAMS Params;
     ZeroMemory(&Params, sizeof(Params));
 
-    Params.SheetMipLevels = 5;
-    Params.AnisotropicFiltering = TRUE;
-    Params.DefaultFontParams.pszFontFamily = L"Arial";
-    Params.DefaultFontParams.FontWeight = DWRITE_FONT_WEIGHT_NORMAL;
-    Params.DefaultFontParams.FontStyle = DWRITE_FONT_STYLE_NORMAL;
-    Params.DefaultFontParams.FontStretch = DWRITE_FONT_STRETCH_NORMAL;
+    Params.SheetMipLevels = 5;                                         // Mip map up to 5
+    Params.AnisotropicFiltering = TRUE;                                // Anisotropic
+    Params.DefaultFontParams.pszFontFamily = L"Arial";                 // Default to Arial if requested font missing
+    Params.DefaultFontParams.FontWeight = DWRITE_FONT_WEIGHT_NORMAL;   // Thickness of font
+    Params.DefaultFontParams.FontStyle = DWRITE_FONT_STYLE_NORMAL;     // Italic vs Normal
+    Params.DefaultFontParams.FontStretch = DWRITE_FONT_STRETCH_NORMAL; // Distortion
 
+    // Use the factory to create the wrapper
     DXVerify(m_font.m_fontFactory->CreateFontWrapper(m_device, NULL, &Params, &m_font.m_fontWrapper));
 
+    // Factory no longer needed
     m_font.m_fontFactory->Release();
     m_font.m_fontFactory = NULL;
 
@@ -159,6 +208,10 @@ namespace DirectSheep
     return true;
   }
 
+  /*!
+      \brief
+      Creates the DirectX device (very important)
+  */
   void RenderContext::InitializeDeviceAndSwapChain(void)
   {
     HRESULT hr = S_OK; // Error check, remains S_OK if no problems
@@ -241,26 +294,37 @@ namespace DirectSheep
 
   }
 
+  /*!
+      \brief
+      Creates a rasterizer state
+  */
   void RenderContext::InitializeRasterizerState(void)
   {
+    // Describes the rasterizer state
     D3D11_RASTERIZER_DESC rd;
-    rd.FillMode = D3D11_FILL_SOLID;
-    rd.CullMode = D3D11_CULL_BACK;
-    rd.FrontCounterClockwise = FALSE;
-    rd.DepthClipEnable = TRUE;
-    rd.ScissorEnable = FALSE;
-    rd.AntialiasedLineEnable = FALSE;
-    rd.MultisampleEnable = TRUE;
-    rd.DepthBias = 0;
-    rd.DepthBiasClamp = 0.0f;
-    rd.SlopeScaledDepthBias = 0.0f;
+    rd.FillMode = D3D11_FILL_SOLID;    // Solid vs Wireframe
+    rd.CullMode = D3D11_CULL_BACK;     // Cull the backside of mesh
+    rd.FrontCounterClockwise = FALSE;  // How front of mesh is determined by vertex order
+    rd.DepthClipEnable = TRUE;         // We are using depth clipping (depth buffer)
+    rd.ScissorEnable = FALSE;          // No scissoring
+    rd.AntialiasedLineEnable = FALSE;  // No need for antialiasing yet
+    rd.MultisampleEnable = TRUE;       // Definately want multisampling
+    rd.DepthBias = 0;                  // No depth bias
+    rd.DepthBiasClamp = 0.0f;          // "" "" ""
+    rd.SlopeScaledDepthBias = 0.0f;    // "" "" ""
 
+    // Create rasterizer state for fill
     DXVerify(m_device->CreateRasterizerState(&rd, &m_rastState[RastStates::Fill]));
 
-    rd.FillMode = D3D11_FILL_WIREFRAME;
+    rd.FillMode = D3D11_FILL_WIREFRAME; // Make another raster state for wireframe
 
     DXVerify(m_device->CreateRasterizerState(&rd, &m_rastState[RastStates::Wire]));
   }
+
+  /*!
+      \brief
+      Creates a backbuffer to draw to
+  */
   void RenderContext::InitializeBackBuffer(void)
   {
     // find the address of the backbuffer
@@ -274,8 +338,13 @@ namespace DirectSheep
     m_deviceContext->OMSetRenderTargets(1, &m_backBuffer, m_depthBuffer.m_depthBuffer);
   }
 
+  /*!
+      \brief
+      Create blend states
+  */
   void RenderContext::InitializeBlendModes(void)
   {
+    // This is a blend state for multiplicative alpha
     D3D11_BLEND_DESC bd;
     ZeroMemory(&bd, sizeof(D3D11_BLEND_DESC));
     bd.RenderTarget[0].BlendEnable = TRUE;
@@ -292,14 +361,19 @@ namespace DirectSheep
     DXVerify(m_device->CreateBlendState(&bd, &m_blendStateMap[BLEND_MODE_ALPHA]));
   }
 
+  /*!
+      \brief
+      Create a sampler state
+  */
   void RenderContext::InitializeSamplerState(void)
   {
+    // This affects how textures are sampled onto meshes
     D3D11_SAMPLER_DESC sd;
     sd.Filter = D3D11_FILTER_ANISOTROPIC;
     sd.MaxAnisotropy = 16;
-    sd.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
-    sd.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
-    sd.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
+    sd.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP; // Clamp U
+    sd.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP; // Clamp V
+    sd.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP; // Clamp W (3D texture)
     sd.BorderColor[0] = 0.0f;
     sd.BorderColor[1] = 0.0f;
     sd.BorderColor[2] = 0.0f;
@@ -308,11 +382,17 @@ namespace DirectSheep
     sd.MaxLOD = FLT_MAX;
     sd.MipLODBias = 0.0f;
 
+    // Create the sampler state
     DXVerify(m_device->CreateSamplerState(&sd, &m_sampleStates[0]));
   }
 
+  /*!
+      \brief
+      Create a depth state
+  */
   void RenderContext::InitializeDepthState(void)
   {
+    // This gives more control over depth sorting
     D3D11_DEPTH_STENCIL_DESC dsDesc;
 
     ZeroMemory(&dsDesc, sizeof(D3D11_DEPTH_STENCIL_DESC));
