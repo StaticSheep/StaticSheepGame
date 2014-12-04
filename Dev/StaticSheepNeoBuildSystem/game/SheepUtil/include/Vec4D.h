@@ -1,14 +1,10 @@
-/******************************************************************************
-filename    Vec4D.h
-project     Giga Gravity Games
-author      Zakary Wilson
-date        10/20/2014
-
-Brief Description:
-This header contains the 4D vector struct.
+/*****************************************************************
+Filename: Vec4D.h
+Project: 
+Author(s): Zakary Wilson
 
 All content © 2014 DigiPen (USA) Corporation, all rights reserved.
-******************************************************************************/
+*****************************************************************/
 
 #pragma once
 
@@ -27,6 +23,7 @@ namespace Framework
     Vec4D(const Vec3D& copy){ Vec4D(copy.x, copy.y, copy.z, 0.0f);};
     
     // getters. This overwrites the Vec2 ones
+
     float Length();
     float LengthSquare();
     
