@@ -276,6 +276,12 @@ GameObject
     name std::string "PlayerHUD"
     loadCommand std::string "return function(self) end"
   }
+
+  LuaComponent
+  {
+    name std::string "WinScreen"
+    loadCommand std::string "return function(self) end"
+  }
 }
 GameObject
 {

@@ -95,7 +95,7 @@ function PauseMenu:MakeMenu()
       btn.firstPress = false
       btn:SetText("Quit Game [CONFIRM]")
     else
-      print("QUIT THE GAME")
+      engine.Quit()
     end
   end)
 
@@ -152,16 +152,19 @@ function PauseMenu:Init()
 end
 
 function PauseMenu:Refresh()
-  self:CleanUp()
-  self:PauseSpace(false)
+  --self:PauseSpace(true)
+  --self:CleanUp()
+  
 
-  self:PauseSpace(true)
-  self:MakeMenu()
+  --self:PauseSpace(true)
+  --self:MakeMenu()
   --self:MakeMenu()
 end
 
 function PauseMenu:Remove()
   self:CleanUp()
+  hook.Remove("FrameUpdate", self)
+  hook.Remove("LogicUpdate", self)
 end
 
 function PauseMenu:SetupHooks()

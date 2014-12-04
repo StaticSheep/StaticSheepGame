@@ -56,6 +56,8 @@ namespace Framework
       BIND_FUNCTION_TABLE(L, Draw::DrawLine, DrawLine, surface);
       BIND_FUNCTION_TABLE(L, Draw::DrawString, DrawString, surface);
       BIND_FUNCTION_TABLE(L, Draw::SetPosition, SetPos, surface);
+      BIND_FUNCTION_TABLE(L, Draw::SetPositionEx, SetPosEx, surface);
+      BIND_FUNCTION_TABLE(L, Draw::ForceZ, ForceZ, surface);
       BIND_FUNCTION_TABLE(L, Draw::MeasureString, MeasureString, surface);
 
       CREATE_TABLE(L, audio);
@@ -113,6 +115,8 @@ namespace Framework
       BIND_FUNCTION_EX(L, PlayerController::CurrentHealth, CurrentHealth);
       BIND_FUNCTION_EX(L, Level1_Logic::GetPlayerHealth, GetPlayerHealth);
       BIND_FUNCTION_EX(L, Level1_Logic::GetPlayerLives, GetPlayerLives);
+      BIND_FUNCTION_EX(L, Level1_Logic::GetWinner, GetWinner);
+      BIND_FUNCTION_EX(L, Level1_Logic::EndMatch, EndMatch);
 
       //BIND_FUNCTION_EX(L, BoxCollider::SetVelocity, SetVelocity);
     }

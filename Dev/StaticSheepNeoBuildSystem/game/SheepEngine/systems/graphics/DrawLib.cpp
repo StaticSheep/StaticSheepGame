@@ -18,6 +18,8 @@ namespace Framework
   unsigned Draw::m_TextureID;
   int Draw::m_whiteTextureID = -1;
   DirectSheep::Handle Draw::m_whiteHandle(DirectSheep::TEXTURE, 0);
+  bool Draw::m_useForcedZ = false;
+  float Draw::m_forceZ = 0.0f;
 
   void Draw::SetCamState(int camState)
   {
@@ -48,7 +50,21 @@ namespace Framework
 
   void Draw::SetPosition(float x, float y)
   {
-    GRAPHICS->SetPosition(x, y, -1.0f);
+    //if (m_useForcedZ)
+    //  TRACELOG->Log(TraceLevel::DEBUG, "Forced Z was %f", m_forceZ);
+    GRAPHICS->SetPosition(x, y, m_useForcedZ ? m_forceZ : 0.0f);
+  }
+
+  void Draw::SetPositionEx(float x, float y, float z)
+  {
+    GRAPHICS->SetPosition(x, y, z);
+  }
+
+  void Draw::ForceZ(bool use, float z)
+  {
+    m_useForcedZ = use;
+    m_forceZ = z;
+    //TRACELOG->Log(TraceLevel::DEBUG, "Forced Z to %f", z);
   }
 
   void Draw::SetColor(float r, float g, float b, float a)
@@ -60,22 +76,27 @@ namespace Framework
   void Draw::DrawRect(float x, float y, float width, float height)
   {
     GRAPHICS->SetSize(width, height);
-    GRAPHICS->SetPosition(x, y, 0.0f);
+    SetPosition(x, y);
+    GRAPHICS->FlipSprite(false, false);
 
     if (m_whiteTextureID == -1)
     {
       m_whiteTextureID = GRAPHICS->GetTextureID("White.png");
       new (&m_whiteHandle) DirectSheep::Handle(DirectSheep::TEXTURE, m_whiteTextureID);
     }
-      
-    //GRAPHICS->BindTexture(m_whiteTextureID);
-    GRAPHICS->DrawBatched(m_whiteHandle);
+    
+    GRAPHICS->SetUV(Vec2(0, 0), Vec2(1, 1));
+
+    GRAPHICS->BindTexture(m_whiteTextureID);
+    GRAPHICS->RawDraw();
+    //GRAPHICS->DrawBatched(m_whiteHandle);
   }
 
   void Draw::DrawTexturedRect(float x, float y, float width, float height)
   {
     GRAPHICS->SetSize(width, height);
-    GRAPHICS->SetPosition(x, y, 0.0f);
+    SetPosition(x, y);
+    GRAPHICS->FlipSprite(false, false);
     
 //     GRAPHICS->BindTexture(m_TextureID);
 //     GRAPHICS->RawDraw();
@@ -86,7 +107,8 @@ namespace Framework
   void Draw::DrawTexturedRectRotated(float x, float y, float width, float height, float theta)
   {
     GRAPHICS->SetSize(width, height);
-    GRAPHICS->SetPosition(x, y, 0.0f);
+    SetPosition(x, y);
+    GRAPHICS->FlipSprite(false, false);
     //GRAPHICS->BindTexture(m_TextureID);
 
 
@@ -124,7 +146,8 @@ namespace Framework
 
     GRAPHICS->SetRotation(rotation);
 
-    GRAPHICS->SetPosition(sX + diffX / 2, sY + diffY / 2, 0.0f);
+   SetPosition(sX + diffX / 2, sY + diffY / 2);
+    GRAPHICS->SetUV(Vec2(0, 0), Vec2(1, 1));
 
     GRAPHICS->DrawBatched(m_whiteHandle);
 

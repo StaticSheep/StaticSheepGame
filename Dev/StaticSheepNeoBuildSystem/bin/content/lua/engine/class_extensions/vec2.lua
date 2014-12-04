@@ -40,10 +40,6 @@ function META.__eq(a, b)
   return a.x == b.x and a.y == b.y
 end
 
-function META.__tostring(a)
-  return "(".. a.x ..", ".. a.y ..")"
-end
-
 function META.new(x, y)
   local tab = setmetatable({}, META)
   tab.x = x

@@ -1,3 +1,10 @@
+/*****************************************************************
+Filename: Create.cpp
+Project:
+Author(s): Scott Nelson (Primary)
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+*****************************************************************/
 #include "precompiled.h"
 #include "Context.h"
 #include "Handle.h"
@@ -164,7 +171,7 @@ namespace DirectSheep
     UINT deviceFlags = 0; // Flags for registering device
 
 #if defined (_DEBUG)
-    deviceFlags |= D3D11_CREATE_DEVICE_DEBUG; // If in debug mode set DirectX to debug mode
+    //deviceFlags |= D3D11_CREATE_DEVICE_DEBUG; // If in debug mode set DirectX to debug mode
 #endif
 
     // Array of driver types in order of most prefered to least
@@ -203,10 +210,8 @@ namespace DirectSheep
     swapDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;     // use buffer as render target
     swapDesc.OutputWindow = m_hwnd;                             // attach to window
     swapDesc.SampleDesc.Count = 4;                              // # of multisamples
-    swapDesc.Windowed = true;                           // windowed/full-screen mode
+    swapDesc.Windowed = !m_fullscreen;                          // windowed/full-screen mode
     swapDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;    // allow full-screen switching
-    //swapDesc.BufferDesc.RefreshRate.Numerator = 60;
-    //swapDesc.BufferDesc.RefreshRate.Denominator	= 1;
 
     // create DirectX device, it's context, and swapchain using swapDesc
 

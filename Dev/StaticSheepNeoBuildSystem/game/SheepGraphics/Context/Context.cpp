@@ -177,7 +177,7 @@ namespace DirectSheep
       SafeRelease(it.second);
     }
 
-    for (int i = 0; i < m_CameraPool.size(); ++i)
+    for (unsigned i = 0; i < m_CameraPool.size(); ++i)
     {
       if (m_CameraPool[i])
       {

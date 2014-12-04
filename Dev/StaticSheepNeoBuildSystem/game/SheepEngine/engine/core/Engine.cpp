@@ -108,6 +108,7 @@ namespace Framework
 
   void Engine::SystemMessage(Message& msg)
   {
+    void* data = &m_editorAcitve;
     for (unsigned int i = 0; i < m_systems.size(); ++i)
       m_systems[i]->ReceiveMessage(msg);
   }
@@ -122,7 +123,14 @@ namespace Framework
   {
     Window->Update();
 
-    m_time += Framerate.GetDT() * 1000.0f;
+    if (!WINDOW_ACTIVE)
+    {
+      SHEEPINPUT->Update(0);
+      return;
+    }
+      
+
+    m_time += (unsigned)(Framerate.GetDT() * 1000.0f);
 
     for (auto it = m_spaces.begin(); it != m_spaces.end(); ++it)
       if (!(*it)->m_ready)
@@ -159,6 +167,7 @@ namespace Framework
     if(Framerate.FramerateCheck())
     {
       Step();
+      Framerate.EndMainLoop();
     }
   }
 

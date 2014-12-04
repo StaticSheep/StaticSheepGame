@@ -1,3 +1,10 @@
+/*****************************************************************
+Filename: Tex2d.h
+Project:
+Author(s): Scott Nelson (Primary)
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+*****************************************************************/
 #pragma once
 
 #include "DirectXIncludes.h"
@@ -29,5 +36,8 @@ namespace DirectSheep
     ID3D11Texture2D* m_rawTex;
     ID3D11RenderTargetView* m_renderTarget;
     ID3D11ShaderResourceView* m_ShaderRes;
+
+    unsigned m_width;
+    unsigned m_height;
   };
 }

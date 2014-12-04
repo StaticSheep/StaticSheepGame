@@ -1,3 +1,11 @@
+/*****************************************************************
+Filename: CRigidBody.cpp
+Project:
+Author(s): Jon Sourbeer(primary), Zachary Nawar
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+*****************************************************************/
+
 #pragma once
 #include "pch/precompiled.h"
 

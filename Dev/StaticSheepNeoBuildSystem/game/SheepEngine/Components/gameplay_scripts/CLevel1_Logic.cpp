@@ -70,8 +70,8 @@ namespace Framework
   void Level1_Logic::LogicUpdate(float dt)
 	{
 
-    if (deadPlayers >= 3)
-      EndMatch();
+    //if (deadPlayers >= 3)
+    //  EndMatch();
     if (camShake)
       CameraShake(dt, camShakeTime, camShakeMagnitude);
 
@@ -89,7 +89,7 @@ namespace Framework
       Transform *PT = ePlat->GetComponent<Transform>(eTransform);
       //BoxCollider *platC = ePlat->GetComponent <BoxCollider>(eBoxCollider);
       ePlat->GetComponent<ElevatorPlat>(eElevatorPlat)->direction = true;
-      PT->SetTranslation(Vec3(320.0f,-520.0f,0.9f));
+      PT->SetTranslation(Vec3(320.0f,-580.0f,0.9f));
 
       if (randomDrop == 0)
       {
@@ -104,7 +104,7 @@ namespace Framework
       Transform *PT2 = ePlat2->GetComponent<Transform>(eTransform);
       //BoxCollider *platC2 = ePlat2->GetComponent <BoxCollider>(eBoxCollider);
       ePlat2->GetComponent<ElevatorPlat>(eElevatorPlat)->direction = false;
-      PT2->SetTranslation(Vec3(-320.0f, 520.0f, 0.9f));
+      PT2->SetTranslation(Vec3(-320.0f, 580.0f, 0.9f));
 
       if (randomDrop == 0)
       {
@@ -226,8 +226,8 @@ namespace Framework
     Transform *lc = space->GetHandles().GetAs<Transform>(levelTransform);
     if (shake)
     {
-      float distanceX = (float)GetRandom(-magnitude, magnitude);
-      float distanceY = (float)GetRandom(-magnitude, magnitude);
+      float distanceX = (float)GetRandom((int)-magnitude, (int)magnitude);
+      float distanceY = (float)GetRandom((int)-magnitude, (int)magnitude);
       lc->SetTranslation(lc->GetTranslation() + Vec3(distanceX, distanceY, 0.0));
       shake = false;
     }
@@ -260,18 +260,31 @@ namespace Framework
     return playerLives[ply];
   }
 
-  void Level1_Logic::EndMatch()
+  int Level1_Logic::GetWinner()
   {
+    int winner = 1;
+    int numAlive = 0;
+
     for (int i = 0; i < 4; ++i)
     {
       if (playerLives[i] > 0)
       {
-        //the player who won is what 'i' is currently
         //restart the level here
-        ENGINE->ChangeLevel("Asteroid");
+        winner = i + 1;
+        ++numAlive;
       }
     }
-    //if we hit this point everyone is dead and it's a tie
+
+    if (numAlive > 1)
+      return 0;
+    else
+      return winner;
+  }
+
+  void Level1_Logic::EndMatch()
+  {
     ENGINE->ChangeLevel("Asteroid");
   }
+
+  
 }

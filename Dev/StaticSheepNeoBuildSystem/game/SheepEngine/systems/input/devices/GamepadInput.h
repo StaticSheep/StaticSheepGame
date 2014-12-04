@@ -53,6 +53,9 @@ namespace Framework
 
     /* -- Misc -- */
 
+    // sets the right stick values. For keyboard input
+    void SetRightStick(Vec2D&);
+
     void Rumble(float a_fLeftMotor = 0.0f, float a_fRightMotor = 0.0f);
 
     bool Connected(); // Is it plugged in?

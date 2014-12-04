@@ -50,6 +50,7 @@ local headColors = {Color(0, 255, 0), Color(255, 0, 0), Color(255, 0, 255), Colo
 
 function PlayerHUD:Create(i)
   self.base[i] = gui.Create("Frame")
+  self.base[i]:SetPriority(0)
   self:Register(self.base[i])
   self.base[i]:SetColor(Color(50, 50, 50, 0))
   self.base[i]:SetBGColor(Color(100, 100, 100, 0))
@@ -98,6 +99,10 @@ function PlayerHUD:Init()
   self.super.Init(self)
 end
 
+function PlayerHUD:SetupHooks()
+  hook.Add("FrameUpdate", self, self.FrameUpdate)
+end
+
 function PlayerHUD:Refresh()
   self:CleanUp()
   self:Make()
@@ -105,6 +110,22 @@ end
 
 function PlayerHUD:Remove()
   self:CleanUp()
+  print("REMOVE")
+  hook.Remove("FrameUpdate", self)
+end
+
+function PlayerHUD:FrameUpdate(deltaTime)
+  if GameSpaces[self._space]._paused or GAME_WON then
+    for i=1,4 do
+      if not self.base[i] then return end
+      self.base[i]:SetVisible(false)
+    end
+  else
+    for i=1,4 do
+      if not self.base[i] then return end
+      self.base[i]:SetVisible(true)
+    end
+  end
 end
 
 RegisterComponent(PlayerHUD)

@@ -1,3 +1,10 @@
+/*****************************************************************
+Filename: Debug.h
+Project:
+Author(s): Zachary Nawar (primary)
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+*****************************************************************/
 #define SHEEPGRAPHICS 1
 
 #include <map>

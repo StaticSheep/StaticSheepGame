@@ -1,3 +1,10 @@
+/*****************************************************************
+Filename: Pshader.hlsl
+Project:
+Author(s): Scott Nelson (Primary)
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+*****************************************************************/
 cbuffer perFrame: register(b0)
 {
   float4 cAmbientColor;
@@ -15,7 +22,6 @@ SamplerState g_samLinear : register(s0);
 
 float4 PSMain(PSInput input) : SV_TARGET0
 {
-  //input.texCoord.x = 1 - input.texCoord.x;
   float4 vDiffuse = g_txDiffuse.Sample(g_samLinear, input.texCoord);
   return cAmbientColor * cAmbientIntensity.r * vDiffuse;
 }

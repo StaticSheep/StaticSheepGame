@@ -1,17 +1,10 @@
-/*****************************************************************************/
-/*!
-\file   Matrix3D.cpp
-\author Zakary Wilson
-\par    Course: GAM200
-\par    Giga Gravity Games
-\date   10/20/2014<BR>
-\brief  
-    This file contains functions to construct and perform matrix 
-    multiplication<BR>
+/*****************************************************************
+Filename: Matrix3D.cpp
+Project: 
+Author(s): Zakary Wilson
 
-\par    All content © 2014 DigiPen (USA) Corporation, all rights reserved.
-*/
-/*****************************************************************************/
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+*****************************************************************/
 
 #include "src/precompiled.h"
 #include "Matrix3D.h"
@@ -20,26 +13,13 @@
 namespace Framework
 {
 
-/*****************************************************************************/
-/*!
-    \brief
-      Default constructor for a 3x3 matrix. Defaults to identity.
-*/
-/*****************************************************************************/
+  // Constructors
   Mat3D::Mat3D()
   {
     _Reset();
   }
   
-/*****************************************************************************/
-/*!
-    \brief
-      Non-default constructor. Sets the matrix to be translation.
-      
-    \param trans
-      The translation vector
-*/
-/*****************************************************************************/
+  // Creates a translation matrix. 
   Mat3D::Mat3D(const Vec2D& trans)
   {
     _Reset();
@@ -47,15 +27,7 @@ namespace Framework
     _matrix[1][2] = trans.y;
   }
   
-/*****************************************************************************/
-/*!
-    \brief
-      Non-default constructor. Sets the matrix to be rotation.
-      
-    \param radians
-      The angle in radians
-*/
-/*****************************************************************************/
+  // Creates a rotation matrix. In radians
   Mat3D::Mat3D(float radians) 
   {
     _Reset();
@@ -68,18 +40,7 @@ namespace Framework
     _matrix[1][1] = cosine;
   }
   
-/*****************************************************************************/
-/*!
-    \brief
-      Non-default constructor. Sets the matrix to be scale.
-      
-    \param x
-      The x scale
-      
-    \param y
-      The y scale
-*/
-/*****************************************************************************/
+  // Creates a scale matrix
   Mat3D::Mat3D(float x, float y)
   {
     _Reset();
@@ -87,22 +48,7 @@ namespace Framework
     _matrix[1][1] = y;
   }
   
-/*****************************************************************************/
-/*!
-    \brief
-      Non-default constructor. Outright constructs the matrix from the 
-      passed in vectors.
-      
-    \param r
-      The right vector (x vector)
-      
-    \param u
-      The up vector (y vector)
-      
-    \param p
-      The point/translation vector (point)
-*/
-/*****************************************************************************/
+  // Outright contructs the matrix based on the vectors passed in
   Mat3D::Mat3D(const Vec3D& r, const Vec3D& u, const Vec3D& p)
   {
     _matrix[0][0] = r.x;
@@ -118,15 +64,7 @@ namespace Framework
     _matrix[2][2] = p.z;
   }
   
-/*****************************************************************************/
-/*!
-    \brief
-      Sets the matrix to be a translation matrix.
-      
-    \param trans
-      The vector to translate by
-*/
-/*****************************************************************************/
+  // Set the matrix to translate by the vector
   void Mat3D::SetTranslation(const Vec2D& trans)
   {
     _Reset();
@@ -134,21 +72,7 @@ namespace Framework
     _matrix[1][2] = trans.y;
   }
   
-/*****************************************************************************/
-/*!
-    \brief
-      Sets the matrix to be a translation matrix.
-      
-    \param x
-      The x to translate to
-      
-    \param y
-      The y to translate to
-      
-    \param z
-      The z to translate to, defaults to 1.0
-*/
-/*****************************************************************************/
+  // Set the matrix to translate by the values
   void Mat3D::SetTranslation(float x, float y, float z)
   {
     _Reset();
@@ -157,15 +81,7 @@ namespace Framework
     _matrix[2][2] = z;
   }
   
-/*****************************************************************************/
-/*!
-    \brief
-      Sets the matrix to be a rotation matrix. In degrees.
-      
-    \param degrees
-      The angle in degrees
-*/
-/*****************************************************************************/
+  //Set the matrix to rotate. In degrees
   void Mat3D::SetRotationDegrees(float degrees)
   {
     float sine = sinf((float)(degrees * PI) / 180.0f);
@@ -179,15 +95,7 @@ namespace Framework
     _matrix[1][1] = cosine;
   }
   
-/*****************************************************************************/
-/*!
-    \brief
-      Sets the matrix to be a rotation matrix. In radians.
-      
-    \param radians
-      The angle in radians
-*/
-/*****************************************************************************/
+  // Set the matrix to rotate. In radians
   void Mat3D::SetRotationRadians(float radians)
   {
     float sine = sin(radians);
@@ -201,15 +109,7 @@ namespace Framework
     _matrix[1][1] = cosine;
   }
   
-/*****************************************************************************/
-/*!
-    \brief
-      Sets the matrix to be a scale matrix.
-      
-    \param scale
-      The vector to scale by
-*/
-/*****************************************************************************/
+  // Set the matrix to scale by the vector
   void Mat3D::SetScale(const Vec2D& scale)
   {
     _Reset();
@@ -218,18 +118,7 @@ namespace Framework
     _matrix[1][1] = scale.y;
   }
   
-/*****************************************************************************/
-/*!
-    \brief
-      Sets the matrix to be a scale matrix.
-      
-    \param x
-      The x scale
-      
-    \param y
-      The y scale
-*/
-/*****************************************************************************/
+  // Set the matrix to scale by the values
   void Mat3D::SetScale(float x, float y)
   {
     _Reset();
@@ -238,12 +127,7 @@ namespace Framework
     _matrix[1][1] = y;
   }
   
-/*****************************************************************************/
-/*!
-    \brief
-      Makes a transpose of the passed in matrix.
-*/
-/*****************************************************************************/
+  // Returns a transpose of this matrix
   Mat3D Mat3D::Transpose()
   {
     return Mat3D(Vec3D(_matrix[0][0], _matrix[0][1], _matrix[0][2]),
@@ -251,12 +135,7 @@ namespace Framework
                  Vec3D(_matrix[2][0], _matrix[2][1], _matrix[2][2]));
   }
   
-/*****************************************************************************/
-/*!
-    \brief
-      Inverts the current matrix.
-*/
-/*****************************************************************************/
+  // Inverts this matrix
   void Mat3D::Inverse()
   {
     float a = _matrix[0][0];
@@ -287,15 +166,7 @@ namespace Framework
     *this = linear;
   }
   
-/*****************************************************************************/
-/*!
-    \brief
-      Operator overload for matrix multiplication.
-      
-    \param rhs
-      The matrix on the right hand side
-*/
-/*****************************************************************************/
+  // Matrix multiplication
   Mat3D Mat3D::operator*(const Mat3D& rhs) const
   {
     int i,j;
@@ -328,15 +199,7 @@ namespace Framework
     return C;
   }
   
-/*****************************************************************************/
-/*!
-    \brief
-      Operator overload for matrix to vector multiplication.
-      
-    \param rhs
-      The vector on the right hand side
-*/
-/*****************************************************************************/
+  // Matrix vector multiplication
   Vec3D Mat3D::operator*(const Vec3D& v) const
   {
     float X = _matrix[0][0] * v.x +
@@ -356,16 +219,8 @@ namespace Framework
     return result;
   }
   
-/*****************************************************************************/
-/*!
-    \brief
-      Operator overload for matrix multiplication.
-      
-    \param rhs
-      The matrix on the right hand side ( it's vec2, assumes vector not point)
-*/
-/*****************************************************************************/
-  Vec3D Mat3D::operator*(const Vec2D& v) const // assuming vector, not point
+  // Matrix vector multiplication
+  Vec3D Mat3D::operator*(const Vec2D& v) const
   {
     float X = _matrix[0][0] * v.x +
               _matrix[0][1] * v.y;
@@ -381,24 +236,14 @@ namespace Framework
     return result;
   }
   
-/*****************************************************************************/
-/*!
-    \brief
-      Operator overload for matrix multiplication.
-*/
-/*****************************************************************************/
+  // Matrix multiplication
   Mat3D& Mat3D::operator*=(const Mat3D& rhs)
   {
     *this = *this * rhs;
     return *this;
   }
   
-/*****************************************************************************/
-/*!
-    \brief
-      Operator overload for matrix assignment.
-*/
-/*****************************************************************************/
+  // Assignment operator
   Mat3D& Mat3D::operator=(const Mat3D& rhs)
   {
     for(int i = 0; i < 3; ++i)
@@ -409,12 +254,7 @@ namespace Framework
     return *this;
   }
 
-/*****************************************************************************/
-/*!
-    \brief
-      Resets the matrix to the identity matrix.
-*/
-/*****************************************************************************/
+  // Resets the matrix to the identity matrix
   void Mat3D::_Reset()
   {
     for(int i = 0; i < 3; ++i)

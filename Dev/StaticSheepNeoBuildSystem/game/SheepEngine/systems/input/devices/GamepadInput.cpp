@@ -137,7 +137,19 @@ namespace Framework
 
   bool GamePadInput::ButtonDown(int a_iButton)
   {
-    return State.Gamepad.wButtons & XINPUT_Buttons[a_iButton];
+    return (State.Gamepad.wButtons & XINPUT_Buttons[a_iButton]) != 0;
+  }
+
+  void GamePadInput::SetRightStick(Vec2D& input)
+  {
+    State.Gamepad.sThumbRX = (BYTE)(input.x * 255);
+    State.Gamepad.sThumbRY = (BYTE)(input.y * 255);
+
+    if(input.x > 0.0f)
+    {
+      int stuff = 10;
+      stuff += 5;
+    }
   }
 
   void GamePadInput::Rumble(float a_fLeftMotor, float a_fRightMotor)

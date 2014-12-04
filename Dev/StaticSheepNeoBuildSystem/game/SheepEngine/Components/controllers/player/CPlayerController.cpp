@@ -9,6 +9,7 @@
 #include "../../gameplay_scripts/CBullet_default.h"
 #include "../../sprites/CAniSprite.h"
 #include "../../gameplay_scripts/CCheats.h"
+#include "../systems/input/Input.h"
 
 
 namespace Framework
@@ -84,6 +85,8 @@ namespace Framework
     bc->SetBodyCollisionGroup(space->GetGameObject(owner)->archetype);
 	}
 
+  static Vec2D aim(1.0f, 0.0f);
+
 	//************************************
 	// Method:    LogicUpdate
 	// FullName:  Framework::PlayerController::LogicUpdate
@@ -111,7 +114,7 @@ namespace Framework
 			aimDir = aimingDirection(gp); //get the direction the player is currently aiming;
 
 		//fire on trigger pull
-		if (gp->RightTrigger() && hasFired == false)
+		if ((gp->RightTrigger() && hasFired == false) || (SHEEPINPUT->KeyIsDown(VK_SPACE) && hasFired == false && gp->GetIndex() == 0))
 		{
 			hasFired = true;
 			onFire();
@@ -124,6 +127,11 @@ namespace Framework
         shotDelay = weapon->delay;
       }
     }
+
+    // keyboard input for first player
+    if(SHEEPINPUT->KeyIsDown(VK_SPACE))
+        SHEEPINPUT->Pads[0].State.Gamepad.bRightTrigger = (BYTE)255;
+
 		//if the trigger is released, reset the bool
 		if (!gp->RightTrigger() && weapon->semi)
     {
@@ -164,7 +172,7 @@ namespace Framework
         }
       }
       //left stick move
-      if (gp->LeftStick_X() > 0.2 /*&& snappedNormal.x == 0*/)
+      if (gp->LeftStick_X() > 0.2 /*&& snappedNormal.x == 0*/ || (SHEEPINPUT->KeyIsDown(0x44) && gp->GetIndex() == 0))
       {
         //bc->SetVelocity(Vec3(0.0f, 0.0f, 0.0f));
         if (snappedNormal.y > 0)
@@ -177,7 +185,7 @@ namespace Framework
         else
           ps->SetFlipX(false);
       }
-      else if (gp->LeftStick_X() < -0.2 /*&& snappedNormal.x == 0*/)
+      else if (gp->LeftStick_X() < -0.2 /*&& snappedNormal.x == 0*/ || (SHEEPINPUT->KeyIsDown(0x41) && gp->GetIndex() == 0))
       {
         //bc->SetVelocity(Vec3(0.0f, 0.0f, 0.0f));
         if (snappedNormal.y > 0)
@@ -192,7 +200,7 @@ namespace Framework
       }
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
-      if (gp->LeftStick_Y() > 0.2 /*&& snappedNormal.x != 0*/)
+      if (gp->LeftStick_Y() > 0.2 /*&& snappedNormal.x != 0*/ || (SHEEPINPUT->KeyIsDown(0x57) && gp->GetIndex() == 0))
       {
         //bc->SetVelocity(Vec3(0.0f, 0.0f, 0.0f));
         if (snappedNormal.x > 0)
@@ -205,7 +213,7 @@ namespace Framework
         else
           ps->SetFlipX(true);
       }
-      else if (gp->LeftStick_Y() < -0.2 /*&& snappedNormal.x != 0*/)
+      else if (gp->LeftStick_Y() < -0.2 /*&& snappedNormal.x != 0*/ || (SHEEPINPUT->KeyIsDown(0x53) && gp->GetIndex() == 0))
       {
         //bc->SetVelocity(Vec3(0.0f, 0.0f, 0.0f));
         if (snappedNormal.x > 0)
@@ -232,7 +240,7 @@ namespace Framework
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
       //jump
-      if ((gp->ButtonDown(XButtons.A) || gp->ButtonDown(XButtons.LShoulder)) && isSnapped)
+      if (((gp->ButtonDown(XButtons.A) || gp->ButtonDown(XButtons.LShoulder)) && isSnapped) || (SHEEPINPUT->KeyIsDown('Q') && gp->GetIndex() == 0))
       {
         bc->AddToVelocity(-(snappedNormal * 600));
         isSnapped = false;
@@ -286,6 +294,35 @@ namespace Framework
 
     isSnapped = false;
 
+    
+
+    if (gp->GetIndex() == 0 && !gp->Connected())
+    {
+      if ((SHEEPINPUT->KeyIsDown(VK_LEFT)))
+      {
+        aim += Vec2D(-1.0f, 0.0f);
+      }
+
+      if ((SHEEPINPUT->KeyIsDown(VK_RIGHT)))
+      {
+        aim += Vec2D(1.0f, 0.0f);
+      }
+
+      if ((SHEEPINPUT->KeyIsDown(VK_UP)))
+      {
+        aim += Vec2D(0.0f, 1.0f);
+      }
+
+      if ((SHEEPINPUT->KeyIsDown(VK_DOWN)))
+      {
+        aim += Vec2D(0.0f, -1.0f);
+      }
+
+      aim.Normalize();
+      SHEEPINPUT->Pads[0].SetRightStick(aim);
+      aimDir = Vec3D(aim.x, aim.y, 0.0);
+    }
+
 	}
 
 
@@ -305,8 +342,8 @@ namespace Framework
     if (OtherObject->name == "Bullet" && !hasRespawned && !GodMode && !PerfectMachine)
     {
       health -= OtherObject->GetComponent<Bullet_Default>(eBullet_Default)->damage;
-      float randomX = GetRandom(-25, 25);
-      float randomY = GetRandom(-25, 25);
+      float randomX = (float)GetRandom(-25, 25);
+      float randomY = (float)GetRandom(-25, 25);
       se->Play("hit1", &SoundInstance(1.0f));
       Transform *ps = space->GetHandles().GetAs<Transform>(playerTransform);
       Handle hit = (FACTORY->LoadObjectFromArchetype(space, "hit"))->self;
@@ -362,7 +399,7 @@ namespace Framework
 
       //i have to set up a bool flag here for finding a matching vector
       bool dublicate = false;
-      for (int i = 0; i < normals.size(); ++i)
+      for (unsigned i = 0; i < normals.size(); ++i)
       {
         if (snappedNormal.x == normals[i].x && snappedNormal.y == normals[i].y)
           dublicate = true;
@@ -377,7 +414,7 @@ namespace Framework
       //get the thing we are colliding with
       snappedTo = otherObject;
       float avX = 0, avY = 0;
-      for (int i = 0; i < normals.size(); ++i)
+      for (unsigned i = 0; i < normals.size(); ++i)
       {
         avX += normals[i].x;
         avY += normals[i].y;
@@ -538,7 +575,7 @@ namespace Framework
     Handle explosion = (FACTORY->LoadObjectFromArchetype(space, "explosion"))->self;
     Transform *exT = space->GetGameObject(explosion)->GetComponent<Transform>(eTransform);
     exT->SetTranslation(ps->GetTranslation());
-    exT->SetRotation(GetRandom(0, 2 * (float)PI));
+    exT->SetRotation((float)GetRandom(0, (int)(2.0f * (float)PI)));
     space->hooks.Call("PlayerDied", playerNum); //calling an event called player died
     space->GetGameObject(owner)->Destroy();
   }
@@ -556,12 +593,12 @@ namespace Framework
     //get animated sprite component
     AniSprite *pa = space->GetHandles().GetAs<AniSprite>(playerAnimation);
 
-    if (isSnapped && !(gp->LStick_InDeadZone()))
+    if ((isSnapped && !(gp->LStick_InDeadZone())) || (isSnapped && gp->GetIndex() == 0 && (SHEEPINPUT->KeyIsDown('D') || SHEEPINPUT->KeyIsDown('A') || SHEEPINPUT->KeyIsDown('W') || SHEEPINPUT->KeyIsDown('S'))))
     {
       //set animated sprite to run
       if (animCont.AnimState != RUN)
       {
-        pa->SetRange(Vec2(animCont.run.beginFrame, animCont.run.endFrame));
+        pa->SetRange(Vec2((float)animCont.run.beginFrame, (float)animCont.run.endFrame));
         animCont.AnimState = RUN;
       }
     }
@@ -570,7 +607,7 @@ namespace Framework
       if (animCont.AnimState != JUMP)
       {
         //set animated sprite to jump
-        pa->SetRange(Vec2(animCont.jump.beginFrame, animCont.jump.endFrame));
+        pa->SetRange(Vec2((float)animCont.jump.beginFrame, (float)animCont.jump.endFrame));
         animCont.AnimState = JUMP;
       }
     }
@@ -579,7 +616,7 @@ namespace Framework
       if (animCont.AnimState != IDLE)
       {
         //set animated sprite to idle
-        pa->SetRange(Vec2(animCont.idle.beginFrame, animCont.idle.endFrame));
+        pa->SetRange(Vec2((float)animCont.idle.beginFrame, (float)animCont.idle.endFrame));
         animCont.AnimState = IDLE;
       }
     }

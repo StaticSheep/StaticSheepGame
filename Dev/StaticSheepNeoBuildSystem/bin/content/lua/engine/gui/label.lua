@@ -81,7 +81,10 @@ function META:DrawSize()
 end
 
 function META:Paint()
+  --print("Paint Label")
   local pos = self:DrawPos()
+
+  surface.SetRotation(0)
 
   if self.outlineWidth > 0 then
     draw.SimpleTextOutlined(self.text, self.font, pos.x, pos.y,

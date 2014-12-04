@@ -38,6 +38,9 @@ namespace Framework
           editor = true;
       }
     }
+
+    if (editor)
+      OpenConsole();
 #endif
 
     Core->AddSystem(new InputManager());
@@ -53,11 +56,12 @@ namespace Framework
 #endif
 
     Core->AddSystem(new SheepGraphics());
+    
 
     if(editor)
     {
-      Core->AddSystem(new AntTweakModule());
       Core->AddSystem(new Debug());
+      Core->AddSystem(new AntTweakModule());
     }
 
 #if USE_EDITOR
@@ -71,21 +75,27 @@ namespace Framework
   void InitEngine(void)
   {
     ENGINE->Initialize();
+    
 
 #if USE_EDITOR
 #else
 
-    if(editor)
+    if (editor)
     {
       ENGINE->LoadLuaLevel("content/lua/engine/lua_levels/uisandbox.lua");
-	    ENGINE->OpenEditor();
+      ENGINE->OpenEditor();
     }
-    else
+
+    ENGINE->SystemMessage(Message(Message::EngineReady));
+
+    if (!editor)
     {
       ENGINE->ChangeLevel("Asteroid");
     }
 	  //ENGINE->LoadLevel("content/data/spaces/Level1.space");
 #endif
+
+    
     
   }
 

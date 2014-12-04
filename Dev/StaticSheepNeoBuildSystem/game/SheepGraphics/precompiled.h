@@ -1,3 +1,10 @@
+/*****************************************************************
+Filename: precompiled.h
+Project:
+Author(s): Scott Nelson (Primary)
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+*****************************************************************/
 #include <assert.h>
 #include <crtdbg.h>
 #include <map>
@@ -24,7 +31,9 @@
 					  exp,MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),(LPTSTR)buffer,size,NULL); \
 					  ErrorIf(true, "sheep_grahics", "DX Error %s", buffer);}
 #else
+#ifndef DXVerify
 #define DXVerify(x) (x)
+#endif
 #endif
 
 #include "SafeRelease.h"
