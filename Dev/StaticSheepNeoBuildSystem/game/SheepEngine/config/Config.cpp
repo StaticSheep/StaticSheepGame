@@ -72,17 +72,20 @@ namespace Framework
   void InitEngine(void)
   {
     ENGINE->Initialize();
-    ENGINE->SystemMessage(Message(Message::EngineReady));
+    
 
 #if USE_EDITOR
 #else
 
-    if(editor)
+    if (editor)
     {
       ENGINE->LoadLuaLevel("content/lua/engine/lua_levels/uisandbox.lua");
-	    ENGINE->OpenEditor();
+      ENGINE->OpenEditor();
     }
-    else
+
+    ENGINE->SystemMessage(Message(Message::EngineReady));
+
+    if (!editor)
     {
       ENGINE->ChangeLevel("Asteroid");
     }

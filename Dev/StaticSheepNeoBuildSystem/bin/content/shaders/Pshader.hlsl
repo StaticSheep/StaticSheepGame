@@ -1,3 +1,10 @@
+/*****************************************************************
+Filename: Pshader.hlsl
+Project:
+Author(s): Scott Nelson (Primary)
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+*****************************************************************/
 cbuffer perFrame: register(b0)
 {
   float4 cAmbientColor;

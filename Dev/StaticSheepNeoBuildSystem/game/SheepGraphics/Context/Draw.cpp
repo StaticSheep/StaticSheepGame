@@ -1,3 +1,10 @@
+/*****************************************************************
+Filename: Draw.cpp
+Project:
+Author(s): Scott Nelson (Primary)
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+*****************************************************************/
 #include "precompiled.h"
 #include "Context.h"
 #include "Handle.h"
@@ -62,7 +69,7 @@ namespace DirectSheep
     rotMat = XMMatrixRotationRollPitchYaw(-DirectX::XM_PI, 0.0f, m_spriteTrans.theta);
 
 
-    transMat = XMMatrixTranslation(m_spriteTrans.x, m_camUse ? m_spriteTrans.y : -m_spriteTrans.y, 0.0f);
+    transMat = XMMatrixTranslation(m_spriteTrans.x, m_camUse ? m_spriteTrans.y : -m_spriteTrans.y, m_spriteTrans.z);
 
     rotMat = XMMatrixMultiply(rotMat, transMat);
 

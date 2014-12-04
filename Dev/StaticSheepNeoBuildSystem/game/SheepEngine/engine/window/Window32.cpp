@@ -102,7 +102,8 @@ namespace Framework
 
         ShowWindow(hWnd, SW_MINIMIZE);
       }
-      else if (wParam == WA_CLICKACTIVE || wParam == WA_ACTIVE && !ENGINE->m_editorAcitve)
+      else if ((wParam == WA_CLICKACTIVE || wParam == WA_ACTIVE) &&
+        !ENGINE->m_editorAcitve)
       {
         ENGINE->SystemMessage(Message(Message::WindowRestore));
 

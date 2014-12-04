@@ -1,3 +1,10 @@
+/*****************************************************************
+Filename: Tex2d.cpp
+Project:
+Author(s): Scott Nelson (Primary)
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+*****************************************************************/
 #include "precompiled.h"
 #include "Tex2d.h"
 #include "WICTextureLoader.h"

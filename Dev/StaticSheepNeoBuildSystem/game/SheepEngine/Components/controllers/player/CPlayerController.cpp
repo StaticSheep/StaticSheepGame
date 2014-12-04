@@ -313,6 +313,7 @@ namespace Framework
 
       aim.Normalize();
       SHEEPINPUT->Pads[0].SetRightStick(aim);
+      aimDir = Vec3D(aim.x, aim.y, 0.0);
     }
 
 	}

@@ -14,7 +14,7 @@ end
 local function SortPanels(p1, p2)
   if not p2 then return nil end
   if not p1 then return nil end
-  return p1.priority > p2.priority
+  return p1.priority < p2.priority
 end
 
 function gui.Create( classname, parent, name, ...)
@@ -160,7 +160,9 @@ function gui.Draw()
   for k,v in pairs(gui.panels) do
     --print("Painting "..k)
     if v.visible then
+      --print("PAINT")
       v:_BasePaint()
+      --print("EPAINT")
     end
   end
 end

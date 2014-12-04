@@ -8,8 +8,8 @@ local IsValid = IsValid
 local setmetatable = setmetatable
 
 
---local print = print
---local PrintTable = PrintTable
+local print = print
+local PrintTable = PrintTable
 
 module("hook")
 
@@ -30,9 +30,8 @@ function Add(event, name, func, checkfunc)
 end
 
 function Remove(event, name)
-	if type(func) ~= "function" then return end
 	if type(event) ~= "string" then return end
-
+	
 	Hooks[event][name] = nil
 end
 

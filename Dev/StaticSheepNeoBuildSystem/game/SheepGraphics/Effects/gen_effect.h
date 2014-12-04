@@ -1,3 +1,10 @@
+/*****************************************************************
+Filename: gen_effect.h
+Project:
+Author(s): Scott Nelson (Primary)
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+*****************************************************************/
 #pragma once
 
 #include "CBuffer.h"
