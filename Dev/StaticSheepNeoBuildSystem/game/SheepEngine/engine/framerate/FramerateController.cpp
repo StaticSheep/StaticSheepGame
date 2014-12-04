@@ -154,7 +154,7 @@ namespace Framework
     if (remainingTime > 1)
     {
       //TRACELOG->Log(TraceLevel::DEBUG, "Sleeping for: %f milliseconds", remainingTime - 1);
-      Sleep(remainingTime - 1);
+      Sleep((DWORD)(remainingTime - 1));
     }
 
   }

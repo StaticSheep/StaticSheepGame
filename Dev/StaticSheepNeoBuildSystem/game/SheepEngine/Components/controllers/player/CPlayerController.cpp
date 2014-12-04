@@ -335,8 +335,8 @@ namespace Framework
     if (OtherObject->name == "Bullet" && !hasRespawned && !GodMode && !PerfectMachine)
     {
       health -= OtherObject->GetComponent<Bullet_Default>(eBullet_Default)->damage;
-      float randomX = GetRandom(-25, 25);
-      float randomY = GetRandom(-25, 25);
+      float randomX = (float)GetRandom(-25, 25);
+      float randomY = (float)GetRandom(-25, 25);
       se->Play("hit1", &SoundInstance(1.0f));
       Transform *ps = space->GetHandles().GetAs<Transform>(playerTransform);
       Handle hit = (FACTORY->LoadObjectFromArchetype(space, "hit"))->self;
@@ -392,7 +392,7 @@ namespace Framework
 
       //i have to set up a bool flag here for finding a matching vector
       bool dublicate = false;
-      for (int i = 0; i < normals.size(); ++i)
+      for (unsigned i = 0; i < normals.size(); ++i)
       {
         if (snappedNormal.x == normals[i].x && snappedNormal.y == normals[i].y)
           dublicate = true;
@@ -407,7 +407,7 @@ namespace Framework
       //get the thing we are colliding with
       snappedTo = otherObject;
       float avX = 0, avY = 0;
-      for (int i = 0; i < normals.size(); ++i)
+      for (unsigned i = 0; i < normals.size(); ++i)
       {
         avX += normals[i].x;
         avY += normals[i].y;
@@ -568,7 +568,7 @@ namespace Framework
     Handle explosion = (FACTORY->LoadObjectFromArchetype(space, "explosion"))->self;
     Transform *exT = space->GetGameObject(explosion)->GetComponent<Transform>(eTransform);
     exT->SetTranslation(ps->GetTranslation());
-    exT->SetRotation(GetRandom(0, 2 * (float)PI));
+    exT->SetRotation((float)GetRandom(0, (int)(2.0f * (float)PI)));
     space->hooks.Call("PlayerDied", playerNum); //calling an event called player died
     space->GetGameObject(owner)->Destroy();
   }
@@ -591,7 +591,7 @@ namespace Framework
       //set animated sprite to run
       if (animCont.AnimState != RUN)
       {
-        pa->SetRange(Vec2(animCont.run.beginFrame, animCont.run.endFrame));
+        pa->SetRange(Vec2((float)animCont.run.beginFrame, (float)animCont.run.endFrame));
         animCont.AnimState = RUN;
       }
     }
@@ -600,7 +600,7 @@ namespace Framework
       if (animCont.AnimState != JUMP)
       {
         //set animated sprite to jump
-        pa->SetRange(Vec2(animCont.jump.beginFrame, animCont.jump.endFrame));
+        pa->SetRange(Vec2((float)animCont.jump.beginFrame, (float)animCont.jump.endFrame));
         animCont.AnimState = JUMP;
       }
     }
@@ -609,7 +609,7 @@ namespace Framework
       if (animCont.AnimState != IDLE)
       {
         //set animated sprite to idle
-        pa->SetRange(Vec2(animCont.idle.beginFrame, animCont.idle.endFrame));
+        pa->SetRange(Vec2((float)animCont.idle.beginFrame, (float)animCont.idle.endFrame));
         animCont.AnimState = IDLE;
       }
     }

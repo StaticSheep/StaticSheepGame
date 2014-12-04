@@ -226,8 +226,8 @@ namespace Framework
     Transform *lc = space->GetHandles().GetAs<Transform>(levelTransform);
     if (shake)
     {
-      float distanceX = (float)GetRandom(-magnitude, magnitude);
-      float distanceY = (float)GetRandom(-magnitude, magnitude);
+      float distanceX = (float)GetRandom((int)-magnitude, (int)magnitude);
+      float distanceY = (float)GetRandom((int)-magnitude, (int)magnitude);
       lc->SetTranslation(lc->GetTranslation() + Vec3(distanceX, distanceY, 0.0));
       shake = false;
     }

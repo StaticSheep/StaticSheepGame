@@ -137,7 +137,7 @@ namespace Framework
 
   bool GamePadInput::ButtonDown(int a_iButton)
   {
-    return State.Gamepad.wButtons & XINPUT_Buttons[a_iButton];
+    return (State.Gamepad.wButtons & XINPUT_Buttons[a_iButton]) != 0;
   }
 
   void GamePadInput::SetRightStick(Vec2D& input)

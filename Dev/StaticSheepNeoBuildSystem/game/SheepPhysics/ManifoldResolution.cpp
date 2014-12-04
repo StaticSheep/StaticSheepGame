@@ -59,7 +59,7 @@ namespace SheepFizz
         (bRepulsionCrossNorm.z_ * bRepulsionCrossNorm.z_ * B->massData_.inverseInertia);
 
       //calculate impulse scalar : "j"
-      float j = -(1.0f + (mResitution * .5)) * contactVelocity / inverseMassSum;
+      float j = -(1.0f + (mResitution * 0.5f)) * contactVelocity / inverseMassSum;
 
       float accumulatedPrev = accumulatedImpulse[i];
       accumulatedImpulse[i] = Maximum(j + accumulatedImpulse[i], 0);
