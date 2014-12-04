@@ -140,17 +140,19 @@ namespace Framework
     {
       if (frameSkip)
       {
-        if (frameSkip2)
-        {
+        //if (frameSkip2)
+        //{
           bc->SetBodyRotation(-snappedNormal);
           normals.clear();
           normals.push_back(snappedNormal);
-        }
-        frameSkip2 = !frameSkip2;
+        //}
+        //frameSkip2 = !frameSkip2;
       }
       frameSkip = !frameSkip;
+
       bc->SetVelocity(snappedNormal * 100);
       bc->SetAngVelocity(0.0);
+
       if (snappedTo != Handle::null)
       {
         //snappedObject->Get(BoxCollider); => snappedObject->GetComponent<BoxCollider>(eBoxCollider);
@@ -162,7 +164,7 @@ namespace Framework
         }
       }
       //left stick move
-      if (gp->LeftStick_X() > 0.2 && snappedNormal.x == 0)
+      if (gp->LeftStick_X() > 0.2 /*&& snappedNormal.x == 0*/)
       {
         //bc->SetVelocity(Vec3(0.0f, 0.0f, 0.0f));
         if (snappedNormal.y > 0)
@@ -175,7 +177,7 @@ namespace Framework
         else
           ps->SetFlipX(false);
       }
-      else if (gp->LeftStick_X() < -0.2 && snappedNormal.x == 0)
+      else if (gp->LeftStick_X() < -0.2 /*&& snappedNormal.x == 0*/)
       {
         //bc->SetVelocity(Vec3(0.0f, 0.0f, 0.0f));
         if (snappedNormal.y > 0)
@@ -190,7 +192,7 @@ namespace Framework
       }
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
-      if (gp->LeftStick_Y() > 0.2 && snappedNormal.x != 0)
+      if (gp->LeftStick_Y() > 0.2 /*&& snappedNormal.x != 0*/)
       {
         //bc->SetVelocity(Vec3(0.0f, 0.0f, 0.0f));
         if (snappedNormal.x > 0)
@@ -203,7 +205,7 @@ namespace Framework
         else
           ps->SetFlipX(true);
       }
-      else if (gp->LeftStick_Y() < -0.2 && snappedNormal.x != 0)
+      else if (gp->LeftStick_Y() < -0.2 /*&& snappedNormal.x != 0*/)
       {
         //bc->SetVelocity(Vec3(0.0f, 0.0f, 0.0f));
         if (snappedNormal.x > 0)
@@ -216,6 +218,17 @@ namespace Framework
         else
           ps->SetFlipX(false);
       }
+      //clamp the velocity
+      if (bc->GetCurrentVelocity().x > 450)
+        bc->SetVelocity(Vec3(450.0f, bc->GetCurrentVelocity().y, 0.0f));
+      if (bc->GetCurrentVelocity().x < -450)
+        bc->SetVelocity(Vec3(-450.0f, bc->GetCurrentVelocity().y, 0.0f));
+      if (bc->GetCurrentVelocity().y > 450)
+        bc->SetVelocity(Vec3(bc->GetCurrentVelocity().x, 450, 0.0f));
+      if (bc->GetCurrentVelocity().y < -450)
+        bc->SetVelocity(Vec3(bc->GetCurrentVelocity().x, -450, 0.0f));
+
+      
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
       //jump
