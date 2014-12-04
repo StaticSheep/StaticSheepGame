@@ -1,3 +1,10 @@
+/*****************************************************************
+Filename: WAutomatic.cpp
+Project:  Gam200
+Author(s): Greg Walls (Primary)
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+*****************************************************************/
 #include "pch/precompiled.h"
 #include "WAutomatic.h"
 #include "Components/transform/CTransform.h"

@@ -1,3 +1,10 @@
+/*****************************************************************
+Filename: CWeaponPickup.cpp
+Project:  Gam200
+Author(s): Greg Walls (Primary)
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+*****************************************************************/
 #pragma once
 
 #include "components/base/Component.h"
