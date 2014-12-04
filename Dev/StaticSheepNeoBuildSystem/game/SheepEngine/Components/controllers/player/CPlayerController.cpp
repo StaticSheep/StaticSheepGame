@@ -9,6 +9,7 @@
 #include "../../gameplay_scripts/CBullet_default.h"
 #include "../../sprites/CAniSprite.h"
 #include "../../gameplay_scripts/CCheats.h"
+#include "../systems/input/Input.h"
 
 
 namespace Framework
@@ -111,7 +112,7 @@ namespace Framework
 			aimDir = aimingDirection(gp); //get the direction the player is currently aiming;
 
 		//fire on trigger pull
-		if (gp->RightTrigger() && hasFired == false)
+		if ((gp->RightTrigger() && hasFired == false) || (SHEEPINPUT->KeyIsPressed(VK_SPACE) && hasFired == false && gp->GetIndex() == 0))
 		{
 			hasFired = true;
 			onFire();
@@ -164,7 +165,7 @@ namespace Framework
         }
       }
       //left stick move
-      if (gp->LeftStick_X() > 0.2 /*&& snappedNormal.x == 0*/)
+      if (gp->LeftStick_X() > 0.2 /*&& snappedNormal.x == 0*/ || (SHEEPINPUT->KeyIsDown(0x44) && gp->GetIndex() == 0))
       {
         //bc->SetVelocity(Vec3(0.0f, 0.0f, 0.0f));
         if (snappedNormal.y > 0)
@@ -177,7 +178,7 @@ namespace Framework
         else
           ps->SetFlipX(false);
       }
-      else if (gp->LeftStick_X() < -0.2 /*&& snappedNormal.x == 0*/)
+      else if (gp->LeftStick_X() < -0.2 /*&& snappedNormal.x == 0*/ || (SHEEPINPUT->KeyIsDown(0x41) && gp->GetIndex() == 0))
       {
         //bc->SetVelocity(Vec3(0.0f, 0.0f, 0.0f));
         if (snappedNormal.y > 0)
@@ -192,7 +193,7 @@ namespace Framework
       }
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
-      if (gp->LeftStick_Y() > 0.2 /*&& snappedNormal.x != 0*/)
+      if (gp->LeftStick_Y() > 0.2 /*&& snappedNormal.x != 0*/ || (SHEEPINPUT->KeyIsDown(0x57) && gp->GetIndex() == 0))
       {
         //bc->SetVelocity(Vec3(0.0f, 0.0f, 0.0f));
         if (snappedNormal.x > 0)
@@ -205,7 +206,7 @@ namespace Framework
         else
           ps->SetFlipX(true);
       }
-      else if (gp->LeftStick_Y() < -0.2 /*&& snappedNormal.x != 0*/)
+      else if (gp->LeftStick_Y() < -0.2 /*&& snappedNormal.x != 0*/ || (SHEEPINPUT->KeyIsDown(0x53) && gp->GetIndex() == 0))
       {
         //bc->SetVelocity(Vec3(0.0f, 0.0f, 0.0f));
         if (snappedNormal.x > 0)
@@ -232,7 +233,7 @@ namespace Framework
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
       //jump
-      if ((gp->ButtonDown(XButtons.A) || gp->ButtonDown(XButtons.LShoulder)) && isSnapped)
+      if (((gp->ButtonDown(XButtons.A) || gp->ButtonDown(XButtons.LShoulder)) && isSnapped) || (SHEEPINPUT->KeyIsDown(0x51) && gp->GetIndex() == 0))
       {
         bc->AddToVelocity(-(snappedNormal * 600));
         isSnapped = false;
@@ -285,6 +286,34 @@ namespace Framework
       PlayerDeath(se, ps);
 
     isSnapped = false;
+
+    Vec2D aim;
+
+    if(!gp->Connected())
+    {
+      if((SHEEPINPUT->KeyIsDown(VK_LEFT) && gp->GetIndex() == 0))
+      {
+        aim += Vec2D(-1.0f, 0.0f);
+      }
+
+      if((SHEEPINPUT->KeyIsDown(VK_RIGHT) && gp->GetIndex() == 0))
+      {
+        aim += Vec2D(1.0f, 0.0f);
+      }
+
+      if((SHEEPINPUT->KeyIsDown(VK_UP) && gp->GetIndex() == 0))
+      {
+        aim += Vec2D(0.0f, 1.0f);
+      }
+
+      if((SHEEPINPUT->KeyIsDown(VK_DOWN) && gp->GetIndex() == 0))
+      {
+        aim += Vec2D(0.0f, -1.0f);
+      }
+
+      aim.Normalize();
+      SHEEPINPUT->Pads[0].SetRightStick(aim);
+    }
 
 	}
 

@@ -140,6 +140,12 @@ namespace Framework
     return State.Gamepad.wButtons & XINPUT_Buttons[a_iButton];
   }
 
+  void GamePadInput::SetRightStick(Vec2D& input)
+  {
+    State.Gamepad.sThumbRX = (BYTE)(input.x * 255);
+    State.Gamepad.sThumbRY = (BYTE)(input.y * 255);
+  }
+
   void GamePadInput::Rumble(float a_fLeftMotor, float a_fRightMotor)
   {
     //vibration state
