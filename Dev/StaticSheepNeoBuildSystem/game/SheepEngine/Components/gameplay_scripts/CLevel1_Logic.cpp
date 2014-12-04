@@ -98,13 +98,13 @@ namespace Framework
       Transform *PT = ePlat->GetComponent<Transform>(eTransform);
       //BoxCollider *platC = ePlat->GetComponent <BoxCollider>(eBoxCollider);
       ePlat->GetComponent<ElevatorPlat>(eElevatorPlat)->direction = true;
-      PT->SetTranslation(Vec3(320.0f,-580.0f,0.9f));
+      PT->SetTranslation(Vec3(320.0f,-535.0f,0.9f));
 
-      if (randomDrop == 0)
+      if (randomDrop >= 0)
       {
         GameObject *weap = (FACTORY->LoadObjectFromArchetype(space, "ShotgunPickup"));
         Transform *WT = weap->GetComponent<Transform>(eTransform);
-        WT->SetTranslation(PT->GetTranslation() + Vec3(0.0, 68.0, 0.0));
+        WT->SetTranslation(PT->GetTranslation() + Vec3(0.0, 85.0, 0.0));
       }
 
       randomDrop = GetRandom(0, 2);
@@ -113,19 +113,19 @@ namespace Framework
       Transform *PT2 = ePlat2->GetComponent<Transform>(eTransform);
       //BoxCollider *platC2 = ePlat2->GetComponent <BoxCollider>(eBoxCollider);
       ePlat2->GetComponent<ElevatorPlat>(eElevatorPlat)->direction = false;
-      PT2->SetTranslation(Vec3(-320.0f, 580.0f, 0.9f));
+      PT2->SetTranslation(Vec3(-320.0f, 535.0f, 0.9f));
 
       if (randomDrop == 0)
       {
         GameObject *weap = (FACTORY->LoadObjectFromArchetype(space, "AutoPickup"));
         Transform *WT = weap->GetComponent<Transform>(eTransform);
-        WT->SetTranslation(PT2->GetTranslation() + Vec3(0.0, -68.0, 0.0));
+        WT->SetTranslation(PT2->GetTranslation() + Vec3(0.0, -85.0, 0.0));
       }
 
       spawnTimer = 3;
     }
 
-    if (timeLimit <= 0)
+    if (timeLimit == 0)
     {
       GameObject *eGiantPlat = (FACTORY->LoadObjectFromArchetype(space, "KillBoxBig"));
       Transform *GPT = eGiantPlat->GetComponent<Transform>(eTransform);

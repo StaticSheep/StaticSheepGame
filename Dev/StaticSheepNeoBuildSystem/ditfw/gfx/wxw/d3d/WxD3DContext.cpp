@@ -11,7 +11,7 @@
 #include "WxWindow.h"
 #include "wx/object.h"
 
-#include <d3d11.h>
+//#include <d3d11.h>
 
 //#include <gl/glew.h>
 //#include <gl/wglew.h>

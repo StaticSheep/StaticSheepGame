@@ -76,7 +76,7 @@ namespace Framework
 	{
     Transform *bt = space->GetHandles().GetAs<Transform>(wpTransfrom);
 
-    if (bt->GetTranslation().x > 1000 || bt->GetTranslation().x < -1000 || bt->GetTranslation().y > 600 || bt->GetTranslation().y < -600)
+    if (bt->GetTranslation().x > 1000 || bt->GetTranslation().x < -1000 || bt->GetTranslation().y > 700 || bt->GetTranslation().y < -700)
       space->GetGameObject(owner)->Destroy();
 	}
 
@@ -92,7 +92,8 @@ namespace Framework
       space->GetGameObject(owner)->Destroy();
     }
 
-    if (OtherObject->archetype == "KillBox" || OtherObject->archetype == "Grinder" || OtherObject->archetype == "KillBoxBig")
+    if (OtherObject->archetype == "KillBox" || 
+      OtherObject->archetype == "Grinder" || OtherObject->archetype == "KillBoxBig")
       space->GetGameObject(owner)->Destroy();
 
 	}
