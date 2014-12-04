@@ -1,6 +1,12 @@
+/*****************************************************************
+Filename: Shape.h
+Project:
+Author(s): Jon Sourbeer (Primary)
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+*****************************************************************/
+
 #pragma once
-
-
 
 #include "Matrix.h"
 #include "ObjectAllocator.h"
