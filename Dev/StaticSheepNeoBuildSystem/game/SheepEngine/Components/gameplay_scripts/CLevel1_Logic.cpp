@@ -60,7 +60,7 @@ namespace Framework
     for (int i = 0; i < 4; ++i)
       spawnTimers[i] = 2.0f;
 
-    numOfPlayers = 1;
+    numOfPlayers = 4;
 	}
 
   void Level1_Logic::Remove()

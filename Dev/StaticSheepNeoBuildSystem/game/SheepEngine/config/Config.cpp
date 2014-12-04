@@ -53,11 +53,12 @@ namespace Framework
 #endif
 
     Core->AddSystem(new SheepGraphics());
+    Core->AddSystem(new Debug());
 
     if(editor)
     {
       Core->AddSystem(new AntTweakModule());
-      Core->AddSystem(new Debug());
+      
     }
 
 #if USE_EDITOR

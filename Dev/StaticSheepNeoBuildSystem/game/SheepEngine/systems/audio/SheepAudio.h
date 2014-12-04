@@ -40,6 +40,8 @@ namespace Framework
   
     void RegisterComponents();
     const void* GetDebugData();
+
+    void ReceiveMessage(Message& msg);
   
     bool Play(const std::string& name, SoundInstance* instance);
   

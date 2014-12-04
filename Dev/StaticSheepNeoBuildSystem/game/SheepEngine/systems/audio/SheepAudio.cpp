@@ -141,6 +141,18 @@ namespace Framework
     REGISTER_COMPONENT(SoundPlayer);
   }
 
+  void SheepAudio::ReceiveMessage(Message& msg)
+  {
+    if(msg.MessageId == Message::WindowMinimize)
+    {
+      PauseAll(true);
+    }
+    if(msg.MessageId == Message::WindowRestore)
+    {
+      PauseAll(false);
+    }
+  }
+
 /*!
   \brief
     Updates the audio system. All it does it update FMOD.
