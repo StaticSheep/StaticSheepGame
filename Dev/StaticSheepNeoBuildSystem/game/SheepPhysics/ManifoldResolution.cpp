@@ -70,7 +70,7 @@ namespace SheepFizz
       //from B to A;
       Vec3D impulse = j * normal;
       
-      if (penetration > .08)
+      if (penetration > .08 && (A->massData_.mass == 0 || B->massData_.mass == 0))
         impulse *= 1 + penetration;
 
       if (penetration > .10 && (A->massData_.mass == 0 || B->massData_.mass == 0))
