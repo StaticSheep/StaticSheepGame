@@ -85,11 +85,11 @@ HRESULT CFW1GlyphRenderStates::initRenderResources(
 	
 	// D3DCompiler
 #ifdef FW1_DELAYLOAD_D3DCOMPILER_XX_DLL
-	HMODULE hD3DCompiler = LoadLibrary(D3DCOMPILER_DLL);
+	HMODULE hD3DCompiler = LoadLibrary("d3dcompiler_43.dll");
 	if(hD3DCompiler == NULL) {
 		DWORD dwErr = GetLastError();
 		dwErr;
-		m_lastError = std::wstring(L"Failed to load ") + D3DCOMPILER_DLL_W;
+		m_lastError = std::wstring(L"Failed to load ") + L"d3dcompiler_43.dll";
 		hResult = E_FAIL;
 	}
 	else {
@@ -97,7 +97,7 @@ HRESULT CFW1GlyphRenderStates::initRenderResources(
 		if(m_pfnD3DCompile == NULL) {
 			DWORD dwErr = GetLastError();
 			dwErr;
-			m_lastError = std::wstring(L"Failed to load D3DCompile from ") + D3DCOMPILER_DLL_W;
+			m_lastError = std::wstring(L"Failed to load D3DCompile from ") + L"d3dcompiler_43.dll";
 			hResult = E_FAIL;
 		}
 		else {

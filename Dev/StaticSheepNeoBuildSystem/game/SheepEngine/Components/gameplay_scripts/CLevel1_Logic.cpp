@@ -100,7 +100,7 @@ namespace Framework
       ePlat->GetComponent<ElevatorPlat>(eElevatorPlat)->direction = true;
       PT->SetTranslation(Vec3(320.0f,-535.0f,0.9f));
 
-      if (randomDrop >= 0)
+      if (randomDrop == 0)
       {
         GameObject *weap = (FACTORY->LoadObjectFromArchetype(space, "ShotgunPickup"));
         Transform *WT = weap->GetComponent<Transform>(eTransform);
