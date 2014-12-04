@@ -77,7 +77,7 @@ namespace Framework
 
     if(editor)
     {
-      ENGINE->LoadLuaLevel("content/lua/engine/lua_levels/uisandbox.lua");
+      //ENGINE->LoadLuaLevel("content/lua/engine/lua_levels/uisandbox.lua");
 	    ENGINE->OpenEditor();
     }
     else

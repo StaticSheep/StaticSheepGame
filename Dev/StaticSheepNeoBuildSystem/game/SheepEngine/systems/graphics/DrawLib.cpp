@@ -66,6 +66,7 @@ namespace Framework
   {
     GRAPHICS->SetSize(width, height);
     GRAPHICS->SetPosition(x, y, 0.0f);
+    GRAPHICS->FlipSprite(false, false);
 
     if (m_whiteTextureID == -1)
     {
@@ -82,6 +83,7 @@ namespace Framework
   {
     GRAPHICS->SetSize(width, height);
     GRAPHICS->SetPosition(x, y, 0.0f);
+    GRAPHICS->FlipSprite(false, false);
     
 //     GRAPHICS->BindTexture(m_TextureID);
 //     GRAPHICS->RawDraw();
@@ -93,6 +95,7 @@ namespace Framework
   {
     GRAPHICS->SetSize(width, height);
     GRAPHICS->SetPosition(x, y, 0.0f);
+    GRAPHICS->FlipSprite(false, false);
     //GRAPHICS->BindTexture(m_TextureID);
 
 
