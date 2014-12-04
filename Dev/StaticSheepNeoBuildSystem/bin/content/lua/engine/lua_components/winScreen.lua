@@ -24,6 +24,7 @@ function WinScreen:Init()
   self._winner = 1
   self._opened = false
 
+  GAME_WON = false
 
   self.super.Init(self)
 end
@@ -157,6 +158,7 @@ function WinScreen:FrameUpdate(deltaTime)
 
   if winner ~= 0 and not self._opened then
     self._winner = winner
+    GAME_WON = true
     self:Create()
   end
 

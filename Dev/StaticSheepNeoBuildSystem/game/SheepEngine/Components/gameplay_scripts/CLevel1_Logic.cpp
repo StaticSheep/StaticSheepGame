@@ -270,7 +270,7 @@ namespace Framework
       if (playerLives[i] > 0)
       {
         //restart the level here
-        winner = i;
+        winner = i + 1;
         ++numAlive;
       }
     }
