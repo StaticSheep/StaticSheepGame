@@ -1,17 +1,10 @@
-/*****************************************************************************/
-/*!
-\file   Matrix2D.cpp
-\author Zakary Wilson
-\par    Course: GAM200
-\par    Giga Gravity Games
-\date   10/20/2014<BR>
-\brief  
-    This file contains functions to construct and perform matrix 
-    multiplication<BR>
+/*****************************************************************
+Filename: Matrix2D.cpp
+Project: 
+Author(s): Zakary Wilson
 
-\par    All content © 2014 DigiPen (USA) Corporation, all rights reserved.
-*/
-/*****************************************************************************/
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+*****************************************************************/
 
 #include "src/precompiled.h"
 #include "Matrix2D.h"
@@ -20,30 +13,13 @@
 namespace Framework
 {
 
-/*****************************************************************************/
-/*!
-    \brief
-      Default constructor for 2x2 matrix. Defaults to identity2x2
-*/
-/*****************************************************************************/
+  // Constructors
   Mat2D::Mat2D()
   {
     _Reset();
   }
   
-/*****************************************************************************/
-/*!
-    \brief
-      Non-default constructor, outright sets the 2x2 matrix to the x and y
-      vectors passed in.
-      
-    \param left
-      the x vector
-      
-    \param right
-      the y vector
-*/
-/*****************************************************************************/
+  // Builds the matrix outright with vectors
   Mat2D::Mat2D(const Vec2D& left, const Vec2D& right)
   {
     _matrix[0][0] = left.x;
@@ -53,15 +29,7 @@ namespace Framework
     _matrix[1][1] = right.y;
   }
   
-/*****************************************************************************/
-/*!
-    \brief
-      Non-default constructor, sets it to a rotation matrix
-      
-    \param theta
-      The degree to do the 2D rotation
-*/
-/*****************************************************************************/
+  // Creates a rotation matrix
   Mat2D::Mat2D(float theta)
   {
     float sine = sin(theta);
@@ -73,18 +41,7 @@ namespace Framework
     _matrix[1][1] = cosine;
   }
   
-/*****************************************************************************/
-/*!
-    \brief
-      Non-default constructor for scale. 
-      
-    \param x
-      the x scale
-      
-    \param y
-      the y scale
-*/
-/*****************************************************************************/
+  // Creates a scale matrix
   Mat2D::Mat2D(float x, float y)
   {
     _matrix[0][0] = x;
@@ -94,24 +51,7 @@ namespace Framework
     _matrix[1][1] = y;
   }
   
-/*****************************************************************************/
-/*!
-    \brief
-      Non-default constructor for outrighting setting the values
-      
-    \param x0
-      00 element
-      
-    \param y0
-      01 element
-      
-    \param x1
-      10 element
-      
-    \param y1
-      11 element
-*/
-/*****************************************************************************/
+  // Creates a matrix explicitly with the values. 
   Mat2D::Mat2D(float x0, float y0, float x1, float y1)
   {
     matrix[0] = x0;
@@ -120,15 +60,7 @@ namespace Framework
     matrix[3] = y1;
   }
   
-/*****************************************************************************/
-/*!
-    \brief
-      Sets the matrix to be a rotation matrix. In degrees.
-      
-    \param degrees
-      The angle in degrees
-*/
-/*****************************************************************************/
+  // Sets the matrix to rotation given in degrees
   void Mat2D::SetRotationDegrees(float degrees)
   {
     float sine = (float)sin((degrees * PI) / 180.0f);
@@ -140,15 +72,7 @@ namespace Framework
     _matrix[1][1] = cosine;
   }
   
-/*****************************************************************************/
-/*!
-    \brief
-      Sets the matrix to be a rotation matrix. In radians.
-      
-    \param degrees
-      The angle in radians
-*/
-/*****************************************************************************/
+  // Sets the matrix to rotation given in radians
   void Mat2D::SetRotationRadians(float radians)
   {
     float sine = (float)sin(radians);
@@ -160,15 +84,7 @@ namespace Framework
     _matrix[1][1] = cosine;
   }
   
-/*****************************************************************************/
-/*!
-    \brief
-      Sets the matrix to be a scale matrix.
-      
-    \param scale
-      The vector to scale with. 
-*/
-/*****************************************************************************/
+  // Sets the matrix to scale, given by a vector
   void Mat2D::SetScale(const Vec2D& scale)
   {
     _matrix[0][0] = scale.x;
@@ -178,18 +94,7 @@ namespace Framework
     _matrix[1][1] = scale.y;
   }
   
-/*****************************************************************************/
-/*!
-    \brief
-      Sets the matrix to be a scale matrix.
-      
-    \param x
-      The x scale
-      
-    \param y
-      The y scale
-*/
-/*****************************************************************************/
+  // Sets the matrix to scale, with two floats
   void Mat2D::SetScale(float x, float y)
   {
     _matrix[0][0] = x;
@@ -199,12 +104,7 @@ namespace Framework
     _matrix[1][1] = y;
   }
   
-/*****************************************************************************/
-/*!
-    \brief
-      Transposes the passed in matrix and spits out the transpose of it.
-*/
-/*****************************************************************************/
+  // Returns a transpose of the matrix
   Mat2D Mat2D::Transpose() const
   {
     return Mat2D(Vec2D(_matrix[0][0], _matrix[0][1]), 
@@ -212,12 +112,7 @@ namespace Framework
                   
   }
   
-/*****************************************************************************/
-/*!
-    \brief
-      Inverses the current matrix.
-*/
-/*****************************************************************************/
+  // Returns the inverse of this matrix
   Mat2D Mat2D::Inverse() const
   {
     float a = _matrix[0][0];
@@ -241,15 +136,7 @@ namespace Framework
     return linear;
   }
 
-/*****************************************************************************/
-/*!
-    \brief
-      Operator overload for matrix multiplication.
-      
-    \param rhs
-      The matrix on the right hand side.
-*/
-/*****************************************************************************/
+  // Matrix multiplication
   Mat2D Mat2D::operator*(const Mat2D& rhs) const
   {
     int j;
@@ -272,30 +159,14 @@ namespace Framework
     return C;
   }
   
-/*****************************************************************************/
-/*!
-    \brief
-      Operator overload for matrix multiplication.
-      
-    \param rhs
-      The matrix on the right hand side.
-*/
-/*****************************************************************************/
+  // Matrix multiplication
   Mat2D& Mat2D::operator*=(const Mat2D& rhs)
   {
     *this = *this * rhs;
     return *this;
   }
   
-/*****************************************************************************/
-/*!
-    \brief
-      Operator overload for matrix to vector multiplication.
-      
-    \param rhs
-      The vector on the right hand side
-*/
-/*****************************************************************************/
+  // Matrix vector multiplication
   Vec2D Mat2D::operator*(const Vec2D& rhs) const
   {
     Vec2D result;
@@ -306,15 +177,7 @@ namespace Framework
     return result;
   }
 
-/*****************************************************************************/
-/*!
-    \brief
-      Operator overload for matrix assignment.
-      
-    \param rhs
-      The vector on the right hand side
-*/
-/*****************************************************************************/
+  // Assignment
   Mat2D& Mat2D::operator=(const Mat2D& rhs)
   {
     for(int i = 0; i < 2; ++i)
@@ -325,6 +188,7 @@ namespace Framework
     return *this;
   }
 
+  // Resets the matrix to the identity matrix
   void Mat2D::_Reset()
   {
     for (int i = 0; i < 2; ++i)

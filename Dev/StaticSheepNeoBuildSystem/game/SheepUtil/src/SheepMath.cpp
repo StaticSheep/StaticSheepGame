@@ -1,23 +1,15 @@
-/******************************************************************************
+/*****************************************************************
 Filename: SheepMath.cpp
 Project: 
 Author(s): Zakary Wilson
 
 All content © 2014 DigiPen (USA) Corporation, all rights reserved.
-******************************************************************************/
-
-/******************************************************************************
-    Includes
-******************************************************************************/
+*****************************************************************/
 
 #include "src/precompiled.h"
 #include "SheepMath.h" /* math functions */
 #include "boost/random.hpp"
 #include <cstdlib>
-
-/******************************************************************************
-    Constants
-******************************************************************************/
 
 // these are used for CatSpline
 const float M11 =  0.0f;
@@ -43,32 +35,14 @@ const float Floating_Precision = 1000000.0f; //used in float to fractions f()
 namespace Framework
 {
 
-/******************************************************************************
-  Private Function Prototypes
-******************************************************************************/
-
+  /* ----- Private Function Prototypes ----- */
   double    _POW(float,int);
   double    _Factorial(int);
   int       _GDC(int,int);
   Fraction  _FloatToFraction(float);
   double    _SquareRoot(float);
 
-/*****************************************************************************/
-
-
-/*!
-    \brief
-      Raises a float to the power of the passed int exponent.
-    
-    \param number
-      Number to be raised to the power of exponent.
-    
-    \param exponent
-      The power to raise number to.
-      
-    \return result
-      Return a double, since the number could be potentially very large.
-*/
+  // power function. Raises the number by the exponent
   double POW(float number, int exponent)
   {
     if(exponent == 1)
@@ -83,17 +57,8 @@ namespace Framework
     return _POW(number, exponent);
   }
 
- 
-/*!
-    \brief
-      Calculates the factorial of an integer
-    
-    \param number
-      The number to find the factorial of. Positive only
-      
-    \return result
-      Return a double, since the number could be potentially very large.
-*/
+  // Calculates the factorial of the number. Returns double because it could
+  // be very large
   double Factorial(int number)
   {
     if(number < 0)
@@ -105,17 +70,7 @@ namespace Framework
     return _Factorial(number);
   }
 
- 
-/*!
-    \brief
-      Changes a float into a fraction(struct) of integers.
-    
-    \param number
-      The number to find the integer fraction of.
-      
-    \return fract
-      Return a struct that contains the numerator and denominator.
-*/
+  // Converts a float into a fraction, which would be represented by integers
   Fraction FloatToFraction(float number)
   {
     Fraction Zero(0,0);
@@ -125,17 +80,7 @@ namespace Framework
       return Zero;
   }
 
- 
-/*!
-    \brief
-      Approximates accurately the square root of a positive float.
-    
-    \param number
-      The number to find the square root of.
-      
-    \return x
-      Return the square root in double form, for maximum accuracy.
-*/
+  // Calculates the square root of the number
   double SquareRoot(float Number)
   {
     Fraction fract(0,0);
@@ -155,14 +100,7 @@ namespace Framework
     return _SquareRoot(Number);
   }
 
- 
-/*!
-    \brief
-      Sets a Vec2 to unit length.
-    
-    \param Vector
-      Pointer to the Vec2 to be normalized.
-*/
+  // Normalizes a 2D Vector
   void Normalize(Vec2D* Vector)
   {
     double length = SquareRoot( ( Vector->x * Vector->x ) + 
@@ -175,14 +113,7 @@ namespace Framework
     return;
   }
 
- 
-/*!
-    \brief
-      Sets a Vec3 to unit length.
-    
-    \param Vector
-      Pointer to the Vec3 to be normalized.
-*/
+  // Normalizes a 3D Vector
   void Normalize(Vec3D* Vector)
   {
     float length;
@@ -198,27 +129,10 @@ namespace Framework
     return;
   }
   
- 
-/*!
-    \brief
-      This approximates a curve with 4 given control points. It will make the
-      curve between the two middle points. The curve will start and end on
-      the second and third points.
-    
-    \param x
-      The time, or position on the curve
-      
-    \param v0
-      The first control point
-      
-    \param v1
-      The second control point
-    
-    \param v2
-      The third control point
-      
-    \param v3
-      The fourth control point
+/*
+  This calculates a curve between 4 control points. This first parameter is the
+  time where the value should be calculated on the curve. The curve is only valid
+  between the two middle control points.
 */
   float CatSpline(double x, float v0, float v1, float v2, float v3)
   {

@@ -1,3 +1,10 @@
+/*****************************************************************
+Filename: Matrix4D.cpp
+Project: 
+Author(s): Zakary Wilson
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+*****************************************************************/
 
 #include "src/precompiled.h"
 #include "Matrix4D.h"
@@ -6,26 +13,13 @@
 namespace Framework
 {
 
-/*****************************************************************************/
-/*!
-    \brief
-      Default constructor for 4x4 matrix. Defaults to identity matrix.
-*/
-/*****************************************************************************/
+  // Constructors
   Mat4D::Mat4D()
   {
     _Reset();
   }
   
-/*****************************************************************************/
-/*!
-    \brief
-      Non-default constructor. Sets the matrix to a 3D translation.
-      
-    \param vec
-      The vector to translate by
-*/
-/*****************************************************************************/
+  // Sets the matrix to translate by the vector
   Mat4D::Mat4D(const Vec3D& vec)
   {
     _Reset();
@@ -34,15 +28,7 @@ namespace Framework
     _matrix[2][3] = vec.z;
   }
   
-/*****************************************************************************/
-/*!
-    \brief
-      Non-default constructor. Sets the matrix to a 3D translation.
-      
-    \param vec
-      The vector to translate by. Shouldn't use, because 4th dimension stuff
-*/
-/*****************************************************************************/
+  // Sets the matrix to translate by the vector
   Mat4D::Mat4D(const Vec4D& vec)
   {
     _Reset();
@@ -52,25 +38,7 @@ namespace Framework
     _matrix[3][3] = vec.w; // ummmm....
   }
   
-/*****************************************************************************/
-/*!
-    \brief
-      Non-default constructor. Outright constructs it from the vectors passed
-      in.
-      
-    \param r
-      The roll vector (x vector)
-      
-    \param p
-      The pitch vector (y vector)
-      
-    \param y
-      The yaw vector (z vector)
-      
-    \param vec
-      The position (w vector)
-*/
-/*****************************************************************************/
+  // Construct the matrix outright with the vectors passed in
   Mat4D::Mat4D(const Vec4D& r, const Vec4D& p, const Vec4D& y, const Vec4D& vec)
   {
     // roll
@@ -98,19 +66,7 @@ namespace Framework
     _matrix[3][3] = vec.w;
   }
   
-/*****************************************************************************/
-/*!
-    \brief
-      Takes two Vec4s and constructs a 4x4 matrix by multiplaying VectorA by 
-      the transpose of VectorB.
-    
-    \param VectorA
-      Pointer to the first Vec4.
-
-    \param VectorB
-      Pointer to the second Vec4..
-*/
-/*****************************************************************************/
+  // Constructs the matrix by transposing to Vector4s
   Mat4D::Mat4D(const Vec4D& VectorA, const Vec4D& VectorB)
   {
     _matrix[0][0] = VectorA.x * VectorB.x;
@@ -134,21 +90,7 @@ namespace Framework
     _matrix[3][3] = VectorA.w * VectorB.w;
   }
   
-/*****************************************************************************/
-/*!
-    \brief
-      Non-default constructor. Creates a scale matrix.
-    
-    \param x
-      The x scale
-
-    \param y
-      The y scale
-
-    \param z
-      The z scale
-*/
-/*****************************************************************************/
+  // Scale matrix
   Mat4D::Mat4D(float x, float y, float z)
   {
     _Reset();
@@ -157,15 +99,7 @@ namespace Framework
     _matrix[2][2] = z;
   }
   
-/*****************************************************************************/
-/*!
-    \brief
-      Sets the matrix to be a translation matrix.
-    
-    \param vec
-      The vector to translate to
-*/
-/*****************************************************************************/
+  // Setters
   void Mat4D::SetTranslation(const Vec3D& vec)
   {
     _Reset();
@@ -174,15 +108,6 @@ namespace Framework
     _matrix[2][3] = vec.z;
   }
   
-/*****************************************************************************/
-/*!
-    \brief
-      Sets the matrix to be a translation matrix.
-    
-    \param vec
-      The vector to translate to... 4th dimension craziness...?
-*/
-/*****************************************************************************/
   void Mat4D::SetTranslation(const Vec4D& vec)
   {
     _Reset();
@@ -192,24 +117,6 @@ namespace Framework
     _matrix[3][3] = vec.w; // I don't know anymore...
   }
   
-/*****************************************************************************/
-/*!
-    \brief
-      Sets the matrix to be a translation matrix.
-    
-    \param x
-      The x translation
-      
-    \param y
-      The y translation
-      
-    \param z
-      The z translation
-      
-    \param w
-      The w translation, defaults to 1.0f
-*/
-/*****************************************************************************/
   void Mat4D::SetTranslation(float x, float y, float z, float w)
   {
     _Reset();
@@ -219,18 +126,6 @@ namespace Framework
     _matrix[3][3] = w;
   }
   
-/*****************************************************************************/
-/*!
-    \brief
-      Sets the matrix to be a scale matrix.
-    
-    \param x
-      The x scale
-      
-    \param y
-      The y scale
-*/
-/*****************************************************************************/
   void Mat4D::SetScale(const Vec2D& vec)
   {
     _Reset();
@@ -238,15 +133,6 @@ namespace Framework
     _matrix[1][1] = vec.y;
   }
   
-/*****************************************************************************/
-/*!
-    \brief
-      Sets the matrix to be a scale matrix.
-    
-    \param vec
-      The vector to scale by
-*/
-/*****************************************************************************/
   void Mat4D::SetScale(const Vec3D& vec)
   {
     _Reset();
@@ -255,12 +141,7 @@ namespace Framework
     _matrix[2][2] = vec.z;
   }
   
-/*****************************************************************************/
-/*!
-    \brief
-      Spits out a transpose of the current matrix.
-*/
-/*****************************************************************************/
+  // Returns a transpost of the matrix
   Mat4D Mat4D::Transpose()
   {
     return Mat4D
@@ -270,27 +151,13 @@ namespace Framework
      Vec4D(_matrix[3][0], _matrix[3][1], _matrix[3][2], _matrix[3][3]));
   }
   
-/*****************************************************************************/
-/*!
-    \brief
-      Matrix multiplication for 4x4 matrices.
-      
-    \param rhs
-      The matrix on the right
-*/
-/*****************************************************************************/
+  // Operator overloads
   Mat4D& Mat4D::operator*=(const Mat4D& rhs)
   {
     *this = *this * rhs;
     return *this;
   }
   
-/*****************************************************************************/
-/*!
-    \brief
-      Operator overload for assignment of 4x4 matrices.
-*/
-/*****************************************************************************/
   Mat4D& Mat4D::operator=(const Mat4D& rhs)
   {
     for(int i = 0; i < 4; ++i)
@@ -301,13 +168,7 @@ namespace Framework
     
     return *this;
   }
-  
-/*****************************************************************************/
-/*!
-    \brief
-      Operator overload for matrix multiplication.
-*/
-/*****************************************************************************/
+
   Mat4D Mat4D::operator*(const Mat4D& rhs) const
   {
     int i,j;
@@ -381,12 +242,7 @@ namespace Framework
     }
   }
   
-/*****************************************************************************/
-/*!
-    \brief
-      Resets the matrix to the identity matrix.
-*/
-/*****************************************************************************/
+  // Resets the matrix to the identity
   void Mat4D::_Reset()
   {
     for(int i = 0; i < 4; ++i)
