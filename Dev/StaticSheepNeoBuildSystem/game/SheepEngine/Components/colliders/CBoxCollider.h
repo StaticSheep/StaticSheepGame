@@ -1,3 +1,11 @@
+/*****************************************************************
+Filename: CBoxCollider.h
+Project:
+Author(s): Zachary Nawar
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+*****************************************************************/
+
 #pragma once
 
 #include "components/rigidbody/CRigidBody.h"

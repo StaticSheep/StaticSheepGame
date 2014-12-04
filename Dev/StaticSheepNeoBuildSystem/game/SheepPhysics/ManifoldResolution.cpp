@@ -1,3 +1,11 @@
+/*****************************************************************
+Filename: ManifoldResolution.cpp
+Project:
+Author(s): Jon Sourbeer (Primary)
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+*****************************************************************/
+
 #include "precompiled.h"
 #include "Manifold.h"
 #include "Vec3D.h"
@@ -65,7 +73,7 @@ namespace SheepFizz
       if (penetration > .08)
         impulse *= 1 + penetration;
 
-      if (penetration > .10)
+      if (penetration > .10 && (A->massData_.mass == 0 || B->massData_.mass == 0))
         impulse *= 1.5;
 
       impulse.z = 0;

@@ -1,7 +1,7 @@
 /*****************************************************************
 Filename: SheepPhysics.cpp
 Project: 
-Author(s): Zachary Nawar, Jon Sourbeer(primary)
+Author(s): Jon Sourbeer(primary), Zachary Nawar
 
 All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 *****************************************************************/
