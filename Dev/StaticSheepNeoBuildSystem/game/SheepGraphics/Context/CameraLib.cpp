@@ -1,3 +1,10 @@
+/*****************************************************************
+Filename: CameraLib.cpp
+Project:
+Author(s): Scott Nelson (Primary)
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+*****************************************************************/
 #include "precompiled.h"
 #include "Context.h"
 namespace DirectSheep
