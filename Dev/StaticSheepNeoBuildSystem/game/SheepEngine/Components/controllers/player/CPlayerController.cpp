@@ -31,6 +31,9 @@ namespace Framework
     GoldenGun = false;
     PerfectMachine = false;
     normals.clear();
+    lastRotation = 0.0f;
+    frameSkip = false;
+    frameSkip2 = false;
 	}
 
 	PlayerController::~PlayerController() //4
@@ -135,20 +138,21 @@ namespace Framework
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
     if (isSnapped)
     {
-      /*float avX = 0, avY = 0, avZ = 0;
-      for (int i = 0; i < normals.size(); ++i)
+      if (frameSkip)
       {
-        avX += normals[i].x;
-        avY += normals[i].y;
-        avZ += normals[i].z;
+        //if (frameSkip2)
+        //{
+          bc->SetBodyRotation(-snappedNormal);
+          normals.clear();
+          normals.push_back(snappedNormal);
+        //}
+        //frameSkip2 = !frameSkip2;
       }
-      avX /= normals.size();
-      avY /= normals.size();
-      avZ /= normals.size();
-      snappedNormal = Vec3(avX, avY, avZ);*/
+      frameSkip = !frameSkip;
 
       bc->SetVelocity(snappedNormal * 100);
       bc->SetAngVelocity(0.0);
+
       if (snappedTo != Handle::null)
       {
         //snappedObject->Get(BoxCollider); => snappedObject->GetComponent<BoxCollider>(eBoxCollider);
@@ -160,7 +164,7 @@ namespace Framework
         }
       }
       //left stick move
-      if (gp->LeftStick_X() > 0.2 && snappedNormal.x == 0)
+      if (gp->LeftStick_X() > 0.2 /*&& snappedNormal.x == 0*/)
       {
         //bc->SetVelocity(Vec3(0.0f, 0.0f, 0.0f));
         if (snappedNormal.y > 0)
@@ -173,7 +177,7 @@ namespace Framework
         else
           ps->SetFlipX(false);
       }
-      else if (gp->LeftStick_X() < -0.2 && snappedNormal.x == 0)
+      else if (gp->LeftStick_X() < -0.2 /*&& snappedNormal.x == 0*/)
       {
         //bc->SetVelocity(Vec3(0.0f, 0.0f, 0.0f));
         if (snappedNormal.y > 0)
@@ -188,7 +192,7 @@ namespace Framework
       }
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
-      if (gp->LeftStick_Y() > 0.2 && snappedNormal.x != 0)
+      if (gp->LeftStick_Y() > 0.2 /*&& snappedNormal.x != 0*/)
       {
         //bc->SetVelocity(Vec3(0.0f, 0.0f, 0.0f));
         if (snappedNormal.x > 0)
@@ -201,7 +205,7 @@ namespace Framework
         else
           ps->SetFlipX(true);
       }
-      else if (gp->LeftStick_Y() < -0.2 && snappedNormal.x != 0)
+      else if (gp->LeftStick_Y() < -0.2 /*&& snappedNormal.x != 0*/)
       {
         //bc->SetVelocity(Vec3(0.0f, 0.0f, 0.0f));
         if (snappedNormal.x > 0)
@@ -214,6 +218,17 @@ namespace Framework
         else
           ps->SetFlipX(false);
       }
+      //clamp the velocity
+      if (bc->GetCurrentVelocity().x > 450)
+        bc->SetVelocity(Vec3(450.0f, bc->GetCurrentVelocity().y, 0.0f));
+      if (bc->GetCurrentVelocity().x < -450)
+        bc->SetVelocity(Vec3(-450.0f, bc->GetCurrentVelocity().y, 0.0f));
+      if (bc->GetCurrentVelocity().y > 450)
+        bc->SetVelocity(Vec3(bc->GetCurrentVelocity().x, 450, 0.0f));
+      if (bc->GetCurrentVelocity().y < -450)
+        bc->SetVelocity(Vec3(bc->GetCurrentVelocity().x, -450, 0.0f));
+
+      
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
       //jump
@@ -221,6 +236,7 @@ namespace Framework
       {
         bc->AddToVelocity(-(snappedNormal * 600));
         isSnapped = false;
+        normals.clear();
         if (GetRandom(0, 1))
           se->Play("jump2", &SoundInstance(0.75f));
         else
@@ -230,11 +246,10 @@ namespace Framework
         else if (gp->ButtonPressed(XButtons.LShoulder))
           space->GetGameObject(owner)->hooks.Call("ButtonPressed", Buttons::LB);
       }
-      
     }
     else
     {
-
+      normals.clear();
     }
 ////////////////////////////////////////////////////////////////
 		//melee
@@ -270,6 +285,7 @@ namespace Framework
       PlayerDeath(se, ps);
 
     isSnapped = false;
+
 	}
 
 
@@ -344,17 +360,35 @@ namespace Framework
       }
       snappedNormal = OOBc->GetCollisionNormals(manifold);
 
-      normals.push_back(Vec3(snappedNormal));
+      //i have to set up a bool flag here for finding a matching vector
+      bool dublicate = false;
+      for (int i = 0; i < normals.size(); ++i)
+      {
+        if (snappedNormal.x == normals[i].x && snappedNormal.y == normals[i].y)
+          dublicate = true;
+      }
+      if (dublicate == false)
+        normals.push_back(Vec3(snappedNormal));
 
-      float rotation = (snappedNormal.DotProduct(bc->GetBodyUpNormal())) / (snappedNormal.Length() * bc->GetBodyUpNormal().Length());
-      rotation = std::acosf(rotation);
-      if (snappedNormal.x == -1.0f)
-        rotation = rotation + (float)PI;
-      ps->SetRotation(rotation);
+      if (normals.size() == 0)
+        normals.push_back(Vec3(snappedNormal));
 
       isSnapped = true;
       //get the thing we are colliding with
       snappedTo = otherObject;
+      float avX = 0, avY = 0;
+      for (int i = 0; i < normals.size(); ++i)
+      {
+        avX += normals[i].x;
+        avY += normals[i].y;
+      }
+      if (normals.size() != 0)
+      {
+        avX /= normals.size();
+        avY /= normals.size();
+        Vec3 averaged(avX, avY, 0.0f);
+        snappedNormal = averaged;
+      }
 		}
 		else if (OtherObject->HasComponent(eCircleCollider))
 		{

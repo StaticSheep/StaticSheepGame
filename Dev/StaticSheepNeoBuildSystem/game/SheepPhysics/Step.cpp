@@ -53,6 +53,14 @@ namespace SheepFizz
 		Body* body = handles_.GetAs<Body>(handle);
 		body->orientation_ = rot;
 	}//end of SetBodyRot
+
+  void PhysicsSpace::SetBodyRot(Handle handle, Vec3D direction)
+  {
+    Body* body = handles_.GetAs<Body>(handle);
+    float rot;
+    rot = atan2(direction.y, direction.x);
+    body->orientation_ = rot - (float)PI / 2.0f;
+  }//end of SetBodyRot
 	
 	void PhysicsSpace::SetBodyAngVeloc(Handle handle, float angveloc)
 	{
@@ -181,7 +189,12 @@ namespace SheepFizz
   {
     Body* body = handles_.GetAs<Body>(handle);
     if (body->shape_->GetShape() == Rec)
-      return ((Rectangle*)body->shape_)->GetNormal(2);
+    {
+      Vec3D normal = ((Rectangle*)body->shape_)->GetNormal(0);
+      Matrix2D rot(body->orientation_);
+      normal = rot * normal;
+      return normal;
+    }   
       
     return Vec3D();
   }//end of GetBodyUpNormal

@@ -56,6 +56,9 @@ namespace Framework
       virtual Vec3D GetCollisionPoint(SheepFizz::ExternalManifold manifold);
       virtual std::string GetBodyCollisionGroup(void);
 
+      //settors
+      virtual void SetBodyRotation(Vec3D direction);
+
       //gettors
       virtual Vec3D GetCurrentVelocity(void);
       virtual Vec3D GetGravityNormal(void);

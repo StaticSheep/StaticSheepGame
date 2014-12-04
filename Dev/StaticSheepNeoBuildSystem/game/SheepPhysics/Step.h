@@ -48,6 +48,7 @@ namespace SheepFizz
 		PHY_API void SetBodyVeloc(Handle handle, Vec3D velocity);
 		PHY_API void SetBodyForce(Handle handle, Vec3D force);
 		PHY_API void SetBodyRot(Handle handle, float rot);
+    PHY_API void SetBodyRot(Handle handle, Vec3D direction);
 		PHY_API void SetBodyAngVeloc(Handle handle, float angveloc);
 		PHY_API void SetBodyTorque(Handle handle, float torque);
     PHY_API void SetBodyCollisionGroup(Handle handle, CollisionGroup group);
