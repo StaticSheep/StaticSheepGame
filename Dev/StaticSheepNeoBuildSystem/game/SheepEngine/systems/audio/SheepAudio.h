@@ -43,11 +43,16 @@ namespace Framework
 
     void ReceiveMessage(Message& msg);
   
+    // Plays the requested sound
     bool Play(const std::string& name, SoundInstance* instance);
   
     bool Stop(SoundInstance* instance);
     void StopAll();
+
+    // Pauses the instance. Pass true for pause, false for unpause
     void Pause(SoundInstance* instance, bool status);
+
+    // Pause everything. Pass true for pause, false for unpause
     void PauseAll(bool paused);
 
     void SetMasterVolume(float volume);
