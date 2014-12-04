@@ -1,3 +1,10 @@
+/*****************************************************************
+Filename: Cheats.h
+Project:  Gam200
+Author(s): Greg Walls (Primary)
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+*****************************************************************/
 #pragma once
 
 #include "components/base/Component.h"
@@ -49,11 +56,12 @@ namespace Framework
 		void Remove();
     void RecordButtonPress(Buttons button);
     Handle playerController; //to get a hold of the player and change its cheat bools
+    Handle levelController;
     PlayerController *pc;
 		//member variables
     bool enabled;     //are cheats turned on?
     //add new cheat sequences here!
-    CheatSequence GM, GG, PM;
+    CheatSequence GM, GG, PM, IW;
 
 	};
 }

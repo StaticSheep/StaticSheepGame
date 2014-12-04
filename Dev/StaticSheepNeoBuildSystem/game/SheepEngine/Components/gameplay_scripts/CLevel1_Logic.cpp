@@ -1,3 +1,11 @@
+/*****************************************************************
+Filename: CLevel1_Logic.cpp
+Project:  Gam200
+Author(s): Greg Walls (Primary)
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+*****************************************************************/
+
 #include "pch/precompiled.h"
 #include "CLevel1_Logic.h"
 #include "types/space/Space.h"
@@ -49,6 +57,7 @@ namespace Framework
 		//logic setup, you're attached and components are in place
 		space->hooks.Add("LogicUpdate", self, BUILD_FUNCTION(Level1_Logic::LogicUpdate));
     space->hooks.Add("PlayerDied", self, BUILD_FUNCTION(Level1_Logic::PlayerDied));
+    space->hooks.Add("CheatWin", self, BUILD_FUNCTION(Level1_Logic::CheatWin));
     levelSound = space->GetGameObject(owner)->GetComponentHandle(eSoundPlayer);
     levelCamera = space->GetGameObject(owner)->GetComponentHandle(eCamera);
     levelTransform = space->GetGameObject(owner)->GetComponentHandle(eTransform);
@@ -286,5 +295,9 @@ namespace Framework
     ENGINE->ChangeLevel("Asteroid");
   }
 
-  
+  void Level1_Logic::CheatWin()
+  {
+    for (int i = 0; i < 4; ++i)
+      playerLives[i] = 0;
+  }
 }

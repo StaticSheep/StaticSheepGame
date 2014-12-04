@@ -1,3 +1,10 @@
+/*****************************************************************
+Filename: Cheats.cpp
+Project:  Gam200
+Author(s): Greg Walls (Primary)
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+*****************************************************************/
 #include "pch/precompiled.h"
 #include "CCheats.h"
 #include "types/space/Space.h"
@@ -23,6 +30,10 @@ namespace Framework
     Buttons pm[] {Buttons::UP, Buttons::UP, Buttons::UP, Buttons::UP, Buttons::UP, Buttons::UP};
     PM = CheatSequence(pm);
     PM.activated = false;
+
+    Buttons iw[] {Buttons::UP, Buttons::RIGHT, Buttons::DOWN, Buttons::LEFT, Buttons::UP, Buttons::DOWN};
+    IW = CheatSequence(iw);
+    IW.activated = false;
   }
 
   Cheats::~Cheats()
@@ -58,6 +69,7 @@ namespace Framework
     GM.CheatUpdate(button);
     GG.CheatUpdate(button);
     PM.CheatUpdate(button);
+    IW.CheatUpdate(button);
 
     //here I'm checking if the individual cheat sequences have been activated or not,
     //and activated the corresponding cheat bool in the player controller
@@ -73,6 +85,8 @@ namespace Framework
       pc->PerfectMachine = true;
     else
       pc->PerfectMachine = false;
+    if (IW.activated)
+      space->hooks.Call("CheatWin");
   }
 
   Cheats::CheatSequence::CheatSequence(Buttons *input)
