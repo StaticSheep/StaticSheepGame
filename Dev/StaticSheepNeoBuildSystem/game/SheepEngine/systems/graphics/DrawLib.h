@@ -24,7 +24,7 @@ namespace Framework
     static Vec2 GetTextSize(const char* text, const char* font);
     static void SetRotation(float theta);
     static void SetPosition(float x, float y);
-    static void SetPositionEX(float x, float y, float z);
+    static void SetPositionEx(float x, float y, float z);
     static void SetColor(float r, float g, float b, float a);
 
     static void DrawRect(float x, float y, float width, float height);
@@ -34,6 +34,9 @@ namespace Framework
     static void DrawLine(float sX, float sY, float eX, float eY, float width=1);
     static void DrawCircle(float x, float y, float radius);
     static void DrawString(const char* text, float size, const char* font);
+
+    static void ForceZ(bool use, float z);
+
 
     static int ScreenWidth(void);
     static int ScreenHeight(void);
@@ -47,6 +50,9 @@ namespace Framework
     static bool m_useCamera;
     static int m_whiteTextureID;
     static DirectSheep::Handle m_whiteHandle;
+
+    static float m_forceZ;
+    static bool m_useForcedZ;
     
   };
 }

@@ -120,9 +120,9 @@ namespace Framework
     TYPE_SET_FROM_LUA(Vec2, Vec2::FromLua);
 
     TYPE_REGISTER(Vec3);
-    TYPE_ADD_MEMBER(Vec3, x_);
-    TYPE_ADD_MEMBER(Vec3, y_);
-    TYPE_ADD_MEMBER(Vec3, z_);
+    TYPE_ADD_MEMBER(Vec3, X, false, true, "X");
+    TYPE_ADD_MEMBER(Vec3, Y, false, true, "Y");
+    TYPE_ADD_MEMBER(Vec3, Z, false, true, "Z");
     TYPE_SET_TWEAK_TYPE(Vec3, AntTweak::TW_TYPE_DIR3F);
     TYPE_SET_TO_LUA(Vec3, Vec3::ToLua);
     TYPE_SET_FROM_LUA(Vec3, Vec3::FromLua);

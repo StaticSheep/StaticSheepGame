@@ -31,7 +31,7 @@ function SetupMetatable(name, meta)
       if comp ~= false then
         return comp
       else
-        print("ERROR : Component does not exist on object!")
+        --print("ERROR : Component does not exist on object!")
         return nil
         
       end

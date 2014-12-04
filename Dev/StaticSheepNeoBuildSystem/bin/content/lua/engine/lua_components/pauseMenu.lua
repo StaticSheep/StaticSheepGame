@@ -163,6 +163,8 @@ end
 
 function PauseMenu:Remove()
   self:CleanUp()
+  hook.Remove("FrameUpdate", self)
+  hook.Remove("LogicUpdate", self)
 end
 
 function PauseMenu:SetupHooks()

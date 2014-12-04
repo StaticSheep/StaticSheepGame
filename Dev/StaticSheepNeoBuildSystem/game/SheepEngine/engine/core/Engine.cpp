@@ -108,6 +108,7 @@ namespace Framework
 
   void Engine::SystemMessage(Message& msg)
   {
+    void* data = &m_editorAcitve;
     for (unsigned int i = 0; i < m_systems.size(); ++i)
       m_systems[i]->ReceiveMessage(msg);
   }

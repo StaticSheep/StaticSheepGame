@@ -1,12 +1,33 @@
 local META = GetMeta("Vector3")
 
 function META.__add(a, b)
+  --print("Vec3 Add")
   if type(a) == "number" then
     return META.new(b.x + a, b.y + a, b.z + a)
   elseif type(b) == "number" then
     return META.new(a.x + b, a.y + b, a.z + b)
   else
-    return Vector.new(a.x + b.x, a.y + b.y, a.z + b.z)
+    -- print("Vec3 Add 2 Vec3's")
+    -- for k,v in pairs(a) do
+    --   print(k.."-"..v)
+    -- end
+    
+    --PrintTable(getmetatable(a))
+
+    -- function trace (event, line)
+    --   local s = debug.getinfo(2).short_src
+    --   print(s .. ":" .. line)
+    -- end
+    
+    -- debug.sethook(trace, "l")
+
+    -- print(tostring(a))
+    -- local status, err = pcall(function() print(a.z) end)
+    
+    -- print(debug.traceback())
+
+    -- debug.sethook(nil, "l")
+    return Vec3(a.x + b.x, a.y + b.y, a.z + b.z)
   end
 end
 
@@ -14,7 +35,7 @@ function META.__sub(a, b)
   if type(b) == "number" then
     return META.new(a.x - b, a.y - b, a.z - b)
   else
-    return Vector.new(a.x - b.x, a.y - b.y, a.z - b.z)
+    return META.new(a.x - b.x, a.y - b.y, a.z - b.z)
   end
 end
 
@@ -24,7 +45,7 @@ function META.__mul(a, b)
   elseif type(b) == "number" then
     return META.new(a.x * b, a.y * b, a.z * b)
   else
-    return Vector.new(a.x * b.x, a.y * b.y, a.z * b.z)
+    return META.new(a.x * b.x, a.y * b.y, a.z * b.z)
   end
 end
 
@@ -32,7 +53,7 @@ function META.__div(a, b)
   if type(b) == "number" then
     return META.new(a.x / b, a.y / b, a.z / b)
   else
-    return Vector.new(a.x / b.x, a.y / b.y, a.z / b.z)
+    return META.new(a.x / b.x, a.y / b.y, a.z / b.z)
   end
 end
 
@@ -40,11 +61,9 @@ function META.__eq(a, b)
   return a.x == b.x and a.y == b.y and a.z == b.z
 end
 
-function META.__tostring(a)
-  return "(".. a.x ..", ".. a.y ..", ".. a.z ..")"
-end
 
-function META.new(x, y)
+function META.new(x, y, z)
+  --print("New Vec3")
   local tab = setmetatable({}, META)
   tab.x = x
   tab.y = y

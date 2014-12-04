@@ -11,7 +11,10 @@ function META:SetTexture(tex)
 end
 
 function META:Paint()
+  --print("Paint Image")
   local pos = self:DrawPos()
+
+
 
   surface.SetColor(self.color.r, self.color.g, self.color.b, self.color.a)
   surface.SetTexture(self._textureID)
