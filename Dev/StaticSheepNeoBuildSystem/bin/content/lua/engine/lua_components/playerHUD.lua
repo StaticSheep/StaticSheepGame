@@ -115,7 +115,7 @@ function PlayerHUD:Remove()
 end
 
 function PlayerHUD:FrameUpdate(deltaTime)
-  if GameSpaces[self._space]._paused then
+  if GameSpaces[self._space]._paused or GAME_WON then
     for i=1,4 do
       if not self.base[i] then return end
       self.base[i]:SetVisible(false)

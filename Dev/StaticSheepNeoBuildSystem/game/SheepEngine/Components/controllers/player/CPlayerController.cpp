@@ -112,7 +112,7 @@ namespace Framework
 			aimDir = aimingDirection(gp); //get the direction the player is currently aiming;
 
 		//fire on trigger pull
-		if ((gp->RightTrigger() && hasFired == false) || (SHEEPINPUT->KeyIsPressed(VK_SPACE) && hasFired == false && gp->GetIndex() == 0))
+		if ((gp->RightTrigger() && hasFired == false) || (SHEEPINPUT->KeyIsDown(VK_SPACE) && hasFired == false && gp->GetIndex() == 0))
 		{
 			hasFired = true;
 			onFire();
@@ -125,6 +125,11 @@ namespace Framework
         shotDelay = weapon->delay;
       }
     }
+
+    // keyboard input for first player
+    if(SHEEPINPUT->KeyIsDown(VK_SPACE))
+        SHEEPINPUT->Pads[0].State.Gamepad.bRightTrigger = (BYTE)255;
+
 		//if the trigger is released, reset the bool
 		if (!gp->RightTrigger() && weapon->semi)
     {
@@ -233,7 +238,7 @@ namespace Framework
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
       //jump
-      if (((gp->ButtonDown(XButtons.A) || gp->ButtonDown(XButtons.LShoulder)) && isSnapped) || (SHEEPINPUT->KeyIsDown(0x51) && gp->GetIndex() == 0))
+      if (((gp->ButtonDown(XButtons.A) || gp->ButtonDown(XButtons.LShoulder)) && isSnapped) || (SHEEPINPUT->KeyIsDown('Q') && gp->GetIndex() == 0))
       {
         bc->AddToVelocity(-(snappedNormal * 600));
         isSnapped = false;
@@ -287,7 +292,7 @@ namespace Framework
 
     isSnapped = false;
 
-    Vec2D aim;
+    static Vec2D aim(1.0f,0.0f);
 
     if(!gp->Connected())
     {
@@ -586,7 +591,7 @@ namespace Framework
     //get animated sprite component
     AniSprite *pa = space->GetHandles().GetAs<AniSprite>(playerAnimation);
 
-    if (isSnapped && !(gp->LStick_InDeadZone()))
+    if ((isSnapped && !(gp->LStick_InDeadZone())) || (isSnapped && gp->GetIndex() == 0 && (SHEEPINPUT->KeyIsDown('D') || SHEEPINPUT->KeyIsDown('A') || SHEEPINPUT->KeyIsDown('W') || SHEEPINPUT->KeyIsDown('S'))))
     {
       //set animated sprite to run
       if (animCont.AnimState != RUN)

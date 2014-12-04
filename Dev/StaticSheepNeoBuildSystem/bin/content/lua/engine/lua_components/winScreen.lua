@@ -24,6 +24,7 @@ function WinScreen:Init()
   self._winner = 1
   self._opened = false
 
+  GAME_WON = false
 
   self.super.Init(self)
 end
@@ -152,7 +153,24 @@ function WinScreen:SetupHooks()
 end
 
 function WinScreen:FrameUpdate(deltaTime)
+  local levelLogic = self:Owner().Level1_Logic
+  local winner = levelLogic:GetWinner()
 
+  if winner ~= 0 and not self._opened then
+    self._winner = winner
+    GAME_WON = true
+    self:Create()
+  end
+
+  if self._opened then
+    if gamepad.ButtonPressed(nil, GAMEPAD_START) then
+      levelLogic:EndMatch()
+    end
+
+    if KeyIsPressed(KEY_ENTER) then
+      levelLogic:EndMatch()
+    end
+  end
 end
 
 RegisterComponent(WinScreen)
