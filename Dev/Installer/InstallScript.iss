@@ -32,7 +32,7 @@ LicenseFile=EULA\DigiPen_EULA.txt
 Compression=lzma
 SolidCompression=yes
 ; Path to the icon for the installer (TCR check requires custom icon)
-SetupIconFile=.\FILES\icon.ico
+SetupIconFile=.\GAMEDIRECTORY\icon.ico
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
@@ -73,7 +73,7 @@ Source: .\REDIST\*; DestDir: {tmp}; Flags: ignoreversion
 [Icons]
 Name: {group}\GigaGravityGames; Filename: {app}\GigaGravityGames.exe; WorkingDir: {app}; IconFilename: "{app}\icon.ico"
 Name: {group}\SheepEngineEditor; Filename: {app}\GigaGravityGames.exe; Parameters: "-editor"; WorkingDir: {app}; IconFilename: "{app}\icon.ico"
-Name: {group}\{cm:UninstallProgram,SheepEngine}; Filename: {uninstallexe}
+Name: {group}\{cm:UninstallProgram,GigaGravityGames}; Filename: {uninstallexe}
 Name: {commondesktop}\GigaGravityGames; Filename: {app}\GigaGravityGames.exe; Tasks: desktopicon; WorkingDir: {app}; IconFilename: "{app}\icon.ico"
 Name: {commondesktop}\SheepEngineEditor; Filename: {app}\GigaGravityGames.exe; Parameters: "-editor"; Tasks: editoricon; WorkingDir: {app}; IconFilename: "{app}\icon.ico"
 
@@ -84,6 +84,6 @@ Name: {commondesktop}\SheepEngineEditor; Filename: {app}\GigaGravityGames.exe; P
 ;   the installer exits as required by the TCRs.
 [Run]
 Filename: {tmp}\vcredist_x86.exe; Parameters: /q; StatusMsg: Installing Visual C++ x86 Redistributable...
-;Filename: {tmp}\dxwebsetup.exe; Parameters: /q; StatusMsg: Installing DirectX...
+Filename: {tmp}\DXSETUP.exe; Parameters: /silent; StatusMsg: Installing DirectX...
 Filename: {app}\GigaGravityGames.exe; Description: {cm:LaunchProgram,Giga Gravity Games}; Flags: nowait postinstall skipifsilent
 Filename: {app}\GigaGravityGames.exe; Parameters: "-editor"; Description: {cm:LaunchProgram,Sheep Engine Editor}; Flags: postinstall unchecked
