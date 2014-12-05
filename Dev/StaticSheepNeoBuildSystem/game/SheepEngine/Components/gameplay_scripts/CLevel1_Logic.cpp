@@ -125,7 +125,7 @@ namespace Framework
       spawnTimer = 3;
     }
 
-    if (timeLimit == 0)
+    if (timeLimit <= 0)
     {
       GameObject *eGiantPlat = (FACTORY->LoadObjectFromArchetype(space, "KillBoxBig"));
       Transform *GPT = eGiantPlat->GetComponent<Transform>(eTransform);

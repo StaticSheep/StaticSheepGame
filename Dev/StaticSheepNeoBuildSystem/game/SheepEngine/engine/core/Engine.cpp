@@ -167,7 +167,7 @@ namespace Framework
     if(Framerate.FramerateCheck())
     {
       Step();
-      Framerate.EndMainLoop();
+      //Framerate.EndMainLoop();
     }
   }
 
