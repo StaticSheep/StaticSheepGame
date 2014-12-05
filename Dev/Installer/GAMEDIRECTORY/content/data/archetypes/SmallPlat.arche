@@ -1,0 +1,48 @@
+GameObject
+{
+  name std::string "SmallPlatform"
+  archetype std::string "SmallPlat"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 0.000000
+      y_ float 0.000000
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 0.750000
+      y_ float 0.750000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "cart refined.png"
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 1.000000
+      Y float 1.000000
+    }
+  }
+  BoxCollider
+  {
+    m_width float 236.250000
+    m_height float 96.750000
+    m_materialName std::string "Static"
+    m_hasCollisionCallback bool false
+  }
+  ElevatorPlat
+  {
+    direction bool true
+  }
+}

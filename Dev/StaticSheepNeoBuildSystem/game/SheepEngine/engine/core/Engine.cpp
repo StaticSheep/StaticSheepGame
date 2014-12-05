@@ -24,6 +24,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "systems/input/Input.h"
 #include "systems/graphics/SheepGraphics.h"
 
+#include "systems/audio/SheepAudio.h"
+
 #include <boost/filesystem.hpp>
 #include <boost/foreach.hpp>
 
@@ -264,6 +266,8 @@ namespace Framework
       ClearSpaces();
       CleanUp();
     }
+
+    AUDIO->Update(0.0f);
 
     FACTORY->LoadLevel(m_nextLevel.c_str(), nullptr);
 
