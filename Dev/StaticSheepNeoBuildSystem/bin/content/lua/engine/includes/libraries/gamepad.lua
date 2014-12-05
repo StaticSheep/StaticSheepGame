@@ -18,7 +18,7 @@ if not gamepad then gamepad = {} end
 function gamepad.ButtonDown(pads, btn)
   if not pads then pads = {0, 1, 2, 3} end
   for k,v in pairs(pads) do
-    if GamePad(pad):ButtonDown(btn) then
+    if GamePad(v):ButtonDown(btn) then
       return true
     end
   end
@@ -27,7 +27,7 @@ end
 function gamepad.ButtonPressed(pads, btn)
   if not pads then pads = {0, 1, 2, 3} end
   for k,v in pairs(pads) do
-    if GamePad(pad):ButtonPressed(btn) then
+    if GamePad(v):ButtonPressed(btn) then
       return true
     end
   end

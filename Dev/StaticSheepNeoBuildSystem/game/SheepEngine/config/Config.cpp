@@ -29,6 +29,7 @@ namespace Framework
     
 #ifdef _DEBUG
     editor = true;
+    OpenConsole();
 #else
     if(argc > 1)
     {

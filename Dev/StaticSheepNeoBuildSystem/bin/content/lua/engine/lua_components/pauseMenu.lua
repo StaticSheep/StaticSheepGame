@@ -180,7 +180,8 @@ end
 function PauseMenu:LogicUpdate(deltaTime)
   if not self._opened and not self.base then
     if KeyIsPressed(KEY_ESCAPE) or
-      gamepad.ButtonPressed(nil, GAMEPAD_START) then
+      gamepad.ButtonPressed(nil, GAMEPAD_START) and
+      not GAME_WON then
 
       Log(DEBUG, "Pausing space")
       self:PauseSpace(true)

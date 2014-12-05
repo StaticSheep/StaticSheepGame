@@ -163,8 +163,11 @@ namespace Framework
     // tell this event to stop
     if(instance->type == 0)
     {
-     if(ErrorCheck(instance->eventInstance->stop(FMOD_STUDIO_STOP_IMMEDIATE)))
-      return false;
+      if (ErrorCheck(instance->eventInstance->stop(FMOD_STUDIO_STOP_IMMEDIATE)))
+      {
+        instance->eventInstance->release();
+        return false;
+      }
     }
 
     if(instance->type == 1)
