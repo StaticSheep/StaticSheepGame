@@ -139,13 +139,10 @@ namespace Framework
       {
         if (!ENGINE->m_editorAcitve)
         {
-          int width;
-          int height;
-          GetDesktopResolution(width, height);
-          SetWindowPos(ENGINE->Window->GetHandle(), NULL, 0, 0, width, height, 0);
+          
           m_renderContext->SetFullscreen(true);
         }
-          
+        ShowWindow(ENGINE->Window->GetHandle(), 1);
       }
       
     }

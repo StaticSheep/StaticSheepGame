@@ -75,7 +75,7 @@ namespace Framework
 #if USE_EDITOR
 
 #else
-	Core->MakeWindow(GetModuleHandle(NULL), 1);
+	Core->MakeWindow(GetModuleHandle(NULL), 1, !editor);
 #endif
     return Core;
   }

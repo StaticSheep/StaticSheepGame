@@ -28,7 +28,7 @@ namespace Framework
     void AddSystem(ISystem* system);
 
     // Creates a window for the engine to use
-    void MakeWindow(void* hInstance, int show);
+    void MakeWindow(void* hInstance, int show, bool fullScreen);
 
     // Initializes all engine systems and the engine
     void Initialize(void);

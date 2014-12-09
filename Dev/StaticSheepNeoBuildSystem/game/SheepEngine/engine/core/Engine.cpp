@@ -79,9 +79,9 @@ namespace Framework
     Framerate.Initialize();
   }
 
-  void Engine::MakeWindow(void* hInstance, int show)
+  void Engine::MakeWindow(void* hInstance, int show, bool fullScreen)
   {
-    Window->MakeWindow(hInstance, show);
+    Window->MakeWindow(hInstance, show, fullScreen);
   }
 
   void Engine::Shutdown()

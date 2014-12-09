@@ -14,7 +14,7 @@ namespace Framework
   class SheepWindow
   {
   public:
-    void MakeWindow(void* hInstance, int nCmdShow);
+    void MakeWindow(void* hInstance, int nCmdShow, bool fullScreen);
     void Update();
     HWND GetHandle();
 
