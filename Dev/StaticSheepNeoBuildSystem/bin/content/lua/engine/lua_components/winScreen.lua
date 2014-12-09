@@ -1,3 +1,10 @@
+--[[*****************************************************************
+Filename: winScreen.lua
+Project: Giga Gravity Games
+Author(s): Zachary Nawar (Primary)
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+*****************************************************************]]
 local WinScreen = GetMeta("WinScreen")
 
 InheritMeta(WinScreen, "LuaComponent")

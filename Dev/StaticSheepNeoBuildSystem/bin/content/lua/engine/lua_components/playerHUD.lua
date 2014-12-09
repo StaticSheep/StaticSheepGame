@@ -1,3 +1,10 @@
+--[[*****************************************************************
+Filename: playerHUD.lua
+Project: Giga Gravity Games
+Author(s): Zachary Nawar (Primary)
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+*****************************************************************]]
 local PlayerHUD = GetMeta("PlayerHUD")
 
 InheritMeta(PlayerHUD, "LuaComponent")

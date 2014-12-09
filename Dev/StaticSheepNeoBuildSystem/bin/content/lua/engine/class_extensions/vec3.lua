@@ -1,3 +1,10 @@
+--[[*****************************************************************
+Filename: Vec3.lua
+Project: Giga Gravity Games
+Author(s): Jon Sourbeer (Primary)
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+*****************************************************************]]
 local META = GetMeta("Vector3")
 
 function META.__add(a, b)

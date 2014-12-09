@@ -1,3 +1,10 @@
+--[[*****************************************************************
+Filename: UiMenu.lua
+Project: Giga Gravity Games
+Author(s): Zachary Nawar (Primary)
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+*****************************************************************]]
 if not uimenu then
   uimenu = {}
   uimenu.list = {}

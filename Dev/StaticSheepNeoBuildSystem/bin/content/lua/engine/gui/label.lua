@@ -1,3 +1,10 @@
+--[[*****************************************************************
+Filename: label.lua
+Project: Giga Gravity Games
+Author(s): Zachary Nawar (Primary)
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+*****************************************************************]]
 local META = GetMeta("Label")
 
 function META:Init()
