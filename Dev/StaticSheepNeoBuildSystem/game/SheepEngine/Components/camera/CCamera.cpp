@@ -1,3 +1,10 @@
+/*****************************************************************
+Filename: CCamera.cpp
+Project:
+Author(s): Scott Nelson (Primary)
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+*****************************************************************/
 #include "pch/precompiled.h"
 
 #include "systems/graphics/SheepGraphics.h"

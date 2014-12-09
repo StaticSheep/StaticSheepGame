@@ -1,4 +1,10 @@
+/*****************************************************************
+Filename: Vec3.cpp
+Project:
+Author(s): Jon Sourbeer (Primary)
 
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+*****************************************************************/
 #include "pch/precompiled.h"
 #include "Vec3D.h"
 
