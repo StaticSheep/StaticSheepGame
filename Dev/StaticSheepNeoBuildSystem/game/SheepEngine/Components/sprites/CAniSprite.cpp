@@ -71,7 +71,7 @@ namespace Framework
   DirectSheep::Handle& AniSprite::SetTexture(const std::string& Texture)
   {
     m_spriteName = Texture;
-    m_texture = GRAPHICS->SetTexture(Texture);
+    m_texture = GRAPHICS->LoadTexture(Texture);
     TextureSize = GRAPHICS->GetTextureDim(m_texture);
 
     m_time = 0;
@@ -315,8 +315,8 @@ namespace Framework
     GRAPHICS->SetColor(Color);
     GRAPHICS->SetUV(uvBegin, uvEnd);
     GRAPHICS->SetCamState(0);
-    GRAPHICS->FlipSprite(m_flipX, m_flipY);
-    GRAPHICS->DrawSprite(this);
+    GRAPHICS->SetSpriteFlip(m_flipX, m_flipY);
+    GRAPHICS->DrawBatched(m_texture);
 
     CheckNextFrame();
   }

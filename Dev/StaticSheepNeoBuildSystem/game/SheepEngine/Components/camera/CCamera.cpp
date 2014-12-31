@@ -11,6 +11,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "Context/Context.h"
 #include "CCamera.h"
 
+#include "Camera/Camera.h"
+
 namespace Framework
 {
   Camera::Camera() : m_viewPort(1920, 1080), m_active(false)
@@ -33,7 +35,7 @@ namespace Framework
 
     this->GetOwner()->hooks.Add("TransformDirty", self, BUILD_FUNCTION(Camera::UpdatePosition));
 
-    m_CamHandle = GRAPHICS->m_renderContext->NewCamera();
+    m_camHandle = GRAPHICS->m_renderContext->NewCamera();
 
     if(m_active || !space->m_edit)
       SetActive(true);
@@ -51,27 +53,28 @@ namespace Framework
   {
     Transform* trans = space->GetHandles().GetAs<Transform>(transform);
 
-    GRAPHICS->m_renderContext->SetCamPosition(m_CamHandle, trans->GetTranslation().x, trans->GetTranslation().y);
-    GRAPHICS->m_renderContext->SetCamFOV(m_CamHandle, m_FOV);
-    GRAPHICS->m_renderContext->SetCamScale(m_CamHandle, m_viewPort.x_, m_viewPort.y_);
+    DirectSheep::Camera* cam = GRAPHICS->RetrieveCamera(m_camHandle);
+    cam->SetPosition(trans->GetTranslation().x, trans->GetTranslation().y);
+    cam->SetFov(m_FOV);
+    cam->SetScale(m_viewPort.x_, m_viewPort.y_);
   }
 
   void Camera::SetActive(bool isActive)
   {
     m_active = isActive;
 
-    Camera* currCam = space->GetHandles().GetAs<Camera>(GRAPHICS->CurrentCamera);
+    Camera* currCam = space->GetHandles().GetAs<Camera>(GRAPHICS->currentCamera);
 
     if (currCam && !IsActive())
       currCam->m_active = false;
 
-    GRAPHICS->CurrentCamera = this->GetOwner()->GetComponentHandle(Framework::eCamera);
+    GRAPHICS->currentCamera = this->GetOwner()->GetComponentHandle(Framework::eCamera);
 
     if (space->m_edit)
       return;
 
     if (m_active)
-      GRAPHICS->m_renderContext->SetCamActive(m_CamHandle);
+      GRAPHICS->SetActiveCamera(m_camHandle);
   }
 
   void Camera::TweakSetActive(void * isActive)
@@ -81,7 +84,7 @@ namespace Framework
 
   bool Camera::IsActive()
   {
-    if (this->GetOwner()->GetComponentHandle(Framework::eCamera) == GRAPHICS->CurrentCamera)
+    if (this->GetOwner()->GetComponentHandle(Framework::eCamera) == GRAPHICS->currentCamera)
       return true;
     else
       return false;
@@ -91,8 +94,7 @@ namespace Framework
   void Camera::SetFov(float FOV)
   {
     m_FOV = FOV;
-
-    GRAPHICS->m_renderContext->SetCamFOV(m_CamHandle, m_FOV);
+    GRAPHICS->RetrieveCamera(m_camHandle)->SetFov(m_FOV); 
   }
 
   void Camera::TweakSetFov(void* FOV)
@@ -109,7 +111,7 @@ namespace Framework
   {
     m_viewPort = viewport;
 
-    GRAPHICS->m_renderContext->SetCamScale(m_CamHandle, m_viewPort.x_, m_viewPort.y_);
+    GRAPHICS->RetrieveCamera(m_camHandle)->SetScale(m_viewPort.x_, m_viewPort.y_);
   }
 
   Vec2 Camera::GetViewport()

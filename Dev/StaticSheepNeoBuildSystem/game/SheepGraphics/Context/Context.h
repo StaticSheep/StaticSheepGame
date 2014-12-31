@@ -15,6 +15,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "Texture/Tex2d.h"
 #include "SafeRelease.h"
 #include "Handle.h"
+#include "Matrix4D.h"
 
 namespace DirectSheep
 {
@@ -70,14 +71,23 @@ class RenderContext
    //                     CAMERA FUNCTIONS                     //
    //////////////////////////////////////////////////////////////
    GFX_API Handle NewCamera();
+
    GFX_API void SetCamState(int camState);
-   GFX_API void SetCamPosition(Handle Camera, float x, float y);
-   GFX_API void SetCamPosition(Handle Camera, float x, float y, float z);
-   GFX_API void SetCamScale(Handle Camera, float width, float height);
-   GFX_API void SetCamFOV(Handle Camera, float FOV);
-   GFX_API void SetCamActive(Handle Camera);
-   GFX_API void SetCamDefault();
-   GFX_API Handle GetCamActive();
+   /*GFX_API void SetCamPosition(Handle camera, float x, float y);
+   GFX_API void SetCamPosition(Handle camera, float x, float y, float z);
+   GFX_API void SetCamScale(Handle camera, float width, float height);
+   GFX_API void SetCamFOV(Handle camera, float FOV);*/
+   GFX_API void SetActiveCamera(Handle camera);
+   
+   GFX_API Handle GetActiveCamera();
+   GFX_API static inline DirectSheep::Camera* RetrieveCamera(Handle camera)
+   {
+     return (DirectSheep::Camera*)camera.ptr;
+   }
+
+   GFX_API Framework::Mat4D GetCamViewProj(Handle camera);
+
+   GFX_API void ActivateDefaultCamera();
 
     /////////////////////////////////////////////////////////////
     //                    CREATE FUNCTIONS                     //
@@ -111,7 +121,7 @@ class RenderContext
     //                    SETTER FUNCTIONS                     //
     /////////////////////////////////////////////////////////////
 
-   GFX_API void setWireFrame(bool isWired);
+   GFX_API void SetWireFrame(bool isWired);
    GFX_API void SetSpriteFlip(bool xFlip, bool yFlip);
    GFX_API void Resize(float width, float height);
    GFX_API void SetClearColor(const float r, const float g, const float b, const float a);

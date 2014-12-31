@@ -39,7 +39,7 @@ namespace Framework
 
     void UpdatePosition();
     Handle transform;
-    DirectSheep::Handle m_CamHandle;
+    DirectSheep::Handle m_camHandle;
     Vec2 m_viewPort;
   };
 

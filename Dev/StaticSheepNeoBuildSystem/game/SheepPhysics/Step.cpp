@@ -271,7 +271,7 @@ namespace SheepFizz
       break;
 
     default:
-      return 0;
+      return Vec3D();
       break;
     }
 

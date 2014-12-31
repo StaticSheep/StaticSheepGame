@@ -25,6 +25,7 @@ namespace Framework
     Mat4D(const Vec4D&, const Vec4D&, const Vec4D&, const Vec4D&); // Construct with vectors
     Mat4D(const Vec4D&, const Vec4D&);                             // Transpose constructor
     Mat4D(float, float, float);                                    // Scale
+    Mat4D(float*);
     
     // setters
     void SetTranslation(const Vec3D&);

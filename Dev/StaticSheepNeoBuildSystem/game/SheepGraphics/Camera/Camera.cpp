@@ -9,7 +9,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "Camera.h"
 namespace DirectSheep
 {
-  Camera::Camera(float screenWidth, float screenHeight, bool isPerspective) : 
+  Camera::Camera(float screenWidth, float screenHeight, bool isPerspective) :
     m_perspective(isPerspective),
     m_width(screenWidth),
     m_height(screenHeight),
@@ -45,7 +45,7 @@ namespace DirectSheep
     m_viewProj = m_View * m_Projection;
   }
 
-  Vec3 Camera::GetPosition()
+  Vec3 Camera::GetPosition() const
   {
     return m_position;
   }
@@ -72,7 +72,7 @@ namespace DirectSheep
     m_Theta = orientation;
   }
 
-  float Camera::GetOrientation()
+  float Camera::GetOrientation() const
   {
     return m_Theta;
   }
@@ -85,7 +85,7 @@ namespace DirectSheep
     m_viewProj = m_View * m_Projection;
   }
 
-  float Camera::GetFov()
+  float Camera::GetFov() const
   {
     return m_Fov;
   }
@@ -119,17 +119,17 @@ namespace DirectSheep
     return Vec2(m_width, m_height);
   }
 
-  Mat4 Camera::getView()
+  Mat4 Camera::GetView() const
   {
     return m_View;
   }
 
-  Mat4 Camera::getProj()
+  Mat4 Camera::GetProj() const
   {
     return m_Projection;
   }
 
-  Mat4 Camera::getViewProj()
+  Mat4 Camera::GetViewProj() const
   {
     return m_viewProj;
   }
@@ -154,4 +154,15 @@ namespace DirectSheep
   {
     m_Projection = DirectX::XMMatrixOrthographicOffCenterLH(0, m_width, -m_height, 0, 0.0f, 1000.0f);
   }
+
+  Vec3 Camera::ToWorld(Vec2 screenPos) const
+  {
+    return Vec3::Transform(Vec3(screenPos.x, screenPos.y, 0), m_viewProj);
+  }
+
+  Vec2 Camera::ToScreen(Vec3 worldPos) const
+  {
+    return Vec2((float*)&Vec3::Transform(worldPos, m_viewProj.Invert()));
+  }
+
 }

@@ -40,7 +40,7 @@ namespace DirectSheep
 
     scaleMat = DirectX::XMMatrixMultiply(scaleMat, transMat);
 
-    matFinal = scaleMat * ((Camera*)m_camera.ptr)->getViewProj();
+    matFinal = scaleMat * ((Camera*)m_camera.ptr)->GetViewProj();
 
     m_deviceContext->RSSetState(m_rastState[m_currentRast]);
 
@@ -49,7 +49,7 @@ namespace DirectSheep
     SetBlendMode(BLEND_MODE_ALPHA);
 
     m_genericEffect->bind(m_deviceContext);
-    m_genericEffect->bindPosUV(m_deviceContext, ((Camera*)m_camera.ptr)->getProj(), ((Camera*)m_camera.ptr)->getView(), scaleMat, Vec2(0,0), Vec2(1,1));
+    m_genericEffect->bindPosUV(m_deviceContext, ((Camera*)m_camera.ptr)->GetProj(), ((Camera*)m_camera.ptr)->GetView(), scaleMat, Vec2(0,0), Vec2(1,1));
     m_genericEffect->bindAmbient (m_deviceContext, m_spriteBlend, 1);
 
     m_deviceContext->Draw(vertexCount, vertexStart);
@@ -74,7 +74,7 @@ namespace DirectSheep
 
     rotMat = XMMatrixMultiply(rotMat, transMat);
 
-    matFinal = rotMat * ((Camera*)m_camera.ptr)->getViewProj();
+    matFinal = rotMat * ((Camera*)m_camera.ptr)->GetViewProj();
 
     FW1_RECTF rect;
     rect.Left = rect.Right = 0.0f;
@@ -149,7 +149,7 @@ namespace DirectSheep
     m_batcher->Begin(SpriteSortMode_Texture, m_blendStateMap[BLEND_MODE_ALPHA],
       m_sampleStates[0], m_depthBuffer.m_depthState,
       m_rastState[m_currentRast], nullptr,
-      ((Camera*)m_camera.ptr)->getViewProj());
+      ((Camera*)m_camera.ptr)->GetViewProj());
   }
 
   void RenderContext::EndBatch()

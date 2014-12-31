@@ -38,6 +38,9 @@ namespace Framework
     static void ForceZ(bool use, float z);
 
 
+    static Vec3 ToWorld(Vec2 screenPos);
+    static Vec2 ToScreen(Vec3 worldPos);
+
     static int ScreenWidth(void);
     static int ScreenHeight(void);
 

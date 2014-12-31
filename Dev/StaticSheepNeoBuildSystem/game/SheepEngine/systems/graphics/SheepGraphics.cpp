@@ -91,9 +91,9 @@ namespace Framework
     FinishFrame();
 	}
   
-  void SheepGraphics::SetDefaultCam(void)
+  void SheepGraphics::ActivateDefaultCamera(void)
   {
-    m_renderContext->SetCamDefault();
+    m_renderContext->ActivateDefaultCamera();
   }
 
   static void GetDesktopResolution(int& horizontal, int& vertical)
@@ -171,6 +171,8 @@ namespace Framework
     m_renderContext->EndBatch();
     m_renderContext->StartBatch();
 
+    //Draw::ToWorld(Vec2(100, 100));
+
     // Post Draw
     for (auto it = ENGINE->Spaces().begin(); it != ENGINE->Spaces().end(); ++it)
     {
@@ -235,35 +237,35 @@ namespace Framework
 
   void SheepGraphics::SetWireframe(bool iswired)
   {
-    m_renderContext->setWireFrame(iswired);
+    m_renderContext->SetWireFrame(iswired);
   }
 
-  void SheepGraphics::FlipSprite(bool x, bool y)
+  void SheepGraphics::SetSpriteFlip(bool x, bool y)
   {
     m_renderContext->SetSpriteFlip(x, y);
   }
 
-  DirectSheep::Handle SheepGraphics::SetTexture(const std::string& Texture)
+  DirectSheep::Handle SheepGraphics::LoadTexture(const std::string& textureName)
   {
     for(auto it : m_textureMap)
     {
-      if(it.first == Texture)
+      if (it.first == textureName)
         return it.second;
     }
 
-    std::string realTexture = Texture;
+    std::string realTexture = textureName;
 
     DirectSheep::Handle temp;
 
-    m_renderContext->CreateTexture(temp, Texture);
+    m_renderContext->CreateTexture(temp, textureName);
     
 #if SHEEP_DEBUG
     ++(m_debugData.numTextures);
 #endif
 
-    m_textureMap[Texture] = temp;
+    m_textureMap[textureName] = temp;
 
-    return m_textureMap[Texture];
+    return m_textureMap[textureName];
   }
 
   void SheepGraphics::BindTexture(int ID)
@@ -276,14 +278,6 @@ namespace Framework
     m_renderContext->SetBlendCol(Color.R, Color.G, Color.B, Color.A);
   }
 
-  void SheepGraphics::DrawSprite(Sprite *sprite)
-  {
-    m_renderContext->DrawBatched(sprite->GetTexture());
-
-#if SHEEP_DEBUG
-    ++(m_debugData.numBatchedCalls);
-#endif
-  }
 
   void SheepGraphics::DrawBatched(DirectSheep::Handle texture)
   {
@@ -312,7 +306,7 @@ namespace Framework
       if(it.first == texture)
          return m_textureMap[texture].GetIndex();
     }
-     return (SetTexture(texture)).GetIndex();
+    return (LoadTexture(texture)).GetIndex();
   }
 
   void SheepGraphics::SetCamState(int camState)
@@ -351,7 +345,7 @@ namespace Framework
         {
           std::string foo = it->path().extension().generic_string();
           if (it->path().extension().generic_string() == ".png" || it->path().extension().generic_string() == ".jpg")
-            SetTexture(it->path().filename().generic_string());
+            LoadTexture(it->path().filename().generic_string());
         }
       }
       return true;
@@ -364,6 +358,21 @@ namespace Framework
     const char* font)
   {
     return m_renderContext->MeasureString(text, size, font);
+  }
+
+  DirectSheep::Camera* SheepGraphics::RetrieveCamera(DirectSheep::Handle camHandle)
+  {
+    return DirectSheep::RenderContext::RetrieveCamera(camHandle);
+  }
+
+  DirectSheep::Handle SheepGraphics::GetActiveCamera()
+  {
+    return m_renderContext->GetActiveCamera();
+  }
+
+  void SheepGraphics::SetActiveCamera(DirectSheep::Handle camHandle)
+  {
+    m_renderContext->SetActiveCamera(camHandle);
   }
 
 }

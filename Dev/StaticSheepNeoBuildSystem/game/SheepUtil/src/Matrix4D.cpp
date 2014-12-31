@@ -98,6 +98,12 @@ namespace Framework
     _matrix[1][1] = y;
     _matrix[2][2] = z;
   }
+
+  Mat4D::Mat4D(float* m)
+  {
+    _Reset();
+    memcpy(_matrix, m, sizeof(float)* 16);
+  }
   
   // Setters
   void Mat4D::SetTranslation(const Vec3D& vec)

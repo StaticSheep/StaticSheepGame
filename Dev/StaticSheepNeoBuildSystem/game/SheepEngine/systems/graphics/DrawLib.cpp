@@ -8,6 +8,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 *****************************************************************/
 #include "pch/precompiled.h"
 #include "SheepGraphics.h"
+#include "systems/graphics/Debug.h"
 #include <math.h>
 
 namespace Framework
@@ -77,7 +78,7 @@ namespace Framework
   {
     GRAPHICS->SetSize(width, height);
     SetPosition(x, y);
-    GRAPHICS->FlipSprite(false, false);
+    GRAPHICS->SetSpriteFlip(false, false);
 
     if (m_whiteTextureID == -1)
     {
@@ -96,7 +97,7 @@ namespace Framework
   {
     GRAPHICS->SetSize(width, height);
     SetPosition(x, y);
-    GRAPHICS->FlipSprite(false, false);
+    GRAPHICS->SetSpriteFlip(false, false);
     
 //     GRAPHICS->BindTexture(m_TextureID);
 //     GRAPHICS->RawDraw();
@@ -108,7 +109,7 @@ namespace Framework
   {
     GRAPHICS->SetSize(width, height);
     SetPosition(x, y);
-    GRAPHICS->FlipSprite(false, false);
+    GRAPHICS->SetSpriteFlip(false, false);
     //GRAPHICS->BindTexture(m_TextureID);
 
 
@@ -185,6 +186,16 @@ namespace Framework
   void Draw::DrawString(const char* text, float size, const char* font)
   {
     GRAPHICS->DrawSpriteText(text, size, font);
+  }
+
+  Vec3 Draw::ToWorld(Vec2 screenPos)
+  {
+    return Vec3((float*)&GRAPHICS->RetrieveCamera(GRAPHICS->GetActiveCamera())->ToWorld(DirectSheep::Vec2((float*)&screenPos)));
+  }
+
+  Vec2 Draw::ToScreen(Vec3 worldPos)
+  {
+    return Vec2((float*)&GRAPHICS->RetrieveCamera(GRAPHICS->GetActiveCamera())->ToScreen(DirectSheep::Vec3((float*)&worldPos)));
   }
 
 

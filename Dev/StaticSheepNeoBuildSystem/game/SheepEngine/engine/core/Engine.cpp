@@ -323,7 +323,7 @@ namespace Framework
       }
     }
 
-    GRAPHICS->SetDefaultCam();
+    GRAPHICS->ActivateDefaultCamera();
 
   }
 

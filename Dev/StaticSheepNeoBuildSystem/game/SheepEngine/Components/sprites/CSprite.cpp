@@ -43,7 +43,7 @@ namespace Framework
   void Sprite::SetTexture(const char * Texture)
   {
     m_spriteName = Texture;
-    m_texture = GRAPHICS->SetTexture(Texture);
+    m_texture = GRAPHICS->LoadTexture(Texture);
     TextureSize = GRAPHICS->GetTextureDim(m_texture);
   }
 
@@ -91,10 +91,10 @@ namespace Framework
     GRAPHICS->SetSize(trans->GetScale().X * Size.X, trans->GetScale().Y * Size.Y);
     GRAPHICS->SetColor(Color);
     GRAPHICS->SetUV(Vec2(0,0), Vec2(1,1));
-    GRAPHICS->FlipSprite(m_flipX, m_flipY);
+    GRAPHICS->SetSpriteFlip(m_flipX, m_flipY);
     GRAPHICS->SetCamState(0);
 
-    GRAPHICS->DrawSprite(this);
+    GRAPHICS->DrawBatched(this->m_texture);
     
   }
 }

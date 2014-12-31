@@ -27,7 +27,7 @@ namespace DirectSheep
       m_flip = DirectX::SpriteEffects_None;
   }
 
-  void RenderContext::setWireFrame(bool isWired)
+  void RenderContext::SetWireFrame(bool isWired)
   {
     if (isWired)
       m_currentRast = RastStates::Wire;
