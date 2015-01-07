@@ -29,7 +29,7 @@ namespace Framework
 
   void Pistol::Fire(GameObject *player)
   {
-    
+
     GameObject *bullet = (FACTORY->LoadObjectFromArchetype(player->space, "Bullet"));
     bullet->GetComponent<Bullet_Default>(eBullet_Default)->damage = damage;
     Transform *BT = bullet->GetComponent<Transform>(eTransform);
@@ -42,5 +42,15 @@ namespace Framework
 
     SoundEmitter *se = player->GetComponent<SoundEmitter>(eSoundEmitter);
     se->Play("Laser_Shot", &SoundInstance(1.0f));
+  }
+
+  void Pistol::DelayUpdate(float dt)
+  {
+
+  }
+
+  void Pistol::ResetDelay()
+  {
+    delay = 0;
   }
 }

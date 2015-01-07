@@ -16,5 +16,7 @@ namespace Framework
     virtual ~Automatic();
 
     virtual void Fire(GameObject*);
+    virtual void DelayUpdate(float dt);
+    virtual void ResetDelay();
   };
 }

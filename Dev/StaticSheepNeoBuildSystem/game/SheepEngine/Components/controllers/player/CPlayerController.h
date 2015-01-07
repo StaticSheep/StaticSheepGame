@@ -13,6 +13,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "../../transform/CTransform.h"
 #include "types/weapons/WBase.h"
 #include "AnimationController.h"
+#include "../../colliders/CBoxCollider.h"
 
 namespace Framework
 {
@@ -31,17 +32,17 @@ namespace Framework
     void RespawnBlink(float dt);
     void PlayerDeath(SoundEmitter *se, Transform *pt);
     void SetAnimations();
-
+    void clampVelocity(float clamp);
     int CurrentHealth();
-
+    void jump();
+    void PlayerButtonPress();
 		//member variables
 		int playerNum; //the player number, i.e. 1, 2, 3, 4
     int health; //players health
 		bool hasFired, isSnapped, hasRespawned, blink; //has fired is a flag to prevent fully auto fire, is snapped is a bool to see if the player is snapped to something
-    bool GodMode, GoldenGun, PerfectMachine;
-    bool frameSkip, frameSkip2;
+    bool GodMode, GoldenGun, PerfectMachine;  //the cheats 
+    bool frameSkip;
     float rotation, lastRotation;
-    float shotDelay;
     float respawnTimer;
     std::vector<Vec3> normals;
     AnimationController animCont;
