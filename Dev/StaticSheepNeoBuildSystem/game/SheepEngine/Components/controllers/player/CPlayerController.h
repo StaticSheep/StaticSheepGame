@@ -1,5 +1,5 @@
 /*****************************************************************
-Filename: CPlayerController.cpp
+Filename: CPlayerController.h
 Project:  Gam200
 Author(s): Greg Walls (Primary)
 
