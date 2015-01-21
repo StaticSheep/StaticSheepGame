@@ -26,6 +26,9 @@ namespace DirectSheep
 namespace DirectSheep
 {
 
+  extern float SCREEN_WIDTH;
+  extern float SCREEN_HEIGHT;
+
   class Camera;
   class GenEffect;
   class PointLight;
@@ -123,7 +126,7 @@ class RenderContext
 
    GFX_API void SetWireFrame(bool isWired);
    GFX_API void SetSpriteFlip(bool xFlip, bool yFlip);
-   GFX_API void Resize(float width, float height);
+   void Resize(float width, float height);
    GFX_API void SetClearColor(const float r, const float g, const float b, const float a);
    GFX_API void SetTargetWindow(const HWND& hwnd);
    GFX_API void SetFullscreen(const bool fullscreen);
@@ -136,7 +139,7 @@ class RenderContext
    GFX_API void SetVSync(bool vsync);
 
    GFX_API void SetUV(float x1, float y1, float x2, float y2);
-   GFX_API void SetPosition(const float x, const float y, const float z);
+   void SetPosition(const float x, const float y, const float z);
    GFX_API void SetRotation(const float theta);
    GFX_API void SetDimensions(const float w, const float h);
    GFX_API void SetBlendCol(const float r, const float g, const float b, const float a);

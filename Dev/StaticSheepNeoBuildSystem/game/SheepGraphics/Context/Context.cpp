@@ -20,6 +20,9 @@ using namespace DirectX;
 
 namespace DirectSheep
 {
+
+  float SCREEN_WIDTH = 1337;
+  float SCREEN_HEIGHT = 1337;
   
   /*!
       \brief
@@ -85,6 +88,8 @@ namespace DirectSheep
   {
     // Start viewport at window dimensions
     m_viewport.dim = Dimension((unsigned)width, (unsigned)height);
+    SCREEN_WIDTH = width;
+    SCREEN_HEIGHT = height;
 
     // Regiset window handle
     m_hwnd = hwnd;

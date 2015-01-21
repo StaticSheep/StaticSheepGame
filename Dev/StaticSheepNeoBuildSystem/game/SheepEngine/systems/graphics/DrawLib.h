@@ -40,6 +40,7 @@ namespace Framework
 
     static Vec3 ToWorld(Vec2 screenPos);
     static Vec2 ToScreen(Vec3 worldPos);
+    static Vec2 ToOrtho(Vec2 screenPos);
 
     static int ScreenWidth(void);
     static int ScreenHeight(void);

@@ -43,6 +43,9 @@ namespace DirectSheep
       m_viewport.offsetX = 0;
       m_viewport.offsetY = 0;
 
+      SCREEN_WIDTH = width;
+      SCREEN_HEIGHT = height;
+
       m_deviceContext->OMSetRenderTargets(0, 0, 0);
 
       m_backBuffer->Release();

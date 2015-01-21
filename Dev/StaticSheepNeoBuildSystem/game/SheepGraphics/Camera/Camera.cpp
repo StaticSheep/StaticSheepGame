@@ -7,6 +7,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 *****************************************************************/
 #include "precompiled.h"
 #include "Camera.h"
+#include "Context\Context.h"
+
 namespace DirectSheep
 {
   Camera::Camera(float screenWidth, float screenHeight, bool isPerspective) :
@@ -157,12 +159,45 @@ namespace DirectSheep
 
   Vec3 Camera::ToWorld(Vec2 screenPos) const
   {
-    return Vec3::Transform(Vec3(screenPos.x, screenPos.y, 0), m_viewProj);
+    if (m_perspective)
+    {
+
+      Vec4 world = Vec4::Transform(Vec4(2 * (screenPos.x/SCREEN_WIDTH) - 1,
+        -(2 * (screenPos.y / SCREEN_HEIGHT) - 1),
+        0.11f, 1), m_viewProj.Invert());
+      world.w = 1.0f / world.w;
+
+      world.x *= world.w;
+      world.y *= world.w;
+      world.z *= world.w;
+
+      //world.x = 1600 * (world.x + 1) / 2;
+      //world.y = 900 * (-world.y + 1) / 2;
+
+      return world;
+    }
+    else
+    {
+      return Vec3(screenPos.x, screenPos.y, 0);
+    }
+    
   }
 
   Vec2 Camera::ToScreen(Vec3 worldPos) const
   {
-    return Vec2((float*)&Vec3::Transform(worldPos, m_viewProj.Invert()));
+    if (m_perspective)
+    {
+      Vec4 screen = Vec4::Transform(Vec4(worldPos.x, worldPos.y, 0.0f, 1), m_viewProj);
+      screen.x = SCREEN_WIDTH * ((screen.x / screen.w) + 1) / 2;
+      screen.y = SCREEN_HEIGHT * ((-screen.y / screen.w) + 1) / 2;
+
+      return Vec2((float*)&screen);
+    }
+    else
+    {
+      return Vec2(worldPos);
+    }
+    
   }
 
 }

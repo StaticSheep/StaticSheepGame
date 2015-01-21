@@ -17,6 +17,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/sprites/CAniSprite.h"
 #include <iostream>
 #include <boost/filesystem.hpp>
+#include "../input/Input.h"
 using namespace boost::filesystem;
 
 
@@ -171,8 +172,6 @@ namespace Framework
     m_renderContext->EndBatch();
     m_renderContext->StartBatch();
 
-    //Draw::ToWorld(Vec2(100, 100));
-
     // Post Draw
     for (auto it = ENGINE->Spaces().begin(); it != ENGINE->Spaces().end(); ++it)
     {
@@ -196,6 +195,7 @@ namespace Framework
 
     m_renderContext->SetCamState(2);
     m_renderContext->StartBatch();
+
     ENGINE->SystemMessage(Message(Message::GUIDraw));
     m_renderContext->EndBatch();
 

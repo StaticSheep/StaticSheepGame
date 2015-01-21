@@ -190,12 +190,21 @@ namespace Framework
 
   Vec3 Draw::ToWorld(Vec2 screenPos)
   {
-    return Vec3((float*)&GRAPHICS->RetrieveCamera(GRAPHICS->GetActiveCamera())->ToWorld(DirectSheep::Vec2((float*)&screenPos)));
+    return Vec3((float*)&GRAPHICS->RetrieveCamera(GRAPHICS->GetActiveCamera())
+      ->ToWorld(DirectSheep::Vec2((float*)&screenPos)));
   }
 
   Vec2 Draw::ToScreen(Vec3 worldPos)
   {
-    return Vec2((float*)&GRAPHICS->RetrieveCamera(GRAPHICS->GetActiveCamera())->ToScreen(DirectSheep::Vec3((float*)&worldPos)));
+    return Vec2((float*)&GRAPHICS->RetrieveCamera(GRAPHICS->GetActiveCamera())
+      ->ToScreen(DirectSheep::Vec3((float*)&worldPos)));
+  }
+
+  Vec2 Draw::ToOrtho(Vec2 screenPos)
+  {
+    screenPos.x = GRAPHICS->_ScreenWidth * (screenPos.x + 1) / 2;
+    screenPos.y = GRAPHICS->_ScreenHeight * (-screenPos.y + 1) / 2;
+    return screenPos;
   }
 
 
