@@ -110,10 +110,10 @@ namespace DirectSheep
     DirectX::SpriteEffects effect = DirectX::SpriteEffects_None;
 
     m_spriteTrans.x = m_camUse ? m_spriteTrans.x :
-      m_spriteTrans.x + m_spriteTrans.w / 2;
+      m_spriteTrans.x + cos(m_spriteTrans.theta) * m_spriteTrans.w / 2;
 
     m_spriteTrans.y = m_camUse ? m_spriteTrans.y :
-      -m_spriteTrans.y - m_spriteTrans.h / 2;
+      -m_spriteTrans.y - sin(-m_spriteTrans.theta) * m_spriteTrans.h / 2;
       
     m_spriteTrans.w = m_camUse ? m_spriteTrans.w :
       m_spriteTrans.w / width;

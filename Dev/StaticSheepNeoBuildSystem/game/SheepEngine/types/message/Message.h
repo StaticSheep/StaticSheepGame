@@ -32,6 +32,7 @@ namespace Framework
       WindowRestore,
       CameraChange,
       EngineReady,
+      ObjectSelected,
       Pause,
       Quit,
     };
@@ -55,5 +56,17 @@ namespace Framework
 
     float width;
     float height;
+  };
+
+  class ObjectSelectedMessage : public Message
+  {
+  public:
+    ObjectSelectedMessage(GameObject* iobj)
+      : Message(ObjectSelected), obj(iobj)
+    {
+
+    }
+
+    GameObject* obj;
   };
 }

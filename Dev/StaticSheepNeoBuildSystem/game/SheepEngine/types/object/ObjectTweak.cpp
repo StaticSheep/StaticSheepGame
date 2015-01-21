@@ -15,6 +15,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/lua/CLuaComponent.h"
 
 #include "systems/anttweak/AntTweakModule.h"
+#include "systems/editor/GizmoEditor.h"
 
 namespace Framework
 {
@@ -527,6 +528,10 @@ namespace Framework
       CustomTweak(nullptr, Variable(this), nullptr, nullptr);
     else
       UpdateTweakBar();
+
+    ObjectSelectedMessage msg(this);
+
+    ENGINE->SystemMessage(msg);
   }
 
   void GameObject::TweakSetName(void* inname)

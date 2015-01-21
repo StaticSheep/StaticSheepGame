@@ -153,7 +153,7 @@ namespace Framework
     // Draw Hooks
     GameSpace* space;
 
-    m_renderContext->SetCamState(0);
+    Draw::SetCamState(0);
     m_renderContext->StartBatch();
     // Regular Draw
     for (auto it = ENGINE->Spaces().begin(); it != ENGINE->Spaces().end(); ++it)
@@ -193,7 +193,7 @@ namespace Framework
 
     m_renderContext->EndBatch();
 
-    m_renderContext->SetCamState(2);
+    Draw::SetCamState(2);
     m_renderContext->StartBatch();
 
     ENGINE->SystemMessage(Message(Message::GUIDraw));

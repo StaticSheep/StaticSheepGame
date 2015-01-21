@@ -23,6 +23,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "systems/skynet/Skynet.h"
 
 #include "WxWindow.h"
+#include "systems/editor/GizmoEditor.h"
 //#include "gfx/wxw/d3d/WxD3DCanvas.h"
 //#include "gfx/wxw/d3d/WxD3DContext.h"
 
@@ -56,6 +57,7 @@ namespace Framework
     Core->AddSystem(new GameLogic());
     Core->AddSystem(new SheepPhysics());
     Core->AddSystem(new SheepAudio());
+    
 
     void* rc = nullptr;
 
@@ -70,6 +72,7 @@ namespace Framework
     {
       Core->AddSystem(new Debug());
       Core->AddSystem(new AntTweakModule());
+      Core->AddSystem(new GizmoEditor());
     }
 
 #if USE_EDITOR

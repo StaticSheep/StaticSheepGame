@@ -73,7 +73,7 @@ namespace DirectSheep
 
   GFX_API Handle RenderContext::GetActiveCamera()
   {
-    return m_camera;
+    return m_Perspective;
   }
 
   GFX_API void RenderContext::ActivateDefaultCamera()

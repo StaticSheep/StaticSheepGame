@@ -24,7 +24,7 @@ namespace Framework
 
   void Draw::SetCamState(int camState)
   {
-    Draw::m_useCamera = camState != 0;
+    Draw::m_useCamera = camState == 0;
     GRAPHICS->SetCamState(camState);
   }
 
@@ -125,8 +125,6 @@ namespace Framework
     float diffX = eX - sX;
     float diffY = eY - sY;
 
-    if (m_whiteTextureID == -1)
-      m_whiteTextureID = GRAPHICS->GetTextureID("White.png");
 
     GRAPHICS->SetSize(sqrt(diffX * diffX + diffY * diffY), width);
 
@@ -143,11 +141,15 @@ namespace Framework
       rotation = atan(diffY / diffX);
      
     float offsetX = diffX * cos(rotation) - diffY * sin(rotation);
-    float offxetY = diffX * sin(rotation) - diffY * cos(rotation);
+    float offsetY = diffX * sin(rotation) - diffY * cos(rotation);
 
     GRAPHICS->SetRotation(rotation);
 
-   SetPosition(sX + diffX / 2, sY + diffY / 2);
+    if (m_useCamera)
+      SetPosition(sX + diffX / 2, sY + diffY / 2);
+    else
+      SetPosition(sX, sY);
+
     GRAPHICS->SetUV(Vec2(0, 0), Vec2(1, 1));
 
     GRAPHICS->DrawBatched(m_whiteHandle);
@@ -200,12 +202,6 @@ namespace Framework
       ->ToScreen(DirectSheep::Vec3((float*)&worldPos)));
   }
 
-  Vec2 Draw::ToOrtho(Vec2 screenPos)
-  {
-    screenPos.x = GRAPHICS->_ScreenWidth * (screenPos.x + 1) / 2;
-    screenPos.y = GRAPHICS->_ScreenHeight * (-screenPos.y + 1) / 2;
-    return screenPos;
-  }
 
 
   int Draw::ScreenHeight(void)
