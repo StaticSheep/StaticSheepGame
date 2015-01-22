@@ -9,6 +9,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #pragma once
 
 #include "Vec3D.h"
+#include "Vertices.h"
 
 namespace Framework
 {
@@ -19,5 +20,10 @@ namespace Framework
     Vec2(Vec2D rhs) :Vec2D(rhs) {}
     static void ToLua(lua_State* L, Variable& var);
     static void FromLua(lua_State* L, int index, Variable* var);
+
+    operator DirectSheep::Vec2()
+    {
+      return DirectSheep::Vec2((float*)this);
+    }
   };
 }

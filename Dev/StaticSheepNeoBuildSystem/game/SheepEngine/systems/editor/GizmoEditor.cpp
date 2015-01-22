@@ -21,6 +21,13 @@ namespace Framework
   static unsigned pivotID = -1;
   static unsigned gizmoTipID = -1;
 
+  static const int lineWidth = 4;
+  static const int arrowSize = 16;
+  static const int lineLength = 60;
+  static const int pivotRadius = 8;
+  static const float arrowSelectProximity = arrowSize * arrowSize;
+  static const float pivotSelectProximity = pivotRadius * pivotRadius;
+
   GizmoEditor::GizmoEditor()
     :m_mode(Translation)
   {
@@ -44,6 +51,129 @@ namespace Framework
     {
       if (m_object != Handle::null)
       {
+        GameObject* obj = m_objSpace->GetGameObject(m_object);
+        if (obj == nullptr)
+        {
+          m_object = Handle::null;
+          return;
+        }
+        Transform* trans = obj->GetComponent<Transform>(eTransform);
+
+        Vec2 screenPos = Draw::ToScreen(trans->GetTranslation());
+        Vec2 mousePos = SHEEPINPUT->Mouse.GetScreenPosition();
+        Vec2 arrowPos;
+
+        // Draw Pivot
+        if ((screenPos - mousePos).SquareLength() < pivotSelectProximity ||
+          (m_dragging && m_dragAxis == DA_XY))
+        {
+          Draw::SetColor(1, 1, 0, 1);
+          m_pHover = true;
+        }
+        else
+        {
+          Draw::SetColor(1, 1, 1, 1);
+          m_pHover = false;
+        }
+        Draw::SetTexture(pivotID);
+        Draw::DrawCircle(screenPos.x, screenPos.y, pivotRadius);
+
+        
+
+        // Draw Gizmo Hands
+        if (m_mode == Translation)
+        {
+          // X-axis
+          arrowPos = Vec2(screenPos.x + lineLength + arrowSize / 2, screenPos.y);
+          if ((arrowPos - mousePos).SquareLength() < arrowSelectProximity
+            || (m_dragging && m_dragAxis == DA_X))
+          {
+            Draw::SetColor(1, 1, 0, 1);
+            m_xHover = true;
+          }
+          else
+          {
+            Draw::SetColor(1, 0, 0, 1);
+            m_xHover = false;
+          }
+          Draw::DrawLine(screenPos.x, screenPos.y,
+            screenPos.x + lineLength, screenPos.y);
+          Draw::DrawTriangle(arrowPos.x - arrowSize / 2, arrowPos.y + arrowSize / 2,
+            arrowPos.x - arrowSize / 2, arrowPos.y - arrowSize / 2,
+            arrowPos.x + arrowSize / 2, arrowPos.y);
+
+
+          // Y-axis
+          arrowPos = Vec2(screenPos.x, screenPos.y - lineLength - arrowSize / 2);
+          if ((arrowPos - mousePos).SquareLength() < arrowSelectProximity)
+          {
+            Draw::SetColor(1, 1, 0, 1);
+            m_yHover = true;
+          }
+          else
+          {
+            Draw::SetColor(0, 1, 0, 1);
+            m_yHover = false;
+          }
+          Draw::DrawLine(screenPos.x, screenPos.y - lineLength,
+            screenPos.x, screenPos.y);
+          Draw::DrawTriangle(arrowPos.x + arrowSize / 2, arrowPos.y + arrowSize / 2,
+            arrowPos.x - arrowSize / 2, arrowPos.y + arrowSize / 2,
+            arrowPos.x, arrowPos.y - arrowSize / 2);
+        }
+
+
+        // Selecting / Drag Start
+        if (!m_dragging)
+        {
+          if (SHEEPINPUT->Mouse.ButtonDown(LMB))
+          {
+            if (m_pHover)
+            {
+              m_dragging = true;
+              m_dragAxis = DA_XY;
+            }
+            else if (m_xHover)
+            {
+              m_dragging = true;
+              m_dragAxis = DA_X;
+            }
+            else if (m_yHover)
+            {
+              m_dragging = true;
+              m_dragAxis = DA_Y;
+            }
+
+            m_lastMousePos = SHEEPINPUT->Mouse.GetScreenPosition();
+          }
+        }
+        else
+        {
+          // We are dragging
+          if (SHEEPINPUT->Mouse.ButtonReleased(LMB))
+          {
+            m_dragging = false;
+          }
+          else
+          {
+            Vec2 diff = Draw::ToWorld(SHEEPINPUT->Mouse.GetScreenPosition()) - Draw::ToWorld(m_lastMousePos);
+            if (m_dragAxis == DA_X)
+            {
+              trans->SetTranslation(trans->GetTranslation() + Vec3(diff.x, 0, 0));
+            }
+            else if (m_dragAxis == DA_Y)
+            {
+              trans->SetTranslation(trans->GetTranslation() + Vec3(0, diff.y, 0));
+            }
+            else if (m_dragAxis == DA_XY)
+            {
+              trans->SetTranslation(trans->GetTranslation() + Vec3(diff.x, diff.y, 0));
+            }
+
+            m_lastMousePos = SHEEPINPUT->Mouse.GetScreenPosition();
+          }
+        }
+
 
       }
     }
@@ -77,70 +207,11 @@ namespace Framework
     m_mode = mode;
   }
 
-  static const int lineWidth = 4;
-  static const int arrowSize = 16;
-  static const int lineLength = 60;
-  static const float selectProximity = 16 * 16;
+  
 
   void GizmoEditor::Draw()
   {
-    if (m_object != Handle::null)
-    {
-      GameObject* obj = m_objSpace->GetGameObject(m_object);
-      Transform* trans = obj->GetComponent<Transform>(eTransform);
-      
-      Vec2 screenPos = Draw::ToScreen(trans->GetTranslation());
-      Vec2 mousePos = SHEEPINPUT->Mouse.GetScreenPosition();
-      Vec2 arrowPos;
-
-      // Draw Pivot
-      Draw::SetColor(255, 255, 255, 255);
-      Draw::SetTexture(pivotID);
-      Draw::DrawTexturedRect(screenPos.x - 10, screenPos.y - 10, 20, 20);
-
-      // Draw Gizmo Hands
-      if (m_mode == Translation)
-      {
-        // X-axis
-        Draw::SetColor(1, 0, 0, 1);
-        Draw::DrawLine(screenPos.x, screenPos.y,
-          screenPos.x + lineLength, screenPos.y, lineWidth);
-        
-        Draw::SetTexture(gizmoTipID);
-        arrowPos = Vec2(screenPos.x + lineLength + arrowSize / 2, screenPos.y);
-        if ((arrowPos - mousePos).SquareLength() < selectProximity)
-          Draw::SetColor(1, 1, 0, 1);
-        else
-          Draw::SetColor(1, 0, 0, 0.8f);
-
-        Draw::DrawTexturedRectRotated(screenPos.x + lineLength,
-          screenPos.y - arrowSize / 2,
-          arrowSize, arrowSize, -PI / 2);
-        
-
-        // Y-axis
-        Draw::SetColor(0, 1, 0, 1);
-        Draw::DrawLine(screenPos.x, screenPos.y - lineLength,
-          screenPos.x, screenPos.y, lineWidth);
-
-        Draw::DrawRect(800, 450, 6, 6);
-
-        Draw::DrawLine(100, 400, 100, 600, 4);
-
-        Draw::DrawRect(100, 600, 6, 6);
-
-        Draw::SetTexture(gizmoTipID);
-        arrowPos = Vec2(screenPos.x, screenPos.y - lineLength - arrowSize / 2);
-        if ((arrowPos - mousePos).SquareLength() < selectProximity)
-          Draw::SetColor(1, 1, 0, 1);
-        else
-          Draw::SetColor(0, 1, 0, 0.8f);
-
-        Draw::DrawTexturedRectRotated(screenPos.x - arrowSize / 2,
-          screenPos.y - lineLength - arrowSize, arrowSize, arrowSize, 0);
-        
-      }
-    }
+    
 
   }
 

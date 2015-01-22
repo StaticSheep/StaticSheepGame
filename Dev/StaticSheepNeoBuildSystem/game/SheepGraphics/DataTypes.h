@@ -90,14 +90,14 @@ namespace DirectSheep
 
   struct Dimension
   {
-   GFX_API Dimension(unsigned w = 0, unsigned h = 0) : width(w), height(h) {};
+   Dimension(unsigned w = 0, unsigned h = 0) : width(w), height(h) {};
     unsigned width;
     unsigned height;
   };
 
   struct InputElement
   {
-  GFX_API InputElement(const std::string& sem, Format form, bool inst = false) : semantic(sem), format(form), instance(inst) {}
+  InputElement(const std::string& sem, Format form, bool inst = false) : semantic(sem), format(form), instance(inst) {}
 
     std::string semantic;
     Format format;

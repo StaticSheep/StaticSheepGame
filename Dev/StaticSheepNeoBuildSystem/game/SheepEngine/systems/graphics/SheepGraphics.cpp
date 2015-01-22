@@ -207,12 +207,12 @@ namespace Framework
 
   void SheepGraphics::StartFrame()
   {
-    m_renderContext->frameStart();
+    m_renderContext->FrameStart();
   }
 
   void SheepGraphics::FinishFrame()
   {
-    m_renderContext->frameEnd();
+    m_renderContext->FrameEnd();
   }
 
   void SheepGraphics::SetPosition(float x, float y, float Z)

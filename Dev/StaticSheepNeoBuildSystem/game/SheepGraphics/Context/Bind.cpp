@@ -61,6 +61,8 @@ namespace DirectSheep
       SetViewport(0, 0, Dimension((unsigned)width, (unsigned)height));
 
       ((Camera*)m_orthoScreen.ptr)->SetScale(width, height);
+
+      UpdatePrimativeEffect();
     }
   }
 

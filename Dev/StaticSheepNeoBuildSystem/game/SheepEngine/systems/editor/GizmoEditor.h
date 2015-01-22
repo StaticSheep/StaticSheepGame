@@ -51,11 +51,29 @@ namespace Framework
     GizmoType GetGizmoMode();
 
   private:
+
+    enum DragAxis
+    {
+      DA_None,
+      DA_X,
+      DA_Y,
+      DA_XY,
+    };
     // Currently Selected Object
     Handle m_object;
     GameSpace* m_objSpace;
 
-    GizmoType m_mode;
+    bool m_dragging = false;
+    DragAxis m_dragAxis = DA_None;
+
+    bool m_xHover = false;
+    bool m_yHover = false;
+    bool m_pHover = false;
+
+    Vec2 m_lastMousePos;
+    
+
+    GizmoType m_mode = Translation;
 
   };
 }

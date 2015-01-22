@@ -9,14 +9,14 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "Context.h"
 namespace DirectSheep
 {
-  GFX_API Handle RenderContext::NewCamera()
+  Handle RenderContext::NewCamera()
   {
     Handle newCam(CAMERA, new Camera(1920, 1080, true));
     m_CameraPool.push_back((Camera*)newCam.ptr);
     return newCam;
   }
 
-  GFX_API void RenderContext::SetCamState(int camState)
+  void RenderContext::SetCamState(int camState)
   {
     switch (camState)
     {
@@ -39,31 +39,31 @@ namespace DirectSheep
     }
   }
 
-  //GFX_API void RenderContext::SetCamPosition(Handle Camera, float x, float y)
+  //void RenderContext::SetCamPosition(Handle Camera, float x, float y)
   //{
   //  if (Camera.type == CAMERA)
   //    ((DirectSheep::Camera*)Camera.ptr)->SetPosition(x, y);
   //}
 
-  //GFX_API void RenderContext::SetCamPosition(Handle Camera, float x, float y, float z)
+  //void RenderContext::SetCamPosition(Handle Camera, float x, float y, float z)
   //{
   //  if (Camera.type == CAMERA)
   //    ((DirectSheep::Camera*)Camera.ptr)->SetPosition(x, y, z);
   //}
 
-  //GFX_API void RenderContext::SetCamScale(Handle Camera, float width, float height)
+  //void RenderContext::SetCamScale(Handle Camera, float width, float height)
   //{
   //  if (Camera.type == CAMERA)
   //    ((DirectSheep::Camera*)Camera.ptr)->SetScale(width, height);
   //}
 
-  //GFX_API void RenderContext::SetCamFOV(Handle Camera, float FOV)
+  //void RenderContext::SetCamFOV(Handle Camera, float FOV)
   //{
   //  if (Camera.type == CAMERA)
   //    ((DirectSheep::Camera*)Camera.ptr)->SetFov(FOV);
   //}
 
-  GFX_API void RenderContext::SetActiveCamera(Handle Camera)
+  void RenderContext::SetActiveCamera(Handle Camera)
   {
     if (Camera.type == CAMERA && Camera.ptr)
       m_Perspective.ptr = Camera.ptr;
@@ -71,17 +71,17 @@ namespace DirectSheep
       ActivateDefaultCamera();
   }
 
-  GFX_API Handle RenderContext::GetActiveCamera()
+  Handle RenderContext::GetActiveCamera()
   {
     return m_Perspective;
   }
 
-  GFX_API void RenderContext::ActivateDefaultCamera()
+  void RenderContext::ActivateDefaultCamera()
   {
     m_Perspective.ptr = m_editor.ptr;
   }
 
-  GFX_API Framework::Mat4D RenderContext::GetCamViewProj(Handle camera)
+  Framework::Mat4D RenderContext::GetCamViewProj(Handle camera)
   {
     if (camera.type == CAMERA)
     {

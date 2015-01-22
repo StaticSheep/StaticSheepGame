@@ -10,6 +10,12 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "Handle.h"
 #include "SpriteBatch.h"
 
+
+#include "Effects.h"
+#include "CommonStates.h"
+#include <wrl\client.h>
+
+
 using namespace DirectX;
 
 namespace DirectSheep
@@ -102,7 +108,7 @@ namespace DirectSheep
 
   }
 
-  GFX_API void RenderContext::DrawBatched(DirectSheep::Handle texture)
+  void RenderContext::DrawBatched(DirectSheep::Handle texture)
   {
     unsigned width = GetTextureSize(texture).width;
     unsigned height = GetTextureSize(texture).height;
@@ -110,10 +116,10 @@ namespace DirectSheep
     DirectX::SpriteEffects effect = DirectX::SpriteEffects_None;
 
     m_spriteTrans.x = m_camUse ? m_spriteTrans.x :
-      m_spriteTrans.x + cos(m_spriteTrans.theta) * m_spriteTrans.w / 2;
+      m_spriteTrans.x + m_spriteTrans.w / 2;
 
     m_spriteTrans.y = m_camUse ? m_spriteTrans.y :
-      -m_spriteTrans.y - sin(-m_spriteTrans.theta) * m_spriteTrans.h / 2;
+      -m_spriteTrans.y - m_spriteTrans.h / 2;
       
     m_spriteTrans.w = m_camUse ? m_spriteTrans.w :
       m_spriteTrans.w / width;
@@ -138,7 +144,7 @@ namespace DirectSheep
   }
 
 
-  void RenderContext::frameStart(void)
+  void RenderContext::FrameStart(void)
   {
     ClearBackBuffer();
     ClearDepthBuffer();
@@ -146,19 +152,56 @@ namespace DirectSheep
 
   void RenderContext::StartBatch()
   {
+    
+
     m_batcher->Begin(SpriteSortMode_Texture, m_blendStateMap[BLEND_MODE_ALPHA],
       m_sampleStates[0], m_depthBuffer.m_depthState,
       m_rastState[m_currentRast], nullptr,
       ((Camera*)m_camera.ptr)->GetViewProj());
+    
   }
+
 
   void RenderContext::EndBatch()
   {
     m_batcher->End();
+    
   }
 
-  void RenderContext::frameEnd(void)
+  void RenderContext::FrameEnd(void)
   {
+    
+
+    m_primativeEffect->Apply(m_deviceContext);
+    m_deviceContext->IASetInputLayout(m_primativeLayout);
+
+    m_primitiveBatch->Begin();
+
+    std::pair<VertexPositionColor, VertexPositionColor>* line;
+
+    while (!m_lineList.empty())
+    {
+      line = &(m_lineList.top());
+      m_primitiveBatch->DrawLine(line->first, line->second);
+      m_lineList.pop();
+    }
+
+    std::tuple<VertexPositionColor,
+      VertexPositionColor, VertexPositionColor>* triangle;
+
+
+    while (!m_triangleList.empty())
+    {
+      triangle = &(m_triangleList.top());
+      m_primitiveBatch->DrawTriangle(std::get<0>(*triangle),
+        std::get<1>(*triangle), std::get<2>(*triangle));
+      m_triangleList.pop();
+    }
+
+
+    m_primitiveBatch->End();
+    m_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
     Present();
   }
 
@@ -166,4 +209,50 @@ namespace DirectSheep
   {
     m_swapChain->Present(m_vsync, 0);
   }
+
+
+  void RenderContext::DrawLine(Vec3 start, Vec3 end,
+    Color startColor, Color endColor)
+  {
+    if (!m_camUse)
+    {
+      start.y = -start.y;
+      end.y = -end.y;
+    }
+    m_lineList.push(std::make_pair(VertexPositionColor(start, startColor),
+      VertexPositionColor(end, endColor)));
+
+    /*m_primitiveBatch->DrawLine(
+      VertexPositionColor(start, startColor),
+      VertexPositionColor(end, endColor));*/
+  }
+
+  void RenderContext::DrawLine(Vec3 start, Vec3 end)
+  {
+    if (!m_camUse)
+    {
+      start.y = -start.y;
+      end.y = -end.y;
+    }
+    m_lineList.push(std::make_pair(VertexPositionColor(start, m_spriteBlend),
+      VertexPositionColor(end, m_spriteBlend)));
+    //m_primitiveBatch->DrawLine(
+    //  VertexPositionColor(start, m_spriteBlend),
+    //  VertexPositionColor(end, m_spriteBlend));
+  }
+
+  void RenderContext::DrawTriangle(Vec3 v1, Vec3 v2, Vec3 v3)
+  {
+    if (!m_camUse)
+    {
+      v1.y = -v1.y;
+      v2.y = -v2.y;
+      v3.y = -v3.y;
+    }
+
+    m_triangleList.push(std::make_tuple(VertexPositionColor(v1, m_spriteBlend),
+      VertexPositionColor(v2, m_spriteBlend), VertexPositionColor(v3, m_spriteBlend)));
+
+  }
+
 }

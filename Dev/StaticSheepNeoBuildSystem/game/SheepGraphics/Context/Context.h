@@ -16,6 +16,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "SafeRelease.h"
 #include "Handle.h"
 #include "Matrix4D.h"
+#include <stack>
 
 namespace DirectSheep
 {
@@ -46,129 +47,138 @@ class RenderContext
     RenderContext(void);
     ~RenderContext(void);
 
-    GFX_API static RenderContext * Allocate(void);
+    static RenderContext * Allocate(void);
 
     //Returns true if the RenderContext is Initialized, else false
-    GFX_API bool IsInitialized(void) const;
+    bool IsInitialized(void) const;
     //Initializes the RenderContext
     //Returns true if successful, else false
-    GFX_API bool Initialize(HWND hwnd, float height, float width);
+    bool Initialize(HWND hwnd, float height, float width);
     //Uninitializes the RenderContext
-    GFX_API void Uninitialize(RenderContext * rCon);
+    void Uninitialize(RenderContext * rCon);
 
     /////////////////////////////////////////////////////////////
     //                     DRAW FUNCTIONS                      //
     /////////////////////////////////////////////////////////////
 
-   GFX_API void Draw(unsigned vertexCount, unsigned vertexStart = 0);
-   GFX_API void DrawSpriteText(const char * text, float size = 32, const char * font = "Arial");
-   GFX_API void DrawBatched(DirectSheep::Handle texture);
-   GFX_API void StartBatch();
-   GFX_API void EndBatch();
-   GFX_API void frameStart();
-   GFX_API void frameEnd();
-   GFX_API void Present(void);
+    /* --- General Draw Functions --- */
+   void Draw(unsigned vertexCount, unsigned vertexStart = 0);
+   void DrawSpriteText(const char * text, float size = 32, const char * font = "Arial");
+   void DrawBatched(DirectSheep::Handle texture);
+
+   /* --- Primitive Draw Functions --- */
+   void DrawLine(Vec3 start, Vec3 end, Color startColor, Color endColor);
+   void DrawLine(Vec3 start, Vec3 end);
+   void DrawTriangle(Vec3 v1, Vec3 v2, Vec3 v3);
+
+   void StartBatch();
+   void EndBatch();
+
+   void FrameStart();
+   void FrameEnd();
+
+   void Present(void);
 
 
    //////////////////////////////////////////////////////////////
    //                     CAMERA FUNCTIONS                     //
    //////////////////////////////////////////////////////////////
-   GFX_API Handle NewCamera();
+   Handle NewCamera();
 
-   GFX_API void SetCamState(int camState);
-   /*GFX_API void SetCamPosition(Handle camera, float x, float y);
-   GFX_API void SetCamPosition(Handle camera, float x, float y, float z);
-   GFX_API void SetCamScale(Handle camera, float width, float height);
-   GFX_API void SetCamFOV(Handle camera, float FOV);*/
-   GFX_API void SetActiveCamera(Handle camera);
+   void SetCamState(int camState);
+   /*void SetCamPosition(Handle camera, float x, float y);
+   void SetCamPosition(Handle camera, float x, float y, float z);
+   void SetCamScale(Handle camera, float width, float height);
+   void SetCamFOV(Handle camera, float FOV);*/
+   void SetActiveCamera(Handle camera);
    
-   GFX_API Handle GetActiveCamera();
-   GFX_API static inline DirectSheep::Camera* RetrieveCamera(Handle camera)
+   Handle GetActiveCamera();
+   static inline DirectSheep::Camera* RetrieveCamera(Handle camera)
    {
      return (DirectSheep::Camera*)camera.ptr;
    }
 
-   GFX_API Framework::Mat4D GetCamViewProj(Handle camera);
+   Framework::Mat4D GetCamViewProj(Handle camera);
 
-   GFX_API void ActivateDefaultCamera();
+   void ActivateDefaultCamera();
 
     /////////////////////////////////////////////////////////////
     //                    CREATE FUNCTIONS                     //
     /////////////////////////////////////////////////////////////
     
-   GFX_API bool CreateTexture(Handle& handle, const std::string& filename);
-   GFX_API bool CreateVertexBuffer(Handle& handle, size_t size);
-           bool CreateIndexBuffer(Handle& handle, size_t size);
-   GFX_API bool CreateConstantBuffer(Handle& handle, size_t size);
-           bool CreateRenderTarget(Handle& handle, const RenderTargetMode mode, const Format format, const float downsamplePercentage = 1.0f, const Dimension& dim = Dimension());
-           bool CreateDepthBuffer(void);
-   GFX_API bool CreateFontWrapper(void);
+   bool CreateTexture(Handle& handle, const std::string& filename);
+   bool CreateVertexBuffer(Handle& handle, size_t size);
+   bool CreateIndexBuffer(Handle& handle, size_t size);
+   bool CreateConstantBuffer(Handle& handle, size_t size);
+   bool CreateRenderTarget(Handle& handle, const RenderTargetMode mode, const Format format, const float downsamplePercentage = 1.0f, const Dimension& dim = Dimension());
+   bool CreateDepthBuffer(void);
+   bool CreateFontWrapper(void);
 
     /////////////////////////////////////////////////////////////
     //                    BIND FUNCTIONS                       //
     /////////////////////////////////////////////////////////////
 
-   GFX_API void BindVertexShader(const Handle& vsHandle);
-   GFX_API void BindPixelShader(const Handle& psHandle);
-   GFX_API void BindTexture(unsigned slot, const Handle& texHandle);
-   GFX_API void BindTextures(unsigned count, const Handle texHandles[], unsigned startSlot = 0);
-   GFX_API void BindVertexBuffer(const Handle& vbHandle, size_t stride, size_t offset = 0);
-   GFX_API void BindVertexBuffers(unsigned count, const Handle vertexBuffers[], size_t strides[], size_t offsets[]);
-   GFX_API void BindIndexBuffer(const Handle& ibHandle);
-   GFX_API void BindConstantBuffer(unsigned slot, const Handle& cbHandle, ObjectType shaderType =VERTEX_SHADER);
-   GFX_API void BindRenderTarget(const Handle& rtHandle);
-   GFX_API void BindRenderTargets(unsigned count, const Handle rtHandle, ...);
-   GFX_API void BindDepthBuffer(void);
+   void BindVertexShader(const Handle& vsHandle);
+   void BindPixelShader(const Handle& psHandle);
+   void BindTexture(unsigned slot, const Handle& texHandle);
+   void BindTextures(unsigned count, const Handle texHandles[], unsigned startSlot = 0);
+   void BindVertexBuffer(const Handle& vbHandle, size_t stride, size_t offset = 0);
+   void BindVertexBuffers(unsigned count, const Handle vertexBuffers[], size_t strides[], size_t offsets[]);
+   void BindIndexBuffer(const Handle& ibHandle);
+   void BindConstantBuffer(unsigned slot, const Handle& cbHandle, ObjectType shaderType =VERTEX_SHADER);
+   void BindRenderTarget(const Handle& rtHandle);
+   void BindRenderTargets(unsigned count, const Handle rtHandle, ...);
+   void BindDepthBuffer(void);
 
     /////////////////////////////////////////////////////////////
     //                    SETTER FUNCTIONS                     //
     /////////////////////////////////////////////////////////////
 
-   GFX_API void SetWireFrame(bool isWired);
-   GFX_API void SetSpriteFlip(bool xFlip, bool yFlip);
+   void SetWireFrame(bool isWired);
+   void SetSpriteFlip(bool xFlip, bool yFlip);
    void Resize(float width, float height);
-   GFX_API void SetClearColor(const float r, const float g, const float b, const float a);
-   GFX_API void SetTargetWindow(const HWND& hwnd);
-   GFX_API void SetFullscreen(const bool fullscreen);
-   GFX_API void SetPrimitiveTopology(const PrimitiveTopology primitiveTopology);
-   GFX_API void SetBlendMode(const BlendMode blendMode);
-   GFX_API void SetViewport(int xOffset, int yOffset, Dimension dim);
-   GFX_API void SetViewport(const Viewport& viewport);
-   GFX_API void SetDisplayMode(unsigned modeIndex);
-   GFX_API void SetDisplayMode(const Dimension& resolution);
-   GFX_API void SetVSync(bool vsync);
+   void SetClearColor(const float r, const float g, const float b, const float a);
+   void SetTargetWindow(const HWND& hwnd);
+   void SetFullscreen(const bool fullscreen);
+   void SetPrimitiveTopology(const PrimitiveTopology primitiveTopology);
+   void SetBlendMode(const BlendMode blendMode);
+   void SetViewport(int xOffset, int yOffset, Dimension dim);
+   void SetViewport(const Viewport& viewport);
+   void SetDisplayMode(unsigned modeIndex);
+   void SetDisplayMode(const Dimension& resolution);
+   void SetVSync(bool vsync);
 
-   GFX_API void SetUV(float x1, float y1, float x2, float y2);
+   void SetUV(float x1, float y1, float x2, float y2);
    void SetPosition(const float x, const float y, const float z);
-   GFX_API void SetRotation(const float theta);
-   GFX_API void SetDimensions(const float w, const float h);
-   GFX_API void SetBlendCol(const float r, const float g, const float b, const float a);
+   void SetRotation(const float theta);
+   void SetDimensions(const float w, const float h);
+   void SetBlendCol(const float r, const float g, const float b, const float a);
 
     /////////////////////////////////////////////////////////////
     //                    GETTER FUNCTIONS                     //
     /////////////////////////////////////////////////////////////
 
-   GFX_API Handle GetBackBuffer(void) const;
-   GFX_API bool GetFullscreen(void) const;
-   GFX_API void* ExternalGetDevice(void) const;
-    ID3D11Device* GetDevice(void) const;
-    ID3D11DeviceContext* GetDeviceContext(void) const;
-   GFX_API const Dimension& GetNativeResolution(void) const;
-   GFX_API const Viewport& GetViewport(void) const;
-    int GetCurrentDisplayModeIndex(void) const;
-    const std::string& GetGraphicsCardInfo(void) const;
-   GFX_API const Dimension GetTextureSize(const Handle& texHandle) const;
+   Handle GetBackBuffer(void) const;
+   bool GetFullscreen(void) const;
+   void* ExternalGetDevice(void) const;
+   ID3D11Device* GetDevice(void) const;
+   ID3D11DeviceContext* GetDeviceContext(void) const;
+   const Dimension& GetNativeResolution(void) const;
+   const Viewport& GetViewport(void) const;
+   int GetCurrentDisplayModeIndex(void) const;
+   const std::string& GetGraphicsCardInfo(void) const;
+   const Dimension GetTextureSize(const Handle& texHandle) const;
 
     /////////////////////////////////////////////////////////////
     //                    UTILITY FUNCTIONS                    //
     /////////////////////////////////////////////////////////////
 
-    void CopyData(const Handle& handle, const void *data, size_t size = 0);
-   GFX_API void ClearRenderTarget(const Handle& handle,
+   void CopyData(const Handle& handle, const void *data, size_t size = 0);
+   void ClearRenderTarget(const Handle& handle,
      float r, float g, float b, float a);
-   GFX_API void ClearBackBuffer(void);
-   GFX_API void ClearDepthBuffer(void);
-   GFX_API Framework::Vec2D MeasureString(const char* text, float size,
+   void ClearBackBuffer(void);
+   void ClearDepthBuffer(void);
+   Framework::Vec2D MeasureString(const char* text, float size,
      const char* font);
 
     /////////////////////////////////////////////////////////////
@@ -204,7 +214,9 @@ class RenderContext
     void ReleaseConstantBufferIntern(const Handle& constantBuffer);
     void ReleaseRenderTargetIntern(const Handle& renderTarget);
 
-    int test;
+    
+
+    void UpdatePrimativeEffect();
 
 
 #if SHEEPGRAPHICS
@@ -336,6 +348,17 @@ class RenderContext
     /////////////
     
     std::unique_ptr<DirectX::SpriteBatch> m_batcher;
+    std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>>
+      m_primitiveBatch;
+    std::unique_ptr<DirectX::BasicEffect> m_primativeEffect;
+    ID3D11InputLayout* m_primativeLayout;
+
+    std::stack<std::pair<DirectX::VertexPositionColor, 
+      DirectX::VertexPositionColor >> m_lineList;
+    std::stack < std::tuple < DirectX::VertexPositionColor,
+      DirectX::VertexPositionColor,
+      DirectX::VertexPositionColor >> m_triangleList;
+
     DirectX::SpriteEffects                m_flip = DirectX::SpriteEffects_None;
 
     /////////////

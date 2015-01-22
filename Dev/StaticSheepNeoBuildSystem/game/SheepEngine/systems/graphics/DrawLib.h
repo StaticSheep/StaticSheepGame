@@ -28,12 +28,18 @@ namespace Framework
     static void SetColor(float r, float g, float b, float a);
 
     static void DrawRect(float x, float y, float width, float height);
+    static void DrawRectOutline(float x, float y, float width, float height);
     static void DrawTexturedRect(float x, float y, float width, float height);
     static void DrawTexturedRectRotated(float x, float y,
       float width, float height, float theta);
-    static void DrawLine(float sX, float sY, float eX, float eY, float width=1);
+    static void DrawLine(float sX, float sY, float eX, float eY);
+    static void DrawLineEx(float sX, float sY, float eX, float eY,
+      Vec4 startColor, Vec4 endColor);
     static void DrawCircle(float x, float y, float radius);
     static void DrawString(const char* text, float size, const char* font);
+
+    static void DrawTriangle(float x0, float y0, float x1, float y1,
+      float x2, float y2);
 
     static void ForceZ(bool use, float z);
 

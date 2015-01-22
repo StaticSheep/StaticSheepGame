@@ -35,7 +35,7 @@ namespace Framework
 
     this->GetOwner()->hooks.Add("TransformDirty", self, BUILD_FUNCTION(Camera::UpdatePosition));
 
-    m_camHandle = GRAPHICS->m_renderContext->NewCamera();
+    m_camHandle = GRAPHICS->RC()->NewCamera();
 
     if(m_active || !space->m_edit)
       SetActive(true);

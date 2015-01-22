@@ -100,9 +100,19 @@ namespace DirectSheep
     // Init DirectX
     InitializeDeviceAndSwapChain();
 
+    m_primativeEffect = std::unique_ptr<BasicEffect>(new BasicEffect(m_device));
+    m_primativeEffect->SetVertexColorEnabled(true);
+
+
     // Initialize Sprite Batcher
     m_batcher = std::unique_ptr<DirectX::SpriteBatch>(new SpriteBatch(m_deviceContext));
     m_batcher->SetRotation(DXGI_MODE_ROTATION_UNSPECIFIED);
+
+    // Initialize Primitive Batcher
+    m_primitiveBatch = std::unique_ptr < DirectX::PrimitiveBatch <
+      DirectX::VertexPositionColor >> (new DirectX::PrimitiveBatch<DirectX::
+      VertexPositionColor>(m_deviceContext));
+
 
     // Initialize Depth Buffer for Z-sorting
     CreateDepthBuffer();
@@ -137,12 +147,30 @@ namespace DirectSheep
 
     m_camera = m_Perspective;
 
+
+    UpdatePrimativeEffect();
+
     // Initialize Effects
     m_genericEffect = new GenEffect(m_device);
 
     // RenderContext is now initialized
     m_initialized = true;
     return true;
+  }
+
+  void RenderContext::UpdatePrimativeEffect()
+  {
+    m_primativeEffect->SetProjection(((Camera*)m_orthoScreen.ptr)->GetProj());
+
+    void const* shaderByteCode;
+    size_t byteCodeLength;
+
+    m_primativeEffect->GetVertexShaderBytecode(&shaderByteCode, &byteCodeLength);
+
+    m_device->CreateInputLayout(VertexPositionColor::InputElements,
+      VertexPositionColor::InputElementCount,
+      shaderByteCode, byteCodeLength,
+      &m_primativeLayout);
   }
 
   
@@ -533,7 +561,7 @@ namespace DirectSheep
     }
   }
 
-  GFX_API Framework::Vec2D RenderContext::MeasureString(const char* text,
+  Framework::Vec2D RenderContext::MeasureString(const char* text,
     float size, const char* font)
   {
     std::string tempText = text;

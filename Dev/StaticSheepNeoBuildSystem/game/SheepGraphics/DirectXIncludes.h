@@ -23,5 +23,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include <FW1FontWrapper.h>
 #include <DirectXPackedVector.h>
 #include "SpriteBatch.h"
-
+#include "PrimitiveBatch.h"
+#include "GeometricPrimitive.h"
+#include "VertexTypes.h"
+#include "Effects.h"
 

@@ -93,6 +93,14 @@ namespace Framework
     //GRAPHICS->DrawBatched(m_whiteHandle);
   }
 
+  void Draw::DrawRectOutline(float x, float y, float width, float height)
+  {
+    Draw::DrawLine(x, y, x + width, y);
+    Draw::DrawLine(x + width, y, x + width, y - height);
+    Draw::DrawLine(x + width, y - height, x, y - height);
+    Draw::DrawLine(x, y - height, x, y);
+  }
+
   void Draw::DrawTexturedRect(float x, float y, float width, float height)
   {
     GRAPHICS->SetSize(width, height);
@@ -120,13 +128,20 @@ namespace Framework
     GRAPHICS->SetRotation(0);
   }
 
-  void Draw::DrawLine(float sX, float sY, float eX, float eY, float width/* =1 */)
+  void Draw::DrawLine(float sX, float sY, float eX, float eY)
   {
+    if (!m_useCamera)
+    {
+      GRAPHICS->RC()->DrawLine(Vec3(sX, sY, 0), Vec3(eX, eY, 0));
+      return;
+    }
+
     float diffX = eX - sX;
-    float diffY = eY - sY;
+    float diffY = eY - sY; 
 
+    
 
-    GRAPHICS->SetSize(sqrt(diffX * diffX + diffY * diffY), width);
+    GRAPHICS->SetSize(sqrt(diffX * diffX + diffY * diffY), 1);
 
     if (m_whiteTextureID == -1)
     {
@@ -156,6 +171,20 @@ namespace Framework
 
   }
 
+  void Draw::DrawTriangle(float x0, float y0, float x1, float y1,
+    float x2, float y2)
+  {
+    GRAPHICS->RC()->DrawTriangle(Vec3(x0, y0, 0), Vec3(x1, y1, 0),
+      Vec3(x2, y2, 0));
+  }
+
+  void DrawLine(float sX, float sY, float eX, float eY,
+    Vec4 startColor, Vec4 endColor)
+  {
+    GRAPHICS->RC()->DrawLine(Vec3(sX, sY, 0), Vec3(eX, eY, 0),
+      startColor, endColor);
+  }
+
   void Draw::DrawCircle(float x, float y, float radius)
   {
     const int numLines = 32;
@@ -165,6 +194,9 @@ namespace Framework
     float lineAngle = (2.0f * (float)Framework::PI) / (float)numLines;
 
     Vec3D p2(cosf(theta), sinf(theta));
+
+    //x += radius;
+    //y += radius;
 
     p2 *= radius;
     p2 += Vec3D(x, y);

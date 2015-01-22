@@ -138,7 +138,7 @@ namespace Framework
 
     DebugData::SheepGraphics m_debugData;
 
-
+    DirectSheep::RenderContext *m_renderContext;
   public:
 
     Handle currentCamera;
@@ -146,8 +146,8 @@ namespace Framework
     int _ScreenWidth;
     int _ScreenHeight;
 
-
-    DirectSheep::RenderContext *m_renderContext;
+    DirectSheep::RenderContext* RC() { return m_renderContext; }
+    
 
 	};
 

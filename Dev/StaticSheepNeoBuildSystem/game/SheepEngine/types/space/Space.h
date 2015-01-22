@@ -90,7 +90,7 @@ namespace Framework
     Handle tweakHandle;
 
     // Physics Space to simulate this game space's physics
-	  void* m_pSpace;
+    void* m_pSpace = nullptr;
     
     // The game space is being edited
     bool m_edit;
