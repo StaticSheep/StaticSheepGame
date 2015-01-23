@@ -13,6 +13,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "DataTypes.h"
 #include "Vec2D.h"
 #include "Texture/Tex2d.h"
+#include "model.h"
 #include "SafeRelease.h"
 #include "Handle.h"
 #include "Matrix4D.h"
@@ -65,6 +66,7 @@ class RenderContext
    void Draw(unsigned vertexCount, unsigned vertexStart = 0);
    void DrawSpriteText(const char * text, float size = 32, const char * font = "Arial");
    void DrawBatched(DirectSheep::Handle texture);
+   void DrawPLight(void);
 
    /* --- Primitive Draw Functions --- */
    void DrawLine(Vec3 start, Vec3 end, Color startColor, Color endColor);
@@ -367,6 +369,8 @@ class RenderContext
 
     GenEffect*                               m_genericEffect;
     PointLight*                              m_PointLight;
+
+    Model<PositionVertex>*                   m_PLightModel;
 
 
     ///////////

@@ -255,4 +255,43 @@ namespace DirectSheep
 
   }
 
+
+  void RenderContext::DrawPLight(void)
+  {
+    PositionVertex vertices[4] = {
+        { Vec3(-SCREEN_WIDTH / 2.f, SCREEN_HEIGHT / 2.f, 0.f) }, // TOP LEFT
+        { Vec3(SCREEN_WIDTH / 2.f, SCREEN_HEIGHT / 2.f, 0.f) }, // TOP RIGHT
+        { Vec3(-SCREEN_WIDTH / 2.f, -SCREEN_HEIGHT / 2.f, 0.f) }, // BOTTOM LEFT
+        { Vec3(SCREEN_WIDTH / 2.f, -SCREEN_HEIGHT / 2.f, 0.f) }, // BOTTOM RIGHT
+    };
+
+    UINT indices[6] = {
+      0, 1, 2,
+      2, 1, 3
+    };
+
+    m_PLightModel = new Model<PositionVertex>(m_device, vertices, 4, indices, 6);
+
+    m_PointLight = new PointLight(m_device);
+
+    m_PointLight->bindMatrices(m_deviceContext, XMMatrixOrthographicLH(SCREEN_WIDTH, SCREEN_HEIGHT,
+      0.f, 100.f), XMMatrixLookAtLH(Vec3(0.f, 0.f, 0.f), Vec3(0.f, 0.f, 1.f), Vec3(0.f, 1.f, 0.f)), XMMatrixScaling(5,5,5));
+
+    m_PointLight->bindLight(m_deviceContext, Light(Vec3(0.0f, 0.0f, 0.0f), Color(1.0f, 0.2f, 0.2f, 1.0f), Vec3(0.050097f, 0.101329f, 0.007211f)));
+
+    m_PLightModel->bind(m_deviceContext);
+
+    m_PointLight->bind(m_deviceContext);
+
+    SetBlendMode(BLEND_MODE_ADDITIVE);
+
+    m_deviceContext->DrawIndexed(m_PLightModel->getIndexCount(), 0, 0);
+
+    Present();
+
+    delete m_PLightModel;
+    delete m_PointLight;
+  }
+
 }
+

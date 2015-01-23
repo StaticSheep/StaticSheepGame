@@ -152,7 +152,6 @@ namespace Framework
 	{
     // Draw Hooks
     GameSpace* space;
-
     Draw::SetCamState(0);
     m_renderContext->StartBatch();
     // Regular Draw
@@ -202,6 +201,8 @@ namespace Framework
     m_renderContext->StartBatch();
     ENGINE->SystemMessage(Message(Message::PostGUIDraw));
     m_renderContext->EndBatch();
+
+    m_renderContext->DrawPLight();
     
 	}
 
