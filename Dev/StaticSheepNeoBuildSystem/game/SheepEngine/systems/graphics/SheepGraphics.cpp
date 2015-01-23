@@ -202,7 +202,8 @@ namespace Framework
     m_renderContext->StartBatch();
     ENGINE->SystemMessage(Message(Message::PostGUIDraw));
     m_renderContext->EndBatch();
-    
+
+    Draw::SetCamState(2);
 	}
 
   void SheepGraphics::StartFrame()

@@ -177,8 +177,7 @@ namespace DirectSheep
 
     m_primitiveBatch->Begin();
 
-    std::pair<VertexPositionColor, VertexPositionColor>* line;
-
+    DebugLine* line;
     while (!m_lineList.empty())
     {
       line = &(m_lineList.top());
@@ -186,16 +185,23 @@ namespace DirectSheep
       m_lineList.pop();
     }
 
-    std::tuple<VertexPositionColor,
-      VertexPositionColor, VertexPositionColor>* triangle;
-
-
+    DebugTriangle* triangle;
     while (!m_triangleList.empty())
     {
       triangle = &(m_triangleList.top());
       m_primitiveBatch->DrawTriangle(std::get<0>(*triangle),
         std::get<1>(*triangle), std::get<2>(*triangle));
       m_triangleList.pop();
+    }
+
+    DebugQuad* quad;
+    while (!m_quadList.empty())
+    {
+      quad = &(m_quadList.top());
+      m_primitiveBatch->DrawQuad(std::get<0>(*quad),
+        std::get<1>(*quad), std::get<2>(*quad),
+        std::get<3>(*quad));
+      m_quadList.pop();
     }
 
 
@@ -239,6 +245,24 @@ namespace DirectSheep
     //m_primitiveBatch->DrawLine(
     //  VertexPositionColor(start, m_spriteBlend),
     //  VertexPositionColor(end, m_spriteBlend));
+  }
+
+  void RenderContext::DrawQuad(Vec3 v1, Vec3 v2, Vec3 v3, Vec3 v4)
+  {
+    if (!m_camUse)
+    {
+      v1.y = -v1.y;
+      v2.y = -v2.y;
+      v3.y = -v3.y;
+      v4.y = -v4.y;
+    }
+
+    m_quadList.push(std::make_tuple(VertexPositionColor(v1, m_spriteBlend),
+      VertexPositionColor(v2, m_spriteBlend),
+      VertexPositionColor(v3, m_spriteBlend),
+      VertexPositionColor(v4, m_spriteBlend)
+      ));
+
   }
 
   void RenderContext::DrawTriangle(Vec3 v1, Vec3 v2, Vec3 v3)

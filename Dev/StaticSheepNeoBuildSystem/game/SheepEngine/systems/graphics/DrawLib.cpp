@@ -93,12 +93,83 @@ namespace Framework
     //GRAPHICS->DrawBatched(m_whiteHandle);
   }
 
-  void Draw::DrawRectOutline(float x, float y, float width, float height)
+  Vec2 Draw::RotateAroundPoint(Vec2 p, Vec2 o, float theta)
   {
-    Draw::DrawLine(x, y, x + width, y);
-    Draw::DrawLine(x + width, y, x + width, y - height);
-    Draw::DrawLine(x + width, y - height, x, y - height);
-    Draw::DrawLine(x, y - height, x, y);
+    return Vec2((p.x - o.x)*cos(theta) - (p.y - o.y)*sin(theta) + o.x,
+      (p.x - o.x)*sin(theta) + (p.y - o.y)*cos(theta) + o.y);
+  }
+
+  void Draw::DrawRectOutline(float x, float y, float width, float height,
+    float theta)
+  {
+    theta = -theta;
+    float x1, y1, x2, y2;
+    float xc, yc;
+
+    xc = x + width / 2;
+    yc = y + height / 2;
+
+    x1 = ((x)-xc)*cos(theta) - ((y)-yc)*sin(theta) + xc;
+    y1 = ((x)-xc)*sin(theta) + ((y)-yc)*cos(theta) + yc;
+
+    x2 = ((x + width)-xc)*cos(theta) - ((y)-yc)*sin(theta) + xc;
+    y2 = ((x + width) - xc)*sin(theta) + ((y)-yc)*cos(theta) + yc;
+
+    Draw::DrawLine(x1, y1,
+      x2, y2);
+
+    x1 = ((x + width) - xc)*cos(theta) - ((y)-yc)*sin(theta) + xc;
+    y1 = ((x + width) - xc)*sin(theta) + ((y)-yc)*cos(theta) + yc;
+
+    x2 = ((x + width) - xc)*cos(theta) - ((y + height) - yc)*sin(theta) + xc;
+    y2 = ((x + width) - xc)*sin(theta) + ((y + height) - yc)*cos(theta) + yc;
+
+
+    Draw::DrawLine(x1, y1,
+      x2, y2);
+
+    /*Draw::DrawLine(x + width, y,
+      x + width, y + height);*/
+
+    x1 = ((x + width) - xc)*cos(theta) - ((y + height) - yc)*sin(theta) + xc;
+    y1 = ((x + width) - xc)*sin(theta) + ((y + height) - yc)*cos(theta) + yc;
+
+    x2 = ((x) - xc)*cos(theta) - ((y + height) - yc)*sin(theta) + xc;
+    y2 = ((x) - xc)*sin(theta) + ((y + height) - yc)*cos(theta) + yc;
+
+    Draw::DrawLine(x1, y1,
+      x2, y2);
+
+    /*Draw::DrawLine(x + width, y + height,
+      x, y + height);*/
+
+    x1 = ((x)-xc)*cos(theta) - ((y + height) - yc)*sin(theta) + xc;
+    y1 = ((x)-xc)*sin(theta) + ((y + height) - yc)*cos(theta) + yc;
+
+    x2 = ((x)-xc)*cos(theta) - ((y) - yc)*sin(theta) + xc;
+    y2 = ((x)-xc)*sin(theta) + ((y) - yc)*cos(theta) + yc;
+
+    Draw::DrawLine(x1, y1,
+      x2, y2);
+
+    /*Draw::DrawLine(x, y + height,
+      x, y);*/
+  }
+
+  void Draw::DrawQuad(float x, float y, float width, float height, float theta)
+  {
+    Vec3 v1(x, y),
+      v2(x, y - height),
+      v3(x + width, y - height),
+      v4(x + width, y),
+      center(x + width / 2, y + height / 2);
+
+    v1 = RotateAroundPoint(v1, center, theta);
+    v2 = RotateAroundPoint(v2, center, theta);
+    v3 = RotateAroundPoint(v3, center, theta);
+    v4 = RotateAroundPoint(v4, center, theta);
+
+    GRAPHICS->RC()->DrawQuad(v1, v2, v3, v4);
   }
 
   void Draw::DrawTexturedRect(float x, float y, float width, float height)

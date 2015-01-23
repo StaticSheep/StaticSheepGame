@@ -18,6 +18,9 @@ namespace Framework
   class Draw
   {
   public:
+    
+    static Vec2 RotateAroundPoint(Vec2 p, Vec2 o, float theta);
+    
     static void SetCamState(int camState);
     static void SetTexture(unsigned texID);
     static int  GetTextureID(const char* texName);
@@ -28,7 +31,10 @@ namespace Framework
     static void SetColor(float r, float g, float b, float a);
 
     static void DrawRect(float x, float y, float width, float height);
-    static void DrawRectOutline(float x, float y, float width, float height);
+    static void DrawRectOutline(float x, float y, float width, float height,
+      float theta = 0);
+    static void DrawQuad(float x, float y, float width, float height, 
+      float theta = 0);
     static void DrawTexturedRect(float x, float y, float width, float height);
     static void DrawTexturedRectRotated(float x, float y,
       float width, float height, float theta);

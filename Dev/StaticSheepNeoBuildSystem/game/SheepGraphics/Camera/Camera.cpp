@@ -183,13 +183,19 @@ namespace DirectSheep
     
   }
 
+
   Vec2 Camera::ToScreen(Vec3 worldPos) const
   {
     if (m_perspective)
     {
-      Vec4 screen = Vec4::Transform(Vec4(worldPos.x, worldPos.y, 0.0f, 1), m_viewProj);
+      Vec4 screen = Vec4::Transform(Vec4(worldPos.x, worldPos.y, worldPos.z, 1),
+        m_viewProj);
+
+  
       screen.x = SCREEN_WIDTH * ((screen.x / screen.w) + 1) / 2;
       screen.y = SCREEN_HEIGHT * ((-screen.y / screen.w) + 1) / 2;
+      /*screen.x = SCREEN_WIDTH * ((screen.x / screen.w) + 1) / 2;
+      screen.y = SCREEN_HEIGHT * ((-screen.y / screen.w) + 1) / 2;*/
 
       return Vec2((float*)&screen);
     }

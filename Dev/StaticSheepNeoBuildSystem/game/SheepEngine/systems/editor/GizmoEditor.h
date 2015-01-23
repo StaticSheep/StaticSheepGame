@@ -52,6 +52,17 @@ namespace Framework
 
   private:
 
+    void DetectHover(Vec2 screenPos);
+    void DrawHandles(Vec2 screenPos);
+
+    void DrawSpriteOutline(GameObject* obj, Vec3 objScale, Vec2 screenPos,
+      float theta);
+    void DrawRigidBodyOutline(GameObject* obj, Vec3 objScale, Vec2 screenPos,
+      float theta);
+
+    void DetectDrag();
+    void HandleDrag(GameObject* obj);
+
     enum DragAxis
     {
       DA_None,
@@ -70,7 +81,13 @@ namespace Framework
     bool m_yHover = false;
     bool m_pHover = false;
 
+    Vec2 m_bronzeRatio;
+
     Vec2 m_lastMousePos;
+    Vec2 m_xArrow;
+    Vec2 m_yArrow;
+
+    float m_scaleDampening = 50.0f;
     
 
     GizmoType m_mode = Translation;

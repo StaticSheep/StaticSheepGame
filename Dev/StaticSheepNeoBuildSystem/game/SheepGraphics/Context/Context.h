@@ -26,6 +26,18 @@ namespace DirectSheep
 
 namespace DirectSheep
 {
+  typedef std::pair<DirectX::VertexPositionColor,
+    DirectX::VertexPositionColor > DebugLine;
+
+  typedef std::tuple < DirectX::VertexPositionColor,
+    DirectX::VertexPositionColor,
+    DirectX::VertexPositionColor > DebugTriangle;
+
+  typedef std::tuple < DirectX::VertexPositionColor,
+    DirectX::VertexPositionColor, DirectX::VertexPositionColor,
+    DirectX::VertexPositionColor > DebugQuad;
+
+  typedef std::vector<DirectX::VertexPositionColor> DebugPoly;
 
   extern float SCREEN_WIDTH;
   extern float SCREEN_HEIGHT;
@@ -69,6 +81,7 @@ class RenderContext
    /* --- Primitive Draw Functions --- */
    void DrawLine(Vec3 start, Vec3 end, Color startColor, Color endColor);
    void DrawLine(Vec3 start, Vec3 end);
+   void DrawQuad(Vec3 v1, Vec3 v2, Vec3 v3, Vec3 v4);
    void DrawTriangle(Vec3 v1, Vec3 v2, Vec3 v3);
 
    void StartBatch();
@@ -353,11 +366,10 @@ class RenderContext
     std::unique_ptr<DirectX::BasicEffect> m_primativeEffect;
     ID3D11InputLayout* m_primativeLayout;
 
-    std::stack<std::pair<DirectX::VertexPositionColor, 
-      DirectX::VertexPositionColor >> m_lineList;
-    std::stack < std::tuple < DirectX::VertexPositionColor,
-      DirectX::VertexPositionColor,
-      DirectX::VertexPositionColor >> m_triangleList;
+    std::stack <DebugLine> m_lineList;
+    std::stack <DebugTriangle> m_triangleList;
+    std::stack <DebugQuad> m_quadList;
+    std::stack <DebugPoly> m_polyList;
 
     DirectX::SpriteEffects                m_flip = DirectX::SpriteEffects_None;
 

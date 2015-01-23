@@ -25,5 +25,37 @@ namespace Framework
     {
       return DirectSheep::Vec2((float*)this);
     }
+
+    bool operator>(const Vec2D& rhs) const
+    {
+      if (x > rhs.x && y > rhs.y)
+        return true;
+
+      return false;
+    }
+
+    bool operator<(const Vec2D& rhs) const
+    {
+      if (x < rhs.x && y < rhs.y)
+        return true;
+
+      return false;
+    }
+
+    bool operator>=(const Vec2D& rhs) const
+    {
+      if (x >= rhs.x && y >= rhs.y)
+        return true;
+
+      return false;
+    }
+
+    bool operator<=(const Vec2D& rhs) const
+    {
+      if (x <= rhs.x && y <= rhs.y)
+        return true;
+
+      return false;
+    }
   };
 }
