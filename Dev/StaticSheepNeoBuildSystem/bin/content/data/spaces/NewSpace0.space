@@ -1,1 +1,22 @@
 NewSpace0
+GameObject
+{
+  name std::string ""
+  archetype std::string ""
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 0.000000
+      y_ float 0.000000
+      z_ float 0.000000
+    }
+    Rotation float 1.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+}

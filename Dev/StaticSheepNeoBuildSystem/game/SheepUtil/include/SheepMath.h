@@ -44,4 +44,6 @@ namespace Framework
   float     Minimum(float a, float b);
   float     Maximum(float a, float b);
   float     Clamp(float a, float min, float max);
+  float     DistanceFromLine(Vec2D ls, Vec2D le, Vec2D point);
+  float     DistanceFromSegment(Vec2D s0, Vec2D s1, Vec2D p);
 }

@@ -324,4 +324,29 @@ namespace Framework
     
     return x; /* then return what we found */
   }
+
+  float DistanceFromLine(Vec2D ls, Vec2D le, Vec2D point)
+  {
+    return std::abs((le.y - ls.y) * point.x - (le.x - ls.x) * point.y + le.x *
+      ls.y - le.y * ls.x) / std::sqrtf((le.y - ls.y) * (le.y - ls.y) +
+      (le.x - ls.x) * (le.x - ls.x));
+  }
+
+  float DistanceFromSegment(Vec2D s0, Vec2D s1, Vec2D p)
+  {
+    Vec2D v = s1 - s0;
+    Vec2D w = p - s0;
+
+    float c1 = w * v;
+    if (c1 <= 0)
+      return (p - s0).Length();
+
+    float c2 = v * v;
+    if (c2 <= c1)
+      return (p - s1).Length();
+
+    float b = c1 / c2;
+    Vec2D pb = s0 + b * v;
+    return (p - pb).Length();
+  }
 } // end namespace

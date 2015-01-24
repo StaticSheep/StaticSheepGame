@@ -86,6 +86,7 @@ namespace Framework
     static void PlayInEditor(bool play);
     static bool PlayingInEditor(void);
     static void OpenEditor();
+    static void UpdateEditorWindow();
 
     // Returns the lua environment
     lua_State* Lua(void) const;

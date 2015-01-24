@@ -34,9 +34,9 @@ namespace Framework
   static const float pivotSelectProximity = pivotRadius * pivotRadius;
 
   GizmoEditor::GizmoEditor()
-    :m_mode(Scale)
+    :m_mode(Translation)
   {
-
+    GIZMO_EDITOR = this;
   }
 
   GizmoEditor::~GizmoEditor()
@@ -50,10 +50,10 @@ namespace Framework
     gizmoTipID = Draw::GetTextureID("gizmo_tip.png");
   }
 
-  void GizmoEditor::DetectHover(Vec2 screenPos)
+  void GizmoEditor::DetectHover(Vec2 screenPos, float theta)
   {
     Vec2 mousePos = SHEEPINPUT->Mouse.GetScreenPosition();
-    Vec2 topLeft, botRight;
+    Vec2 lineStart;
 
     if ((screenPos - mousePos).SquareLength() < pivotSelectProximity)
       m_pHover = true;
@@ -63,22 +63,35 @@ namespace Framework
     if (m_mode != Rotation)
     {
       // Determine the positions of the arrows and if the user is hovering
+      if (m_world)
+        theta = 0;
 
       m_xArrow = Vec2(screenPos.x + lineLength + arrowSize / 2, screenPos.y);
-      topLeft = m_xArrow - 
-        Vec2(arrowSize / 2 + lineLength - pivotRadius, arrowSize / 3);
 
-      botRight = m_xArrow - Vec2(arrowSize / 2, -arrowSize / 3);
+      lineStart = screenPos + Vec2(pivotRadius * 2 * cos(theta),
+        pivotRadius * 2 * sin(theta));
+      m_xArrow = screenPos + Vec2(lineLength * cos(theta),
+        lineLength * sin(theta));
+      m_xArrowCenter = screenPos + Vec2((lineLength + arrowSize / 2)
+        * cos(theta),
+        (lineLength + arrowSize / 2) * sin(theta));
+
 
       if ((m_xArrow - mousePos).SquareLength() < arrowSelectProximity
-        || (mousePos > topLeft && botRight > mousePos))
+        || DistanceFromSegment(lineStart, m_xArrow, mousePos) < pivotRadius
+        )
         m_xHover = true;
       else
         m_xHover = false;
 
-      m_yArrow = Vec2(screenPos.x, screenPos.y - lineLength - arrowSize / 2);
+      lineStart = screenPos + Vec2(pivotRadius * 2 * cos(theta - PI / 2),
+        pivotRadius * 2 * sin(theta - PI / 2));
 
-      if ((m_yArrow - mousePos).SquareLength() < arrowSelectProximity)
+      m_yArrow = screenPos + Vec2(lineLength * cos(theta - PI / 2),
+        lineLength * sin(theta - PI / 2));
+
+      if ((m_yArrow - mousePos).SquareLength() < arrowSelectProximity
+        || DistanceFromSegment(lineStart, m_yArrow, mousePos) < pivotRadius)
         m_yHover = true;
       else
         m_yHover = false;
@@ -88,7 +101,7 @@ namespace Framework
     
   }
 
-  void GizmoEditor::DrawHandles(Vec2 screenPos)
+  void GizmoEditor::DrawHandles(Vec2 screenPos, float theta)
   {
     Vec2 mousePos = SHEEPINPUT->Mouse.GetScreenPosition();
 
@@ -122,14 +135,21 @@ namespace Framework
       }
 
       Draw::DrawLine(screenPos.x, screenPos.y,
-        screenPos.x + lineLength, screenPos.y);
+        m_xArrow.x, m_xArrow.y);
 
       if (m_mode == Translation)
       {
-        Draw::DrawTriangle(m_xArrow.x - arrowSize / 2,
-          m_xArrow.y + arrowSize / 2,
-          m_xArrow.x - arrowSize / 2, m_xArrow.y - arrowSize / 2,
-          m_xArrow.x + arrowSize / 2, m_xArrow.y);
+        Vec2 t1(-arrowSize / 2, -arrowSize / 2),
+          t2(arrowSize / 2, 0),
+          t3(-arrowSize / 2, arrowSize / 2);
+
+        t1 = Draw::RotateAroundPoint(t1, Vec3(), theta);
+        t2 = Draw::RotateAroundPoint(t2, Vec3(), theta);
+        t3 = Draw::RotateAroundPoint(t3, Vec3(), theta);
+        
+        Draw::DrawTriangle(t1.x + m_xArrow.x, t1.y + m_xArrow.y,
+          t2.x + m_xArrow.x, t2.y + m_xArrow.y,
+          t3.x + m_xArrow.x, t3.y + m_xArrow.y);
       }
       else if (m_mode == Scale)
       {
@@ -149,15 +169,23 @@ namespace Framework
         Draw::SetColor(0, 1, 0, 1);
       }
 
-      Draw::DrawLine(screenPos.x, screenPos.y - lineLength,
-        screenPos.x, screenPos.y);
+      Draw::DrawLine(screenPos.x, screenPos.y,
+        m_yArrow.x, m_yArrow.y);
 
       if (m_mode == Translation)
       {
-        Draw::DrawTriangle(m_yArrow.x + arrowSize / 2,
-          m_yArrow.y + arrowSize / 2,
-          m_yArrow.x - arrowSize / 2, m_yArrow.y + arrowSize / 2,
-          m_yArrow.x, m_yArrow.y - arrowSize / 2);
+        Vec2 t1(0, -arrowSize / 2),
+          t2(arrowSize / 2, arrowSize / 2),
+          t3(-arrowSize / 2, arrowSize / 2);
+
+        t1 = Draw::RotateAroundPoint(t1, Vec3(), theta);
+        t2 = Draw::RotateAroundPoint(t2, Vec3(), theta);
+        t3 = Draw::RotateAroundPoint(t3, Vec3(), theta);
+
+        Draw::DrawTriangle(t1.x + m_yArrow.x, t1.y + m_yArrow.y,
+          t2.x + m_yArrow.x, t2.y + m_yArrow.y,
+          t3.x + m_yArrow.x, t3.y + m_yArrow.y);
+
       }
       else if (m_mode == Scale)
       {
@@ -225,9 +253,11 @@ namespace Framework
     }
   }
 
-  void GizmoEditor::HandleDrag(GameObject* obj)
+  void GizmoEditor::HandleDrag(Vec2 screenPos, GameObject* obj)
   {
     Transform* trans = obj->GetComponent<Transform>(eTransform);
+    float theta = trans->GetRotation();
+
 
     // We are dragging
     if (SHEEPINPUT->Mouse.ButtonReleased(LMB))
@@ -239,19 +269,78 @@ namespace Framework
       Vec2 diff = Draw::ToWorld(SHEEPINPUT->Mouse.GetScreenPosition())
         - Draw::ToWorld(m_lastMousePos);
 
+      if (m_useSnapping)
+      {
+        int reps;
+
+        m_snapBuffer += diff;
+
+        reps = (int)(m_snapBuffer.x / m_snapDistance);
+        diff.x = reps * m_snapDistance;
+        m_snapBuffer.x -= reps * m_snapDistance;
+
+        reps = (int)(m_snapBuffer.y / m_snapDistance);
+        diff.y = reps * m_snapDistance;
+        m_snapBuffer.y -= reps * m_snapDistance;
+      }
+      else
+        m_snapBuffer = 0;
+
       if (m_mode == Translation)
       {
         if (m_dragAxis == DA_X)
         {
-          trans->SetTranslation(trans->GetTranslation() + Vec3(diff.x, 0, 0));
+          if (m_world)
+          {
+            trans->SetTranslation(trans->GetTranslation()
+              + Vec3(diff.x, 0, 0));
+          }
+          else
+          {
+            Vec2 arrowDir = m_xArrow - screenPos;
+            arrowDir.Normalize();
+            float ml = diff.Length();
+
+            if ((int)(theta / (PI / 2)) % 2)
+              theta = -theta;
+
+            if (Vec2(1, 0).Rotate(theta) * diff <= 0)
+              ml = -ml;
+
+
+            trans->SetTranslation(trans->GetTranslation()
+              + Vec3(arrowDir.x * ml, arrowDir.y * -ml, 0));
+          }
+          
         }
         else if (m_dragAxis == DA_Y)
         {
-          trans->SetTranslation(trans->GetTranslation() + Vec3(0, diff.y, 0));
+          if (m_world)
+          {
+            trans->SetTranslation(trans->GetTranslation()
+              + Vec3(0, diff.y, 0));
+          }
+          else
+          {
+            Vec2 arrowDir = m_yArrow - screenPos;
+            arrowDir.Normalize();
+            float ml = diff.Length();
+
+            if ((int)(theta / (PI / 2)) % 2)
+              theta = -theta;
+
+            if (Vec2(0, 1).Rotate(theta) * diff <= 0)
+              ml = -ml;
+
+
+            trans->SetTranslation(trans->GetTranslation()
+              + Vec3(arrowDir.x * ml, arrowDir.y * -ml, 0));
+          }
         }
         else if (m_dragAxis == DA_XY)
         {
-          trans->SetTranslation(trans->GetTranslation() + Vec3(diff.x, diff.y, 0));
+          trans->SetTranslation(trans->GetTranslation()
+            + Vec3(diff.x, diff.y, 0));
         }
       }
       else if (m_mode == Scale)
@@ -268,8 +357,11 @@ namespace Framework
         }
         else if (m_dragAxis == DA_XY)
         {
-          trans->SetScale(trans->GetScale()
-            + Vec3(diff.x / m_scaleDampening, diff.y / m_scaleDampening, 0));
+          Vec3 scale = trans->GetScale();
+          float xymod = scale.x / scale.y;
+          trans->SetScale(scale
+            + Vec3((diff.x + diff.y) / m_scaleDampening * xymod,
+            (diff.x + diff.y) / m_scaleDampening, 0));
         }
       }
       
@@ -301,10 +393,10 @@ namespace Framework
 
         Transform* trans = obj->GetComponent<Transform>(eTransform);
         Vec2 screenPos = Draw::ToScreen(trans->GetTranslation());
-        float theta = trans->GetRotation();
+        float theta = -trans->GetRotation();
 
-        DetectHover(screenPos);
-        DrawHandles(screenPos);
+        DetectHover(screenPos, theta);
+        DrawHandles(screenPos, theta);
 
         if (obj->HasComponent(eSprite))
           DrawSpriteOutline(obj, trans->GetScale(), screenPos, theta);
@@ -318,7 +410,7 @@ namespace Framework
         }
         else
         {
-          HandleDrag(obj);
+          HandleDrag(screenPos, obj);
         }
           
 

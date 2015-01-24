@@ -50,10 +50,12 @@ namespace Framework
     void SetGizmoMode(GizmoType mode);
     GizmoType GetGizmoMode();
 
+    void ToggleSnapping(bool on);
+
   private:
 
-    void DetectHover(Vec2 screenPos);
-    void DrawHandles(Vec2 screenPos);
+    void DetectHover(Vec2 screenPos, float theta);
+    void DrawHandles(Vec2 screenPos, float theta);
 
     void DrawSpriteOutline(GameObject* obj, Vec3 objScale, Vec2 screenPos,
       float theta);
@@ -61,7 +63,7 @@ namespace Framework
       float theta);
 
     void DetectDrag();
-    void HandleDrag(GameObject* obj);
+    void HandleDrag(Vec2 screenPos, GameObject* obj);
 
     enum DragAxis
     {
@@ -84,13 +86,18 @@ namespace Framework
     Vec2 m_bronzeRatio;
 
     Vec2 m_lastMousePos;
-    Vec2 m_xArrow;
-    Vec2 m_yArrow;
+    Vec2 m_xArrow, m_xArrowCenter;
+    Vec2 m_yArrow, m_yArrowCenter;
 
-    float m_scaleDampening = 50.0f;
+    Vec2 m_snapBuffer = 0;
     
+    float m_scaleDampening = 25.0f;
+    float m_snapDistance = 50.0f;
+    bool m_useSnapping = false;
+    bool m_world = true;
 
     GizmoType m_mode = Translation;
 
+    friend class Engine;
   };
 }

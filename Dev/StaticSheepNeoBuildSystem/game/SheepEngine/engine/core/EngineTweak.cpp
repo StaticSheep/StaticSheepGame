@@ -16,6 +16,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 #include <boost/filesystem.hpp>
 #include <boost/foreach.hpp>
+#include "systems/editor/GizmoEditor.h"
 
 
 namespace Framework
@@ -145,13 +146,28 @@ namespace Framework
     ENGINE->PlayInEditor(true);
   }
 
-  void Engine::OpenEditor()
+  static void SwitchGizmoTranslation(void* cd)
   {
-    // Create the main bar and get a handle to it
-    
-    ENGINE->m_editorAcitve = true;
-    AntTweak::TBar* mainBar = ATWEAK->CreateBar("Editor");
-    EngineBar = mainBar->self;
+    GIZMO_EDITOR->SetGizmoMode(Translation);
+    ENGINE->UpdateEditorWindow();
+  }
+
+  static void SwitchGizmoScale(void* cd)
+  {
+    GIZMO_EDITOR->SetGizmoMode(Scale);
+    ENGINE->UpdateEditorWindow();
+  }
+
+  static void SwitchGizmoRotation(void* cd)
+  {
+    GIZMO_EDITOR->SetGizmoMode(Rotation);
+    ENGINE->UpdateEditorWindow();
+  }
+
+  void Engine::UpdateEditorWindow()
+  {
+    AntTweak::TBar* mainBar = ATWEAK->GetBar(EngineBar);
+    mainBar->Reset();
 
     mainBar->DefineLabel("Load Level");
     mainBar->AddButton("LoadLevel", EditorLoadLevel, nullptr);
@@ -159,7 +175,7 @@ namespace Framework
     mainBar->DefineLabel("Save Level");
     mainBar->AddButton("SaveLevel", EditorSaveLevel, nullptr);
 
-    mainBar->AddSeparator("Spaceshit");
+    mainBar->AddSeparator("spaces");
 
     mainBar->DefineLabel("Create New Space");
     mainBar->DefineHelpMessage("Creates a blank space from scratch");
@@ -171,6 +187,61 @@ namespace Framework
     mainBar->AddSeparator("PIESTUFF");
     mainBar->DefineLabel("Play In Editor");
     mainBar->AddButton("PIE", EditorPlayLevel, ENGINE);
+
+    mainBar->AddSeparator("Gizmos");
+
+    mainBar->DefineLabel("Gizmo Mode");
+    mainBar->AddButton("GizmoMode", nullptr, nullptr);
+    GizmoType cMode = GIZMO_EDITOR->GetGizmoMode();
+
+    mainBar->DefineKeyShortcut("CTRL+q");
+    mainBar->AddButton("Translation", SwitchGizmoTranslation, nullptr);
+
+    mainBar->DefineKeyShortcut("CTRL+w");
+    mainBar->AddButton("Scale", SwitchGizmoScale, nullptr);
+
+    mainBar->DefineKeyShortcut("CTRL+r");
+    mainBar->AddButton("Rotation", SwitchGizmoRotation, nullptr);
+
+    mainBar->AddButton("Options", nullptr, nullptr);
+    
+
+    mainBar->DefineLabel("Snapping");
+    mainBar->AddVarRW("Snapping", AntTweak::TW_TYPE_BOOLCPP,
+      &(GIZMO_EDITOR->m_useSnapping));
+
+
+    mainBar->DefineLabel("Snap Distance");
+    mainBar->AddVarRW("SnapDistance", AntTweak::TW_TYPE_FLOAT,
+      &(GIZMO_EDITOR->m_snapDistance));
+
+    if (cMode == Translation)
+    {
+      mainBar->AddVarRW("World", AntTweak::TW_TYPE_BOOLCPP,
+        &(GIZMO_EDITOR->m_world));
+    }
+
+    if (cMode == Scale)
+    {
+      mainBar->DefineLabel("Dampening");
+      mainBar->AddVarRW("ScaleDampening", AntTweak::TW_TYPE_FLOAT,
+        &(GIZMO_EDITOR->m_scaleDampening));
+    }
+
+    
+
+
+  }
+
+  void Engine::OpenEditor()
+  {
+    // Create the main bar and get a handle to it
+    
+    ENGINE->m_editorAcitve = true;
+    AntTweak::TBar* mainBar = ATWEAK->CreateBar("Editor");
+    EngineBar = mainBar->self;
+
+    UpdateEditorWindow();
   }
 
 }

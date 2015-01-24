@@ -102,7 +102,6 @@ namespace Framework
   void Draw::DrawRectOutline(float x, float y, float width, float height,
     float theta)
   {
-    theta = -theta;
     float x1, y1, x2, y2;
     float xc, yc;
 
