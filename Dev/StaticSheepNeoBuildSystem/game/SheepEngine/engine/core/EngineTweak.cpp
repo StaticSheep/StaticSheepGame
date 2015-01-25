@@ -217,8 +217,8 @@ namespace Framework
 
     if (cMode == Translation)
     {
-      mainBar->AddVarRW("World", AntTweak::TW_TYPE_BOOLCPP,
-        &(GIZMO_EDITOR->m_world));
+      //mainBar->AddVarRW("World", AntTweak::TW_TYPE_BOOLCPP,
+      //  &(GIZMO_EDITOR->m_world));
     }
 
     if (cMode == Scale)

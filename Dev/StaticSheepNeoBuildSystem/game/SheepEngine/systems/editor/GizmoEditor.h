@@ -81,11 +81,13 @@ namespace Framework
 
     bool m_xHover = false;
     bool m_yHover = false;
+    bool m_rHover = false;
     bool m_pHover = false;
 
     Vec2 m_bronzeRatio;
 
     Vec2 m_lastMousePos;
+    Vec2 m_startRotatePos;
     Vec2 m_xArrow, m_xArrowCenter;
     Vec2 m_yArrow, m_yArrowCenter;
 

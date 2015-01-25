@@ -29,9 +29,20 @@ namespace Framework
   static const int arrowSize = 16;
   static const int lineLength = 60;
   static const int pivotRadius = 8;
+  static const float rotationRadius = 140;
   static const int centerSize = pivotRadius * 6;
   static const float arrowSelectProximity = arrowSize * arrowSize;
   static const float pivotSelectProximity = pivotRadius * pivotRadius;
+
+  static const float rotationProximityBuffer = 4;
+
+  static const float rotationMinSelectProximity =
+    (rotationRadius - rotationProximityBuffer) *
+    (rotationRadius - rotationProximityBuffer);
+
+  static const float rotationMaxSelectProximity =
+    (rotationRadius + rotationProximityBuffer) *
+    (rotationRadius + rotationProximityBuffer);
 
   GizmoEditor::GizmoEditor()
     :m_mode(Translation)
@@ -98,6 +109,23 @@ namespace Framework
 
 
     }
+    else
+    {
+      // Rotation
+      if ((screenPos - mousePos).SquareLength() < rotationMaxSelectProximity
+        && (screenPos - mousePos).SquareLength() > rotationMinSelectProximity)
+      {
+        if (!m_dragging)
+          m_startRotatePos = mousePos;
+
+        m_rHover = true;
+      }
+      else
+      {
+        m_rHover = false;
+      }
+      
+    }
     
   }
 
@@ -116,13 +144,13 @@ namespace Framework
     }
     Draw::SetTexture(pivotID);
     Draw::DrawCircle(screenPos.x, screenPos.y, pivotRadius);
-    Draw::DrawRectOutline(screenPos.x - centerSize / 2,
-      screenPos.y - centerSize / 2, centerSize, centerSize);
-
 
     // Draw Gizmo Hands
     if (m_mode != Rotation)
     {
+      Draw::DrawRectOutline(screenPos.x - centerSize / 2,
+        screenPos.y - centerSize / 2, centerSize, centerSize);
+
       // ========================================================  X-axis
 
       if ((m_dragging && m_dragAxis == DA_X) || m_xHover)
@@ -143,9 +171,12 @@ namespace Framework
           t2(arrowSize / 2, 0),
           t3(-arrowSize / 2, arrowSize / 2);
 
-        t1 = Draw::RotateAroundPoint(t1, Vec3(), theta);
-        t2 = Draw::RotateAroundPoint(t2, Vec3(), theta);
-        t3 = Draw::RotateAroundPoint(t3, Vec3(), theta);
+        if (!m_world)
+        {
+          t1 = Draw::RotateAroundPoint(t1, Vec3(), theta);
+          t2 = Draw::RotateAroundPoint(t2, Vec3(), theta);
+          t3 = Draw::RotateAroundPoint(t3, Vec3(), theta);
+        }
         
         Draw::DrawTriangle(t1.x + m_xArrow.x, t1.y + m_xArrow.y,
           t2.x + m_xArrow.x, t2.y + m_xArrow.y,
@@ -178,9 +209,12 @@ namespace Framework
           t2(arrowSize / 2, arrowSize / 2),
           t3(-arrowSize / 2, arrowSize / 2);
 
-        t1 = Draw::RotateAroundPoint(t1, Vec3(), theta);
-        t2 = Draw::RotateAroundPoint(t2, Vec3(), theta);
-        t3 = Draw::RotateAroundPoint(t3, Vec3(), theta);
+        if (!m_world)
+        {
+          t1 = Draw::RotateAroundPoint(t1, Vec3(), theta);
+          t2 = Draw::RotateAroundPoint(t2, Vec3(), theta);
+          t3 = Draw::RotateAroundPoint(t3, Vec3(), theta);
+        }
 
         Draw::DrawTriangle(t1.x + m_yArrow.x, t1.y + m_yArrow.y,
           t2.x + m_yArrow.x, t2.y + m_yArrow.y,
@@ -192,6 +226,50 @@ namespace Framework
         Draw::DrawQuad(m_yArrow.x - arrowSize / 2, m_yArrow.y + arrowSize / 2,
           arrowSize, arrowSize);
       }
+    }
+    else
+    {
+      // Rotation
+      if (m_rHover || m_dragging)
+      {
+        Draw::SetColor(1, 1, 0, 1);
+      }
+      else
+      {
+        Draw::SetColor(1, 1, 1, 1);
+      }
+
+      Draw::DrawCircle(screenPos.x, screenPos.y, rotationRadius);
+
+      
+
+      if (m_rHover || m_dragging)
+      {
+        Vec2 dir = (screenPos - m_startRotatePos).Normalize(); 
+        Vec2 start = screenPos - dir * rotationRadius;
+        Vec2 end = start + Vec2(dir.y, -dir.x) * 110;
+        start = start + Vec2(dir.y, -dir.x) * -110;
+
+        Draw::SetColor(1, 0, 0, 1);
+        Draw::DrawLine(start.x, start.y, end.x, end.y);
+      }
+      if (m_dragging)
+      {
+        Vec2 start, end;
+        Vec2 dir = Vec2(cos(theta), sin(theta));
+        start = screenPos - dir * rotationRadius;
+        end = screenPos + dir * rotationRadius;
+
+        Draw::SetColor(1, 0, 0, 1);
+        Draw::DrawLine(start.x, start.y, end.x, end.y);
+
+        start = screenPos - Vec2(dir.y, -dir.x) * rotationRadius;
+        end = screenPos + Vec2(dir.y, -dir.x) * rotationRadius;
+
+        Draw::SetColor(0, 1, 0, 1);
+        Draw::DrawLine(start.x, start.y, end.x, end.y);
+      }
+      
     }
   }
 
@@ -248,6 +326,11 @@ namespace Framework
         m_dragging = true;
         m_dragAxis = DA_Y;
       }
+      else if (m_rHover)
+      {
+        m_dragging = true;
+
+      }
 
       m_lastMousePos = SHEEPINPUT->Mouse.GetScreenPosition();
     }
@@ -297,19 +380,7 @@ namespace Framework
           }
           else
           {
-            Vec2 arrowDir = m_xArrow - screenPos;
-            arrowDir.Normalize();
-            float ml = diff.Length();
 
-            if ((int)(theta / (PI / 2)) % 2)
-              theta = -theta;
-
-            if (Vec2(1, 0).Rotate(theta) * diff <= 0)
-              ml = -ml;
-
-
-            trans->SetTranslation(trans->GetTranslation()
-              + Vec3(arrowDir.x * ml, arrowDir.y * -ml, 0));
           }
           
         }
@@ -322,19 +393,7 @@ namespace Framework
           }
           else
           {
-            Vec2 arrowDir = m_yArrow - screenPos;
-            arrowDir.Normalize();
-            float ml = diff.Length();
 
-            if ((int)(theta / (PI / 2)) % 2)
-              theta = -theta;
-
-            if (Vec2(0, 1).Rotate(theta) * diff <= 0)
-              ml = -ml;
-
-
-            trans->SetTranslation(trans->GetTranslation()
-              + Vec3(arrowDir.x * ml, arrowDir.y * -ml, 0));
           }
         }
         else if (m_dragAxis == DA_XY)
@@ -363,6 +422,16 @@ namespace Framework
             + Vec3((diff.x + diff.y) / m_scaleDampening * xymod,
             (diff.x + diff.y) / m_scaleDampening, 0));
         }
+      }
+      else if (m_mode == Rotation)
+      {
+        Vec2 dir = (screenPos - m_startRotatePos).Normalize();
+        dir = Vec2(dir.y, -dir.x);
+
+        if (diff * dir >= 0)
+          trans->SetRotation(trans->GetRotation() + diff.Length() / 100);
+        else
+          trans->SetRotation(trans->GetRotation() - diff.Length() / 100);
       }
       
 
