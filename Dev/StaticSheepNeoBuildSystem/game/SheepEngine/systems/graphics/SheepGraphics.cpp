@@ -88,7 +88,7 @@ namespace Framework
     m_debugData.numTextDraws = 0;
 #endif
     StartFrame();
-    //Draw();
+    Draw();
     m_renderContext->DrawPLight();
     FinishFrame();
 	}

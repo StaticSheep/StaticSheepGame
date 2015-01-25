@@ -28,7 +28,11 @@ namespace DirectSheep
       DXVerify(loadFromData(pDevice, vertData, numVerts, indexData, numIndices, isDynamic));
     }
 
-    ~Model() {}
+    ~Model() 
+    {
+      SafeRelease(m_indexBuf);
+      SafeRelease(m_vertexBuf);
+    }
 
     void bind(ID3D11DeviceContext* deviceContext)
     {

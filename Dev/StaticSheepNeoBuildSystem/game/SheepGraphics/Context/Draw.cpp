@@ -172,35 +172,35 @@ namespace DirectSheep
   {
     
 
-    //m_primativeEffect->Apply(m_deviceContext);
-    //m_deviceContext->IASetInputLayout(m_primativeLayout);
+    m_primativeEffect->Apply(m_deviceContext);
+    m_deviceContext->IASetInputLayout(m_primativeLayout);
 
-    //m_primitiveBatch->Begin();
+    m_primitiveBatch->Begin();
 
-    //std::pair<VertexPositionColor, VertexPositionColor>* line;
+    std::pair<VertexPositionColor, VertexPositionColor>* line;
 
-    //while (!m_lineList.empty())
-    //{
-    //  line = &(m_lineList.top());
-    //  m_primitiveBatch->DrawLine(line->first, line->second);
-    //  m_lineList.pop();
-    //}
+    while (!m_lineList.empty())
+    {
+      line = &(m_lineList.top());
+      m_primitiveBatch->DrawLine(line->first, line->second);
+      m_lineList.pop();
+    }
 
-    //std::tuple<VertexPositionColor,
-    //  VertexPositionColor, VertexPositionColor>* triangle;
-
-
-    //while (!m_triangleList.empty())
-    //{
-    //  triangle = &(m_triangleList.top());
-    //  m_primitiveBatch->DrawTriangle(std::get<0>(*triangle),
-    //    std::get<1>(*triangle), std::get<2>(*triangle));
-    //  m_triangleList.pop();
-    //}
+    std::tuple<VertexPositionColor,
+      VertexPositionColor, VertexPositionColor>* triangle;
 
 
-    //m_primitiveBatch->End();
-    //m_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+    while (!m_triangleList.empty())
+    {
+      triangle = &(m_triangleList.top());
+      m_primitiveBatch->DrawTriangle(std::get<0>(*triangle),
+        std::get<1>(*triangle), std::get<2>(*triangle));
+      m_triangleList.pop();
+    }
+
+
+    m_primitiveBatch->End();
+    m_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
     Present();
   }
@@ -259,21 +259,16 @@ namespace DirectSheep
   void RenderContext::DrawPLight(void)
   {
     static float a = 0;
-    a += .1;
-    m_PointLight->bindMatrices(m_deviceContext, XMMatrixOrthographicLH(SCREEN_WIDTH, SCREEN_HEIGHT,
-      0.f, 100.f), XMMatrixLookAtLH(Vec3(0.f, 0.f, 0.f), Vec3(0.f, 0.f, 1.f), Vec3(0.f, 1.f, 0.f)), XMMatrixIdentity());
+    a += .01;
+    m_PointLight->bindMatrices(m_deviceContext, XMMatrixIdentity(), XMMatrixIdentity(), XMMatrixIdentity());
 
-    m_PointLight->bindLight(m_deviceContext, Light(Vec3(SCREEN_WIDTH / 2 + 50 * cosf(a), SCREEN_HEIGHT / 2 + 50  * sinf(a), 0.0f), Color(cosf(a), sinf(a), tanf(a), 1.0f), Vec3(0.050097f, 0.101329f, 0.007211f)));
+    m_PointLight->bindLight(m_deviceContext, Light(Vec3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0.0f), Color(1, 1, 1, 1), Vec3(.01, .01, .01)));
 
     m_PLightModel->bind(m_deviceContext);
 
     m_PointLight->bind(m_deviceContext);
 
     SetBlendMode(BLEND_MODE_ADDITIVE);
-
-    m_deviceContext->OMSetRenderTargets(1, &m_backBuffer, m_depthBuffer.m_depthBuffer);
-
-    SetViewport(0, 0, Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
 
     m_deviceContext->DrawIndexed(m_PLightModel->getIndexCount(), 0, 0);
   }
