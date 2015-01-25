@@ -37,6 +37,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/gameplay_scripts/CWarningText.h"
 #include "components/gameplay_scripts/CBackgroundPan.h"
 #include "components/gameplay_scripts/CCheats.h"
+#include "components/slotmachine/slots_controller.h"
 
 
 namespace Framework
@@ -291,6 +292,8 @@ namespace Framework
     TYPE_SET_FROM_LUA( LuaComponent, Lua::GenericObjectFromLua );
     TYPE_REGISTER_PTR( LuaComponent* );
     //TYPE_SET_TO_LUA( LuaComponent*, Lua::GameComponentToLua);
+
+    TYPE_REGISTER(SlotController);
 
     TYPE_REGISTER( AntTweak::TBar );
     TYPE_REGISTER_PTR( AntTweak::TBar* );

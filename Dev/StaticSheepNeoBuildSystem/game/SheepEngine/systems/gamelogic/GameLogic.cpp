@@ -26,6 +26,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/gameplay_scripts/CWarningText.h"
 #include "components/gameplay_scripts/CBackgroundPan.h"
 #include "components/gameplay_scripts/CCheats.h"
+#include "components/slotmachine/slots_controller.h"
 
 namespace Framework
 {
@@ -60,6 +61,7 @@ namespace Framework
     REGISTER_COMPONENT(WarningText);
     REGISTER_COMPONENT(BackgroundPan);
     REGISTER_COMPONENT(Cheats);
+    REGISTER_COMPONENT(SlotController);
   }
 
   void GameLogic::Initialize()

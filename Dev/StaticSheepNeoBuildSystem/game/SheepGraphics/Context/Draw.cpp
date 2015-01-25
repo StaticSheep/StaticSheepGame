@@ -159,6 +159,7 @@ namespace DirectSheep
       m_rastState[m_currentRast], nullptr,
       ((Camera*)m_camera.ptr)->GetViewProj());
     
+    
   }
 
 

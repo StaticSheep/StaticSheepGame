@@ -141,6 +141,9 @@ namespace Framework
 
   static void EditorPlayLevel(void* clientData)
   {
+    ObjectSelectedMessage msg(nullptr);
+    ENGINE->SystemMessage(msg);
+
     ATWEAK->RemoveAllBars();
 
     ENGINE->PlayInEditor(true);
