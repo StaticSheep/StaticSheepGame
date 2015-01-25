@@ -10,7 +10,7 @@ struct VSOutput
   float4 position : SV_POSITION;
 };
 
-cbuffer LightBuffer : register(cb0)
+cbuffer LightBuffer : register(b0)
 {
   float4 atten;
   float4 col;

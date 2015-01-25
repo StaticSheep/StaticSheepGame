@@ -37,5 +37,7 @@ namespace DirectSheep
     size_t               m_vShaderSize;
     void*                m_pShaderData;
     size_t               m_pShaderSize;
+    ID3DBlob*            m_pShaderBlob;
+    ID3DBlob*            m_vShaderBlob;
   };
 }

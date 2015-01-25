@@ -50,7 +50,7 @@ namespace DirectSheep
     m_device(NULL),
     m_deviceContext(NULL),
     m_backBuffer(NULL),
-    m_clearColor(Color(Colors::Black.operator const float *())), // Clear color for backbuffer
+    m_clearColor(Color(Colors::Black .operator const float *())), // Clear color for backbuffer
     m_spriteBlend(Vec4(1, 1, 1, 1)),                             // Start blending color as white
     m_primative(PRIMITIVE_TOPOLOGY_TRIANGLELIST)                 // Draw using triangle lists
   {
@@ -152,6 +152,22 @@ namespace DirectSheep
 
     // Initialize Effects
     m_genericEffect = new GenEffect(m_device);
+
+    PositionVertex vertices[4] = {
+        { Vec3(-SCREEN_WIDTH / 2.f, SCREEN_HEIGHT / 2.f, 0.f) }, // top left
+        { Vec3(SCREEN_WIDTH / 2.f, SCREEN_HEIGHT / 2.f, 0.f) },  // top right
+        { Vec3(-SCREEN_WIDTH / 2.f, -SCREEN_HEIGHT / 2.f, 0.f) },// bottom left
+        { Vec3(SCREEN_WIDTH / 2.f, -SCREEN_HEIGHT / 2.f, 0.f) } // bottom right
+    };
+
+    UINT indices[6] = {
+      0, 1, 2,
+      2, 1, 3,
+    };
+
+    m_PLightModel = new Model<PositionVertex>(m_device, vertices, 4, indices, 6);
+
+    m_PointLight = new PointLight(m_device);
 
     // RenderContext is now initialized
     m_initialized = true;
@@ -278,7 +294,8 @@ namespace DirectSheep
   */
     void RenderContext::SetBlendMode(const BlendMode blendMode)
     {
-      m_deviceContext->OMSetBlendState(m_blendStateMap[blendMode],0, 0xffffffff);
+      float blendFactor[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
+      m_deviceContext->OMSetBlendState(m_blendStateMap[blendMode],blendFactor, 0xffffffff);
     }
 
   

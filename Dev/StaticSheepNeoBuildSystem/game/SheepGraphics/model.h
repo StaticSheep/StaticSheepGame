@@ -77,6 +77,8 @@ namespace DirectSheep
 
       result = dev->CreateBuffer(&vBufDesc, &vBufSub, &m_vertexBuf);
 
+      DXVerify(result);
+
       if (SUCCEEDED(result))
       {
         D3D11_BUFFER_DESC iBufDesc;
@@ -92,6 +94,7 @@ namespace DirectSheep
         iBufSub.SysMemSlicePitch = 0;
 
         result = dev->CreateBuffer(&iBufDesc, &iBufSub, &m_indexBuf);
+        DXVerify(result);
       }
       return result;
     }
