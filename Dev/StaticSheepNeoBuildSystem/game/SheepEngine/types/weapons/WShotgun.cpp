@@ -15,11 +15,12 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 namespace Framework
 {
+  static float weapDelay = 1.0f;
   Shotgun::Shotgun()
   {
-    delay = 1;
+    delay = 1.0f;
     damage = 34;
-    knockback = 400;
+    knockback = 600;
     semi = true;
   }
 
@@ -70,5 +71,17 @@ namespace Framework
 
     SoundEmitter *se = player->GetComponent<SoundEmitter>(eSoundEmitter);
     se->Play("Shotgun_Shot", &SoundInstance(1.0f));
+  }
+
+  void Shotgun::DelayUpdate(float dt)
+  {
+    delay -= dt;
+    if (delay < -100)
+      delay = 0;
+  }
+
+  void Shotgun::ResetDelay()
+  {
+    delay = weapDelay;
   }
 }

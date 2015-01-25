@@ -25,39 +25,17 @@ namespace Framework
     virtual void Remove();
 
     void Update(float dt);
-    
+    void Stop();
 
     float slotHeight = 64;
-
-    float fastToSlow = 1.5f;
-    float slowToCrawl = 1.0f;
-    float crawlToStop = 2.0f;
 
     float startSpeed = 4;
     
 
   private:
-    float m_curTime = 0;
-
-
-    enum Stage
-    {
-      Stopped,
-      Fast,
-      Slow,
-      Crawl,
-      Stop
-    };
-
-    float m_uvSnap;
-    float m_curSpeed;
-    float m_timeLeft;
-
-    float m_timeData[4];
-
-    float m_startCrawlSpeed;
-
-    bool m_transition;
-    Stage m_stage;
+    float m_timeLeft = 0;
+    float m_curSpeed = 0;
+    float m_uvSnap = 0;
+    bool m_spinning = false;
   };
 }

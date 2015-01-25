@@ -36,20 +36,16 @@ namespace Framework
     spr->MaxUV = Vec2(1, m_uvSnap);
 
     m_curSpeed = startSpeed;
-    m_timeLeft = 10;
-
-    m_stage = Fast;
-    m_timeData[0] = m_timeLeft - (m_timeLeft / 3);
-    m_timeData[1] = m_timeData[0] - (m_timeLeft / 3);
+    m_timeLeft = 5;
+    m_spinning = true;
   }
 
   void SlotController::Update(float dt)
   {
     Sprite* spr = (Sprite*)space->GetComponent(eSprite, owner);
 
-    if (m_timeLeft > 0)
+    if (m_spinning)
     {
-      m_curTime += dt;
       m_timeLeft -= dt;
 
       float vMove = m_curSpeed * dt;
@@ -62,66 +58,16 @@ namespace Framework
       }
       spr->MaxUV = spr->MaxUV + Vec2(0, vMove);
 
-      m_curSpeed = m_timeLeft*m_timeLeft - m_curTime*m_curTime;
+      if (m_timeLeft <= 0)
+      {
+        float r = spr->MinUV.y - (int)(spr->MinUV.y / m_uvSnap) * m_uvSnap;
+        if (r <= m_curSpeed)
+        {
+          spr->MinUV.y -= r;
+          spr->MaxUV.y -= r;
+        }
+      }
     }
-
-/*
-    if (m_stage != Stop)
-    {
-
-      if (m_stage == Fast && m_timeLeft < m_timeData[0])
-      {
-        if (m_transition)
-        {
-          if (m_curSpeed < startSpeed / 3)
-          {
-            m_transition = false;
-            m_stage = Slow;
-          }
-          else
-            m_curSpeed -= ((startSpeed / 3) / fastToSlow) * dt;
-        }
-        else
-          m_transition = true;
-      }
-
-      if (m_stage == Slow && m_timeLeft < m_timeData[1])
-      {
-        if (m_transition)
-        {
-          if (m_curSpeed < startSpeed / 6)
-          {
-            m_transition = false;
-            m_stage = Crawl;
-          }
-          else
-            m_curSpeed -= ((startSpeed / 2) / fastToSlow) * dt;
-        }
-        else
-          m_transition = true;
-      }
-
-      if (m_stage == Slow && m_timeLeft <= slowToCrawl)
-      {
-        if (m_transition)
-        {
-          m_curSpeed -= (m_startCrawlSpeed / slowToCrawl) * dt;
-          if (m_curSpeed < 0)
-          {
-            m_curSpeed = 0;
-            m_transition = false;
-            m_stage = Stop;
-          }
-        }
-        else
-        {
-          m_transition = true;
-          m_startCrawlSpeed = m_curSpeed;
-        }
-      }
-      m_timeLeft -= dt;
-    }*/
-    
 
     
   }
