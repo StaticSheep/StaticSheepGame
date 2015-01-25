@@ -352,6 +352,7 @@ namespace Framework
       Vec2 diff = Draw::ToWorld(SHEEPINPUT->Mouse.GetScreenPosition())
         - Draw::ToWorld(m_lastMousePos);
 
+
       if (m_useSnapping)
       {
         int reps;
@@ -365,9 +366,23 @@ namespace Framework
         reps = (int)(m_snapBuffer.y / m_snapDistance);
         diff.y = reps * m_snapDistance;
         m_snapBuffer.y -= reps * m_snapDistance;
+
+        if (m_mode == Rotation)
+        {
+          m_snapRotateBuffer += diff.Length();
+          reps = (int)(m_snapRotateBuffer / m_snapDistance);
+          diff.Normalize();
+          diff = diff * reps * m_snapDistance;
+          m_snapRotateBuffer -= reps * m_snapDistance;
+        }
+        
       }
       else
+      {
         m_snapBuffer = 0;
+        m_snapRotateBuffer - 0;
+      }
+        
 
       if (m_mode == Translation)
       {
@@ -426,12 +441,12 @@ namespace Framework
       else if (m_mode == Rotation)
       {
         Vec2 dir = (screenPos - m_startRotatePos).Normalize();
-        dir = Vec2(dir.y, -dir.x);
+        //dir = Vec2(dir.y, -dir.x);
 
         if (diff * dir >= 0)
-          trans->SetRotation(trans->GetRotation() + diff.Length() / 100);
+          trans->SetRotation(trans->GetRotation() + (PI / 180) * diff.Length());
         else
-          trans->SetRotation(trans->GetRotation() - diff.Length() / 100);
+          trans->SetRotation(trans->GetRotation() - (PI / 180) * diff.Length());
       }
       
 

@@ -27,9 +27,9 @@ namespace Framework
     void Update(float dt);
     void Stop();
 
-    float slotHeight = 64;
+    float slotOptions = 3;
 
-    float startSpeed = 4;
+    float startSpeed = 7;
     
 
   private:

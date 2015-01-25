@@ -92,9 +92,12 @@ namespace Framework
     Vec2 m_yArrow, m_yArrowCenter;
 
     Vec2 m_snapBuffer = 0;
-    
+    float m_snapRotateBuffer = 0;
+
     float m_scaleDampening = 25.0f;
     float m_snapDistance = 50.0f;
+
+
     bool m_useSnapping = false;
     bool m_world = true;
 
