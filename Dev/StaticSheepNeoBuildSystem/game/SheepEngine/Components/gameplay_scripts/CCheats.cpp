@@ -63,7 +63,7 @@ namespace Framework
 
   void Cheats::RecordButtonPress(Buttons button)
   {
-    pc = space->GetHandles().GetAs<PlayerController>(playerController); //get the player controller
+    PlayerController* pc = space->GetHandles().GetAs<PlayerController>(playerController); //get the player controller
 
     //if you make a new cheat sequence add it here with the rest to check its update
     GM.CheatUpdate(button);

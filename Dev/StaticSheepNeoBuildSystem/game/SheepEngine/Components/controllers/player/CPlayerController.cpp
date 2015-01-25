@@ -17,6 +17,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "../../sprites/CAniSprite.h"
 #include "../../gameplay_scripts/CCheats.h"
 #include "../systems/input/Input.h"
+#include "../build/vs2013/projects/MetricInfo.h"
+
 
 
 namespace Framework
@@ -41,6 +43,7 @@ namespace Framework
     normals.clear();
     lastRotation = 0.0f;
     frameSkip = false;
+
 	}
 
 	PlayerController::~PlayerController() //4
@@ -88,6 +91,7 @@ namespace Framework
     animCont = AnimationController(playerNum);
     animCont.AnimState = IDLE;
     bc->SetBodyCollisionGroup(space->GetGameObject(owner)->archetype);
+
 	}
 
   static Vec2D aim(1.0f, 0.0f); //default aiming direction
@@ -114,7 +118,16 @@ namespace Framework
 
     //if the player is out of health run the player death function
     if (health <= 0)
+    {
+      MetricInfo metricData;
+      metricData.mt = PLAYER_DEATH;
+      metricData.playerNum = playerNum;
+      metricData.x = (int)ps->GetTranslation().x;
+      metricData.y = (int)ps->GetTranslation().y;
+      ENGINE->SystemMessage(MetricsMessage(&metricData));
+
       PlayerDeath(se, ps);
+    }
 
     //if the player has just respawned, run the blink function
     if (hasRespawned)
@@ -295,6 +308,13 @@ namespace Framework
       SHEEPINPUT->Pads[0].SetRightStick(aim);
       aimDir = Vec3D(aim.x, aim.y, 0.0);
     }
+
+    MetricInfo metricData;
+    metricData.mt = PLAYER_LOCATION;
+    metricData.playerNum = playerNum;
+    metricData.x = (int)ps->GetTranslation().x;
+    metricData.y = (int)ps->GetTranslation().y;
+    ENGINE->SystemMessage(MetricsMessage(&metricData));
 
 	}
 
@@ -641,21 +661,53 @@ namespace Framework
   //************************************
   void PlayerController::PlayerButtonPress()
   {
-    if (gp->ButtonPressed(XButtons.Y))
-      space->GetGameObject(owner)->hooks.Call("ButtonPressed", Buttons::Y);
-    if (gp->ButtonPressed(XButtons.DPad.Up))
-      space->GetGameObject(owner)->hooks.Call("ButtonPressed", Buttons::UP);
-    if (gp->ButtonPressed(XButtons.DPad.Down))
-      space->GetGameObject(owner)->hooks.Call("ButtonPressed", Buttons::DOWN);
-    if (gp->ButtonPressed(XButtons.DPad.Left))
-      space->GetGameObject(owner)->hooks.Call("ButtonPressed", Buttons::LEFT);
-    if (gp->ButtonPressed(XButtons.DPad.Right))
-      space->GetGameObject(owner)->hooks.Call("ButtonPressed", Buttons::RIGHT);
+    MetricInfo playerButton;
+    playerButton.mt == PLAYER_BUTTON_PRESS;
+    playerButton.playerNum = playerNum;
+    playerButton.x = (int)ps->GetTranslation().x;
+    playerButton.y = (int)ps->GetTranslation().y;
+
+    if (gp->ButtonPressed(XButtons.A))
+    {
+      playerButton.button = Buttons::A;
+    }
+    if (gp->ButtonPressed(XButtons.B))
+    {
+      playerButton.button = Buttons::B;
+    }
     if (gp->ButtonPressed(XButtons.X))
     {
       //bc->AddToAngVelocity(.5f);
       space->GetGameObject(owner)->hooks.Call("ButtonPressed", Buttons::X);
+      playerButton.button = Buttons::X;
     }
+    if (gp->ButtonPressed(XButtons.Y))
+    {
+      space->GetGameObject(owner)->hooks.Call("ButtonPressed", Buttons::Y);
+      playerButton.button = Buttons::Y;
+    }
+    if (gp->ButtonPressed(XButtons.DPad.Up))
+    {
+      space->GetGameObject(owner)->hooks.Call("ButtonPressed", Buttons::UP);
+      playerButton.button = Buttons::UP;
+    }
+    if (gp->ButtonPressed(XButtons.DPad.Down))
+    {
+      space->GetGameObject(owner)->hooks.Call("ButtonPressed", Buttons::DOWN);
+      playerButton.button = Buttons::DOWN;
+    }
+    if (gp->ButtonPressed(XButtons.DPad.Left))
+    {
+      space->GetGameObject(owner)->hooks.Call("ButtonPressed", Buttons::LEFT);
+      playerButton.button = Buttons::LEFT;
+    }
+    if (gp->ButtonPressed(XButtons.DPad.Right))
+    {
+      space->GetGameObject(owner)->hooks.Call("ButtonPressed", Buttons::RIGHT);
+      playerButton.button = Buttons::RIGHT;
+    }
+    
+    ENGINE->SystemMessage(MetricsMessage(&playerButton));
   }
 
   //************************************

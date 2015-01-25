@@ -31,6 +31,7 @@ namespace Framework
       WindowMinimize,
       WindowRestore,
       CameraChange,
+      MetricsData,
       EngineReady,
       Pause,
       Quit,
@@ -55,5 +56,18 @@ namespace Framework
 
     float width;
     float height;
+  };
+
+  class MetricsMessage : public Message
+  {
+  public:
+    MetricsMessage(void* dmata)
+      :Message(MetricsData),
+      data(dmata)
+    {
+
+    }
+
+    void* data;
   };
 }

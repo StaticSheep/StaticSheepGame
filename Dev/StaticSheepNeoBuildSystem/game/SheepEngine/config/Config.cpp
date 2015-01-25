@@ -23,6 +23,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "systems/skynet/Skynet.h"
 
 #include "WxWindow.h"
+#include "systems/metrics/MetricController.h"
+
 //#include "gfx/wxw/d3d/WxD3DCanvas.h"
 //#include "gfx/wxw/d3d/WxD3DContext.h"
 
@@ -56,6 +58,7 @@ namespace Framework
     Core->AddSystem(new GameLogic());
     Core->AddSystem(new SheepPhysics());
     Core->AddSystem(new SheepAudio());
+    Core->AddSystem(new MetricController());
 
     void* rc = nullptr;
 

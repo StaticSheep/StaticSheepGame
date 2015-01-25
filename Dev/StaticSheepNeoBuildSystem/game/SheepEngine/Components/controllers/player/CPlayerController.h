@@ -14,6 +14,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "types/weapons/WBase.h"
 #include "AnimationController.h"
 #include "../../colliders/CBoxCollider.h"
+#include "../../gameplay_scripts/CCheats.h"
 
 namespace Framework
 {
