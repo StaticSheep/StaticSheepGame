@@ -17,6 +17,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "Shape.h"
 #include "Vec3D.h"
 #include <vector>
+#include "RayCast.h"
 
 
 
@@ -159,6 +160,9 @@ namespace SheepFizz
 			HandleManager handles_;
 
 			std::vector<Manifold> manifolds_;
+
+      //raycast is constructed once
+      RayCast rayCast_;
 
       //debug info
       unsigned int manifoldNumber_;
