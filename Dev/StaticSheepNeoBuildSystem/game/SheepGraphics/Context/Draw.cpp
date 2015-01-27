@@ -63,50 +63,14 @@ namespace DirectSheep
 
   void RenderContext::DrawSpriteText(const char * text, float size, const char * font)
   {
-    Mat4 matFinal;
 
-    Mat4 rotMat, transMat;
-
-    matFinal = XMMatrixIdentity();
-    rotMat = XMMatrixIdentity();
-    transMat = XMMatrixIdentity();
-
-
-    rotMat = XMMatrixRotationRollPitchYaw(-DirectX::XM_PI, 0.0f, m_spriteTrans.theta);
-
-
-    transMat = XMMatrixTranslation(m_spriteTrans.x,
-      m_camUse ? m_spriteTrans.y : -m_spriteTrans.y, 0.0f);
-
-    rotMat = XMMatrixMultiply(rotMat, transMat);
-
-    matFinal = rotMat * ((Camera*)m_camera.ptr)->GetViewProj();
-
-    FW1_RECTF rect;
-    rect.Left = rect.Right = 0.0f;
-    rect.Top = rect.Bottom = 0.0f;
-
-    std::string boop(text);
-    std::wstring test(boop.begin(), boop.end());
+    std::string sText(text);
+    std::wstring wText(sText.begin(), sText.end());
 
     if (m_font.count(font))
-      m_font[font]->DrawString(m_batcher, test.c_str(), Vec2(m_spriteTrans.x, m_spriteTrans.y), XMLoadFloat4(&m_spriteBlend), m_spriteTrans.theta, Vec2(0, 0), GXMVECTOR(size), DirectX::SpriteEffects::SpriteEffects_None, m_spriteTrans.z);
+      m_font[font]->DrawString(m_batcher.get(), wText.c_str(), Vec2(m_spriteTrans.x, m_camUse ? m_spriteTrans.y : -m_spriteTrans.y), Colors::White, m_spriteTrans.theta, Vec2(0, 0), Vec2(1, -1), DirectX::SpriteEffects_None, 0);
     else
-      m_font["Arial"]->DrawString(m_batcher.get(), test.c_str(), Vec2(m_spriteTrans.x, m_spriteTrans.y));
-    //m_font.m_fontWrapper->DrawString(
-    //  m_deviceContext,
-    //  test.c_str(),// String
-    //  WFont.c_str(),
-    //  size,
-    //  &rect,
-    //  //(UINT32)0xFFFFFFFF,
-    //  DirectX::PackedVector::XMCOLOR(m_spriteBlend.z * 255, m_spriteBlend.y * 255,
-    //  m_spriteBlend.x * 255, m_spriteBlend.w * 255),// Text color, 0xAaBbGgRr
-    //  NULL,
-    //  (float*)(&matFinal)->m,
-    //  FW1_RESTORESTATE | FW1_LEFT | FW1_TOP | FW1_NOWORDWRAP
-    //  );// Flags (for example FW1_RESTORESTATE to keep context states 
-
+      m_font["Arial"]->DrawString(m_batcher.get(), wText.c_str(), Vec2(m_spriteTrans.x, m_camUse ? m_spriteTrans.y : -m_spriteTrans.y), Colors::White, m_spriteTrans.theta, Vec2(0, 0), Vec2(1, -1), DirectX::SpriteEffects_None, 0);
   }
 
   void RenderContext::DrawBatched(DirectSheep::Handle texture)
