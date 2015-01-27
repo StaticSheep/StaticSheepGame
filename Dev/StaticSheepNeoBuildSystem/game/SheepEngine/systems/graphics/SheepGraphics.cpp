@@ -88,8 +88,9 @@ namespace Framework
     m_debugData.numTextDraws = 0;
 #endif
     StartFrame();
+    
     Draw();
-    m_renderContext->DrawPLight();
+    
     FinishFrame();
 	}
   
@@ -198,7 +199,7 @@ namespace Framework
 
     ENGINE->SystemMessage(Message(Message::GUIDraw));
     m_renderContext->EndBatch();
-
+    m_renderContext->DrawPLight();
     m_renderContext->StartBatch();
     ENGINE->SystemMessage(Message(Message::PostGUIDraw));
     m_renderContext->EndBatch();

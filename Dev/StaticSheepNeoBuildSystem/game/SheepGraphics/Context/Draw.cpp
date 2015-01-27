@@ -262,13 +262,13 @@ namespace DirectSheep
     a += .01;
     m_PointLight->bindMatrices(m_deviceContext, XMMatrixIdentity(), XMMatrixIdentity(), XMMatrixIdentity());
 
-    m_PointLight->bindLight(m_deviceContext, Light(Vec3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0.0f), Color(1, 1, 1, 1), Vec3(.01, .01, .01)));
+    m_PointLight->bindLight(m_deviceContext, Light(Vec3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0.0f), Color(0, 1, 0, 1), Vec3(.050097f, 0.101329f, .007211f)));
 
     m_PLightModel->bind(m_deviceContext);
 
     m_PointLight->bind(m_deviceContext);
 
-    SetBlendMode(BLEND_MODE_ADDITIVE);
+    SetBlendMode(BLEND_MODE_MULTIPLY);
 
     m_deviceContext->DrawIndexed(m_PLightModel->getIndexCount(), 0, 0);
   }

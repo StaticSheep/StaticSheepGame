@@ -23,7 +23,7 @@ float4 PSMain(VSOutput input) : SV_TARGET
   float at = 1. / (atten.x + atten.y * diff + atten.z * diff * diff);
   float4 newColor = col * at;
 
-    newColor.w = col.w;
+    newColor.w = 1;
 
   return saturate(newColor);
 }
