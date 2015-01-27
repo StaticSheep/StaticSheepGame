@@ -666,6 +666,7 @@ namespace Framework
     playerButton.playerNum = playerNum;
     playerButton.x = (int)ps->GetTranslation().x;
     playerButton.y = (int)ps->GetTranslation().y;
+    playerButton.button = Buttons::NONE;
 
     if (gp->ButtonPressed(XButtons.A))
     {

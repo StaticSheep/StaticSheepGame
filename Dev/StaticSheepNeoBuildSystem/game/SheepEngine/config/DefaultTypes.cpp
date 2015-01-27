@@ -294,6 +294,7 @@ namespace Framework
     //TYPE_SET_TO_LUA( LuaComponent*, Lua::GameComponentToLua);
 
     TYPE_REGISTER(SlotController);
+    TYPE_ADD_MEMBER(SlotController, m_order, false, true, "Order");
 
     TYPE_REGISTER( AntTweak::TBar );
     TYPE_REGISTER_PTR( AntTweak::TBar* );

@@ -28,6 +28,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 #include <boost/filesystem.hpp>
 #include <boost/foreach.hpp>
+#include "systems/anttweak/AntTweakModule.h"
 
 namespace Framework
 {
@@ -160,8 +161,9 @@ namespace Framework
     if (m_returnFromPIE)
       ReloadEditor();
 
-    if (m_PIE)
-      CheckReturnFromPIE();
+    if (m_editorAcitve)
+      CheckPIE();
+    
   }
 
   void Engine::MainLoop()
@@ -289,11 +291,11 @@ namespace Framework
 
 
 
-  void Engine::CheckReturnFromPIE()
+  void Engine::CheckPIE()
   {
     if (SHEEPINPUT->Keyboard.KeyIsPressed(VK_F5))
     {
-      PlayInEditor(false);
+      PlayInEditor(!PlayingInEditor());
     }
   }
 
@@ -340,6 +342,11 @@ namespace Framework
     if (play)
     {
       TRACELOG->Log(TraceLevel::DEBUG, "Prepping PIE mode.");
+
+      ObjectSelectedMessage msg(nullptr);
+      ENGINE->SystemMessage(msg);
+
+      ATWEAK->RemoveAllBars();
 
       std::vector<GameSpace*>& gameSpaces = ENGINE->Spaces();
 
@@ -388,15 +395,15 @@ namespace Framework
     }
   }
   
-  void Engine::StartPIE()
+  void Engine::StartPIE(void)
   {
     TRACELOG->Log(TraceLevel::DEBUG, "Starting PIE mode.");
 
     std::string filePath = "cache\\spaces\\";
 
-    boost::filesystem::directory_iterator it(filePath), eod;
-
     m_enteringPIE = false;
+
+    boost::filesystem::directory_iterator it(filePath), eod;
 
     BOOST_FOREACH(boost::filesystem::path const &p, std::make_pair(it, eod))
     {

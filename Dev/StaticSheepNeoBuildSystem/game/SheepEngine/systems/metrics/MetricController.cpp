@@ -122,7 +122,8 @@ namespace Framework
   }
   void MetricController::UpdateButtonPress(char player, Buttons button)
   {
-    ++(player_button_press[player][button]);
+    if (button < Buttons::TOTALBUTTONS)
+      ++(player_button_press[player][button]);
   }
   void MetricController::PrintMetrics()
   {
