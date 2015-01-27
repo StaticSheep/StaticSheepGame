@@ -10,6 +10,7 @@ All content © 2015 DigiPen (USA) Corporation, all rights reserved.
 #include "pch/precompiled.h"
 #include "MetricController.h"
 #include <fstream>
+#include <ctime>
 
 namespace Framework
 {
@@ -133,8 +134,18 @@ namespace Framework
   }
   void MetricController::PrintMetrics()
   {
+    time_t rawtime;
+    struct tm * timeinfo;
+    char buffer[80];
+
+    time(&rawtime);
+    timeinfo = localtime(&rawtime);
+
+    strftime(buffer, 80, "metrics\\%d_%m_%Y_%I_%M_%S.txt\0", timeinfo);
+    //std::string str(buffer);
+
     std::ofstream outFile;
-    outFile.open("metrics.txt", std::ofstream::out | std::ios_base::app); //open the file and set the mode to append
+    outFile.open(buffer, std::ofstream::out | std::ios_base::app); //open the file and set the mode to append
     if (outFile.is_open()) //double check the file opened
     {
       outFile << "Total Round Time: " << GameTimer << std::endl;
