@@ -70,7 +70,10 @@ namespace Framework
       UpdateLocation(info.playerNum, GameTimer, info.x, info.y);
       break;
     case PLAYER_DEATH:
-      UpdateLocation(info.playerNum, GameTimer, info.x, info.y);
+      UpdateDeath(info.playerNum, GameTimer, info.x, info.y);
+      break;
+    case PLAYER_KILL:
+      UpdateKill(info.playerNum, GameTimer, info.x, info.y);
       break;
     case PLAYER_BUTTON_PRESS:
       UpdateButtonPress(info.playerNum, info.button);
@@ -112,6 +115,10 @@ namespace Framework
     player_death[player].push_back(metric_loc);
     player_deaths[player]++;
   }
+  void MetricController::UpdateKill(char player, float time, int x, int y)
+  {
+    player_kills[player]++;
+  }
   void MetricController::SetRoundLength(float time)
   {
     roundLength = time;
@@ -133,18 +140,19 @@ namespace Framework
       outFile << "Total Round Time: " << GameTimer << std::endl;
       for (int i = 0; i < 4; ++i)
       {
+        outFile << "********************************" << std::endl;
         outFile << "Player " << i + 1 << std::endl;
         outFile << "Kills: " << player_kills[i] << std::endl;
         outFile << "Deaths: " << player_deaths[i] << std::endl;
-        outFile << "Pistol fire: " << player_fire[0][0] << " shots." << std::endl;
-        outFile << "Auto-Gun fire: " << player_fire[0][1] << " shots." << std::endl;
-        outFile << "Shotgun fire: " << player_fire[0][2] << " shots." << std::endl;
+        //outFile << "Pistol fire: " << player_fire[0][0] << " shots." << std::endl;
+        //outFile << "Auto-Gun fire: " << player_fire[0][1] << " shots." << std::endl;
+        //outFile << "Shotgun fire: " << player_fire[0][2] << " shots." << std::endl;
         outFile << "Auto-Gun pickups: " << player_pickup[0][1] << std::endl;
         outFile << "Shotgun pickups: " << player_pickup[0][2] << std::endl;
-        outFile << "A-button presses: " << player_button_press[i][Buttons::A] << std::endl;
-        outFile << "B-button presses: " << player_button_press[i][Buttons::B] << std::endl;
-        outFile << "X-button presses: " << player_button_press[i][Buttons::X] << std::endl;
-        outFile << "Y-button presses: " << player_button_press[i][Buttons::Y] << std::endl;
+        //outFile << "A-button presses: " << player_button_press[i][Buttons::A] << std::endl;
+        //outFile << "B-button presses: " << player_button_press[i][Buttons::B] << std::endl;
+        //outFile << "X-button presses: " << player_button_press[i][Buttons::X] << std::endl;
+        //outFile << "Y-button presses: " << player_button_press[i][Buttons::Y] << std::endl;
         //outFile << "RT-button presses: " << player_button_press[0][Buttons::RT] << std::endl;
         //outFile << "RB-button presses: " << player_button_press[0][Buttons::RB] << std::endl;
         //outFile << "LT-button presses: " << player_button_press[0][Buttons::LT] << std::endl;

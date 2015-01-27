@@ -342,8 +342,26 @@ namespace Framework
       Handle hit = (FACTORY->LoadObjectFromArchetype(space, "hit"))->self;
       Transform *exT = space->GetGameObject(hit)->GetComponent<Transform>(eTransform);
       exT->SetTranslation(ps->GetTranslation() + Vec3(randomX,randomY,-1.0f));
-      return;
+
+      //for metrics, need to determine where the bullet came from by checking its collision group
+      if (health <= 0)
+      {
+        int pn = 0;
+
+        if (OtherObject->GetComponent<CircleCollider>(eCircleCollider)->GetBodyCollisionGroup() == "Player1")
+          pn = 0;
+        else if (OtherObject->GetComponent<CircleCollider>(eCircleCollider)->GetBodyCollisionGroup() == "Player2")
+          pn = 1;
+        else if (OtherObject->GetComponent<CircleCollider>(eCircleCollider)->GetBodyCollisionGroup() == "Player3")
+          pn = 2;
+        else if (OtherObject->GetComponent<CircleCollider>(eCircleCollider)->GetBodyCollisionGroup() == "Player4")
+          pn = 3;
+
+        MetricInfo metricData(pn, 0, 0, PLAYER_KILL, Buttons::TOTALBUTTONS, Weapons::PISTOL);
+        ENGINE->SystemMessage(MetricsMessage(&metricData));
+      }
     }
+
     if ((OtherObject->archetype == "KillBox" || OtherObject->archetype == "KillBoxBig" || OtherObject->name == "GrinderBig") 
         && !GodMode && !PerfectMachine)
       health = 0;
@@ -354,7 +372,6 @@ namespace Framework
 
     if (OtherObject->name == "WeaponPickup")
       se->Play("weapon_pickup", &SoundInstance(0.75f));
-
 		
 		//get the transform of the thing we are colliding with
 		Transform *OOT = OtherObject->GetComponent<Transform>(eTransform);
@@ -666,6 +683,7 @@ namespace Framework
     playerButton.playerNum = playerNum;
     playerButton.x = (int)ps->GetTranslation().x;
     playerButton.y = (int)ps->GetTranslation().y;
+    playerButton.button = Buttons::TOTALBUTTONS;
 
     if (gp->ButtonPressed(XButtons.A))
     {
@@ -706,8 +724,9 @@ namespace Framework
       space->GetGameObject(owner)->hooks.Call("ButtonPressed", Buttons::RIGHT);
       playerButton.button = Buttons::RIGHT;
     }
-    
-    ENGINE->SystemMessage(MetricsMessage(&playerButton));
+
+    if (playerButton.button != Buttons::TOTALBUTTONS)
+      ENGINE->SystemMessage(MetricsMessage(&playerButton));
   }
 
   //************************************

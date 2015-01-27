@@ -31,6 +31,7 @@ namespace Framework
     void UpdatePickup(char player, Weapons weap);
     void UpdateLocation(char player, float time, int x, int y);
     void UpdateDeath(char player, float time, int x, int y);
+    void UpdateKill(char player, float time, int x, int y);
     void SetRoundLength(float time);
     void SetRoundWinner(char player);
     void ReceiveMessage(Message& msg);
