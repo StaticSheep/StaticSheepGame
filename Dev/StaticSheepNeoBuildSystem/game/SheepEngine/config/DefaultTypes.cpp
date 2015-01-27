@@ -37,6 +37,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/gameplay_scripts/CWarningText.h"
 #include "components/gameplay_scripts/CBackgroundPan.h"
 #include "components/gameplay_scripts/CCheats.h"
+#include "components/particles/CParticleSystem.h"
 
 
 namespace Framework
@@ -270,6 +271,10 @@ namespace Framework
     TYPE_ADD_MEMBER( AniSprite, Size, false, true, "Scale");
     TYPE_SET_TWEAK_TYPE( AniSprite, AntTweak::TW_TYPE_COMPONENT );
     TYPE_SET_FROM_LUA( AniSprite, Lua::GenericObjectFromLua );
+
+    TYPE_REGISTER( ParticleSystem );
+	  TYPE_SET_TWEAK_TYPE(ParticleSystem, AntTweak::TW_TYPE_COMPONENT);
+    TYPE_ADD_MEMBER( ParticleSystem, textureName, false, true, "Texture");
 
     TYPE_REGISTER(Camera);
     TYPE_ADD_MEMBER(Camera, m_active, false, true, "Active",

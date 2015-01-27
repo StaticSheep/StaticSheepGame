@@ -15,6 +15,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "engine/window/Window32.h"
 
 #include "components/sprites/CAniSprite.h"
+#include "components/particles/CParticleSystem.h"
 #include <iostream>
 #include <boost/filesystem.hpp>
 using namespace boost::filesystem;
@@ -41,6 +42,7 @@ namespace Framework
     REGISTER_COMPONENT(Sprite);
     REGISTER_COMPONENT(Camera);
     REGISTER_COMPONENT(AniSprite);
+    REGISTER_COMPONENT(ParticleSystem);
   }
 
 	SheepGraphics::~SheepGraphics()

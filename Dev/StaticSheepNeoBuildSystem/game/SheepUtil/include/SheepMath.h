@@ -27,6 +27,39 @@ namespace Framework
     int Numerator;
     int Denominator;
   };
+
+
+  // t current time, b start value, c change in value, d duration
+
+  // linear ((c * t) / d) + b
+
+  //template<typename T>
+  class Ease
+  {
+  public:
+
+    template<typename T>
+    static T Linear(float currentTime, T start, T end)
+    {
+      return start * ( 1.0f - currentTime) + (end * currentTime);
+    }
+
+    template<typename T>
+    static T Quadratic(float currentTime, float endTime, T start, T end)
+    {
+      // in
+      if(currentTime < endTime / 2.0f)
+      {
+        currentTime /= endTime;
+        return end * currentTime * currentTime + start;
+      }
+      else // out
+      {
+        currentTime /= endTime;
+        return -end * currentTime * ( currentTime - 2.0f) + start;
+      }
+    }
+  };
   
 /******************************************************************************
     Public Functions

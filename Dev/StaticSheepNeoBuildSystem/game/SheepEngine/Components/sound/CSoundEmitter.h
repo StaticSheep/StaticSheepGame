@@ -33,7 +33,7 @@ namespace Framework
     
     float _pitch;
     float _volume;
-    
+
   };
 }
 
