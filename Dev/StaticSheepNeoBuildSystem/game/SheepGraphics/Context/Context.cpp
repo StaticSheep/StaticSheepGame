@@ -122,9 +122,6 @@ namespace DirectSheep
     
     // Set DirectX viewport
     SetViewport(0, 0, Dimension((unsigned)width, (unsigned)height));
-
-    // Initializes SpriteFont
-    CreateFontWrapper();
     
     // Initialize all DirectX states
     InitializeRasterizerState();
@@ -208,8 +205,6 @@ namespace DirectSheep
     SafeRelease(m_deviceContext);
 
     SafeRelease(m_swapChain);
-
-    m_font.Release();
 
     SafeRelease(m_backBuffer);
 
@@ -581,27 +576,16 @@ namespace DirectSheep
   Framework::Vec2D RenderContext::MeasureString(const char* text,
     float size, const char* font)
   {
+    XMVECTOR fontSize;
     std::string tempText = text;
     std::wstring wcText(tempText.begin(), tempText.end());
 
-    std::string tempFont = font;
-    std::wstring wcFont(tempFont.begin(), tempFont.end());
+    if (m_font.count(font))
+      fontSize = m_font[font]->MeasureString(wcText.c_str());
+    else
+      return Framework::Vec2D(0, 0);
 
-    FW1_RECTF rect;
-    rect.Left = 0.0f;
-    rect.Right = 0.0f;
-    rect.Top = 0.0f;
-    rect.Bottom = 0.0f;
-
-    FW1_RECTF res = m_font.m_fontWrapper->MeasureString(wcText.c_str(),
-      wcFont.c_str(), size, &rect, FW1_ANALYZEONLY
-      | FW1_RESTORESTATE | FW1_LEFT | FW1_TOP | FW1_NOWORDWRAP);
-
-    float width = res.Right;
-    float height = abs(res.Top) + abs(res.Bottom);
-    //m_font->m_fontWrapper->MeasureString;
-
-    return Framework::Vec2D(width, height);
+    return Framework::Vec2D(XMVectorGetX(fontSize), XMVectorGetY(fontSize));
   }
 
 

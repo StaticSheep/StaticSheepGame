@@ -136,27 +136,12 @@ namespace DirectSheep
     return true;
   }
 
-  bool RenderContext::CreateFontWrapper(void)
+  void RenderContext::AddFont(const char* fontname,const char* filename)
   {
-    DXVerify(FW1CreateFactory(FW1_VERSION, &m_font.m_fontFactory));
+    std::string font = std::string(filename);
+    std::wstring wFont(font.begin(), font.end());
 
-    FW1_FONTWRAPPERCREATEPARAMS Params;
-    ZeroMemory(&Params, sizeof(Params));
-
-    Params.SheetMipLevels = 5;
-    Params.AnisotropicFiltering = TRUE;
-    Params.DefaultFontParams.pszFontFamily = L"Arial";
-    Params.DefaultFontParams.FontWeight = DWRITE_FONT_WEIGHT_NORMAL;
-    Params.DefaultFontParams.FontStyle = DWRITE_FONT_STYLE_NORMAL;
-    Params.DefaultFontParams.FontStretch = DWRITE_FONT_STRETCH_NORMAL;
-
-    DXVerify(m_font.m_fontFactory->CreateFontWrapper(m_device, NULL, &Params, &m_font.m_fontWrapper));
-
-    m_font.m_fontFactory->Release();
-    m_font.m_fontFactory = NULL;
-
-
-    return true;
+    m_font[std::string(fontname)].reset(new DirectX::SpriteFont(m_device, wFont.c_str()));
   }
 
   void RenderContext::InitializeDeviceAndSwapChain(void)

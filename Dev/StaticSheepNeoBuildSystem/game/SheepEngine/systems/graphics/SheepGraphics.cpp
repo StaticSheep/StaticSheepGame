@@ -348,7 +348,25 @@ namespace Framework
             LoadTexture(it->path().filename().generic_string());
         }
       }
-      return true;
+      else
+        return false;
+
+      p = filepath + "/Fonts";
+      if (exists(p))
+      {
+        if (is_directory(p))
+        {
+          for (directory_iterator it(p), end; it != end; ++it)
+          {
+            std::string foo = it->path().extension().generic_string();
+            if (it->path().extension().generic_string() == ".spritefont")
+              m_renderContext->AddFont(it->path().stem().generic_string().c_str(), it->path().generic_string().c_str());
+          }
+        }
+        return true;
+      }
+      else
+        return false;
     }
     return false;
   }

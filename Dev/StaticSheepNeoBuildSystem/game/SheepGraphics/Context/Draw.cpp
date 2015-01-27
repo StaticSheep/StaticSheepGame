@@ -89,22 +89,23 @@ namespace DirectSheep
     std::string boop(text);
     std::wstring test(boop.begin(), boop.end());
 
-    std::string sfont(font);
-    std::wstring WFont(sfont.begin(), sfont.end());
-
-    m_font.m_fontWrapper->DrawString(
-      m_deviceContext,
-      test.c_str(),// String
-      WFont.c_str(),
-      size,
-      &rect,
-      //(UINT32)0xFFFFFFFF,
-      DirectX::PackedVector::XMCOLOR(m_spriteBlend.z * 255, m_spriteBlend.y * 255,
-      m_spriteBlend.x * 255, m_spriteBlend.w * 255),// Text color, 0xAaBbGgRr
-      NULL,
-      (float*)(&matFinal)->m,
-      FW1_RESTORESTATE | FW1_LEFT | FW1_TOP | FW1_NOWORDWRAP
-      );// Flags (for example FW1_RESTORESTATE to keep context states 
+    if (m_font.count(font))
+      m_font[font]->DrawString(m_batcher, test.c_str(), Vec2(m_spriteTrans.x, m_spriteTrans.y), XMLoadFloat4(&m_spriteBlend), m_spriteTrans.theta, Vec2(0, 0), GXMVECTOR(size), DirectX::SpriteEffects::SpriteEffects_None, m_spriteTrans.z);
+    else
+      m_font["Arial"]->DrawString(m_batcher.get(), test.c_str(), Vec2(m_spriteTrans.x, m_spriteTrans.y));
+    //m_font.m_fontWrapper->DrawString(
+    //  m_deviceContext,
+    //  test.c_str(),// String
+    //  WFont.c_str(),
+    //  size,
+    //  &rect,
+    //  //(UINT32)0xFFFFFFFF,
+    //  DirectX::PackedVector::XMCOLOR(m_spriteBlend.z * 255, m_spriteBlend.y * 255,
+    //  m_spriteBlend.x * 255, m_spriteBlend.w * 255),// Text color, 0xAaBbGgRr
+    //  NULL,
+    //  (float*)(&matFinal)->m,
+    //  FW1_RESTORESTATE | FW1_LEFT | FW1_TOP | FW1_NOWORDWRAP
+    //  );// Flags (for example FW1_RESTORESTATE to keep context states 
 
   }
 
