@@ -190,6 +190,12 @@ namespace Framework
 
     mainBar->AddSeparator("Gizmos");
 
+    mainBar->DefineLabel("Editor Options");
+    mainBar->AddButton("EditorOptions", nullptr, nullptr);
+
+    mainBar->DefineLabel("Single Object Window");
+    mainBar->AddVarRW("SOW", AntTweak::TW_TYPE_BOOLCPP, &(GIZMO_EDITOR->m_oneObjectBar));
+
     mainBar->DefineLabel("Gizmo Mode");
     mainBar->AddButton("GizmoMode", nullptr, nullptr);
     GizmoType cMode = GIZMO_EDITOR->GetGizmoMode();
@@ -203,6 +209,7 @@ namespace Framework
     mainBar->DefineKeyShortcut("CTRL+r");
     mainBar->AddButton("Rotation", SwitchGizmoRotation, nullptr);
 
+    mainBar->DefineLabel("Gizmo Options");
     mainBar->AddButton("Options", nullptr, nullptr);
     
 

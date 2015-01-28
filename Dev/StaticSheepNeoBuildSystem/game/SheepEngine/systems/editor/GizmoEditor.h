@@ -9,6 +9,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 #include "systems/System.h"
 #include "types/object/Object.h"
+#include "types/vectors/Vec2.h"
+#include "types/vectors/Vec3.h"
 
 namespace Framework
 {
@@ -52,6 +54,9 @@ namespace Framework
 
     void ToggleSnapping(bool on);
 
+
+    bool m_oneObjectBar = false;
+
   private:
 
     void DetectHover(Vec2 screenPos, float theta);
@@ -64,6 +69,8 @@ namespace Framework
 
     void DetectDrag();
     void HandleDrag(Vec2 screenPos, GameObject* obj);
+
+    void HighlightBar(GameObject* obj);
 
     enum DragAxis
     {

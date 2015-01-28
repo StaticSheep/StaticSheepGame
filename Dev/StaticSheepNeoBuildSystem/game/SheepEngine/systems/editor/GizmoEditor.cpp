@@ -15,6 +15,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "../graphics/SheepGraphics.h"
 #include "components/colliders/CCircleCollider.h"
 #include "components/colliders/CBoxCollider.h"
+#include "../anttweak/AntTweakModule.h"
 
 namespace Framework
 {
@@ -512,11 +513,23 @@ namespace Framework
   {
     if (obj == nullptr)
     {
+      GameObject* oldObject = m_objSpace->GetGameObject(m_object);
+      if (oldObject)
+        oldObject->m_editorFocus = false;
+
       m_object = Handle::null;
       m_objSpace = nullptr;
     }
     else
     {
+      if (m_objSpace)
+      {
+        GameObject* oldObject = m_objSpace->GetGameObject(m_object);
+        if (oldObject)
+          oldObject->m_editorFocus = false;
+      }
+
+      obj->m_editorFocus = true;
       m_object = obj->self;
       m_objSpace = obj->space;
     }   
@@ -540,6 +553,42 @@ namespace Framework
 
   }
 
+  void GizmoEditor::HighlightBar(GameObject* obj)
+  {
+    auto spaces = ENGINE->Spaces();
+    for (int i = 0; i < spaces.size(); ++i)
+    {
+      for (int j = 0; j < spaces[i]->m_objects.Size(); ++j)
+      {
+        GameObject* robj = (GameObject*)(spaces[i]->m_objects[j]);
+        AntTweak::TBar* bar = ATWEAK->GetBar(robj->tweakHandle);
+        if (!bar)
+          continue;
+
+        if (m_oneObjectBar)
+        {
+          if (obj != robj)
+          {
+            ATWEAK->RemoveBar(bar);
+            robj->tweakHandle = Handle::null;
+          }
+          else
+            bar->SetColor(180, 200, 0);
+        }
+        else
+        {
+          if (obj != robj)
+            bar->SetColor(0, 0, 100);
+          else
+            bar->SetColor(180, 200, 0);
+        }
+        
+      }
+    }
+
+    
+  }
+
   void GizmoEditor::ReceiveMessage(Message& msg)
   {
     ObjectSelectedMessage* objectMessage;
@@ -548,6 +597,7 @@ namespace Framework
     case Message::ObjectSelected:
       objectMessage = (ObjectSelectedMessage*)&msg;
       SetSelectedObject(objectMessage->obj);
+      HighlightBar(objectMessage->obj);
       break;
     case Message::GUIDraw:
       Draw();

@@ -32,6 +32,10 @@ namespace Framework
 
   struct GenericLookup
   {
+    GenericLookup() {};
+    GenericLookup(Handle h, GameSpace* sp)
+    :self(h), space(sp) {};
+  
     Handle self;
     GameSpace* space;
   };
