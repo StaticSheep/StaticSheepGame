@@ -9,6 +9,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #pragma once
 
 #include "components/base/Component.h"
+#include "../SheepUtil/include/Matrix3D.h"
 #include <string>
 #include <vector>
 
@@ -22,21 +23,22 @@ namespace Framework
 
   enum Eases
   {
-    None = 0,
-    Linear,
-    Quadratic,
-    Cubic,
-    Logarithmic,
+    EaseNone = 0,
+    EaseLinear,
+    EaseQuadraticIn,
+    EaseQuadraticOut,
+    EaseCubicIn,
+    EaseCubicOut,
     Catspline
-  
   };
 
   template<typename T>
   struct ParticleOption
   {
-    T min;
-    T max;
-    T slop;
+    T m_startMin;
+    T m_startMax;
+    T m_endMin;
+    T m_endMax;
     Eases ease;
   };
 
@@ -74,9 +76,12 @@ namespace Framework
     
       void Initialize();
 
+      static void ToTweak(AntTweak::TBar* bar, Variable& var, const char* tempLabel, const char* label);
+
       /*----- Hooked functions ----- */
     
       void UpdateParticles(float dt); // update behavior
+      void FrameUpdate(float dt);
       void DrawParticles(); // tell batcher to draw the things
     
       /*----- Toggles ----- */
@@ -102,25 +107,36 @@ namespace Framework
       void SetGravityPull(Vec3& strength);
 
       std::string textureName;
-  
-    private:
-    
-      Particle* SpawnParticle(Vec3& location);
-      void RemoveParticle(unsigned index);
-      void ClearParticles(void);
-    
-      std::vector<Particle> particles; // bucket of particles
-      
-      Handle transform;
-      
-      unsigned int textureID;
       ParticleOption<float> particleLife;     // how long particles live
       ParticleOption<float> rate;             // spawn rate
+      ParticleOption<float> amount;           // how many particles per tick
       ParticleOption<Vec3> velocity;          // velocity of the particles
       ParticleOption<float> scale;            // start to end scale of particles
       ParticleOption<Vec3> direction;         // direction to spawn
       ParticleOption<float> angularVelocity;  
       ParticleOption<Vec4> color;
+      ParticleOption<float> speed;
+  
+    private:
+    
+      Particle* SpawnParticle(const Vec3& location);
+      void RemoveParticle(unsigned index);
+      void ClearParticles(void);
+
+      void UpdateVelocity(unsigned index, float t);
+      void UpdateAngularVelocity(unsigned index, float t);
+      void UpdatePosition(unsigned index, float dt);
+      void UpdateScale(unsigned index, float t);
+      void UpdateRotation(unsigned index, float t);
+      void UpdateColor(unsigned index, float t);
+    
+      std::vector<Particle> particles; // bucket of particles
+      
+      Handle transform;
+      Mat3D localRotation;
+      
+      unsigned int textureID;
+      
       float time;                             // current emitter time for spawning
     
       //Vec4D startColor;             // start color for the particles

@@ -146,12 +146,39 @@ namespace Framework
     return (float)(((c4 * x + c3) * x + c2) * x + c1);
   }
   
-  // 
+  static boost::random::mt19937 rng((uint32_t)std::time(0));
+
   int GetRandom(int min, int max)
   {
-    static boost::random::mt19937 rng((uint32_t)std::time(0));
+    
     boost::random::uniform_int_distribution<> range(min, max);
     return range(rng);
+  }
+
+  float GetRandom(float min, float max)
+  {
+    if(min == max || min > max)
+      return min;
+
+    boost::random::uniform_real_distribution<> range(min, max);
+    return (float)range(rng);
+  }
+
+  Vec3D GetRandom(const Vec3D& min, const Vec3D& max)
+  {
+    float x = GetRandom(min.x, max.x);
+    float y = GetRandom(min.y, max.y);
+    float z = GetRandom(min.z, max.z);
+
+    return Vec3D(x, y, z);
+  }
+
+  Vec4D GetRandom(const Vec4D& min, const Vec4D& max)
+  {
+    Vec3D rand = GetRandom((Vec3D)min, (Vec3D)max);
+    float w = GetRandom(min.w, max.w);
+
+    return Vec4D(rand.x, rand.y, rand.z, w);
   }
 
 /*!

@@ -9,6 +9,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 #include <math.h>
 #include "Vec3D.h"
+#include "Vec4D.h"
 
 namespace Framework
 {
@@ -70,7 +71,11 @@ namespace Framework
   Fraction  FloatToFraction(float);
   double    SquareRoot(float);
   void      Normalize(Vec3D*);
+
   int       GetRandom(int min, int max);
+  float     GetRandom(float min, float max);
+  Vec3D     GetRandom(const Vec3D& min, const Vec3D& max);
+  Vec4D     GetRandom(const Vec4D& min, const Vec4D& max);
   float     Minimum(float a, float b);
   float     Maximum(float a, float b);
   float     CatSpline(double, float, float, float, float);

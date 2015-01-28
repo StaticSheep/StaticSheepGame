@@ -10,6 +10,9 @@
 
 namespace Framework
 {
+  static float test;
+
+
   Particle::Particle()
   {
     position = Vec3();
@@ -25,43 +28,60 @@ namespace Framework
                      ParticleOption<Vec4>& color_,
                      ParticleOption<float>& life_)
   {
-    scale = scale_.min;
-    color = color_.min;
-    life = life_.min + (GetRandom(-life_.slop * 256, life_.slop * 256) / 256.0f);
+    scale = GetRandom(scale_.m_startMin, scale_.m_startMax);
+    color = GetRandom(color_.m_startMin, color_.m_startMax);
+    life = GetRandom(life_.m_startMin, life_.m_startMax);
   }
 
 
   ParticleSystem::ParticleSystem()
   {
-    spawn = true;
-    rate.min = 0.125f;
-    rate.max = 0.125f;
-    rate.slop = 0.0f;
+    if(ENGINE->m_editorAcitve)
+      spawn = true;
 
-    particleLife.min = 0.25f;
-    particleLife.max = 1.0f;
-    particleLife.slop = 1.0f;
+    particleLife.m_startMin = 0.5f;
+    particleLife.m_startMax = 1.0f;
+    particleLife.m_endMin = 1.0f;
+    particleLife.m_endMax = 1.0f;
+    particleLife.ease = EaseLinear;
 
-    scale.min = 5.0f;
-    scale.max = 8.0f;
-    scale.slop = 1.0f;
+    velocity.m_startMin = Vec3(-10.0f, 30.0f, 0.0f);
+    velocity.m_startMax = Vec3( 10.0f, 30.0f, 0.0f);
+    velocity.m_endMin = Vec3(-10.0f, 80.0f, 0.0f);
+    velocity.m_endMax = Vec3( 10.0f, 80.0f, 0.0f);
+    velocity.ease = EaseNone;
 
-    velocity.min = Vec3(0.0f, 1.0f, 0.0f);
-    velocity.max = Vec3(0.0f, 3.0f, 0.0f);
-    velocity.slop = Vec3(2.0f, 0.0f, 0.0f);
+    scale.m_startMin = 3.0f;
+    scale.m_startMax = 5.0f;
+    scale.m_endMin = 8.0f;
+    scale.m_endMax = 10.0f;
+    scale.ease = EaseLinear;
 
-    color.min = Vec4(1.0f, 1.0f, 1.0f, 1.0f);
-    color.max = Vec4(1.0f, 0.125f, 0.25f, 0.25f);
+    color.m_startMin = Vec4(0.9f, 0.9f, 0.9f, 0.9f);
+    color.m_startMax = Vec4(1.0f, 1.0f, 1.0f, 1.0f);
+    color.m_endMin = Vec4( 0.9f, 0.125f, 0.125f, 0.1f);
+    color.m_endMax = Vec4( 1.0f, 0.25f, 0.25f, 0.125f);
+    color.ease = EaseLinear;
 
-    
+    speed.m_startMin = 1000.0f;
+    speed.m_endMax = 0.0f;
   }
 
   void ParticleSystem::Initialize()
   {
     transform = this->GetOwner()->GetComponentHandle(eTransform);
 
+    space->hooks.Add("FrameUpdate", self, BUILD_FUNCTION(ParticleSystem::FrameUpdate));
     space->hooks.Add("LogicUpdate", self, BUILD_FUNCTION(ParticleSystem::UpdateParticles));
     space->hooks.Add("Draw", self, BUILD_FUNCTION(ParticleSystem::DrawParticles));
+  }
+
+  void ParticleSystem::ToTweak(AntTweak::TBar* bar, Variable& var, const char* tempLabel, const char* label)
+  {
+    ParticleSystem* ps = var.GetValue<ParticleSystem*>();
+
+    AntTweak::Tweaker::DefaultTweak(bar, Variable(ps->velocity), "Velocity", "Velocity");
+
   }
 
   ParticleSystem::~ParticleSystem()
@@ -70,18 +90,28 @@ namespace Framework
   }
 
   /*----- Hooked functions ----- */
-    
+  
+  void ParticleSystem::FrameUpdate(float dt)
+  {
+    if(ENGINE->m_editorAcitve)
+      UpdateParticles(dt);
+  }
+
   void ParticleSystem::UpdateParticles(float dt)
   {
     Transform* trans = space->GetHandles().GetAs<Transform>(transform);
-
+    localRotation = Mat3D(trans->GetRotation());
+    
+    // change this so that the emitter handles this... system should just update the already existing particles
     if(spawn)
     {
-      for(unsigned i = 0; i < 4; ++i)
+      for(unsigned i = 0; i < 8; ++i)
       {
-        Particle* temp = SpawnParticle(trans->GetTranslation());
-        int rand = GetRandom(-2,2);
-        temp->velocity = Vec3(5.0f * rand, 0.0f, 0.0f);
+        float randomX = GetRandom(-10.0f, 10.0f);
+        float randomY = GetRandom(-10.0f, 10.0f);
+        Vec3D location = localRotation * (trans->GetTranslation() + Vec3D(randomX, randomY,0));
+        Particle* temp = SpawnParticle(location);
+        temp->velocity = localRotation * temp->velocity;
       }
       
     }
@@ -100,12 +130,15 @@ namespace Framework
             break;
         }
 
-        int rand = GetRandom(-1,1);
+        //int rand = GetRandom(-1,1);
 
-        particles[i].velocity = Ease::Linear(1.0f - particles[i].life / particleLife.max, velocity.min + (rand * velocity.slop), velocity.max + (rand * velocity.slop));
-        particles[i].position += particles[i].velocity;
-        particles[i].scale = Ease::Linear(1.0f - (particles[i].life / particleLife.max), scale.min + (rand * scale.slop), scale.max + (rand * scale.slop));
-        particles[i].color = Ease::Linear(1.0f - particles[i].life / particleLife.max, color.min, color.max);
+        // gets a value from 0 to 1.
+        float time = 1.0f - (particles[i].life / particleLife.m_endMax);
+
+        UpdateVelocity(i, time);
+        UpdatePosition(i, dt);
+        UpdateScale(i, time);
+        UpdateColor(i, time);
 
       }
     }
@@ -122,7 +155,7 @@ namespace Framework
       Vec4 color = particles[i].color;
 
       Draw::SetColor(color.x, color.y, color.z, color.w);
-      Draw::DrawTexturedRect(particles[i].position.x, particles[i].position.y, particles[i].scale, particles[i].scale);
+      Draw::DrawTexturedRectRotated(particles[i].position.x, particles[i].position.y, particles[i].scale, particles[i].scale, particles[i].theta);
     }
   }
     
@@ -204,11 +237,11 @@ namespace Framework
     gravityPull = strength;
   }
     
-  Particle* ParticleSystem::SpawnParticle(Vec3& location)
+  Particle* ParticleSystem::SpawnParticle(const Vec3& location)
   {
     Particle temp(scale, color, particleLife);
     temp.position = location;
-    temp.velocity = velocity.min;
+    temp.velocity = GetRandom(velocity.m_startMin, velocity.m_startMax);
 
     particles.push_back(temp);
     return &particles.back();
@@ -229,5 +262,80 @@ namespace Framework
   {
 
   }
+
+
+  void ParticleSystem::UpdateVelocity(unsigned index, float t)
+  {
+    Vec3D averageMin = velocity.m_startMin * 0.5f + velocity.m_startMax * 0.5f;
+
+    switch(velocity.ease)
+    {
+      // no ease, don't do anything
+      case EaseNone:
+        particles[index].velocity.Normalize();
+        particles[index].velocity *= Ease::Linear(t, speed.m_startMin, speed.m_endMax);
+        break;
+
+      case EaseLinear:
+        particles[index].velocity = localRotation * Ease::Linear(t, (Vec3D)particles[index].velocity, GetRandom(velocity.m_endMin, velocity.m_endMax));
+        break;
+
+      case EaseQuadraticIn:
+        break;
+
+      case EaseQuadraticOut:
+        break;
+
+      default:
+        break;
+    }
+  }
+
+  void ParticleSystem::UpdatePosition(unsigned index, float dt)
+  {
+    particles[index].position += particles[index].velocity * dt;
+  }
+
+  void ParticleSystem::UpdateScale(unsigned index, float t)
+  {
+    float averageMin = scale.m_startMin * 0.5f + scale.m_startMax * 0.5f;
+
+    switch(scale.ease)
+    {
+      case EaseNone:
+        break;
+
+      case EaseLinear:
+        particles[index].scale = Ease::Linear(t, averageMin, GetRandom(scale.m_endMin, scale.m_endMax));
+        break;
+
+      default:
+        break;
+    }
+  }
+
+  void ParticleSystem::UpdateRotation(unsigned index, float t)
+  {
+
+  }
+
+  void ParticleSystem::UpdateColor(unsigned index, float t)
+  {
+    Vec4D averageMin = color.m_startMin * 0.5f + color.m_startMax * 0.5f;
+
+    switch(color.ease)
+    {
+      case EaseNone:
+        break;
+
+      case EaseLinear:
+        particles[index].color = Ease::Linear(t, averageMin, GetRandom(color.m_endMin, color.m_endMax));
+        break;
+
+      default:
+        break;
+    }
+  }
+
 
 }

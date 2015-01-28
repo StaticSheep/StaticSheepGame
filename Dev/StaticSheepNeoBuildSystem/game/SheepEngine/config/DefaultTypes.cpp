@@ -272,9 +272,36 @@ namespace Framework
     TYPE_SET_TWEAK_TYPE( AniSprite, AntTweak::TW_TYPE_COMPONENT );
     TYPE_SET_FROM_LUA( AniSprite, Lua::GenericObjectFromLua );
 
-    TYPE_REGISTER( ParticleSystem );
-	  TYPE_SET_TWEAK_TYPE(ParticleSystem, AntTweak::TW_TYPE_COMPONENT);
-    TYPE_ADD_MEMBER( ParticleSystem, textureName, false, true, "Texture");
+    TYPE_REGISTER(ParticleSystem);
+    TYPE_ADD_MEMBER(ParticleSystem, textureName, false, true, "ParticleTexture");
+    TYPE_ADD_MEMBER(ParticleSystem, particleLife, false, true, "PLifetime");
+    TYPE_ADD_MEMBER(ParticleSystem, rate, false, true, "PSpawnRate");
+    TYPE_ADD_MEMBER(ParticleSystem, amount, false, true, "ParticlesPerTick");
+    
+    TYPE_ADD_MEMBER(ParticleSystem, scale, false, true, "PScale");
+    TYPE_ADD_MEMBER(ParticleSystem, direction, false, true, "PSpawnDirection");
+    TYPE_ADD_MEMBER(ParticleSystem, angularVelocity, false, true, "PAngularVelocity");
+    TYPE_ADD_MEMBER(ParticleSystem, color, false, true, "PColor");
+    TYPE_ADD_MEMBER(ParticleSystem, velocity, false, true, "PVelocity");
+    TYPE_SET_TWEAK_TYPE(ParticleSystem, AntTweak::TW_TYPE_COMPONENT);
+
+    TYPE_REGISTER(ParticleOption<float>);
+    TYPE_ADD_MEMBER(ParticleOption<float>, m_startMin, false, true, "Start Min");
+    TYPE_ADD_MEMBER(ParticleOption<float>, m_startMax, false, true, "Start Max");
+    TYPE_ADD_MEMBER(ParticleOption<float>, m_endMin, false, true, "End Min");
+    TYPE_ADD_MEMBER(ParticleOption<float>, m_endMax, false, true, "End Max");
+
+    TYPE_REGISTER(ParticleOption<Vec3>);
+    TYPE_ADD_MEMBER(ParticleOption<Vec3>, m_startMin, false, true, "Start Min");
+    TYPE_ADD_MEMBER(ParticleOption<Vec3>, m_startMax, false, true, "Start Max");
+    TYPE_ADD_MEMBER(ParticleOption<Vec3>, m_endMin, false, true, "End Min");
+    TYPE_ADD_MEMBER(ParticleOption<Vec3>, m_endMax, false, true, "End Max");
+
+    TYPE_REGISTER(ParticleOption<Vec4>);
+    TYPE_ADD_MEMBER(ParticleOption<Vec4>, m_startMin, false, true, "Start Min");
+    TYPE_ADD_MEMBER(ParticleOption<Vec4>, m_startMax, false, true, "Start Max");
+    TYPE_ADD_MEMBER(ParticleOption<Vec4>, m_endMin, false, true, "End Min");
+    TYPE_ADD_MEMBER(ParticleOption<Vec4>, m_endMax, false, true, "End Max");
 
     TYPE_REGISTER(Camera);
     TYPE_ADD_MEMBER(Camera, m_active, false, true, "Active",
@@ -302,6 +329,7 @@ namespace Framework
 
     TYPE_REGISTER(GamePadInput);
     TYPE_REGISTER_PTR(GamePadInput*);
+
 
     RegisterEnums();
   }
