@@ -50,7 +50,7 @@ namespace DirectSheep
     m_device(NULL),
     m_deviceContext(NULL),
     m_backBuffer(NULL),
-    m_clearColor(Color(Colors::Black.operator const float *())), // Clear color for backbuffer
+    m_clearColor(Color(Colors::Black .operator const float *())), // Clear color for backbuffer
     m_spriteBlend(Vec4(1, 1, 1, 1)),                             // Start blending color as white
     m_primative(PRIMITIVE_TOPOLOGY_TRIANGLELIST)                 // Draw using triangle lists
   {
@@ -122,9 +122,6 @@ namespace DirectSheep
     
     // Set DirectX viewport
     SetViewport(0, 0, Dimension((unsigned)width, (unsigned)height));
-
-    // Initializes SpriteFont
-    CreateFontWrapper();
     
     // Initialize all DirectX states
     InitializeRasterizerState();
@@ -152,6 +149,22 @@ namespace DirectSheep
 
     // Initialize Effects
     m_genericEffect = new GenEffect(m_device);
+
+    PositionVertex vertices[4] = {
+        { Vec3(-SCREEN_WIDTH / 2.f, SCREEN_HEIGHT / 2.f, 0.f) }, // top left
+        { Vec3(SCREEN_WIDTH / 2.f, SCREEN_HEIGHT / 2.f, 0.f) },  // top right
+        { Vec3(-SCREEN_WIDTH / 2.f, -SCREEN_HEIGHT / 2.f, 0.f) },// bottom left
+        { Vec3(SCREEN_WIDTH / 2.f, -SCREEN_HEIGHT / 2.f, 0.f) } // bottom right
+    };
+
+    UINT indices[6] = {
+      0, 1, 2,
+      2, 1, 3,
+    };
+
+    m_PLightModel = new Model<PositionVertex>(m_device, vertices, 4, indices, 6);
+
+    m_PointLight = new PointLight(m_device);
 
     // RenderContext is now initialized
     m_initialized = true;
@@ -192,8 +205,6 @@ namespace DirectSheep
     SafeRelease(m_deviceContext);
 
     SafeRelease(m_swapChain);
-
-    m_font.Release();
 
     SafeRelease(m_backBuffer);
 
@@ -278,7 +289,8 @@ namespace DirectSheep
   */
     void RenderContext::SetBlendMode(const BlendMode blendMode)
     {
-      m_deviceContext->OMSetBlendState(m_blendStateMap[blendMode],0, 0xffffffff);
+      float blendFactor[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
+      m_deviceContext->OMSetBlendState(m_blendStateMap[blendMode],blendFactor, 0xffffffff);
     }
 
   
@@ -564,27 +576,16 @@ namespace DirectSheep
   Framework::Vec2D RenderContext::MeasureString(const char* text,
     float size, const char* font)
   {
+    XMVECTOR fontSize;
     std::string tempText = text;
     std::wstring wcText(tempText.begin(), tempText.end());
 
-    std::string tempFont = font;
-    std::wstring wcFont(tempFont.begin(), tempFont.end());
+    if (m_font.count(font))
+      fontSize = m_font[font]->MeasureString(wcText.c_str());
+    else
+      return Framework::Vec2D(0, 0);
 
-    FW1_RECTF rect;
-    rect.Left = 0.0f;
-    rect.Right = 0.0f;
-    rect.Top = 0.0f;
-    rect.Bottom = 0.0f;
-
-    FW1_RECTF res = m_font.m_fontWrapper->MeasureString(wcText.c_str(),
-      wcFont.c_str(), size, &rect, FW1_ANALYZEONLY
-      | FW1_RESTORESTATE | FW1_LEFT | FW1_TOP | FW1_NOWORDWRAP);
-
-    float width = res.Right;
-    float height = abs(res.Top) + abs(res.Bottom);
-    //m_font->m_fontWrapper->MeasureString;
-
-    return Framework::Vec2D(width, height);
+    return Framework::Vec2D(XMVectorGetX(fontSize), XMVectorGetY(fontSize));
   }
 
 

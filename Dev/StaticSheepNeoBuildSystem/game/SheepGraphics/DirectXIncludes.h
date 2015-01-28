@@ -25,6 +25,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "SpriteBatch.h"
 #include "PrimitiveBatch.h"
 #include "GeometricPrimitive.h"
+#include "SpriteFont.h"
 #include "VertexTypes.h"
 #include "Effects.h"
 

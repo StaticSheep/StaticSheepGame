@@ -43,29 +43,27 @@ namespace DirectSheep
     std::ifstream s_stream;
 
     s_stream.open(vShaderName, std::ifstream::in | std::ifstream::binary);
-    if (s_stream.good())
-    {
-      s_stream.seekg(0, std::ios::end);
-      m_vShaderSize = size_t(s_stream.tellg());
-      m_vShaderData = new char[m_vShaderSize];
-      s_stream.seekg(0, std::ios::beg);
-      s_stream.read((char*)m_vShaderData, m_vShaderSize);
-      s_stream.close();
-    }
+    ErrorIf(!s_stream.good(), "Shader File IO", "Failed to find %s", vShaderName.c_str());
+
+    s_stream.seekg(0, std::ios::end);
+    m_vShaderSize = size_t(s_stream.tellg());
+    m_vShaderData = new char[m_vShaderSize];
+    s_stream.seekg(0, std::ios::beg);
+    s_stream.read(&((char*)m_vShaderData)[0], m_vShaderSize);
+    s_stream.close();
 
     DXVerify(pDevice->CreateVertexShader(m_vShaderData, m_vShaderSize,
       NULL, &m_vShader));
 
     s_stream.open(pShaderName, std::ifstream::in | std::ifstream::binary);
-    if (s_stream.good())
-    {
-      s_stream.seekg(0, std::ios::end);
-      m_pShaderSize = size_t(s_stream.tellg());
-      m_pShaderData = new char[m_pShaderSize];
-      s_stream.seekg(0, std::ios::beg);
-      s_stream.read((char*)m_pShaderData, m_pShaderSize);
-      s_stream.close();
-    }
+
+    ErrorIf(!s_stream.good(), "Shader File IO", "Failed to find %s", pShaderName.c_str());
+    s_stream.seekg(0, std::ios::end);
+    m_pShaderSize = size_t(s_stream.tellg());
+    m_pShaderData = new char[m_pShaderSize];
+    s_stream.seekg(0, std::ios::beg);
+    s_stream.read(&((char*)m_pShaderData)[0], m_pShaderSize);
+    s_stream.close();
 
     DXVerify(pDevice->CreatePixelShader(m_pShaderData, m_pShaderSize,
       NULL, &m_pShader));

@@ -15,7 +15,7 @@ struct VSOutput
   float4 position : SV_POSITION;
 };
 
-cbuffer MatrixBuffer : register(cb0)
+cbuffer MatrixBuffer : register(b0)
 {
   matrix proj;
   matrix view;

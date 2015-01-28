@@ -174,7 +174,7 @@ namespace DirectSheep
       //world.x = 1600 * (world.x + 1) / 2;
       //world.y = 900 * (-world.y + 1) / 2;
 
-      return world;
+      return (Vec3)world;
     }
     else
     {
