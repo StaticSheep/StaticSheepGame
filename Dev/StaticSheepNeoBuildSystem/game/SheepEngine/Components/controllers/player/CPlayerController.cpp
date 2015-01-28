@@ -342,8 +342,27 @@ namespace Framework
       Handle hit = (FACTORY->LoadObjectFromArchetype(space, "hit"))->self;
       Transform *exT = space->GetGameObject(hit)->GetComponent<Transform>(eTransform);
       exT->SetTranslation(ps->GetTranslation() + Vec3(randomX,randomY,-1.0f));
+
+      //for metrics, need to determine where the bullet came from by checking its collision group
+      if (health <= 0)
+      {
+        int pn = 0;
+
+        if (OtherObject->GetComponent<CircleCollider>(eCircleCollider)->GetBodyCollisionGroup() == "Player1")
+          pn = 0;
+        else if (OtherObject->GetComponent<CircleCollider>(eCircleCollider)->GetBodyCollisionGroup() == "Player2")
+          pn = 1;
+        else if (OtherObject->GetComponent<CircleCollider>(eCircleCollider)->GetBodyCollisionGroup() == "Player3")
+          pn = 2;
+        else if (OtherObject->GetComponent<CircleCollider>(eCircleCollider)->GetBodyCollisionGroup() == "Player4")
+          pn = 3;
+
+        MetricInfo metricData(pn, 0, 0, PLAYER_KILL, Buttons::TOTALBUTTONS, Weapons::PISTOL);
+        ENGINE->SystemMessage(MetricsMessage(&metricData));
+      }
       return;
     }
+
     if ((OtherObject->archetype == "KillBox" || OtherObject->archetype == "KillBoxBig" || OtherObject->name == "GrinderBig") 
         && !GodMode && !PerfectMachine)
       health = 0;
