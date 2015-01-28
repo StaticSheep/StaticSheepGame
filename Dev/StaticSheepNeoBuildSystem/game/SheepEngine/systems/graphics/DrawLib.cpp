@@ -217,9 +217,14 @@ namespace Framework
     }
   }
 
-  void Draw::DrawString(const char* text, float size, const char* font)
+  void Draw::DrawString(const char* text, int fontIndex, float size)
   {
-    GRAPHICS->DrawSpriteText(text, size, font);
+    GRAPHICS->DrawSpriteText(text, fontIndex, size);
+  }
+
+  int Draw::GetFontIndex(const char* fontName)
+  {
+    return GRAPHICS->GetFontIndex(fontName);
   }
 
   Vec3 Draw::ToWorld(Vec2 screenPos)
@@ -246,9 +251,9 @@ namespace Framework
     return GRAPHICS->_ScreenWidth;
   }
 
-  Vec2 Draw::MeasureString(const char* text, float size, const char* font)
+  Vec2 Draw::MeasureString(const char* text, float size, int fontIndex)
   {
-    return GRAPHICS->MeasureString(text, size, font);
+    return GRAPHICS->MeasureString(text, size, fontIndex);
   }
   
 }

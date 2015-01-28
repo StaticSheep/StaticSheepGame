@@ -36,7 +36,8 @@ namespace Framework
     static void DrawLineEx(float sX, float sY, float eX, float eY,
       Vec4 startColor, Vec4 endColor);
     static void DrawCircle(float x, float y, float radius);
-    static void DrawString(const char* text, float size, const char* font);
+    static void DrawString(const char* text, int fontIndex, float size);
+    static int GetFontIndex(const char* fontName);
 
     static void DrawTriangle(float x0, float y0, float x1, float y1,
       float x2, float y2);
@@ -50,7 +51,7 @@ namespace Framework
     static int ScreenWidth(void);
     static int ScreenHeight(void);
 
-    static Vec2 MeasureString(const char* text, float size, const char* font);
+    static Vec2 MeasureString(const char* text, float size, int fontIndex);
     
   private:
     static unsigned m_TextureID;

@@ -64,7 +64,7 @@ class RenderContext
 
     /* --- General Draw Functions --- */
    void Draw(unsigned vertexCount, unsigned vertexStart = 0);
-   void DrawSpriteText(const char * text, float size = 32, const char * font = "Arial");
+   void DrawSpriteText(const char * text, int index, float size = 32);
    void DrawBatched(DirectSheep::Handle texture);
    void DrawPLight(void);
 
@@ -114,7 +114,7 @@ class RenderContext
    bool CreateConstantBuffer(Handle& handle, size_t size);
    bool CreateRenderTarget(Handle& handle, const RenderTargetMode mode, const Format format, const float downsamplePercentage = 1.0f, const Dimension& dim = Dimension());
    bool CreateDepthBuffer(void);
-   void AddFont(const char* fontname,const char* filename);
+   int AddFont(const char* fontname,const char* filename);
 
     /////////////////////////////////////////////////////////////
     //                    BIND FUNCTIONS                       //
@@ -181,7 +181,7 @@ class RenderContext
    void ClearBackBuffer(void);
    void ClearDepthBuffer(void);
    Framework::Vec2D MeasureString(const char* text, float size,
-     const char* font);
+     int fontIndex);
 
     /////////////////////////////////////////////////////////////
     //                 PUBLIC RELEASE FUCNTION                 //
@@ -295,7 +295,8 @@ class RenderContext
     IDXGISwapChain              *m_swapChain;
     ID3D11Device                *m_device;
     ID3D11DeviceContext         *m_deviceContext;
-    std::unordered_map<std::string, std::unique_ptr<DirectX::SpriteFont>> m_font;
+    //std::unordered_map<std::string, std::unique_ptr<DirectX::SpriteFont>> m_font;
+    std::vector<DirectX::SpriteFont*> m_font;
     int                         m_displayModeIndex;
                                 
     ID3D11RenderTargetView      *m_backBuffer;
@@ -323,6 +324,7 @@ class RenderContext
     Handle                                   m_Ortho;
     Handle                                   m_orthoScreen;
     Handle                                   m_editor;
+    Handle                                   m_postEffects;
     std::vector<DirectSheep::Camera*>         m_CameraPool;
     bool                                     m_camUse;
 

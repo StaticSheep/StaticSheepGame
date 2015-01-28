@@ -92,6 +92,7 @@ namespace Framework
     Draw();
     
     FinishFrame();
+    m_renderContext->DrawPLight();
 	}
   
   void SheepGraphics::ActivateDefaultCamera(void)
@@ -188,21 +189,23 @@ namespace Framework
     Lua::CallFunc(ENGINE->Lua(), "hook.Call", "PostDraw");
 
     m_renderContext->EndBatch();
-
+    
     m_renderContext->StartBatch();
     ENGINE->SystemMessage(Message(Message::PostDraw));
 
     m_renderContext->EndBatch();
-
+    //m_renderContext->DrawPLight();
     Draw::SetCamState(2);
+    
     m_renderContext->StartBatch();
 
     ENGINE->SystemMessage(Message(Message::GUIDraw));
     m_renderContext->EndBatch();
-    //m_renderContext->DrawPLight();
+    
     m_renderContext->StartBatch();
     ENGINE->SystemMessage(Message(Message::PostGUIDraw));
     m_renderContext->EndBatch();
+    
 	}
 
   void SheepGraphics::StartFrame()
@@ -314,9 +317,9 @@ namespace Framework
     m_renderContext->SetCamState(camState);
   }
 
-  void SheepGraphics::DrawSpriteText(const char * text, float size, const char * font)
+  void SheepGraphics::DrawSpriteText(const char * text, int fontIndex, float size)
   {
-    m_renderContext->DrawSpriteText(text, size, font);
+    m_renderContext->DrawSpriteText(text, fontIndex, size);
 
 #if SHEEP_DEBUG
     ++(m_debugData.numTextDraws);
@@ -325,6 +328,14 @@ namespace Framework
   void* SheepGraphics::GetDevice()
   {
     return m_renderContext->ExternalGetDevice();
+  }
+
+  int SheepGraphics::GetFontIndex(const char * fontName)
+  {
+    if (m_fontMap.count(fontName))
+      return m_fontMap[fontName];
+    else
+      return m_fontMap["Arial"];
   }
 
   Vec2 SheepGraphics::GetTextureDim(DirectSheep::Handle texture)
@@ -360,7 +371,8 @@ namespace Framework
           {
             std::string foo = it->path().extension().generic_string();
             if (it->path().extension().generic_string() == ".spritefont")
-              m_renderContext->AddFont(it->path().stem().generic_string().c_str(), it->path().generic_string().c_str());
+              // This line is gross
+              m_fontMap[it->path().stem().generic_string().c_str()] = m_renderContext->AddFont(it->path().stem().generic_string().c_str(), it->path().generic_string().c_str());
           }
         }
         return true;
@@ -373,9 +385,9 @@ namespace Framework
   
 
   Vec2 SheepGraphics::MeasureString(const char* text, float size,
-    const char* font)
+    int fontIndex)
   {
-    return m_renderContext->MeasureString(text, size, font);
+    return m_renderContext->MeasureString(text, size, fontIndex);
   }
 
   DirectSheep::Camera* SheepGraphics::RetrieveCamera(DirectSheep::Handle camHandle)

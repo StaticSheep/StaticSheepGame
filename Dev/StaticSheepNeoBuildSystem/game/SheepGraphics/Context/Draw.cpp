@@ -61,16 +61,19 @@ namespace DirectSheep
     m_deviceContext->Draw(vertexCount, vertexStart);
   }
 
-  void RenderContext::DrawSpriteText(const char * text, float size, const char * font)
+  void RenderContext::DrawSpriteText(const char * text, int index, float size)
   {
+    if (index >= m_font.size() || index < 0)
+    {
+      index = 0;
+      m_font[index]->DrawString(m_batcher.get(), L"Invalid Font", Vec2(m_spriteTrans.x, m_camUse ? m_spriteTrans.y : -m_spriteTrans.y), 255 * m_spriteBlend, m_spriteTrans.theta, Vec2(0, 0), Vec2(1, -1), DirectX::SpriteEffects_None, 0);
+      return;
+    }
 
     std::string sText(text);
     std::wstring wText(sText.begin(), sText.end());
 
-    if (m_font.count(font))
-      m_font[font]->DrawString(m_batcher.get(), wText.c_str(), Vec2(m_spriteTrans.x, m_camUse ? m_spriteTrans.y : -m_spriteTrans.y), Colors::White, m_spriteTrans.theta, Vec2(0, 0), Vec2(1, -1), DirectX::SpriteEffects_None, 0);
-    else
-      m_font["Arial"]->DrawString(m_batcher.get(), wText.c_str(), Vec2(m_spriteTrans.x, m_camUse ? m_spriteTrans.y : -m_spriteTrans.y), Colors::White, m_spriteTrans.theta, Vec2(0, 0), Vec2(1, -1), DirectX::SpriteEffects_None, 0);
+    m_font[index]->DrawString(m_batcher.get(), wText.c_str(), Vec2(m_spriteTrans.x, m_camUse ? m_spriteTrans.y : -m_spriteTrans.y), 255 * m_spriteBlend, m_spriteTrans.theta, Vec2(0, 0), Vec2(1, -1), DirectX::SpriteEffects_None, 0);
   }
 
   void RenderContext::DrawBatched(DirectSheep::Handle texture)
@@ -225,9 +228,9 @@ namespace DirectSheep
   {
     static float a = 0;
     a += .01;
-    m_PointLight->bindMatrices(m_deviceContext, XMMatrixIdentity(), XMMatrixIdentity(), XMMatrixIdentity());
+    m_PointLight->bindMatrices(m_deviceContext, ((Camera*)m_postEffects.ptr)->GetProj(), ((Camera*)m_postEffects.ptr)->GetView(), DirectX::XMMatrixIdentity());
 
-    m_PointLight->bindLight(m_deviceContext, Light(Vec3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0.0f), Color(0, 1, 0, 1), Vec3(.050097f, 0.101329f, .007211f)));
+    m_PointLight->bindLight(m_deviceContext, Light(Vec3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, -1.0f), Color(a, a, a, 1), Vec3(0, 0, .0001)));
 
     m_PLightModel->bind(m_deviceContext);
 
