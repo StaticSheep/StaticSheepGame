@@ -13,8 +13,6 @@ All content © 2015 DigiPen (USA) Corporation, all rights reserved.
 
 namespace Framework
 {
-  //this enum keeps track of the different kinds of metrics to take
-
 
   class MetricController : public ISystem
   {
