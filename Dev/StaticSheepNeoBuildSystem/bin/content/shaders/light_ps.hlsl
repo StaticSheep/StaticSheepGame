@@ -10,7 +10,7 @@ struct VSOutput
   float4 position : SV_POSITION;
 };
 
-cbuffer LightBuffer : register(cb0)
+cbuffer LightBuffer : register(b0)
 {
   float4 atten;
   float4 col;
@@ -23,7 +23,7 @@ float4 PSMain(VSOutput input) : SV_TARGET
   float at = 1. / (atten.x + atten.y * diff + atten.z * diff * diff);
   float4 newColor = col * at;
 
-  newColor.w = 1.f;
+    newColor.w = 1;
 
   return saturate(newColor);
 }

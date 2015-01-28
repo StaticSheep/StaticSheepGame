@@ -1,25 +1,147 @@
-Total Round Time: 82.9517
-********************************
+Total Round Time: 10.3539
 Player 1
-Kills: 4
-Deaths: 2
-Auto-Gun pickups: 1
-Shotgun pickups: 1
-********************************
+Kills: 0
+Deaths: 0
+Pistol fire: 0 shots.
+Auto-Gun fire: 0 shots.
+Shotgun fire: 0 shots.
+Auto-Gun pickups: 0
+Shotgun pickups: 0
+A-button presses: 0
+B-button presses: 0
+X-button presses: 0
+Y-button presses: 0
 Player 2
 Kills: 0
-Deaths: 5
-Auto-Gun pickups: 1
-Shotgun pickups: 1
-********************************
+Deaths: 0
+Pistol fire: 0 shots.
+Auto-Gun fire: 0 shots.
+Shotgun fire: 0 shots.
+Auto-Gun pickups: 0
+Shotgun pickups: 0
+A-button presses: 0
+B-button presses: 0
+X-button presses: 0
+Y-button presses: 0
 Player 3
 Kills: 0
-Deaths: 4
-Auto-Gun pickups: 1
-Shotgun pickups: 1
-********************************
+Deaths: 0
+Pistol fire: 0 shots.
+Auto-Gun fire: 0 shots.
+Shotgun fire: 0 shots.
+Auto-Gun pickups: 0
+Shotgun pickups: 0
+A-button presses: 0
+B-button presses: 0
+X-button presses: 0
+Y-button presses: 0
 Player 4
 Kills: 0
-Deaths: 5
-Auto-Gun pickups: 1
-Shotgun pickups: 1
+Deaths: 0
+Pistol fire: 0 shots.
+Auto-Gun fire: 0 shots.
+Shotgun fire: 0 shots.
+Auto-Gun pickups: 0
+Shotgun pickups: 0
+A-button presses: 0
+B-button presses: 0
+X-button presses: 0
+Y-button presses: 0
+Total Round Time: 10.2203
+Player 1
+Kills: 0
+Deaths: 0
+Pistol fire: 0 shots.
+Auto-Gun fire: 0 shots.
+Shotgun fire: 0 shots.
+Auto-Gun pickups: 0
+Shotgun pickups: 0
+A-button presses: 0
+B-button presses: 0
+X-button presses: 0
+Y-button presses: 0
+Player 2
+Kills: 0
+Deaths: 0
+Pistol fire: 0 shots.
+Auto-Gun fire: 0 shots.
+Shotgun fire: 0 shots.
+Auto-Gun pickups: 0
+Shotgun pickups: 0
+A-button presses: 0
+B-button presses: 0
+X-button presses: 0
+Y-button presses: 0
+Player 3
+Kills: 0
+Deaths: 0
+Pistol fire: 0 shots.
+Auto-Gun fire: 0 shots.
+Shotgun fire: 0 shots.
+Auto-Gun pickups: 0
+Shotgun pickups: 0
+A-button presses: 0
+B-button presses: 0
+X-button presses: 0
+Y-button presses: 0
+Player 4
+Kills: 0
+Deaths: 0
+Pistol fire: 0 shots.
+Auto-Gun fire: 0 shots.
+Shotgun fire: 0 shots.
+Auto-Gun pickups: 0
+Shotgun pickups: 0
+A-button presses: 0
+B-button presses: 0
+X-button presses: 0
+Y-button presses: 0
+Total Round Time: 10.3706
+Player 1
+Kills: 0
+Deaths: 0
+Pistol fire: 0 shots.
+Auto-Gun fire: 0 shots.
+Shotgun fire: 0 shots.
+Auto-Gun pickups: 0
+Shotgun pickups: 0
+A-button presses: 0
+B-button presses: 0
+X-button presses: 0
+Y-button presses: 0
+Player 2
+Kills: 0
+Deaths: 0
+Pistol fire: 0 shots.
+Auto-Gun fire: 0 shots.
+Shotgun fire: 0 shots.
+Auto-Gun pickups: 0
+Shotgun pickups: 0
+A-button presses: 0
+B-button presses: 0
+X-button presses: 0
+Y-button presses: 0
+Player 3
+Kills: 0
+Deaths: 0
+Pistol fire: 0 shots.
+Auto-Gun fire: 0 shots.
+Shotgun fire: 0 shots.
+Auto-Gun pickups: 0
+Shotgun pickups: 0
+A-button presses: 0
+B-button presses: 0
+X-button presses: 0
+Y-button presses: 0
+Player 4
+Kills: 0
+Deaths: 0
+Pistol fire: 0 shots.
+Auto-Gun fire: 0 shots.
+Shotgun fire: 0 shots.
+Auto-Gun pickups: 0
+Shotgun pickups: 0
+A-button presses: 0
+B-button presses: 0
+X-button presses: 0
+Y-button presses: 0

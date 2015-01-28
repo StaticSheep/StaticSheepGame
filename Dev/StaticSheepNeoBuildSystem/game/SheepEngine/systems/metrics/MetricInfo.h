@@ -36,7 +36,8 @@ enum Buttons{
   RB, //11
   START,  //12
   SELECT,  //13
-  TOTALBUTTONS //14
+  TOTALBUTTONS, //14
+  NONE
 };
 
 enum Weapons

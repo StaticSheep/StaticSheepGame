@@ -341,7 +341,7 @@ namespace Framework
   {
 #if USE_ANTTWEAKBAR
     int color[3] = {red, green, blue};
-    TwSetParam((TwBar*)antTweakBar, NULL, "label", TW_PARAM_INT32, 3, &color);
+    TwSetParam((TwBar*)antTweakBar, NULL, "color", TW_PARAM_INT32, 3, &color);
 #endif
   }
 

@@ -70,6 +70,8 @@ project "SheepGraphics"
 	  -- "..\\..\\..\\tools\\AutoHeaderVS.exe $(SolutionDir)..\\..\\game\\SheepGraphics\\Texture\\ $(SolutionDir)..\\..\\game\\SheepGraphics\\include\\SheepGraphics\\ GFX_API",
    --  "..\\..\\..\\tools\\AutoHeaderVS.exe $(SolutionDir)..\\..\\game\\SheepGraphics\\Camera\\ $(SolutionDir)..\\..\\game\\SheepGraphics\\include\\SheepGraphics\\ GFX_API",
    --  "..\\..\\..\\tools\\AutoHeaderVS.exe $(SolutionDir)..\\..\\game\\SheepGraphics\\Effects\\ $(SolutionDir)..\\..\\game\\SheepGraphics\\include\\SheepGraphics\\ GFX_API",
+   --"fxc /Od /Zi /T fx_4_1 /Fo $(SolutionDir)..\\..\\bin\\content\\shaders\\light_ps.cso $(SolutionDir)..\\..\\bin\\content\\shaders\\light_ps.hlsl",
+   --"fxc /Od /Zi /T fx_4_1 /Fo $(SolutionDir)..\\..\\bin\\content\\shaders\\light_vs.cso $(SolutionDir)..\\..\\bin\\content\\shaders\\light_vs.hlsl",
 
   }
 

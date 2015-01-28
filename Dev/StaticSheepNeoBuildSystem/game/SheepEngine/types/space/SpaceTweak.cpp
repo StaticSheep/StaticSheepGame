@@ -32,11 +32,7 @@ namespace Framework
     AntTweak::TBar* spaceBar = ATWEAK->CreateBar(space.GetName().c_str());
     space.tweakHandle = spaceBar->self;
 
-    
-    int r = rand() % (4 - 1);
-    int r2 = rand() % (8 - 1);
-
-    spaceBar->SetPos(225 + 255 * r, 16 + 10 * r2);
+    spaceBar->SetPos(225, 16);
 
     space.UpdateTweakBar();
 #endif

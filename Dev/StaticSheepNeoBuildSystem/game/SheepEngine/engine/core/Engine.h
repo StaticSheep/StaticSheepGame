@@ -186,7 +186,7 @@ namespace Framework
     bool m_returnFromPIE = false;
     bool m_enteringPIE = false;
     void ReloadEditor(void);
-    void CheckReturnFromPIE(void);
+    void CheckPIE(void);
     void StartPIE(void);
 
     /*---------- Friends ----------*/

@@ -31,11 +31,19 @@ namespace Framework
 
     float startSpeed = 7;
     
-
+    int m_order = 0;
   private:
     float m_timeLeft = 0;
     float m_curSpeed = 0;
     float m_uvSnap = 0;
+    float m_realSnap = 0;
+    int m_land = -1;
+
+    
+
+    bool m_timed = true;
+    bool m_stopping = false;
     bool m_spinning = false;
+    
   };
 }

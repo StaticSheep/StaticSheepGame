@@ -7,12 +7,13 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 *****************************************************************/
 #pragma once
 
-
 #include <map>
+#include <unordered_map>
 #include "Vertices.h"
 #include "DataTypes.h"
 #include "Vec2D.h"
 #include "Texture/Tex2d.h"
+#include "model.h"
 #include "SafeRelease.h"
 #include "Handle.h"
 #include "Matrix4D.h"
@@ -77,6 +78,7 @@ class RenderContext
    void Draw(unsigned vertexCount, unsigned vertexStart = 0);
    void DrawSpriteText(const char * text, float size = 32, const char * font = "Arial");
    void DrawBatched(DirectSheep::Handle texture);
+   void DrawPLight(void);
 
    /* --- Primitive Draw Functions --- */
    void DrawLine(Vec3 start, Vec3 end, Color startColor, Color endColor);
@@ -125,7 +127,7 @@ class RenderContext
    bool CreateConstantBuffer(Handle& handle, size_t size);
    bool CreateRenderTarget(Handle& handle, const RenderTargetMode mode, const Format format, const float downsamplePercentage = 1.0f, const Dimension& dim = Dimension());
    bool CreateDepthBuffer(void);
-   bool CreateFontWrapper(void);
+   void AddFont(const char* fontname,const char* filename);
 
     /////////////////////////////////////////////////////////////
     //                    BIND FUNCTIONS                       //
@@ -275,14 +277,6 @@ class RenderContext
       Dimension        size;
     };
 
-    struct Font
-    {
-      Font() : m_fontFactory(NULL), m_fontWrapper(NULL) {}
-      void Release() { SafeRelease(m_fontWrapper); SafeRelease(m_fontFactory); }
-      IFW1Factory     *m_fontFactory;
-      IFW1FontWrapper *m_fontWrapper;
-    };
-
     struct Transform
     {
       Transform() : x(0), y(0), w(64), h(64), theta(0), uvBegin(0,0), uvEnd(1,1) {}
@@ -312,9 +306,9 @@ class RenderContext
     // DirectX //
     /////////////
     IDXGISwapChain              *m_swapChain;
-    ID3D11Device                *m_device;   
+    ID3D11Device                *m_device;
     ID3D11DeviceContext         *m_deviceContext;
-    Font                         m_font;               
+    std::unordered_map<std::string, std::unique_ptr<DirectX::SpriteFont>> m_font;
     int                         m_displayModeIndex;
                                 
     ID3D11RenderTargetView      *m_backBuffer;
@@ -379,6 +373,8 @@ class RenderContext
 
     GenEffect*                               m_genericEffect;
     PointLight*                              m_PointLight;
+
+    Model<PositionVertex>*                   m_PLightModel;
 
 
     ///////////
