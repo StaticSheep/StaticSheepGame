@@ -141,8 +141,10 @@ namespace Framework
 		return m_freeSlots;
 	}
 
+  // Swith to lambdas?
   void HandleManager::Run(void(*runFunc)(void* ptr))
   {
+    
     for (unsigned int i = 0; i < m_MaxEntries - 1; ++i)
     {
       if (m_array[i].m_allocated)
