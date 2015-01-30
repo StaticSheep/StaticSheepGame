@@ -35,7 +35,7 @@ namespace DirectSheep
 
 
   private:
-    CBuffer<LightBuffer>* m_lightBuffer;
+    CBuffer<LightBuffer>* m_lightsBuffer;
     CBuffer<MatBuffer>*   m_matBuffer;
 
   };

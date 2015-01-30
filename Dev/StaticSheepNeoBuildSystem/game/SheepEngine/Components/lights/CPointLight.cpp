@@ -11,7 +11,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 namespace Framework
 {
-  PointLight::PointLight() : m_brightness(1, 1, 1, 500), 
+  PointLight::PointLight() : m_brightness(1, 1, 1, 500),
                              m_attenuation(0,0,.00001f),
                              m_isOn(false), 
                              m_hardFalloff(false) {}

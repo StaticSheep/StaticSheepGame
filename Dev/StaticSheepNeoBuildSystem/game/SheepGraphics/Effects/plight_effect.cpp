@@ -49,7 +49,7 @@ namespace DirectSheep
 
   PointLight::PointLight(ID3D11Device* pDevice) : Effect(pDevice, "content/shaders/light_vs.cso", "content/shaders/light_ps.cso")
   {
-    m_lightBuffer = new CBuffer<LightBuffer>(pDevice);
+    m_lightBuffer = new CBuffer<LightsBuffer>(pDevice);
 
     m_matBuffer = new CBuffer<MatBuffer>(pDevice);
 

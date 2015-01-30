@@ -350,6 +350,8 @@ class RenderContext
     // Batcher //
     /////////////
     
+    std::vector<Light>
+
     std::unique_ptr<DirectX::SpriteBatch> m_batcher;
     std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>>
       m_primitiveBatch;
