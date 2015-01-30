@@ -27,8 +27,8 @@ namespace Framework
 
   void AimingArrow::Initialize()
 	{
-    playerGamePad = space->GetGameObject(owner)->GetComponentHandle(eGamePad); //gets the handle to the gamepad
-
+    arrowSprite = space->GetGameObject(owner)->GetComponentHandle(eSprite); //gets the handle to the gamepad
+    arrowTrans = space->GetGameObject(owner)->GetComponentHandle(eTransform);
 		//logic setup, you're attached and components are in place
     space->hooks.Add("LogicUpdate", self, BUILD_FUNCTION(AimingArrow::LogicUpdate));
 
@@ -38,22 +38,34 @@ namespace Framework
 	}
 
   static GamePad *gp;           //players controller
-  static Transform *arrowTransform;
+  static Transform *arrowTransform, *pt;
+  static Sprite *as;
 
   void AimingArrow::LogicUpdate(float dt)
   {
     gp = space->GetHandles().GetAs<GamePad>(playerGamePad);
+    as = space->GetHandles().GetAs<Sprite>(arrowSprite);
+    arrowTransform = space->GetHandles().GetAs<Transform>(arrowTrans);
+    pt = space->GetHandles().GetAs<Transform>(playerTransform);
     //arrowTransform = space->GetHandles().GetAs<Transform>(arrowTrans);
 
     //Transform *pt = space->GetHandles().GetAs<Transform>(eTransfrom);
 
-    if (gp->RStick_InDeadZone() == false)     //if the right stick is NOT inside of its dead zone
+    if (pt != nullptr && gp->RStick_InDeadZone() == false)     //if the right stick is NOT inside of its dead zone
     {
       Vec3 aimDir = aimingDirection(gp, 'R');           //get the direction the player is currently aiming;
 
+      if (aimDir.x > 0.0f)
+        arrowTransform->SetRotation((float)atan(aimDir.y / aimDir.x));
+      else
+        arrowTransform->SetRotation((float)atan(aimDir.y / aimDir.x) + PI);
 
-      arrowTransform->SetRotation((float)atan(aimDir.y / aimDir.x));
+      Vec3 arrowOffset = pt->GetTranslation() + aimDir * 50;
+      arrowTransform->SetTranslation(arrowOffset);
+      
     }
+    else
+      DestroySelf();
   }
 
   void AimingArrow::Remove()

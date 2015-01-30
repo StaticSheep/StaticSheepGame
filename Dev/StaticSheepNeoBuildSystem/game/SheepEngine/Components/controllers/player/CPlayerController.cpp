@@ -19,6 +19,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "../systems/input/Input.h"
 #include "systems/metrics/MetricInfo.h"
 #include "systems/graphics/SheepGraphics.h"
+#include "../../gameplay_scripts/CAimingArrow.h"
 
 
 
@@ -44,7 +45,7 @@ namespace Framework
     normals.clear();
     lastRotation = 0.0f;
     frameSkip = false;
-
+    arrowSpawn = false;
 	}
 
 	PlayerController::~PlayerController() //4
@@ -137,10 +138,19 @@ namespace Framework
     if (gp->RStick_InDeadZone() == false)     //if the right stick is NOT inside of its dead zone
     {
       aimDir = aimingDirection(gp);           //get the direction the player is currently aiming;
-      
-      //draw aiming arrow*********************************
-      
+
+      if (!arrowSpawn)
+      {
+        //draw aiming arrow
+        GameObject *AA = (FACTORY->LoadObjectFromArchetype(space, "AimingArrow"));
+        AA->GetComponent<AimingArrow>(eAimingArrow)->playerGamePad = playerGamePad;
+        AA->GetComponent<AimingArrow>(eAimingArrow)->playerTransform = playerTransform;
+        AA->GetComponent <Transform>(eTransform)->SetTranslation(ps->GetTranslation());
+        arrowSpawn = true;
+      }
     }
+    else
+      arrowSpawn = false;
     
     //update the weapons delay
     weapon->DelayUpdate(dt);
