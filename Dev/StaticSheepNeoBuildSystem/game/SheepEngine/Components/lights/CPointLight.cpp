@@ -11,24 +11,28 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 namespace Framework
 {
-  PointLight::PointLight()
-  {
+  PointLight::PointLight() : m_brightness(1, 1, 1, 500), 
+                             m_attenuation(0,0,.00001f),
+                             m_isOn(false), 
+                             m_hardFalloff(false) {}
 
-  }
-
-  PointLight::~PointLight()
-  {
-
-  }
+  PointLight::~PointLight() {}
 
   void PointLight::Initialize()
   {
+    transform = this->GetOwner()->GetComponentHandle(eTransform);
 
+    space->hooks.Add("PostDraw", self, BUILD_FUNCTION(PointLight::Render));
   }
 
   void PointLight::Remove()
   {
+    space->hooks.Remove("Draw", self);
+  }
 
+  void PointLight::Render()
+  {
+    GRAPHICS->DrawPointLight(Vec3(GRAPHICS->_ScreenWidth / 2, GRAPHICS->_ScreenHeight / 2, 0), m_brightness, m_attenuation);
   }
 
   void PointLight::TurnOn()
@@ -54,43 +58,43 @@ namespace Framework
   // Manually change attenuation: Falloff
   void PointLight::SetAttenuation(float constant, float linear, float quadratic)
   {
-
+    m_attenuation = Vec3(constant, linear, quadratic);
   }
 
   void PointLight::SetConstant(float constant)
   {
-
+    m_attenuation.x = constant;
   }
 
   void PointLight::SetLinear(float linear)
   {
-
+    m_attenuation.y = linear;
   }
 
   void PointLight::SetQuadratic(float quadratic)
   {
-
+    m_attenuation.z = quadratic;
   }
 
   // Get attenuation values
   Vec3D PointLight::GetAttenuation(void)
   {
-    return Vec3D(m_constant, m_linear, m_quadratic);
+    return m_attenuation;
   }
 
   float PointLight::GetConstant(void)
   {
-    return m_constant;
+    return m_attenuation.x;
   }
 
   float PointLight::GetLinear(void)
   {
-    return m_linear;
+    return m_attenuation.y;
   }
   
   float PointLight::GetQuadratic(void)
   {
-    return m_quadratic;
+    return m_attenuation.z;
   }
 
   // Set and Get brightness
@@ -102,47 +106,5 @@ namespace Framework
   Vec4 PointLight::GetBrightness(void)
   {
     return m_brightness;
-  }
-
-  // Set falloff values
-  void PointLight::SetFalloff(float hundred, float fifty, float zero)
-  {
-
-  }
-
-  void PointLight::SetHundred(float hundred)
-  {
-
-  }
-
-  void PointLight::SetFifty(float fifty)
-  {
-
-  }
-
-  void PointLight::SetZero(float zero)
-  {
-
-  }
-
-  // Get falloff values
-  Vec3D PointLight::GetFalloff(void)
-  {
-    return Vec3D(m_f100, m_f50, m_f0);
-  }
-
-  float PointLight::GetHundred(void)
-  {
-    return m_f100;
-  }
-
-  float PointLight::GetFifty(void)
-  {
-    return m_f50;
-  }
-
-  float PointLight::GetZero(void)
-  {
-    return m_f0;
   }
 }

@@ -239,13 +239,15 @@ namespace DirectSheep
   }
 
 
-  void RenderContext::DrawPLight(void)
+  void RenderContext::DrawPLight(Framework::Vec3D position, Framework::Vec4D brightness, Framework::Vec3D attenuation)
   {
-    static float a = 0;
-    a += .01;
+    Vec3 pos(position.x, position.y, position.z);
+    Color col(brightness.x, brightness.y, brightness.z);
+    Vec3 at(attenuation.x, attenuation.y, attenuation.z);
+
     m_PointLight->bindMatrices(m_deviceContext, ((Camera*)m_postEffects.ptr)->GetProj(), ((Camera*)m_postEffects.ptr)->GetView(), DirectX::XMMatrixIdentity());
 
-    m_PointLight->bindLight(m_deviceContext, Light(Vec3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, -1.0f), Color(a, a, a, 1), Vec3(0, 0, .0001)));
+    m_PointLight->bindLight(m_deviceContext, Light(pos, col, at));
 
     m_PLightModel->bind(m_deviceContext);
 

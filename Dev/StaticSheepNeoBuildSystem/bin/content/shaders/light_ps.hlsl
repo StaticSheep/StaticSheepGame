@@ -19,11 +19,11 @@ cbuffer LightBuffer : register(b0)
 
 float4 PSMain(VSOutput input) : SV_TARGET
 {
-  float diff = length(input.position - pos);
-  float at = 1. / (atten.x + atten.y * diff + atten.z * diff * diff);
+  float dist = length(input.position - pos);
+  float at = col.a / (atten.x + atten.y * dist + atten.z * dist * dist);
   float4 newColor = col * at;
 
-    newColor.w = 1;
+  newColor.w = 1;
 
   return saturate(newColor);
 }

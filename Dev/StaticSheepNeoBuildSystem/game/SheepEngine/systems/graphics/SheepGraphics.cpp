@@ -42,6 +42,7 @@ namespace Framework
     REGISTER_COMPONENT(Sprite);
     REGISTER_COMPONENT(Camera);
     REGISTER_COMPONENT(AniSprite);
+    REGISTER_COMPONENT(PointLight);
   }
 
 	SheepGraphics::~SheepGraphics()
@@ -92,7 +93,6 @@ namespace Framework
     Draw();
     
     FinishFrame();
-    m_renderContext->DrawPLight();
 	}
   
   void SheepGraphics::ActivateDefaultCamera(void)
@@ -156,6 +156,7 @@ namespace Framework
     // Draw Hooks
     GameSpace* space;
     Draw::SetCamState(0);
+    
     m_renderContext->StartBatch();
     // Regular Draw
     for (auto it = ENGINE->Spaces().begin(); it != ENGINE->Spaces().end(); ++it)
@@ -194,7 +195,6 @@ namespace Framework
     ENGINE->SystemMessage(Message(Message::PostDraw));
 
     m_renderContext->EndBatch();
-    //m_renderContext->DrawPLight();
     Draw::SetCamState(2);
     
     m_renderContext->StartBatch();
@@ -289,6 +289,11 @@ namespace Framework
 #if SHEEP_DEBUG
     ++(m_debugData.numBatchedCalls);
 #endif
+  }
+
+  void SheepGraphics::DrawPointLight(Vec3D position, Vec4D brightness, Vec3D attenuation)
+  {
+    m_renderContext->DrawPLight(position, brightness, attenuation);
   }
 
   void SheepGraphics::RawDraw(void)

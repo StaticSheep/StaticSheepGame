@@ -112,7 +112,7 @@ namespace Framework
         Draw::SetCamState(1);
         Draw::SetPosition( 200.0f, 400.0f);
         Draw::SetColor(1.0f,1.0f,1.0f,1.0f);
-        Draw::DrawString(fps_string.c_str(), Vec2D(1, 1), fontIndex);
+        Draw::DrawString(fps_string.c_str(), Vec2D(10, 10), fontIndex);
         Draw::SetCamState(0);
       }
 

@@ -66,7 +66,7 @@ class RenderContext
    void Draw(unsigned vertexCount, unsigned vertexStart = 0);
    void DrawSpriteText(const char * text, int index, Framework::Vec2D& scale);
    void DrawBatched(DirectSheep::Handle texture);
-   void DrawPLight(void);
+   void DrawPLight(Framework::Vec3D position, Framework::Vec4D brightness, Framework::Vec3D attenuation);
 
    /* --- Primitive Draw Functions --- */
    void DrawLine(Vec3 start, Vec3 end, Color startColor, Color endColor);

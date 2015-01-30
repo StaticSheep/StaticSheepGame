@@ -15,6 +15,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 #include "components/sprites/CSprite.h"
 #include "components/camera/CCamera.h"
+#include "components/lights/CPointLight.h"
 
 #include "systems/System.h"
 
@@ -98,6 +99,8 @@ namespace Framework
     // Unbatched raw draw for sprite text
     void DrawSpriteText(const char * text, int fontIndex, Vec2D scale);
     int GetFontIndex(const char * fontName);
+
+    void DrawPointLight(Vec3D position, Vec4D brightness, Vec3D attenuation);
 
     /* =========== Graphics Engine Functions ============ */
 

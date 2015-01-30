@@ -48,4 +48,12 @@ namespace DirectSheep
     int numLights;
     float padding[3];
   };
+
+  struct LightFBuffer
+  {
+    float d50;
+    float d0;
+    Color col;
+    Vec4 pos;
+  };
 }
