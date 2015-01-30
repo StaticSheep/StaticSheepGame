@@ -7,11 +7,10 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 *****************************************************************/
 #pragma once
 #include "SimpleMath.h"
+#include "Vec2D.h"
 
 namespace DirectSheep
 {
-  // Our Custom Vertex
-
   typedef DirectX::SimpleMath::Vector2 Vec2;
   typedef DirectX::SimpleMath::Vector3 Vec3;
   typedef DirectX::SimpleMath::Vector4 Vec4;

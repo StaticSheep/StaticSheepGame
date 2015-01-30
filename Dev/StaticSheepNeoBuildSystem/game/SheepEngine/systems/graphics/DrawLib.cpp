@@ -88,9 +88,9 @@ namespace Framework
     
     GRAPHICS->SetUV(Vec2(0, 0), Vec2(1, 1));
 
-    GRAPHICS->BindTexture(m_whiteTextureID);
-    GRAPHICS->RawDraw();
-    //GRAPHICS->DrawBatched(m_whiteHandle);
+    //GRAPHICS->BindTexture(m_whiteTextureID);
+    //GRAPHICS->RawDraw();
+    GRAPHICS->DrawBatched(m_whiteHandle);
   }
 
   Vec2 Draw::RotateAroundPoint(Vec2 p, Vec2 o, float theta)
@@ -287,9 +287,19 @@ namespace Framework
     }
   }
 
-  void Draw::DrawString(const char* text, float size, const char* font)
+  void Draw::DrawString(const char* text, Vec2D scale, int fontIndex)
   {
-    GRAPHICS->DrawSpriteText(text, size, font);
+    GRAPHICS->DrawSpriteText(text, fontIndex, scale);
+  }
+
+  void Draw::LuaDrawString(const char* text, float scale, int fontIndex)
+  {
+    GRAPHICS->DrawSpriteText(text, fontIndex, Vec2(scale, scale));
+  }
+
+  int Draw::GetFontIndex(const char* fontName)
+  {
+    return GRAPHICS->GetFontIndex(fontName);
   }
 
   Vec3 Draw::ToWorld(Vec2 screenPos)
@@ -316,9 +326,14 @@ namespace Framework
     return GRAPHICS->_ScreenWidth;
   }
 
-  Vec2 Draw::MeasureString(const char* text, float size, const char* font)
+  Vec2 Draw::MeasureString(const char* text, Vec2D scale, int fontIndex)
   {
-    return GRAPHICS->MeasureString(text, size, font);
+    return GRAPHICS->MeasureString(text, scale, fontIndex);
+  }
+
+  Vec2 Draw::LuaMeasureString(const char* text, float scale, int fontIndex)
+  {
+    return GRAPHICS->MeasureString(text, Vec2(scale, scale), fontIndex);
   }
   
 }

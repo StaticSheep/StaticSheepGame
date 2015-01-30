@@ -136,12 +136,14 @@ namespace DirectSheep
     return true;
   }
 
-  void RenderContext::AddFont(const char* fontname,const char* filename)
+  int RenderContext::AddFont(const char* fontname,const char* filename)
   {
     std::string font = std::string(filename);
     std::wstring wFont(font.begin(), font.end());
 
-    m_font[std::string(fontname)].reset(new DirectX::SpriteFont(m_device, wFont.c_str()));
+    m_font.push_back(Font(new DirectX::SpriteFont(m_device, wFont.c_str())));
+
+    return m_font.size() - 1;
   }
 
   void RenderContext::InitializeDeviceAndSwapChain(void)

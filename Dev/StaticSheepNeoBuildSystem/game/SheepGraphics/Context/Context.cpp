@@ -142,6 +142,9 @@ namespace DirectSheep
     m_editor = Handle(CAMERA, new Camera(1920, 1080, true));
     m_CameraPool.push_back((Camera*)m_editor.ptr);
 
+    m_postEffects = Handle(CAMERA, new Camera(SCREEN_WIDTH, SCREEN_HEIGHT, true));
+    m_CameraPool.push_back((Camera*)m_postEffects.ptr);
+
     m_camera = m_Perspective;
 
 
@@ -198,6 +201,12 @@ namespace DirectSheep
     for (size_t i = 0; i < m_handles.size(); ++i)
     {
       Release(m_handles[i]);
+    }
+
+    for (size_t i = 0; i < m_font.size(); ++i)
+    {
+      if (m_font[i].m_spriteFont)
+        delete m_font[i].m_spriteFont;
     }
 
     SafeRelease(m_device);
@@ -573,19 +582,19 @@ namespace DirectSheep
     }
   }
 
-  Framework::Vec2D RenderContext::MeasureString(const char* text,
-    float size, const char* font)
+  Framework::Vec2D RenderContext::MeasureString(const char* text, Framework::Vec2D scale,
+    int fontIndex)
   {
+    if (fontIndex >= m_font.size() || fontIndex < 0)
+      return Framework::Vec2D(0, 0);
+
     XMVECTOR fontSize;
     std::string tempText = text;
     std::wstring wcText(tempText.begin(), tempText.end());
 
-    if (m_font.count(font))
-      fontSize = m_font[font]->MeasureString(wcText.c_str());
-    else
-      return Framework::Vec2D(0, 0);
+    fontSize = m_font[fontIndex].m_spriteFont->MeasureString(wcText.c_str());
 
-    return Framework::Vec2D(XMVectorGetX(fontSize), XMVectorGetY(fontSize));
+    return Framework::Vec2D(XMVectorGetX(fontSize) * scale.x, XMVectorGetY(fontSize) * scale.y);
   }
 
 

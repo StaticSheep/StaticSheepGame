@@ -96,7 +96,8 @@ namespace Framework
     void DrawBatched(DirectSheep::Handle texture);
 
     // Unbatched raw draw for sprite text
-    void DrawSpriteText(const char * text, float size, const char * font);
+    void DrawSpriteText(const char * text, int fontIndex, Vec2D scale);
+    int GetFontIndex(const char * fontName);
 
     /* =========== Graphics Engine Functions ============ */
 
@@ -106,7 +107,7 @@ namespace Framework
 
     /* =========== Utility Functions ============ */
 
-    Vec2 MeasureString(const char* text, float size, const char* font);
+    Vec2 MeasureString(const char* text, Vec2D scale, int fontIndex);
 
     /* =========== Camera Functions ============ */
 
@@ -131,6 +132,7 @@ namespace Framework
 		void Draw(void);
 
     std::unordered_map<std::string, DirectSheep::Handle> m_textureMap;
+    std::unordered_map<std::string, int> m_fontMap;
 
     DirectSheep::Handle spriteQuad;
 
