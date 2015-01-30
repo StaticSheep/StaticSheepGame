@@ -49,8 +49,13 @@ namespace SheepFizz
 
   bool RayCast::SimpleRayCircleTest(Body* circle)
   {
+      //create a vector between the circle and the ray's start
     Vec3D centerVec = circle->position_ - position_;
+
+      //project it onto the direction
     centerVec = (centerVec * direction_) * direction_;
+
+      //create a new vector perpendicular to it for test against the radius
     centerVec = centerVec - circle->position_;
     
     if (centerVec.SquareLength <= (circle->shape_->GetRadius() * circle->shape_->GetRadius()))
@@ -61,7 +66,18 @@ namespace SheepFizz
 
   bool RayCast::SimpleRayRectangleTest(Body* rectangle)
   {
+    Rectangle* rec = (Rectangle*)(rectangle->shape_);
 
+    for (unsigned int i = 0; i < rec->GetVertexNumber(); ++i)
+    {
+      Vec3D normal = rec->GetNormal(i);
+
+      if ((normal * direction_) >= 0)
+        return false;
+
+    }
+
+    return true;
   }
 
   bool RayCast::ComplexRayTest(Body* body)
@@ -90,7 +106,12 @@ namespace SheepFizz
 
   bool RayCast::ComplexRayRectangleTest(Body* rectangle)
   {
+    bool rayIntersect = SimpleRayRectangleTest(rectangle);
 
+    if (!rayIntersect)
+        return false;
+
+    
   }
 
   void FindFirstCollision()
