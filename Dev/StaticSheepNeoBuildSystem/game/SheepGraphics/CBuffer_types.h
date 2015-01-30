@@ -46,6 +46,6 @@ namespace DirectSheep
     Color col[MAX_LIGHTS];
     Vec4 pos[MAX_LIGHTS];
     int numLights;
-    float padding[(MAX_LIGHTS * sizeof(Vec4) + sizeof(float)) % 16];
+    float padding[3];
   };
 }

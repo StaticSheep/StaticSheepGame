@@ -32,7 +32,7 @@ namespace Framework
 
   void PointLight::Render()
   {
-    GRAPHICS->DrawPointLight(space->GetHandles().GetAs<Transform>(transform)->GetTranslation(), m_brightness, m_attenuation);
+    GRAPHICS->BatchPointLight(space->GetHandles().GetAs<Transform>(transform)->GetTranslation(), m_brightness, m_attenuation);
   }
 
   void PointLight::TurnOn()

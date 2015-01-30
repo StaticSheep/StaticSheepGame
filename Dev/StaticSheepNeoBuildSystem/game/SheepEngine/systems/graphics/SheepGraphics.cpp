@@ -189,7 +189,9 @@ namespace Framework
 
     Lua::CallFunc(ENGINE->Lua(), "hook.Call", "PostDraw");
     m_renderContext->EndBatch();
-    
+
+    DrawPointLights(true);
+
     m_renderContext->StartBatch();
     ENGINE->SystemMessage(Message(Message::PostDraw));
     m_renderContext->EndBatch();
@@ -289,9 +291,14 @@ namespace Framework
 #endif
   }
 
-  void SheepGraphics::DrawPointLight(Vec3D position, Vec4D brightness, Vec3D attenuation)
+  void SheepGraphics::BatchPointLight(Vec3D position, Vec4D brightness, Vec3D attenuation)
   {
-    m_renderContext->DrawPLight(position, brightness, attenuation);
+    m_renderContext->BatchPLight(position, brightness, attenuation);
+  }
+
+  void SheepGraphics::DrawPointLights(bool isLight)
+  {
+    m_renderContext->DrawPLights(isLight);
   }
 
   void SheepGraphics::RawDraw(void)

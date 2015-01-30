@@ -100,7 +100,8 @@ namespace Framework
     void DrawSpriteText(const char * text, int fontIndex, Vec2D scale);
     int GetFontIndex(const char * fontName);
 
-    void DrawPointLight(Vec3D position, Vec4D brightness, Vec3D attenuation);
+    void BatchPointLight(Vec3D position, Vec4D brightness, Vec3D attenuation);
+    void DrawPointLights(bool isLight);
 
     /* =========== Graphics Engine Functions ============ */
 
