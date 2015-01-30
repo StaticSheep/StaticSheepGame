@@ -56,7 +56,7 @@ E_NAME(Component)
   E_ENTRY(WarningText)
   E_ENTRY(BackgroundPan)
   E_ENTRY(Cheats)
-  E_ENTRY(SlotController)
+  E_ENTRY(SlotMachine)
 
 
 
