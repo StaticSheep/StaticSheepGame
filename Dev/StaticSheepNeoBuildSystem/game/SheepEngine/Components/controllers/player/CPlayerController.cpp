@@ -145,7 +145,11 @@ namespace Framework
         GameObject *AA = (FACTORY->LoadObjectFromArchetype(space, "AimingArrow"));
         AA->GetComponent<AimingArrow>(eAimingArrow)->playerGamePad = playerGamePad;
         AA->GetComponent<AimingArrow>(eAimingArrow)->playerTransform = playerTransform;
-        AA->GetComponent <Transform>(eTransform)->SetTranslation(ps->GetTranslation());
+        AA->GetComponent<Transform>(eTransform)->SetTranslation(ps->GetTranslation());
+
+        AniSprite *playerS = space->GetHandles().GetAs<AniSprite>(playerAnimation); //get the player's ani-sprite
+        AA->GetComponent<Sprite>(eSprite)->Color = playerS->Color; //set the colors equal
+        AA->GetComponent<Sprite>(eSprite)->Color.z = 1.0f; //make sure the alpha isn't low (happens during respawn)
         arrowSpawn = true;
       }
     }
