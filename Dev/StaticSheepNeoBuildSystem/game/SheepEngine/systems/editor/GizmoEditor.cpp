@@ -570,13 +570,6 @@ namespace Framework
         {
           HandleDrag(screenPos, obj);
         }
-          
-
-
-      }
-      else
-      {
-        
       }
 
       if (!m_dragging)
