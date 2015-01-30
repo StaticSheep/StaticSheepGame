@@ -15,6 +15,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include <windows.h>
 #include <windowsx.h>
 #include "AntTweakBar.h"
+#include "systems/anttweak/AntTweakModule.h"
 
 
 static void GetDesktopResolution(int& horizontal, int& vertical)
@@ -96,7 +97,11 @@ namespace Framework
 
 #if USE_ANTTWEAKBAR
     if (TwEventWin(hWnd, message, wParam, lParam))
+    {
       return 0; // Event has been handled by AntTweakBar
+    }
+    
+      
 #endif
 
     switch( message )                       // Check message

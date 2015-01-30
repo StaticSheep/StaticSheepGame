@@ -68,7 +68,9 @@ namespace Framework
       float theta);
 
     void DetectDrag();
+    
     void HandleDrag(Vec2 screenPos, GameObject* obj);
+    void DetectSelect();
 
     void HighlightBar(GameObject* obj);
 

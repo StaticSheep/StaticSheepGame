@@ -278,9 +278,11 @@ namespace Framework
     Vec2 screenPos, float theta)
   {
     Sprite* spr = obj->GetComponent<Sprite>(eSprite);
+    float ratio = 100.0f / DirectSheep::Camera::perspectiveW;
     Vec2 spriteSize(spr->Size.x * objScale.x *
       spr->TextureSize.x * m_bronzeRatio.x,
       spr->Size.y * objScale.y * spr->TextureSize.y * m_bronzeRatio.y);
+    spriteSize = ratio * spriteSize;
 
     Draw::SetColor(1.0f, 0.5f, 0.06f, 0.9f);
 
@@ -310,6 +312,7 @@ namespace Framework
 
   void GizmoEditor::DetectDrag()
   {
+
     if (SHEEPINPUT->Mouse.ButtonDown(LMB))
     {
       if (m_pHover)
@@ -330,7 +333,6 @@ namespace Framework
       else if (m_rHover)
       {
         m_dragging = true;
-
       }
 
       m_lastMousePos = SHEEPINPUT->Mouse.GetScreenPosition();
@@ -381,7 +383,7 @@ namespace Framework
       else
       {
         m_snapBuffer = 0;
-        m_snapRotateBuffer - 0;
+        m_snapRotateBuffer = 0;
       }
         
 
@@ -457,6 +459,77 @@ namespace Framework
     }
   }
 
+  void GizmoEditor::DetectSelect()
+  {
+    Vec2 mousePos = SHEEPINPUT->Mouse.GetScreenPosition();
+    if (!SHEEPINPUT->Mouse.ButtonPressed(RMB))
+      return;
+
+    if (ENGINE->Spaces().size() == 0)
+      return;
+
+
+    if (m_dragging)
+      return;
+
+    GameSpace* sp;
+    GameObject* obj;
+    Transform* tr;
+    Sprite* spr;
+    std::vector<Transform*> good_objects;
+    Vec2 topleft;
+    Vec2 botRight;
+    float ratio;
+
+    for (int s = 0; s < ENGINE->Spaces().size(); ++s)
+    {
+      sp = ENGINE->Spaces()[s];
+      for (int i = 0; i < sp->m_objects.Size(); ++i)
+      {
+        obj = (GameObject*)sp->m_objects[i];
+        tr = obj->GetComponent<Transform>(eTransform);
+        spr = obj->GetComponent<Sprite>(eSprite);
+
+        if (spr)
+        {
+          topleft = Draw::ToScreen(tr->GetTranslation());
+
+          ratio = 100.0f / DirectSheep::Camera::perspectiveW;
+          topleft.x -= tr->GetScale().x * spr->TextureSize.x * spr->Size.x * ratio * 0.5f;
+          topleft.y -= tr->GetScale().y * spr->TextureSize.y * spr->Size.y * ratio * 0.5f;
+          botRight = topleft;
+          botRight.x += tr->GetScale().x * spr->TextureSize.x * spr->Size.x * ratio;
+          botRight.y += tr->GetScale().y * spr->TextureSize.y * spr->Size.y * ratio;
+
+          if (mousePos > topleft && mousePos < botRight)
+          {
+            good_objects.push_back(tr);
+          }
+
+        }
+      }
+    }
+
+
+    float bestZ = 1000.0f;
+    Transform* cur = nullptr;
+    Transform* picked = nullptr;
+    for (int i = 0; i < good_objects.size(); ++i)
+    {
+      cur = good_objects[i];
+      if (cur->GetTranslation().z < bestZ)
+      {
+        picked = cur;
+        bestZ = cur->GetTranslation().z;
+      }
+    }
+    if (picked)
+    {
+      obj = picked->space->GetGameObject(picked->owner);
+      obj->TweakObject();
+    }
+
+  }
 
   void GizmoEditor::Update(float dt)
   {
@@ -501,6 +574,13 @@ namespace Framework
 
 
       }
+      else
+      {
+        
+      }
+
+      if (!m_dragging)
+        DetectSelect();
 
     }
     else

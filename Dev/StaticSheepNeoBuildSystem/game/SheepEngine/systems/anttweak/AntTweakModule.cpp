@@ -127,6 +127,7 @@ namespace Framework
   {
 #if USE_ANTTWEAKBAR
     RemoveBars();
+    ATWEAK->inputUsed = false;
 #endif
   }
 

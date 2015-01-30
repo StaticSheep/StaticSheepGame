@@ -156,6 +156,7 @@ namespace Framework
 
     virtual std::string GetName() {return "AntTweakBar";};
 
+    bool inputUsed = false;
   private:
 
     void RemoveBars(void);
