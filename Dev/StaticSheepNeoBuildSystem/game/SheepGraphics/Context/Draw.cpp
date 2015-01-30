@@ -55,17 +55,29 @@ namespace DirectSheep
     SetBlendMode(BLEND_MODE_ALPHA);
 
     m_genericEffect->bind(m_deviceContext);
-    m_genericEffect->bindPosUV(m_deviceContext, ((Camera*)m_camera.ptr)->GetProj(), ((Camera*)m_camera.ptr)->GetView(), scaleMat, Vec2(0,0), Vec2(1,1));
+    m_genericEffect->bindPosUV(m_deviceContext,
+      ((Camera*)m_camera.ptr)->GetProj(),
+      ((Camera*)m_camera.ptr)->GetView(),
+      scaleMat, Vec2(0,0), Vec2(1,1));
+
+
     m_genericEffect->bindAmbient (m_deviceContext, m_spriteBlend, 1);
 
     m_deviceContext->Draw(vertexCount, vertexStart);
   }
 
-  void RenderContext::DrawSpriteText(const char * text, int index, Framework::Vec2D& scale)
+  void RenderContext::DrawSpriteText(const char * text, int index,
+    Framework::Vec2D& scale)
   {
     if (index >= m_font.size() || index < 0)
     {
-      m_font[0].m_spriteFont->DrawString(m_batcher.get(), L"Invalid Font", Vec2(m_spriteTrans.x, m_camUse ? m_spriteTrans.y : -m_spriteTrans.y), 255 * m_spriteBlend, m_spriteTrans.theta, Vec2(0, 0), Vec2(1,-1), DirectX::SpriteEffects_None, 0);
+      m_font[0].m_spriteFont->DrawString(m_batcher.get(),
+        L"Invalid Font", Vec2(m_spriteTrans.x,
+        m_camUse ? m_spriteTrans.y : -m_spriteTrans.y),
+        255 * m_spriteBlend, m_spriteTrans.theta,
+        Vec2(0, 0), Vec2(1,-1), DirectX::SpriteEffects_None,
+        m_spriteTrans.z);
+
       return;
     }
 
@@ -74,8 +86,9 @@ namespace DirectSheep
 
     m_font[index].m_spriteFont->DrawString(m_batcher.get(), wText.c_str(),
       Vec2(m_spriteTrans.x, m_camUse ? m_spriteTrans.y : -m_spriteTrans.y),
-      255 * m_spriteBlend, m_spriteTrans.theta, Vec2(0, 0), Vec2(scale.x, -scale.y),
-      DirectX::SpriteEffects_None, 0);
+      255 * m_spriteBlend, m_spriteTrans.theta, Vec2(0, 0),
+      Vec2(scale.x, -scale.y),
+      DirectX::SpriteEffects_None, m_spriteTrans.z);
   }
 
   void RenderContext::DrawBatched(DirectSheep::Handle texture)

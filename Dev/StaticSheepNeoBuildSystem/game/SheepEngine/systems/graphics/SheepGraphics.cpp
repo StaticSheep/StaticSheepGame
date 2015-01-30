@@ -319,7 +319,7 @@ namespace Framework
 
   void SheepGraphics::DrawSpriteText(const char * text, int fontIndex, Vec2D scale)
   {
-    m_renderContext->DrawSpriteText(text, fontIndex, scale);
+    m_renderContext->DrawSpriteText(text, fontIndex, 0.02f * scale);
 
 #if SHEEP_DEBUG
     ++(m_debugData.numTextDraws);
@@ -387,7 +387,7 @@ namespace Framework
   Vec2 SheepGraphics::MeasureString(const char* text, Vec2D scale,
     int fontIndex)
   {
-    return m_renderContext->MeasureString(text, scale, fontIndex);
+    return m_renderContext->MeasureString(text, 0.02f * scale, fontIndex);
   }
 
   DirectSheep::Camera* SheepGraphics::RetrieveCamera(DirectSheep::Handle camHandle)

@@ -54,11 +54,12 @@ namespace Framework
       BIND_FUNCTION_TABLE(L, Draw::DrawTexturedRect, DrawTexturedRect, surface);
       BIND_FUNCTION_TABLE(L, Draw::DrawTexturedRectRotated, DrawTexturedRectRotated, surface);
       BIND_FUNCTION_TABLE(L, Draw::DrawLine, DrawLine, surface);
-      BIND_FUNCTION_TABLE(L, Draw::DrawString, DrawString, surface);
+      BIND_FUNCTION_TABLE(L, Draw::LuaDrawString, DrawString, surface);
       BIND_FUNCTION_TABLE(L, Draw::SetPosition, SetPos, surface);
       BIND_FUNCTION_TABLE(L, Draw::SetPositionEx, SetPosEx, surface);
       BIND_FUNCTION_TABLE(L, Draw::ForceZ, ForceZ, surface);
-      BIND_FUNCTION_TABLE(L, Draw::MeasureString, MeasureString, surface);
+      BIND_FUNCTION_TABLE(L, Draw::LuaMeasureString, MeasureString, surface);
+      BIND_FUNCTION_TABLE(L, Draw::GetFontIndex, GetFontID, surface);
 
       CREATE_TABLE(L, audio);
       BIND_FUNCTION_TABLE(L, SheepAudio::LuaPauseAll, PauseAll, audio);

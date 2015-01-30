@@ -88,9 +88,9 @@ namespace Framework
     
     GRAPHICS->SetUV(Vec2(0, 0), Vec2(1, 1));
 
-    GRAPHICS->BindTexture(m_whiteTextureID);
-    GRAPHICS->RawDraw();
-    //GRAPHICS->DrawBatched(m_whiteHandle);
+    //GRAPHICS->BindTexture(m_whiteTextureID);
+    //GRAPHICS->RawDraw();
+    GRAPHICS->DrawBatched(m_whiteHandle);
   }
 
   void Draw::DrawRectOutline(float x, float y, float width, float height)
@@ -217,9 +217,14 @@ namespace Framework
     }
   }
 
-  void Draw::DrawString(const char* text, int fontIndex, Vec2D scale)
+  void Draw::DrawString(const char* text, Vec2D scale, int fontIndex)
   {
     GRAPHICS->DrawSpriteText(text, fontIndex, scale);
+  }
+
+  void Draw::LuaDrawString(const char* text, float scale, int fontIndex)
+  {
+    GRAPHICS->DrawSpriteText(text, fontIndex, Vec2(scale, scale));
   }
 
   int Draw::GetFontIndex(const char* fontName)
@@ -254,6 +259,11 @@ namespace Framework
   Vec2 Draw::MeasureString(const char* text, Vec2D scale, int fontIndex)
   {
     return GRAPHICS->MeasureString(text, scale, fontIndex);
+  }
+
+  Vec2 Draw::LuaMeasureString(const char* text, float scale, int fontIndex)
+  {
+    return GRAPHICS->MeasureString(text, Vec2(scale, scale), fontIndex);
   }
   
 }
