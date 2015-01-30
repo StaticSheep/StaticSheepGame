@@ -217,9 +217,9 @@ namespace Framework
     }
   }
 
-  void Draw::DrawString(const char* text, int fontIndex, float size)
+  void Draw::DrawString(const char* text, int fontIndex, Vec2D scale)
   {
-    GRAPHICS->DrawSpriteText(text, fontIndex, size);
+    GRAPHICS->DrawSpriteText(text, fontIndex, scale);
   }
 
   int Draw::GetFontIndex(const char* fontName)
@@ -251,9 +251,9 @@ namespace Framework
     return GRAPHICS->_ScreenWidth;
   }
 
-  Vec2 Draw::MeasureString(const char* text, float size, int fontIndex)
+  Vec2 Draw::MeasureString(const char* text, Vec2D scale, int fontIndex)
   {
-    return GRAPHICS->MeasureString(text, size, fontIndex);
+    return GRAPHICS->MeasureString(text, scale, fontIndex);
   }
   
 }

@@ -112,7 +112,7 @@ namespace Framework
         Draw::SetCamState(1);
         Draw::SetPosition( 200.0f, 400.0f);
         Draw::SetColor(1.0f,1.0f,1.0f,1.0f);
-        Draw::DrawString(fps_string.c_str(), fontIndex, 15.0f);
+        Draw::DrawString(fps_string.c_str(), fontIndex, Vec2D(1,1));
         Draw::SetCamState(0);
       }
 
@@ -137,7 +137,7 @@ namespace Framework
           Draw::SetColor(1.0f,1.0f,1.0f,1.0f);
           Draw::SetRotation(0.0f);
           Draw::SetPosition(ENGINE->Window->GetWidth() / -4.0f, ENGINE->Window->GetHeight() / 2.0f - 100.0f);
-          Draw::DrawString(string.c_str(), fontIndex, 15.0f);
+          Draw::DrawString(string.c_str(), fontIndex, Vec2D(1.0f,1.0f));
           Draw::SetCamState(0);
 
           
@@ -151,7 +151,7 @@ namespace Framework
           Draw::SetColor(1.0f, 1.0f, 1.0f, 1.0f);
           Draw::SetRotation(3.14159f);
           Draw::SetPosition(ENGINE->Window->GetWidth() / -4.0f, ENGINE->Window->GetHeight() / 2.0f - 100.0f);
-          Draw::DrawString(string.c_str(), fontIndex, 15.0f);
+          Draw::DrawString(string.c_str(), fontIndex, Vec2D(1.0f, 1.0f));
           Draw::SetCamState(0);
           break;
 
@@ -166,7 +166,7 @@ namespace Framework
           Draw::SetColor(1.0f, 1.0f, 1.0f, 1.0f);
           Draw::SetRotation(0.0f);
           Draw::SetPosition(ENGINE->Window->GetWidth() / 2.0f, ENGINE->Window->GetHeight() / 2.0f - 100.0f);
-          Draw::DrawString(string.c_str(), fontIndex, 15.0f);
+          Draw::DrawString(string.c_str(), fontIndex, Vec2D(1.0f, 1.0f));
           Draw::SetCamState(0);
           break;
           
@@ -377,7 +377,7 @@ namespace Framework
     Draw::SetPosition((ENGINE->Window->GetWidth() / 2.0f) - 296.0f, (ENGINE->Window->GetHeight() / 2.0f - 16.0f));
 
     std::string stringTime = std::to_string(previousTime).erase(4,std::string::npos) + "ms";
-    Draw::DrawString(stringTime.c_str(), fontIndex, 15.0f);
+    Draw::DrawString(stringTime.c_str(), fontIndex, Vec2D(1.0f, 1.0f));
 
     Draw::SetCamState(0);
     ++performanceCounter;

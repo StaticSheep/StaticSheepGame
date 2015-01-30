@@ -203,6 +203,12 @@ namespace DirectSheep
       Release(m_handles[i]);
     }
 
+    for (size_t i = 0; i < m_font.size(); ++i)
+    {
+      if (m_font[i].m_spriteFont)
+        delete m_font[i].m_spriteFont;
+    }
+
     SafeRelease(m_device);
 
     SafeRelease(m_deviceContext);
@@ -576,7 +582,7 @@ namespace DirectSheep
     }
   }
 
-  Framework::Vec2D RenderContext::MeasureString(const char* text, float size,
+  Framework::Vec2D RenderContext::MeasureString(const char* text, Framework::Vec2D scale,
     int fontIndex)
   {
     if (fontIndex >= m_font.size() || fontIndex < 0)
@@ -586,9 +592,9 @@ namespace DirectSheep
     std::string tempText = text;
     std::wstring wcText(tempText.begin(), tempText.end());
 
-    fontSize = m_font[fontIndex]->MeasureString(wcText.c_str());
+    fontSize = m_font[fontIndex].m_spriteFont->MeasureString(wcText.c_str());
 
-    return Framework::Vec2D(XMVectorGetX(fontSize), XMVectorGetY(fontSize));
+    return Framework::Vec2D(XMVectorGetX(fontSize) * scale.x, XMVectorGetY(fontSize) * scale.y);
   }
 
 

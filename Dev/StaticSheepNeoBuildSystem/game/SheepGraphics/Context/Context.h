@@ -64,7 +64,7 @@ class RenderContext
 
     /* --- General Draw Functions --- */
    void Draw(unsigned vertexCount, unsigned vertexStart = 0);
-   void DrawSpriteText(const char * text, int index, float size = 32);
+   void DrawSpriteText(const char * text, int index, Framework::Vec2D& scale);
    void DrawBatched(DirectSheep::Handle texture);
    void DrawPLight(void);
 
@@ -180,7 +180,7 @@ class RenderContext
      float r, float g, float b, float a);
    void ClearBackBuffer(void);
    void ClearDepthBuffer(void);
-   Framework::Vec2D MeasureString(const char* text, float size,
+   Framework::Vec2D MeasureString(const char* text, Framework::Vec2D scale,
      int fontIndex);
 
     /////////////////////////////////////////////////////////////
@@ -278,6 +278,13 @@ class RenderContext
       float theta;
     };
 
+    struct Font
+    {
+      Font() : m_spriteFont(nullptr) {}
+      Font(DirectX::SpriteFont* newFont) : m_spriteFont(newFont) {}
+      DirectX::SpriteFont* m_spriteFont;
+    };
+
     //////////////
     //  System  //
     //////////////
@@ -296,7 +303,7 @@ class RenderContext
     ID3D11Device                *m_device;
     ID3D11DeviceContext         *m_deviceContext;
     //std::unordered_map<std::string, std::unique_ptr<DirectX::SpriteFont>> m_font;
-    std::vector<DirectX::SpriteFont*> m_font;
+    std::vector<Font> m_font;
     int                         m_displayModeIndex;
                                 
     ID3D11RenderTargetView      *m_backBuffer;

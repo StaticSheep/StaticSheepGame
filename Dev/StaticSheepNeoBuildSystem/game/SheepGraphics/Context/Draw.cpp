@@ -61,19 +61,21 @@ namespace DirectSheep
     m_deviceContext->Draw(vertexCount, vertexStart);
   }
 
-  void RenderContext::DrawSpriteText(const char * text, int index, float size)
+  void RenderContext::DrawSpriteText(const char * text, int index, Framework::Vec2D& scale)
   {
     if (index >= m_font.size() || index < 0)
     {
-      index = 0;
-      m_font[index]->DrawString(m_batcher.get(), L"Invalid Font", Vec2(m_spriteTrans.x, m_camUse ? m_spriteTrans.y : -m_spriteTrans.y), 255 * m_spriteBlend, m_spriteTrans.theta, Vec2(0, 0), Vec2(1, -1), DirectX::SpriteEffects_None, 0);
+      m_font[0].m_spriteFont->DrawString(m_batcher.get(), L"Invalid Font", Vec2(m_spriteTrans.x, m_camUse ? m_spriteTrans.y : -m_spriteTrans.y), 255 * m_spriteBlend, m_spriteTrans.theta, Vec2(0, 0), Vec2(1,-1), DirectX::SpriteEffects_None, 0);
       return;
     }
 
     std::string sText(text);
     std::wstring wText(sText.begin(), sText.end());
 
-    m_font[index]->DrawString(m_batcher.get(), wText.c_str(), Vec2(m_spriteTrans.x, m_camUse ? m_spriteTrans.y : -m_spriteTrans.y), 255 * m_spriteBlend, m_spriteTrans.theta, Vec2(0, 0), Vec2(1, -1), DirectX::SpriteEffects_None, 0);
+    m_font[index].m_spriteFont->DrawString(m_batcher.get(), wText.c_str(),
+      Vec2(m_spriteTrans.x, m_camUse ? m_spriteTrans.y : -m_spriteTrans.y),
+      255 * m_spriteBlend, m_spriteTrans.theta, Vec2(0, 0), Vec2(scale.x, -scale.y),
+      DirectX::SpriteEffects_None, 0);
   }
 
   void RenderContext::DrawBatched(DirectSheep::Handle texture)

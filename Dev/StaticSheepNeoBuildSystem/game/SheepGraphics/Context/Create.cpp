@@ -141,7 +141,7 @@ namespace DirectSheep
     std::string font = std::string(filename);
     std::wstring wFont(font.begin(), font.end());
 
-    m_font.push_back(new DirectX::SpriteFont(m_device, wFont.c_str()));
+    m_font.push_back(Font(new DirectX::SpriteFont(m_device, wFont.c_str())));
 
     return m_font.size() - 1;
   }
