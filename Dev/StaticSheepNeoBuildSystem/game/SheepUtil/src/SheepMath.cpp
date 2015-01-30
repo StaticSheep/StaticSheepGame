@@ -150,18 +150,39 @@ namespace Framework
 
   int GetRandom(int min, int max)
   {
-    
     boost::random::uniform_int_distribution<> range(min, max);
     return range(rng);
   }
 
   float GetRandom(float min, float max)
   {
-    if(min == max || min > max)
+    if(min == max)
       return min;
+
+    if(min > max)
+    {
+      float temp = min;
+      min = max;
+      max = temp;
+    }
 
     boost::random::uniform_real_distribution<> range(min, max);
     return (float)range(rng);
+  }
+
+  Vec3D GetRandomNormalizedVector(const Vec3D& left, const Vec3D& right)
+  {
+    int scalar = GetRandom(0, 100);
+
+    if(scalar % 2)
+    {
+      Vec3D result(left * ( 50.0f / (float)scalar) + right);
+      return result.Normalize();
+    }
+    else
+    {
+      return Vec3D(left + ( 50.0f / (float)scalar) * right).Normalize();
+    }
   }
 
   Vec3D GetRandom(const Vec3D& min, const Vec3D& max)

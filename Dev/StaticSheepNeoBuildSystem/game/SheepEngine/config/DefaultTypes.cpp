@@ -274,16 +274,25 @@ namespace Framework
 
     TYPE_REGISTER(ParticleSystem);
     TYPE_ADD_MEMBER(ParticleSystem, textureName, false, true, "ParticleTexture");
-    TYPE_ADD_MEMBER(ParticleSystem, particleLife, false, true, "PLifetime");
-    TYPE_ADD_MEMBER(ParticleSystem, rate, false, true, "PSpawnRate");
-    TYPE_ADD_MEMBER(ParticleSystem, amount, false, true, "ParticlesPerTick");
+    TYPE_ADD_MEMBER(ParticleSystem, particleLife, false, true, "ParticleLifetime");
+    TYPE_ADD_MEMBER(ParticleSystem, rate, false, true, "ParticleSpawnDelay");
+    TYPE_ADD_MEMBER(ParticleSystem, amount, false, true, "ParticlesPerSpawn");
+    TYPE_ADD_MEMBER(ParticleSystem, directionEase, false, true, "DirectionEase");
+    TYPE_ADD_MEMBER(ParticleSystem, direction, false, true, "ParticleDirection", 
+      BUILD_FUNCTION(ParticleSystem::TweakSetDirection));
+    TYPE_ADD_MEMBER(ParticleSystem, angularVelocity, false, true, "ParticleAngularVelocity");
+    TYPE_ADD_MEMBER(ParticleSystem, scaleEase, false, true, "ScaleEase");
+    TYPE_ADD_MEMBER(ParticleSystem, scale, false, true, "ParticleScale");
+    TYPE_ADD_MEMBER(ParticleSystem, colorEase, false, true, "ColorEase");
+    TYPE_ADD_MEMBER(ParticleSystem, color, false, true, "ParticleColor");
+    TYPE_ADD_MEMBER(ParticleSystem, speedEase, false, true, "SpeedEase");
+    TYPE_ADD_MEMBER(ParticleSystem, speed, false, true, "ParticleSpeed");
     
-    TYPE_ADD_MEMBER(ParticleSystem, scale, false, true, "PScale");
-    TYPE_ADD_MEMBER(ParticleSystem, direction, false, true, "PSpawnDirection");
-    TYPE_ADD_MEMBER(ParticleSystem, angularVelocity, false, true, "PAngularVelocity");
-    TYPE_ADD_MEMBER(ParticleSystem, color, false, true, "PColor");
-    TYPE_ADD_MEMBER(ParticleSystem, velocity, false, true, "PVelocity");
     TYPE_SET_TWEAK_TYPE(ParticleSystem, AntTweak::TW_TYPE_COMPONENT);
+
+    TYPE_REGISTER(ParticleOptionShort<float>);
+    TYPE_ADD_MEMBER(ParticleOptionShort<float>, m_startMin, false, true, "Minimum");
+    TYPE_ADD_MEMBER(ParticleOptionShort<float>, m_startMax, false, true, "Maximum");
 
     TYPE_REGISTER(ParticleOption<float>);
     TYPE_ADD_MEMBER(ParticleOption<float>, m_startMin, false, true, "Start Min");

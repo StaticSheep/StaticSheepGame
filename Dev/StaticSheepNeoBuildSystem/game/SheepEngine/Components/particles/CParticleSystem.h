@@ -33,29 +33,45 @@ namespace Framework
   };
 
   template<typename T>
+  struct ParticleOptionShort
+  {
+    T m_startMin;
+    T m_startMax;
+  };
+
+  template<typename T>
   struct ParticleOption
   {
     T m_startMin;
     T m_startMax;
     T m_endMin;
     T m_endMax;
-    Eases ease;
   };
 
+  // byte budget 100 bytes
   struct Particle
   {
     Particle();
-    Particle(ParticleOption<float>& scale, 
+    Particle(ParticleOption<float>& scale,
              ParticleOption<Vec4>&  color,
-             ParticleOption<float>& life);
+             ParticleOption<Vec3>&  dir,
+             ParticleOption<float>& speed,
+             ParticleOptionShort<float>& life);
 
-    Vec3 position;
-    float scale;
-    Vec4 color;
-    Vec3 velocity;
-    float angularVelocity;
-    float theta;
-    float life;
+
+    Vec3 position;          // 12 bytes
+    float scale;            //  4 bytes
+    float endScale;         //  4 bytes
+    Vec4 color;             // 16 bytes
+    Vec4 endColor;          // 16 bytes
+    Vec3 direction;         // 12 bytes
+    Vec3 endDirection;      // 12 bytes
+    float speed;            //  4 bytes
+    float endSpeed;         //  4 bytes
+    float theta;            //  4 bytes
+    float life;             //  4 bytes
+    float endLife;          //  4 bytes
+                      // total 96 bytes
   };
 
   // interpolation crap
@@ -83,6 +99,7 @@ namespace Framework
       void UpdateParticles(float dt); // update behavior
       void FrameUpdate(float dt);
       void DrawParticles(); // tell batcher to draw the things
+      void Remove();
     
       /*----- Toggles ----- */
     
@@ -94,28 +111,35 @@ namespace Framework
       /*----- Setters ----- */
     
       void SetTexture(unsigned int newTexture);
-      void SetLifetime(ParticleOption<float>& op);
-      void SetSpawnRate(ParticleOption<float>& op);
-      void SetVelocity(ParticleOption<Vec3>& op);
+      void SetLifetime(ParticleOptionShort<float>& op);
+      void SetSpawnRate(ParticleOptionShort<float>& op);
+      void SetDirection(void* op);
+      void SetSpeed(ParticleOption<float>& op);
       void SetScale(ParticleOption<float>& op);
       void SetVortex(float something, float something2); // some sort of spinning
-      void SetDirection(ParticleOption<Vec3>& dir); // normalize it first bitch
       void SetAngularVelocity(ParticleOption<float>);
       void SetColor(ParticleOption<Vec4>& op);
     
       void SetGravity(bool state);
       void SetGravityPull(Vec3& strength);
 
+      void TweakSetDirection(const void*);
+
+
       std::string textureName;
-      ParticleOption<float> particleLife;     // how long particles live
-      ParticleOption<float> rate;             // spawn rate
-      ParticleOption<float> amount;           // how many particles per tick
-      ParticleOption<Vec3> velocity;          // velocity of the particles
+      ParticleOptionShort<float> particleLife;     // how long particles live
+      ParticleOptionShort<float> rate;             // spawn rate
+      ParticleOptionShort<float> amount;           // how many particles per tick
+      ParticleOption<Vec3> direction;         // velocity of the particles
       ParticleOption<float> scale;            // start to end scale of particles
-      ParticleOption<Vec3> direction;         // direction to spawn
       ParticleOption<float> angularVelocity;  
       ParticleOption<Vec4> color;
       ParticleOption<float> speed;
+
+      int scaleEase;
+      int directionEase;
+      int colorEase;
+      int speedEase;
   
     private:
     
@@ -123,7 +147,8 @@ namespace Framework
       void RemoveParticle(unsigned index);
       void ClearParticles(void);
 
-      void UpdateVelocity(unsigned index, float t);
+      void UpdateDirection(unsigned index, float t);
+      void UpdateSpeed(unsigned index, float t);
       void UpdateAngularVelocity(unsigned index, float t);
       void UpdatePosition(unsigned index, float dt);
       void UpdateScale(unsigned index, float t);
@@ -149,5 +174,6 @@ namespace Framework
       bool timedSpawn;              // set on timed spawn
       bool gravity;                 // if gravity is being used
       bool physics;                 // if trying to simulate physics
+      bool directionChange;
   };
 }

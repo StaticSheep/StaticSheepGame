@@ -42,22 +42,30 @@ namespace Framework
     template<typename T>
     static T Linear(float currentTime, T start, T end)
     {
-      return start * ( 1.0f - currentTime) + (end * currentTime);
+      return start * (1.0f - currentTime) + (end * currentTime);
     }
 
     template<typename T>
-    static T Quadratic(float currentTime, float endTime, T start, T end)
+    static T QuadraticIn(float t, T start, T end)
     {
-      // in
-      if(currentTime < endTime / 2.0f)
+      return start * (1.0f - t * t) + end * t * t;
+    }
+
+    template<typename T>
+    static T QuadraticOut(float t, T start, T end)
+    {
+      return start * (1.0f - ( t * (1 - t))) + end * ( t * (1 - t));
+    }
+
+    template<typename T>
+    static T QuadraticInOut(float t, T start, T end)
+    {
+      if(t < 0.5f)
+        return start * (1.0f - 2.0f * t * t) + (end * 2.0f * t * t);
+      else
       {
-        currentTime /= endTime;
-        return end * currentTime * currentTime + start;
-      }
-      else // out
-      {
-        currentTime /= endTime;
-        return -end * currentTime * ( currentTime - 2.0f) + start;
+        t -= 0.5f;
+        return start * (1.0f - 2.0f * t * (1.0f - t)) + (end * 2.0f * t * (1.0f * t));
       }
     }
   };
@@ -76,6 +84,7 @@ namespace Framework
   float     GetRandom(float min, float max);
   Vec3D     GetRandom(const Vec3D& min, const Vec3D& max);
   Vec4D     GetRandom(const Vec4D& min, const Vec4D& max);
+  Vec3D     GetRandomNormalizedVector(const Vec3D& left, const Vec3D& right);
   float     Minimum(float a, float b);
   float     Maximum(float a, float b);
   float     CatSpline(double, float, float, float, float);

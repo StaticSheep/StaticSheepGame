@@ -159,6 +159,20 @@ namespace Framework
     z = rhs.z;
     return *this;
   }
+
+  bool Vec3D::operator!=(const Vec3D& rhs)
+  {
+    if( this->x != rhs.x )
+      return true;
+
+    if( this->y != rhs.y )
+      return true;
+
+    if( this->z != rhs.z )
+      return true;
+
+    return false;
+  }
   
   Vec3D operator*(float scalar, const Vec3D& rhs)
   {

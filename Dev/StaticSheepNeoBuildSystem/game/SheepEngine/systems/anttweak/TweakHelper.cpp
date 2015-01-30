@@ -149,7 +149,8 @@ namespace Framework
                   bar->SetGroupParent(uniqueName.c_str(), tempLabel);
             }
 
-            tweakMember = nullptr;
+            if (i + 1 == typeMembers.size())
+              tweakMember = nullptr;
 
 
             // Subtract the current member offset from the tweakOffset

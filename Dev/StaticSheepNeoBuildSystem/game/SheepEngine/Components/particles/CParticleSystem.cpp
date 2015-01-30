@@ -16,21 +16,41 @@ namespace Framework
   Particle::Particle()
   {
     position = Vec3();
-    scale = 0.0f;
+    scale = 1.0f;
+    endScale = 1.0f;
     color = Vec4();
-    velocity = Vec3();
-    angularVelocity = 0.0f;
+    endColor = Vec4();
+    direction = Vec3();
+    endDirection = Vec3();
+    speed = 0.0f;
+    endSpeed = 0.0f;
     theta = 0.0f;
-    life = 0.0f;
+    life = 1.0f;
+    endLife = 1.0f;
   }
 
-  Particle::Particle(ParticleOption<float>& scale_, 
-                     ParticleOption<Vec4>& color_,
-                     ParticleOption<float>& life_)
+  Particle::Particle(ParticleOption<float>& scale_,
+                     ParticleOption<Vec4>&  color_,
+                     ParticleOption<Vec3>&  dir_,
+                     ParticleOption<float>& speed_,
+                     ParticleOptionShort<float>& life_)
   {
     scale = GetRandom(scale_.m_startMin, scale_.m_startMax);
+    endScale = GetRandom(scale_.m_endMin, scale_.m_endMax);
+
     color = GetRandom(color_.m_startMin, color_.m_startMax);
+    endColor = GetRandom(color_.m_endMin, color_.m_endMax);
+
+    direction = GetRandomNormalizedVector(dir_.m_startMin, dir_.m_startMax);
+    endDirection = GetRandomNormalizedVector(dir_.m_endMin, dir_.m_endMax);
+
+    speed = GetRandom(speed_.m_startMin, speed_.m_startMax);
+    endSpeed = GetRandom(speed_.m_endMin, speed_.m_endMax);
+
     life = GetRandom(life_.m_startMin, life_.m_startMax);
+    endLife = life;
+
+    theta = GetRandom(0.0f, 2.0f * PI);
   }
 
 
@@ -41,30 +61,35 @@ namespace Framework
 
     particleLife.m_startMin = 0.5f;
     particleLife.m_startMax = 1.0f;
-    particleLife.m_endMin = 1.0f;
-    particleLife.m_endMax = 1.0f;
-    particleLife.ease = EaseLinear;
 
-    velocity.m_startMin = Vec3(-10.0f, 30.0f, 0.0f);
-    velocity.m_startMax = Vec3( 10.0f, 30.0f, 0.0f);
-    velocity.m_endMin = Vec3(-10.0f, 80.0f, 0.0f);
-    velocity.m_endMax = Vec3( 10.0f, 80.0f, 0.0f);
-    velocity.ease = EaseNone;
+    direction.m_startMin = Vec3(-1.0f, 1.0f, 0.0f);
+    direction.m_startMax = Vec3( 1.0f, 1.0f, 0.0f);
+    direction.m_endMin = Vec3(0.0f, 1.0f, 0.0f);
+    direction.m_endMax = Vec3(0.0f, 1.0f, 0.0f);
+    directionEase = EaseLinear;
 
     scale.m_startMin = 3.0f;
     scale.m_startMax = 5.0f;
     scale.m_endMin = 8.0f;
     scale.m_endMax = 10.0f;
-    scale.ease = EaseLinear;
+    scaleEase = EaseLinear;
 
     color.m_startMin = Vec4(0.9f, 0.9f, 0.9f, 0.9f);
     color.m_startMax = Vec4(1.0f, 1.0f, 1.0f, 1.0f);
     color.m_endMin = Vec4( 0.9f, 0.125f, 0.125f, 0.1f);
     color.m_endMax = Vec4( 1.0f, 0.25f, 0.25f, 0.125f);
-    color.ease = EaseLinear;
+    colorEase = EaseLinear;
 
-    speed.m_startMin = 1000.0f;
+    rate.m_startMin = 120.0f;
+    amount.m_startMin = 1.0f;
+
+    speed.m_startMin = 100.0f;
+    speed.m_startMax = 300.0f;
+    speed.m_endMin = 0.0f;
     speed.m_endMax = 0.0f;
+    speedEase = EaseLinear;
+
+    textureName = "White.png";
   }
 
   void ParticleSystem::Initialize()
@@ -80,7 +105,7 @@ namespace Framework
   {
     ParticleSystem* ps = var.GetValue<ParticleSystem*>();
 
-    AntTweak::Tweaker::DefaultTweak(bar, Variable(ps->velocity), "Velocity", "Velocity");
+    AntTweak::Tweaker::DefaultTweak(bar, Variable(ps->direction), "ParticleDirection", "Particle Direction");
 
   }
 
@@ -89,29 +114,51 @@ namespace Framework
 
   }
 
+  void ParticleSystem::Remove()
+  {
+    space->hooks.Remove("FrameUpdate", self);
+    space->hooks.Remove("LogicUpdate", self);
+    space->hooks.Remove("Draw", self);
+  }
+
   /*----- Hooked functions ----- */
   
   void ParticleSystem::FrameUpdate(float dt)
   {
     if(ENGINE->m_editorAcitve)
+    {
+      if(directionChange)
+      {
+        direction.m_startMin.Normalize();
+        direction.m_startMax.Normalize();
+        direction.m_endMin.Normalize();
+        direction.m_endMax.Normalize();
+        directionChange = false;
+      }
+
       UpdateParticles(dt);
+    }
   }
 
   void ParticleSystem::UpdateParticles(float dt)
   {
     Transform* trans = space->GetHandles().GetAs<Transform>(transform);
     localRotation = Mat3D(trans->GetRotation());
+
+    time += dt;
     
     // change this so that the emitter handles this... system should just update the already existing particles
     if(spawn)
     {
-      for(unsigned i = 0; i < 8; ++i)
+      while(time > 0.0f)
       {
-        float randomX = GetRandom(-10.0f, 10.0f);
-        float randomY = GetRandom(-10.0f, 10.0f);
-        Vec3D location = localRotation * (trans->GetTranslation() + Vec3D(randomX, randomY,0));
-        Particle* temp = SpawnParticle(location);
-        temp->velocity = localRotation * temp->velocity;
+        for(int i = 0; i < (int)amount.m_startMin; ++i)
+        {
+          Vec3D location = localRotation * (trans->GetTranslation());// + Vec3D(randomX, randomY,0));
+          Particle* temp = SpawnParticle(location);
+        }
+
+        time -= 1.0f / (rate.m_startMin);
       }
       
     }
@@ -130,12 +177,12 @@ namespace Framework
             break;
         }
 
-        //int rand = GetRandom(-1,1);
-
         // gets a value from 0 to 1.
-        float time = 1.0f - (particles[i].life / particleLife.m_endMax);
+        //float time = 1.0f - (particles[i].life / particles[i].endLife);
+        float time = dt / particles[i].endLife;
 
-        UpdateVelocity(i, time);
+        UpdateDirection(i, time);
+        UpdateSpeed(i, time);
         UpdatePosition(i, dt);
         UpdateScale(i, time);
         UpdateColor(i, time);
@@ -146,8 +193,12 @@ namespace Framework
 
   void ParticleSystem::DrawParticles()
   {
+    DirectSheep::Handle handle = GRAPHICS->SetTexture(textureName.c_str());
+    Draw::SetTexture(Draw::GetTextureID(textureName.c_str()));
+    Vec2 scale = GRAPHICS->GetTextureDim(handle);
+
+    //Draw::SetTexture(Draw::GetTextureID(textureName.c_str()));
     
-    Draw::SetTexture(Draw::GetTextureID("White.png"));
     
 
     for(unsigned i = 0; i < particles.size(); ++i)
@@ -155,7 +206,7 @@ namespace Framework
       Vec4 color = particles[i].color;
 
       Draw::SetColor(color.x, color.y, color.z, color.w);
-      Draw::DrawTexturedRectRotated(particles[i].position.x, particles[i].position.y, particles[i].scale, particles[i].scale, particles[i].theta);
+      Draw::DrawTexturedRectRotated(particles[i].position.x, particles[i].position.y, particles[i].scale / scale.x, particles[i].scale / scale.y, particles[i].theta);
     }
   }
     
@@ -187,19 +238,26 @@ namespace Framework
     textureID = newTexture;
   }
 
-  void ParticleSystem::SetLifetime(ParticleOption<float>& op)
+  void ParticleSystem::SetLifetime(ParticleOptionShort<float>& op)
   {
     particleLife = op;
   }
 
-  void ParticleSystem::SetSpawnRate(ParticleOption<float>& op)
+  void ParticleSystem::SetSpawnRate(ParticleOptionShort<float>& op)
   {
     rate = op;
   }
 
-  void ParticleSystem::SetVelocity(ParticleOption<Vec3>& op)
+  void ParticleSystem::SetDirection(void* op)
   {
-    velocity = op;
+    *(Vec3*)((char*)this + AntTweak::Tweaker::currentGeneric->realOffset) = *(Vec3*)op;
+
+    ((Vec3*)((char*)this + AntTweak::Tweaker::currentGeneric->realOffset))->Normalize();
+  }
+
+  void ParticleSystem::SetSpeed(ParticleOption<float>& op)
+  {
+    speed = op;
   }
 
   void ParticleSystem::SetScale(ParticleOption<float>& op)
@@ -210,11 +268,6 @@ namespace Framework
   void ParticleSystem::SetVortex(float something, float something2)
   {
     return;
-  }
-
-  void ParticleSystem::SetDirection(ParticleOption<Vec3>& dir)
-  {
-    direction = dir;
   }
 
   void ParticleSystem::SetAngularVelocity(ParticleOption<float> op)
@@ -236,14 +289,24 @@ namespace Framework
   {
     gravityPull = strength;
   }
+
+  void ParticleSystem::TweakSetDirection(const void* value)
+  {
+    SetDirection((Vec3*)value);
+  }
     
   Particle* ParticleSystem::SpawnParticle(const Vec3& location)
   {
-    Particle temp(scale, color, particleLife);
-    temp.position = location;
-    temp.velocity = GetRandom(velocity.m_startMin, velocity.m_startMax);
+    ParticleOption<Vec3> newDir;
+    newDir.m_startMin = localRotation * direction.m_startMin;
+    newDir.m_startMax = localRotation * direction.m_startMax;
+    newDir.m_endMin = localRotation * direction.m_endMin;
+    newDir.m_endMax = localRotation * direction.m_endMax;
 
+    Particle temp(scale, color, newDir, speed, particleLife);
+    temp.position = location;
     particles.push_back(temp);
+
     return &particles.back();
   }
 
@@ -263,27 +326,49 @@ namespace Framework
 
   }
 
-
-  void ParticleSystem::UpdateVelocity(unsigned index, float t)
+  void ParticleSystem::UpdateDirection(unsigned index, float t)
   {
-    Vec3D averageMin = velocity.m_startMin * 0.5f + velocity.m_startMax * 0.5f;
-
-    switch(velocity.ease)
+    switch(directionEase)
     {
       // no ease, don't do anything
       case EaseNone:
-        particles[index].velocity.Normalize();
-        particles[index].velocity *= Ease::Linear(t, speed.m_startMin, speed.m_endMax);
         break;
 
       case EaseLinear:
-        particles[index].velocity = localRotation * Ease::Linear(t, (Vec3D)particles[index].velocity, GetRandom(velocity.m_endMin, velocity.m_endMax));
+        particles[index].direction = Ease::Linear(t, particles[index].direction, particles[index].endDirection);
         break;
 
       case EaseQuadraticIn:
+        particles[index].direction = Ease::QuadraticIn(t, particles[index].direction, particles[index].endDirection);
         break;
 
       case EaseQuadraticOut:
+        particles[index].direction = Ease::QuadraticOut(t, particles[index].direction, particles[index].endDirection);
+        break;
+
+      default:
+        break;
+    }
+  }
+
+  void ParticleSystem::UpdateSpeed(unsigned index, float t)
+  {
+    switch(speedEase)
+    {
+      // no ease, don't do anything
+      case EaseNone:
+        break;
+
+      case EaseLinear:
+        particles[index].speed = Ease::Linear(t, particles[index].speed, particles[index].endSpeed);
+        break;
+
+      case EaseQuadraticIn:
+        particles[index].speed = Ease::QuadraticIn(t, particles[index].speed, particles[index].endSpeed);
+        break;
+
+      case EaseQuadraticOut:
+        particles[index].speed = Ease::QuadraticOut(t, particles[index].speed, particles[index].endSpeed);
         break;
 
       default:
@@ -293,20 +378,26 @@ namespace Framework
 
   void ParticleSystem::UpdatePosition(unsigned index, float dt)
   {
-    particles[index].position += particles[index].velocity * dt;
+    particles[index].position += particles[index].direction * particles[index].speed * dt;
   }
 
   void ParticleSystem::UpdateScale(unsigned index, float t)
   {
-    float averageMin = scale.m_startMin * 0.5f + scale.m_startMax * 0.5f;
-
-    switch(scale.ease)
+    switch(scaleEase)
     {
       case EaseNone:
         break;
 
       case EaseLinear:
-        particles[index].scale = Ease::Linear(t, averageMin, GetRandom(scale.m_endMin, scale.m_endMax));
+        particles[index].scale = Ease::Linear(t, particles[index].scale, particles[index].endScale);
+        break;
+
+      case EaseQuadraticIn:
+        particles[index].scale = Ease::QuadraticIn(t, particles[index].scale, particles[index].endScale);
+        break;
+
+      case EaseQuadraticOut:
+        particles[index].scale = Ease::QuadraticOut(t, particles[index].scale, particles[index].endScale);
         break;
 
       default:
@@ -316,20 +407,28 @@ namespace Framework
 
   void ParticleSystem::UpdateRotation(unsigned index, float t)
   {
-
+    // does nothing right now
+    return;
   }
 
   void ParticleSystem::UpdateColor(unsigned index, float t)
   {
-    Vec4D averageMin = color.m_startMin * 0.5f + color.m_startMax * 0.5f;
 
-    switch(color.ease)
+    switch(colorEase)
     {
       case EaseNone:
         break;
 
       case EaseLinear:
-        particles[index].color = Ease::Linear(t, averageMin, GetRandom(color.m_endMin, color.m_endMax));
+        particles[index].color = Ease::Linear(t, particles[index].color, particles[index].endColor);
+        break;
+
+      case EaseQuadraticIn:
+        particles[index].color = Ease::QuadraticIn(t, particles[index].color, particles[index].endColor);
+        break;
+
+      case EaseQuadraticOut:
+        particles[index].color = Ease::QuadraticOut(t, particles[index].color, particles[index].endColor);
         break;
 
       default:
