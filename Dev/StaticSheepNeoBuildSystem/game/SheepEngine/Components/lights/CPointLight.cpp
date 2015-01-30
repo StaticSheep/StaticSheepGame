@@ -27,12 +27,12 @@ namespace Framework
 
   void PointLight::Remove()
   {
-    space->hooks.Remove("Draw", self);
+    space->hooks.Remove("PostDraw", self);
   }
 
   void PointLight::Render()
   {
-    GRAPHICS->DrawPointLight(Vec3(GRAPHICS->_ScreenWidth / 2, GRAPHICS->_ScreenHeight / 2, 0), m_brightness, m_attenuation);
+    GRAPHICS->DrawPointLight(space->GetHandles().GetAs<Transform>(transform)->GetTranslation(), m_brightness, m_attenuation);
   }
 
   void PointLight::TurnOn()
