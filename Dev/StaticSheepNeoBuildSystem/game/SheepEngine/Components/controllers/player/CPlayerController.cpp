@@ -149,7 +149,7 @@ namespace Framework
 
         AniSprite *playerS = space->GetHandles().GetAs<AniSprite>(playerAnimation); //get the player's ani-sprite
         AA->GetComponent<Sprite>(eSprite)->Color = playerS->Color; //set the colors equal
-        AA->GetComponent<Sprite>(eSprite)->Color.z = 1.0f; //make sure the alpha isn't low (happens during respawn)
+        AA->GetComponent<Sprite>(eSprite)->Color.a = 0.7f; //make sure the alpha isn't low (happens during respawn)
         arrowSpawn = true;
       }
     }
