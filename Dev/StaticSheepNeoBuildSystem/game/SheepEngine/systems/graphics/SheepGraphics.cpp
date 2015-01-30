@@ -188,17 +188,14 @@ namespace Framework
     }
 
     Lua::CallFunc(ENGINE->Lua(), "hook.Call", "PostDraw");
-
     m_renderContext->EndBatch();
     
     m_renderContext->StartBatch();
     ENGINE->SystemMessage(Message(Message::PostDraw));
-
     m_renderContext->EndBatch();
     Draw::SetCamState(2);
-    
-    m_renderContext->StartBatch();
 
+    m_renderContext->StartBatch();
     ENGINE->SystemMessage(Message(Message::GUIDraw));
     m_renderContext->EndBatch();
     

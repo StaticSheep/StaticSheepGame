@@ -153,8 +153,6 @@ namespace DirectSheep
 
   void RenderContext::FrameEnd(void)
   {
-    
-
     m_primativeEffect->Apply(m_deviceContext);
     m_deviceContext->IASetInputLayout(m_primativeLayout);
 
