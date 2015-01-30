@@ -27,7 +27,15 @@ namespace Framework
     {
       return DirectSheep::Color((float*)this);
     }
+
   };
 
-  typedef Vec4 LightVec4;
+  class LightColor : public Vec4
+  {
+  public:
+    LightColor(float x = 0, float y = 0, float z = 0, float w = 0)
+      : Vec4(x, y, z, w) { }
+    LightColor(const Vec4& rhs)
+      :Vec4(rhs) {}
+  };
 }
