@@ -10,7 +10,8 @@ local META = GetMeta("Label")
 function META:Init()
   self.text = ""
   self.font = "Arial"
-  self.fontSize = 12
+  self.fontID = 0
+  self.fontSize = 1
 
   self.outlineWidth = 0
   self.outlineColor = Color(0, 0, 0, 255)
@@ -55,6 +56,7 @@ end
 
 function META:SetFont(font)
   self.font = font
+  self.fontID = surface.GetFontID(font)
 end
 
 function META:GetFont()
@@ -84,7 +86,7 @@ function META:SetOnPressed(func)
 end
 
 function META:DrawSize()
-  return surface.MeasureString(self.text, self.fontSize, self.font)
+  return surface.MeasureString(self.text, self.fontSize, self.fontID)
 end
 
 function META:Paint()
@@ -94,11 +96,11 @@ function META:Paint()
   surface.SetRotation(0)
 
   if self.outlineWidth > 0 then
-    draw.SimpleTextOutlined(self.text, self.font, pos.x, pos.y,
+    draw.SimpleTextOutlined(self.text, self.fontID, pos.x, pos.y,
      self.fontSize, self.color, self.alignX, self.alignY,
      self.outlineWidth, self.outlineColor)
   else
-    draw.SimpleText(self.text, self.font, pos.x, pos.y,
+    draw.SimpleText(self.text, self.fontID, pos.x, pos.y,
      self.fontSize, self.color, self.alignX, self.alignY)
   end
 
