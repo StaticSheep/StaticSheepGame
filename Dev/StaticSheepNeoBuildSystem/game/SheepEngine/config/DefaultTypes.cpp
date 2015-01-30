@@ -135,6 +135,12 @@ namespace Framework
     TYPE_ADD_MEMBER(Vec4, A);
     TYPE_SET_TWEAK_TYPE(Vec4, AntTweak::TW_TYPE_COLOR4F);
 
+    TYPE_REGISTER(LightVec4);
+    TYPE_ADD_MEMBER(LightVec4, R, false, true);
+    TYPE_ADD_MEMBER(LightVec4, G, false, true);
+    TYPE_ADD_MEMBER(LightVec4, B, false, true);
+    TYPE_ADD_MEMBER(LightVec4, A, false, true, "Intensity");
+
 
     TYPE_REGISTER( GameComponent );
     TYPE_SET_FROM_LUA( GameComponent, Lua::GenericObjectFromLua );
