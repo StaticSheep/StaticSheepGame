@@ -28,7 +28,7 @@ namespace Framework
 		void Initialize();
 		void Remove();
 		void onFire();
-		Vec3 aimingDirection(GamePad *gp);
+		Vec3 aimingDirection(GamePad *gp, char stick = 'R');
     void Melee();
     void RespawnBlink(float dt);
     void PlayerDeath(SoundEmitter *se, Transform *pt);

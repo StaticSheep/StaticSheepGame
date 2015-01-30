@@ -18,6 +18,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "../../gameplay_scripts/CCheats.h"
 #include "../systems/input/Input.h"
 #include "systems/metrics/MetricInfo.h"
+#include "systems/graphics/SheepGraphics.h"
 
 
 
@@ -133,8 +134,13 @@ namespace Framework
     if (hasRespawned)
       RespawnBlink(dt);
 
-		if (gp->RStick_InDeadZone() == false)     //if the right stick is NOT inside of its dead zone
-			aimDir = aimingDirection(gp);           //get the direction the player is currently aiming;
+    if (gp->RStick_InDeadZone() == false)     //if the right stick is NOT inside of its dead zone
+    {
+      aimDir = aimingDirection(gp);           //get the direction the player is currently aiming;
+      
+      //draw aiming arrow*********************************
+      
+    }
     
     //update the weapons delay
     weapon->DelayUpdate(dt);
@@ -357,7 +363,7 @@ namespace Framework
         else if (OtherObject->GetComponent<CircleCollider>(eCircleCollider)->GetBodyCollisionGroup() == "Player4")
           pn = 3;
 
-        MetricInfo metricData(pn, 0, 0, PLAYER_KILL, Buttons::TOTALBUTTONS, Weapons::PISTOL);
+        MetricInfo metricData(pn, 0, 0, PLAYER_KILL, Buttons::NONE, Weapons::PISTOL);
         ENGINE->SystemMessage(MetricsMessage(&metricData));
       }
       return;
@@ -490,32 +496,24 @@ namespace Framework
 	// Qualifier:
 	// Parameter: GamePad * gp
 	//************************************
-	Vec3 PlayerController::aimingDirection(GamePad *gp)
+	Vec3 PlayerController::aimingDirection(GamePad *gp, char stick)
 	{
 		Vec3 returnVec;
-    float thresh = 1.0f; //the threshold minimum for aiming
 
-		returnVec.x = gp->RightStick_X();
-		returnVec.y = gp->RightStick_Y();
+    if (stick == 'L')
+    {
+      returnVec.x = gp->LeftStick_X();
+      returnVec.y = gp->LeftStick_Y();
+    }
+    else
+    {
+      //here I'm grabbing where the right stick's x and y is and saving that to a vector
+      returnVec.x = gp->RightStick_X();
+      returnVec.y = gp->RightStick_Y();
+    }
+    //then I normalize that vector and multiply it by a constant (1.5)
     returnVec.Normalize();
     returnVec *= 1.5;
-
-    //making sure that the default return vector is within a certain range so that
-    //when bullets spawn using that return vector they don't spawn to far away from the player.
-    if (returnVec.x > 1.0)
-      returnVec.x = 1.0;
-    if (returnVec.y > 1.0)
-      returnVec.y = 1.0;
-
-    if (returnVec.x < -1.0)
-      returnVec.x = -1.0;
-    if (returnVec.y < -1.0)
-      returnVec.y = -1.0;
-
-    if (returnVec.x < 0)
-    {
-      //flip sprite 
-    }
 
 		return returnVec;
 	}
@@ -661,7 +659,9 @@ namespace Framework
   //************************************
   void PlayerController::jump()
   {
-    bc->AddToVelocity(-(snappedNormal * 600));
+    //bc->AddToVelocity(-(snappedNormal * 600));
+    Vec3 jmpDir = aimingDirection(gp, 'L');
+    bc->AddToVelocity(jmpDir * 500);
     isSnapped = false;
     normals.clear();
     
