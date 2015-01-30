@@ -1,13 +1,12 @@
 /*****************************************************************
 Filename: Engine.cpp
-Project: 
+Project: Giga Gravity Games - Sheep Engine
 Author(s): Zachary Nawar (Primary)
 
 All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 *****************************************************************/
 
-// This is a way to force the project to include the libraries
-// without messing around with project settings
+
 #pragma comment (lib, "SheepGraphics.lib")
 #pragma comment (lib, "SheepPhysics.lib")
 #pragma comment (lib, "luaSource.lib")
@@ -18,16 +17,17 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 #include <iostream>
 
-
 #include "engine/window/Window32.h"
-#include "components/transform/CTransform.h"
+
 #include "systems/input/Input.h"
 #include "systems/graphics/SheepGraphics.h"
-
+#include "systems/anttweak/AntTweakModule.h"
 #include "systems/audio/SheepAudio.h"
 
 #include <boost/filesystem.hpp>
 #include <boost/foreach.hpp>
+
+// See header file for function documentation
 
 namespace Framework
 {
@@ -65,16 +65,12 @@ namespace Framework
 
   void Engine::Initialize()
   {
+    // Setup Lua interface
     L = Lua::CreateEnvironment();
-
     Lua::CallFunc(L, "PostInit");
 
-    //Lua::CallFunc(L, "filesystem.UpdateOldFiles");
-
     for (unsigned int i = 0; i < m_systems.size(); ++i)
-    {
       m_systems[i]->Initialize();
-    }
 
     Framerate.Initialize();
   }
@@ -86,6 +82,7 @@ namespace Framework
 
   void Engine::Shutdown()
   {
+    // Make sure each game space has been properly cleaned up
     for (unsigned int i = 0; i < m_spaces.size(); ++i)
     {
       GameSpace* space = m_spaces[i];
@@ -125,27 +122,30 @@ namespace Framework
   {
     Window->Update();
 
+    // Pause the update loop and manually call update on the
+    // input system if the window has lost focus.
     if (!WINDOW_ACTIVE)
     {
       SHEEPINPUT->Update(0);
       return;
     }
-      
 
     m_time += (unsigned)(Framerate.GetDT() * 1000.0f);
 
+    /* When a gamespace is first created it is not ready to have
+    any logic excuted on it until the start of the next frame */
     for (auto it = m_spaces.begin(); it != m_spaces.end(); ++it)
       if (!(*it)->m_ready)
         (*it)->m_ready = true;
 
     for (unsigned int i = 0; i < m_systems.size(); ++i)
     {
-      Framerate.StartFrame();
+      Framerate.StartFrame(); // For performance tracking
       m_systems[i]->Update(Framerate.GetDT());
       Framerate.EndFrame(m_systems[i]->GetName().c_str());
     }
 
-
+    // Takes care of any invalid spaces
     CleanUp();
 
     if (m_levelChange)
@@ -160,8 +160,9 @@ namespace Framework
     if (m_returnFromPIE)
       ReloadEditor();
 
-    if (m_PIE)
-      CheckReturnFromPIE();
+    if (m_editorAcitve)
+      CheckPIE();
+    
   }
 
   void Engine::MainLoop()
@@ -187,8 +188,6 @@ namespace Framework
   {
     return ENGINE->m_time;
   }
-
-
 
   std::vector<GameSpace*>& Engine::Spaces()
   {
@@ -249,10 +248,6 @@ namespace Framework
     }
   }
 
-
-
-
-
   void Engine::ChangeLevel(const char* name)
   {
     m_levelChange = true;
@@ -266,7 +261,8 @@ namespace Framework
       ClearSpaces();
       CleanUp();
     }
-
+    
+    // Quickly FMOD to remove any old sound channels which were just removed
     AUDIO->Update(0.0f);
 
     FACTORY->LoadLevel(m_nextLevel.c_str(), nullptr);
@@ -274,8 +270,6 @@ namespace Framework
     m_nextLevel.clear();
     m_levelChange = false;
   }
-
-
 
   void Engine::CleanUp()
   {
@@ -286,14 +280,11 @@ namespace Framework
   }
 
 
-
-
-
-  void Engine::CheckReturnFromPIE()
+  void Engine::CheckPIE()
   {
     if (SHEEPINPUT->Keyboard.KeyIsPressed(VK_F5))
     {
-      PlayInEditor(false);
+      PlayInEditor(!PlayingInEditor());
     }
   }
 
@@ -311,6 +302,7 @@ namespace Framework
 
     m_returnFromPIE = false;
 
+    // AntTweak bar editor window, see EngineTweak.cpp
     OpenEditor();
 
     BOOST_FOREACH(boost::filesystem::path const &p, std::make_pair(it, eod))
@@ -341,6 +333,11 @@ namespace Framework
     {
       TRACELOG->Log(TraceLevel::DEBUG, "Prepping PIE mode.");
 
+      ObjectSelectedMessage msg(nullptr);
+      ENGINE->SystemMessage(msg);
+
+      ATWEAK->RemoveAllBars();
+
       std::vector<GameSpace*>& gameSpaces = ENGINE->Spaces();
 
       std::string cacheLocation = "cache\\spaces\\";
@@ -358,9 +355,6 @@ namespace Framework
         filepath = cacheLocation + gameSpaces[i]->GetName()
           + FACTORY->LevelFileExtension;
         FACTORY->SaveSpaceToFilePath(gameSpaces[i], filepath.c_str());
-
-        //if (gameSpaces[i]->m_fileName.length() > 0)
-        //  FACTORY->SaveSpaceToFile(gameSpaces[i], gameSpaces[i]->m_fileName.c_str(), true);
       }
 
       for (size_t i = 0; i < gameSpaces.size(); ++i)
@@ -376,27 +370,24 @@ namespace Framework
 
       std::vector<GameSpace*>& gameSpaces = ENGINE->Spaces();
 
-      // Mark all current gamespaces for deletion
+      // Mark all current game spaces for deletion
       for (size_t i = 0; i < gameSpaces.size(); ++i)
         gameSpaces[i]->Destroy();
       
       ENGINE->m_PIE = false;
       ENGINE->m_returnFromPIE = true;
-
-      
-
     }
   }
   
-  void Engine::StartPIE()
+  void Engine::StartPIE(void)
   {
     TRACELOG->Log(TraceLevel::DEBUG, "Starting PIE mode.");
 
     std::string filePath = "cache\\spaces\\";
 
-    boost::filesystem::directory_iterator it(filePath), eod;
-
     m_enteringPIE = false;
+
+    boost::filesystem::directory_iterator it(filePath), eod;
 
     BOOST_FOREACH(boost::filesystem::path const &p, std::make_pair(it, eod))
     {

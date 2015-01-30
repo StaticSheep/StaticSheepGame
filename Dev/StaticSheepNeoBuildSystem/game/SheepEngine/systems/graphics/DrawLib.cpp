@@ -16,6 +16,8 @@ namespace Framework
   bool Draw::m_useCamera = true;
   Vec4 Draw::m_Color;
   Vec2 Draw::m_TextPos;
+  Vec2 Draw::m_UVMin;
+  Vec2 Draw::m_UVMax;
   unsigned Draw::m_TextureID;
   int Draw::m_whiteTextureID = -1;
   DirectSheep::Handle Draw::m_whiteHandle(DirectSheep::TEXTURE, 0);
@@ -74,6 +76,12 @@ namespace Framework
     GRAPHICS->SetColor(Draw::m_Color);
   }
 
+  void Draw::SetUVs(Vec2 UVMin, Vec2 UVMax)
+  {
+    m_UVMin = UVMin;
+    m_UVMax = UVMax;
+  }
+
   void Draw::DrawRect(float x, float y, float width, float height)
   {
     GRAPHICS->SetSize(width, height);
@@ -86,19 +94,91 @@ namespace Framework
       new (&m_whiteHandle) DirectSheep::Handle(DirectSheep::TEXTURE, m_whiteTextureID);
     }
     
-    GRAPHICS->SetUV(Vec2(0, 0), Vec2(1, 1));
+    GRAPHICS->SetUV(m_UVMin, m_UVMax);
 
     //GRAPHICS->BindTexture(m_whiteTextureID);
     //GRAPHICS->RawDraw();
     GRAPHICS->DrawBatched(m_whiteHandle);
+
+    SetUVs(Vec2(), Vec2(1, 1));
   }
 
-  void Draw::DrawRectOutline(float x, float y, float width, float height)
+  Vec2 Draw::RotateAroundPoint(Vec2 p, Vec2 o, float theta)
   {
-    Draw::DrawLine(x, y, x + width, y);
-    Draw::DrawLine(x + width, y, x + width, y - height);
-    Draw::DrawLine(x + width, y - height, x, y - height);
-    Draw::DrawLine(x, y - height, x, y);
+    return Vec2((p.x - o.x)*cos(theta) - (p.y - o.y)*sin(theta) + o.x,
+      (p.x - o.x)*sin(theta) + (p.y - o.y)*cos(theta) + o.y);
+  }
+
+  void Draw::DrawRectOutline(float x, float y, float width, float height,
+    float theta)
+  {
+    float x1, y1, x2, y2;
+    float xc, yc;
+
+    xc = x + width / 2;
+    yc = y + height / 2;
+
+    x1 = ((x)-xc)*cos(theta) - ((y)-yc)*sin(theta) + xc;
+    y1 = ((x)-xc)*sin(theta) + ((y)-yc)*cos(theta) + yc;
+
+    x2 = ((x + width)-xc)*cos(theta) - ((y)-yc)*sin(theta) + xc;
+    y2 = ((x + width) - xc)*sin(theta) + ((y)-yc)*cos(theta) + yc;
+
+    Draw::DrawLine(x1, y1,
+      x2, y2);
+
+    x1 = ((x + width) - xc)*cos(theta) - ((y)-yc)*sin(theta) + xc;
+    y1 = ((x + width) - xc)*sin(theta) + ((y)-yc)*cos(theta) + yc;
+
+    x2 = ((x + width) - xc)*cos(theta) - ((y + height) - yc)*sin(theta) + xc;
+    y2 = ((x + width) - xc)*sin(theta) + ((y + height) - yc)*cos(theta) + yc;
+
+
+    Draw::DrawLine(x1, y1,
+      x2, y2);
+
+    /*Draw::DrawLine(x + width, y,
+      x + width, y + height);*/
+
+    x1 = ((x + width) - xc)*cos(theta) - ((y + height) - yc)*sin(theta) + xc;
+    y1 = ((x + width) - xc)*sin(theta) + ((y + height) - yc)*cos(theta) + yc;
+
+    x2 = ((x) - xc)*cos(theta) - ((y + height) - yc)*sin(theta) + xc;
+    y2 = ((x) - xc)*sin(theta) + ((y + height) - yc)*cos(theta) + yc;
+
+    Draw::DrawLine(x1, y1,
+      x2, y2);
+
+    /*Draw::DrawLine(x + width, y + height,
+      x, y + height);*/
+
+    x1 = ((x)-xc)*cos(theta) - ((y + height) - yc)*sin(theta) + xc;
+    y1 = ((x)-xc)*sin(theta) + ((y + height) - yc)*cos(theta) + yc;
+
+    x2 = ((x)-xc)*cos(theta) - ((y) - yc)*sin(theta) + xc;
+    y2 = ((x)-xc)*sin(theta) + ((y) - yc)*cos(theta) + yc;
+
+    Draw::DrawLine(x1, y1,
+      x2, y2);
+
+    /*Draw::DrawLine(x, y + height,
+      x, y);*/
+  }
+
+  void Draw::DrawQuad(float x, float y, float width, float height, float theta)
+  {
+    Vec3 v1(x, y),
+      v2(x, y - height),
+      v3(x + width, y - height),
+      v4(x + width, y),
+      center(x + width / 2, y + height / 2);
+
+    v1 = RotateAroundPoint(v1, center, theta);
+    v2 = RotateAroundPoint(v2, center, theta);
+    v3 = RotateAroundPoint(v3, center, theta);
+    v4 = RotateAroundPoint(v4, center, theta);
+
+    GRAPHICS->RC()->DrawQuad(v1, v2, v3, v4);
   }
 
   void Draw::DrawTexturedRect(float x, float y, float width, float height)
@@ -107,9 +187,9 @@ namespace Framework
     SetPosition(x, y);
     GRAPHICS->SetSpriteFlip(false, false);
     
-//     GRAPHICS->BindTexture(m_TextureID);
-//     GRAPHICS->RawDraw();
-    GRAPHICS->SetUV(Vec2(0, 0), Vec2(1, 1));
+    GRAPHICS->SetUV(m_UVMin, m_UVMax);
+    SetUVs(Vec2(), Vec2(1, 1));
+
     GRAPHICS->DrawBatched(DirectSheep::Handle(DirectSheep::TEXTURE, m_TextureID));
   }
 
@@ -121,7 +201,8 @@ namespace Framework
     //GRAPHICS->BindTexture(m_TextureID);
 
 
-    GRAPHICS->SetUV(Vec2(0, 0), Vec2(1, 1));
+    GRAPHICS->SetUV(m_UVMin, m_UVMax);
+    SetUVs(Vec2(), Vec2(1, 1));
     GRAPHICS->SetRotation(theta);
     GRAPHICS->DrawBatched(DirectSheep::Handle(DirectSheep::TEXTURE, m_TextureID));
     

@@ -38,6 +38,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/gameplay_scripts/CWarningText.h"
 #include "components/gameplay_scripts/CBackgroundPan.h"
 #include "components/gameplay_scripts/CCheats.h"
+#include "components/slotmachine/slotmachine.h"
 
 
 namespace Framework
@@ -134,6 +135,12 @@ namespace Framework
     TYPE_ADD_MEMBER(Vec4, B);
     TYPE_ADD_MEMBER(Vec4, A);
     TYPE_SET_TWEAK_TYPE(Vec4, AntTweak::TW_TYPE_COLOR4F);
+
+    TYPE_REGISTER(LightVec4);
+    TYPE_ADD_MEMBER(LightVec4, R, false, true);
+    TYPE_ADD_MEMBER(LightVec4, G, false, true);
+    TYPE_ADD_MEMBER(LightVec4, B, false, true);
+    TYPE_ADD_MEMBER(LightVec4, A, false, true, "Intensity");
 
 
     TYPE_REGISTER( GameComponent );
@@ -298,6 +305,11 @@ namespace Framework
     TYPE_SET_FROM_LUA( LuaComponent, Lua::GenericObjectFromLua );
     TYPE_REGISTER_PTR( LuaComponent* );
     //TYPE_SET_TO_LUA( LuaComponent*, Lua::GameComponentToLua);
+
+    TYPE_REGISTER(SlotMachine);
+    TYPE_SET_TWEAK_TYPE(SlotMachine, AntTweak::TW_TYPE_COMPONENT);
+    TYPE_ADD_MEMBER(SlotMachine, numSlots, false, true, "Slots",
+      BUILD_FUNCTION(SlotMachine::TweakSetNumSlots));
 
     TYPE_REGISTER( AntTweak::TBar );
     TYPE_REGISTER_PTR( AntTweak::TBar* );

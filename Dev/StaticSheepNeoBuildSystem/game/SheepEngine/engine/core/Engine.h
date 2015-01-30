@@ -86,6 +86,7 @@ namespace Framework
     static void PlayInEditor(bool play);
     static bool PlayingInEditor(void);
     static void OpenEditor();
+    static void UpdateEditorWindow();
 
     // Returns the lua environment
     lua_State* Lua(void) const;
@@ -185,7 +186,7 @@ namespace Framework
     bool m_returnFromPIE = false;
     bool m_enteringPIE = false;
     void ReloadEditor(void);
-    void CheckReturnFromPIE(void);
+    void CheckPIE(void);
     void StartPIE(void);
 
     /*---------- Friends ----------*/

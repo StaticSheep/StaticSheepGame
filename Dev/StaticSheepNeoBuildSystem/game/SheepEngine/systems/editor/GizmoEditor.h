@@ -9,6 +9,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 #include "systems/System.h"
 #include "types/object/Object.h"
+#include "types/vectors/Vec2.h"
+#include "types/vectors/Vec3.h"
 
 namespace Framework
 {
@@ -50,7 +52,27 @@ namespace Framework
     void SetGizmoMode(GizmoType mode);
     GizmoType GetGizmoMode();
 
+    void ToggleSnapping(bool on);
+
+
+    bool m_oneObjectBar = false;
+
   private:
+
+    void DetectHover(Vec2 screenPos, float theta);
+    void DrawHandles(Vec2 screenPos, float theta);
+
+    void DrawSpriteOutline(GameObject* obj, Vec3 objScale, Vec2 screenPos,
+      float theta);
+    void DrawRigidBodyOutline(GameObject* obj, Vec3 objScale, Vec2 screenPos,
+      float theta);
+
+    void DetectDrag();
+    
+    void HandleDrag(Vec2 screenPos, GameObject* obj);
+    void DetectSelect();
+
+    void HighlightBar(GameObject* obj);
 
     enum DragAxis
     {
@@ -68,12 +90,28 @@ namespace Framework
 
     bool m_xHover = false;
     bool m_yHover = false;
+    bool m_rHover = false;
     bool m_pHover = false;
 
+    Vec2 m_bronzeRatio;
+
     Vec2 m_lastMousePos;
-    
+    Vec2 m_startRotatePos;
+    Vec2 m_xArrow, m_xArrowCenter;
+    Vec2 m_yArrow, m_yArrowCenter;
+
+    Vec2 m_snapBuffer = 0;
+    float m_snapRotateBuffer = 0;
+
+    float m_scaleDampening = 25.0f;
+    float m_snapDistance = 50.0f;
+
+
+    bool m_useSnapping = false;
+    bool m_world = true;
 
     GizmoType m_mode = Translation;
 
+    friend class Engine;
   };
 }

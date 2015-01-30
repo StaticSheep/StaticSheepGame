@@ -41,6 +41,9 @@ namespace DirectSheep
     Vec3 ToWorld(Vec2 screenPos) const;
     Vec2 ToScreen(Vec3 worldPpos) const;
 
+    static float perspectiveZ;
+    static float perspectiveW;
+
   private:
     void BuildView();
     void BuildPerspective();

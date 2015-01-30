@@ -190,11 +190,13 @@ namespace Framework
     Lua::CallFunc(ENGINE->Lua(), "hook.Call", "PostDraw");
     m_renderContext->EndBatch();
 
+   
     DrawPointLights(true);
 
     m_renderContext->StartBatch();
     ENGINE->SystemMessage(Message(Message::PostDraw));
     m_renderContext->EndBatch();
+
     Draw::SetCamState(2);
 
     m_renderContext->StartBatch();
@@ -204,7 +206,6 @@ namespace Framework
     m_renderContext->StartBatch();
     ENGINE->SystemMessage(Message(Message::PostGUIDraw));
     m_renderContext->EndBatch();
-    
     Draw::SetCamState(2);
 	}
 

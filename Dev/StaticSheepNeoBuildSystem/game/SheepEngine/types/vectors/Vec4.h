@@ -28,4 +28,6 @@ namespace Framework
       return DirectSheep::Color((float*)this);
     }
   };
+
+  typedef Vec4 LightVec4;
 }

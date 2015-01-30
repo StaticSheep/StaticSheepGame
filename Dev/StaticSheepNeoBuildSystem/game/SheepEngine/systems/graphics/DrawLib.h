@@ -18,6 +18,9 @@ namespace Framework
   class Draw
   {
   public:
+    
+    static Vec2 RotateAroundPoint(Vec2 p, Vec2 o, float theta);
+    
     static void SetCamState(int camState);
     static void SetTexture(unsigned texID);
     static int  GetTextureID(const char* texName);
@@ -26,9 +29,13 @@ namespace Framework
     static void SetPosition(float x, float y);
     static void SetPositionEx(float x, float y, float z);
     static void SetColor(float r, float g, float b, float a);
+    static void SetUVs(Vec2 UVMin, Vec2 UVMax);
 
     static void DrawRect(float x, float y, float width, float height);
-    static void DrawRectOutline(float x, float y, float width, float height);
+    static void DrawRectOutline(float x, float y, float width, float height,
+      float theta = 0);
+    static void DrawQuad(float x, float y, float width, float height, 
+      float theta = 0);
     static void DrawTexturedRect(float x, float y, float width, float height);
     static void DrawTexturedRectRotated(float x, float y,
       float width, float height, float theta);
@@ -47,6 +54,7 @@ namespace Framework
 
     static void ForceZ(bool use, float z);
 
+    
 
     static Vec3 ToWorld(Vec2 screenPos);
     static Vec2 ToScreen(Vec3 worldPos);
@@ -60,6 +68,8 @@ namespace Framework
     static unsigned m_TextureID;
     static Vec4 m_Color;
     static Vec2 m_TextPos;
+    static Vec2 m_UVMin;
+    static Vec2 m_UVMax;
     static bool m_useCamera;
     static int m_whiteTextureID;
     static DirectSheep::Handle m_whiteHandle;

@@ -10,6 +10,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "modules/memory/ObjectAllocator.h"
 #include "modules/handlemanager/HandleManager.h"
 #include "components/base/Component.h"
+#include "systems/editor/GizmoEditor.h"
 
 namespace Framework
 {
@@ -147,6 +148,7 @@ namespace Framework
     friend class Engine;
     friend class Factory;
     friend class GameLogic;
+    friend class GizmoEditor;
 	};
 
 }

@@ -16,12 +16,14 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 namespace Framework
 {
+  static float weapDelay = 0.075f;
   Automatic::Automatic()
   {
     delay = 0.075f;
     damage = 10;
     knockback = 50;
     semi = false;
+    
   }
 
   Automatic::~Automatic()
@@ -52,5 +54,17 @@ namespace Framework
 
     SoundEmitter *se = player->GetComponent<SoundEmitter>(eSoundEmitter);
     se->Play("laser1", &SoundInstance(0.25f));
+  }
+
+  void Automatic::DelayUpdate(float dt)
+  {
+    delay -= dt;
+    if (delay < -100)
+      delay = 0;
+  }
+
+  void Automatic::ResetDelay()
+  {
+    delay = weapDelay;
   }
 }
