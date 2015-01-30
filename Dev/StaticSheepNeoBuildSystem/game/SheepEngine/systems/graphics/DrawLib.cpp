@@ -16,6 +16,8 @@ namespace Framework
   bool Draw::m_useCamera = true;
   Vec4 Draw::m_Color;
   Vec2 Draw::m_TextPos;
+  Vec2 Draw::m_UVMin;
+  Vec2 Draw::m_UVMax;
   unsigned Draw::m_TextureID;
   int Draw::m_whiteTextureID = -1;
   DirectSheep::Handle Draw::m_whiteHandle(DirectSheep::TEXTURE, 0);
@@ -74,6 +76,12 @@ namespace Framework
     GRAPHICS->SetColor(Draw::m_Color);
   }
 
+  void Draw::SetUVs(Vec2 UVMin, Vec2 UVMax)
+  {
+    m_UVMin = UVMin;
+    m_UVMax = UVMax;
+  }
+
   void Draw::DrawRect(float x, float y, float width, float height)
   {
     GRAPHICS->SetSize(width, height);
@@ -86,11 +94,13 @@ namespace Framework
       new (&m_whiteHandle) DirectSheep::Handle(DirectSheep::TEXTURE, m_whiteTextureID);
     }
     
-    GRAPHICS->SetUV(Vec2(0, 0), Vec2(1, 1));
+    GRAPHICS->SetUV(m_UVMin, m_UVMax);
 
     //GRAPHICS->BindTexture(m_whiteTextureID);
     //GRAPHICS->RawDraw();
     GRAPHICS->DrawBatched(m_whiteHandle);
+
+    SetUVs(Vec2(), Vec2(1, 1));
   }
 
   Vec2 Draw::RotateAroundPoint(Vec2 p, Vec2 o, float theta)
@@ -177,9 +187,9 @@ namespace Framework
     SetPosition(x, y);
     GRAPHICS->SetSpriteFlip(false, false);
     
-//     GRAPHICS->BindTexture(m_TextureID);
-//     GRAPHICS->RawDraw();
-    GRAPHICS->SetUV(Vec2(0, 0), Vec2(1, 1));
+    GRAPHICS->SetUV(m_UVMin, m_UVMax);
+    SetUVs(Vec2(), Vec2(1, 1));
+
     GRAPHICS->DrawBatched(DirectSheep::Handle(DirectSheep::TEXTURE, m_TextureID));
   }
 
@@ -191,7 +201,8 @@ namespace Framework
     //GRAPHICS->BindTexture(m_TextureID);
 
 
-    GRAPHICS->SetUV(Vec2(0, 0), Vec2(1, 1));
+    GRAPHICS->SetUV(m_UVMin, m_UVMax);
+    SetUVs(Vec2(), Vec2(1, 1));
     GRAPHICS->SetRotation(theta);
     GRAPHICS->DrawBatched(DirectSheep::Handle(DirectSheep::TEXTURE, m_TextureID));
     
