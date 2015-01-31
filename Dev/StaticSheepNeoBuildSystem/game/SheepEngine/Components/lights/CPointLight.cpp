@@ -11,9 +11,9 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 namespace Framework
 {
-  PointLight::PointLight() : m_brightness(1, 1, 1, 500),
-                             m_attenuation(0,0,.00001f),
-                             m_isOn(false), 
+  PointLight::PointLight() : m_brightness(1, 1, 1, 1),
+    m_attenuation(0.050097f, 0.101329f, 0.007211f),
+                             m_isOn(true), 
                              m_hardFalloff(false) {}
 
   PointLight::~PointLight() {}
@@ -32,7 +32,8 @@ namespace Framework
 
   void PointLight::Render()
   {
-    GRAPHICS->BatchPointLight(space->GetHandles().GetAs<Transform>(transform)->GetTranslation(), m_brightness, m_attenuation);
+    if (m_isOn)
+      GRAPHICS->BatchPointLight(space->GetHandles().GetAs<Transform>(transform)->GetTranslation(), m_brightness, m_attenuation);
   }
 
   void PointLight::TurnOn()

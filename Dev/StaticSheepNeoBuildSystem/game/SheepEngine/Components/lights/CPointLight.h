@@ -50,7 +50,7 @@ namespace Framework
     void IsHardFallOff(bool ishardfalloff);
 
     // RGB and brightness values
-    Vec4 m_brightness;
+    LightColor m_brightness;
 
     Vec3 m_attenuation;
 

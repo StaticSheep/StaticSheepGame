@@ -263,7 +263,7 @@ namespace DirectSheep
   void RenderContext::BatchPLight(Framework::Vec3D position, Framework::Vec4D brightness, Framework::Vec3D attenuation)
   {
     Vec3 pos(position.x, position.y, position.z);
-    Color col(brightness.x, brightness.y, brightness.z);
+    Color col(brightness.x, brightness.y, brightness.z, brightness.a);
     Vec3 at(attenuation.x, attenuation.y, attenuation.z);
 
     m_PointLights.push_back(Light(pos, col, at));
@@ -271,9 +271,12 @@ namespace DirectSheep
 
   void RenderContext::DrawPLights(bool isLight)
   {
+    if (!isLight)
+      return;
+
     m_PointLight->bindMatrices(m_deviceContext, ((Camera*)m_postEffects.ptr)->GetProj(), ((Camera*)m_postEffects.ptr)->GetView(), DirectX::XMMatrixIdentity());
 
-    m_PointLight->bindLights(m_deviceContext, m_PointLights.data(), m_PointLights.size());
+    m_PointLight->bindLights(m_deviceContext, m_PointLights.data(),  m_PointLights.size() < MAX_LIGHTS ? m_PointLights.size() : MAX_LIGHTS);
 
     m_PLightModel->bind(m_deviceContext);
 
