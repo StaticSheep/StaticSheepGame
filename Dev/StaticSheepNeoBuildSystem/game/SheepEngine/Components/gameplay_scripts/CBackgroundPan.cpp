@@ -10,6 +10,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "types/space/Space.h"
 #include "../transform/CTransform.h"
 #include "../colliders/CBoxCollider.h"
+#include "systems/graphics/SheepGraphics.h"
 
 namespace Framework
 {
@@ -40,9 +41,19 @@ namespace Framework
 	{
     Transform *pt = space->GetHandles().GetAs<Transform>(bTransfrom);
 
-    pt->SetRotation(pt->GetRotation() + (dt / 20));
+    /*pt->SetRotation(pt->GetRotation() + (dt / 20));
     if (pt->GetRotation() > 2 * PI)
-      pt->SetRotation(0);
+    pt->SetRotation(0);*/
+
+    /*pt->SetTranslation(pt->GetTranslation() + Vec3(-1.0f, 0.0f, 0.0f));
+    if (pt->GetTranslation().x + 1485 < -GRAPHICS->_ScreenWidth / 2)
+    pt->SetTranslation(Vec3(-GRAPHICS->_ScreenWidth + 1485));*/
+
+    Handle backgroundSprite = space->GetGameObject(owner)->GetComponentHandle(eSprite);
+    Sprite *bgs = space->GetHandles().GetAs<Sprite>(backgroundSprite);
+    bgs->MinUV.x += 0.01f * dt;
+    bgs->MaxUV.x = bgs->MinUV.x + 1;
+
 	}
 
 }
