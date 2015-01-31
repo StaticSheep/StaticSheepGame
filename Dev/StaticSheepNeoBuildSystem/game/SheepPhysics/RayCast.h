@@ -57,6 +57,9 @@ namespace SheepFizz
       //used for polygon collision
       unsigned int support_;
 
+      //used for circle collision
+      //Vec3D circleNorm;
+
       //reflection of the ray - calculated only after the first
       //collision is found
       bool reflectRay_;
