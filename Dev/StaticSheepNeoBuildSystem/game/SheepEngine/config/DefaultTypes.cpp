@@ -39,6 +39,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/gameplay_scripts/CBackgroundPan.h"
 #include "components/gameplay_scripts/CCheats.h"
 #include "components/slotmachine/slotmachine.h"
+#include "components/gameplay_scripts/CAimingArrow.h"
 
 
 namespace Framework
@@ -226,6 +227,10 @@ namespace Framework
     TYPE_REGISTER(Cheats);
     TYPE_SET_TWEAK_TYPE(Cheats, AntTweak::TW_TYPE_COMPONENT);
     TYPE_ADD_MEMBER(Cheats, enabled, false, true, "Enable?");
+
+    TYPE_REGISTER(AimingArrow);
+    TYPE_SET_TWEAK_TYPE(AimingArrow, AntTweak::TW_TYPE_COMPONENT);
+    TYPE_ADD_MEMBER(AimingArrow, arrowColor, false, true, "Color");
 
     TYPE_REGISTER(Pistol);
     TYPE_REGISTER(Shotgun);

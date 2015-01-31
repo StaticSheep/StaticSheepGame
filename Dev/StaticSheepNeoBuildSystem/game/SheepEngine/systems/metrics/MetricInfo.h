@@ -15,6 +15,7 @@ enum MetricType
   PISTOL_FIRE,
   PLAYER_LOCATION,
   PLAYER_DEATH,
+  PLAYER_KILL,
   PLAYER_BUTTON_PRESS,
   ROUND_WINNER,
   ROUND_LENGTH
@@ -49,6 +50,9 @@ enum Weapons
 //this struct will be sent with messages to the metric controller
 struct MetricInfo
 {
+  MetricInfo(){};
+  MetricInfo(int pn, int x_, int y_, MetricType mt, Buttons button, Weapons weap) : playerNum(pn), x(x_), y(y_), mt(mt), button(button), weapon(weap){};
+
   int playerNum;
   MetricType mt;
   Buttons button;

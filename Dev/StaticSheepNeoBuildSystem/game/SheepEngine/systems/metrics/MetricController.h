@@ -13,8 +13,6 @@ All content © 2015 DigiPen (USA) Corporation, all rights reserved.
 
 namespace Framework
 {
-  //this enum keeps track of the different kinds of metrics to take
-
 
   class MetricController : public ISystem
   {
@@ -31,6 +29,7 @@ namespace Framework
     void UpdatePickup(char player, Weapons weap);
     void UpdateLocation(char player, float time, int x, int y);
     void UpdateDeath(char player, float time, int x, int y);
+    void UpdateKill(char player, float time, int x, int y);
     void SetRoundLength(float time);
     void SetRoundWinner(char player);
     void ReceiveMessage(Message& msg);

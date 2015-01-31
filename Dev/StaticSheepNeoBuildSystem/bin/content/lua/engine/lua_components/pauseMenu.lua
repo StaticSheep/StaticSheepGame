@@ -174,11 +174,11 @@ function PauseMenu:Init()
 
   self.super.Init(self)
 
-  self:PauseSpace(true)
+  -- self:PauseSpace(true)
 
 
-  self:MakeMenu()
-  self:MakeHelpMenu()
+  -- self:MakeMenu()
+  -- self:MakeHelpMenu()
 
   self.base.pos.x = 0
 end
