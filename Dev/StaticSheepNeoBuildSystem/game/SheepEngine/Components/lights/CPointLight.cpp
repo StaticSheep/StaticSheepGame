@@ -33,7 +33,10 @@ namespace Framework
   void PointLight::Render()
   {
     if (m_isOn)
-      GRAPHICS->BatchPointLight(space->GetHandles().GetAs<Transform>(transform)->GetTranslation(), m_brightness, m_attenuation);
+    {
+      Vec4 scaledBrightness(m_brightness.r / 255.0f, m_brightness.g / 255.0f, m_brightness.b / 255.0f, m_brightness.a * 20.0f);
+      GRAPHICS->BatchPointLight(space->GetHandles().GetAs<Transform>(transform)->GetTranslation(), scaledBrightness, m_attenuation);
+    }
   }
 
   void PointLight::TurnOn()

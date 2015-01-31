@@ -271,7 +271,7 @@ namespace DirectSheep
 
   void RenderContext::DrawPLights(bool isLight)
   {
-    if (!isLight)
+    if (!isLight || !m_PointLights.size())
       return;
 
     m_PointLight->bindMatrices(m_deviceContext, ((Camera*)m_postEffects.ptr)->GetProj(), ((Camera*)m_postEffects.ptr)->GetView(), DirectX::XMMatrixIdentity());
