@@ -38,6 +38,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/gameplay_scripts/CBackgroundPan.h"
 #include "components/gameplay_scripts/CCheats.h"
 #include "components/particles/CParticleSystem.h"
+#include "components/particles/CParticleCircleEmitter.h"
+#include "components/particles/Particles.h"
 
 
 namespace Framework
@@ -311,6 +313,15 @@ namespace Framework
     TYPE_ADD_MEMBER(ParticleOption<Vec4>, m_startMax, false, true, "Start Max");
     TYPE_ADD_MEMBER(ParticleOption<Vec4>, m_endMin, false, true, "End Min");
     TYPE_ADD_MEMBER(ParticleOption<Vec4>, m_endMax, false, true, "End Max");
+
+    TYPE_REGISTER(ParticleCircleEmitter);
+    TYPE_ADD_MEMBER(ParticleCircleEmitter, m_innerRadius, false, true, "Inner Radius");
+    TYPE_ADD_MEMBER(ParticleCircleEmitter, m_outerRadius, false, true, "Outer Radius");
+    TYPE_ADD_MEMBER(ParticleCircleEmitter, m_amount, false, true, "Spawn Amount");
+    TYPE_ADD_MEMBER(ParticleCircleEmitter, m_rate, false, true, "Spawn Delay");
+    TYPE_ADD_MEMBER(ParticleCircleEmitter, spawning, false, true, "Constant Spawning");
+    TYPE_ADD_MEMBER(ParticleCircleEmitter, outward, false, true, "Spawn Outwards");
+    TYPE_ADD_MEMBER(ParticleCircleEmitter, inward, false, true, "Spawn Inwards");
 
     TYPE_REGISTER(Camera);
     TYPE_ADD_MEMBER(Camera, m_active, false, true, "Active",

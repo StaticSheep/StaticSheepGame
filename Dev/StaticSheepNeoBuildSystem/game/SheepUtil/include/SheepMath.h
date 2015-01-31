@@ -54,7 +54,7 @@ namespace Framework
     template<typename T>
     static T QuadraticOut(float t, T start, T end)
     {
-      return start * (1.0f - ( t * (1 - t))) + end * ( t * (1 - t));
+      return start * (1.0f - (t * ( 2.0f - t))) + end * (t * ( 2.0f - t));
     }
 
     template<typename T>

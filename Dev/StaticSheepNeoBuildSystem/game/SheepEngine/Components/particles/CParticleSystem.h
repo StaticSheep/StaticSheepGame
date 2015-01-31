@@ -10,6 +10,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 #include "components/base/Component.h"
 #include "../SheepUtil/include/Matrix3D.h"
+#include "CParticleCircleEmitter.h"
+#include "Particles.h"
 #include <string>
 #include <vector>
 
@@ -20,67 +22,6 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 namespace Framework
 {
-
-  enum Eases
-  {
-    EaseNone = 0,
-    EaseLinear,
-    EaseQuadraticIn,
-    EaseQuadraticOut,
-    EaseCubicIn,
-    EaseCubicOut,
-    Catspline
-  };
-
-  template<typename T>
-  struct ParticleOptionShort
-  {
-    T m_startMin;
-    T m_startMax;
-  };
-
-  template<typename T>
-  struct ParticleOption
-  {
-    T m_startMin;
-    T m_startMax;
-    T m_endMin;
-    T m_endMax;
-  };
-
-  // byte budget 100 bytes
-  struct Particle
-  {
-    Particle();
-    Particle(ParticleOption<float>& scale,
-             ParticleOption<Vec4>&  color,
-             ParticleOption<Vec3>&  dir,
-             ParticleOption<float>& speed,
-             ParticleOptionShort<float>& life);
-
-
-    Vec3 position;          // 12 bytes
-    float scale;            //  4 bytes
-    float endScale;         //  4 bytes
-    Vec4 color;             // 16 bytes
-    Vec4 endColor;          // 16 bytes
-    Vec3 direction;         // 12 bytes
-    Vec3 endDirection;      // 12 bytes
-    float speed;            //  4 bytes
-    float endSpeed;         //  4 bytes
-    float theta;            //  4 bytes
-    float life;             //  4 bytes
-    float endLife;          //  4 bytes
-                      // total 96 bytes
-  };
-
-  // interpolation crap
-  
-
-  // class ParticleBoxEmitter handles initial spawn location
-  // class ParticleCircleEmitter "  "
-  
-  
 
   // handles spawning of particles and updating them...
   class ParticleSystem : public GameComponent
@@ -143,7 +84,7 @@ namespace Framework
   
     private:
     
-      Particle* SpawnParticle(const Vec3& location);
+      Particle* SpawnParticle(const Vec3& location, bool setDirection);
       void RemoveParticle(unsigned index);
       void ClearParticles(void);
 
@@ -162,7 +103,7 @@ namespace Framework
       
       unsigned int textureID;
       
-      float time;                             // current emitter time for spawning
+      float time;                     // current emitter time for spawning
     
       //Vec4D startColor;             // start color for the particles
       //Vec4D endColor;               // end color to interpolate to
@@ -175,5 +116,7 @@ namespace Framework
       bool gravity;                 // if gravity is being used
       bool physics;                 // if trying to simulate physics
       bool directionChange;
+
+      friend ParticleCircleEmitter;
   };
 }
