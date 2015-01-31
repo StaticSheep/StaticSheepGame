@@ -14,6 +14,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "Vec2D.h"
 #include "Texture/Tex2d.h"
 #include "model.h"
+#include "Light.h"
 #include "SafeRelease.h"
 #include "Handle.h"
 #include "Matrix4D.h"
@@ -78,7 +79,8 @@ class RenderContext
    void Draw(unsigned vertexCount, unsigned vertexStart = 0);
    void DrawSpriteText(const char * text, int index, Framework::Vec2D& scale);
    void DrawBatched(DirectSheep::Handle texture);
-   void DrawPLight(void);
+   void BatchPLight(Framework::Vec3D position, Framework::Vec4D brightness, Framework::Vec3D attenuation);
+   void DrawPLights(bool isLight);
 
    /* --- Primitive Draw Functions --- */
    void DrawLine(Vec3 start, Vec3 end, Color startColor, Color endColor);
@@ -363,6 +365,8 @@ class RenderContext
     // Batcher //
     /////////////
     
+    std::vector<Light>                    m_PointLights;
+
     std::unique_ptr<DirectX::SpriteBatch> m_batcher;
     std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>>
       m_primitiveBatch;

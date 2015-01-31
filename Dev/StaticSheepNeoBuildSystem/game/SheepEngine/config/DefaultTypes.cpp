@@ -16,6 +16,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/sound/CSoundPlayer.h"
 #include "components/sprites/CSprite.h"
 #include "components/sprites/CAniSprite.h"
+#include "Components/lights/CPointLight.h"
 #include "Components/camera/CCamera.h"
 #include "components/rigidbody/CRigidBody.h"
 #include "components/transform/CTransform.h"
@@ -139,7 +140,7 @@ namespace Framework
     TYPE_ADD_MEMBER(LightColor, R, false, true);
     TYPE_ADD_MEMBER(LightColor, G, false, true);
     TYPE_ADD_MEMBER(LightColor, B, false, true);
-    TYPE_ADD_MEMBER(LightColor, A, false, true, "Intensity");
+    TYPE_ADD_MEMBER(LightColor, A, false, true, "Intensity"); 
 
 
     TYPE_REGISTER( GameComponent );
@@ -258,6 +259,12 @@ namespace Framework
     TYPE_ADD_MEMBER(Sprite, m_flipY, false, true, "FlipY");
     TYPE_SET_TWEAK_TYPE( Sprite, AntTweak::TW_TYPE_COMPONENT );
     TYPE_SET_FROM_LUA( Sprite, Lua::GenericObjectFromLua );
+
+    TYPE_REGISTER(PointLight);
+    TYPE_ADD_MEMBER(PointLight, m_brightness, false, true, "LightColor");
+    TYPE_ADD_MEMBER(PointLight, m_attenuation, false, true, "Attenuation");
+    TYPE_SET_TWEAK_TYPE(PointLight, AntTweak::TW_TYPE_COMPONENT);
+    TYPE_SET_FROM_LUA(PointLight, Lua::GenericObjectFromLua);
 
     TYPE_REGISTER( AniSprite );
     TYPE_ADD_MEMBER(AniSprite, m_spriteName, false, true, "Texture",

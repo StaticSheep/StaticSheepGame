@@ -25,9 +25,8 @@ namespace DirectSheep
       const Mat4& view,
       const Mat4& world);
 
-    void bindLights(ID3D11DeviceContext* pContext,
-      const Light* lights,
-      const int numLights);
+    void bindLight(ID3D11DeviceContext* pContext,
+      const Light& light);
 
     PointLight(ID3D11Device* pDevice);
 
@@ -36,7 +35,7 @@ namespace DirectSheep
 
 
   private:
-    CBuffer<LightsBuffer>* m_lightBuffer;
+    CBuffer<LightFBuffer>* m_lightBuffer;
     CBuffer<MatBuffer>*   m_matBuffer;
 
   };

@@ -42,6 +42,7 @@ namespace Framework
     REGISTER_COMPONENT(Sprite);
     REGISTER_COMPONENT(Camera);
     REGISTER_COMPONENT(AniSprite);
+    REGISTER_COMPONENT(PointLight);
   }
 
 	SheepGraphics::~SheepGraphics()
@@ -92,7 +93,6 @@ namespace Framework
     Draw();
     
     FinishFrame();
-    m_renderContext->DrawPLight();
 	}
   
   void SheepGraphics::ActivateDefaultCamera(void)
@@ -156,6 +156,7 @@ namespace Framework
     // Draw Hooks
     GameSpace* space;
     Draw::SetCamState(0);
+    
     m_renderContext->StartBatch();
     // Regular Draw
     for (auto it = ENGINE->Spaces().begin(); it != ENGINE->Spaces().end(); ++it)
@@ -187,18 +188,18 @@ namespace Framework
     }
 
     Lua::CallFunc(ENGINE->Lua(), "hook.Call", "PostDraw");
-
     m_renderContext->EndBatch();
-    
+
+   
+    DrawPointLights(true);
+
     m_renderContext->StartBatch();
     ENGINE->SystemMessage(Message(Message::PostDraw));
-
     m_renderContext->EndBatch();
-    //m_renderContext->DrawPLight();
-    Draw::SetCamState(2);
-    
-    m_renderContext->StartBatch();
 
+    Draw::SetCamState(2);
+
+    m_renderContext->StartBatch();
     ENGINE->SystemMessage(Message(Message::GUIDraw));
     m_renderContext->EndBatch();
     
@@ -289,6 +290,16 @@ namespace Framework
 #if SHEEP_DEBUG
     ++(m_debugData.numBatchedCalls);
 #endif
+  }
+
+  void SheepGraphics::BatchPointLight(Vec3D position, Vec4D brightness, Vec3D attenuation)
+  {
+    m_renderContext->BatchPLight(position, brightness, attenuation);
+  }
+
+  void SheepGraphics::DrawPointLights(bool isLight)
+  {
+    m_renderContext->DrawPLights(isLight);
   }
 
   void SheepGraphics::RawDraw(void)

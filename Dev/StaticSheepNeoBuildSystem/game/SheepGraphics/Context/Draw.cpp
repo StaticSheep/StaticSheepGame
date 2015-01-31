@@ -132,12 +132,11 @@ namespace DirectSheep
   {
     ClearBackBuffer();
     ClearDepthBuffer();
+    m_PointLights.clear();
   }
 
   void RenderContext::StartBatch()
   {
-    
-
     m_batcher->Begin(SpriteSortMode_Texture, m_blendStateMap[BLEND_MODE_ALPHA],
       m_sampleStates[0], m_depthBuffer.m_depthState,
       m_rastState[m_currentRast], nullptr,
@@ -149,14 +148,11 @@ namespace DirectSheep
 
   void RenderContext::EndBatch()
   {
-    m_batcher->End();
-    
+    m_batcher->End(); 
   }
 
   void RenderContext::FrameEnd(void)
   {
-    
-
     m_primativeEffect->Apply(m_deviceContext);
     m_deviceContext->IASetInputLayout(m_primativeLayout);
 
@@ -264,14 +260,23 @@ namespace DirectSheep
 
   }
 
-
-  void RenderContext::DrawPLight(void)
+  void RenderContext::BatchPLight(Framework::Vec3D position, Framework::Vec4D brightness, Framework::Vec3D attenuation)
   {
-    static float a = 0;
-    a += .01;
+    Vec3 pos(position.x, position.y, position.z);
+    Color col(brightness.x, brightness.y, brightness.z, brightness.a);
+    Vec3 at(attenuation.x, attenuation.y, attenuation.z);
+
+    m_PointLights.push_back(Light(pos, col, at));
+  }
+
+  void RenderContext::DrawPLights(bool isLight)
+  {
+    if (!isLight || !m_PointLights.size())
+      return;
+
     m_PointLight->bindMatrices(m_deviceContext, ((Camera*)m_postEffects.ptr)->GetProj(), ((Camera*)m_postEffects.ptr)->GetView(), DirectX::XMMatrixIdentity());
 
-    m_PointLight->bindLight(m_deviceContext, Light(Vec3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, -1.0f), Color(a, a, a, 1), Vec3(0, 0, .0001)));
+    m_PointLight->bindLights(m_deviceContext, m_PointLights.data(),  m_PointLights.size() < MAX_LIGHTS ? m_PointLights.size() : MAX_LIGHTS);
 
     m_PLightModel->bind(m_deviceContext);
 
