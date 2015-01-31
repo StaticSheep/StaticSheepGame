@@ -303,6 +303,11 @@ namespace Framework
     TYPE_SET_TWEAK_TYPE(SlotMachine, AntTweak::TW_TYPE_COMPONENT);
     TYPE_ADD_MEMBER(SlotMachine, numSlots, false, true, "Slots",
       BUILD_FUNCTION(SlotMachine::TweakSetNumSlots));
+    TYPE_ADD_MEMBER(SlotMachine, slotSize, false, true, "SlotScale");
+    TYPE_ADD_MEMBER(SlotMachine, slotMargin, false, true, "Margin");
+    TYPE_ADD_MEMBER(SlotMachine, startTime, false, true, "Time");
+    TYPE_ADD_MEMBER(SlotMachine, bonusTime, false, true, "Extra Time");
+    TYPE_ADD_MEMBER(SlotMachine, slotOffset, false, true, "Offset");
 
     TYPE_REGISTER( AntTweak::TBar );
     TYPE_REGISTER_PTR( AntTweak::TBar* );

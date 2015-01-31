@@ -38,6 +38,7 @@ namespace Framework
 
     float startSpeed = 7;
 
+    Vec2 slotOffset;
     Vec2 slotSize = Vec2(1, 1);
     float slotMargin = 10;
 

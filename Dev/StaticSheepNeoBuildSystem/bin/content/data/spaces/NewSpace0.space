@@ -14,12 +14,44 @@ GameObject
     Rotation float 0.000000
     Scale Vec3
     {
-      x_ float 1.000000
-      y_ float 1.000000
+      x_ float 2.000000
+      y_ float 2.000000
       z_ float 0.000000
     }
   }
+  Sprite
+  {
+    m_spriteName std::string "SlotMachine.png"
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 1.000000
+      Y float 1.000000
+    }
+    m_flipX bool false
+    m_flipY bool false
+  }
   SlotMachine
   {
+    numSlots int 3
+    slotSize Vec2
+    {
+      X float 0.780000
+      Y float 1.120000
+    }
+    slotMargin float 71.000000
+    startTime float 3.000000
+    bonusTime float 0.200000
+    slotOffset Vec2
+    {
+      X float 0.000000
+      Y float 13.000000
+    }
   }
 }

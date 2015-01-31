@@ -148,9 +148,10 @@ namespace Framework
 
     float xPos = tr->GetTranslation().x - 
       (numSlots / 2.0f) * (m_slotDimensions.x + slotMargin) +
-      ((m_slotDimensions.x + slotMargin) / 2);
-    float yPos = tr->GetTranslation().y;
+      ((m_slotDimensions.x + slotMargin) / 2) + slotOffset.x;
+    float yPos = tr->GetTranslation().y + slotOffset.y;
 
+    Draw::ForceZ(true, tr->GetTranslation().z - 0.01f);
     for (int i = 0; i < m_slots.size(); ++i)
     {
       Slot* slot = &m_slots[i];
@@ -167,6 +168,8 @@ namespace Framework
 
       xPos += m_slotDimensions.x + slotMargin;
     }
+
+    Draw::ForceZ(false, 0);
   }
 
   void SlotMachine::TweakSetNumSlots(const void* value)
