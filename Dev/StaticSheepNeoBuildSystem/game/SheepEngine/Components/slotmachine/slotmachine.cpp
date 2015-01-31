@@ -192,10 +192,12 @@ namespace Framework
     float finalMargin = slotMargin * trsc.x;
 
     float xPos = tr->GetTranslation().x -
-      ((numSlots - 1) / 2.0f) * (finalSlotDim.x + finalMargin);
+      ((numSlots - 1) / 2.0f) * (finalSlotDim.x + finalMargin) +
+      (slotOffset.x);
     //-      (numSlots / 2.0f) * (finalSlotDim.x + finalMargin);
 
-    float yPos = tr->GetTranslation().y + slotOffset.y * trsc.y;
+    float yPos = tr->GetTranslation().y + slotOffset.y * trsc.y
+      + slotOffset.y;
 
     
     for (int i = 0; i < m_slots.size(); ++i)
