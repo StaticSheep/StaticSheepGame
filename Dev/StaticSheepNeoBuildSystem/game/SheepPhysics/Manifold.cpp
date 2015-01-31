@@ -57,43 +57,43 @@ namespace SheepFizz
 	//determine the support point on body B relative to the face of body A
 	float SupportPoint(Body& A, Body& B, Vec3D vertex, Vec3D normal, unsigned int& supportPoint)
 	{
-	float supportPenetration;
-	float minMagnitude = MAXVALUE;
+	  float supportPenetration;
+	  float minMagnitude = MAXVALUE;
 
-	//get the rotation matrices of each body
-	Matrix2D aRotation(A.orientation_);
-	Matrix2D bRotation(B.orientation_);
+	  //get the rotation matrices of each body
+	  Matrix2D aRotation(A.orientation_);
+	  Matrix2D bRotation(B.orientation_);
 
-  unsigned int BvertexNumber = ((Rectangle*)B.shape_)->GetVertexNumber();
+    unsigned int BvertexNumber = ((Rectangle*)B.shape_)->GetVertexNumber();
 
-	//pull a vertex from B to check against A
-  for (unsigned int i = 0; i < BvertexNumber; ++i)
-	{
-		//grab vertex from Body B - will act as support point
-		Vec3D vertexB = ((Rectangle*)B.shape_)->GetVertex(i);
+	  //pull a vertex from B to check against A
+    for (unsigned int i = 0; i < BvertexNumber; ++i)
+	  {
+		  //grab vertex from Body B - will act as support point
+		  Vec3D vertexB = ((Rectangle*)B.shape_)->GetVertex(i);
 
-		//move vertexB into world space
-		vertexB = bRotation * vertexB;
-		vertexB += B.position_;
+		  //move vertexB into world space
+		  vertexB = bRotation * vertexB;
+		  vertexB += B.position_;
 
-		//move it into A's space
-		vertexB -= A.position_;
-		vertexB = aRotation.Transpose() * vertexB;
+		  //move it into A's space
+		  vertexB -= A.position_;
+		  vertexB = aRotation.Transpose() * vertexB;
 
-		//get the penetration of the support point
-		supportPenetration = vertexB.DotProduct(normal) - vertex.DotProduct(normal);
+		  //get the penetration of the support point
+		  supportPenetration = vertexB.DotProduct(normal) - vertex.DotProduct(normal);
 
-		//if the supportPenetration is smaller, it means the point is closer
-		//a negative value is required for penetration
-		if(supportPenetration < minMagnitude)
-		{
-		minMagnitude = supportPenetration;
-		supportPoint = i;
-		}
-	}
+		  //if the supportPenetration is smaller, it means the point is closer
+		  //a negative value is required for penetration
+		  if(supportPenetration < minMagnitude)
+		  {
+		    minMagnitude = supportPenetration;
+		    supportPoint = i;
+		  }
+	  }
 
-	return minMagnitude;
-	}//end of SupportPoint
+	  return minMagnitude;
+  }//end of SupportPoint
 
 
   //*******************

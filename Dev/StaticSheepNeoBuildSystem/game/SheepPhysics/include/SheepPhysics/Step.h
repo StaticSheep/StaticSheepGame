@@ -12,8 +12,8 @@ Filename: Step.h
 #include "Material.h"
 #include "Shape.h"
 #include "Vec3D.h"
+#include "RayCast.h"
 #include <vector>
-
 
 
 namespace SheepFizz
@@ -140,6 +140,9 @@ namespace SheepFizz
 			HandleManager handles_;
 
 			std::vector<Manifold> manifolds_;
+
+      //raycast is constructed once
+      RayCast rayCast_;
 
       //debug info
       unsigned int manifoldNumber_;

@@ -16,9 +16,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "Material.h"
 #include "Shape.h"
 #include "Vec3D.h"
-#include <vector>
 #include "RayCast.h"
-
+#include <vector>
 
 
 namespace SheepFizz
