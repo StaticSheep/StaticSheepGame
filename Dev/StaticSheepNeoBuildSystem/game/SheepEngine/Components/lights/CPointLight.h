@@ -52,7 +52,7 @@ namespace Framework
     // RGB and brightness values
     LightColor m_brightness;
 
-    Vec3 m_attenuation;
+    LightVec3 m_attenuation;
 
     // Hard falloff will cut light off all light at zero percent value
     bool m_hardFalloff;

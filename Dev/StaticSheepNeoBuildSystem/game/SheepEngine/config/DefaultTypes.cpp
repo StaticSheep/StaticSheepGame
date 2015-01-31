@@ -137,11 +137,15 @@ namespace Framework
     TYPE_SET_TWEAK_TYPE(Vec4, AntTweak::TW_TYPE_COLOR4F);
 
     TYPE_REGISTER(LightColor);
-    TYPE_ADD_MEMBER(LightColor, R, false, true);
-    TYPE_ADD_MEMBER(LightColor, G, false, true);
-    TYPE_ADD_MEMBER(LightColor, B, false, true);
+    TYPE_ADD_MEMBER(LightColor, R, false, true, "Red");
+    TYPE_ADD_MEMBER(LightColor, G, false, true, "Green");
+    TYPE_ADD_MEMBER(LightColor, B, false, true, "Blue");
     TYPE_ADD_MEMBER(LightColor, A, false, true, "Intensity"); 
 
+    TYPE_REGISTER(LightVec3);
+    TYPE_ADD_MEMBER(LightVec3, X, false, true, "Constant");
+    TYPE_ADD_MEMBER(LightVec3, Y, false, true, "Linear");
+    TYPE_ADD_MEMBER(LightVec3, Z, false, true, "Quadratic");
 
     TYPE_REGISTER( GameComponent );
     TYPE_SET_FROM_LUA( GameComponent, Lua::GenericObjectFromLua );
@@ -308,13 +312,21 @@ namespace Framework
 
     TYPE_REGISTER(SlotMachine);
     TYPE_SET_TWEAK_TYPE(SlotMachine, AntTweak::TW_TYPE_COMPONENT);
-    TYPE_ADD_MEMBER(SlotMachine, numSlots, false, true, "Slots",
+
+    TYPE_ADD_MEMBER(SlotMachine, numSlots, false, true, "# Reels",
       BUILD_FUNCTION(SlotMachine::TweakSetNumSlots));
+
     TYPE_ADD_MEMBER(SlotMachine, slotSize, false, true, "SlotScale");
     TYPE_ADD_MEMBER(SlotMachine, slotMargin, false, true, "Margin");
+    TYPE_ADD_MEMBER(SlotMachine, slotOffset, false, true, "Offset");
+    TYPE_ADD_MEMBER(SlotMachine, slotBackSize, false, true, "BackingScale");
+
     TYPE_ADD_MEMBER(SlotMachine, startTime, false, true, "Time");
     TYPE_ADD_MEMBER(SlotMachine, bonusTime, false, true, "Extra Time");
-    TYPE_ADD_MEMBER(SlotMachine, slotOffset, false, true, "Offset");
+
+    TYPE_ADD_MEMBER(SlotMachine, useSpriteColor, false, true, "Use Sprite Color");
+    TYPE_ADD_MEMBER(SlotMachine, backingColor, false, true, "BackColor");
+
 
     TYPE_REGISTER( AntTweak::TBar );
     TYPE_REGISTER_PTR( AntTweak::TBar* );

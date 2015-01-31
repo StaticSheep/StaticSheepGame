@@ -27,15 +27,20 @@ namespace Framework
 
   void SlotMachine::SetupSlots()
   {
+    Transform* tr = (Transform*)space->GetComponent(eTransform, owner);
+    Vec2 trsc = tr->GetScale();
+
     int spinId = Draw::GetTextureID(m_spinTexture.c_str());
-    int stopID = Draw::GetTextureID(m_stopTexture.c_str());
+    int stopId = Draw::GetTextureID(m_stopTexture.c_str());
+    m_slotbackTextureID = Draw::GetTextureID(m_slotBackTexture.c_str());
 
     Vec2 spinDim = GRAPHICS->GetTextureDim(
       DirectSheep::Handle(DirectSheep::TEXTURE, spinId));
 
+    m_slotBackDimensions = GRAPHICS->GetTextureDim(
+      DirectSheep::Handle(DirectSheep::TEXTURE, m_slotbackTextureID));
+
     m_slotDimensions = spinDim;
-    m_slotDimensions.x *= slotSize.x;
-    m_slotDimensions.y *= slotSize.y;
 
     m_slots.clear();
 
@@ -44,7 +49,11 @@ namespace Framework
       m_slots.emplace_back();
       Slot* slot = &m_slots.back();
       slot->spinTextureID = spinId;
-      slot->stopTextureID = stopID;
+      slot->stopTextureID = stopId;
+
+      if (customReelCB)
+        customReelCB(i, &slot->spinTextureID, &slot->stopTextureID);
+
       slot->curSpeed = m_startSpeed;
       slot->height = (spinDim.y / slotOptions) / spinDim.y;
       slot->realHeight = slot->height;
@@ -53,6 +62,8 @@ namespace Framework
       slot->spinning = true;
       slot->spinPos = GetRandom(0, 1000) / 300.0f;
     }
+
+    
   }
 
   void SlotMachine::Initialize()
@@ -73,6 +84,8 @@ namespace Framework
   void SlotMachine::Start()
   {
     m_spinning = true;
+    m_numSpinning = m_slots.size();
+    m_results.clear();
 
     for (int i = 0; i < m_slots.size(); ++i)
     {
@@ -87,12 +100,22 @@ namespace Framework
         slot->timed = true;
         slot->timeLeft = startTime + (bonusTime * i);
       }
+
+      m_results.emplace_back();
     }
   }
 
   void SlotMachine::Stop()
   { 
 
+  }
+
+  void SlotMachine::SlotsFinished()
+  {
+    if (finishCB)
+    {
+      finishCB(&m_results);
+    }
   }
 
   void SlotMachine::Update(float dt)
@@ -127,17 +150,31 @@ namespace Framework
         if (slot->stopping)
         {
           if (slot->land < 0)
-            slot->land = GetRandom(0, (slotOptions - 1));
+          {
+            if (selectionCB)
+              selectionCB(&(slot->land), i);
+            else
+              slot->land = GetRandom(0, (slotOptions - 1));
+          }
+            
 
           float stopV = slot->land * slot->realHeight + slot->height;
           if (slot->spinPos - stopV < slot->curSpeed * dt * 5)
           {
             slot->spinPos = stopV - slot->height;
+            m_results[i] = slot->land;
             slot->spinning = false;
+            --m_numSpinning;
           }
         }
 
       }
+    }
+
+    if (m_numSpinning == 0 && m_spinning)
+    {
+      m_spinning = false;
+      SlotsFinished();
     }
     
   }
@@ -145,16 +182,35 @@ namespace Framework
   void SlotMachine::Draw()
   {
     Transform* tr = (Transform*)space->GetComponent(eTransform, owner);
+    Sprite* sp = (Sprite*)space->GetComponent(eSprite, owner);
 
-    float xPos = tr->GetTranslation().x - 
-      (numSlots / 2.0f) * (m_slotDimensions.x + slotMargin) +
-      ((m_slotDimensions.x + slotMargin) / 2) + slotOffset.x;
-    float yPos = tr->GetTranslation().y + slotOffset.y;
+    Vec2 trsc = tr->GetScale();
 
-    Draw::ForceZ(true, tr->GetTranslation().z - 0.01f);
+    Vec2 finalSlotSize = slotSize & trsc;
+    Vec2 finalBackSize = finalSlotSize & slotBackSize;
+    Vec2 finalSlotDim = finalSlotSize & m_slotDimensions;
+    float finalMargin = slotMargin * trsc.x;
+
+    float xPos = tr->GetTranslation().x -
+      ((numSlots - 1) / 2.0f) * (finalSlotDim.x + finalMargin);
+    //-      (numSlots / 2.0f) * (finalSlotDim.x + finalMargin);
+
+    float yPos = tr->GetTranslation().y + slotOffset.y * trsc.y;
+
+    
     for (int i = 0; i < m_slots.size(); ++i)
     {
       Slot* slot = &m_slots[i];
+
+      if (useSpriteColor && sp)
+        Draw::SetColor(sp->Color.r, sp->Color.g, sp->Color.b, 1);
+      else
+        Draw::SetColor(1, 1, 1, 1);
+
+      Draw::SetTexture(m_slotbackTextureID);
+      Draw::ForceZ(true, tr->GetTranslation().z - 0.01f);
+      Draw::DrawTexturedRect(xPos, yPos, finalBackSize.x, finalBackSize.y);
+
 
       Draw::SetColor(1, 1, 1, 1);
       Draw::SetUVs(Vec2(0, slot->spinPos), Vec2(1, slot->spinPos + slot->height));
@@ -163,10 +219,11 @@ namespace Framework
         Draw::SetTexture(slot->spinTextureID);
       else
         Draw::SetTexture(slot->stopTextureID);
+      
+      Draw::ForceZ(true, tr->GetTranslation().z - 0.02f);
+      Draw::DrawTexturedRect(xPos, yPos, finalSlotSize.x, finalSlotSize.y);
 
-      Draw::DrawTexturedRect(xPos, yPos, slotSize.x, slotSize.y);
-
-      xPos += m_slotDimensions.x + slotMargin;
+      xPos += finalSlotDim.x + finalMargin;
     }
 
     Draw::ForceZ(false, 0);

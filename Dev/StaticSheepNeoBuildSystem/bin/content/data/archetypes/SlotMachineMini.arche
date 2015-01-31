@@ -1,13 +1,12 @@
-NewSpace0
 GameObject
 {
-  name std::string ""
-  archetype std::string ""
+  name std::string "SMM"
+  archetype std::string "SlotMachineMini"
   Transform
   {
     Translation Vec3
     {
-      x_ float 78.086739
+      x_ float 0.000000
       y_ float 0.000000
       z_ float 0.000000
     }
@@ -21,7 +20,7 @@ GameObject
   }
   Sprite
   {
-    m_spriteName std::string "SlotMachine.png"
+    m_spriteName std::string "SlotMachine_minimal.png"
     Color Vec4
     {
       R float 1.000000
@@ -49,7 +48,7 @@ GameObject
     slotOffset Vec2
     {
       X float 0.000000
-      Y float -10.000000
+      Y float 0.000000
     }
     slotBackSize Vec2
     {

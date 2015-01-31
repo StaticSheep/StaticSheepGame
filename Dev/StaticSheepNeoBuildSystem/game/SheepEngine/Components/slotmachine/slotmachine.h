@@ -44,11 +44,30 @@ namespace Framework
 
     float startTime = 3.0f;
     float bonusTime = 0.2f;
+
+    Vec2 slotBackSize = Vec2(1, 1);
     
+    std::string m_stopTexture = "slot_test.png";
+    std::string m_spinTexture = "slot_test_blur.png";
+    std::string m_slotBackTexture = "slotmachine_slotback.png";
+
+    Vec4 backingColor = Vec4(1, 1, 1, 1);
+    bool useSpriteColor = true;
+
+    // (int slotNum, int* spinID, int* stopID)
+    Function customReelCB;
+    // (int* result, int slotNum)
+    Function selectionCB;
+    // (std::vector<int>* results)
+    Function finishCB;
+
     int m_order = 0;
   private:
 
     void SetupSlots();
+    void SlotsFinished();
+
+
 
     struct Slot
     {
@@ -70,14 +89,17 @@ namespace Framework
       bool timed = false;
     };
 
-    std::vector<Slot> m_slots;
+    int m_numSpinning = 0;
 
-    std::string m_stopTexture = "slot_test.png";
-    std::string m_spinTexture = "slot_test_blur.png";
+    std::vector<Slot> m_slots;
+    std::vector<int> m_results;
+    
+    int m_slotbackTextureID = -1;
 
     float m_startSpeed = 10;
 
     Vec2 m_slotDimensions;
+    Vec2 m_slotBackDimensions;
 
     bool m_timed = true;
     bool m_spinning = false;

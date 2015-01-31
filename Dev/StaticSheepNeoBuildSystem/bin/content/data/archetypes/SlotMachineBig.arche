@@ -1,13 +1,12 @@
-NewSpace0
 GameObject
 {
-  name std::string ""
-  archetype std::string ""
+  name std::string "SlotMachine"
+  archetype std::string "SlotMachineBig"
   Transform
   {
     Translation Vec3
     {
-      x_ float 78.086739
+      x_ float 0.000000
       y_ float 0.000000
       z_ float 0.000000
     }
@@ -61,10 +60,10 @@ GameObject
     useSpriteColor bool true
     backingColor Vec4
     {
-      R float 0.000000
-      G float 0.000000
-      B float 0.000000
-      A float 0.000000
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
     }
   }
 }

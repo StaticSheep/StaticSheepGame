@@ -1,13 +1,12 @@
-NewSpace0
 GameObject
 {
-  name std::string ""
-  archetype std::string ""
+  name std::string "SlotMachine"
+  archetype std::string "BronzeSMachine"
   Transform
   {
     Translation Vec3
     {
-      x_ float 78.086739
+      x_ float 0.000000
       y_ float 0.000000
       z_ float 0.000000
     }
@@ -46,6 +45,8 @@ GameObject
       Y float 0.600000
     }
     slotMargin float 30.000000
+    startTime float 3.000000
+    bonusTime float 0.200000
     slotOffset Vec2
     {
       X float 0.000000
@@ -55,16 +56,6 @@ GameObject
     {
       X float 2.600000
       Y float 1.900000
-    }
-    startTime float 3.000000
-    bonusTime float 0.200000
-    useSpriteColor bool true
-    backingColor Vec4
-    {
-      R float 0.000000
-      G float 0.000000
-      B float 0.000000
-      A float 0.000000
     }
   }
 }

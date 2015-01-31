@@ -26,6 +26,14 @@ namespace Framework
       return DirectSheep::Vec2((float*)this);
     }
 
+    Vec2 operator&(const Vec2& rhs) const
+    {
+      Vec2 out = *this;
+      out.x *= rhs.x;
+      out.y *= rhs.y;
+      return out;
+    }
+
     bool operator>(const Vec2D& rhs) const
     {
       if (x > rhs.x && y > rhs.y)
