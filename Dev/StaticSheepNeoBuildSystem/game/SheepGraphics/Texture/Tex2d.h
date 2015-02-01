@@ -24,7 +24,7 @@ namespace DirectSheep
     UINT getHeight() const;
 
     Tex2D(ID3D11Device* dev, UINT width, UINT height,
-      DXGI_FORMAT format = DXGI_FORMAT_R32G32B32A32_FLOAT);
+      DXGI_FORMAT format = DXGI_FORMAT_R8G8B8A8_UNORM);
 
     Tex2D(ID3D11Device* dev, ID3D11Texture2D* raw);
 

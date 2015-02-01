@@ -27,17 +27,62 @@ function META:Init()
   self.tex[3] = surface.GetTextureID("Entertainment.png")
 
   self._alpha = 255
+  self._texID = self.tex[1]
 
   self.List = actionlist.Create()
   self.List:PushBack(Action(
     function(act)
-      act.tl = 2
       act.ttl = 2
+      act.tl = act.ttl
     end,
     function(act, dt)
       act.tl = act.tl - dt
       self._alpha = lerp(0, 255, (1-(act.tl/act.ttl)))
       --print(tostring(self._alpha))
+      if act.tl < 0 then
+        act:Done()
+      end
+    end,
+    nil,
+    true))
+
+  self.List:PushBack(Action(
+    function(act)
+      act.tl = 3
+    end,
+    function(act, dt)
+      act.tl = act.tl - dt
+      if act.tl < 0 then
+        act:Done()
+      end
+    end,
+    nil,
+    true))
+
+  self.List:PushBack(Action(
+    function(act)
+      act.ttl = 2
+      act.tl = act.ttl
+    end,
+    function(act, dt)
+      act.tl = act.tl - dt
+      self._alpha = lerp(0, 255, (act.tl/act.ttl))
+      if act.tl < 0 then
+        act:Done()
+      end
+    end,
+    nil,
+    true))
+
+  self.List:PushBack(Action(
+    function(act)
+      act.ttl = 2
+      act.tl = act.ttl
+
+    end,
+    function(act, dt)
+      act.tl = act.tl - dt
+      self._alpha = lerp(0, 255, (act.tl/act.ttl))
       if act.tl < 0 then
         act:Done()
       end

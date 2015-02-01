@@ -300,8 +300,9 @@ namespace DirectSheep
   */
     void RenderContext::SetBlendMode(const BlendMode blendMode)
     {
-      m_deviceContext->OMSetBlendState(m_blendStateMap[blendMode], nullptr,
-        0xffffffff);
+      float blendF[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
+      m_deviceContext->OMSetBlendState(m_blendStateMap[blendMode],
+        blendF, 0xffffffff);
     }
 
   
@@ -404,7 +405,7 @@ namespace DirectSheep
   
    void RenderContext::SetBlendCol(const float r, const float g, const float b, const float a)
    {
-     m_spriteBlend = Vec4(r,g,b,a);
+     m_spriteBlend = Vec4(r, g, b, a);
    }
 
   
@@ -496,7 +497,8 @@ namespace DirectSheep
     void RenderContext::ClearBackBuffer(void)
     {
       m_deviceContext->ClearRenderTargetView(m_backBuffer,
-        (float*)&Vec4(m_clearColor.R(), m_clearColor.G(), m_clearColor.B(), 0.0f));
+        (float*)&Vec4(m_clearColor.R(), m_clearColor.G(), m_clearColor.B(),
+        1.0f));
     }
 
   
