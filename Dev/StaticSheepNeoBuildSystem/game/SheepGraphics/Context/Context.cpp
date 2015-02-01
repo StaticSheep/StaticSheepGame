@@ -105,7 +105,9 @@ namespace DirectSheep
 
 
     // Initialize Sprite Batcher
-    m_batcher = std::unique_ptr<DirectX::SpriteBatch>(new SpriteBatch(m_deviceContext));
+    m_batcher = std::unique_ptr<DirectX::SpriteBatch>(
+      new SpriteBatch(m_deviceContext));
+
     m_batcher->SetRotation(DXGI_MODE_ROTATION_UNSPECIFIED);
 
     // Initialize Primitive Batcher
@@ -298,8 +300,8 @@ namespace DirectSheep
   */
     void RenderContext::SetBlendMode(const BlendMode blendMode)
     {
-      float blendFactor[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
-      m_deviceContext->OMSetBlendState(m_blendStateMap[blendMode],blendFactor, 0xffffffff);
+      m_deviceContext->OMSetBlendState(m_blendStateMap[blendMode], nullptr,
+        0xffffffff);
     }
 
   
@@ -493,7 +495,8 @@ namespace DirectSheep
   */
     void RenderContext::ClearBackBuffer(void)
     {
-      m_deviceContext->ClearRenderTargetView(m_backBuffer, (float*)&Vec4(m_clearColor.R(), m_clearColor.G(), m_clearColor.B(), 1.0f));
+      m_deviceContext->ClearRenderTargetView(m_backBuffer,
+        (float*)&Vec4(m_clearColor.R(), m_clearColor.G(), m_clearColor.B(), 0.0f));
     }
 
   
@@ -503,7 +506,8 @@ namespace DirectSheep
   */
     void RenderContext::ClearDepthBuffer(void)
     {
-      m_deviceContext->ClearDepthStencilView(m_depthBuffer.m_depthBuffer, D3D11_CLEAR_DEPTH, 1.0f, 0);
+      m_deviceContext->ClearDepthStencilView(m_depthBuffer.m_depthBuffer,
+        D3D11_CLEAR_DEPTH, 1.0f, 0);
     }
 
     /////////////////////////////////////////////////////////////

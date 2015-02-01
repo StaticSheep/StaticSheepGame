@@ -118,8 +118,10 @@ namespace DirectSheep
     texd.Height = m_viewport.dim.height;
     texd.ArraySize = 1;                      // Only one depth buffer
     texd.MipLevels = 1;                      // Mip Mapping
-    texd.SampleDesc.Count = 4;
-    texd.Format = DXGI_FORMAT_D32_FLOAT;
+    texd.SampleDesc.Count = 1;
+    texd.SampleDesc.Quality = 0;
+    texd.Usage = D3D11_USAGE_DEFAULT;
+    texd.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
     texd.BindFlags = D3D11_BIND_DEPTH_STENCIL; // This is a depth stencil
 
     DXVerify(m_device->CreateTexture2D(&texd, NULL, &m_depthBuffer.texture2D));
@@ -128,8 +130,8 @@ namespace DirectSheep
     D3D11_DEPTH_STENCIL_VIEW_DESC dsvd;
     ZeroMemory(&dsvd, sizeof(dsvd));   // Zero members
 
-    dsvd.Format = DXGI_FORMAT_D32_FLOAT;
-    dsvd.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2DMS;
+    dsvd.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+    dsvd.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
 
     DXVerify(m_device->CreateDepthStencilView(m_depthBuffer.texture2D, &dsvd, &m_depthBuffer.m_depthBuffer));
 
@@ -196,7 +198,9 @@ namespace DirectSheep
     swapDesc.BufferDesc.Height = m_viewport.dim.height;         // back buffer height
     swapDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;     // use buffer as render target
     swapDesc.OutputWindow = m_hwnd;                             // attach to window
-    swapDesc.SampleDesc.Count = 4;                              // # of multisamples
+    swapDesc.SampleDesc.Count = 1;                              // # of multisamples
+    swapDesc.SampleDesc.Quality = 0;
+    swapDesc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
     swapDesc.Windowed = !m_fullscreen;                          // windowed/full-screen mode
     swapDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;    // allow full-screen switching
 
@@ -271,11 +275,11 @@ namespace DirectSheep
     bd.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
     bd.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
     bd.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
-    bd.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
+    bd.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ZERO;
     bd.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
     bd.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
     bd.IndependentBlendEnable = false;
-    bd.AlphaToCoverageEnable = true;
+    bd.AlphaToCoverageEnable = false;
 
     // Additive blend state
     DXVerify(m_device->CreateBlendState(&bd, &m_blendStateMap[BLEND_MODE_ALPHA]));

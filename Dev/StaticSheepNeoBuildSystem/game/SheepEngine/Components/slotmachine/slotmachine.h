@@ -47,8 +47,8 @@ namespace Framework
 
     Vec2 slotBackSize = Vec2(1, 1);
     
-    std::string m_stopTexture = "slot_test.png";
-    std::string m_spinTexture = "slot_test_blur.png";
+    std::string m_stopTexture = "ggg_reel.png";
+    std::string m_spinTexture = "ggg_reel_blur.png";
     std::string m_slotBackTexture = "slotmachine_slotback.png";
 
     Vec4 backingColor = Vec4(1, 1, 1, 1);

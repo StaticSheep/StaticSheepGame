@@ -326,11 +326,11 @@ namespace Framework
     TYPE_ADD_MEMBER(SlotMachine, slotOffset, false, true, "Offset");
     TYPE_ADD_MEMBER(SlotMachine, slotBackSize, false, true, "BackingScale");
 
-    TYPE_ADD_MEMBER(SlotMachine, startTime, false, true, "Time");
-    TYPE_ADD_MEMBER(SlotMachine, bonusTime, false, true, "Extra Time");
+    TYPE_ADD_MEMBER(SlotMachine, startTime, true, true, "Time");
+    TYPE_ADD_MEMBER(SlotMachine, bonusTime, true, true, "Extra Time");
 
     TYPE_ADD_MEMBER(SlotMachine, useSpriteColor, false, true, "Use Sprite Color");
-    TYPE_ADD_MEMBER(SlotMachine, backingColor, false, true, "BackColor");
+    TYPE_ADD_MEMBER(SlotMachine, backingColor, true, true, "BackColor");
 
 
     TYPE_REGISTER( AntTweak::TBar );

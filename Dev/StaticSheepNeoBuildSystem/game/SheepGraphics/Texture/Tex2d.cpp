@@ -68,6 +68,7 @@ namespace DirectSheep
     }
     D3D11_TEXTURE2D_DESC texDesc;
     m_rawTex->GetDesc(&texDesc);
+    
 
     m_width = texDesc.Width;
     m_height = texDesc.Height;
