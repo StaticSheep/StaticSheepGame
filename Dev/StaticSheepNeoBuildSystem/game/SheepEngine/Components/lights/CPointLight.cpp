@@ -34,8 +34,14 @@ namespace Framework
   {
     if (m_isOn)
     {
-      Vec4 scaledBrightness(m_brightness.r, m_brightness.g, m_brightness.b, m_brightness.a);
-      GRAPHICS->BatchPointLight(space->GetHandles().GetAs<Transform>(transform)->GetTranslation(), scaledBrightness, m_attenuation);
+      Vec4 scaledBrightness(m_brightness.r,
+        m_brightness.g,
+        m_brightness.b,
+        m_brightness.a);
+
+      GRAPHICS->BatchPointLight(
+        space->GetHandles().GetAs<Transform>(transform)->GetTranslation(),
+        scaledBrightness, m_attenuation);
     }
   }
 

@@ -23,7 +23,7 @@ float4 combineLights(float4 position, int i)
   float dist = length(position - pos[i]);
   float at = col[i].a / (atten[i].x + (atten[i].y * dist) + (atten[i].z * dist * dist));
   float4 newCol = col[i] * at;
-  newCol.w = at;
+  newCol.w = 1.0f;
   return saturate(newCol);
 }
 
@@ -35,7 +35,7 @@ float4 PSMain(VSOutput input) : SV_TARGET
   {
     outputCol += combineLights(input.position, i);
   }
-  //outputCol /= numLights;
+
   outputCol.w = 1.0f;
 
   return saturate(outputCol);

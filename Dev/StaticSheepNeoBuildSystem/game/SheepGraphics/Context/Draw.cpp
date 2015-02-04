@@ -264,8 +264,12 @@ namespace DirectSheep
   {
     // Convert stats from into DirectX container, do scalar ratio
     Vec3 pos(position.x, position.y, position.z);
-    Color col(brightness.x / 255.0f, brightness.y / 255.0f, brightness.z / 255.0f, brightness.a * 20.0f);
-    Vec3 at(attenuation.x / 1000.0f, attenuation.y / 1000.0f, attenuation.z / 1000.0f);
+
+    Color col(brightness.x / 255.0f, brightness.y / 255.0f,
+      brightness.z / 255.0f, brightness.a * 20.0f);
+
+    Vec3 at(attenuation.x / 500.0f, attenuation.y / 500.0f,
+      attenuation.z / 500.0f);
 
     // Store new light in vector, to be drawn at DrawPLights
     m_PointLights.push_back(Light(pos, col, at));
@@ -278,10 +282,15 @@ namespace DirectSheep
       return;
 
     // Bind matrix
-    m_PointLight->bindMatrices(m_deviceContext, ((Camera*)m_postEffects.ptr)->GetProj(), ((Camera*)m_postEffects.ptr)->GetView(), DirectX::XMMatrixIdentity());
+    m_PointLight->bindMatrices(m_deviceContext,
+      ((Camera*)m_postEffects.ptr)->GetProj(),
+      ((Camera*)m_postEffects.ptr)->GetView(),
+      DirectX::XMMatrixIdentity());
 
     // Bind lights to shader
-    m_PointLight->bindLights(m_deviceContext, m_PointLights.data(),  m_PointLights.size() < MAX_LIGHTS ? m_PointLights.size() : MAX_LIGHTS);
+    m_PointLight->bindLights(m_deviceContext,
+      m_PointLights.data(),
+      m_PointLights.size() < MAX_LIGHTS ? m_PointLights.size() : MAX_LIGHTS);
 
     // Bind light mesh
     m_PLightModel->bind(m_deviceContext);

@@ -321,7 +321,7 @@ namespace DirectSheep
     bd.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
     bd.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
 
-    bd.AlphaToCoverageEnable = false;
+    bd.AlphaToCoverageEnable = true;
     bd.IndependentBlendEnable = false;
 
     DXVerify(m_device->CreateBlendState(&bd, &m_blendStateMap[BLEND_MODE_MULTIPLY]));

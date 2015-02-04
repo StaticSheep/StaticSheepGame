@@ -62,46 +62,9 @@ GameObject
   {
     m_brightness LightColor
     {
-      R float 255.000000
-      G float 255.000000
-      B float 255.000000
-      A float 5.000000
-    }
-    m_attenuation LightVec3
-    {
-      X float 0.050097
-      Y float 0.101329
-      Z float 0.007211
-    }
-  }
-}
-GameObject
-{
-  name std::string ""
-  archetype std::string ""
-  Transform
-  {
-    Translation Vec3
-    {
-      x_ float -443.292511
-      y_ float 0.000000
-      z_ float 0.000000
-    }
-    Rotation float 0.000000
-    Scale Vec3
-    {
-      x_ float 1.000000
-      y_ float 1.000000
-      z_ float 0.000000
-    }
-  }
-  PointLight
-  {
-    m_brightness LightColor
-    {
-      R float 255.000000
-      G float 255.000000
-      B float 255.000000
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
       A float 5.000000
     }
     m_attenuation LightVec3
