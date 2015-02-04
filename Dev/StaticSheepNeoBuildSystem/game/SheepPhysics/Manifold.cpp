@@ -364,8 +364,6 @@ namespace SheepFizz
 	  if(m.penetration > 2)
 	    m.penetration = 2;
 
-	  //m.penetration /= m.contactCount;
-
 	}//end of RectangleRectangleManifold
 
 
