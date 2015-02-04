@@ -65,9 +65,9 @@ function draw.SimpleText(text, font, x, y, size, color, xalign, yalign)
     local alpha = 255
     if (color.a) then alpha = color.a end
 
-    surface.SetColor( color.r / 255, color.g / 255,color.b / 255, alpha / 255)
+    surface.SetColor( color.r, color.g, color.b, alpha)
   else
-    surface.SetColor(1, 1, 1, 1)
+    surface.SetColor(255, 255, 255, 255)
   end
   
 

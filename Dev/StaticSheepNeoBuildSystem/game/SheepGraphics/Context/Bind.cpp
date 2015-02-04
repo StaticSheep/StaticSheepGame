@@ -37,7 +37,7 @@ namespace DirectSheep
 
   void RenderContext::Resize(float width, float height)
   {
-
+    return;
     if (m_swapChain)
     {
       m_viewport.dim = Dimension((unsigned)width, (unsigned)height);

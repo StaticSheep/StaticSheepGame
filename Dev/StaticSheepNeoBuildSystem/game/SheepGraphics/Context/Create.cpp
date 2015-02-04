@@ -11,6 +11,9 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 #include "WICTextureLoader.h"
 #include <direct.h>
+
+#pragma comment(lib, "dxgi.lib")
+
 using namespace DirectX;
 namespace DirectSheep
 {
@@ -130,7 +133,7 @@ namespace DirectSheep
     D3D11_DEPTH_STENCIL_VIEW_DESC dsvd;
     ZeroMemory(&dsvd, sizeof(dsvd));   // Zero members
 
-    dsvd.Format = DXGI_FORMAT_D32_FLOAT;
+    dsvd.Format = texd.Format;
     dsvd.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
 
     DXVerify(m_device->CreateDepthStencilView(m_depthBuffer.texture2D, &dsvd, &m_depthBuffer.m_depthBuffer));
@@ -160,7 +163,7 @@ namespace DirectSheep
     UINT deviceFlags = 0; // Flags for registering device
 
 #if defined (_DEBUG)
-    //deviceFlags |= D3D11_CREATE_DEVICE_DEBUG; // If in debug mode set DirectX to debug mode
+    deviceFlags |= D3D11_CREATE_DEVICE_DEBUG; // If in debug mode set DirectX to debug mode
 #endif
 
     // Array of driver types in order of most prefered to least
@@ -201,7 +204,7 @@ namespace DirectSheep
     swapDesc.SampleDesc.Count = 1;                              // # of multisamples
     swapDesc.SampleDesc.Quality = 0;
     swapDesc.Windowed = !m_fullscreen;                          // windowed/full-screen mode
-    swapDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;    // allow full-screen switching
+    //swapDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;    // allow full-screen switching
 
     // create DirectX device, it's context, and swapchain using swapDesc
 
@@ -210,22 +213,27 @@ namespace DirectSheep
     {
       driverType = driverTypes[driverTypeIndex]; // Grabs driver type
 
+      hr = CreateDXGIFactory(__uuidof(IDXGIFactory2), (void**)(&m_factory));
+
+      
+
+      hr = D3D11CreateDevice(nullptr, driverType, NULL, deviceFlags,
+        featureLevels, 1, D3D11_SDK_VERSION, &m_device,
+        &featureLevel, &m_deviceContext);
+
+      
+      
+
       // Attempts to init
-      hr = D3D11CreateDeviceAndSwapChain(NULL,      // No adapter
-        driverType,       // Current driver setting attempt
-        NULL,             // Don't want to use software
-        deviceFlags,      // Special flags(debug)
-        featureLevels,    // Pointer to feature levels
-        numFeatureLevels, // Size of feature level array
-        D3D11_SDK_VERSION,// Use DirectX 11 SDK
-        &swapDesc,        // Struct with all params for device creatiosn
-        &m_swapChain,     // Set swapchain pointer
-        &m_device,        // Set device pointer
-        &featureLevel,    // Give array of fearure levels DX will use best option
-        &m_deviceContext);// Set devic context pointer
+      hr = m_factory->CreateSwapChain(m_device, &swapDesc, &m_swapChain);
 
       if (SUCCEEDED(hr)) // If succeeded then break otherwise try lower driver settings
         break;
+      else
+      {
+        
+      }
+      
     }
     DXVerify(hr); // Check for any DirectX specific error messages
 
@@ -269,6 +277,7 @@ namespace DirectSheep
     // Alpha blend state
     D3D11_BLEND_DESC bd;
     ZeroMemory(&bd, sizeof(D3D11_BLEND_DESC));
+
     bd.RenderTarget[0].BlendEnable = TRUE;
 
     bd.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
@@ -280,7 +289,7 @@ namespace DirectSheep
     bd.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
 
     bd.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
-    bd.AlphaToCoverageEnable = true; 
+    bd.AlphaToCoverageEnable = false;
     bd.IndependentBlendEnable = false;
     
 
@@ -297,7 +306,7 @@ namespace DirectSheep
     bd.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ONE;
     bd.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
 
-    bd.AlphaToCoverageEnable = true;
+    bd.AlphaToCoverageEnable = false;
     bd.IndependentBlendEnable = false;
 
     DXVerify(m_device->CreateBlendState(&bd, &m_blendStateMap[BLEND_MODE_ADDITIVE]));
@@ -312,7 +321,7 @@ namespace DirectSheep
     bd.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
     bd.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
 
-    bd.AlphaToCoverageEnable = true;
+    bd.AlphaToCoverageEnable = false;
     bd.IndependentBlendEnable = false;
 
     DXVerify(m_device->CreateBlendState(&bd, &m_blendStateMap[BLEND_MODE_MULTIPLY]));
@@ -321,7 +330,7 @@ namespace DirectSheep
   void RenderContext::InitializeSamplerState(void)
   {
     D3D11_SAMPLER_DESC sd;
-    sd.Filter = D3D11_FILTER_ANISOTROPIC;
+    sd.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT;// D3D11_FILTER_ANISOTROPIC;
     sd.MaxAnisotropy = 16;
     sd.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
     sd.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
@@ -344,7 +353,7 @@ namespace DirectSheep
     ZeroMemory(&dsDesc, sizeof(D3D11_DEPTH_STENCIL_DESC));
     // Paramaters for Depth test
     dsDesc.DepthEnable = true;
-    dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+    dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
     dsDesc.DepthFunc = D3D11_COMPARISON_LESS_EQUAL;
 
     // Paramaters for Stencil test

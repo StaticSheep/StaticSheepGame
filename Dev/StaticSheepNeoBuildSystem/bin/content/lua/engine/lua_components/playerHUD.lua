@@ -78,6 +78,7 @@ function PlayerHUD:Create(i)
     
   lives:SetText("x 3")
   lives:SetPos(80, 80)
+  lives:SetFontColor(Color(255, 255, 255))
   lives:SetYAlignment(TEXT_ALIGN_BOTTOM)
 
   local healthbar = gui.Create("Panel", self.base[i])

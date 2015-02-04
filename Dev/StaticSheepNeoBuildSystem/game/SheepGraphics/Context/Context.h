@@ -19,6 +19,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "Handle.h"
 #include "Matrix4D.h"
 #include <stack>
+#include "CommonStates.h"
 
 namespace DirectSheep
 {
@@ -315,6 +316,7 @@ class RenderContext
     // DirectX //
     /////////////
     IDXGISwapChain              *m_swapChain;
+    IDXGIFactory2                *m_factory;
     ID3D11Device                *m_device;
     ID3D11DeviceContext         *m_deviceContext;
     //std::unordered_map<std::string, std::unique_ptr<DirectX::SpriteFont>> m_font;
@@ -372,6 +374,8 @@ class RenderContext
       m_primitiveBatch;
     std::unique_ptr<DirectX::BasicEffect> m_primativeEffect;
     ID3D11InputLayout* m_primativeLayout;
+
+    std::unique_ptr<DirectX::CommonStates> m_states;
 
     std::stack <DebugLine> m_lineList;
     std::stack <DebugTriangle> m_triangleList;

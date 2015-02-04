@@ -88,7 +88,7 @@ namespace DirectSheep
       Vec2(m_spriteTrans.x, m_camUse ? m_spriteTrans.y : -m_spriteTrans.y),
       255 * m_spriteBlend, m_spriteTrans.theta, Vec2(0, 0),
       Vec2(scale.x, -scale.y),
-      DirectX::SpriteEffects_None, m_spriteTrans.z);
+      DirectX::SpriteEffects_None, m_spriteTrans.z - 5);
   }
 
   void RenderContext::DrawBatched(DirectSheep::Handle texture)
@@ -137,9 +137,9 @@ namespace DirectSheep
 
   void RenderContext::StartBatch()
   {
-    m_batcher->Begin(SpriteSortMode_Texture, m_blendStateMap[BLEND_MODE_ALPHA],
-      m_sampleStates[0], m_depthBuffer.m_depthState,
-      m_rastState[m_currentRast], nullptr,
+    m_batcher->Begin(SpriteSortMode_BackToFront, m_states->NonPremultiplied(),
+      m_states->LinearWrap(), m_states->DepthDefault(),
+      m_states->CullCounterClockwise(), nullptr,
       ((Camera*)m_camera.ptr)->GetViewProj());
     
     

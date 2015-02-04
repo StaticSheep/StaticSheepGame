@@ -171,7 +171,6 @@ namespace Framework
     }
 
     Lua::CallFunc(ENGINE->Lua(), "hook.Call", "Draw");
-
     m_renderContext->EndBatch();
     m_renderContext->StartBatch();
 

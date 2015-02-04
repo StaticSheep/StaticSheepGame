@@ -11,6 +11,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 #include "WICTextureLoader.h"
 #include <direct.h>
+#include "CommonStates.h"
 
 #pragma comment (lib, "d3d11.lib")
 
@@ -103,6 +104,7 @@ namespace DirectSheep
     m_primativeEffect = std::unique_ptr<BasicEffect>(new BasicEffect(m_device));
     m_primativeEffect->SetVertexColorEnabled(true);
 
+    m_states = std::unique_ptr<DirectX::CommonStates>(new DirectX::CommonStates(m_device));
 
     // Initialize Sprite Batcher
     m_batcher = std::unique_ptr<DirectX::SpriteBatch>(
@@ -496,9 +498,8 @@ namespace DirectSheep
   */
     void RenderContext::ClearBackBuffer(void)
     {
-      m_deviceContext->ClearRenderTargetView(m_backBuffer,
-        (float*)&Vec4(m_clearColor.R(), m_clearColor.G(), m_clearColor.B(),
-        1.0f));
+      float clearColor[4] = { 0, 0, 0, 1.0f };
+      m_deviceContext->ClearRenderTargetView(m_backBuffer, clearColor);
     }
 
   

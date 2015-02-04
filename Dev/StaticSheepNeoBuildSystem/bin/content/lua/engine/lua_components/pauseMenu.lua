@@ -180,7 +180,7 @@ function PauseMenu:Init()
   -- self:MakeMenu()
   -- self:MakeHelpMenu()
 
-  self.base.pos.x = 0
+  --self.base.pos.x = 0
 end
 
 function PauseMenu:Refresh()
