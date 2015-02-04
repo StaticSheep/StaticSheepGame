@@ -52,6 +52,8 @@ namespace Framework
     Vec3D& Vec3D::operator*=(float scalar);       // scalar
     Vec3D operator^(const Vec3D&) const;          // cross product
     Vec3D& operator=(const Vec3D&);               // assignment
+
+    bool operator!=(const Vec3D&);
     
     // data
     union

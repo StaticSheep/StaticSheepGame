@@ -15,6 +15,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "engine/window/Window32.h"
 
 #include "components/sprites/CAniSprite.h"
+#include "components/particles/CParticleSystem.h"
+#include "components/particles/CParticleCircleEmitter.h"
 #include <iostream>
 #include <boost/filesystem.hpp>
 #include "../input/Input.h"
@@ -43,6 +45,8 @@ namespace Framework
     REGISTER_COMPONENT(Camera);
     REGISTER_COMPONENT(AniSprite);
     REGISTER_COMPONENT(PointLight);
+    REGISTER_COMPONENT(ParticleSystem);
+    REGISTER_COMPONENT(ParticleCircleEmitter);
   }
 
 	SheepGraphics::~SheepGraphics()

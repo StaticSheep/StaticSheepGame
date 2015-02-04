@@ -40,6 +40,9 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/gameplay_scripts/CCheats.h"
 #include "components/slotmachine/slotmachine.h"
 #include "components/gameplay_scripts/CAimingArrow.h"
+#include "components/particles/CParticleSystem.h"
+#include "components/particles/CParticleCircleEmitter.h"
+#include "components/particles/Particles.h"
 
 
 namespace Framework
@@ -294,6 +297,55 @@ namespace Framework
     TYPE_SET_TWEAK_TYPE( AniSprite, AntTweak::TW_TYPE_COMPONENT );
     TYPE_SET_FROM_LUA( AniSprite, Lua::GenericObjectFromLua );
 
+    TYPE_REGISTER(ParticleSystem);
+    TYPE_ADD_MEMBER(ParticleSystem, textureName, false, true, "ParticleTexture");
+    TYPE_ADD_MEMBER(ParticleSystem, particleLife, false, true, "ParticleLifetime");
+    TYPE_ADD_MEMBER(ParticleSystem, rate, false, true, "ParticleSpawnDelay");
+    TYPE_ADD_MEMBER(ParticleSystem, amount, false, true, "ParticlesPerSpawn");
+    TYPE_ADD_MEMBER(ParticleSystem, directionEase, false, true, "DirectionEase");
+    TYPE_ADD_MEMBER(ParticleSystem, direction, false, true, "ParticleDirection", 
+      BUILD_FUNCTION(ParticleSystem::TweakSetDirection));
+    TYPE_ADD_MEMBER(ParticleSystem, angularVelocity, false, true, "ParticleAngularVelocity");
+    TYPE_ADD_MEMBER(ParticleSystem, scaleEase, false, true, "ScaleEase");
+    TYPE_ADD_MEMBER(ParticleSystem, scale, false, true, "ParticleScale");
+    TYPE_ADD_MEMBER(ParticleSystem, colorEase, false, true, "ColorEase");
+    TYPE_ADD_MEMBER(ParticleSystem, color, false, true, "ParticleColor");
+    TYPE_ADD_MEMBER(ParticleSystem, speedEase, false, true, "SpeedEase");
+    TYPE_ADD_MEMBER(ParticleSystem, speed, false, true, "ParticleSpeed");
+    
+    TYPE_SET_TWEAK_TYPE(ParticleSystem, AntTweak::TW_TYPE_COMPONENT);
+
+    TYPE_REGISTER(ParticleOptionShort<float>);
+    TYPE_ADD_MEMBER(ParticleOptionShort<float>, m_startMin, false, true, "Minimum");
+    TYPE_ADD_MEMBER(ParticleOptionShort<float>, m_startMax, false, true, "Maximum");
+
+    TYPE_REGISTER(ParticleOption<float>);
+    TYPE_ADD_MEMBER(ParticleOption<float>, m_startMin, false, true, "Start Min");
+    TYPE_ADD_MEMBER(ParticleOption<float>, m_startMax, false, true, "Start Max");
+    TYPE_ADD_MEMBER(ParticleOption<float>, m_endMin, false, true, "End Min");
+    TYPE_ADD_MEMBER(ParticleOption<float>, m_endMax, false, true, "End Max");
+
+    TYPE_REGISTER(ParticleOption<Vec3>);
+    TYPE_ADD_MEMBER(ParticleOption<Vec3>, m_startMin, false, true, "Start Min");
+    TYPE_ADD_MEMBER(ParticleOption<Vec3>, m_startMax, false, true, "Start Max");
+    TYPE_ADD_MEMBER(ParticleOption<Vec3>, m_endMin, false, true, "End Min");
+    TYPE_ADD_MEMBER(ParticleOption<Vec3>, m_endMax, false, true, "End Max");
+
+    TYPE_REGISTER(ParticleOption<Vec4>);
+    TYPE_ADD_MEMBER(ParticleOption<Vec4>, m_startMin, false, true, "Start Min");
+    TYPE_ADD_MEMBER(ParticleOption<Vec4>, m_startMax, false, true, "Start Max");
+    TYPE_ADD_MEMBER(ParticleOption<Vec4>, m_endMin, false, true, "End Min");
+    TYPE_ADD_MEMBER(ParticleOption<Vec4>, m_endMax, false, true, "End Max");
+
+    TYPE_REGISTER(ParticleCircleEmitter);
+    TYPE_ADD_MEMBER(ParticleCircleEmitter, m_innerRadius, false, true, "Inner Radius");
+    TYPE_ADD_MEMBER(ParticleCircleEmitter, m_outerRadius, false, true, "Outer Radius");
+    TYPE_ADD_MEMBER(ParticleCircleEmitter, m_amount, false, true, "Spawn Amount");
+    TYPE_ADD_MEMBER(ParticleCircleEmitter, m_rate, false, true, "Spawn Delay");
+    TYPE_ADD_MEMBER(ParticleCircleEmitter, spawning, false, true, "Constant Spawning");
+    TYPE_ADD_MEMBER(ParticleCircleEmitter, outward, false, true, "Spawn Outwards");
+    TYPE_ADD_MEMBER(ParticleCircleEmitter, inward, false, true, "Spawn Inwards");
+
     TYPE_REGISTER(Camera);
     TYPE_ADD_MEMBER(Camera, m_active, false, true, "Active",
       BUILD_FUNCTION(Camera::TweakSetActive));
@@ -338,6 +390,7 @@ namespace Framework
 
     TYPE_REGISTER(GamePadInput);
     TYPE_REGISTER_PTR(GamePadInput*);
+
 
     RegisterEnums();
   }
