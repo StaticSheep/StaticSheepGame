@@ -1,4 +1,10 @@
+/*****************************************************************
+Filename: CParticleCircleEmitter.cpp
+Project: 
+Author(s): Zakary Wilson
 
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+*****************************************************************/
 
 #include "pch/precompiled.h"
 #include "Handle.h"
@@ -21,7 +27,6 @@ namespace Framework
 
   ParticleCircleEmitter::~ParticleCircleEmitter()
   {
-
   }
 
   void ParticleCircleEmitter::Initialize()
@@ -38,12 +43,14 @@ namespace Framework
     space->hooks.Remove("FrameUpdate", self);
   }
 
+  // for seeing the particles in the editor
   void ParticleCircleEmitter::FrameUpdate(float dt)
   {
     if(ENGINE->m_editorAcitve)
       UpdateEmitter(dt);
   }
 
+  // 
   void ParticleCircleEmitter::UpdateEmitter(float dt)
   {
     // if we are set to currently spawn
@@ -57,6 +64,7 @@ namespace Framework
     }
   }
 
+  // spawns at the specified rate and amount 
   void ParticleCircleEmitter::SpawnParticle(float dt, ParticleSystem* system)
   {
     Transform* trans = space->GetHandles().GetAs<Transform>(transform);

@@ -270,11 +270,6 @@ namespace Framework
     return;
   }
 
-  void ParticleSystem::ClearParticles(void)
-  {
-
-  }
-
   // Uses eases to update the direction of the particle. Ease = 0 is most efficient, since it does nothing
   void ParticleSystem::UpdateDirection(unsigned index, float t)
   {
@@ -327,11 +322,13 @@ namespace Framework
     }
   }
 
+  // updates the position of the particle by it's velocity
   void ParticleSystem::UpdatePosition(unsigned index, float dt)
   {
     particles[index].position += particles[index].currentDirection * particles[index].currentSpeed * dt;
   }
 
+  // updates the scale of the particle based on the scaling parameters
   void ParticleSystem::UpdateScale(unsigned index, float t)
   {
     switch(scaleEase)
@@ -358,10 +355,11 @@ namespace Framework
 
   void ParticleSystem::UpdateRotation(unsigned index, float t)
   {
-    // does nothing right now
+    // does nothing right now... rotation is currently random
     return;
   }
 
+  // updates the color of the particle based on the color parameters
   void ParticleSystem::UpdateColor(unsigned index, float t)
   {
     switch(colorEase)
