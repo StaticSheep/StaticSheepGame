@@ -270,7 +270,7 @@ namespace Framework
       clampVelocity(450.0f);
 
       //jump
-      if (((gp->ButtonDown(XButtons.A) || gp->ButtonDown(XButtons.LShoulder)) && isSnapped) || (SHEEPINPUT->KeyIsDown('Q') && gp->GetIndex() == 0))
+      if (((gp->ButtonDown(XButtons.A) || gp->LeftTrigger()) && isSnapped) || (SHEEPINPUT->KeyIsDown('Q') && gp->GetIndex() == 0))
       {
         jump(); //player jump
         if (GetRandom(0, 1)) //determine sound for jump
@@ -285,11 +285,10 @@ namespace Framework
     }
 
 		//melee
-		if (gp->ButtonPressed(XButtons.B))
-		{
-      Melee();
-      space->GetGameObject(owner)->hooks.Call("ButtonPressed", Buttons::B);
-		}
+    if (gp->ButtonPressed(XButtons.LShoulder))
+      Melee(Buttons::LB);
+    else if (gp->ButtonPressed(XButtons.RShoulder))
+      Melee(Buttons::RB);
 
     PlayerButtonPress(); //check to see if the player has pressed any of the controller buttons (for cheats or other things)
 
@@ -539,9 +538,19 @@ namespace Framework
   // Returns:   void
   // Qualifier:
   //************************************
-  void PlayerController::Melee()
+  void PlayerController::Melee(Buttons butt)
   {
-
+    //zero out all the velocity the player has
+    bc->SetVelocity(Vec3(0.0f, 0.0f, 0.0f));
+    if (gp->LStick_InDeadZone())
+    {
+      if (butt == Buttons::LB)
+        bc->SetVelocity(Vec3(-1000.0f, 0.0f, 0.0f));
+      else if (butt == Buttons::RB)
+        bc->SetVelocity(Vec3(1000.0f, 0.0f, 0.0f));
+    }
+    else
+      bc->SetVelocity(aimingDirection(gp, 'L') * 1000);
   }
 
   //************************************
@@ -673,16 +682,22 @@ namespace Framework
   //************************************
   void PlayerController::jump()
   {
-    //bc->AddToVelocity(-(snappedNormal * 600));
-    Vec3 jmpDir = aimingDirection(gp, 'L');
+    Vec3 jmpDir;
+    if (gp->LStick_InDeadZone())
+      jmpDir = -snappedNormal;
+    else
+    {
+      jmpDir = aimingDirection(gp, 'L');
+      if (-snappedNormal * jmpDir < 0)
+      {
+        jmpDir += ((-snappedNormal * jmpDir) * snappedNormal) *2;
+      }
+    }
+
     bc->AddToVelocity(jmpDir * 500);
     isSnapped = false;
     normals.clear();
     
-    if (gp->ButtonPressed(XButtons.A))
-      space->GetGameObject(owner)->hooks.Call("ButtonPressed", Buttons::A);
-    else if (gp->ButtonPressed(XButtons.LShoulder))
-      space->GetGameObject(owner)->hooks.Call("ButtonPressed", Buttons::LB);
   }
 
   //************************************
