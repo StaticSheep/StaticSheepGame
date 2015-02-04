@@ -11,8 +11,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 namespace Framework
 {
-  PointLight::PointLight() : m_brightness(255, 255, 255, 5),
-    m_attenuation(0.050097f, 0.101329f, 0.007211f),
+  PointLight::PointLight() : m_brightness(1, 1, 1, 1),
+    m_attenuation(0.01f, 0.01f, 0.01f),
                              m_isOn(true), 
                              m_hardFalloff(false) {}
 
@@ -34,7 +34,7 @@ namespace Framework
   {
     if (m_isOn)
     {
-      Vec4 scaledBrightness(m_brightness.r / 255.0f, m_brightness.g / 255.0f, m_brightness.b / 255.0f, m_brightness.a * 20.0f);
+      Vec4 scaledBrightness(m_brightness.r, m_brightness.g, m_brightness.b, m_brightness.a);
       GRAPHICS->BatchPointLight(space->GetHandles().GetAs<Transform>(transform)->GetTranslation(), scaledBrightness, m_attenuation);
     }
   }
