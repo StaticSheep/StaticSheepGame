@@ -46,6 +46,7 @@ namespace Framework
     lastRotation = 0.0f;
     frameSkip = false;
     arrowSpawn = false;
+    hasDashed = false;
 	}
 
 	PlayerController::~PlayerController() //4
@@ -192,6 +193,7 @@ namespace Framework
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
     if (isSnapped)
     {
+      hasDashed = false;
       if (frameSkip)
       {
           bc->SetBodyRotation(-snappedNormal);
@@ -540,6 +542,9 @@ namespace Framework
   //************************************
   void PlayerController::Melee(Buttons butt)
   {
+    if (hasDashed)
+      return;
+
     //zero out all the velocity the player has
     bc->SetVelocity(Vec3(0.0f, 0.0f, 0.0f));
     if (gp->LStick_InDeadZone())
@@ -551,6 +556,8 @@ namespace Framework
     }
     else
       bc->SetVelocity(aimingDirection(gp, 'L') * 1000);
+
+    hasDashed = true;
   }
 
   //************************************

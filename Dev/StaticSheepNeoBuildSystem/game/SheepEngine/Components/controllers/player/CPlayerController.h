@@ -42,7 +42,7 @@ namespace Framework
     int health; //players health
 		bool hasFired, isSnapped, hasRespawned, blink; //has fired is a flag to prevent fully auto fire, is snapped is a bool to see if the player is snapped to something
     bool GodMode, GoldenGun, PerfectMachine;  //the cheats 
-    bool frameSkip, arrowSpawn;
+    bool frameSkip, arrowSpawn, hasDashed;
     float rotation, lastRotation;
     float respawnTimer;
     std::vector<Vec3> normals;

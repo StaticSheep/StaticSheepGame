@@ -31,12 +31,12 @@ namespace Framework
     timeLimit = 60;
     spawnTimer = 3;
     numOfPlayers = 1;
-    spawnPos[0] = Vec3(-610.0f, -435.0f, 0.0f);
-    spawnPos[1] = Vec3(610.0f, -435.0f, 0.0f);
+    spawnPos[0] = Vec3(-610.0f, -440.0f, 0.0f);
+    spawnPos[1] = Vec3(610.0f, -440.0f, 0.0f);
     spawnPos[2] = Vec3(610.0f, 435.0f, 0.0f);
     spawnPos[3] = Vec3(-610.0f, 435.0f, 0.0f);
     spawnPos[4] = Vec3(0.0f, 435.0f, 0.0f);
-    spawnPos[5] = Vec3(0.0f, -435.0f, 0.0f);
+    spawnPos[5] = Vec3(0.0f, -440.0f, 0.0f);
     deadPlayers = 0;
     for (int i = 0; i < 4; ++i)
       playerLives[i] = 5;
