@@ -268,8 +268,8 @@ namespace DirectSheep
     Color col(brightness.x / 255.0f, brightness.y / 255.0f,
       brightness.z / 255.0f, brightness.a * 20.0f);
 
-    Vec3 at(attenuation.x / 500.0f, attenuation.y / 500.0f,
-      attenuation.z / 500.0f);
+    Vec3 at(attenuation.x / 15000.0f, attenuation.y / 15000.0f,
+      attenuation.z / 15000.0f);
 
     // Store new light in vector, to be drawn at DrawPLights
     m_PointLights.push_back(Light(pos, col, at));

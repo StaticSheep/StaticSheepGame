@@ -141,14 +141,15 @@ namespace Framework
 
   void ParticleSystem::DrawParticles()
   {
-    // get a handle to the texture
-    DirectSheep::Handle handle = GRAPHICS->SetTexture(textureName.c_str());
+    DirectSheep::Handle texHandle =
+      DirectSheep::Handle(DirectSheep::TEXTURE,
+      Draw::GetTextureID(textureName.c_str()));
 
     // also set the texture
     Draw::SetTexture(Draw::GetTextureID(textureName.c_str()));
 
     // but also get the scale of the texture for normalizing the scale for particles
-    Vec2 scale = GRAPHICS->GetTextureDim(handle);
+    Vec2 scale = GRAPHICS->GetTextureDim(texHandle);
 
     for(unsigned i = 0; i < particles.size(); ++i)
     {
