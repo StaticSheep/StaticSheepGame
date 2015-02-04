@@ -29,6 +29,7 @@ namespace Framework
     static void SetPosition(float x, float y);
     static void SetPositionEx(float x, float y, float z);
     static void SetColor(float r, float g, float b, float a);
+    static void SetUVs(Vec2 UVMin, Vec2 UVMax);
 
     static void DrawRect(float x, float y, float width, float height);
     static void DrawRectOutline(float x, float y, float width, float height,
@@ -42,13 +43,18 @@ namespace Framework
     static void DrawLineEx(float sX, float sY, float eX, float eY,
       Vec4 startColor, Vec4 endColor);
     static void DrawCircle(float x, float y, float radius);
-    static void DrawString(const char* text, float size, const char* font);
+
+    static void DrawString(const char* text, Vec2D scale, int fontIndex);
+    static void LuaDrawString(const char* text, float scale, int fontIndex);
+
+    static int GetFontIndex(const char* fontName);
 
     static void DrawTriangle(float x0, float y0, float x1, float y1,
       float x2, float y2);
 
     static void ForceZ(bool use, float z);
 
+    
 
     static Vec3 ToWorld(Vec2 screenPos);
     static Vec2 ToScreen(Vec3 worldPos);
@@ -56,12 +62,14 @@ namespace Framework
     static int ScreenWidth(void);
     static int ScreenHeight(void);
 
-    static Vec2 MeasureString(const char* text, float size, const char* font);
-    
+    static Vec2 MeasureString(const char* text, Vec2D scale, int fontIndex);
+    static Vec2 LuaMeasureString(const char* text, float scale, int fontIndex);
   private:
     static unsigned m_TextureID;
     static Vec4 m_Color;
     static Vec2 m_TextPos;
+    static Vec2 m_UVMin;
+    static Vec2 m_UVMax;
     static bool m_useCamera;
     static int m_whiteTextureID;
     static DirectSheep::Handle m_whiteHandle;

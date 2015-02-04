@@ -60,6 +60,8 @@ namespace Framework
 
     int currentState;
 
+    int fontIndex;
+
     /*---------- Debug Data Structs ----------*/
 
     DebugAudio*     audio;

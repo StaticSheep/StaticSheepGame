@@ -17,6 +17,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "../SheepUtil/include/SheepMath.h"
 #include "CGiantKillBox.h"
 #include "../camera/CCamera.h"
+#include "../particles/CParticleSystem.h"
 
 static const char *playerNames[] = { "Player1", "Player2", "Player3", "Player4" };
 static bool warning;

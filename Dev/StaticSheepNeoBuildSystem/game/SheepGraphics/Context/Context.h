@@ -14,10 +14,12 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "Vec2D.h"
 #include "Texture/Tex2d.h"
 #include "model.h"
+#include "Light.h"
 #include "SafeRelease.h"
 #include "Handle.h"
 #include "Matrix4D.h"
 #include <stack>
+#include "CommonStates.h"
 
 namespace DirectSheep
 {
@@ -76,9 +78,10 @@ class RenderContext
 
     /* --- General Draw Functions --- */
    void Draw(unsigned vertexCount, unsigned vertexStart = 0);
-   void DrawSpriteText(const char * text, float size = 32, const char * font = "Arial");
+   void DrawSpriteText(const char * text, int index, Framework::Vec2D& scale);
    void DrawBatched(DirectSheep::Handle texture);
-   void DrawPLight(void);
+   void BatchPLight(Framework::Vec3D position, Framework::Vec4D brightness, Framework::Vec3D attenuation);
+   void DrawPLights(bool isLight);
 
    /* --- Primitive Draw Functions --- */
    void DrawLine(Vec3 start, Vec3 end, Color startColor, Color endColor);
@@ -127,7 +130,7 @@ class RenderContext
    bool CreateConstantBuffer(Handle& handle, size_t size);
    bool CreateRenderTarget(Handle& handle, const RenderTargetMode mode, const Format format, const float downsamplePercentage = 1.0f, const Dimension& dim = Dimension());
    bool CreateDepthBuffer(void);
-   void AddFont(const char* fontname,const char* filename);
+   int AddFont(const char* fontname,const char* filename);
 
     /////////////////////////////////////////////////////////////
     //                    BIND FUNCTIONS                       //
@@ -193,8 +196,8 @@ class RenderContext
      float r, float g, float b, float a);
    void ClearBackBuffer(void);
    void ClearDepthBuffer(void);
-   Framework::Vec2D MeasureString(const char* text, float size,
-     const char* font);
+   Framework::Vec2D MeasureString(const char* text, Framework::Vec2D scale,
+     int fontIndex);
 
     /////////////////////////////////////////////////////////////
     //                 PUBLIC RELEASE FUCNTION                 //
@@ -291,6 +294,13 @@ class RenderContext
       float theta;
     };
 
+    struct Font
+    {
+      Font() : m_spriteFont(nullptr) {}
+      Font(DirectX::SpriteFont* newFont) : m_spriteFont(newFont) {}
+      DirectX::SpriteFont* m_spriteFont;
+    };
+
     //////////////
     //  System  //
     //////////////
@@ -306,9 +316,11 @@ class RenderContext
     // DirectX //
     /////////////
     IDXGISwapChain              *m_swapChain;
+    IDXGIFactory2                *m_factory;
     ID3D11Device                *m_device;
     ID3D11DeviceContext         *m_deviceContext;
-    std::unordered_map<std::string, std::unique_ptr<DirectX::SpriteFont>> m_font;
+    //std::unordered_map<std::string, std::unique_ptr<DirectX::SpriteFont>> m_font;
+    std::vector<Font> m_font;
     int                         m_displayModeIndex;
                                 
     ID3D11RenderTargetView      *m_backBuffer;
@@ -336,6 +348,7 @@ class RenderContext
     Handle                                   m_Ortho;
     Handle                                   m_orthoScreen;
     Handle                                   m_editor;
+    Handle                                   m_postEffects;
     std::vector<DirectSheep::Camera*>         m_CameraPool;
     bool                                     m_camUse;
 
@@ -354,11 +367,15 @@ class RenderContext
     // Batcher //
     /////////////
     
+    std::vector<Light>                    m_PointLights;
+
     std::unique_ptr<DirectX::SpriteBatch> m_batcher;
     std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>>
       m_primitiveBatch;
     std::unique_ptr<DirectX::BasicEffect> m_primativeEffect;
     ID3D11InputLayout* m_primativeLayout;
+
+    std::unique_ptr<DirectX::CommonStates> m_states;
 
     std::stack <DebugLine> m_lineList;
     std::stack <DebugTriangle> m_triangleList;

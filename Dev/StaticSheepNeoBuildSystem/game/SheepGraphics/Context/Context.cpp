@@ -11,6 +11,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 #include "WICTextureLoader.h"
 #include <direct.h>
+#include "CommonStates.h"
 
 #pragma comment (lib, "d3d11.lib")
 
@@ -103,9 +104,12 @@ namespace DirectSheep
     m_primativeEffect = std::unique_ptr<BasicEffect>(new BasicEffect(m_device));
     m_primativeEffect->SetVertexColorEnabled(true);
 
+    m_states = std::unique_ptr<DirectX::CommonStates>(new DirectX::CommonStates(m_device));
 
     // Initialize Sprite Batcher
-    m_batcher = std::unique_ptr<DirectX::SpriteBatch>(new SpriteBatch(m_deviceContext));
+    m_batcher = std::unique_ptr<DirectX::SpriteBatch>(
+      new SpriteBatch(m_deviceContext));
+
     m_batcher->SetRotation(DXGI_MODE_ROTATION_UNSPECIFIED);
 
     // Initialize Primitive Batcher
@@ -141,6 +145,9 @@ namespace DirectSheep
 
     m_editor = Handle(CAMERA, new Camera(1920, 1080, true));
     m_CameraPool.push_back((Camera*)m_editor.ptr);
+
+    m_postEffects = Handle(CAMERA, new Camera(SCREEN_WIDTH, SCREEN_HEIGHT, true));
+    m_CameraPool.push_back((Camera*)m_postEffects.ptr);
 
     m_camera = m_Perspective;
 
@@ -198,6 +205,12 @@ namespace DirectSheep
     for (size_t i = 0; i < m_handles.size(); ++i)
     {
       Release(m_handles[i]);
+    }
+
+    for (size_t i = 0; i < m_font.size(); ++i)
+    {
+      if (m_font[i].m_spriteFont)
+        delete m_font[i].m_spriteFont;
     }
 
     SafeRelease(m_device);
@@ -289,8 +302,9 @@ namespace DirectSheep
   */
     void RenderContext::SetBlendMode(const BlendMode blendMode)
     {
-      float blendFactor[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
-      m_deviceContext->OMSetBlendState(m_blendStateMap[blendMode],blendFactor, 0xffffffff);
+      float blendF[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
+      m_deviceContext->OMSetBlendState(m_blendStateMap[blendMode],
+        blendF, 0xffffffff);
     }
 
   
@@ -393,7 +407,7 @@ namespace DirectSheep
   
    void RenderContext::SetBlendCol(const float r, const float g, const float b, const float a)
    {
-     m_spriteBlend = Vec4(r,g,b,a);
+     m_spriteBlend = Vec4(r, g, b, a);
    }
 
   
@@ -484,7 +498,8 @@ namespace DirectSheep
   */
     void RenderContext::ClearBackBuffer(void)
     {
-      m_deviceContext->ClearRenderTargetView(m_backBuffer, (float*)&Vec4(m_clearColor.R(), m_clearColor.G(), m_clearColor.B(), 1.0f));
+      float clearColor[4] = { 0, 0, 0, 1.0f };
+      m_deviceContext->ClearRenderTargetView(m_backBuffer, clearColor);
     }
 
   
@@ -494,7 +509,8 @@ namespace DirectSheep
   */
     void RenderContext::ClearDepthBuffer(void)
     {
-      m_deviceContext->ClearDepthStencilView(m_depthBuffer.m_depthBuffer, D3D11_CLEAR_DEPTH, 1.0f, 0);
+      m_deviceContext->ClearDepthStencilView(m_depthBuffer.m_depthBuffer,
+        D3D11_CLEAR_DEPTH, 1.0f, 0);
     }
 
     /////////////////////////////////////////////////////////////
@@ -573,19 +589,19 @@ namespace DirectSheep
     }
   }
 
-  Framework::Vec2D RenderContext::MeasureString(const char* text,
-    float size, const char* font)
+  Framework::Vec2D RenderContext::MeasureString(const char* text, Framework::Vec2D scale,
+    int fontIndex)
   {
+    if (fontIndex >= m_font.size() || fontIndex < 0)
+      return Framework::Vec2D(0, 0);
+
     XMVECTOR fontSize;
     std::string tempText = text;
     std::wstring wcText(tempText.begin(), tempText.end());
 
-    if (m_font.count(font))
-      fontSize = m_font[font]->MeasureString(wcText.c_str());
-    else
-      return Framework::Vec2D(0, 0);
+    fontSize = m_font[fontIndex].m_spriteFont->MeasureString(wcText.c_str());
 
-    return Framework::Vec2D(XMVectorGetX(fontSize), XMVectorGetY(fontSize));
+    return Framework::Vec2D(XMVectorGetX(fontSize) * scale.x, XMVectorGetY(fontSize) * scale.y);
   }
 
 

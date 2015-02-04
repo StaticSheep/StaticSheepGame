@@ -15,6 +15,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 #include "components/sprites/CSprite.h"
 #include "components/camera/CCamera.h"
+#include "components/lights/CPointLight.h"
 
 #include "systems/System.h"
 
@@ -96,7 +97,11 @@ namespace Framework
     void DrawBatched(DirectSheep::Handle texture);
 
     // Unbatched raw draw for sprite text
-    void DrawSpriteText(const char * text, float size, const char * font);
+    void DrawSpriteText(const char * text, int fontIndex, Vec2D scale);
+    int GetFontIndex(const char * fontName);
+
+    void BatchPointLight(Vec3D position, Vec4D brightness, Vec3D attenuation);
+    void DrawPointLights(bool isLight);
 
     /* =========== Graphics Engine Functions ============ */
 
@@ -106,7 +111,7 @@ namespace Framework
 
     /* =========== Utility Functions ============ */
 
-    Vec2 MeasureString(const char* text, float size, const char* font);
+    Vec2 MeasureString(const char* text, Vec2D scale, int fontIndex);
 
     /* =========== Camera Functions ============ */
 
@@ -131,6 +136,7 @@ namespace Framework
 		void Draw(void);
 
     std::unordered_map<std::string, DirectSheep::Handle> m_textureMap;
+    std::unordered_map<std::string, int> m_fontMap;
 
     DirectSheep::Handle spriteQuad;
 

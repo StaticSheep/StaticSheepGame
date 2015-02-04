@@ -8,7 +8,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #pragma once
 #include "Vertices.h"
 #include "DataTypes.h"
-
+#define MAX_LIGHTS 100
 namespace DirectSheep
 {
   struct MatBuffer
@@ -42,9 +42,9 @@ namespace DirectSheep
 
   struct LightsBuffer
   {
-    Vec4 atten[10];
-    Color col[10];
-    Vec4 pos[10];
+    Vec4 atten[MAX_LIGHTS];
+    Color col[MAX_LIGHTS];
+    Vec4 pos[MAX_LIGHTS];
     int numLights;
     float padding[3];
   };

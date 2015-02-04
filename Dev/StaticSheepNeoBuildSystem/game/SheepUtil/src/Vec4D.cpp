@@ -75,6 +75,36 @@ namespace Framework
   {
     return (rhs.x * x + rhs.y * y + rhs.z * z + rhs.w * w);
   }
+
+  Vec4D Vec4D::operator/(float scalar) const
+  {
+    return Vec4D(x / scalar, y / scalar, z / scalar, w / scalar);
+  }
+  
+  Vec4D& Vec4D::operator/=(float scalar)
+  {
+    x /= scalar;
+    y /= scalar;
+    z /= scalar;
+    w /= scalar;
+
+    return *this;
+  }
+  
+  Vec4D Vec4D::operator*(float scalar) const
+  {
+    return Vec4D(x * scalar, y * scalar, z * scalar, w * scalar);
+  }
+  
+  Vec4D& Vec4D::operator*=(float scalar)
+  {
+    x *= scalar;
+    y *= scalar;
+    z *= scalar;
+    w *= scalar;
+
+    return *this;
+  }
   
   Vec4D& Vec4D::operator=(const Vec4D& rhs)
   {

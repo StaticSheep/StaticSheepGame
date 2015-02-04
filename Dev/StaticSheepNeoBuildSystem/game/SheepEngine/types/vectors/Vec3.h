@@ -27,4 +27,12 @@ namespace Framework
     }
     
   };
+
+  class LightVec3 : public Vec3
+  {
+  public:
+    LightVec3(float x = 0, float y = 0, float z = 0) : Vec3(x, y, z) { }
+    LightVec3(const Vec3& rhs) : Vec3(rhs) {}
+
+  };
 }

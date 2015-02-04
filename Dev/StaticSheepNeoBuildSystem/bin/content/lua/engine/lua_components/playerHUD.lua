@@ -74,9 +74,11 @@ function PlayerHUD:Create(i)
 
   local lives = gui.Create("Label", self.base[i])
   self:Register(lives)
-  lives:SetSize(32)
+  lives:SetSize(ScreenScale(6))
+    
   lives:SetText("x 3")
   lives:SetPos(80, 80)
+  lives:SetFontColor(Color(255, 255, 255))
   lives:SetYAlignment(TEXT_ALIGN_BOTTOM)
 
   local healthbar = gui.Create("Panel", self.base[i])
@@ -111,8 +113,8 @@ function PlayerHUD:SetupHooks()
 end
 
 function PlayerHUD:Refresh()
-  self:CleanUp()
-  self:Make()
+  --self:CleanUp()
+  --self:Make()
 end
 
 function PlayerHUD:Remove()

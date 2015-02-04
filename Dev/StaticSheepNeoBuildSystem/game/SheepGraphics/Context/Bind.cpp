@@ -37,6 +37,7 @@ namespace DirectSheep
 
   void RenderContext::Resize(float width, float height)
   {
+    return;
     if (m_swapChain)
     {
       m_viewport.dim = Dimension((unsigned)width, (unsigned)height);
@@ -99,7 +100,8 @@ namespace DirectSheep
   void RenderContext::BindIndexBuffer(const Handle& ibHandle)
   {
     if (ibHandle.type == INDEX_BUFFER)
-      m_deviceContext->IASetIndexBuffer(m_indexBufferRes[ibHandle.index], DXGI_FORMAT_R32_UINT, 0);
+      m_deviceContext->IASetIndexBuffer(m_indexBufferRes[ibHandle.index],
+      DXGI_FORMAT_R32_UINT, 0);
   }
 
   void RenderContext::BindConstantBuffer(unsigned slot, const Handle& cbHandle, ObjectType shaderType)

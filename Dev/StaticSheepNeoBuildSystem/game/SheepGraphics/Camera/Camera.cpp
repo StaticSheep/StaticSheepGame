@@ -11,6 +11,9 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 namespace DirectSheep
 {
+  float Camera::perspectiveW = 0;
+  float Camera::perspectiveZ = 0;
+
   Camera::Camera(float screenWidth, float screenHeight, bool isPerspective) :
     m_perspective(isPerspective),
     m_width(screenWidth),
@@ -165,6 +168,7 @@ namespace DirectSheep
       Vec4 world = Vec4::Transform(Vec4(2 * (screenPos.x/SCREEN_WIDTH) - 1,
         -(2 * (screenPos.y / SCREEN_HEIGHT) - 1),
         0.11f, 1), m_viewProj.Invert());
+      
       world.w = 1.0f / world.w;
 
       world.x *= world.w;
@@ -191,7 +195,9 @@ namespace DirectSheep
       Vec4 screen = Vec4::Transform(Vec4(worldPos.x, worldPos.y, worldPos.z, 1),
         m_viewProj);
 
-  
+      perspectiveZ = screen.z;
+      perspectiveW = screen.w;
+      
       screen.x = SCREEN_WIDTH * ((screen.x / screen.w) + 1) / 2;
       screen.y = SCREEN_HEIGHT * ((-screen.y / screen.w) + 1) / 2;
       /*screen.x = SCREEN_WIDTH * ((screen.x / screen.w) + 1) / 2;

@@ -21,12 +21,12 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/gameplay_scripts/CGiantKillBox.h"
 #include "components/gameplay_scripts/CGrinder.h"
 #include "components/gameplay_scripts/CExplosion.h"
-#include "Components/sound/CSoundEmitter.h"
+#include "components/sound/CSoundEmitter.h"
 #include "components/gameplay_scripts/CWeaponPickup.h"
 #include "components/gameplay_scripts/CWarningText.h"
 #include "components/gameplay_scripts/CBackgroundPan.h"
 #include "components/gameplay_scripts/CCheats.h"
-#include "components/slotmachine/slots_controller.h"
+#include "components/slotmachine/slotmachine.h"
 #include "components/gameplay_scripts/CAimingArrow.h"
 
 namespace Framework
@@ -62,7 +62,7 @@ namespace Framework
     REGISTER_COMPONENT(WarningText);
     REGISTER_COMPONENT(BackgroundPan);
     REGISTER_COMPONENT(Cheats);
-    REGISTER_COMPONENT(SlotController);
+    REGISTER_COMPONENT(SlotMachine);
     REGISTER_COMPONENT(AimingArrow);
   }
 

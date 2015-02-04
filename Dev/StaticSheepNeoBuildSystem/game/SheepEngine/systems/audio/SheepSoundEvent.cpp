@@ -180,7 +180,7 @@ bool SoundFile::Play(SoundInstance* instance)
 bool SoundFile::_PlayOnce(SoundInstance* instance)
 {
   // play once and set all of the settings
-  ErrorCheck(_system->playSound(sound, 0, true, &channel));
+  ErrorCheck(_system->playSound(sound, nullptr, true, &channel));
   ErrorCheck(channel->setVolume(instance->volume));
   ErrorCheck(channel->setPitch(instance->pitch));
 

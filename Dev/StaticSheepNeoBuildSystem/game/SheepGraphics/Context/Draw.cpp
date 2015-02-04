@@ -55,22 +55,40 @@ namespace DirectSheep
     SetBlendMode(BLEND_MODE_ALPHA);
 
     m_genericEffect->bind(m_deviceContext);
-    m_genericEffect->bindPosUV(m_deviceContext, ((Camera*)m_camera.ptr)->GetProj(), ((Camera*)m_camera.ptr)->GetView(), scaleMat, Vec2(0,0), Vec2(1,1));
+    m_genericEffect->bindPosUV(m_deviceContext,
+      ((Camera*)m_camera.ptr)->GetProj(),
+      ((Camera*)m_camera.ptr)->GetView(),
+      scaleMat, Vec2(0,0), Vec2(1,1));
+
+
     m_genericEffect->bindAmbient (m_deviceContext, m_spriteBlend, 1);
 
     m_deviceContext->Draw(vertexCount, vertexStart);
   }
 
-  void RenderContext::DrawSpriteText(const char * text, float size, const char * font)
+  void RenderContext::DrawSpriteText(const char * text, int index,
+    Framework::Vec2D& scale)
   {
+    if (index >= m_font.size() || index < 0)
+    {
+      m_font[0].m_spriteFont->DrawString(m_batcher.get(),
+        L"Invalid Font", Vec2(m_spriteTrans.x,
+        m_camUse ? m_spriteTrans.y : -m_spriteTrans.y),
+        255 * m_spriteBlend, m_spriteTrans.theta,
+        Vec2(0, 0), Vec2(1,-1), DirectX::SpriteEffects_None,
+        m_spriteTrans.z);
+
+      return;
+    }
 
     std::string sText(text);
     std::wstring wText(sText.begin(), sText.end());
 
-    if (m_font.count(font))
-      m_font[font]->DrawString(m_batcher.get(), wText.c_str(), Vec2(m_spriteTrans.x, m_camUse ? m_spriteTrans.y : -m_spriteTrans.y), Colors::White, m_spriteTrans.theta, Vec2(0, 0), Vec2(1, -1), DirectX::SpriteEffects_None, 0);
-    else
-      m_font["Arial"]->DrawString(m_batcher.get(), wText.c_str(), Vec2(m_spriteTrans.x, m_camUse ? m_spriteTrans.y : -m_spriteTrans.y), Colors::White, m_spriteTrans.theta, Vec2(0, 0), Vec2(1, -1), DirectX::SpriteEffects_None, 0);
+    m_font[index].m_spriteFont->DrawString(m_batcher.get(), wText.c_str(),
+      Vec2(m_spriteTrans.x, m_camUse ? m_spriteTrans.y : -m_spriteTrans.y),
+      255 * m_spriteBlend, m_spriteTrans.theta, Vec2(0, 0),
+      Vec2(scale.x, -scale.y),
+      DirectX::SpriteEffects_None, m_spriteTrans.z - 5);
   }
 
   void RenderContext::DrawBatched(DirectSheep::Handle texture)
@@ -114,15 +132,14 @@ namespace DirectSheep
   {
     ClearBackBuffer();
     ClearDepthBuffer();
+    m_PointLights.clear();
   }
 
   void RenderContext::StartBatch()
   {
-    
-
-    m_batcher->Begin(SpriteSortMode_Texture, m_blendStateMap[BLEND_MODE_ALPHA],
-      m_sampleStates[0], m_depthBuffer.m_depthState,
-      m_rastState[m_currentRast], nullptr,
+    m_batcher->Begin(SpriteSortMode_BackToFront, m_states->NonPremultiplied(),
+      m_states->LinearWrap(), m_states->DepthDefault(),
+      m_states->CullCounterClockwise(), nullptr,
       ((Camera*)m_camera.ptr)->GetViewProj());
     
     
@@ -131,14 +148,11 @@ namespace DirectSheep
 
   void RenderContext::EndBatch()
   {
-    m_batcher->End();
-    
+    m_batcher->End(); 
   }
 
   void RenderContext::FrameEnd(void)
   {
-    
-
     m_primativeEffect->Apply(m_deviceContext);
     m_deviceContext->IASetInputLayout(m_primativeLayout);
 
@@ -246,21 +260,48 @@ namespace DirectSheep
 
   }
 
-
-  void RenderContext::DrawPLight(void)
+  void RenderContext::BatchPLight(Framework::Vec3D position, Framework::Vec4D brightness, Framework::Vec3D attenuation)
   {
-    static float a = 0;
-    a += .01;
-    m_PointLight->bindMatrices(m_deviceContext, XMMatrixIdentity(), XMMatrixIdentity(), XMMatrixIdentity());
+    // Convert stats from into DirectX container, do scalar ratio
+    Vec3 pos(position.x, position.y, position.z);
 
-    m_PointLight->bindLight(m_deviceContext, Light(Vec3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0.0f), Color(0, 1, 0, 1), Vec3(.050097f, 0.101329f, .007211f)));
+    Color col(brightness.x / 255.0f, brightness.y / 255.0f,
+      brightness.z / 255.0f, brightness.a * 20.0f);
 
+    Vec3 at(attenuation.x / 15000.0f, attenuation.y / 15000.0f,
+      attenuation.z / 15000.0f);
+
+    // Store new light in vector, to be drawn at DrawPLights
+    m_PointLights.push_back(Light(pos, col, at));
+  }
+
+  void RenderContext::DrawPLights(bool isLight)
+  {
+    // Are there lights to draw
+    if (!isLight || !m_PointLights.size())
+      return;
+
+    // Bind matrix
+    m_PointLight->bindMatrices(m_deviceContext,
+      ((Camera*)m_postEffects.ptr)->GetProj(),
+      ((Camera*)m_postEffects.ptr)->GetView(),
+      DirectX::XMMatrixIdentity());
+
+    // Bind lights to shader
+    m_PointLight->bindLights(m_deviceContext,
+      m_PointLights.data(),
+      m_PointLights.size() < MAX_LIGHTS ? m_PointLights.size() : MAX_LIGHTS);
+
+    // Bind light mesh
     m_PLightModel->bind(m_deviceContext);
 
+    // Bind light effect
     m_PointLight->bind(m_deviceContext);
 
+    // Set appropriate blend mode
     SetBlendMode(BLEND_MODE_MULTIPLY);
 
+    // Draw lights
     m_deviceContext->DrawIndexed(m_PLightModel->getIndexCount(), 0, 0);
   }
 

@@ -6,6 +6,7 @@ Author(s): Scott Nelson (Primary)
 All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 *****************************************************************/
 #include "precompiled.h"
+#include "Context\Context.h"
 #include "Light.h"
 namespace DirectSheep
 {
@@ -34,7 +35,7 @@ namespace DirectSheep
 
     m_attenuation(attenuation), 
     m_color(color), 
-    m_position(position)
+    m_position(Vec3(SCREEN_WIDTH / 2 + position.x, SCREEN_HEIGHT / 2 - position.y, position.z))
   {}
 
 }

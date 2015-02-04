@@ -15,6 +15,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "engine/window/Window32.h"
 
 #include "components/sprites/CAniSprite.h"
+#include "components/particles/CParticleSystem.h"
+#include "components/particles/CParticleCircleEmitter.h"
 #include <iostream>
 #include <boost/filesystem.hpp>
 #include "../input/Input.h"
@@ -42,6 +44,9 @@ namespace Framework
     REGISTER_COMPONENT(Sprite);
     REGISTER_COMPONENT(Camera);
     REGISTER_COMPONENT(AniSprite);
+    REGISTER_COMPONENT(PointLight);
+    REGISTER_COMPONENT(ParticleSystem);
+    REGISTER_COMPONENT(ParticleCircleEmitter);
   }
 
 	SheepGraphics::~SheepGraphics()
@@ -155,6 +160,7 @@ namespace Framework
     // Draw Hooks
     GameSpace* space;
     Draw::SetCamState(0);
+    
     m_renderContext->StartBatch();
     // Regular Draw
     for (auto it = ENGINE->Spaces().begin(); it != ENGINE->Spaces().end(); ++it)
@@ -169,7 +175,6 @@ namespace Framework
     }
 
     Lua::CallFunc(ENGINE->Lua(), "hook.Call", "Draw");
-
     m_renderContext->EndBatch();
     m_renderContext->StartBatch();
 
@@ -186,20 +191,21 @@ namespace Framework
     }
 
     Lua::CallFunc(ENGINE->Lua(), "hook.Call", "PostDraw");
-
     m_renderContext->EndBatch();
+
+   
+    DrawPointLights(true);
 
     m_renderContext->StartBatch();
     ENGINE->SystemMessage(Message(Message::PostDraw));
-
     m_renderContext->EndBatch();
 
     Draw::SetCamState(2);
-    m_renderContext->StartBatch();
 
+    m_renderContext->StartBatch();
     ENGINE->SystemMessage(Message(Message::GUIDraw));
     m_renderContext->EndBatch();
-    //m_renderContext->DrawPLight();
+    
     m_renderContext->StartBatch();
     ENGINE->SystemMessage(Message(Message::PostGUIDraw));
     m_renderContext->EndBatch();
@@ -289,6 +295,16 @@ namespace Framework
 #endif
   }
 
+  void SheepGraphics::BatchPointLight(Vec3D position, Vec4D brightness, Vec3D attenuation)
+  {
+    m_renderContext->BatchPLight(position, brightness, attenuation);
+  }
+
+  void SheepGraphics::DrawPointLights(bool isLight)
+  {
+    m_renderContext->DrawPLights(isLight);
+  }
+
   void SheepGraphics::RawDraw(void)
   {
     m_renderContext->BindVertexBuffer(spriteQuad,20,0);
@@ -315,9 +331,9 @@ namespace Framework
     m_renderContext->SetCamState(camState);
   }
 
-  void SheepGraphics::DrawSpriteText(const char * text, float size, const char * font)
+  void SheepGraphics::DrawSpriteText(const char * text, int fontIndex, Vec2D scale)
   {
-    m_renderContext->DrawSpriteText(text, size, font);
+    m_renderContext->DrawSpriteText(text, fontIndex, 0.02f * scale);
 
 #if SHEEP_DEBUG
     ++(m_debugData.numTextDraws);
@@ -326,6 +342,14 @@ namespace Framework
   void* SheepGraphics::GetDevice()
   {
     return m_renderContext->ExternalGetDevice();
+  }
+
+  int SheepGraphics::GetFontIndex(const char * fontName)
+  {
+    if (m_fontMap.count(fontName))
+      return m_fontMap[fontName];
+    else
+      return m_fontMap["Arial"];
   }
 
   Vec2 SheepGraphics::GetTextureDim(DirectSheep::Handle texture)
@@ -361,7 +385,8 @@ namespace Framework
           {
             std::string foo = it->path().extension().generic_string();
             if (it->path().extension().generic_string() == ".spritefont")
-              m_renderContext->AddFont(it->path().stem().generic_string().c_str(), it->path().generic_string().c_str());
+              // This line is gross
+              m_fontMap[it->path().stem().generic_string().c_str()] = m_renderContext->AddFont(it->path().stem().generic_string().c_str(), it->path().generic_string().c_str());
           }
         }
         return true;
@@ -373,10 +398,10 @@ namespace Framework
   }
   
 
-  Vec2 SheepGraphics::MeasureString(const char* text, float size,
-    const char* font)
+  Vec2 SheepGraphics::MeasureString(const char* text, Vec2D scale,
+    int fontIndex)
   {
-    return m_renderContext->MeasureString(text, size, font);
+    return m_renderContext->MeasureString(text, 0.02f * scale, fontIndex);
   }
 
   DirectSheep::Camera* SheepGraphics::RetrieveCamera(DirectSheep::Handle camHandle)

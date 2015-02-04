@@ -35,21 +35,30 @@ namespace DirectSheep
     m_matBuffer->setData(pContext, buf);
   }
 
-  void PointLight::bindLight(ID3D11DeviceContext* pContext,
-    const Light& light)
+  void PointLight::bindLights(ID3D11DeviceContext* pContext,
+    const Light* lights,
+    const int numLights)
   {
-    LightBuffer buf = {
-      Vec4(light.getAttenuation()),
-      light.getColor(),
-      Vec4(light.getPosition()),
-    };
+    D3D11_MAPPED_SUBRESOURCE mapResource;
 
-    m_lightBuffer->setData(pContext, buf);
+    pContext->Map(m_lightBuffer->m_CBufferRaw, 0, D3D11_MAP_WRITE_DISCARD, 0, &mapResource);
+
+    LightsBuffer* data = reinterpret_cast<LightsBuffer*>(mapResource.pData);
+
+    for (int i = 0; i < numLights; ++i)
+    {
+      data->atten[i] = Vec4(lights[i].getAttenuation());
+      data->col[i] = lights[i].getColor();
+      data->pos[i] = Vec4(lights[i].getPosition());
+    }
+    data->numLights = numLights;
+
+    pContext->Unmap(m_lightBuffer->m_CBufferRaw, 0);
   }
 
   PointLight::PointLight(ID3D11Device* pDevice) : Effect(pDevice, "content/shaders/light_vs.cso", "content/shaders/light_ps.cso")
   {
-    m_lightBuffer = new CBuffer<LightBuffer>(pDevice);
+    m_lightBuffer = new CBuffer<LightsBuffer>(pDevice);
 
     m_matBuffer = new CBuffer<MatBuffer>(pDevice);
 
