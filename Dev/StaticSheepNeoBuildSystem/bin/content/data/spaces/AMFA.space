@@ -268,7 +268,7 @@ GameObject
   LuaComponent
   {
     name std::string "PauseMenu"
-    loadCommand std::string "return function(self) self.opened = true self.ypos = 456 end"
+    loadCommand std::string "return function(self) self.ypos = 456 self.opened = true end"
   }
 
   LuaComponent

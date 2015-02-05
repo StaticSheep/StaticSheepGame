@@ -40,6 +40,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/gameplay_scripts/CCheats.h"
 #include "components/slotmachine/slotmachine.h"
 #include "components/gameplay_scripts/CAimingArrow.h"
+#include "components/gameplay_scripts/CDashEffect.h"
 #include "components/particles/CParticleSystem.h"
 #include "components/particles/CParticleCircleEmitter.h"
 #include "components/particles/Particles.h"
@@ -234,6 +235,9 @@ namespace Framework
     TYPE_REGISTER(AimingArrow);
     TYPE_SET_TWEAK_TYPE(AimingArrow, AntTweak::TW_TYPE_COMPONENT);
     TYPE_ADD_MEMBER(AimingArrow, arrowColor, false, true, "Color");
+
+    TYPE_REGISTER(DashEffect);
+    TYPE_SET_TWEAK_TYPE(DashEffect, AntTweak::TW_TYPE_COMPONENT);
 
     TYPE_REGISTER(Pistol);
     TYPE_REGISTER(Shotgun);

@@ -20,6 +20,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "systems/metrics/MetricInfo.h"
 #include "systems/graphics/SheepGraphics.h"
 #include "../../gameplay_scripts/CAimingArrow.h"
+#include "../../gameplay_scripts/CDashEffect.h"
 
 
 
@@ -556,6 +557,10 @@ namespace Framework
     }
     else
       bc->SetVelocity(aimingDirection(gp, 'L') * 1000);
+
+    GameObject *dash_effect = (FACTORY->LoadObjectFromArchetype(space, "fire_effect1"));
+    dash_effect->GetComponent<DashEffect>(eDashEffect)->pTransform = playerTransform;
+    dash_effect->GetComponent<Transform>(eTransform)->SetTranslation(ps->GetTranslation());
 
     hasDashed = true;
   }

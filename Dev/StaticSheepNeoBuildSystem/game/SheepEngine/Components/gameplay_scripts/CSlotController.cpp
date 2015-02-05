@@ -32,7 +32,8 @@ namespace Framework
     //gTransfrom = space->GetGameObject(owner)->GetComponentHandle(eTransform);
     //gCollider = space->GetGameObject(owner)->GetComponentHandle(eBoxCollider);
     SlotMachine *sm;
-    
+    sm->SetTextureCB(self, BUILD_FUNCTION(SlotController::SetSMTextures));
+    //when you create a slot machine through an archtype you can set its call backs like this
 	}
 
   void SlotController::Remove()
@@ -49,7 +50,7 @@ namespace Framework
 
   void SlotController::SetSMTextures(int slotNum, int *spinTexID, int *stopTexID)
   {
-
+    //*spinTexID = Draw::GetTextureID(/*string goes here*/);
   }
 
   void SlotController::SetSMResults(int slotNum, int *landResult)
