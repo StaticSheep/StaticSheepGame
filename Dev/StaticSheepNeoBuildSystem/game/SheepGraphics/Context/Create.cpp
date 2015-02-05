@@ -321,7 +321,7 @@ namespace DirectSheep
     bd.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
     bd.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
 
-    bd.AlphaToCoverageEnable = true;
+    bd.AlphaToCoverageEnable = false;
     bd.IndependentBlendEnable = false;
 
     DXVerify(m_device->CreateBlendState(&bd, &m_blendStateMap[BLEND_MODE_MULTIPLY]));
@@ -352,12 +352,12 @@ namespace DirectSheep
 
     ZeroMemory(&dsDesc, sizeof(D3D11_DEPTH_STENCIL_DESC));
     // Paramaters for Depth test
-    dsDesc.DepthEnable = true;
+    dsDesc.DepthEnable = false;
     dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
-    dsDesc.DepthFunc = D3D11_COMPARISON_LESS_EQUAL;
+    dsDesc.DepthFunc = D3D11_COMPARISON_ALWAYS;
 
     // Paramaters for Stencil test
-    dsDesc.StencilEnable = true;
+    dsDesc.StencilEnable = false;
     dsDesc.StencilReadMask = 0xFF;
     dsDesc.StencilWriteMask = 0xFF;
 
