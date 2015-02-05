@@ -13,6 +13,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "../../colliders/CCircleCollider.h"
 #include "../../sprites/CSprite.h"
 #include "types/weapons/WPistol.h"
+#include "types/weapons/WShotgun.h"
 #include "../../gameplay_scripts/CBullet_default.h"
 #include "../../sprites/CAniSprite.h"
 #include "../../gameplay_scripts/CCheats.h"
