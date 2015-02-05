@@ -8,6 +8,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #pragma once
 
 #include "components/base/Component.h"
+#include "components/lights/CPointLight.h"
 #include "types/handle/Handle.h"
 
 namespace Framework
@@ -26,9 +27,15 @@ namespace Framework
 
     void CreateSpawnLights();
 
-    Handle m_lights[5];
+    Handle m_lights[6];
 
-    Vec3 m_spawnPos[5];
+    Vec3 m_spawnPos[6];
+
+    float m_levelTime;
+
+    float m_PulseT;
+
+    bool m_PulseFlip;
 
   };
 }
