@@ -72,6 +72,16 @@ local function MoveObject(self, id, start, finish)
   end
 end
 
+local function MoveText(self, start, finish)
+  return function(act, dt)
+    local cur = Vec3(0, 0, 0)
+    cur.x = lerp(start.x, finish.x, 1 - (act.tl / act.ttl))
+    cur.y = lerp(start.y, finish.y, 1 - (act.tl / act.ttl))
+    cur.z = lerp(start.z, finish.z, 1 - (act.tl / act.ttl))
+    self._textPos = cur
+  end
+end
+
 function META:Run()
   self.tex = {}
   self.tex[1] = surface.GetTextureID("InTheFuture.png")
@@ -82,6 +92,7 @@ function META:Run()
   self._alpha = 255
   self._texID = self.tex[1]
   self._texSize = Vec2(2, 2)
+  self._textPos = Vec3(0, 0, 0)
   self._slotMachine = {}
 
   self.List = actionlist.Create()
@@ -120,8 +131,23 @@ function META:Run()
     FadeOut(self),
     function(act)
       ChangeTexture(self, 3)(act)
-      ChangeDimensions(self, Vec2(3, 3))(act)
+      ChangeDimensions(self, Vec2(4, 4))(act)
     end,
+    true))
+
+  self.List:PushBack(Action(
+    Timed(1),
+    function(act, dt)
+      MoveText(self, Vec3(0, 0, 800), Vec3(0, 0, 0))(act, dt)
+      FadeIn(self)(act, dt)
+    end,
+    nil,
+    false))
+
+  self.List:PushBack(Action(
+    Timed(1.3),
+    Hold(),
+    nil,
     true))
 
   self.List:PushBack(Action(
@@ -139,15 +165,9 @@ function META:Run()
     false))
 
   self.List:PushBack(Action(
-    Timed(1),
-    FadeIn(self),
-    nil,
-    false))
-
-  self.List:PushBack(Action(
-    Timed(0.8),
+    Timed(0.6),
     function(act, dt)
-      MoveObject(self, 1, Vec3(0, 830, 0), Vec3(0, 270, 0))(act, dt)
+      MoveObject(self, 1, Vec3(-20, 830, 0), Vec3(-20, 290, 0))(act, dt)
       --MoveObject(self, 2, Vec3(0, -830, 0), Vec3(0, -330, 0))(act, dt)
       Hold()(act, dt)
     end,
@@ -155,7 +175,7 @@ function META:Run()
     true))
 
   self.List:PushBack(Action(
-    Timed(1.1),
+    Timed(0.7),
     FadeOut(self),
     function(act)
       ChangeTexture(self, 4)(act)
@@ -199,8 +219,8 @@ end
 function META:Draw()
   surface.SetTexture(self._texID)
   surface.SetColor(255, 255, 255, self._alpha)
-  surface.ForceZ(true, -1.0)
-  surface.DrawTexturedRect(0, 0, self._texSize.x, self._texSize.y)
+  surface.ForceZ(true, self._textPos.z - 1.0)
+  surface.DrawTexturedRect(self._textPos.x, self._textPos.z, self._texSize.x, self._texSize.y)
   surface.ForceZ(false, 0)
 end
 
