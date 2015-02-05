@@ -337,34 +337,35 @@ namespace SheepFizz
   //raycast interface
   bool PhysicsSpace::RayCaster(RayConfig* ray)
   {
+    ray->rayOrigin /= meterScale_;
     rayCast_.Initialize(ray);
     ray->gameSpace = userData_;
 
     bool rayIntersect = false;
 
-    switch ((*ray).findFirstCollision)
+    if ((*ray).findFirstCollision)
     {
-      case true:
+      for (unsigned i = 0; i < (bodies_).Size(); ++i)
+      {
+          if (!(Collisions[(*ray).collisionGroup][((Body*)(bodies_)[i])->collisionGroup_]))
+          continue;
+
+        rayIntersect = rayCast_.ComplexRayTest((Body*)(bodies_)[i]);
+
+        if (rayIntersect)
+          rayCast_.GetRayConfig()->bodyIntersections_.push_back((((Body*)&bodies_)[i]).userData);
+      }
+      
+      rayCast_.GetRayConfig()->firstCollisionLocation = rayCast_.GetFirstCollisionPoint() * meterScale_;
+      rayCast_.GetRayConfig()->firstCollisionBody = rayCast_.GetFirstCollisionBody()->userData;
+
+    }
+
+    else
+    {
         for (unsigned i = 0; i < (bodies_).Size(); ++i)
         {
-          if ((*ray).collisionGroup != ((Body*)(bodies_)[i])->collisionGroup_)
-            continue;
-
-          rayIntersect = rayCast_.ComplexRayTest((Body*)(bodies_)[i]);
-
-          if (rayIntersect)
-            rayCast_.GetRayConfig()->bodyIntersections_.push_back((((Body*)&bodies_)[i]).userData);
-        }
-
-        rayCast_.GetRayConfig()->firstCollisionLocation = rayCast_.GetFirstCollisionPoint();
-        rayCast_.GetRayConfig()->firstCollisionBody = rayCast_.GetFirstCollisionBody()->userData;
-
-        break;
-
-      default:
-        for (unsigned i = 0; i < (bodies_).Size(); ++i)
-        {
-          if ((*ray).collisionGroup != ((Body*)(bodies_)[i])->collisionGroup_)
+          if (!(Collisions[(*ray).collisionGroup][((Body*)(bodies_)[i])->collisionGroup_]))
             continue;
 
           rayIntersect = rayCast_.SimpleRayTest((Body*)(bodies_)[i]);
@@ -373,8 +374,9 @@ namespace SheepFizz
             rayCast_.GetRayConfig()->bodyIntersections_.push_back((((Body*)(&bodies_))[i]).userData);
         }
 
-        break;
     }
+
+    rayCast_.GetRayConfig()->rayOrigin *= meterScale_;
 
     if (rayCast_.GetRayConfig()->bodyIntersections_.empty())
       return false;

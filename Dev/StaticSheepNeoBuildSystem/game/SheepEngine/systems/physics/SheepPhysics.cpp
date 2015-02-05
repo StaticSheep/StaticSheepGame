@@ -474,10 +474,15 @@ namespace Framework
     if (ray.findFirstCollision)
     {
       GameSpace* space = (GameSpace*)(ray.gameSpace);
-      Handle handleObj = (unsigned)ray.firstCollisionBody;
+      Handle handleObj = (unsigned)(ray.firstCollisionBody);
 
-      GameObject* obj = space->GetHandles().GetAs<GameObject>(handleObj);
-      ((PlayerController*)obj)->health -= 10;
+     // GameObject* obj = space->GetHandles().GetAs<GameObject>(handleObj);
+      //((PlayerController*)obj)->health -= 10;
+      if (!debugOn)
+        return;
+
+      Draw::SetColor(1, 0, 0, 1);
+      Draw::DrawLine(ray.rayOrigin.x, ray.rayOrigin.y, ray.firstCollisionLocation.x, ray.firstCollisionLocation.y, 1);
     }
 
     else

@@ -1,7 +1,7 @@
 #include "pch/precompiled.h"
 #include "WLaser.h"
 #include "Components/transform/CTransform.h"
-#include "Components/colliders/CCircleCollider.h"
+#include "Components/colliders/CBoxCollider.h"
 #include "Components/controllers/player/CPlayerController.h"
 #include "components/gameplay_scripts/CBullet_default.h"
 
@@ -22,19 +22,15 @@ namespace Framework
 
   void Laser::Fire(GameObject *player)
   {
-
-    //GameObject *bullet = (FACTORY->LoadObjectFromArchetype(player->space, "Bullet"));
-    //bullet->GetComponent<Bullet_Default>(eBullet_Default)->damage = damage;
-    //Transform *BT = bullet->GetComponent<Transform>(eTransform);
-    //CircleCollider *bulletC = bullet->GetComponent <CircleCollider>(eCircleCollider);
     Transform *playerTrans = player->GetComponent <Transform>(eTransform);
     Vec3 AimDir = player->GetComponent<PlayerController>(ePlayerController)->aimDir;
-    ((RigidBody*)player)->SetRayCast((Vec3D)(playerTrans->GetTranslation()), (Vec3D)AimDir, player->archetype);
-    ((RigidBody*)player)->ComplexRayCast();
-    //bulletC->SetBodyCollisionGroup(player->archetype);
-    //BT->SetTranslation(playerTrans->GetTranslation() + AimDir * 25);
-    //bulletC->AddToVelocity(AimDir * 1000);
-
+    
+    Handle playerCollider = player->GetComponentHandle(eBoxCollider);
+    BoxCollider *bc = player->space->GetHandles().GetAs<BoxCollider>(playerCollider);
+    bc->SetRayCast(playerTrans->GetTranslation(), AimDir, player->archetype);
+    bool death = bc->ComplexRayCast();
+    if (death)
+      bc->RayDestruction();
     SoundEmitter *se = player->GetComponent<SoundEmitter>(eSoundEmitter);
     se->Play("Laser_Shot", &SoundInstance(1.0f));
   }

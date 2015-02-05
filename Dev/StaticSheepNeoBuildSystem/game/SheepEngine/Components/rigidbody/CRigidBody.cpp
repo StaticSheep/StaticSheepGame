@@ -237,4 +237,9 @@ namespace Framework
   {
     return PHYSICS->ComplexRayCast(space);
   }
+
+  void RigidBody::RayDestruction()
+  {
+    PHYSICS->RayDestruction();
+  }
 }

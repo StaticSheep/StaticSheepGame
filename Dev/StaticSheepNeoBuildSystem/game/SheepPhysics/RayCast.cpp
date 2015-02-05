@@ -141,6 +141,7 @@ namespace SheepFizz
     Vec3D normalVec = rectangle->position_ - position_;
     normalVec = (normalVec * direction_) * direction_;
     normalVec = rectangle->position_ - normalVec;
+    normalVec.Normalize();
 
     return normalVec;
   }//end of RayNormal
@@ -209,6 +210,7 @@ namespace SheepFizz
     float intersection = direction_.y * (vertex.x - position_.x) - direction_.x * (vertex.y - position_.y);
     intersection /= denominator;
 
+    segmentDirection.z = 0;
     collisionPoint = segmentDirection * intersection + vertex;
 
     return true;
@@ -237,6 +239,10 @@ namespace SheepFizz
           Vec3D lineOne = ((Rectangle*)(rectangle->shape_))->GetVertex(presupport);
           Vec3D lineTwo = ((Rectangle*)(rectangle->shape_))->GetVertex(postsupport);
 
+          vertex += rectangle->position_;
+          lineOne += rectangle->position_;
+          lineTwo += rectangle->position_;
+
           lineOne = lineOne - vertex;
           lineTwo = lineTwo - vertex;
 
@@ -258,6 +264,7 @@ namespace SheepFizz
              {
                firstCollisionSquareLength_ = length;
                firstCollision_ = rectangle;
+               firstCollisionPoint_ = collisionPoint;
              }
           }
 
@@ -266,6 +273,10 @@ namespace SheepFizz
             unsigned int presupport2 = (presupport - 1) >= 0 ? presupport - 1 : ((Rectangle*)(rectangle->shape_))->GetVertexNumber() - 1;
             Vec3D vertex2 = ((Rectangle*)(rectangle->shape_))->GetVertex(presupport);
             lineOne = ((Rectangle*)(rectangle->shape_))->GetVertex(presupport2);
+
+            vertex2 += rectangle->position_;
+            lineOne += rectangle->position_;
+
             lineOne = lineOne - vertex2;
 
             if (RayRectangleIntersect(vertex, lineOne, collisionPoint))
@@ -277,6 +288,7 @@ namespace SheepFizz
               {
                 firstCollisionSquareLength_ = length;
                 firstCollision_ = rectangle;
+                firstCollisionPoint_ = collisionPoint;
               }
             }
           }
@@ -291,6 +303,7 @@ namespace SheepFizz
             {
               firstCollisionSquareLength_ = length;
               firstCollision_ = rectangle;
+              firstCollisionPoint_ = collisionPoint;
             }
           }
 
@@ -299,6 +312,9 @@ namespace SheepFizz
             unsigned int postsupport2 = postsupport + 1 < ((Rectangle*)(rectangle->shape_))->GetVertexNumber() ? postsupport + 1 : 0;
             Vec3D vertex2 = ((Rectangle*)(rectangle->shape_))->GetVertex(postsupport);
             lineTwo = ((Rectangle*)(rectangle->shape_))->GetVertex(postsupport2);
+
+            vertex2 += rectangle->position_;
+            lineTwo += rectangle->position_;
             lineTwo = lineTwo - vertex2;
 
             if (RayRectangleIntersect(vertex, lineTwo, collisionPoint))
@@ -310,11 +326,10 @@ namespace SheepFizz
               {
                 firstCollisionSquareLength_ = length;
                 firstCollision_ = rectangle;
+                firstCollisionPoint_ = collisionPoint;
               }
             }
-          }
-
-          return true;
+          }        
         }
 
         break;
@@ -325,6 +340,7 @@ namespace SheepFizz
         break;
     }
     
+    return true;
   }
 
 }//end of ComplexRayRectangleTest
