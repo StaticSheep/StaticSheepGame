@@ -42,6 +42,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/gameplay_scripts/CAimingArrow.h"
 #include "components/particles/CParticleSystem.h"
 #include "components/particles/CParticleCircleEmitter.h"
+#include "components/particles/CParticleBoxEmitter.h"
 #include "components/particles/Particles.h"
 
 
@@ -300,8 +301,6 @@ namespace Framework
     TYPE_REGISTER(ParticleSystem);
     TYPE_ADD_MEMBER(ParticleSystem, textureName, false, true, "ParticleTexture");
     TYPE_ADD_MEMBER(ParticleSystem, particleLife, false, true, "ParticleLifetime");
-    TYPE_ADD_MEMBER(ParticleSystem, rate, false, true, "ParticleSpawnDelay");
-    TYPE_ADD_MEMBER(ParticleSystem, amount, false, true, "ParticlesPerSpawn");
     TYPE_ADD_MEMBER(ParticleSystem, directionEase, false, true, "DirectionEase");
     TYPE_ADD_MEMBER(ParticleSystem, direction, false, true, "ParticleDirection", 
       BUILD_FUNCTION(ParticleSystem::TweakSetDirection));
@@ -340,11 +339,24 @@ namespace Framework
     TYPE_REGISTER(ParticleCircleEmitter);
     TYPE_ADD_MEMBER(ParticleCircleEmitter, m_innerRadius, false, true, "Inner Radius");
     TYPE_ADD_MEMBER(ParticleCircleEmitter, m_outerRadius, false, true, "Outer Radius");
+    TYPE_ADD_MEMBER(ParticleCircleEmitter, m_spawnOffset, false, true, "Spawn Location Offset");
     TYPE_ADD_MEMBER(ParticleCircleEmitter, m_amount, false, true, "Spawn Amount");
     TYPE_ADD_MEMBER(ParticleCircleEmitter, m_rate, false, true, "Spawn Delay");
     TYPE_ADD_MEMBER(ParticleCircleEmitter, spawning, false, true, "Constant Spawning");
+    TYPE_ADD_MEMBER(ParticleCircleEmitter, timedSpawning, false, true, "Timed Spawning");
+    TYPE_ADD_MEMBER(ParticleCircleEmitter, timed, false, true, "Time");
     TYPE_ADD_MEMBER(ParticleCircleEmitter, outward, false, true, "Spawn Outwards");
     TYPE_ADD_MEMBER(ParticleCircleEmitter, inward, false, true, "Spawn Inwards");
+
+    TYPE_REGISTER(ParticleBoxEmitter);
+    TYPE_ADD_MEMBER(ParticleBoxEmitter, m_width, false, true, "Box Width");
+    TYPE_ADD_MEMBER(ParticleBoxEmitter, m_height, false, true, "Box Height");
+    TYPE_ADD_MEMBER(ParticleBoxEmitter, m_spawnOffset, false, true, "Spawn Offset");
+    TYPE_ADD_MEMBER(ParticleBoxEmitter, m_amount, false, true, "Particle Amount");
+    TYPE_ADD_MEMBER(ParticleBoxEmitter, m_rate, false, true, "Spawn Delay!");
+    TYPE_ADD_MEMBER(ParticleBoxEmitter, spawning, false, true, "Constant Spawning?");
+    TYPE_ADD_MEMBER(ParticleBoxEmitter, timedSpawning, false, true, "Timed Spawning?");
+    TYPE_ADD_MEMBER(ParticleBoxEmitter, timed, false, true, "Time!");
 
     TYPE_REGISTER(Camera);
     TYPE_ADD_MEMBER(Camera, m_active, false, true, "Active",
