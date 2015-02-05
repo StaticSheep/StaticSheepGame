@@ -15,10 +15,13 @@ namespace SheepFizz
     Vec3D rayDirection;
     bool findFirstCollision;
     CollisionGroup collisionGroup;
+  
+    //pointer to the current gamespace, for collision resolution
+    void* gameSpace;
 
     //returned by engine
     Vec3D firstCollisionLocation;
-    Handle firstCollisionBody;
-    std::vector<Handle> bodyIntersections_;   //the bodies the ray collided with
+    void* firstCollisionBody;
+    std::vector<void*> bodyIntersections_;   //the bodies the ray collided with
   };
 }

@@ -223,9 +223,9 @@ namespace Framework
     PHYSICS->ChangePhysBodies(space, m_handle, m_width, m_height);
   }
 
-  void RigidBody::SetRayCast(Vec3D& rayOrigin, Vec3D& rayDirection, CollisionGroup group)
+  void RigidBody::SetRayCast(Vec3D& rayOrigin, Vec3D& rayDirection, std::string name)
   {
-    PHYSICS->SetRayConfig(rayOrigin, rayDirection, group);
+    PHYSICS->SetRayConfig(rayOrigin, rayDirection, name);
   }
 
   bool RigidBody::SimpleRayCast()

@@ -23,7 +23,6 @@ namespace SheepFizz
     firstCollisionSquareLength_ = FLT_MAX;
     firstCollision_ = nullptr;
     reflectRay_ = false;
-
     config_->bodyIntersections_.clear();
 
   }//end of Initialize

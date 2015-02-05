@@ -64,7 +64,7 @@ namespace Framework
       virtual std::string GetBodyCollisionGroup(void);
 
       //raycasting
-      virtual void SetRayCast(Vec3D& rayOrigin, Vec3D& rayDirection, CollisionGroup group = Collide);
+      virtual void SetRayCast(Vec3D& rayOrigin, Vec3D& rayDirection, std::string name);
       virtual bool SimpleRayCast();
       virtual bool ComplexRayCast();
 

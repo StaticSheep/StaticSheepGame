@@ -338,6 +338,7 @@ namespace SheepFizz
   bool PhysicsSpace::RayCaster(RayConfig* ray)
   {
     rayCast_.Initialize(ray);
+    ray->gameSpace = userData_;
 
     bool rayIntersect = false;
 
@@ -352,11 +353,11 @@ namespace SheepFizz
           rayIntersect = rayCast_.ComplexRayTest((Body*)(bodies_)[i]);
 
           if (rayIntersect)
-            rayCast_.GetRayConfig()->bodyIntersections_.push_back((((Body*)&bodies_)[i]).self);
+            rayCast_.GetRayConfig()->bodyIntersections_.push_back((((Body*)&bodies_)[i]).userData);
         }
 
         rayCast_.GetRayConfig()->firstCollisionLocation = rayCast_.GetFirstCollisionPoint();
-        rayCast_.GetRayConfig()->firstCollisionBody = rayCast_.GetFirstCollisionBody()->self;
+        rayCast_.GetRayConfig()->firstCollisionBody = rayCast_.GetFirstCollisionBody()->userData;
 
         break;
 
@@ -369,7 +370,7 @@ namespace SheepFizz
           rayIntersect = rayCast_.SimpleRayTest((Body*)(bodies_)[i]);
 
           if (rayIntersect)
-            rayCast_.GetRayConfig()->bodyIntersections_.push_back((((Body*)(&bodies_))[i]).self);
+            rayCast_.GetRayConfig()->bodyIntersections_.push_back((((Body*)(&bodies_))[i]).userData);
         }
 
         break;

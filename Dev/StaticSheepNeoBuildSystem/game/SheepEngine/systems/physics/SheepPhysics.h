@@ -82,9 +82,10 @@ namespace Framework
       std::string GetCollisionGroup(GameSpace* space, SheepFizz::Handle handle);
 
       //raycast
-      void SetRayConfig(Vec3D rayOrigin, Vec3D rayDirection, CollisionGroup group = Collide);
+      void SetRayConfig(Vec3D& rayOrigin, Vec3D& rayDirection, std::string name);
       bool SimpleRayCast(GameSpace* space);
       bool ComplexRayCast(GameSpace* space);
+      void RayDestruction();
 
 			//settors
 			void SetBodyPosition(GameSpace* space, SheepFizz::Handle handle, Vec3D position);

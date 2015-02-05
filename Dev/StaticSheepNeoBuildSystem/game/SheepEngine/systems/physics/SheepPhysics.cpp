@@ -17,6 +17,9 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/colliders/CBoxCollider.h"
 #include "components/colliders/CCircleCollider.h"
 
+#pragma once
+#include "components/controllers/player/CPlayerController.h"
+
 namespace Framework
 {
 	SheepPhysics* PHYSICS = NULL;
@@ -259,6 +262,7 @@ namespace Framework
     ray.collisionGroup = Collide;
     ray.rayDirection = Vec3D(1, 0, 0);
     ray.rayOrigin = Vec3D(0, 0, 0);
+    ray.gameSpace = nullptr;
 
     debugOn = false;
 
@@ -443,9 +447,14 @@ namespace Framework
 
   //raycast
   //********************
-  void SheepPhysics::SetRayConfig(Vec3D rayOrigin, Vec3D rayDirection, CollisionGroup group)
+  void SheepPhysics::SetRayConfig(Vec3D& rayOrigin, Vec3D& rayDirection, std::string name)
   {
-    ray.collisionGroup = group;
+    if (m_collisionGroup.find(name) != m_collisionGroup.end())
+      ray.collisionGroup = m_collisionGroup[name];
+
+    else
+      ray.collisionGroup = Collide;
+    
     ray.rayDirection = rayDirection;
     ray.rayOrigin = rayOrigin;
   }
@@ -458,6 +467,26 @@ namespace Framework
   bool SheepPhysics::ComplexRayCast(GameSpace* space)
   {
     return  ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->RayCaster(&ray);
+  }
+
+  void SheepPhysics::RayDestruction()
+  {
+    if (ray.findFirstCollision)
+    {
+      GameSpace* space = (GameSpace*)(ray.gameSpace);
+      Handle handleObj = (unsigned)ray.firstCollisionBody;
+
+      GameObject* obj = space->GetHandles().GetAs<GameObject>(handleObj);
+      ((PlayerController*)obj)->health -= 10;
+    }
+
+    else
+    {
+
+    }
+
+    ray.bodyIntersections_.clear();
+    ray.findFirstCollision = false;
   }
 
 	//change bodies
