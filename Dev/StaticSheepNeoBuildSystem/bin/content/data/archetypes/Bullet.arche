@@ -36,6 +36,22 @@ GameObject
     m_flipX bool false
     m_flipY bool false
   }
+  PointLight
+  {
+    m_brightness LightColor
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 0.030000
+    }
+    m_attenuation LightVec3
+    {
+      X float 17.010000
+      Y float -0.990000
+      Z float 0.009900
+    }
+  }
   ParticleSystem
   {
     textureName std::string "White.png"
