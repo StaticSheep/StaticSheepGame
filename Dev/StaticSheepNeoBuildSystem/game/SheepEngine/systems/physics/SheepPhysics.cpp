@@ -438,26 +438,27 @@ namespace Framework
 
   //raycast
   //********************
-  bool SheepPhysics::SimpleRayCast(GameSpace* space, Vec3D& rayOrigin, Vec3D& rayDirection)
+  bool SheepPhysics::SimpleRayCast(GameSpace* space, Vec3D& rayOrigin, Vec3D& rayDirection, CollisionGroup group)
   {
     SheepFizz::RayConfig ray;
 
     ray.findFirstCollision = false;
     ray.rayOrigin = rayOrigin;
     ray.rayDirection = rayDirection;
+    ray.collisionGroup = group;
 
     return  ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->RayCaster(&ray);
 
   }
 
-  bool SheepPhysics::ComplexRayCast(GameSpace* space, Vec3D& rayOrigin, Vec3D& rayDirection)
+  bool SheepPhysics::ComplexRayCast(GameSpace* space, Vec3D& rayOrigin, Vec3D& rayDirection, CollisionGroup group )
   {
     SheepFizz::RayConfig ray;
 
     ray.findFirstCollision = true;
     ray.rayOrigin = rayOrigin;
     ray.rayDirection = rayDirection;
-    ray.collisionGroup = Collide;
+    ray.collisionGroup = group;
 
     return  ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->RayCaster(&ray);
 
