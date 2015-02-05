@@ -14,6 +14,15 @@ namespace Framework
 {
 	class Level1_Logic : public GameComponent
 	{
+    enum GameTypes
+    {
+      FFA,
+      TEAM,
+      JUGGERNAUT,
+      MINIME,
+      SUMO
+    };
+
 	public:
     Level1_Logic();
     ~Level1_Logic();
