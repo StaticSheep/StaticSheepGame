@@ -174,8 +174,14 @@ namespace Framework
 
     if(instance->type == 1)
     {
-     if(ErrorCheck(instance->soundInstance->release()))
-      return false;
+      FMOD::Channel* chnl = nullptr;
+      lowLevelSystem->getChannel(instance->channel, &chnl);
+      if (chnl)
+        chnl->stop();
+
+      if (instance->soundInstance)
+        if (ErrorCheck(instance->soundInstance->release()))
+          return false;
     }
 
     return true;

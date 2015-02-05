@@ -21,6 +21,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "systems/input/Input.h"
 #include "components/controllers/player/CPlayerController.h"
 #include "components/gameplay_scripts/CLevel1_Logic.h"
+#include "components/sound/CSoundPlayer.h"
 
 namespace Framework
 {
@@ -94,6 +95,9 @@ namespace Framework
       BIND_FUNCTION_EX(L, Transform::GetScale, GetScale);
 
       //BIND_FUNCTION_EX(ENGINE->Lua(), Engine::DoSomething, engineDoSomething);
+
+      BIND_FUNCTION_EX(L, SoundPlayer::LuaPlay, PlayLoop);
+      BIND_FUNCTION_EX(L, SoundPlayer::LuaStop, StopLoop);
 
       BIND_FUNCTION_EX(L, LuaComponent::ReceiveLoadCommend, SendLoadCommand);
 

@@ -94,7 +94,7 @@ function META:Run()
   self.tex[3] = surface.GetTextureID("Entertainment.png")
   self.tex[4] = surface.GetTextureID("GigaGravityTitle.png")
 
-  self._alpha = 255
+  self._alpha = 0
   self._texID = self.tex[1]
   self._texSize = Vec2(2, 2)
   self._textPos = Vec3(0, 0, 0)
@@ -103,6 +103,21 @@ function META:Run()
   self._startBtn = nil
 
   self.List = actionlist.Create()
+  self.List:PushBack(Action(
+    nil,
+    function(act, dt)
+      self:Owner().SoundPlayer:PlayLoop("factory_roar")
+      act:Done()
+    end,
+    nil,
+    false))
+
+  self.List:PushBack(Action(
+    Timed(0.25),
+    Hold(),
+    nil,
+    true))
+
   self.List:PushBack(Action(
     Timed(1.5),
     FadeIn(self),
@@ -140,6 +155,24 @@ function META:Run()
       ChangeTexture(self, 3)(act)
       ChangeDimensions(self, Vec2(4, 4))(act)
     end,
+    true))
+
+  self.List:PushBack(Action(
+    Timed(0.1),
+    Hold(),
+    function(act, dt)
+      self:Owner().SoundPlayer:StopLoop("factory_roar")
+    end,
+    true))
+
+  self.List:PushBack(Action(
+    function(act)
+      self:Owner().SoundPlayer:PlayLoop("Main Music")
+    end,
+    function(act, dt)
+      act:Done()
+    end,
+    nil,
     true))
 
   self.List:PushBack(Action(
