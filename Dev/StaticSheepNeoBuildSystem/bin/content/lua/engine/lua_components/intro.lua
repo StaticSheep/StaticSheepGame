@@ -48,7 +48,6 @@ end
 
 local function FadeIn(self)
   return function(act, dt)
-    act.tl = act.tl -dt
     self._alpha = lerp(0, 255, (1-(act.tl/act.ttl)))
     Hold()(act, dt)
   end
@@ -56,31 +55,37 @@ end
 
 local function FadeOut(self)
   return function(act, dt)
-    act.tl = act.tl -dt
     self._alpha = lerp(0, 255, (act.tl/act.ttl))
     Hold()(act, dt)
   end
 end
 
-local function MoveObject(self, id, start, finish)
+local function Translate(self, obj, start, finish)
   return function(act, dt)
     local cur = Vec3(0, 0, 0)
-    cur.x = lerp(start.x, finish.x, 1 - (act.tl / act.ttl))
-    cur.y = lerp(start.y, finish.y, 1 - (act.tl / act.ttl))
-    cur.z = lerp(start.z, finish.z, 1 - (act.tl / act.ttl))
-    self._slotMachine[id].Transform:SetTranslation(cur)
+    local t = (act.tl / act.ttl)
+    if t > 1 then t = 1 end
+    if t < 0 then t = 0 end
+    cur.x = lerp(start.x, finish.x, 1 - t)
+    cur.y = lerp(start.y, finish.y, 1 - t)
+    cur.z = lerp(start.z, finish.z, 1 - t)
+    obj.Transform:SetTranslation(cur)
   end
 end
 
 local function MoveText(self, start, finish)
   return function(act, dt)
-    local cur = Vec3(0, 0, 0)
-    cur.x = lerp(start.x, finish.x, 1 - (act.tl / act.ttl))
-    cur.y = lerp(start.y, finish.y, 1 - (act.tl / act.ttl))
-    cur.z = lerp(start.z, finish.z, 1 - (act.tl / act.ttl))
-    self._textPos = cur
+  local cur = Vec3(0, 0, 0)
+  local t = (act.tl / act.ttl)
+  if t > 1 then t = 1 end
+  if t < 0 then t = 0 end
+  cur.x = lerp(start.x, finish.x, 1 - t)
+  cur.y = lerp(start.y, finish.y, 1 - t)
+  cur.z = lerp(start.z, finish.z, 1 - t)
+  self._textPos = cur
   end
 end
+
 
 function META:Run()
   self.tex = {}
@@ -94,6 +99,8 @@ function META:Run()
   self._texSize = Vec2(2, 2)
   self._textPos = Vec3(0, 0, 0)
   self._slotMachine = {}
+  self._logo = nil
+  self._startBtn = nil
 
   self.List = actionlist.Create()
   self.List:PushBack(Action(
@@ -142,6 +149,21 @@ function META:Run()
       FadeIn(self)(act, dt)
     end,
     nil,
+    true))
+
+  self.List:PushBack(Action(
+    nil,
+    function(act)
+      local obj = self._spacePtr:CreateObject("LeftIntroP")
+      obj.Transform:SetTranslation(Vec3(-980, 0, 0))
+      obj = self._spacePtr:CreateObject("RightIntroP")
+      obj.Transform:SetTranslation(Vec3(980, 0, 0))
+      -- obj = self._spacePtr:CreateObject("IntroMachine2")
+      -- obj.Transform:SetTranslation(Vec3(0, -830, 0))
+      -- self._slotMachine[2] = obj
+      act:Done()
+    end,
+    nil,
     false))
 
   self.List:PushBack(Action(
@@ -165,9 +187,33 @@ function META:Run()
     false))
 
   self.List:PushBack(Action(
+    nil,
+    function(act)
+      local obj = self._spacePtr:CreateObject("TeamLogo")
+      obj.Transform:SetTranslation(Vec3(800, -395, 800))
+      self._logo = obj
+      act:Done()
+    end,
+    nil,
+    false))
+
+  self.List:PushBack(Action(
+    Timed(1.5),
+    function(act, dt)
+      Translate(self, self._logo,
+       Vec3(9000, -9000, 800), Vec3(800, -395, 0))(act, dt)
+      --MoveObject(self, 2, Vec3(0, -830, 0), Vec3(0, -330, 0))(act, dt)
+      Hold()(act, dt)
+    end,
+    nil,
+    false))
+
+  self.List:PushBack(Action(
     Timed(0.6),
     function(act, dt)
-      MoveObject(self, 1, Vec3(-20, 830, 0), Vec3(-20, 290, 0))(act, dt)
+      Translate(self, self._slotMachine[1],
+       Vec3(-20, 830, 0), Vec3(-20, 290, 0))(act, dt)
+
       --MoveObject(self, 2, Vec3(0, -830, 0), Vec3(0, -330, 0))(act, dt)
       Hold()(act, dt)
     end,
@@ -184,10 +230,63 @@ function META:Run()
     true))
 
   self.List:PushBack(Action(
-    Timed(1.25),
+    nil,
+    function(act)
+      local obj = self._spacePtr:CreateObject("StartBtn")
+      self._startBtn = obj
+      act:Done()
+    end,
+    nil,
+    false))
+
+  self.List:PushBack(Action(
+    Timed(1.0),
+    function(act, dt)
+      Hold()(act, dt)
+      Translate(self, self._startBtn, Vec3(0, -300, 800), Vec3(0, -275, 0))(act, dt)
+      --MoveObject(self, 2, Vec3(0, -830, 0), Vec3(0, -330, 0))(act, dt)
+      
+    end,
+    nil,
+    false))
+
+  self.List:PushBack(Action(
+    Timed(1.5),
     FadeIn(self),
     nil,
     true))
+
+  local funcs = {}
+
+  local function DownAction()
+    return Action(Timed(1.75),
+      function(act, dt)
+        Translate(self, self._startBtn, Vec3(0, -275, 0),
+          Vec3(0, -260, 0))(act, dt)
+        Hold()(act, dt)
+      end,
+      function(act)
+        self.List:PushBack(funcs[2]())
+      end,
+      true)
+  end
+
+  local function UpAction()
+    return Action(Timed(1.75),
+      function(act, dt)
+        Translate(self, self._startBtn, Vec3(0, -260, 0),
+          Vec3(0, -275, 0))(act, dt)
+        Hold()(act, dt)
+      end,
+      function(act)
+        self.List:PushBack(funcs[1]())
+      end,
+      true)
+  end
+
+  funcs = {DownAction, UpAction}
+
+  self.List:PushBack(DownAction())
 
 
 end
@@ -214,6 +313,10 @@ end
 
 function META:Update(dt)
   self.List:Update(dt)
+
+  if gamepad.ButtonPressed(nil, GAMEPAD_START) then
+    engine.ChangeLevel("Asteroid")
+  end
 end
 
 function META:Draw()

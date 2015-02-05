@@ -72,7 +72,6 @@ namespace Framework
 
   ParticleSystem::~ParticleSystem()
   {
-
   }
 
   // remove from the hook system
@@ -81,6 +80,7 @@ namespace Framework
     space->hooks.Remove("FrameUpdate", self);
     space->hooks.Remove("LogicUpdate", self);
     space->hooks.Remove("Draw", self);
+    particles.clear();
   }
 
   /*----- Hooked functions ----- */
@@ -88,7 +88,7 @@ namespace Framework
   void ParticleSystem::FrameUpdate(float dt)
   {
     // only update the particles if the editor is active so we can see them
-    if(ENGINE->m_editorAcitve)
+    if(ENGINE->m_editorAcitve && !ENGINE->PlayingInEditor())
     {
       // if antweak bar changed the direction vectors
       if(directionChange)

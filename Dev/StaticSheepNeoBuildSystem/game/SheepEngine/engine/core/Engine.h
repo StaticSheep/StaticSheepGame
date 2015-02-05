@@ -65,6 +65,7 @@ namespace Framework
 
     // Changes the level at the end of the frame
     void ChangeLevel(const char* name);
+    static void LuaChangeLevel(const char* name);
 
     
     // =============================== SPACES ============================== //
