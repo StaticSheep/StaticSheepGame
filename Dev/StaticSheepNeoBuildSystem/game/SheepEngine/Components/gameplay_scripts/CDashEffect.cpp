@@ -48,8 +48,10 @@ namespace Framework
 
     lifeTime += dt;
 
-    if (lifeTime >= 0.5f || pt == nullptr)
+    if (lifeTime >= 0.5f)// || pt == nullptr)
+    {
       space->GetGameObject(owner)->Destroy();
+    }
 	}
 
 

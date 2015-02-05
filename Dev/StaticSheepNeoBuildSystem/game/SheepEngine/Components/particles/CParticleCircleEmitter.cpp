@@ -69,6 +69,9 @@ namespace Framework
   {
     Transform* trans = space->GetHandles().GetAs<Transform>(transform);
 
+    if(!trans)
+      return;
+
     time += dt;
 
     // this loop handles how many particles per second
@@ -85,22 +88,22 @@ namespace Framework
         Vec3 direction = Vec3(randX, randY, 0.0f).Normalize();
 
         if(!outward && !inward)
-          Particle* particle = system->SpawnParticle(trans->GetTranslation() + direction * randLength, true);
+          Particle particle = system->SpawnParticle(trans->GetTranslation() + direction * randLength, true);
 
         if(outward)
         {
-          Particle* particle = system->SpawnParticle(trans->GetTranslation() + direction * randLength, false);
-          particle->direction = direction;
-          particle->currentDirection = direction;
-          particle->endDirection = direction;
+          Particle particle = system->SpawnParticle(trans->GetTranslation() + direction * randLength, false);
+          particle.direction = direction;
+          particle.currentDirection = direction;
+          particle.endDirection = direction;
         }
         else
         if(inward)
         {
-          Particle* particle = system->SpawnParticle(trans->GetTranslation() + direction * randLength, false);
-          particle->direction = -direction;
-          particle->currentDirection = -direction;
-          particle->endDirection = -direction;
+          Particle particle = system->SpawnParticle(trans->GetTranslation() + direction * randLength, false);
+          particle.direction = -direction;
+          particle.currentDirection = -direction;
+          particle.endDirection = -direction;
         }
       }
 

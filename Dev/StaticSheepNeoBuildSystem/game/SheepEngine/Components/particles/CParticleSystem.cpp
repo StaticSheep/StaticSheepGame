@@ -78,6 +78,7 @@ namespace Framework
   // remove from the hook system
   void ParticleSystem::Remove()
   {
+    particles.clear();
     space->hooks.Remove("FrameUpdate", self);
     space->hooks.Remove("LogicUpdate", self);
     space->hooks.Remove("Draw", self);
@@ -88,7 +89,7 @@ namespace Framework
   void ParticleSystem::FrameUpdate(float dt)
   {
     // only update the particles if the editor is active so we can see them
-    if(ENGINE->m_editorAcitve)
+    if(ENGINE->m_editorAcitve && !ENGINE->PlayingInEditor())
     {
       // if antweak bar changed the direction vectors
       if(directionChange)
@@ -231,7 +232,7 @@ namespace Framework
   }
   
   // Spawns a particle at the passed in location. 
-  Particle* ParticleSystem::SpawnParticle(const Vec3& location, bool setDirection)
+  Particle& ParticleSystem::SpawnParticle(const Vec3& location, bool setDirection)
   {
     ParticleOption<Vec3> newDir;
 
@@ -246,14 +247,20 @@ namespace Framework
       Particle temp(scale, color, newDir, speed, particleLife);
       temp.position = location;
       particles.push_back(temp);
-      return &particles.back();
+      return particles.back();
     }
     else // else the other component is handling the direction of the particle
     {
-      Particle temp(scale, color, direction, speed, particleLife);
-      temp.position = location;
-      particles.push_back(temp);
-      return &particles.back();
+      //Particle temp(scale, color, direction, speed, particleLife);
+      //temp.position = location;
+      particles.emplace_back(scale, color, direction, speed, particleLife);
+
+      auto it = particles.end();
+
+      Particle& part = particles[particles.size() - 1]; //particles.back();
+      part.position = location;
+
+      return part;
     }
   }
 
