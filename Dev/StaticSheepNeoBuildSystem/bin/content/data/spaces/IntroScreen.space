@@ -19,6 +19,9 @@ GameObject
       z_ float 0.000000
     }
   }
+  SoundPlayer
+  {
+  }
   LuaComponent
   {
     name std::string "IntroScreen"
