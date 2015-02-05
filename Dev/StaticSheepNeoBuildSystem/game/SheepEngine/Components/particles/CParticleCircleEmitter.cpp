@@ -108,22 +108,22 @@ namespace Framework
         Vec3 location = trans->GetTranslation() + m_spawnOffset;
 
         if(!outward && !inward)
-          Particle* particle = system->SpawnParticle(location + direction * randLength, true);
+          Particle &particle = system->SpawnParticle(location + direction * randLength, true);
 
         if(outward)
         {
-          Particle* particle = system->SpawnParticle(location + direction * randLength, false);
-          particle->direction = direction;
-          particle->currentDirection = direction;
-          particle->endDirection = direction;
+          Particle &particle = system->SpawnParticle(location + direction * randLength, false);
+          particle.direction = direction;
+          particle.currentDirection = direction;
+          particle.endDirection = direction;
         }
         else
         if(inward)
         {
-          Particle* particle = system->SpawnParticle(location + direction * randLength, false);
-          particle->direction = -direction;
-          particle->currentDirection = -direction;
-          particle->endDirection = -direction;
+          Particle &particle = system->SpawnParticle(location + direction * randLength, false);
+          particle.direction = -direction;
+          particle.currentDirection = -direction;
+          particle.endDirection = -direction;
         }
       }
 

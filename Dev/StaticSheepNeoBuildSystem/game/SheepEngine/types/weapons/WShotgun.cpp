@@ -11,6 +11,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "Components/colliders/CCircleCollider.h"
 #include "Components/controllers/player/CPlayerController.h"
 #include "components/gameplay_scripts/CBullet_default.h"
+#include "components/particles/CParticleCircleEmitter.h"
+#include "components/particles/CParticleSystem.h"
 #include "Matrix3D.h"
 
 namespace Framework
@@ -49,6 +51,19 @@ namespace Framework
       {
         bullet = (FACTORY->LoadObjectFromArchetype(player->space, "Bullet_shot"));
         playerTrans = player->GetComponent <Transform>(eTransform);
+
+        bullet->GetComponent<ParticleCircleEmitter>(eParticleCircleEmitter)->spawning = false;
+        bullet->GetComponent<ParticleCircleEmitter>(eParticleCircleEmitter)->timedSpawning = true;
+        bullet->GetComponent<ParticleCircleEmitter>(eParticleCircleEmitter)->timed = 0.001f;
+
+        float theta = atan2f(AimDir.y, AimDir.x) - (PI / 2.0f);
+
+        Mat3D rotation(theta);
+
+        ParticleSystem* part = bullet->GetComponent<ParticleSystem>(eParticleSystem);
+        part->direction.m_startMin = rotation * part->direction.m_startMin;
+        part->direction.m_startMax = rotation * part->direction.m_startMax;
+
         bullet->GetComponent<Bullet_Default>(eBullet_Default)->damage = damage;
         BT = bullet->GetComponent<Transform>(eTransform);
         bulletC = bullet->GetComponent <CircleCollider>(eCircleCollider);
@@ -60,6 +75,10 @@ namespace Framework
       {
         bullet = (FACTORY->LoadObjectFromArchetype(player->space, "Bullet_shot"));
         playerTrans = player->GetComponent <Transform>(eTransform);
+
+        bullet->GetComponent<ParticleCircleEmitter>(eParticleCircleEmitter)->spawning = false;
+        bullet->GetComponent<ParticleCircleEmitter>(eParticleCircleEmitter)->timedSpawning = false;
+
         bullet->GetComponent<Bullet_Default>(eBullet_Default)->damage = damage;
         BT = bullet->GetComponent<Transform>(eTransform);
         bulletC = bullet->GetComponent <CircleCollider>(eCircleCollider);

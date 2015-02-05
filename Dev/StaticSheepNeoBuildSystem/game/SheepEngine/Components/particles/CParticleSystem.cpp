@@ -77,6 +77,7 @@ namespace Framework
   // remove from the hook system
   void ParticleSystem::Remove()
   {
+    particles.clear();
     space->hooks.Remove("FrameUpdate", self);
     space->hooks.Remove("LogicUpdate", self);
     space->hooks.Remove("Draw", self);
@@ -231,7 +232,7 @@ namespace Framework
   }
   
   // Spawns a particle at the passed in location. 
-  Particle* ParticleSystem::SpawnParticle(const Vec3& location, bool setDirection)
+  Particle& ParticleSystem::SpawnParticle(const Vec3& location, bool setDirection)
   {
     ParticleOption<Vec3> newDir;
 
@@ -242,18 +243,23 @@ namespace Framework
       newDir.m_startMax = localRotation * direction.m_startMax;
       newDir.m_endMin = localRotation * direction.m_endMin;
       newDir.m_endMax = localRotation * direction.m_endMax;
-
-      Particle temp(scale, color, newDir, speed, particleLife);
-      temp.position = location;
-      particles.push_back(temp);
-      return &particles.back();
+      particles.emplace_back(scale, color, newDir, speed, particleLife);
+      Particle& part = particles[particles.size() - 1];
+      part.position = location;
+      return part;
     }
     else // else the other component is handling the direction of the particle
     {
-      Particle temp(scale, color, direction, speed, particleLife);
-      temp.position = location;
-      particles.push_back(temp);
-      return &particles.back();
+      //Particle temp(scale, color, direction, speed, particleLife);
+      //temp.position = location;
+      particles.emplace_back(scale, color, direction, speed, particleLife);
+
+      //auto it = particles.end();
+
+      Particle& part = particles[particles.size() - 1]; //particles.back();
+      part.position = location;
+
+      return part;
     }
   }
 
@@ -262,10 +268,8 @@ namespace Framework
   {
     if(index < particles.size())
     {
-      particles[index] = particles.back();
+      particles[index] = particles[particles.size() - 1];
       particles.pop_back();
-      int fuck = particles.size();
-      fuck = fuck;
     }
 
     return;

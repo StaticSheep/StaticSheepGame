@@ -102,7 +102,7 @@ namespace Framework
 
         Vec3 location = trans->GetTranslation() + m_spawnOffset;
 
-        Particle* particle = system->SpawnParticle(location + spawnLocation, true);
+        Particle &particle = system->SpawnParticle(location + spawnLocation, true);
 
       }
 

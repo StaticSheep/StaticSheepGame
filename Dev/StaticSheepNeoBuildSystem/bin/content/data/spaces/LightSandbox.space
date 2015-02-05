@@ -40,13 +40,13 @@ GameObject
 }
 GameObject
 {
-  name std::string ""
-  archetype std::string ""
+  name std::string "SpawnLight"
+  archetype std::string "SpawnLight"
   Transform
   {
     Translation Vec3
     {
-      x_ float 321.957855
+      x_ float 0.000000
       y_ float 0.000000
       z_ float 0.000000
     }
@@ -65,13 +65,13 @@ GameObject
       R float 1.000000
       G float 1.000000
       B float 1.000000
-      A float 5.000000
+      A float 1.000000
     }
     m_attenuation LightVec3
     {
-      X float 0.050097
-      Y float 0.101329
-      Z float 0.007211
+      X float 1.000000
+      Y float 0.000000
+      Z float 75.000000
     }
   }
 }

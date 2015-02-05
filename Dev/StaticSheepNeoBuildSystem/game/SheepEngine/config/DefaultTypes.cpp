@@ -28,6 +28,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/gameplay_scripts/CBullet_default.h"
 #include "components/gameplay_scripts/CElevatorPlat.h"
 #include "components/gameplay_scripts/CLevel1_Logic.h"
+#include "components/gameplay_scripts/CLevel1_Lighting.h"
 #include "components/gameplay_scripts/CGiantKillBox.h"
 #include "components/gameplay_scripts/CGrinder.h"
 #include "components/gameplay_scripts/CExplosion.h"
@@ -40,6 +41,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/gameplay_scripts/CCheats.h"
 #include "components/slotmachine/slotmachine.h"
 #include "components/gameplay_scripts/CAimingArrow.h"
+#include "components/gameplay_scripts/CDashEffect.h"
 #include "components/particles/CParticleSystem.h"
 #include "components/particles/CParticleCircleEmitter.h"
 #include "components/particles/CParticleBoxEmitter.h"
@@ -208,6 +210,9 @@ namespace Framework
     TYPE_ADD_MEMBER(Level1_Logic, timeLimit, false, true, "KillBox Timer");
     TYPE_ADD_MEMBER(Level1_Logic, numOfPlayers, false, true, "# of players");
 
+    TYPE_REGISTER(Level1_Lighting);
+    TYPE_SET_TWEAK_TYPE(Level1_Lighting, AntTweak::TW_TYPE_COMPONENT);
+
     TYPE_REGISTER(GiantKillBox);
     TYPE_SET_TWEAK_TYPE(GiantKillBox, AntTweak::TW_TYPE_COMPONENT);
 
@@ -235,6 +240,9 @@ namespace Framework
     TYPE_REGISTER(AimingArrow);
     TYPE_SET_TWEAK_TYPE(AimingArrow, AntTweak::TW_TYPE_COMPONENT);
     TYPE_ADD_MEMBER(AimingArrow, arrowColor, false, true, "Color");
+
+    TYPE_REGISTER(DashEffect);
+    TYPE_SET_TWEAK_TYPE(DashEffect, AntTweak::TW_TYPE_COMPONENT);
 
     TYPE_REGISTER(Pistol);
     TYPE_REGISTER(Shotgun);

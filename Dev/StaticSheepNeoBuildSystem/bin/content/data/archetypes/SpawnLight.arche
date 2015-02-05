@@ -1,7 +1,7 @@
 GameObject
 {
-  name std::string "WeaponPickup"
-  archetype std::string "AutoPickup"
+  name std::string "SpawnLight"
+  archetype std::string "SpawnLight"
   Transform
   {
     Translation Vec3
@@ -18,32 +18,20 @@ GameObject
       z_ float 0.000000
     }
   }
-  Sprite
+  PointLight
   {
-    m_spriteName std::string "WeapPickupAuto.png"
-    Color Vec4
+    m_brightness LightColor
     {
       R float 1.000000
       G float 1.000000
       B float 1.000000
       A float 1.000000
     }
-    Size Vec2
+    m_attenuation LightVec3
     {
       X float 1.000000
-      Y float 1.000000
+      Y float 0.000000
+      Z float 20.000000
     }
-  }
-  BoxCollider
-  {
-    m_width float 32.000000
-    m_height float 32.000000
-    m_materialName std::string "Static"
-    m_hasCollisionCallback bool true
-  }
-  WeaponPickup
-  {
-    weaponID EWeapons "Pistol"
-    weaponNum int 2
   }
 }

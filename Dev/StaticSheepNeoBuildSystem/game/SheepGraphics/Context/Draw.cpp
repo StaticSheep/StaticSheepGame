@@ -138,7 +138,7 @@ namespace DirectSheep
   void RenderContext::StartBatch()
   {
     m_batcher->Begin(SpriteSortMode_BackToFront, m_states->NonPremultiplied(),
-      m_states->LinearWrap(), m_states->DepthDefault(),
+      m_states->LinearWrap(), m_states->DepthNone(),
       m_states->CullCounterClockwise(), nullptr,
       ((Camera*)m_camera.ptr)->GetViewProj());
     
