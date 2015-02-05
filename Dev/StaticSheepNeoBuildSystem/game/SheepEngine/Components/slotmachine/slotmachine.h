@@ -55,11 +55,13 @@ namespace Framework
     bool useSpriteColor = true;
 
     // (int slotNum, int* spinID, int* stopID)
-    Function customReelCB;
-    // (int* result, int slotNum)
-    Function selectionCB;
+    void SetTextureCB(Handle obj, Function cb);
+    // (int slotNum, int* result)
+    void SetSelectionCB(Handle obj, Function cb);
     // (std::vector<int>* results)
-    Function finishCB;
+    void SetFinishedCB(Handle obj, Function cb);
+
+    void TestFunction(int slotNum, int* spinID, int* stopID);
 
     int m_order = 0;
   private:
@@ -67,6 +69,15 @@ namespace Framework
     void SetupSlots();
     void SlotsFinished();
 
+    // (int slotNum, int* spinID, int* stopID)
+    Function customReelCB;
+    Handle customReelCBObj;
+    // (int slotNum, int* result)
+    Function selectionCB;
+    Handle selectionCBObj;
+    // (std::vector<int>* results)
+    Function finishCB;
+    Handle finishCBObj;
 
 
     struct Slot
