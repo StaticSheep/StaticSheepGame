@@ -77,8 +77,8 @@ namespace Framework
 
   void SlotMachine::Initialize()
   {
-    
-    SetTextureCB(self, BUILD_FUNCTION(SlotMachine::TestFunction));
+    //GREG LOOK AT THIS
+    //SetTextureCB(self, BUILD_FUNCTION(SlotMachine::TestFunction));
 
     space->hooks.Add("LogicUpdate", self,
       BUILD_FUNCTION(SlotMachine::Update));
