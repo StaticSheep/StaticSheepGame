@@ -354,7 +354,7 @@ namespace DirectSheep
     // Paramaters for Depth test
     dsDesc.DepthEnable = true;
     dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
-    dsDesc.DepthFunc = D3D11_COMPARISON_LESS_EQUAL;
+    dsDesc.DepthFunc = D3D11_COMPARISON_ALWAYS;
 
     // Paramaters for Stencil test
     dsDesc.StencilEnable = true;
