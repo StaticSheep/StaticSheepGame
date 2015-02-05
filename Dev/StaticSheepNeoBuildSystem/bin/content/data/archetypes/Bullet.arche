@@ -33,12 +33,133 @@ GameObject
       X float 1.000000
       Y float 1.000000
     }
+    m_flipX bool false
+    m_flipY bool false
+  }
+  ParticleSystem
+  {
+    textureName std::string "White.png"
+    particleLife ParticleOptionShort<float>
+    {
+      m_startMin float 0.500000
+      m_startMax float 1.000000
+    }
+    directionEase int 2
+    direction ParticleOption<Vec3>
+    {
+      m_startMin Vec3
+      {
+        x_ float -0.242536
+        y_ float 0.970143
+        z_ float 0.000000
+      }
+      m_startMax Vec3
+      {
+        x_ float 0.240000
+        y_ float 0.970000
+        z_ float 0.000000
+      }
+      m_endMin Vec3
+      {
+        x_ float -1.000000
+        y_ float 0.000000
+        z_ float 0.000000
+      }
+      m_endMax Vec3
+      {
+        x_ float 1.000000
+        y_ float 0.000000
+        z_ float 0.000000
+      }
+    }
+    angularVelocity ParticleOption<float>
+    {
+      m_startMin float 0.000000
+      m_startMax float 0.000000
+      m_endMin float 0.000000
+      m_endMax float 0.000000
+    }
+    scaleEase int 3
+    scale ParticleOption<float>
+    {
+      m_startMin float 8.000000
+      m_startMax float 10.000000
+      m_endMin float 1.000000
+      m_endMax float 3.000000
+    }
+    colorEase int 1
+    color ParticleOption<Vec4>
+    {
+      m_startMin Vec4
+      {
+        R float 0.000000
+        G float 0.501961
+        B float 0.784314
+        A float 0.784314
+      }
+      m_startMax Vec4
+      {
+        R float 0.000000
+        G float 0.784314
+        B float 1.000000
+        A float 1.000000
+      }
+      m_endMin Vec4
+      {
+        R float 0.000000
+        G float 0.501961
+        B float 0.501961
+        A float 0.098039
+      }
+      m_endMax Vec4
+      {
+        R float 0.000000
+        G float 0.784314
+        B float 0.784314
+        A float 1.000000
+      }
+    }
+    speedEase int 3
+    speed ParticleOption<float>
+    {
+      m_startMin float 800.000000
+      m_startMax float 900.000000
+      m_endMin float 0.000000
+      m_endMax float 0.000000
+    }
+  }
+  ParticleCircleEmitter
+  {
+    m_innerRadius float 0.000000
+    m_outerRadius float 0.000000
+    m_spawnOffset Vec3
+    {
+      x_ float 0.000000
+      y_ float 0.000000
+      z_ float 0.000000
+    }
+    m_amount ParticleOptionShort<float>
+    {
+      m_startMin float 8.000000
+      m_startMax float 0.000000
+    }
+    m_rate ParticleOptionShort<float>
+    {
+      m_startMin float 1.000000
+      m_startMax float 0.000000
+    }
+    spawning bool true
+    timedSpawning bool false
+    timed float -0.016700
+    outward bool false
+    inward bool false
   }
   CircleCollider
   {
     m_radius float 8.000000
     m_materialName std::string "Steel"
     m_hasCollisionCallback bool true
+    m_CollisionGroup std::string ""
   }
   Bullet_Default
   {
