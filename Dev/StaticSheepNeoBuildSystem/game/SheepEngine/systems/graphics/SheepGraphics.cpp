@@ -194,7 +194,8 @@ namespace Framework
     m_renderContext->EndBatch();
 
    
-    DrawPointLights(true);
+    DrawPointLights(ENGINE->m_editorAcitve ? 
+      ENGINE->PlayingInEditor() ? true : ENGINE->m_editorLights : true);
 
     m_renderContext->StartBatch();
     ENGINE->SystemMessage(Message(Message::PostDraw));

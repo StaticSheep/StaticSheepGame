@@ -93,7 +93,7 @@ namespace Framework
         // The Object does not have the component, lets check to see if for some reason we do
         if (m_components[i] != nullptr)
         {
-          m_components[i]->Remove();
+          //m_components[i]->Remove();
           delete m_components[i]; // Delete the component
         }
 
