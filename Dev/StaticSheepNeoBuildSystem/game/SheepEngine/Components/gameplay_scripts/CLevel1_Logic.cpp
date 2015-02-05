@@ -127,11 +127,21 @@ namespace Framework
 
     if (spawnTimer <= 0)
     {
-      int randomDrop = GetRandom(0, 2);
+      int randomDrop = GetRandom(0, 5);
 
       if (randomDrop == 0)
       {
         GameObject *weap = (FACTORY->LoadObjectFromArchetype(space, "ShotgunPickup"));
+        Transform *WT = weap->GetComponent<Transform>(eTransform);
+        BoxCollider *WC = weap->GetComponent<BoxCollider>(eBoxCollider);
+        WC->SetBodyCollisionGroup("Collide");
+        int ranX = GetRandom(-300, 300);
+        int ranY = GetRandom(-300, 300);
+        WT->SetTranslation(Vec3(ranX, ranY, 0.0f));
+      }
+      else if (randomDrop == 3)
+      {
+        GameObject *weap = (FACTORY->LoadObjectFromArchetype(space, "AutoPickup"));
         Transform *WT = weap->GetComponent<Transform>(eTransform);
         BoxCollider *WC = weap->GetComponent<BoxCollider>(eBoxCollider);
         WC->SetBodyCollisionGroup("Collide");
