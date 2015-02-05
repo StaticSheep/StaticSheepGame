@@ -82,8 +82,9 @@ namespace Framework
       std::string GetCollisionGroup(GameSpace* space, SheepFizz::Handle handle);
 
       //raycast
-      bool SimpleRayCast(GameSpace* space, Vec3D& rayOrigin, Vec3D& rayDirection, CollisionGroup group = Collide);
-      bool ComplexRayCast(GameSpace* space, Vec3D& rayOrigin, Vec3D& rayDirection, CollisionGroup group = Collide);
+      void SetRayConfig(Vec3D rayOrigin, Vec3D rayDirection, CollisionGroup group = Collide);
+      bool SimpleRayCast(GameSpace* space);
+      bool ComplexRayCast(GameSpace* space);
 
 			//settors
 			void SetBodyPosition(GameSpace* space, SheepFizz::Handle handle, Vec3D position);
@@ -129,6 +130,8 @@ namespace Framework
       std::unordered_map<CollisionGroup, std::string> m_collisionGroupNames;
       bool debugOn;
       DebugPhysics debugPhys;
+
+      SheepFizz::RayConfig ray;
 
 	};
 

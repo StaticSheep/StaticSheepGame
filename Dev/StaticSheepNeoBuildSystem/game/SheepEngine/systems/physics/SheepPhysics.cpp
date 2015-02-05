@@ -256,7 +256,12 @@ namespace Framework
     m_collisionGroupNames.insert(std::pair<CollisionGroup, std::string>(Player4, "Player4"));
     m_collisionGroupNames.insert(std::pair<CollisionGroup, std::string>(CollisionGroup::Static, "Static"));
 
+    ray.collisionGroup = Collide;
+    ray.rayDirection = Vec3D(1, 0, 0);
+    ray.rayOrigin = Vec3D(0, 0, 0);
+
     debugOn = false;
+
 	}//end of Initialize
 
 	//add circles or rectangles
@@ -438,30 +443,21 @@ namespace Framework
 
   //raycast
   //********************
-  bool SheepPhysics::SimpleRayCast(GameSpace* space, Vec3D& rayOrigin, Vec3D& rayDirection, CollisionGroup group)
+  void SheepPhysics::SetRayConfig(Vec3D rayOrigin, Vec3D rayDirection, CollisionGroup group)
   {
-    SheepFizz::RayConfig ray;
-
-    ray.findFirstCollision = false;
-    ray.rayOrigin = rayOrigin;
-    ray.rayDirection = rayDirection;
     ray.collisionGroup = group;
-
-    return  ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->RayCaster(&ray);
-
+    ray.rayDirection = rayDirection;
+    ray.rayOrigin = rayOrigin;
   }
 
-  bool SheepPhysics::ComplexRayCast(GameSpace* space, Vec3D& rayOrigin, Vec3D& rayDirection, CollisionGroup group )
+  bool SheepPhysics::SimpleRayCast(GameSpace* space)
   {
-    SheepFizz::RayConfig ray;
-
-    ray.findFirstCollision = true;
-    ray.rayOrigin = rayOrigin;
-    ray.rayDirection = rayDirection;
-    ray.collisionGroup = group;
-
     return  ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->RayCaster(&ray);
+  }
 
+  bool SheepPhysics::ComplexRayCast(GameSpace* space)
+  {
+    return  ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->RayCaster(&ray);
   }
 
 	//change bodies
