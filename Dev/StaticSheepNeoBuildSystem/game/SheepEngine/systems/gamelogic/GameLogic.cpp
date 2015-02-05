@@ -28,7 +28,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/gameplay_scripts/CCheats.h"
 #include "components/slotmachine/slotmachine.h"
 #include "components/gameplay_scripts/CAimingArrow.h"
-#include "components/gameplay_scripts/CDashEffect.h"
+#include "components/gameplay_scripts/CLevel1_Lighting.h"
 
 namespace Framework
 {
@@ -55,6 +55,7 @@ namespace Framework
 	  REGISTER_COMPONENT(Bullet_Default);
     REGISTER_COMPONENT(ElevatorPlat);
     REGISTER_COMPONENT(Level1_Logic);
+    REGISTER_COMPONENT(Level1_Lighting);
     REGISTER_COMPONENT(SoundEmitter);
     REGISTER_COMPONENT(GiantKillBox);
     REGISTER_COMPONENT(Grinder);
@@ -65,7 +66,6 @@ namespace Framework
     REGISTER_COMPONENT(Cheats);
     REGISTER_COMPONENT(SlotMachine);
     REGISTER_COMPONENT(AimingArrow);
-    REGISTER_COMPONENT(DashEffect);
   }
 
   void GameLogic::Initialize()

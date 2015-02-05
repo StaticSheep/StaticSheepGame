@@ -44,7 +44,7 @@ namespace Framework
 
     m_slots.clear();
 
-    void* context = space->GetHandles().Get(customReelCBObj);
+    void* context = customReelCBObj != Handle::null ? space->GetHandles().Get(customReelCBObj) : nullptr;
     customReelCB.ForceBind(context);
 
     for (int i = 0; i < numSlots; ++i)
@@ -152,7 +152,9 @@ namespace Framework
   {
     if (finishCB)
     {
-      void* context = space->GetHandles().Get(finishCBObj);
+      void* context = finishCBObj != Handle::null ?
+        space->GetHandles().Get(finishCBObj) : nullptr;
+
       finishCB.ForceBind(context);
       finishCB(&m_results);
     }
@@ -193,7 +195,9 @@ namespace Framework
           {
             if (selectionCB)
             {
-              void* context = space->GetHandles().Get(selectionCBObj);
+              void* context = selectionCBObj != Handle::null ? space->GetHandles().Get(selectionCBObj)
+                : nullptr;
+
               selectionCB.ForceBind(context);
               selectionCB(i, &(slot->land));
             }
@@ -252,7 +256,7 @@ namespace Framework
       if (useSpriteColor && sp)
         Draw::SetColor(sp->Color.r, sp->Color.g, sp->Color.b, 1);
       else
-        Draw::SetColor(1, 1, 1, 1);
+        Draw::SetColor(backingColor.r, backingColor.g, backingColor.b, backingColor.a);
 
       Draw::SetTexture(m_slotbackTextureID);
       Draw::ForceZ(true, tr->GetTranslation().z - 0.01f);

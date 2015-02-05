@@ -149,7 +149,7 @@ namespace Framework
                   bar->SetGroupParent(uniqueName.c_str(), tempLabel);
             }
 
-            if (i + 1 == typeMembers.size())
+            if (i + 1 == typeMembers.size() || tweakMember == m)
               tweakMember = nullptr;
 
 
