@@ -25,6 +25,12 @@ namespace Framework
     m_luaLevelsToLoad.push(path);
   }
 
+  void Engine::LuaChangeLevel(const char* name)
+  {
+    ENGINE->m_levelChange = true;
+    ENGINE->m_nextLevel = name;
+  }
+
   void Engine::LoadLuaLevels()
   {
     std::string luaLevel;

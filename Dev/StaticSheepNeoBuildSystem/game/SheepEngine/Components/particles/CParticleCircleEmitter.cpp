@@ -23,6 +23,7 @@ namespace Framework
     time = 0.0f;
     m_amount.m_startMin = 1.0f;
     m_rate.m_startMin = 30.0f;
+    m_spawnOffset = Vec3();
   }
 
   ParticleCircleEmitter::~ParticleCircleEmitter()
@@ -50,7 +51,7 @@ namespace Framework
       UpdateEmitter(dt);
   }
 
-  // 
+  // updates the emitter
   void ParticleCircleEmitter::UpdateEmitter(float dt)
   {
     // if we are set to currently spawn
@@ -62,15 +63,32 @@ namespace Framework
       if(system)
         SpawnParticle(dt, system);
     }
+    else
+    if(timedSpawning && timed >= 0.0f)
+    {
+      ParticleSystem* system = (ParticleSystem*)space->GetComponent(eParticleSystem, owner);
+
+      timed -= dt;
+
+      if(system)
+        SpawnParticle(dt, system);
+
+      if(timed < 0.0f)
+        timedSpawning = false;
+    }
+  }
+
+  // Set the offset from the transform of the object this is attached to
+  void ParticleCircleEmitter::SetSpawnOffset(Vec3& offset)
+  {
+    m_spawnOffset = offset;
+    return;
   }
 
   // spawns at the specified rate and amount 
   void ParticleCircleEmitter::SpawnParticle(float dt, ParticleSystem* system)
   {
     Transform* trans = space->GetHandles().GetAs<Transform>(transform);
-
-    if(!trans)
-      return;
 
     time += dt;
 
@@ -87,28 +105,43 @@ namespace Framework
 
         Vec3 direction = Vec3(randX, randY, 0.0f).Normalize();
 
+        Vec3 location = trans->GetTranslation() + m_spawnOffset;
+
         if(!outward && !inward)
-          Particle particle = system->SpawnParticle(trans->GetTranslation() + direction * randLength, true);
+          Particle* particle = system->SpawnParticle(location + direction * randLength, true);
 
         if(outward)
         {
-          Particle particle = system->SpawnParticle(trans->GetTranslation() + direction * randLength, false);
-          particle.direction = direction;
-          particle.currentDirection = direction;
-          particle.endDirection = direction;
+          Particle* particle = system->SpawnParticle(location + direction * randLength, false);
+          particle->direction = direction;
+          particle->currentDirection = direction;
+          particle->endDirection = direction;
         }
         else
         if(inward)
         {
-          Particle particle = system->SpawnParticle(trans->GetTranslation() + direction * randLength, false);
-          particle.direction = -direction;
-          particle.currentDirection = -direction;
-          particle.endDirection = -direction;
+          Particle* particle = system->SpawnParticle(location + direction * randLength, false);
+          particle->direction = -direction;
+          particle->currentDirection = -direction;
+          particle->endDirection = -direction;
         }
       }
 
       time -= 1.0f / (m_rate.m_startMin);
     }
+  }
+
+  // toggles spawning on or off
+  void ParticleCircleEmitter::Toggle(bool state)
+  {
+    spawning = state;
+  }
+
+  // tells the emitter to spawn for a set amount of time then stop
+  void ParticleCircleEmitter::SetTimedSpawn(float time_)
+  {
+    timedSpawning = true;
+    timed = time_;
   }
 
 }

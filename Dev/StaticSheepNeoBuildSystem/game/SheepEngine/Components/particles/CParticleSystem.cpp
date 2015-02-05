@@ -72,7 +72,6 @@ namespace Framework
 
   ParticleSystem::~ParticleSystem()
   {
-
   }
 
   // remove from the hook system
@@ -82,6 +81,7 @@ namespace Framework
     space->hooks.Remove("FrameUpdate", self);
     space->hooks.Remove("LogicUpdate", self);
     space->hooks.Remove("Draw", self);
+    particles.clear();
   }
 
   /*----- Hooked functions ----- */

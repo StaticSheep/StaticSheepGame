@@ -42,6 +42,7 @@ namespace Framework
       BIND_FUNCTION_TABLE(L, Engine::LuaGetVariable, GetVariable, engine);
       BIND_FUNCTION_TABLE(L, Engine::LuaGetComponentList, SendComponentList, engine);
       BIND_FUNCTION_TABLE(L, Engine::DateTime, DateTime, engine);
+      BIND_FUNCTION_TABLE(L, Engine::LuaChangeLevel, ChangeLevel, engine);
 
       CREATE_TABLE(L, surface);
       BIND_FUNCTION_TABLE(L, Draw::SetColor, SetColorEx, surface);
