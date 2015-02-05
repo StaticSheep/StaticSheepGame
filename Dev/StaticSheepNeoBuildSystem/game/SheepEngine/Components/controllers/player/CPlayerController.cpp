@@ -561,7 +561,7 @@ namespace Framework
     GameObject *dash_effect = (FACTORY->LoadObjectFromArchetype(space, "fire_effect1"));
     dash_effect->GetComponent<DashEffect>(eDashEffect)->pTransform = playerTransform;
     dash_effect->GetComponent<Transform>(eTransform)->SetTranslation(ps->GetTranslation());
-
+    se->Play("dash", &SoundInstance(1.0f));
     hasDashed = true;
   }
 

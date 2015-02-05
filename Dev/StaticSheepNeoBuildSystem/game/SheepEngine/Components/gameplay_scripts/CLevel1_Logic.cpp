@@ -18,6 +18,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "CGiantKillBox.h"
 #include "../camera/CCamera.h"
 #include "../particles/CParticleSystem.h"
+#include "../sprites/CSprite.h"
 
 static const char *playerNames[] = { "Player1", "Player2", "Player3", "Player4" };
 static bool warning;
@@ -47,6 +48,7 @@ namespace Framework
     shake = true;
     camShakeTime = 0.25f;
     camShakeMagnitude = 10;
+    countDownDone = false;
 	}
 
   Level1_Logic::~Level1_Logic()
@@ -63,9 +65,13 @@ namespace Framework
     levelCamera = space->GetGameObject(owner)->GetComponentHandle(eCamera);
     levelTransform = space->GetGameObject(owner)->GetComponentHandle(eTransform);
     levelEmitter = space->GetGameObject(owner)->GetComponentHandle(eSoundEmitter);
+    levelSprite = space->GetGameObject(owner)->GetComponentHandle(eSprite);
+
     timeLimit = 6;
     startFlag = true;
     playing = false;
+    countDownDone = false;
+    countDownTimer = 4.0f;
 
     for (int i = 0; i < 4; ++i)
       spawnTimers[i] = 2.0f;
@@ -80,51 +86,62 @@ namespace Framework
   void Level1_Logic::LogicUpdate(float dt)
 	{
 
-    //if (deadPlayers >= 3)
-    //  EndMatch();
+    if (!countDownDone)
+    {
+      Sprite *ls = space->GetHandles().GetAs<Sprite>(levelSprite);
+      //run countdown
+      if (countDownTimer <= 3.0f && countDownTimer > 2.0f)
+      {
+        ls->SetTexture("cd_3.png");
+      }
+      else if (countDownTimer <= 2.0f && countDownTimer > 1.0f)
+      {
+        //change sprite
+        ls->SetTexture("cd_2.png");
+        
+      }
+      else if (countDownTimer <= 1.0f && countDownTimer > 0.0f)
+      {
+        //change sprite
+        ls->SetTexture("cd_1.png");
+
+      }
+
+      countDownTimer -= dt;
+      if (countDownTimer <= 0)
+      {
+        countDownDone = true;
+        ls->SetTexture("blank.png");
+      }
+      return;
+    }
+
     if (camShake)
       CameraShake(dt, camShakeTime, camShakeMagnitude);
 
     SpawnPlayers(dt);
     
     
-    //spawnTimer -= dt;
+    spawnTimer -= dt;
     timeLimit -= dt;
 
-    //if (spawnTimer <= 0)
-    //{
-    //  int randomDrop = GetRandom(0, 2);
+    if (spawnTimer <= 0)
+    {
+      int randomDrop = GetRandom(0, 2);
 
-    //  GameObject *ePlat = (FACTORY->LoadObjectFromArchetype(space, "SmallPlat"));
-    //  Transform *PT = ePlat->GetComponent<Transform>(eTransform);
-    //  //BoxCollider *platC = ePlat->GetComponent <BoxCollider>(eBoxCollider);
-    //  ePlat->GetComponent<ElevatorPlat>(eElevatorPlat)->direction = true;
-    //  PT->SetTranslation(Vec3(320.0f,-535.0f,0.9f));
+      if (randomDrop == 0)
+      {
+        GameObject *weap = (FACTORY->LoadObjectFromArchetype(space, "ShotgunPickup"));
+        Transform *WT = weap->GetComponent<Transform>(eTransform);
+        BoxCollider *WC = weap->GetComponent<BoxCollider>(eBoxCollider);
+        WC->SetBodyCollisionGroup("Collide");
+        int ranX = GetRandom(-300, 300);
+        int ranY = GetRandom(-300, 300);
+        WT->SetTranslation(Vec3(ranX, ranY, 0.0f));
+      }
 
-    //  if (randomDrop == 0)
-    //  {
-    //    GameObject *weap = (FACTORY->LoadObjectFromArchetype(space, "ShotgunPickup"));
-    //    Transform *WT = weap->GetComponent<Transform>(eTransform);
-    //    WT->SetTranslation(PT->GetTranslation() + Vec3(0.0, 85.0, 0.0));
-    //  }
-
-    //  randomDrop = GetRandom(0, 2);
-
-    //  GameObject *ePlat2 = (FACTORY->LoadObjectFromArchetype(space, "SmallPlat"));
-    //  Transform *PT2 = ePlat2->GetComponent<Transform>(eTransform);
-    //  //BoxCollider *platC2 = ePlat2->GetComponent <BoxCollider>(eBoxCollider);
-    //  ePlat2->GetComponent<ElevatorPlat>(eElevatorPlat)->direction = false;
-    //  PT2->SetTranslation(Vec3(-320.0f, 535.0f, 0.9f));
-
-    //  if (randomDrop == 0)
-    //  {
-    //    GameObject *weap = (FACTORY->LoadObjectFromArchetype(space, "AutoPickup"));
-    //    Transform *WT = weap->GetComponent<Transform>(eTransform);
-    //    WT->SetTranslation(PT2->GetTranslation() + Vec3(0.0, -85.0, 0.0));
-    //  }
-
-    //  spawnTimer = 3;
-    //}
+      spawnTimer = 2;
+    }
 
     if (timeLimit <= 0)
     {
