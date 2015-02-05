@@ -243,11 +243,10 @@ namespace Framework
       newDir.m_startMax = localRotation * direction.m_startMax;
       newDir.m_endMin = localRotation * direction.m_endMin;
       newDir.m_endMax = localRotation * direction.m_endMax;
-
-      Particle temp(scale, color, newDir, speed, particleLife);
-      temp.position = location;
-      particles.push_back(temp);
-      return particles.back();
+      particles.emplace_back(scale, color, newDir, speed, particleLife);
+      Particle& part = particles[particles.size() - 1];
+      part.position = location;
+      return part;
     }
     else // else the other component is handling the direction of the particle
     {
@@ -255,7 +254,7 @@ namespace Framework
       //temp.position = location;
       particles.emplace_back(scale, color, direction, speed, particleLife);
 
-      auto it = particles.end();
+      //auto it = particles.end();
 
       Particle& part = particles[particles.size() - 1]; //particles.back();
       part.position = location;
@@ -269,10 +268,8 @@ namespace Framework
   {
     if(index < particles.size())
     {
-      particles[index] = particles.back();
+      particles[index] = particles[particles.size() - 1];
       particles.pop_back();
-      int fuck = particles.size();
-      fuck = fuck;
     }
 
     return;
