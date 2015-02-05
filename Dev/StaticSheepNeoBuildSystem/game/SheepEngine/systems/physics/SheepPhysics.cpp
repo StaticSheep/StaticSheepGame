@@ -436,6 +436,31 @@ namespace Framework
 	//end of gettors and settors
 	//********************
 
+  //raycast
+  //********************
+  bool SheepPhysics::SimpleRayCast(GameSpace* space, Vec3D& rayOrigin, Vec3D& rayDirection)
+  {
+    SheepFizz::RayConfig ray;
+
+    ray.findFirstCollision = false;
+    ray.rayOrigin = rayOrigin;
+    ray.rayDirection = rayDirection;
+
+    return  ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->RayCaster(&ray);
+
+  }
+
+  bool SheepPhysics::ComplexRayCast(GameSpace* space, Vec3D& rayOrigin, Vec3D& rayDirection)
+  {
+    SheepFizz::RayConfig ray;
+
+    ray.findFirstCollision = true;
+    ray.rayOrigin = rayOrigin;
+    ray.rayDirection = rayDirection;
+
+    return  ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->RayCaster(&ray);
+
+  }
 
 	//change bodies
 	//********************

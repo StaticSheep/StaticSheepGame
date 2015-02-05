@@ -1,10 +1,7 @@
-
-#ifdef SHEEPPHYSICS
-#include "Manifold.h"
-#endif
-
 #pragma once
+#include "Manifold.h"
 #include <vector>
+#include "RayConfig.h"
 
 namespace SheepFizz
 {
@@ -15,7 +12,7 @@ namespace SheepFizz
       RayCast();
       ~RayCast();
 
-      void Initialize(Vec3D& position, Vec3D& direction);
+      void Initialize(RayConfig* config);
 
       //construct the raycast - position, direction
       //pass in objects to test
@@ -49,8 +46,6 @@ namespace SheepFizz
       bool RaySupport(Rectangle* rectangle, Vec3D& normal, unsigned int vertex, unsigned int& support);
       bool RayRectangleIntersect(Vec3D& vertex, Vec3D& segmentDirection, Vec3D& contactPoint);
 
-      std::vector<Body*> bodyIntersections_;  //will need to be passed by interface and removed
-
       //determine whether we should search for first collision
       //and where it occurs
       bool findFirstCollision_;
@@ -76,6 +71,7 @@ namespace SheepFizz
       Vec3D position_;
       Vec3D direction_;
 
+      RayConfig* config_;
   };
 
   

@@ -1,14 +1,11 @@
-
-#ifdef SHEEPPHYSICS
-#include "Manifold.h"
-#endif
-
 #pragma once
+#include "Manifold.h"
 #include <vector>
+#include "RayConfig.h"
 
 namespace SheepFizz
 {
-  class Body;
+
   class RayCast
   {
     public:
@@ -24,6 +21,7 @@ namespace SheepFizz
 
 
 
+
       //faster tests
 
       //complex tests take longer but find point of contact
@@ -32,24 +30,32 @@ namespace SheepFizz
 
       //helper functions for simple rec test detection
 
-      std::vector<Body*> intersections_;
-    
       //determine whether we should search for first collision
       //and where it occurs
-      Body* firstCollision_;
       bool findFirstCollision_;
+      Body* firstCollision_;
+      Vec3D firstCollisionPoint_;
+      
+      //for comparison points - squared length for easy comparison
+      float firstCollisionSquareLength_;
 
       //used for polygon collision
       unsigned int support_;
+      Vec3D rayNormal_;
+
+      //used for circle collision
+      Vec3D circleNorm;
 
       //reflection of the ray - calculated only after the first
       //collision is found
       bool reflectRay_;
       Vec3D reflectionDirection_;
 
+      //key values for the ray itself
       Vec3D position_;
       Vec3D direction_;
 
+      RayConfig* config_;
   };
 
   

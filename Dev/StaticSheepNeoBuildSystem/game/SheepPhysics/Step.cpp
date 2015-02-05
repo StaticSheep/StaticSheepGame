@@ -334,6 +334,18 @@ namespace SheepFizz
 	}//end of AddBody
 	//*************
 
+  //raycast interface
+  bool PhysicsSpace::RayCaster(RayConfig* ray)
+  {
+    rayCast_.Initialize(ray);
+    rayCast_.RayTest(&bodies_);
+
+    if (ray->bodyIntersections_.empty())
+      return false;
+
+    return true;
+  }
+
 	//change bodies
 	void PhysicsSpace::ChangeBodies(Handle handle, float xradius, float y)
 	{

@@ -12,16 +12,21 @@ namespace SheepFizz
 
   RayCast::~RayCast(){}
 
-  void RayCast::Initialize(Vec3D& position, Vec3D& direction)
+  void RayCast::Initialize(RayConfig* config)
   {
-    position_ = position;
-    direction_ = direction.Normalize();
-    findFirstCollision_ = false;
+    config_ = config;
+
+    position_ = config_->rayOrigin;
+    direction_ = (config_->rayDirection).Normalize();
+    findFirstCollision_ = config_->findFirstCollision;
+    
+    //set values to null
     firstCollisionSquareLength_ = FLT_MAX;
     firstCollision_ = nullptr;
     reflectRay_ = false;
 
-    bodyIntersections_.clear();
+    config_->bodyIntersections_.clear();
+
   }//end of Initialize
 
   void RayCast::SetFindFirstCollision(bool findFirstCollision)
@@ -36,23 +41,41 @@ namespace SheepFizz
 
   bool RayCast::RayTest(ObjectAllocator* bodies_)
   {
+    bool rayIntersect = false;
+
     switch (findFirstCollision_)
     {
       case true:
         for (unsigned i = 0; i < (*bodies_).Size(); ++i)
-          ComplexRayTest((Body*)(*bodies_)[i]);
+        {
+          rayIntersect = ComplexRayTest((Body*)(*bodies_)[i]);
+          
+          if (rayIntersect)
+            config_->bodyIntersections_.push_back((((Body*)bodies_)[i]).self);
+        }
+
+        config_->firstCollisionLocation = firstCollisionPoint_;
+        config_->firstCollisionBody = firstCollision_->self;
 
         break;
 
       default:
         for (unsigned i = 0; i < (*bodies_).Size(); ++i)
-          SimpleRayTest((Body*)(*bodies_)[i]);
+        {
+          rayIntersect = SimpleRayTest((Body*)(*bodies_)[i]);
+          
+          if (rayIntersect)
+            config_->bodyIntersections_.push_back((((Body*)bodies_)[i]).self);
+        }
         
         break;
     }
 
-  }
+    if (!config_->bodyIntersections_.empty())
+      return true;
 
+    return false;
+  }
 
   bool RayCast::SimpleRayTest(Body* body)
   {
@@ -71,9 +94,6 @@ namespace SheepFizz
       default:
         break;
     }
-
-    if (rayIntersect)
-      bodyIntersections_.push_back(body);
 
     return rayIntersect;
   }//end of SimpleRayTest
@@ -96,9 +116,6 @@ namespace SheepFizz
     default:
       break;
     }
-
-    if (rayIntersect)
-      bodyIntersections_.push_back(body);
 
     return rayIntersect;
   }//end of ComplexRayTest
@@ -235,48 +252,109 @@ namespace SheepFizz
     if (!rayIntersect)
         return false;
 
-    //use support point to determine the two sides ray could be intersecting
-    unsigned int presupport = (support_ - 1) >= 0 ? support_ - 1 : ((Rectangle*)(rectangle->shape_))->GetVertexNumber() - 1;
-    unsigned int postsupport = support_ + 1 < ((Rectangle*)(rectangle->shape_))->GetVertexNumber() ? support_ + 1 : 0;
 
-
-    //create segments and get their vector directions
-    Vec3D vertex = ((Rectangle*)(rectangle->shape_))->GetVertex(support_);
-    Vec3D lineOne = ((Rectangle*)(rectangle->shape_))->GetVertex(presupport);
-    Vec3D lineTwo = ((Rectangle*)(rectangle->shape_))->GetVertex(postsupport);
-
-    lineOne = lineOne - vertex;
-    lineTwo = lineTwo - vertex;
-
-    Vec3D collisionPoint;
-
-    //test segment one
-    if (RayRectangleIntersect(vertex, lineOne, collisionPoint))
+    switch (((Rectangle*)(rectangle->shape_))->GetVertexNumber())
     {
-      Vec3D testLength = collisionPoint - position_;
-      float length = testLength.SquareLength();
+      case 4:
+        {
+          //use support point to determine the two sides ray could be intersecting
+          unsigned int presupport = (support_ - 1) >= 0 ? support_ - 1 : ((Rectangle*)(rectangle->shape_))->GetVertexNumber() - 1;
+          unsigned int postsupport = support_ + 1 < ((Rectangle*)(rectangle->shape_))->GetVertexNumber() ? support_ + 1 : 0;
 
-      if (length < firstCollisionSquareLength_)
-      {
-        firstCollisionSquareLength_ = length;
-        firstCollision_ = rectangle;
-      }
+
+          //create segments and get their vector directions
+          Vec3D vertex = ((Rectangle*)(rectangle->shape_))->GetVertex(support_);
+          Vec3D lineOne = ((Rectangle*)(rectangle->shape_))->GetVertex(presupport);
+          Vec3D lineTwo = ((Rectangle*)(rectangle->shape_))->GetVertex(postsupport);
+
+          lineOne = lineOne - vertex;
+          lineTwo = lineTwo - vertex;
+
+          Vec3D collisionPoint;
+
+          Vec3D testLength;
+          float length;
+
+          //test segment one
+          //if the segment does not intersect, it means that the
+          //ray is passing through the opposite side segment
+          //ugly, but should move faster than standard iteration
+          if (RayRectangleIntersect(vertex, lineOne, collisionPoint))
+          {
+             testLength = collisionPoint - position_;
+             length = testLength.SquareLength();
+
+             if (length < firstCollisionSquareLength_)
+             {
+               firstCollisionSquareLength_ = length;
+               firstCollision_ = rectangle;
+             }
+          }
+
+          else
+          {
+            unsigned int presupport2 = (presupport - 1) >= 0 ? presupport - 1 : ((Rectangle*)(rectangle->shape_))->GetVertexNumber() - 1;
+            Vec3D vertex2 = ((Rectangle*)(rectangle->shape_))->GetVertex(presupport);
+            lineOne = ((Rectangle*)(rectangle->shape_))->GetVertex(presupport2);
+            lineOne = lineOne - vertex2;
+
+            if (RayRectangleIntersect(vertex, lineOne, collisionPoint))
+            {
+              testLength = collisionPoint - position_;
+              length = testLength.SquareLength();
+
+              if (length < firstCollisionSquareLength_)
+              {
+                firstCollisionSquareLength_ = length;
+                firstCollision_ = rectangle;
+              }
+            }
+          }
+
+          //test segment two
+          if (RayRectangleIntersect(vertex, lineTwo, collisionPoint))
+          {
+            testLength = collisionPoint - position_;
+            length = testLength.SquareLength();
+
+            if (length < firstCollisionSquareLength_)
+            {
+              firstCollisionSquareLength_ = length;
+              firstCollision_ = rectangle;
+            }
+          }
+
+          else
+          {
+            unsigned int postsupport2 = postsupport + 1 < ((Rectangle*)(rectangle->shape_))->GetVertexNumber() ? postsupport + 1 : 0;
+            Vec3D vertex2 = ((Rectangle*)(rectangle->shape_))->GetVertex(postsupport);
+            lineTwo = ((Rectangle*)(rectangle->shape_))->GetVertex(postsupport2);
+            lineTwo = lineTwo - vertex2;
+
+            if (RayRectangleIntersect(vertex, lineTwo, collisionPoint))
+            {
+              testLength = collisionPoint - position_;
+              length = testLength.SquareLength();
+
+              if (length < firstCollisionSquareLength_)
+              {
+                firstCollisionSquareLength_ = length;
+                firstCollision_ = rectangle;
+              }
+            }
+          }
+
+          return true;
+        }
+
+        break;
+
+        //will need to be filled in with basically same as above for polygon collision
+        //will be slower than box
+      default:
+        break;
     }
     
-    //test segment two
-    if (RayRectangleIntersect(vertex, lineTwo, collisionPoint))
-    {
-      Vec3D testLength = collisionPoint - position_;
-      float length = testLength.SquareLength();
-
-      if (length < firstCollisionSquareLength_)
-      {
-        firstCollisionSquareLength_ = length;
-        firstCollision_ = rectangle;
-      }
-    }
-
-    return true;
   }
 
 }//end of ComplexRayRectangleTest
