@@ -18,7 +18,6 @@ namespace SheepFizz
 
     position_ = config_->rayOrigin;
     direction_ = (config_->rayDirection).Normalize();
-    findFirstCollision_ = config_->findFirstCollision;
     
     //set values to null
     firstCollisionSquareLength_ = FLT_MAX;
@@ -29,52 +28,24 @@ namespace SheepFizz
 
   }//end of Initialize
 
-  void RayCast::SetFindFirstCollision(bool findFirstCollision)
-  {
-    findFirstCollision_ = findFirstCollision;
-  }//end of SetFindFirstCollision
-
   void RayCast::SetReflectRay(bool reflectRay)
   {
     reflectRay_ = reflectRay;
   }//end of SetFindFirstCollision
 
-  bool RayCast::RayTest(ObjectAllocator* bodies_)
+  RayConfig* RayCast::GetRayConfig()
   {
-    bool rayIntersect = false;
+    return config_;
+  }
 
-    switch (findFirstCollision_)
-    {
-      case true:
-        for (unsigned i = 0; i < (*bodies_).Size(); ++i)
-        {
-          rayIntersect = ComplexRayTest((Body*)(*bodies_)[i]);
-          
-          if (rayIntersect)
-            config_->bodyIntersections_.push_back((((Body*)bodies_)[i]).self);
-        }
-
-        config_->firstCollisionLocation = firstCollisionPoint_;
-        config_->firstCollisionBody = firstCollision_->self;
-
-        break;
-
-      default:
-        for (unsigned i = 0; i < (*bodies_).Size(); ++i)
-        {
-          rayIntersect = SimpleRayTest((Body*)(*bodies_)[i]);
-          
-          if (rayIntersect)
-            config_->bodyIntersections_.push_back((((Body*)bodies_)[i]).self);
-        }
-        
-        break;
-    }
-
-    if (!config_->bodyIntersections_.empty())
-      return true;
-
-    return false;
+  Body* RayCast::GetFirstCollisionBody()
+  {
+    return firstCollision_;
+  }
+  
+  Vec3D RayCast::GetFirstCollisionPoint()
+  {
+    return firstCollisionPoint_;
   }
 
   bool RayCast::SimpleRayTest(Body* body)

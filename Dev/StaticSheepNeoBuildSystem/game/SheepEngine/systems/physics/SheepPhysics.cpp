@@ -457,6 +457,7 @@ namespace Framework
     ray.findFirstCollision = true;
     ray.rayOrigin = rayOrigin;
     ray.rayDirection = rayDirection;
+    ray.collisionGroup = Collide;
 
     return  ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->RayCaster(&ray);
 

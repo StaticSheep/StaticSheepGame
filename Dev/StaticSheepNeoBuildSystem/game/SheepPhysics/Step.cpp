@@ -338,9 +338,44 @@ namespace SheepFizz
   bool PhysicsSpace::RayCaster(RayConfig* ray)
   {
     rayCast_.Initialize(ray);
-    rayCast_.RayTest(&bodies_);
 
-    if (ray->bodyIntersections_.empty())
+    bool rayIntersect = false;
+
+    switch ((*ray).findFirstCollision)
+    {
+      case true:
+        for (unsigned i = 0; i < (bodies_).Size(); ++i)
+        {
+          if ((*ray).collisionGroup != ((Body*)(bodies_)[i])->collisionGroup_)
+            continue;
+
+          rayIntersect = rayCast_.ComplexRayTest((Body*)(bodies_)[i]);
+
+          if (rayIntersect)
+            rayCast_.GetRayConfig()->bodyIntersections_.push_back((((Body*)&bodies_)[i]).self);
+        }
+
+        rayCast_.GetRayConfig()->firstCollisionLocation = rayCast_.GetFirstCollisionPoint();
+        rayCast_.GetRayConfig()->firstCollisionBody = rayCast_.GetFirstCollisionBody()->self;
+
+        break;
+
+      default:
+        for (unsigned i = 0; i < (bodies_).Size(); ++i)
+        {
+          if ((*ray).collisionGroup != ((Body*)(bodies_)[i])->collisionGroup_)
+            continue;
+
+          rayIntersect = rayCast_.SimpleRayTest((Body*)(bodies_)[i]);
+
+          if (rayIntersect)
+            rayCast_.GetRayConfig()->bodyIntersections_.push_back((((Body*)(&bodies_))[i]).self);
+        }
+
+        break;
+    }
+
+    if (rayCast_.GetRayConfig()->bodyIntersections_.empty())
       return false;
 
     return true;

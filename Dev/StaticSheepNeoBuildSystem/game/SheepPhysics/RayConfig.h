@@ -14,6 +14,7 @@ namespace SheepFizz
     Vec3D rayOrigin;
     Vec3D rayDirection;
     bool findFirstCollision;
+    CollisionGroup collisionGroup;
 
     //returned by engine
     Vec3D firstCollisionLocation;

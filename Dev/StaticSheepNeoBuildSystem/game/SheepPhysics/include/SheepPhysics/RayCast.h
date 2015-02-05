@@ -21,7 +21,6 @@ namespace SheepFizz
 
 
 
-
       //faster tests
 
       //complex tests take longer but find point of contact
@@ -32,7 +31,6 @@ namespace SheepFizz
 
       //determine whether we should search for first collision
       //and where it occurs
-      bool findFirstCollision_;
       Body* firstCollision_;
       Vec3D firstCollisionPoint_;
       

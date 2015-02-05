@@ -21,12 +21,12 @@ namespace SheepFizz
       //measure dist to sort
       //return true or false
 
-      bool RayTest(ObjectAllocator* bodies);
+      RayConfig* GetRayConfig();
+      Body* GetFirstCollisionBody();
+      Vec3D GetFirstCollisionPoint();
 
       bool SimpleRayTest(Body* body);
       bool ComplexRayTest(Body* body);
-
-      void SetFindFirstCollision(bool findFirstCollision);
 
       void SetReflectRay(bool reflectRay);
       void FindReflectionDirection();
@@ -48,7 +48,6 @@ namespace SheepFizz
 
       //determine whether we should search for first collision
       //and where it occurs
-      bool findFirstCollision_;
       Body* firstCollision_;
       Vec3D firstCollisionPoint_;
       
