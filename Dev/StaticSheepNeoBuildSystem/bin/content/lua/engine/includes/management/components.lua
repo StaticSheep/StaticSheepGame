@@ -58,6 +58,7 @@ function AttachComponentToObject(space, owner, cid, cname)
   component._space = space
   component._cid = cid
   component._type = cname
+  component._spacePtr = GameSpaces[space]._pointer
 
   print("[GameSpace: "..space.."] Attached LuaComponent: "..cname.." ["..cid.."] to C++ GameObject: "..owner)
 

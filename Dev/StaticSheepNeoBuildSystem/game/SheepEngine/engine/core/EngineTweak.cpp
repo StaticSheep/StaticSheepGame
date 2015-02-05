@@ -188,6 +188,9 @@ namespace Framework
     mainBar->DefineLabel("Play In Editor");
     mainBar->AddButton("PIE", EditorPlayLevel, ENGINE);
 
+    mainBar->DefineLabel("Editor Light");
+    mainBar->AddVarRW("EditorLight", AntTweak::TW_TYPE_BOOLCPP, &(ENGINE->m_editorLights));
+
     mainBar->AddSeparator("Gizmos");
 
     mainBar->DefineLabel("Editor Options");

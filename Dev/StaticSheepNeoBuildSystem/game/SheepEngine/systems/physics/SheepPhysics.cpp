@@ -229,6 +229,7 @@ namespace Framework
 		SheepFizz::Material Fluff(.3f, .2f, .4f, .1f);
 		SheepFizz::Material Bounce(.3f, 4.0f, .3f, .15f);
 		SheepFizz::Material Static(.0f,.2f,.5f,.3f);
+    SheepFizz::Material NoBounce(100.0f, 0.0f, 1.0f, 1.0f);
 
 		//insert materials into the unordered map
 		m_materials.insert(std::pair<std::string, SheepFizz::Material>("Wood", Wood));
@@ -237,6 +238,7 @@ namespace Framework
 		m_materials.insert(std::pair<std::string, SheepFizz::Material>("Fluff", Fluff));
 		m_materials.insert(std::pair<std::string, SheepFizz::Material>("Bounce", Bounce));
 		m_materials.insert(std::pair<std::string, SheepFizz::Material>("Static", Static));
+    m_materials.insert(std::pair<std::string, SheepFizz::Material>("NoBounce", NoBounce));
 
     m_collisionGroup.insert(std::pair<std::string, CollisionGroup>("NonCollide", NonCollide));
     m_collisionGroup.insert(std::pair<std::string, CollisionGroup>("Collide", Collide));

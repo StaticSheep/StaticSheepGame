@@ -85,7 +85,13 @@ namespace Framework
 
       //BIND_FUNCTION_EX(ENGINE->Lua(), Engine::LuaError, LuaError);
 
-      //BIND_FUNCTION_EX(ENGINE->Lua(), Transform::Test, TransformTest);
+      BIND_FUNCTION_EX(L, Transform::SetTranslation, SetTranslation);
+      BIND_FUNCTION_EX(L, Transform::SetRotation, SetRotation);
+      BIND_FUNCTION_EX(L, Transform::SetScale, SetScale);
+      BIND_FUNCTION_EX(L, Transform::GetTranslation, GetTranslation);
+      BIND_FUNCTION_EX(L, Transform::GetRotation, GetRotation);
+      BIND_FUNCTION_EX(L, Transform::GetScale, GetScale);
+
       //BIND_FUNCTION_EX(ENGINE->Lua(), Engine::DoSomething, engineDoSomething);
 
       BIND_FUNCTION_EX(L, LuaComponent::ReceiveLoadCommend, SendLoadCommand);

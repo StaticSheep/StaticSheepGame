@@ -44,6 +44,9 @@ namespace Framework
 
     m_slots.clear();
 
+    void* context = customReelCBObj != Handle::null ? space->GetHandles().Get(customReelCBObj) : nullptr;
+    customReelCB.ForceBind(context);
+
     for (int i = 0; i < numSlots; ++i)
     {
       m_slots.emplace_back();
@@ -66,8 +69,17 @@ namespace Framework
     
   }
 
+  void SlotMachine::TestFunction(int slotNum, int* spinID, int* stopID)
+  {
+    int a = 10;
+    a++;
+  }
+
   void SlotMachine::Initialize()
   {
+    //GREG LOOK AT THIS
+    //SetTextureCB(self, BUILD_FUNCTION(SlotMachine::TestFunction));
+
     space->hooks.Add("LogicUpdate", self,
       BUILD_FUNCTION(SlotMachine::Update));
 
@@ -78,11 +90,12 @@ namespace Framework
 
     if (startSpinning)
       Start();
-
   }
 
   void SlotMachine::Start()
   {
+    SetupSlots();
+
     m_spinning = true;
     m_numSpinning = m_slots.size();
     m_results.clear();
@@ -105,15 +118,44 @@ namespace Framework
     }
   }
 
+  void SlotMachine::SetTextureCB(Handle obj, Function cb)
+  {
+    customReelCB = cb;
+    customReelCBObj = obj;
+  }
+
+  void SlotMachine::SetSelectionCB(Handle obj, Function cb)
+  {
+    selectionCB = cb;
+    selectionCBObj = obj;
+  }
+
+  void SlotMachine::SetFinishedCB(Handle obj, Function cb)
+  {
+    finishCB = cb;
+    finishCBObj = obj;
+  }
+
   void SlotMachine::Stop()
   { 
-
+    for (int i = 0; i < m_slots.size(); ++i)
+    {
+      if (m_slots[i].spinning)
+      {
+        m_slots[i].spinning = false;
+        return;
+      }
+    }
   }
 
   void SlotMachine::SlotsFinished()
   {
     if (finishCB)
     {
+      void* context = finishCBObj != Handle::null ?
+        space->GetHandles().Get(finishCBObj) : nullptr;
+
+      finishCB.ForceBind(context);
       finishCB(&m_results);
     }
   }
@@ -152,7 +194,14 @@ namespace Framework
           if (slot->land < 0)
           {
             if (selectionCB)
-              selectionCB(&(slot->land), i);
+            {
+              void* context = selectionCBObj != Handle::null ? space->GetHandles().Get(selectionCBObj)
+                : nullptr;
+
+              selectionCB.ForceBind(context);
+              selectionCB(i, &(slot->land));
+            }
+              
             else
               slot->land = GetRandom(0, (slotOptions - 1));
           }
@@ -207,7 +256,7 @@ namespace Framework
       if (useSpriteColor && sp)
         Draw::SetColor(sp->Color.r, sp->Color.g, sp->Color.b, 1);
       else
-        Draw::SetColor(1, 1, 1, 1);
+        Draw::SetColor(backingColor.r, backingColor.g, backingColor.b, backingColor.a);
 
       Draw::SetTexture(m_slotbackTextureID);
       Draw::ForceZ(true, tr->GetTranslation().z - 0.01f);

@@ -374,6 +374,10 @@ namespace Framework
     TYPE_REGISTER(SlotMachine);
     TYPE_SET_TWEAK_TYPE(SlotMachine, AntTweak::TW_TYPE_COMPONENT);
 
+    TYPE_ADD_MEMBER(SlotMachine, m_stopTexture, false, true, "Still Texture");
+    TYPE_ADD_MEMBER(SlotMachine, m_spinTexture, false, true, "Spin Texture");
+    TYPE_ADD_MEMBER(SlotMachine, m_slotBackTexture, false, true, "Back Texture");
+
     TYPE_ADD_MEMBER(SlotMachine, numSlots, false, true, "# Reels",
       BUILD_FUNCTION(SlotMachine::TweakSetNumSlots));
 

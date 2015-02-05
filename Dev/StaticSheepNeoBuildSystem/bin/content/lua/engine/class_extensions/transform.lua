@@ -9,9 +9,9 @@ local META = GetMeta("Transform")
 
 
 function META:SetPos(pos)
-  self:Settranslation(pos)
+  self:SetTranslation(pos)
 end
 
 function META:GetPos()
-  return self:Gettranslation()
+  return self:GetTranslation()
 end
