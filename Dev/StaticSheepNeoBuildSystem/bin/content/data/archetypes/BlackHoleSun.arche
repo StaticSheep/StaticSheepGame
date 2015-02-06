@@ -1,0 +1,37 @@
+GameObject
+{
+  name std::string "BlackHoleSun"
+  archetype std::string "BlackHoleSun"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 0.000000
+      y_ float 0.000000
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  PointLight
+  {
+    m_brightness LightColor
+    {
+      R float 18.000000
+      G float 10.000000
+      B float 4.000000
+      A float 3599.000000
+    }
+    m_attenuation Vec3
+    {
+      x_ float -47.049904
+      y_ float -5.648671
+      z_ float 0.027211
+    }
+  }
+}

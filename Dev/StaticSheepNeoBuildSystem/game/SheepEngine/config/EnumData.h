@@ -41,6 +41,10 @@ E_NAME(Component)
   E_ENTRY(Sprite)
   E_ENTRY(Camera)
   E_ENTRY(AniSprite)
+  E_ENTRY(PointLight)
+  E_ENTRY(ParticleSystem)
+  E_ENTRY(ParticleCircleEmitter)
+  E_ENTRY(ParticleBoxEmitter)
   E_ENTRY(GamePad)
   E_ENTRY(BoxCollider)
   E_ENTRY(CircleCollider)
@@ -57,6 +61,11 @@ E_NAME(Component)
   E_ENTRY(WarningText)
   E_ENTRY(BackgroundPan)
   E_ENTRY(Cheats)
+  E_ENTRY(SlotMachine)
+  E_ENTRY(AimingArrow)
+
+
+
   E_ENTRY(LuaComponent)
   E_ENTRY(countComponents) //keep this at the end
 E_END(Component)

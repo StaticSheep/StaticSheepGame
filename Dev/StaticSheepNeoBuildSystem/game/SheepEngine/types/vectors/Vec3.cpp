@@ -1,4 +1,10 @@
+/*****************************************************************
+Filename: Vec3.cpp
+Project:
+Author(s): Jon Sourbeer (Primary)
 
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+*****************************************************************/
 #include "pch/precompiled.h"
 #include "Vec3D.h"
 
@@ -14,7 +20,7 @@ namespace Framework
 
     lua_pushcfunction(L, Lua::ErrorFunc); // Index 1
 
-    Lua::StackDump(L);
+    //Lua::StackDump(L);
 
     // Create a new table
     lua_createtable(L, 2, 0); // Index 2
@@ -40,7 +46,7 @@ namespace Framework
 
   void Vec3::FromLua(lua_State* L, int index, Variable* var)
   {
-    Lua::StackDump(L);
+    //Lua::StackDump(L);
 
     lua_getfield(L, -1, "x");
     var->GetValue<Vec3D>().x_ = (float)lua_tonumber(L, -1);

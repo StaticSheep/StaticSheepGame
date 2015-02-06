@@ -1,3 +1,10 @@
+--[[*****************************************************************
+Filename: draw.lua
+Project: Giga Gravity Games
+Author(s): Zachary Nawar (Primary)
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+*****************************************************************]]
 --[[ Draw Library: GUI wrapper and helper functions ]]
 
 local pairs = pairs
@@ -29,14 +36,16 @@ end
 function draw.SimpleText(text, font, x, y, size, color, xalign, yalign)
 
   text = tostring( text )
-  font = font or "Arial"
+  font = font or 0
   x = x or 0
   y = y or 0
   xalign = xalign or TEXT_ALIGN_LEFT
   yalign = yalign or TEXT_ALIGN_TOP
 
 
-  local stringSize = surface.MeasureString(text, size, font)
+  local stringSize
+
+  stringSize = surface.MeasureString(text, size, font)
 
   if (xalign == TEXT_ALIGN_CENTER) then
     x = x - stringSize.x/2
@@ -56,11 +65,12 @@ function draw.SimpleText(text, font, x, y, size, color, xalign, yalign)
     local alpha = 255
     if (color.a) then alpha = color.a end
 
-    surface.SetColor( color.r / 255, color.g / 255,color.b / 255, alpha / 255)
+    surface.SetColor( color.r, color.g, color.b, alpha)
   else
-    surface.SetColor(1, 1, 1, 1)
+    surface.SetColor(255, 255, 255, 255)
   end
   
+
   surface.DrawString(text, size, font)
   
   return w, h

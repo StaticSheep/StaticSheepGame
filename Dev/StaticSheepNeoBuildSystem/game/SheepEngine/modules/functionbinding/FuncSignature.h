@@ -126,6 +126,13 @@ namespace Framework
       m_args = args;
     }
 
+    template <typename C, typename A1, typename A2, typename A3>
+    FunctionSignature(void (C::*)(A1, A2, A3)) : m_ret(NULL), m_argCount(3), m_context(GET_TYPE(C))
+    {
+      static const TypeInfo* args[] = { GET_TYPE(A1), GET_TYPE(A2), GET_TYPE(A3) };
+      m_args = args;
+    }
+
     // Function with a return value, const ------------------------------------------------
 
     template <typename C, typename R>

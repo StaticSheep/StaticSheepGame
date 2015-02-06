@@ -16,6 +16,7 @@ namespace Framework
     virtual ~Pistol();
 
     virtual void Fire(GameObject*);
-
+    virtual void DelayUpdate(float dt);
+    virtual void ResetDelay();
   };
 }

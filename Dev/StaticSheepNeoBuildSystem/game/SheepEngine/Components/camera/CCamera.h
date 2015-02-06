@@ -1,3 +1,10 @@
+/*****************************************************************
+Filename: CCamera.h
+Project:
+Author(s): Scott Nelson (Primary)
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+*****************************************************************/
 #pragma once
 
 #include "Handle.h"
@@ -32,7 +39,7 @@ namespace Framework
 
     void UpdatePosition();
     Handle transform;
-    DirectSheep::Handle m_CamHandle;
+    DirectSheep::Handle m_camHandle;
     Vec2 m_viewPort;
   };
 

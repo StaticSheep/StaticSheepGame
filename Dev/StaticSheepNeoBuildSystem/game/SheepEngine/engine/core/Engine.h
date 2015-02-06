@@ -28,7 +28,7 @@ namespace Framework
     void AddSystem(ISystem* system);
 
     // Creates a window for the engine to use
-    void MakeWindow(void* hInstance, int show);
+    void MakeWindow(void* hInstance, int show, bool fullScreen);
 
     // Initializes all engine systems and the engine
     void Initialize(void);
@@ -65,6 +65,7 @@ namespace Framework
 
     // Changes the level at the end of the frame
     void ChangeLevel(const char* name);
+    static void LuaChangeLevel(const char* name);
 
     
     // =============================== SPACES ============================== //
@@ -86,6 +87,7 @@ namespace Framework
     static void PlayInEditor(bool play);
     static bool PlayingInEditor(void);
     static void OpenEditor();
+    static void UpdateEditorWindow();
 
     // Returns the lua environment
     lua_State* Lua(void) const;
@@ -122,6 +124,7 @@ namespace Framework
     Tracelog TraceLog;
 
     bool m_editorAcitve = false;
+    bool m_editorLights = true;
   private:
 
     // ============================== PRIVATE FUNCTIONS ===================== //
@@ -185,7 +188,7 @@ namespace Framework
     bool m_returnFromPIE = false;
     bool m_enteringPIE = false;
     void ReloadEditor(void);
-    void CheckReturnFromPIE(void);
+    void CheckPIE(void);
     void StartPIE(void);
 
     /*---------- Friends ----------*/

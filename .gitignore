@@ -131,3 +131,5 @@ Dev/StaticSheepGame/SheepGraphics/Context.cpp.REMOTE.5504.cpp
 Dev/StaticSheepNeoBuildSystem/build/vs2013/
 Dev/StaticSheepNeoBuildSystem/bin/backup/
 Dev/StaticSheepNeoBuildSystem/bin/cache/
+Dev/StaticSheepNeoBuildSystem/bin/metrics.txt
+Dev/StaticSheepNeoBuildSystem/bin/metrics/

@@ -42,6 +42,7 @@ namespace Framework
       BIND_FUNCTION_TABLE(L, Engine::LuaGetVariable, GetVariable, engine);
       BIND_FUNCTION_TABLE(L, Engine::LuaGetComponentList, SendComponentList, engine);
       BIND_FUNCTION_TABLE(L, Engine::DateTime, DateTime, engine);
+      BIND_FUNCTION_TABLE(L, Engine::LuaChangeLevel, ChangeLevel, engine);
 
       CREATE_TABLE(L, surface);
       BIND_FUNCTION_TABLE(L, Draw::SetColor, SetColorEx, surface);
@@ -54,11 +55,12 @@ namespace Framework
       BIND_FUNCTION_TABLE(L, Draw::DrawTexturedRect, DrawTexturedRect, surface);
       BIND_FUNCTION_TABLE(L, Draw::DrawTexturedRectRotated, DrawTexturedRectRotated, surface);
       BIND_FUNCTION_TABLE(L, Draw::DrawLine, DrawLine, surface);
-      BIND_FUNCTION_TABLE(L, Draw::DrawString, DrawString, surface);
+      BIND_FUNCTION_TABLE(L, Draw::LuaDrawString, DrawString, surface);
       BIND_FUNCTION_TABLE(L, Draw::SetPosition, SetPos, surface);
       BIND_FUNCTION_TABLE(L, Draw::SetPositionEx, SetPosEx, surface);
       BIND_FUNCTION_TABLE(L, Draw::ForceZ, ForceZ, surface);
-      BIND_FUNCTION_TABLE(L, Draw::MeasureString, MeasureString, surface);
+      BIND_FUNCTION_TABLE(L, Draw::LuaMeasureString, MeasureString, surface);
+      BIND_FUNCTION_TABLE(L, Draw::GetFontIndex, GetFontID, surface);
 
       CREATE_TABLE(L, audio);
       BIND_FUNCTION_TABLE(L, SheepAudio::LuaPauseAll, PauseAll, audio);
@@ -84,7 +86,13 @@ namespace Framework
 
       //BIND_FUNCTION_EX(ENGINE->Lua(), Engine::LuaError, LuaError);
 
-      //BIND_FUNCTION_EX(ENGINE->Lua(), Transform::Test, TransformTest);
+      BIND_FUNCTION_EX(L, Transform::SetTranslation, SetTranslation);
+      BIND_FUNCTION_EX(L, Transform::SetRotation, SetRotation);
+      BIND_FUNCTION_EX(L, Transform::SetScale, SetScale);
+      BIND_FUNCTION_EX(L, Transform::GetTranslation, GetTranslation);
+      BIND_FUNCTION_EX(L, Transform::GetRotation, GetRotation);
+      BIND_FUNCTION_EX(L, Transform::GetScale, GetScale);
+
       //BIND_FUNCTION_EX(ENGINE->Lua(), Engine::DoSomething, engineDoSomething);
 
       BIND_FUNCTION_EX(L, LuaComponent::ReceiveLoadCommend, SendLoadCommand);

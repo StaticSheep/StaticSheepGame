@@ -314,7 +314,7 @@ namespace Framework
   GameObject* Factory::LoadObjectFromArchetypeFP(GameSpace* space, const char* filep)
   {
 	  std::string archetype = filep;
-	  archetype = archetype.substr(archetype.find_last_of('\\') + 1, archetype.length() - archetype.find_last_of('.'));
+    archetype = archetype.substr(archetype.find_last_of('\\') + 1, archetype.find_last_of('.') - archetype.find_last_of('\\') - 1);
 
 	  // Quickly grab the archetype from our map if it exists
 	  const Archetype& aType = GetArchetype(archetype);

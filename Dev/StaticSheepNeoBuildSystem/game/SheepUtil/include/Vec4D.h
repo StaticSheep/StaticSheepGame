@@ -37,6 +37,10 @@ namespace Framework
     Vec4D& operator-=(const Vec4D&);      // minus equals
     Vec4D operator-() const;              // negate
     float operator*(const Vec4D&) const;  // dot product
+    Vec4D Vec4D::operator/(float scalar) const;   // scalar
+    Vec4D& Vec4D::operator/=(float scalar);       // scalar
+    Vec4D Vec4D::operator*(float scalar) const;   // scalar
+    Vec4D& Vec4D::operator*=(float scalar);       // scalar
     Vec4D& operator=(const Vec4D&);       // assignment
     
     // data

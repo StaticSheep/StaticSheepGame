@@ -13,7 +13,7 @@ namespace Framework
 {
 
   Sprite::Sprite()
-    :Color(1, 1, 1, 1), Size(1, 1)
+    :Color(1, 1, 1, 1), Size(1, 1), MaxUV(1, 1)
   {
     transform = NULL;
   }
@@ -43,7 +43,7 @@ namespace Framework
   void Sprite::SetTexture(const char * Texture)
   {
     m_spriteName = Texture;
-    m_texture = GRAPHICS->SetTexture(Texture);
+    m_texture = GRAPHICS->LoadTexture(Texture);
     TextureSize = GRAPHICS->GetTextureDim(m_texture);
   }
 
@@ -86,15 +86,20 @@ namespace Framework
   {
     Transform* trans = space->GetHandles().GetAs<Transform>(transform);
 
-    GRAPHICS->SetPosition(trans->GetTranslation().X, trans->GetTranslation().Y, trans->GetTranslation().Z);
+    GRAPHICS->SetPosition(trans->GetTranslation().X,
+      trans->GetTranslation().Y, trans->GetTranslation().Z);
+
     GRAPHICS->SetRotation(trans->GetRotation());
-    GRAPHICS->SetSize(trans->GetScale().X * Size.X, trans->GetScale().Y * Size.Y);
+
+    GRAPHICS->SetSize(trans->GetScale().X * Size.X,
+      trans->GetScale().Y * Size.Y);
+
     GRAPHICS->SetColor(Color);
-    GRAPHICS->SetUV(Vec2(0,0), Vec2(1,1));
-    GRAPHICS->FlipSprite(m_flipX, m_flipY);
+    GRAPHICS->SetUV(MinUV, MaxUV);
+    GRAPHICS->SetSpriteFlip(m_flipX, m_flipY);
     GRAPHICS->SetCamState(0);
 
-    GRAPHICS->DrawSprite(this);
+    GRAPHICS->DrawBatched(this->m_texture);
     
   }
 }

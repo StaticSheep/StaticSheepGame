@@ -27,7 +27,7 @@ namespace DirectSheep
       m_flip = DirectX::SpriteEffects_None;
   }
 
-  void RenderContext::setWireFrame(bool isWired)
+  void RenderContext::SetWireFrame(bool isWired)
   {
     if (isWired)
       m_currentRast = RastStates::Wire;
@@ -42,6 +42,9 @@ namespace DirectSheep
       m_viewport.dim = Dimension((unsigned)width, (unsigned)height);
       m_viewport.offsetX = 0;
       m_viewport.offsetY = 0;
+
+      SCREEN_WIDTH = width;
+      SCREEN_HEIGHT = height;
 
       m_deviceContext->OMSetRenderTargets(0, 0, 0);
 
@@ -58,6 +61,8 @@ namespace DirectSheep
       SetViewport(0, 0, Dimension((unsigned)width, (unsigned)height));
 
       ((Camera*)m_orthoScreen.ptr)->SetScale(width, height);
+
+      UpdatePrimativeEffect();
     }
   }
 
@@ -94,7 +99,8 @@ namespace DirectSheep
   void RenderContext::BindIndexBuffer(const Handle& ibHandle)
   {
     if (ibHandle.type == INDEX_BUFFER)
-      m_deviceContext->IASetIndexBuffer(m_indexBufferRes[ibHandle.index], DXGI_FORMAT_R32_UINT, 0);
+      m_deviceContext->IASetIndexBuffer(m_indexBufferRes[ibHandle.index],
+      DXGI_FORMAT_R32_UINT, 0);
   }
 
   void RenderContext::BindConstantBuffer(unsigned slot, const Handle& cbHandle, ObjectType shaderType)

@@ -17,6 +17,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "../SheepUtil/include/SheepMath.h"
 #include "CGiantKillBox.h"
 #include "../camera/CCamera.h"
+#include "../particles/CParticleSystem.h"
 
 static const char *playerNames[] = { "Player1", "Player2", "Player3", "Player4" };
 static bool warning;
@@ -31,12 +32,12 @@ namespace Framework
     timeLimit = 60;
     spawnTimer = 3;
     numOfPlayers = 1;
-    spawnPos[0] = Vec3(-610.0f, -435.0f, 0.0f);
-    spawnPos[1] = Vec3(610.0f, -435.0f, 0.0f);
+    spawnPos[0] = Vec3(-610.0f, -440.0f, 0.0f);
+    spawnPos[1] = Vec3(610.0f, -440.0f, 0.0f);
     spawnPos[2] = Vec3(610.0f, 435.0f, 0.0f);
     spawnPos[3] = Vec3(-610.0f, 435.0f, 0.0f);
     spawnPos[4] = Vec3(0.0f, 435.0f, 0.0f);
-    spawnPos[5] = Vec3(0.0f, -435.0f, 0.0f);
+    spawnPos[5] = Vec3(0.0f, -440.0f, 0.0f);
     deadPlayers = 0;
     for (int i = 0; i < 4; ++i)
       playerLives[i] = 5;
@@ -87,43 +88,43 @@ namespace Framework
     SpawnPlayers(dt);
     
     
-    spawnTimer -= dt;
+    //spawnTimer -= dt;
     timeLimit -= dt;
 
-    if (spawnTimer <= 0)
-    {
-      int randomDrop = GetRandom(0, 2);
+    //if (spawnTimer <= 0)
+    //{
+    //  int randomDrop = GetRandom(0, 2);
 
-      GameObject *ePlat = (FACTORY->LoadObjectFromArchetype(space, "SmallPlat"));
-      Transform *PT = ePlat->GetComponent<Transform>(eTransform);
-      //BoxCollider *platC = ePlat->GetComponent <BoxCollider>(eBoxCollider);
-      ePlat->GetComponent<ElevatorPlat>(eElevatorPlat)->direction = true;
-      PT->SetTranslation(Vec3(320.0f,-535.0f,0.9f));
+    //  GameObject *ePlat = (FACTORY->LoadObjectFromArchetype(space, "SmallPlat"));
+    //  Transform *PT = ePlat->GetComponent<Transform>(eTransform);
+    //  //BoxCollider *platC = ePlat->GetComponent <BoxCollider>(eBoxCollider);
+    //  ePlat->GetComponent<ElevatorPlat>(eElevatorPlat)->direction = true;
+    //  PT->SetTranslation(Vec3(320.0f,-535.0f,0.9f));
 
-      if (randomDrop == 0)
-      {
-        GameObject *weap = (FACTORY->LoadObjectFromArchetype(space, "ShotgunPickup"));
-        Transform *WT = weap->GetComponent<Transform>(eTransform);
-        WT->SetTranslation(PT->GetTranslation() + Vec3(0.0, 85.0, 0.0));
-      }
+    //  if (randomDrop == 0)
+    //  {
+    //    GameObject *weap = (FACTORY->LoadObjectFromArchetype(space, "ShotgunPickup"));
+    //    Transform *WT = weap->GetComponent<Transform>(eTransform);
+    //    WT->SetTranslation(PT->GetTranslation() + Vec3(0.0, 85.0, 0.0));
+    //  }
 
-      randomDrop = GetRandom(0, 2);
+    //  randomDrop = GetRandom(0, 2);
 
-      GameObject *ePlat2 = (FACTORY->LoadObjectFromArchetype(space, "SmallPlat"));
-      Transform *PT2 = ePlat2->GetComponent<Transform>(eTransform);
-      //BoxCollider *platC2 = ePlat2->GetComponent <BoxCollider>(eBoxCollider);
-      ePlat2->GetComponent<ElevatorPlat>(eElevatorPlat)->direction = false;
-      PT2->SetTranslation(Vec3(-320.0f, 535.0f, 0.9f));
+    //  GameObject *ePlat2 = (FACTORY->LoadObjectFromArchetype(space, "SmallPlat"));
+    //  Transform *PT2 = ePlat2->GetComponent<Transform>(eTransform);
+    //  //BoxCollider *platC2 = ePlat2->GetComponent <BoxCollider>(eBoxCollider);
+    //  ePlat2->GetComponent<ElevatorPlat>(eElevatorPlat)->direction = false;
+    //  PT2->SetTranslation(Vec3(-320.0f, 535.0f, 0.9f));
 
-      if (randomDrop == 0)
-      {
-        GameObject *weap = (FACTORY->LoadObjectFromArchetype(space, "AutoPickup"));
-        Transform *WT = weap->GetComponent<Transform>(eTransform);
-        WT->SetTranslation(PT2->GetTranslation() + Vec3(0.0, -85.0, 0.0));
-      }
+    //  if (randomDrop == 0)
+    //  {
+    //    GameObject *weap = (FACTORY->LoadObjectFromArchetype(space, "AutoPickup"));
+    //    Transform *WT = weap->GetComponent<Transform>(eTransform);
+    //    WT->SetTranslation(PT2->GetTranslation() + Vec3(0.0, -85.0, 0.0));
+    //  }
 
-      spawnTimer = 3;
-    }
+    //  spawnTimer = 3;
+    //}
 
     if (timeLimit <= 0)
     {

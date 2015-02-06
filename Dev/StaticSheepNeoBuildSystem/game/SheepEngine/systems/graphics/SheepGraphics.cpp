@@ -15,8 +15,12 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "engine/window/Window32.h"
 
 #include "components/sprites/CAniSprite.h"
+#include "components/particles/CParticleSystem.h"
+#include "components/particles/CParticleCircleEmitter.h"
+#include "components/particles/CParticleBoxEmitter.h"
 #include <iostream>
 #include <boost/filesystem.hpp>
+#include "../input/Input.h"
 using namespace boost::filesystem;
 
 
@@ -41,6 +45,10 @@ namespace Framework
     REGISTER_COMPONENT(Sprite);
     REGISTER_COMPONENT(Camera);
     REGISTER_COMPONENT(AniSprite);
+    REGISTER_COMPONENT(PointLight);
+    REGISTER_COMPONENT(ParticleSystem);
+    REGISTER_COMPONENT(ParticleCircleEmitter);
+    REGISTER_COMPONENT(ParticleBoxEmitter);
   }
 
 	SheepGraphics::~SheepGraphics()
@@ -87,13 +95,15 @@ namespace Framework
     m_debugData.numTextDraws = 0;
 #endif
     StartFrame();
+    
     Draw();
+    
     FinishFrame();
 	}
   
-  void SheepGraphics::SetDefaultCam(void)
+  void SheepGraphics::ActivateDefaultCamera(void)
   {
-    m_renderContext->SetCamDefault();
+    m_renderContext->ActivateDefaultCamera();
   }
 
   static void GetDesktopResolution(int& horizontal, int& vertical)
@@ -139,13 +149,10 @@ namespace Framework
       {
         if (!ENGINE->m_editorAcitve)
         {
-          int width;
-          int height;
-          GetDesktopResolution(width, height);
-          SetWindowPos(ENGINE->Window->GetHandle(), NULL, 0, 0, width, height, 0);
+          
           m_renderContext->SetFullscreen(true);
         }
-          
+        ShowWindow(ENGINE->Window->GetHandle(), 1);
       }
       
     }
@@ -154,8 +161,8 @@ namespace Framework
 	{
     // Draw Hooks
     GameSpace* space;
-
-    m_renderContext->SetCamState(0);
+    Draw::SetCamState(0);
+    
     m_renderContext->StartBatch();
     // Regular Draw
     for (auto it = ENGINE->Spaces().begin(); it != ENGINE->Spaces().end(); ++it)
@@ -170,7 +177,6 @@ namespace Framework
     }
 
     Lua::CallFunc(ENGINE->Lua(), "hook.Call", "Draw");
-
     m_renderContext->EndBatch();
     m_renderContext->StartBatch();
 
@@ -187,33 +193,36 @@ namespace Framework
     }
 
     Lua::CallFunc(ENGINE->Lua(), "hook.Call", "PostDraw");
-
     m_renderContext->EndBatch();
+
+   
+    DrawPointLights(ENGINE->m_editorAcitve ? 
+      ENGINE->PlayingInEditor() ? true : ENGINE->m_editorLights : true);
 
     m_renderContext->StartBatch();
     ENGINE->SystemMessage(Message(Message::PostDraw));
-
     m_renderContext->EndBatch();
 
-    m_renderContext->SetCamState(2);
+    Draw::SetCamState(2);
+
     m_renderContext->StartBatch();
     ENGINE->SystemMessage(Message(Message::GUIDraw));
     m_renderContext->EndBatch();
-
+    
     m_renderContext->StartBatch();
     ENGINE->SystemMessage(Message(Message::PostGUIDraw));
     m_renderContext->EndBatch();
-    
+    Draw::SetCamState(2);
 	}
 
   void SheepGraphics::StartFrame()
   {
-    m_renderContext->frameStart();
+    m_renderContext->FrameStart();
   }
 
   void SheepGraphics::FinishFrame()
   {
-    m_renderContext->frameEnd();
+    m_renderContext->FrameEnd();
   }
 
   void SheepGraphics::SetPosition(float x, float y, float Z)
@@ -238,35 +247,35 @@ namespace Framework
 
   void SheepGraphics::SetWireframe(bool iswired)
   {
-    m_renderContext->setWireFrame(iswired);
+    m_renderContext->SetWireFrame(iswired);
   }
 
-  void SheepGraphics::FlipSprite(bool x, bool y)
+  void SheepGraphics::SetSpriteFlip(bool x, bool y)
   {
     m_renderContext->SetSpriteFlip(x, y);
   }
 
-  DirectSheep::Handle SheepGraphics::SetTexture(const std::string& Texture)
+  DirectSheep::Handle SheepGraphics::LoadTexture(const std::string& textureName)
   {
     for(auto it : m_textureMap)
     {
-      if(it.first == Texture)
+      if (it.first == textureName)
         return it.second;
     }
 
-    std::string realTexture = Texture;
+    std::string realTexture = textureName;
 
     DirectSheep::Handle temp;
 
-    m_renderContext->CreateTexture(temp, Texture);
+    m_renderContext->CreateTexture(temp, textureName);
     
 #if SHEEP_DEBUG
     ++(m_debugData.numTextures);
 #endif
 
-    m_textureMap[Texture] = temp;
+    m_textureMap[textureName] = temp;
 
-    return m_textureMap[Texture];
+    return m_textureMap[textureName];
   }
 
   void SheepGraphics::BindTexture(int ID)
@@ -279,14 +288,6 @@ namespace Framework
     m_renderContext->SetBlendCol(Color.R, Color.G, Color.B, Color.A);
   }
 
-  void SheepGraphics::DrawSprite(Sprite *sprite)
-  {
-    m_renderContext->DrawBatched(sprite->GetTexture());
-
-#if SHEEP_DEBUG
-    ++(m_debugData.numBatchedCalls);
-#endif
-  }
 
   void SheepGraphics::DrawBatched(DirectSheep::Handle texture)
   {
@@ -295,6 +296,16 @@ namespace Framework
 #if SHEEP_DEBUG
     ++(m_debugData.numBatchedCalls);
 #endif
+  }
+
+  void SheepGraphics::BatchPointLight(Vec3D position, Vec4D brightness, Vec3D attenuation)
+  {
+    m_renderContext->BatchPLight(position, brightness, attenuation);
+  }
+
+  void SheepGraphics::DrawPointLights(bool isLight)
+  {
+    m_renderContext->DrawPLights(isLight);
   }
 
   void SheepGraphics::RawDraw(void)
@@ -315,7 +326,7 @@ namespace Framework
       if(it.first == texture)
          return m_textureMap[texture].GetIndex();
     }
-     return (SetTexture(texture)).GetIndex();
+    return (LoadTexture(texture)).GetIndex();
   }
 
   void SheepGraphics::SetCamState(int camState)
@@ -323,9 +334,9 @@ namespace Framework
     m_renderContext->SetCamState(camState);
   }
 
-  void SheepGraphics::DrawSpriteText(const char * text, float size, const char * font)
+  void SheepGraphics::DrawSpriteText(const char * text, int fontIndex, Vec2D scale)
   {
-    m_renderContext->DrawSpriteText(text, size, font);
+    m_renderContext->DrawSpriteText(text, fontIndex, 0.02f * scale);
 
 #if SHEEP_DEBUG
     ++(m_debugData.numTextDraws);
@@ -334,6 +345,14 @@ namespace Framework
   void* SheepGraphics::GetDevice()
   {
     return m_renderContext->ExternalGetDevice();
+  }
+
+  int SheepGraphics::GetFontIndex(const char * fontName)
+  {
+    if (m_fontMap.count(fontName))
+      return m_fontMap[fontName];
+    else
+      return m_fontMap["Arial"];
   }
 
   Vec2 SheepGraphics::GetTextureDim(DirectSheep::Handle texture)
@@ -354,19 +373,53 @@ namespace Framework
         {
           std::string foo = it->path().extension().generic_string();
           if (it->path().extension().generic_string() == ".png" || it->path().extension().generic_string() == ".jpg")
-            SetTexture(it->path().filename().generic_string());
+            LoadTexture(it->path().filename().generic_string());
         }
       }
-      return true;
+      else
+        return false;
+
+      p = filepath + "/Fonts";
+      if (exists(p))
+      {
+        if (is_directory(p))
+        {
+          for (directory_iterator it(p), end; it != end; ++it)
+          {
+            std::string foo = it->path().extension().generic_string();
+            if (it->path().extension().generic_string() == ".spritefont")
+              // This line is gross
+              m_fontMap[it->path().stem().generic_string().c_str()] = m_renderContext->AddFont(it->path().stem().generic_string().c_str(), it->path().generic_string().c_str());
+          }
+        }
+        return true;
+      }
+      else
+        return false;
     }
     return false;
   }
   
 
-  Vec2 SheepGraphics::MeasureString(const char* text, float size,
-    const char* font)
+  Vec2 SheepGraphics::MeasureString(const char* text, Vec2D scale,
+    int fontIndex)
   {
-    return m_renderContext->MeasureString(text, size, font);
+    return m_renderContext->MeasureString(text, 0.02f * scale, fontIndex);
+  }
+
+  DirectSheep::Camera* SheepGraphics::RetrieveCamera(DirectSheep::Handle camHandle)
+  {
+    return DirectSheep::RenderContext::RetrieveCamera(camHandle);
+  }
+
+  DirectSheep::Handle SheepGraphics::GetActiveCamera()
+  {
+    return m_renderContext->GetActiveCamera();
+  }
+
+  void SheepGraphics::SetActiveCamera(DirectSheep::Handle camHandle)
+  {
+    m_renderContext->SetActiveCamera(camHandle);
   }
 
 }

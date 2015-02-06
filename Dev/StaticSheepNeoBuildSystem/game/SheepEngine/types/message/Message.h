@@ -31,7 +31,9 @@ namespace Framework
       WindowMinimize,
       WindowRestore,
       CameraChange,
+      MetricsData,
       EngineReady,
+      ObjectSelected,
       Pause,
       Quit,
     };
@@ -55,5 +57,30 @@ namespace Framework
 
     float width;
     float height;
+  };
+
+  class MetricsMessage : public Message
+  {
+  public:
+    MetricsMessage(void* dmata)
+      :Message(MetricsData),
+      data(dmata)
+    {
+
+    }
+
+    void* data;
+  };
+
+  class ObjectSelectedMessage : public Message
+  {
+  public:
+    ObjectSelectedMessage(GameObject* iobj)
+      : Message(ObjectSelected), obj(iobj)
+    {
+
+    }
+
+    GameObject* obj;
   };
 }

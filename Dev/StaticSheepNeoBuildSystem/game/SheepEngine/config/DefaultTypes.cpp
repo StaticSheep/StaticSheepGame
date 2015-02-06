@@ -16,6 +16,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/sound/CSoundPlayer.h"
 #include "components/sprites/CSprite.h"
 #include "components/sprites/CAniSprite.h"
+#include "Components/lights/CPointLight.h"
 #include "Components/camera/CCamera.h"
 #include "components/rigidbody/CRigidBody.h"
 #include "components/transform/CTransform.h"
@@ -38,6 +39,12 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/gameplay_scripts/CWarningText.h"
 #include "components/gameplay_scripts/CBackgroundPan.h"
 #include "components/gameplay_scripts/CCheats.h"
+#include "components/slotmachine/slotmachine.h"
+#include "components/gameplay_scripts/CAimingArrow.h"
+#include "components/particles/CParticleSystem.h"
+#include "components/particles/CParticleCircleEmitter.h"
+#include "components/particles/CParticleBoxEmitter.h"
+#include "components/particles/Particles.h"
 
 
 namespace Framework
@@ -135,6 +142,16 @@ namespace Framework
     TYPE_ADD_MEMBER(Vec4, A);
     TYPE_SET_TWEAK_TYPE(Vec4, AntTweak::TW_TYPE_COLOR4F);
 
+    TYPE_REGISTER(LightColor);
+    TYPE_ADD_MEMBER(LightColor, R, false, true, "Red");
+    TYPE_ADD_MEMBER(LightColor, G, false, true, "Green");
+    TYPE_ADD_MEMBER(LightColor, B, false, true, "Blue");
+    TYPE_ADD_MEMBER(LightColor, A, false, true, "Intensity"); 
+
+    TYPE_REGISTER(LightVec3);
+    TYPE_ADD_MEMBER(LightVec3, X, false, true, "Constant");
+    TYPE_ADD_MEMBER(LightVec3, Y, false, true, "Linear");
+    TYPE_ADD_MEMBER(LightVec3, Z, false, true, "Quadratic");
 
     TYPE_REGISTER( GameComponent );
     TYPE_SET_FROM_LUA( GameComponent, Lua::GenericObjectFromLua );
@@ -216,6 +233,10 @@ namespace Framework
     TYPE_SET_TWEAK_TYPE(Cheats, AntTweak::TW_TYPE_COMPONENT);
     TYPE_ADD_MEMBER(Cheats, enabled, false, true, "Enable?");
 
+    TYPE_REGISTER(AimingArrow);
+    TYPE_SET_TWEAK_TYPE(AimingArrow, AntTweak::TW_TYPE_COMPONENT);
+    TYPE_ADD_MEMBER(AimingArrow, arrowColor, false, true, "Color");
+
     TYPE_REGISTER(Pistol);
     TYPE_REGISTER(Shotgun);
     TYPE_REGISTER(Automatic);
@@ -254,6 +275,12 @@ namespace Framework
     TYPE_SET_TWEAK_TYPE( Sprite, AntTweak::TW_TYPE_COMPONENT );
     TYPE_SET_FROM_LUA( Sprite, Lua::GenericObjectFromLua );
 
+    TYPE_REGISTER(PointLight);
+    TYPE_ADD_MEMBER(PointLight, m_brightness, false, true, "LightColor");
+    TYPE_ADD_MEMBER(PointLight, m_attenuation, false, true, "Attenuation");
+    TYPE_SET_TWEAK_TYPE(PointLight, AntTweak::TW_TYPE_COMPONENT);
+    TYPE_SET_FROM_LUA(PointLight, Lua::GenericObjectFromLua);
+
     TYPE_REGISTER( AniSprite );
     TYPE_ADD_MEMBER(AniSprite, m_spriteName, false, true, "Texture",
       BUILD_FUNCTION(Sprite::TweakSetTexture));
@@ -272,6 +299,66 @@ namespace Framework
     TYPE_ADD_MEMBER( AniSprite, Size, false, true, "Scale");
     TYPE_SET_TWEAK_TYPE( AniSprite, AntTweak::TW_TYPE_COMPONENT );
     TYPE_SET_FROM_LUA( AniSprite, Lua::GenericObjectFromLua );
+
+    TYPE_REGISTER(ParticleSystem);
+    TYPE_ADD_MEMBER(ParticleSystem, textureName, false, true, "ParticleTexture");
+    TYPE_ADD_MEMBER(ParticleSystem, particleLife, false, true, "ParticleLifetime");
+    TYPE_ADD_MEMBER(ParticleSystem, directionEase, false, true, "DirectionEase");
+    TYPE_ADD_MEMBER(ParticleSystem, direction, false, true, "ParticleDirection", 
+      BUILD_FUNCTION(ParticleSystem::TweakSetDirection));
+    TYPE_ADD_MEMBER(ParticleSystem, angularVelocity, false, true, "ParticleAngularVelocity");
+    TYPE_ADD_MEMBER(ParticleSystem, scaleEase, false, true, "ScaleEase");
+    TYPE_ADD_MEMBER(ParticleSystem, scale, false, true, "ParticleScale");
+    TYPE_ADD_MEMBER(ParticleSystem, colorEase, false, true, "ColorEase");
+    TYPE_ADD_MEMBER(ParticleSystem, color, false, true, "ParticleColor");
+    TYPE_ADD_MEMBER(ParticleSystem, speedEase, false, true, "SpeedEase");
+    TYPE_ADD_MEMBER(ParticleSystem, speed, false, true, "ParticleSpeed");
+    
+    TYPE_SET_TWEAK_TYPE(ParticleSystem, AntTweak::TW_TYPE_COMPONENT);
+
+    TYPE_REGISTER(ParticleOptionShort<float>);
+    TYPE_ADD_MEMBER(ParticleOptionShort<float>, m_startMin, false, true, "Minimum");
+    TYPE_ADD_MEMBER(ParticleOptionShort<float>, m_startMax, false, true, "Maximum");
+
+    TYPE_REGISTER(ParticleOption<float>);
+    TYPE_ADD_MEMBER(ParticleOption<float>, m_startMin, false, true, "Start Min");
+    TYPE_ADD_MEMBER(ParticleOption<float>, m_startMax, false, true, "Start Max");
+    TYPE_ADD_MEMBER(ParticleOption<float>, m_endMin, false, true, "End Min");
+    TYPE_ADD_MEMBER(ParticleOption<float>, m_endMax, false, true, "End Max");
+
+    TYPE_REGISTER(ParticleOption<Vec3>);
+    TYPE_ADD_MEMBER(ParticleOption<Vec3>, m_startMin, false, true, "Start Min");
+    TYPE_ADD_MEMBER(ParticleOption<Vec3>, m_startMax, false, true, "Start Max");
+    TYPE_ADD_MEMBER(ParticleOption<Vec3>, m_endMin, false, true, "End Min");
+    TYPE_ADD_MEMBER(ParticleOption<Vec3>, m_endMax, false, true, "End Max");
+
+    TYPE_REGISTER(ParticleOption<Vec4>);
+    TYPE_ADD_MEMBER(ParticleOption<Vec4>, m_startMin, false, true, "Start Min");
+    TYPE_ADD_MEMBER(ParticleOption<Vec4>, m_startMax, false, true, "Start Max");
+    TYPE_ADD_MEMBER(ParticleOption<Vec4>, m_endMin, false, true, "End Min");
+    TYPE_ADD_MEMBER(ParticleOption<Vec4>, m_endMax, false, true, "End Max");
+
+    TYPE_REGISTER(ParticleCircleEmitter);
+    TYPE_ADD_MEMBER(ParticleCircleEmitter, m_innerRadius, false, true, "Inner Radius");
+    TYPE_ADD_MEMBER(ParticleCircleEmitter, m_outerRadius, false, true, "Outer Radius");
+    TYPE_ADD_MEMBER(ParticleCircleEmitter, m_spawnOffset, false, true, "Spawn Location Offset");
+    TYPE_ADD_MEMBER(ParticleCircleEmitter, m_amount, false, true, "Spawn Amount");
+    TYPE_ADD_MEMBER(ParticleCircleEmitter, m_rate, false, true, "Spawn Delay");
+    TYPE_ADD_MEMBER(ParticleCircleEmitter, spawning, false, true, "Constant Spawning");
+    TYPE_ADD_MEMBER(ParticleCircleEmitter, timedSpawning, false, true, "Timed Spawning");
+    TYPE_ADD_MEMBER(ParticleCircleEmitter, timed, false, true, "Time");
+    TYPE_ADD_MEMBER(ParticleCircleEmitter, outward, false, true, "Spawn Outwards");
+    TYPE_ADD_MEMBER(ParticleCircleEmitter, inward, false, true, "Spawn Inwards");
+
+    TYPE_REGISTER(ParticleBoxEmitter);
+    TYPE_ADD_MEMBER(ParticleBoxEmitter, m_width, false, true, "Box Width");
+    TYPE_ADD_MEMBER(ParticleBoxEmitter, m_height, false, true, "Box Height");
+    TYPE_ADD_MEMBER(ParticleBoxEmitter, m_spawnOffset, false, true, "Spawn Offset");
+    TYPE_ADD_MEMBER(ParticleBoxEmitter, m_amount, false, true, "Particle Amount");
+    TYPE_ADD_MEMBER(ParticleBoxEmitter, m_rate, false, true, "Spawn Delay!");
+    TYPE_ADD_MEMBER(ParticleBoxEmitter, spawning, false, true, "Constant Spawning?");
+    TYPE_ADD_MEMBER(ParticleBoxEmitter, timedSpawning, false, true, "Timed Spawning?");
+    TYPE_ADD_MEMBER(ParticleBoxEmitter, timed, false, true, "Time!");
 
     TYPE_REGISTER(Camera);
     TYPE_ADD_MEMBER(Camera, m_active, false, true, "Active",
@@ -294,11 +381,34 @@ namespace Framework
     TYPE_REGISTER_PTR( LuaComponent* );
     //TYPE_SET_TO_LUA( LuaComponent*, Lua::GameComponentToLua);
 
+    TYPE_REGISTER(SlotMachine);
+    TYPE_SET_TWEAK_TYPE(SlotMachine, AntTweak::TW_TYPE_COMPONENT);
+
+    TYPE_ADD_MEMBER(SlotMachine, m_stopTexture, false, true, "Still Texture");
+    TYPE_ADD_MEMBER(SlotMachine, m_spinTexture, false, true, "Spin Texture");
+    TYPE_ADD_MEMBER(SlotMachine, m_slotBackTexture, false, true, "Back Texture");
+
+    TYPE_ADD_MEMBER(SlotMachine, numSlots, false, true, "# Reels",
+      BUILD_FUNCTION(SlotMachine::TweakSetNumSlots));
+
+    TYPE_ADD_MEMBER(SlotMachine, slotSize, false, true, "SlotScale");
+    TYPE_ADD_MEMBER(SlotMachine, slotMargin, false, true, "Margin");
+    TYPE_ADD_MEMBER(SlotMachine, slotOffset, false, true, "Offset");
+    TYPE_ADD_MEMBER(SlotMachine, slotBackSize, false, true, "BackingScale");
+
+    TYPE_ADD_MEMBER(SlotMachine, startTime, true, true, "Time");
+    TYPE_ADD_MEMBER(SlotMachine, bonusTime, true, true, "Extra Time");
+
+    TYPE_ADD_MEMBER(SlotMachine, useSpriteColor, false, true, "Use Sprite Color");
+    TYPE_ADD_MEMBER(SlotMachine, backingColor, true, true, "BackColor");
+
+
     TYPE_REGISTER( AntTweak::TBar );
     TYPE_REGISTER_PTR( AntTweak::TBar* );
 
     TYPE_REGISTER(GamePadInput);
     TYPE_REGISTER_PTR(GamePadInput*);
+
 
     RegisterEnums();
   }

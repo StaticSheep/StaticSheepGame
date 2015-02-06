@@ -34,4 +34,14 @@ namespace Framework
     SoundEmitter *se = player->GetComponent<SoundEmitter>(eSoundEmitter);
     se->Play("Laser_Shot", &SoundInstance(1.0f));
   }
+
+  void Laser::DelayUpdate(float dt)
+  {
+
+  }
+
+  void Laser::ResetDelay()
+  {
+    delay = 0;
+  }
 }

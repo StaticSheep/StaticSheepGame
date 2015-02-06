@@ -18,6 +18,10 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "../../sprites/CAniSprite.h"
 #include "../../gameplay_scripts/CCheats.h"
 #include "../systems/input/Input.h"
+#include "systems/metrics/MetricInfo.h"
+#include "systems/graphics/SheepGraphics.h"
+#include "../../gameplay_scripts/CAimingArrow.h"
+
 
 
 namespace Framework
@@ -42,7 +46,8 @@ namespace Framework
     normals.clear();
     lastRotation = 0.0f;
     frameSkip = false;
-    frameSkip2 = false;
+    arrowSpawn = false;
+    hasDashed = false;
 	}
 
 	PlayerController::~PlayerController() //4
@@ -84,17 +89,20 @@ namespace Framework
 
     BoxCollider *bc = space->GetHandles().GetAs<BoxCollider>(playerCollider);
     bc->SetGravityOff();
-    //weapon = (Pistol*)GET_TYPE(Pistol)->New();
     weapon = (Laser*)GET_TYPE(Laser)->New();
-    shotDelay = weapon->delay;
     SoundEmitter *se = space->GetHandles().GetAs<SoundEmitter>(playerSound);
     se->Play("robot_startup", &SoundInstance(0.50f));
     animCont = AnimationController(playerNum);
     animCont.AnimState = IDLE;
     bc->SetBodyCollisionGroup(space->GetGameObject(owner)->archetype);
+
 	}
 
-  static Vec2D aim(1.0f, 0.0f);
+  static Vec2D aim(1.0f, 0.0f); //default aiming direction
+  static GamePad *gp;           //players controller
+  static BoxCollider *bc;       //players box collider
+  static SoundEmitter *se;      //players sound emitter
+  static Transform *ps;         //players transform
 
 	//************************************
 	// Method:    LogicUpdate
@@ -106,21 +114,52 @@ namespace Framework
 	//************************************
 	void PlayerController::LogicUpdate(float dt)
 	{
-		//get the game pad
-		GamePad *gp = space->GetHandles().GetAs<GamePad>(playerGamePad);
-		//get the box collider of player
-		BoxCollider *bc = space->GetHandles().GetAs<BoxCollider>(playerCollider);
-    SoundEmitter *se = space->GetHandles().GetAs<SoundEmitter>(playerSound);
-    Transform *ps = space->GetHandles().GetAs<Transform>(playerTransform);
+    //update all the players pointers
+    gp = space->GetHandles().GetAs<GamePad>(playerGamePad);
+    bc = space->GetHandles().GetAs<BoxCollider>(playerCollider);
+    se = space->GetHandles().GetAs<SoundEmitter>(playerSound);
+    ps = space->GetHandles().GetAs<Transform>(playerTransform);
 
+    //if the player is out of health run the player death function
     if (health <= 0)
-      PlayerDeath(se, ps);
+    {
+      MetricInfo metricData;
+      metricData.mt = PLAYER_DEATH;
+      metricData.playerNum = playerNum;
+      metricData.x = (int)ps->GetTranslation().x;
+      metricData.y = (int)ps->GetTranslation().y;
+      ENGINE->SystemMessage(MetricsMessage(&metricData));
 
+      PlayerDeath(se, ps);
+    }
+
+    //if the player has just respawned, run the blink function
     if (hasRespawned)
       RespawnBlink(dt);
 
-		if (gp->RStick_InDeadZone() == false)       //if the right stick is NOT inside of its dead zone
-			aimDir = aimingDirection(gp); //get the direction the player is currently aiming;
+    if (gp->RStick_InDeadZone() == false)     //if the right stick is NOT inside of its dead zone
+    {
+      aimDir = aimingDirection(gp);           //get the direction the player is currently aiming;
+
+      if (!arrowSpawn)
+      {
+        //draw aiming arrow
+        GameObject *AA = (FACTORY->LoadObjectFromArchetype(space, "AimingArrow"));
+        AA->GetComponent<AimingArrow>(eAimingArrow)->playerGamePad = playerGamePad;
+        AA->GetComponent<AimingArrow>(eAimingArrow)->playerTransform = playerTransform;
+        AA->GetComponent<Transform>(eTransform)->SetTranslation(ps->GetTranslation());
+
+        AniSprite *playerS = space->GetHandles().GetAs<AniSprite>(playerAnimation); //get the player's ani-sprite
+        AA->GetComponent<Sprite>(eSprite)->Color = playerS->Color; //set the colors equal
+        AA->GetComponent<Sprite>(eSprite)->Color.a = 0.7f; //make sure the alpha isn't low (happens during respawn)
+        arrowSpawn = true;
+      }
+    }
+    else
+      arrowSpawn = false;
+    
+    //update the weapons delay
+    weapon->DelayUpdate(dt);
 
 		//fire on trigger pull
 		if ((gp->RightTrigger() && hasFired == false) || (SHEEPINPUT->KeyIsDown(VK_SPACE) && hasFired == false && gp->GetIndex() == 0))
@@ -128,12 +167,14 @@ namespace Framework
 			hasFired = true;
 			onFire();
 		}
+
+    //check to see if the weapon is semi-auto
     if (weapon->semi == false)
     {
-      if(shotDelay <= 0)
+      if (weapon->delay <= 0)
       {
         hasFired = false;
-        shotDelay = weapon->delay;
+        weapon->ResetDelay();
       }
     }
 
@@ -144,35 +185,29 @@ namespace Framework
 		//if the trigger is released, reset the bool
 		if (!gp->RightTrigger() && weapon->semi)
     {
-      if (shotDelay <= 0)
+      if (weapon->delay <= 0)
       {
-			  hasFired = false;
-        shotDelay = weapon->delay;
+        hasFired = false;
+        weapon->ResetDelay();
       }
-      
     }
-    shotDelay -= dt;
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
     if (isSnapped)
     {
+      hasDashed = false;
       if (frameSkip)
       {
-        //if (frameSkip2)
-        //{
           bc->SetBodyRotation(-snappedNormal);
           normals.clear();
           normals.push_back(snappedNormal);
-        //}
-        //frameSkip2 = !frameSkip2;
       }
       frameSkip = !frameSkip;
 
-      bc->SetVelocity(snappedNormal * 100);
-      bc->SetAngVelocity(0.0);
+      bc->SetVelocity(snappedNormal * 100); //artificial pull or "gravity" to snapped normal
+      bc->SetAngVelocity(0.0);              //if snapped to surface take away all angular velocity
 
       if (snappedTo != Handle::null)
       {
-        //snappedObject->Get(BoxCollider); => snappedObject->GetComponent<BoxCollider>(eBoxCollider);
         GameObject *snappedObject = space->GetHandles().GetAs<GameObject>(snappedTo);
         if ((snappedObject->name == "SmallPlatform" || snappedObject->name == "SmallPlat"))
         {
@@ -209,9 +244,8 @@ namespace Framework
       }
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
-      if (gp->LeftStick_Y() > 0.2 /*&& snappedNormal.x != 0*/ || (SHEEPINPUT->KeyIsDown(0x57) && gp->GetIndex() == 0))
+      if (gp->LeftStick_Y() > 0.2 || (SHEEPINPUT->KeyIsDown(0x57) && gp->GetIndex() == 0))
       {
-        //bc->SetVelocity(Vec3(0.0f, 0.0f, 0.0f));
         if (snappedNormal.x > 0)
           bc->AddToVelocity(-(snappedNormal.CalculateNormal() * 450));
         else if (snappedNormal.x < 0)
@@ -222,9 +256,8 @@ namespace Framework
         else
           ps->SetFlipX(true);
       }
-      else if (gp->LeftStick_Y() < -0.2 /*&& snappedNormal.x != 0*/ || (SHEEPINPUT->KeyIsDown(0x53) && gp->GetIndex() == 0))
+      else if (gp->LeftStick_Y() < -0.2 || (SHEEPINPUT->KeyIsDown(0x53) && gp->GetIndex() == 0))
       {
-        //bc->SetVelocity(Vec3(0.0f, 0.0f, 0.0f));
         if (snappedNormal.x > 0)
           bc->AddToVelocity((snappedNormal.CalculateNormal() * 450));
         if (snappedNormal.x < 0)
@@ -235,74 +268,40 @@ namespace Framework
         else
           ps->SetFlipX(false);
       }
-      //clamp the velocity
-      if (bc->GetCurrentVelocity().x > 450)
-        bc->SetVelocity(Vec3(450.0f, bc->GetCurrentVelocity().y, 0.0f));
-      if (bc->GetCurrentVelocity().x < -450)
-        bc->SetVelocity(Vec3(-450.0f, bc->GetCurrentVelocity().y, 0.0f));
-      if (bc->GetCurrentVelocity().y > 450)
-        bc->SetVelocity(Vec3(bc->GetCurrentVelocity().x, 450, 0.0f));
-      if (bc->GetCurrentVelocity().y < -450)
-        bc->SetVelocity(Vec3(bc->GetCurrentVelocity().x, -450, 0.0f));
 
-      
-////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////
+      //clamp the players velocity
+      clampVelocity(450.0f);
+
       //jump
-      if (((gp->ButtonDown(XButtons.A) || gp->ButtonDown(XButtons.LShoulder)) && isSnapped) || (SHEEPINPUT->KeyIsDown('Q') && gp->GetIndex() == 0))
+      if (((gp->ButtonDown(XButtons.A) || gp->LeftTrigger()) && isSnapped) || (SHEEPINPUT->KeyIsDown('Q') && gp->GetIndex() == 0))
       {
-        bc->AddToVelocity(-(snappedNormal * 600));
-        isSnapped = false;
-        normals.clear();
-        if (GetRandom(0, 1))
+        jump(); //player jump
+        if (GetRandom(0, 1)) //determine sound for jump
           se->Play("jump2", &SoundInstance(0.75f));
         else
           se->Play("jump1", &SoundInstance(0.75f));
-        if (gp->ButtonPressed(XButtons.A))
-          space->GetGameObject(owner)->hooks.Call("ButtonPressed", Buttons::A);
-        else if (gp->ButtonPressed(XButtons.LShoulder))
-          space->GetGameObject(owner)->hooks.Call("ButtonPressed", Buttons::LB);
       }
     }
     else
     {
       normals.clear();
     }
-////////////////////////////////////////////////////////////////
+
 		//melee
-		if (gp->ButtonPressed(XButtons.B))
-		{
-      Melee();
-      space->GetGameObject(owner)->hooks.Call("ButtonPressed", Buttons::B);
-		}
+    if (gp->ButtonPressed(XButtons.LShoulder))
+      Melee(Buttons::LB);
+    else if (gp->ButtonPressed(XButtons.RShoulder))
+      Melee(Buttons::RB);
 
-		if (gp->ButtonPressed(XButtons.X))
-		{
-			//bc->AddToAngVelocity(.5f);
-      space->GetGameObject(owner)->hooks.Call("ButtonPressed", Buttons::X);
-		} 
-    /*if (gp->RightTrigger())
-      space->GetGameObject(owner)->hooks.Call("ButtonPressed", 9);
-      if (gp->LeftTrigger())
-      space->GetGameObject(owner)->hooks.Call("ButtonPressed", 8);*/
-    if (gp->ButtonPressed(XButtons.Y))
-      space->GetGameObject(owner)->hooks.Call("ButtonPressed", Buttons::Y);  
-    if (gp->ButtonPressed(XButtons.DPad.Up))
-      space->GetGameObject(owner)->hooks.Call("ButtonPressed", Buttons::UP);
-    if (gp->ButtonPressed(XButtons.DPad.Down))
-      space->GetGameObject(owner)->hooks.Call("ButtonPressed", Buttons::DOWN);
-    if (gp->ButtonPressed(XButtons.DPad.Left))
-      space->GetGameObject(owner)->hooks.Call("ButtonPressed", Buttons::LEFT);
-    if (gp->ButtonPressed(XButtons.DPad.Right))
-      space->GetGameObject(owner)->hooks.Call("ButtonPressed", Buttons::RIGHT);
+    PlayerButtonPress(); //check to see if the player has pressed any of the controller buttons (for cheats or other things)
 
-    SetAnimations();
+    SetAnimations(); //depending on movement or action, set the players current sprite animation
 
+    //this check makes sure the player hasn't gone "OUTSIDE" the level, if they have it kills them
     if (ps->GetTranslation().x > 1000 || ps->GetTranslation().x < -1000 || ps->GetTranslation().y > 500 || ps->GetTranslation().y < -500)
       PlayerDeath(se, ps);
 
     isSnapped = false;
-
     
 
     if (gp->GetIndex() == 0 && !gp->Connected())
@@ -332,6 +331,13 @@ namespace Framework
       aimDir = Vec3D(aim.x, aim.y, 0.0);
     }
 
+    MetricInfo metricData;
+    metricData.mt = PLAYER_LOCATION;
+    metricData.playerNum = playerNum;
+    metricData.x = (int)ps->GetTranslation().x;
+    metricData.y = (int)ps->GetTranslation().y;
+    ENGINE->SystemMessage(MetricsMessage(&metricData));
+
 	}
 
 
@@ -346,7 +352,7 @@ namespace Framework
 	//************************************
 	void PlayerController::OnCollision(Handle otherObject, SheepFizz::ExternalManifold manifold)
 	{
-    SoundEmitter *se = space->GetHandles().GetAs<SoundEmitter>(playerSound);
+    se = space->GetHandles().GetAs<SoundEmitter>(playerSound);
     GameObject *OtherObject = space->GetHandles().GetAs<GameObject>(otherObject);
     if (OtherObject->name == "Bullet" && !hasRespawned && !GodMode && !PerfectMachine)
     {
@@ -354,14 +360,33 @@ namespace Framework
       float randomX = (float)GetRandom(-25, 25);
       float randomY = (float)GetRandom(-25, 25);
       se->Play("hit1", &SoundInstance(1.0f));
-      Transform *ps = space->GetHandles().GetAs<Transform>(playerTransform);
+      ps = space->GetHandles().GetAs<Transform>(playerTransform);
       Handle hit = (FACTORY->LoadObjectFromArchetype(space, "hit"))->self;
       Transform *exT = space->GetGameObject(hit)->GetComponent<Transform>(eTransform);
       exT->SetTranslation(ps->GetTranslation() + Vec3(randomX,randomY,-1.0f));
+
+      //for metrics, need to determine where the bullet came from by checking its collision group
+      if (health <= 0)
+      {
+        int pn = 0;
+
+        if (OtherObject->GetComponent<CircleCollider>(eCircleCollider)->GetBodyCollisionGroup() == "Player1")
+          pn = 0;
+        else if (OtherObject->GetComponent<CircleCollider>(eCircleCollider)->GetBodyCollisionGroup() == "Player2")
+          pn = 1;
+        else if (OtherObject->GetComponent<CircleCollider>(eCircleCollider)->GetBodyCollisionGroup() == "Player3")
+          pn = 2;
+        else if (OtherObject->GetComponent<CircleCollider>(eCircleCollider)->GetBodyCollisionGroup() == "Player4")
+          pn = 3;
+
+        MetricInfo metricData(pn, 0, 0, PLAYER_KILL, Buttons::NONE, Weapons::PISTOL);
+        ENGINE->SystemMessage(MetricsMessage(&metricData));
+      }
       return;
     }
-    if ((OtherObject->archetype == "KillBox" ||
-      OtherObject->archetype == "KillBoxBig") && !GodMode && !PerfectMachine)
+
+    if ((OtherObject->archetype == "KillBox" || OtherObject->archetype == "KillBoxBig" || OtherObject->name == "GrinderBig") 
+        && !GodMode && !PerfectMachine)
       health = 0;
 
     if ((OtherObject->GetComponentHandle(eGrinder) != Handle::null)
@@ -370,11 +395,6 @@ namespace Framework
 
     if (OtherObject->name == "WeaponPickup")
       se->Play("weapon_pickup", &SoundInstance(0.75f));
-
-    if (OtherObject->name == "GrinderBig" && !GodMode && !PerfectMachine)
-    {
-      health -= 100;
-    }
 
 		
 		//get the transform of the thing we are colliding with
@@ -390,8 +410,8 @@ namespace Framework
       Vec3 oldSnappedNormal = snappedNormal;
       BoxCollider *OOBc = OtherObject->GetComponent<BoxCollider>(eBoxCollider);
       
-      BoxCollider *bc = space->GetHandles().GetAs<BoxCollider>(playerCollider);
-      Transform *ps = space->GetHandles().GetAs<Transform>(playerTransform);
+      bc = space->GetHandles().GetAs<BoxCollider>(playerCollider);
+      ps = space->GetHandles().GetAs<Transform>(playerTransform);
 
       if (oldSnappedNormal.x != OOBc->GetCollisionNormals(manifold).x && oldSnappedNormal.y != OOBc->GetCollisionNormals(manifold).y &&
         snappedNormal.x != OOBc->GetCollisionNormals(manifold).x && snappedNormal.y != OOBc->GetCollisionNormals(manifold).y)
@@ -492,32 +512,24 @@ namespace Framework
 	// Qualifier:
 	// Parameter: GamePad * gp
 	//************************************
-	Vec3 PlayerController::aimingDirection(GamePad *gp)
+	Vec3 PlayerController::aimingDirection(GamePad *gp, char stick)
 	{
 		Vec3 returnVec;
-    float thresh = 1.0f; //the threshold minimum for aiming
 
-		returnVec.x = gp->RightStick_X();
-		returnVec.y = gp->RightStick_Y();
+    if (stick == 'L')
+    {
+      returnVec.x = gp->LeftStick_X();
+      returnVec.y = gp->LeftStick_Y();
+    }
+    else
+    {
+      //here I'm grabbing where the right stick's x and y is and saving that to a vector
+      returnVec.x = gp->RightStick_X();
+      returnVec.y = gp->RightStick_Y();
+    }
+    //then I normalize that vector and multiply it by a constant (1.5)
     returnVec.Normalize();
     returnVec *= 1.5;
-
-    //making sure that the default return vector is within a certain range so that
-    //when bullets spawn using that return vector they don't spawn to far away from the player.
-    if (returnVec.x > 1.0)
-      returnVec.x = 1.0;
-    if (returnVec.y > 1.0)
-      returnVec.y = 1.0;
-
-    if (returnVec.x < -1.0)
-      returnVec.x = -1.0;
-    if (returnVec.y < -1.0)
-      returnVec.y = -1.0;
-
-    if (returnVec.x < 0)
-    {
-      //flip sprite 
-    }
 
 		return returnVec;
 	}
@@ -529,9 +541,24 @@ namespace Framework
   // Returns:   void
   // Qualifier:
   //************************************
-  void PlayerController::Melee()
+  void PlayerController::Melee(Buttons butt)
   {
+    if (hasDashed)
+      return;
 
+    //zero out all the velocity the player has
+    bc->SetVelocity(Vec3(0.0f, 0.0f, 0.0f));
+    if (gp->LStick_InDeadZone())
+    {
+      if (butt == Buttons::LB)
+        bc->SetVelocity(Vec3(-1000.0f, 0.0f, 0.0f));
+      else if (butt == Buttons::RB)
+        bc->SetVelocity(Vec3(1000.0f, 0.0f, 0.0f));
+    }
+    else
+      bc->SetVelocity(aimingDirection(gp, 'L') * 1000);
+
+    hasDashed = true;
   }
 
   //************************************
@@ -632,7 +659,121 @@ namespace Framework
     
   }
 
+  //Takes a players box collider and clamps the velocity of that box collider
+  //to be from the value of clamp to the negative value of clamp
+  //************************************
+  // Method:    clampVelocity
+  // FullName:  Framework::PlayerController::clampVelocity
+  // Access:    public 
+  // Returns:   void
+  // Qualifier:
+  // Parameter: float clamp
+  //************************************
+  void PlayerController::clampVelocity(float clamp)
+  {
+    if (bc->GetCurrentVelocity().x > clamp)
+      bc->SetVelocity(Vec3(clamp, bc->GetCurrentVelocity().y, 0.0f));
+    if (bc->GetCurrentVelocity().x < -clamp)
+      bc->SetVelocity(Vec3(-clamp, bc->GetCurrentVelocity().y, 0.0f));
+    if (bc->GetCurrentVelocity().y > 450)
+      bc->SetVelocity(Vec3(bc->GetCurrentVelocity().x, clamp, 0.0f));
+    if (bc->GetCurrentVelocity().y < -clamp)
+      bc->SetVelocity(Vec3(bc->GetCurrentVelocity().x, -clamp, 0.0f));
+  }
 
+  //************************************
+  // Method:    jump
+  // FullName:  Framework::PlayerController::jump
+  // Access:    public 
+  // Returns:   void
+  // Qualifier:
+  //************************************
+  void PlayerController::jump()
+  {
+    Vec3 jmpDir;
+    if (gp->LStick_InDeadZone())
+      jmpDir = -snappedNormal;
+    else
+    {
+      jmpDir = aimingDirection(gp, 'L');
+      if (-snappedNormal * jmpDir < 0)
+      {
+        jmpDir += ((-snappedNormal * jmpDir) * snappedNormal) *2;
+      }
+    }
+
+    bc->AddToVelocity(jmpDir * 500);
+    isSnapped = false;
+    normals.clear();
+    
+  }
+
+  //************************************
+  // Method:    PlayerButtonPress
+  // FullName:  Framework::PlayerController::PlayerButtonPress
+  // Access:    public 
+  // Returns:   void
+  // Qualifier:
+  //************************************
+  void PlayerController::PlayerButtonPress()
+  {
+    MetricInfo playerButton;
+    playerButton.mt = PLAYER_BUTTON_PRESS;
+    playerButton.playerNum = playerNum;
+    playerButton.x = (int)ps->GetTranslation().x;
+    playerButton.y = (int)ps->GetTranslation().y;
+    playerButton.button = Buttons::NONE;
+
+    if (gp->ButtonPressed(XButtons.A))
+    {
+      playerButton.button = Buttons::A;
+    }
+    if (gp->ButtonPressed(XButtons.B))
+    {
+      playerButton.button = Buttons::B;
+    }
+    if (gp->ButtonPressed(XButtons.X))
+    {
+      //bc->AddToAngVelocity(.5f);
+      space->GetGameObject(owner)->hooks.Call("ButtonPressed", Buttons::X);
+      playerButton.button = Buttons::X;
+    }
+    if (gp->ButtonPressed(XButtons.Y))
+    {
+      space->GetGameObject(owner)->hooks.Call("ButtonPressed", Buttons::Y);
+      playerButton.button = Buttons::Y;
+    }
+    if (gp->ButtonPressed(XButtons.DPad.Up))
+    {
+      space->GetGameObject(owner)->hooks.Call("ButtonPressed", Buttons::UP);
+      playerButton.button = Buttons::UP;
+    }
+    if (gp->ButtonPressed(XButtons.DPad.Down))
+    {
+      space->GetGameObject(owner)->hooks.Call("ButtonPressed", Buttons::DOWN);
+      playerButton.button = Buttons::DOWN;
+    }
+    if (gp->ButtonPressed(XButtons.DPad.Left))
+    {
+      space->GetGameObject(owner)->hooks.Call("ButtonPressed", Buttons::LEFT);
+      playerButton.button = Buttons::LEFT;
+    }
+    if (gp->ButtonPressed(XButtons.DPad.Right))
+    {
+      space->GetGameObject(owner)->hooks.Call("ButtonPressed", Buttons::RIGHT);
+      playerButton.button = Buttons::RIGHT;
+    }
+    
+    ENGINE->SystemMessage(MetricsMessage(&playerButton));
+  }
+
+  //************************************
+  // Method:    CurrentHealth
+  // FullName:  Framework::PlayerController::CurrentHealth
+  // Access:    public 
+  // Returns:   int
+  // Qualifier:
+  //************************************
   int PlayerController::CurrentHealth()
   {
     return health;

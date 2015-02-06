@@ -15,6 +15,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/lua/CLuaComponent.h"
 
 #include "systems/anttweak/AntTweakModule.h"
+#include "systems/editor/GizmoEditor.h"
 
 namespace Framework
 {
@@ -64,10 +65,27 @@ namespace Framework
     objectBar->SetSize(250, 350);
     objectBar->SetValueWidth(100);
 
-    int r = rand() % (5 - 1);
-    int r2 = rand() % (8 - 1);
+    static int count = 0;
+    static int count2 = 0;
 
-    objectBar->SetPos(255 * r, 300 + 10 * r2);
+    
+
+    if (GIZMO_EDITOR->m_oneObjectBar)
+    {
+      objectBar->SetPos(15, 350);
+    }
+    else
+    {
+      objectBar->SetPos(430 + 255 * count++, 16 + count2 * 20);
+      if (count > 3)
+      {
+        count = 0;
+        ++count2;
+        if (count2 > 4)
+          count2 = 0;
+      }
+    }
+    
 
     obj.UpdateTweakBar();
   }
@@ -239,7 +257,7 @@ namespace Framework
   /// Closes the object tweak bar.
   /// </summary>
   /// <param name="clientData">The client data.</param>
-  static void CloseObjectTweak(void* clientData)
+  void GameObject::CloseObjectTweak(void* clientData)
   {
     GenericLookup* gl = (GenericLookup*)clientData;
     GameObject* obj = gl->space->GetGameObject(gl->self);
@@ -513,7 +531,7 @@ namespace Framework
     objectBar->SetGroupOpened("Delete", false);
 
     objectBar->DefineKeyShortcut("CTRL+x");
-    objectBar->AddButton("Close", CloseObjectTweak, tweakLookup);
+    objectBar->AddButton("Close", GameObject::CloseObjectTweak, tweakLookup);
 
   }
 
@@ -527,6 +545,10 @@ namespace Framework
       CustomTweak(nullptr, Variable(this), nullptr, nullptr);
     else
       UpdateTweakBar();
+
+    ObjectSelectedMessage msg(this);
+
+    ENGINE->SystemMessage(msg);
   }
 
   void GameObject::TweakSetName(void* inname)

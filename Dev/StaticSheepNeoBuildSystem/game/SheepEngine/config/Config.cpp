@@ -1,3 +1,10 @@
+/*****************************************************************
+Filename: Config.cpp
+Project:
+Author(s): Zachary Nawar (Primary)
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+*****************************************************************/
 #include "pch/precompiled.h"
 
 #include "Config.h"
@@ -16,6 +23,9 @@
 #include "systems/skynet/Skynet.h"
 
 #include "WxWindow.h"
+#include "systems/editor/GizmoEditor.h"
+#include "systems/metrics/MetricController.h"
+
 //#include "gfx/wxw/d3d/WxD3DCanvas.h"
 //#include "gfx/wxw/d3d/WxD3DContext.h"
 
@@ -49,6 +59,8 @@ namespace Framework
     Core->AddSystem(new GameLogic());
     Core->AddSystem(new SheepPhysics());
     Core->AddSystem(new SheepAudio());
+    Core->AddSystem(new MetricController());
+    
 
     void* rc = nullptr;
 
@@ -58,17 +70,18 @@ namespace Framework
 
     Core->AddSystem(new SheepGraphics());
     
-
+    Core->AddSystem(new Debug());
     if(editor)
     {
-      Core->AddSystem(new Debug());
+      
       Core->AddSystem(new AntTweakModule());
+      Core->AddSystem(new GizmoEditor());
     }
 
 #if USE_EDITOR
 
 #else
-	Core->MakeWindow(GetModuleHandle(NULL), 1);
+	Core->MakeWindow(GetModuleHandle(NULL), 1, !editor);
 #endif
     return Core;
   }

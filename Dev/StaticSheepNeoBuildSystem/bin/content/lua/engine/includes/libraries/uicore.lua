@@ -1,3 +1,10 @@
+--[[*****************************************************************
+Filename: uicore.lua
+Project: Giga Gravity Games
+Author(s): Zachary Nawar (Primary)
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+*****************************************************************]]
 if PanelFactory == nil then PanelFactory = {} end
 
 local panelMetaTable = GetMeta("Panel")

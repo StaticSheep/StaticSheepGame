@@ -1,4 +1,10 @@
+/*****************************************************************
+Filename: TweakHelper.cpp
+Project:
+Author(s): Zachary Nawar (Primary)
 
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+*****************************************************************/
 #include "pch/precompiled.h"
 #include "TweakHelper.h"
 #include "AntTweakModule.h"
@@ -108,7 +114,8 @@ namespace Framework
             tweakMember = m;
 
             // If the next member is POD we stick it in a group
-            if (m->Type()->IsPOD() || m->Type()->GetAType() == TW_TYPE_STDSTRING || m->Type()->GetAType() == TW_TYPE_COLOR4F)
+            if (m->Type()->IsPOD() || m->Type()->GetAType() == TW_TYPE_STDSTRING || m->Type()->GetAType() == TW_TYPE_COLOR4F
+              || m->Type()->GetAType() == TW_TYPE_DIR3F)
               if (label)
                 bar->DefineGroup(label);
               else
@@ -120,7 +127,8 @@ namespace Framework
 
             mVar.Tweak(bar, uniqueName.c_str(), m->TweakLabel());
 
-            if (!m->Type()->IsPOD() && m->Type()->GetAType() != TW_TYPE_STDSTRING && m->Type()->GetAType() != TW_TYPE_COLOR4F)
+            if (!m->Type()->IsPOD() && m->Type()->GetAType() != TW_TYPE_STDSTRING && m->Type()->GetAType() != TW_TYPE_COLOR4F
+              && m->Type()->GetAType() != TW_TYPE_DIR3F)
             {
               std::string groupName;
 
@@ -141,7 +149,8 @@ namespace Framework
                   bar->SetGroupParent(uniqueName.c_str(), tempLabel);
             }
 
-            tweakMember = nullptr;
+            if (i + 1 == typeMembers.size() || tweakMember == m)
+              tweakMember = nullptr;
 
 
             // Subtract the current member offset from the tweakOffset

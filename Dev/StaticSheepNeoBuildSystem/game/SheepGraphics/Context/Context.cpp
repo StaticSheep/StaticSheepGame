@@ -11,6 +11,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 #include "WICTextureLoader.h"
 #include <direct.h>
+#include "CommonStates.h"
 
 #pragma comment (lib, "d3d11.lib")
 
@@ -20,6 +21,9 @@ using namespace DirectX;
 
 namespace DirectSheep
 {
+
+  float SCREEN_WIDTH = 1337;
+  float SCREEN_HEIGHT = 1337;
   
   /*!
       \brief
@@ -47,7 +51,7 @@ namespace DirectSheep
     m_device(NULL),
     m_deviceContext(NULL),
     m_backBuffer(NULL),
-    m_clearColor(Color(Colors::Black.operator const float *())), // Clear color for backbuffer
+    m_clearColor(Color(Colors::Black .operator const float *())), // Clear color for backbuffer
     m_spriteBlend(Vec4(1, 1, 1, 1)),                             // Start blending color as white
     m_primative(PRIMITIVE_TOPOLOGY_TRIANGLELIST)                 // Draw using triangle lists
   {
@@ -85,6 +89,8 @@ namespace DirectSheep
   {
     // Start viewport at window dimensions
     m_viewport.dim = Dimension((unsigned)width, (unsigned)height);
+    SCREEN_WIDTH = width;
+    SCREEN_HEIGHT = height;
 
     // Regiset window handle
     m_hwnd = hwnd;
@@ -95,9 +101,22 @@ namespace DirectSheep
     // Init DirectX
     InitializeDeviceAndSwapChain();
 
+    m_primativeEffect = std::unique_ptr<BasicEffect>(new BasicEffect(m_device));
+    m_primativeEffect->SetVertexColorEnabled(true);
+
+    m_states = std::unique_ptr<DirectX::CommonStates>(new DirectX::CommonStates(m_device));
+
     // Initialize Sprite Batcher
-    m_batcher = std::unique_ptr<DirectX::SpriteBatch>(new SpriteBatch(m_deviceContext));
+    m_batcher = std::unique_ptr<DirectX::SpriteBatch>(
+      new SpriteBatch(m_deviceContext));
+
     m_batcher->SetRotation(DXGI_MODE_ROTATION_UNSPECIFIED);
+
+    // Initialize Primitive Batcher
+    m_primitiveBatch = std::unique_ptr < DirectX::PrimitiveBatch <
+      DirectX::VertexPositionColor >> (new DirectX::PrimitiveBatch<DirectX::
+      VertexPositionColor>(m_deviceContext));
+
 
     // Initialize Depth Buffer for Z-sorting
     CreateDepthBuffer();
@@ -107,9 +126,6 @@ namespace DirectSheep
     
     // Set DirectX viewport
     SetViewport(0, 0, Dimension((unsigned)width, (unsigned)height));
-
-    // Initializes SpriteFont
-    CreateFontWrapper();
     
     // Initialize all DirectX states
     InitializeRasterizerState();
@@ -130,14 +146,51 @@ namespace DirectSheep
     m_editor = Handle(CAMERA, new Camera(1920, 1080, true));
     m_CameraPool.push_back((Camera*)m_editor.ptr);
 
+    m_postEffects = Handle(CAMERA, new Camera(SCREEN_WIDTH, SCREEN_HEIGHT, true));
+    m_CameraPool.push_back((Camera*)m_postEffects.ptr);
+
     m_camera = m_Perspective;
+
+
+    UpdatePrimativeEffect();
 
     // Initialize Effects
     m_genericEffect = new GenEffect(m_device);
 
+    PositionVertex vertices[4] = {
+        { Vec3(-SCREEN_WIDTH / 2.f, SCREEN_HEIGHT / 2.f, 0.f) }, // top left
+        { Vec3(SCREEN_WIDTH / 2.f, SCREEN_HEIGHT / 2.f, 0.f) },  // top right
+        { Vec3(-SCREEN_WIDTH / 2.f, -SCREEN_HEIGHT / 2.f, 0.f) },// bottom left
+        { Vec3(SCREEN_WIDTH / 2.f, -SCREEN_HEIGHT / 2.f, 0.f) } // bottom right
+    };
+
+    UINT indices[6] = {
+      0, 1, 2,
+      2, 1, 3,
+    };
+
+    m_PLightModel = new Model<PositionVertex>(m_device, vertices, 4, indices, 6);
+
+    m_PointLight = new PointLight(m_device);
+
     // RenderContext is now initialized
     m_initialized = true;
     return true;
+  }
+
+  void RenderContext::UpdatePrimativeEffect()
+  {
+    m_primativeEffect->SetProjection(((Camera*)m_orthoScreen.ptr)->GetProj());
+
+    void const* shaderByteCode;
+    size_t byteCodeLength;
+
+    m_primativeEffect->GetVertexShaderBytecode(&shaderByteCode, &byteCodeLength);
+
+    m_device->CreateInputLayout(VertexPositionColor::InputElements,
+      VertexPositionColor::InputElementCount,
+      shaderByteCode, byteCodeLength,
+      &m_primativeLayout);
   }
 
   
@@ -154,13 +207,17 @@ namespace DirectSheep
       Release(m_handles[i]);
     }
 
+    for (size_t i = 0; i < m_font.size(); ++i)
+    {
+      if (m_font[i].m_spriteFont)
+        delete m_font[i].m_spriteFont;
+    }
+
     SafeRelease(m_device);
 
     SafeRelease(m_deviceContext);
 
     SafeRelease(m_swapChain);
-
-    m_font.Release();
 
     SafeRelease(m_backBuffer);
 
@@ -245,7 +302,9 @@ namespace DirectSheep
   */
     void RenderContext::SetBlendMode(const BlendMode blendMode)
     {
-      m_deviceContext->OMSetBlendState(m_blendStateMap[blendMode],0, 0xffffffff);
+      float blendF[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
+      m_deviceContext->OMSetBlendState(m_blendStateMap[blendMode],
+        blendF, 0xffffffff);
     }
 
   
@@ -348,7 +407,7 @@ namespace DirectSheep
   
    void RenderContext::SetBlendCol(const float r, const float g, const float b, const float a)
    {
-     m_spriteBlend = Vec4(r,g,b,a);
+     m_spriteBlend = Vec4(r, g, b, a);
    }
 
   
@@ -439,7 +498,8 @@ namespace DirectSheep
   */
     void RenderContext::ClearBackBuffer(void)
     {
-      m_deviceContext->ClearRenderTargetView(m_backBuffer, (float*)&Vec4(m_clearColor.R(), m_clearColor.G(), m_clearColor.B(), 1.0f));
+      float clearColor[4] = { 0, 0, 0, 1.0f };
+      m_deviceContext->ClearRenderTargetView(m_backBuffer, clearColor);
     }
 
   
@@ -449,7 +509,8 @@ namespace DirectSheep
   */
     void RenderContext::ClearDepthBuffer(void)
     {
-      m_deviceContext->ClearDepthStencilView(m_depthBuffer.m_depthBuffer, D3D11_CLEAR_DEPTH, 1.0f, 0);
+      m_deviceContext->ClearDepthStencilView(m_depthBuffer.m_depthBuffer,
+        D3D11_CLEAR_DEPTH, 1.0f, 0);
     }
 
     /////////////////////////////////////////////////////////////
@@ -528,30 +589,20 @@ namespace DirectSheep
     }
   }
 
-  GFX_API Framework::Vec2D RenderContext::MeasureString(const char* text,
-    float size, const char* font)
+  Framework::Vec2D RenderContext::MeasureString(const char* text, Framework::Vec2D scale,
+    int fontIndex)
   {
+    if (fontIndex >= m_font.size() || fontIndex < 0)
+      return Framework::Vec2D(0, 0);
+
+    XMVECTOR fontSize;
     std::string tempText = text;
     std::wstring wcText(tempText.begin(), tempText.end());
 
-    std::string tempFont = font;
-    std::wstring wcFont(tempFont.begin(), tempFont.end());
+    fontSize = m_font[fontIndex].m_spriteFont->MeasureString(wcText.c_str());
 
-    FW1_RECTF rect;
-    rect.Left = 0.0f;
-    rect.Right = 0.0f;
-    rect.Top = 0.0f;
-    rect.Bottom = 0.0f;
-
-    FW1_RECTF res = m_font.m_fontWrapper->MeasureString(wcText.c_str(),
-      wcFont.c_str(), size, &rect, FW1_ANALYZEONLY
-      | FW1_RESTORESTATE | FW1_LEFT | FW1_TOP | FW1_NOWORDWRAP);
-
-    float width = res.Right;
-    float height = abs(res.Top) + abs(res.Bottom);
-    //m_font->m_fontWrapper->MeasureString;
-
-    return Framework::Vec2D(width, height);
+    return Framework::Vec2D(XMVectorGetX(fontSize) * scale.x, XMVectorGetY(fontSize) * scale.y);
   }
+
 
 }

@@ -146,12 +146,60 @@ namespace Framework
     return (float)(((c4 * x + c3) * x + c2) * x + c1);
   }
   
-  // 
+  static boost::random::mt19937 rng((uint32_t)std::time(0));
+
   int GetRandom(int min, int max)
   {
-    static boost::random::mt19937 rng((uint32_t)std::time(0));
     boost::random::uniform_int_distribution<> range(min, max);
     return range(rng);
+  }
+
+  float GetRandom(float min, float max)
+  {
+    if(min == max)
+      return min;
+
+    if(min > max)
+    {
+      float temp = min;
+      min = max;
+      max = temp;
+    }
+
+    boost::random::uniform_real_distribution<> range(min, max);
+    return (float)range(rng);
+  }
+
+  Vec3D GetRandomNormalizedVector(const Vec3D& left, const Vec3D& right)
+  {
+    int scalar = GetRandom(0, 100);
+
+    if(scalar % 2)
+    {
+      Vec3D result(left * ( 50.0f / (float)scalar) + right);
+      return result.Normalize();
+    }
+    else
+    {
+      return Vec3D(left + ( 50.0f / (float)scalar) * right).Normalize();
+    }
+  }
+
+  Vec3D GetRandom(const Vec3D& min, const Vec3D& max)
+  {
+    float x = GetRandom(min.x, max.x);
+    float y = GetRandom(min.y, max.y);
+    float z = GetRandom(min.z, max.z);
+
+    return Vec3D(x, y, z);
+  }
+
+  Vec4D GetRandom(const Vec4D& min, const Vec4D& max)
+  {
+    Vec3D rand = GetRandom((Vec3D)min, (Vec3D)max);
+    float w = GetRandom(min.w, max.w);
+
+    return Vec4D(rand.x, rand.y, rand.z, w);
   }
 
 /*!
@@ -323,5 +371,30 @@ namespace Framework
     }
     
     return x; /* then return what we found */
+  }
+
+  float DistanceFromLine(Vec2D ls, Vec2D le, Vec2D point)
+  {
+    return std::abs((le.y - ls.y) * point.x - (le.x - ls.x) * point.y + le.x *
+      ls.y - le.y * ls.x) / std::sqrtf((le.y - ls.y) * (le.y - ls.y) +
+      (le.x - ls.x) * (le.x - ls.x));
+  }
+
+  float DistanceFromSegment(Vec2D s0, Vec2D s1, Vec2D p)
+  {
+    Vec2D v = s1 - s0;
+    Vec2D w = p - s0;
+
+    float c1 = w * v;
+    if (c1 <= 0)
+      return (p - s0).Length();
+
+    float c2 = v * v;
+    if (c2 <= c1)
+      return (p - s1).Length();
+
+    float b = c1 / c2;
+    Vec2D pb = s0 + b * v;
+    return (p - pb).Length();
   }
 } // end namespace

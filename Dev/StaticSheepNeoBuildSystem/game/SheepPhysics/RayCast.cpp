@@ -209,7 +209,8 @@ namespace SheepFizz
 
     float intersection = direction_.y * (vertex.x - position_.x) - direction_.x * (vertex.y - position_.y);
     intersection /= denominator;
-
+    if (intersection <= 0 || intersection >= 1)
+      return false;
     segmentDirection.z = 0;
     collisionPoint = segmentDirection * intersection + vertex;
 
@@ -219,13 +220,51 @@ namespace SheepFizz
 
   bool RayCast::ComplexRayRectangleTest(Body* rectangle)
   {
-    bool rayIntersect = SimpleRayRectangleTest(rectangle);
+    //bool rayIntersect = SimpleRayRectangleTest(rectangle);
 
-    if (!rayIntersect)
-        return false;
+    //if (!rayIntersect)
+        //return false;
+    bool rayIntersect;
 
+    for (unsigned int i = 0; i < ((Rectangle*)(rectangle->shape_))->GetVertexNumber(); ++i)
+    {
+      support_ = i;
+      Vec3D vertex = ((Rectangle*)(rectangle->shape_))->GetVertex(support_);
+      unsigned int postsupport = support_ + 1 < ((Rectangle*)(rectangle->shape_))->GetVertexNumber() ? support_ + 1 : 0;
+      Vec3D lineOne = ((Rectangle*)(rectangle->shape_))->GetVertex(postsupport);
 
-    switch (((Rectangle*)(rectangle->shape_))->GetVertexNumber())
+      vertex += rectangle->position_;
+      lineOne += rectangle->position_;
+
+      lineOne = lineOne - vertex;
+
+      Vec3D collisionPoint;
+
+      Vec3D testLength;
+      float length;
+
+      rayIntersect = RayRectangleIntersect(vertex, lineOne, collisionPoint);
+
+      if (rayIntersect)
+      {
+        testLength = collisionPoint - position_;
+        length = testLength.SquareLength();
+
+        if (length < firstCollisionSquareLength_)
+        {
+          firstCollisionSquareLength_ = length;
+          firstCollision_ = rectangle;
+          firstCollisionPoint_ = collisionPoint;
+        }
+      }
+    }
+
+    if (rayIntersect)
+      return true;
+
+    return false;
+
+    /*switch (((Rectangle*)(rectangle->shape_))->GetVertexNumber())
     {
       case 4:
         {
@@ -338,9 +377,8 @@ namespace SheepFizz
         //will be slower than box
       default:
         break;
-    }
+    }*/
     
-    return true;
   }
 
 }//end of ComplexRayRectangleTest

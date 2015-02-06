@@ -7,9 +7,14 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 *****************************************************************/
 #include "precompiled.h"
 #include "Camera.h"
+#include "Context\Context.h"
+
 namespace DirectSheep
 {
-  Camera::Camera(float screenWidth, float screenHeight, bool isPerspective) : 
+  float Camera::perspectiveW = 0;
+  float Camera::perspectiveZ = 0;
+
+  Camera::Camera(float screenWidth, float screenHeight, bool isPerspective) :
     m_perspective(isPerspective),
     m_width(screenWidth),
     m_height(screenHeight),
@@ -45,7 +50,7 @@ namespace DirectSheep
     m_viewProj = m_View * m_Projection;
   }
 
-  Vec3 Camera::GetPosition()
+  Vec3 Camera::GetPosition() const
   {
     return m_position;
   }
@@ -72,7 +77,7 @@ namespace DirectSheep
     m_Theta = orientation;
   }
 
-  float Camera::GetOrientation()
+  float Camera::GetOrientation() const
   {
     return m_Theta;
   }
@@ -85,7 +90,7 @@ namespace DirectSheep
     m_viewProj = m_View * m_Projection;
   }
 
-  float Camera::GetFov()
+  float Camera::GetFov() const
   {
     return m_Fov;
   }
@@ -119,17 +124,17 @@ namespace DirectSheep
     return Vec2(m_width, m_height);
   }
 
-  Mat4 Camera::getView()
+  Mat4 Camera::GetView() const
   {
     return m_View;
   }
 
-  Mat4 Camera::getProj()
+  Mat4 Camera::GetProj() const
   {
     return m_Projection;
   }
 
-  Mat4 Camera::getViewProj()
+  Mat4 Camera::GetViewProj() const
   {
     return m_viewProj;
   }
@@ -154,4 +159,57 @@ namespace DirectSheep
   {
     m_Projection = DirectX::XMMatrixOrthographicOffCenterLH(0, m_width, -m_height, 0, 0.0f, 1000.0f);
   }
+
+  Vec3 Camera::ToWorld(Vec2 screenPos) const
+  {
+    if (m_perspective)
+    {
+
+      Vec4 world = Vec4::Transform(Vec4(2 * (screenPos.x/SCREEN_WIDTH) - 1,
+        -(2 * (screenPos.y / SCREEN_HEIGHT) - 1),
+        0.11f, 1), m_viewProj.Invert());
+      
+      world.w = 1.0f / world.w;
+
+      world.x *= world.w;
+      world.y *= world.w;
+      world.z *= world.w;
+
+      //world.x = 1600 * (world.x + 1) / 2;
+      //world.y = 900 * (-world.y + 1) / 2;
+
+      return (Vec3)world;
+    }
+    else
+    {
+      return Vec3(screenPos.x, screenPos.y, 0);
+    }
+    
+  }
+
+
+  Vec2 Camera::ToScreen(Vec3 worldPos) const
+  {
+    if (m_perspective)
+    {
+      Vec4 screen = Vec4::Transform(Vec4(worldPos.x, worldPos.y, worldPos.z, 1),
+        m_viewProj);
+
+      perspectiveZ = screen.z;
+      perspectiveW = screen.w;
+      
+      screen.x = SCREEN_WIDTH * ((screen.x / screen.w) + 1) / 2;
+      screen.y = SCREEN_HEIGHT * ((-screen.y / screen.w) + 1) / 2;
+      /*screen.x = SCREEN_WIDTH * ((screen.x / screen.w) + 1) / 2;
+      screen.y = SCREEN_HEIGHT * ((-screen.y / screen.w) + 1) / 2;*/
+
+      return Vec2((float*)&screen);
+    }
+    else
+    {
+      return Vec2(worldPos);
+    }
+    
+  }
+
 }

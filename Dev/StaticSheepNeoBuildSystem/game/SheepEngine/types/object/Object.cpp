@@ -238,6 +238,11 @@ namespace Framework
       }
   }
 
+  GameObject* GameObject::GetParent()
+  {
+    return space->GetHandles().GetAs<GameObject>(m_parent);
+  }
+
   bool GameObject::ObjectSorter(Handle left, Handle right)
   {
     return space->GetHandles().GetAs<GameObject>(left)->guid > space->GetHandles().GetAs<GameObject>(right)->guid;

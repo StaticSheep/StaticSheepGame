@@ -91,6 +91,24 @@ namespace Framework
         free(playerController->weapon);
       playerController->weapon = (Weapon *)weaponType->New();
       space->GetGameObject(owner)->Destroy();
+      MetricInfo metricData;
+      metricData.mt = WEAP_PICKUP;
+      metricData.playerNum = playerController->playerNum;
+      metricData.x = 0;
+      metricData.y = 0;
+      switch (weaponID)
+      {
+      case ePistol:
+        metricData.weapon = PISTOL;
+        break;
+      case eAutomatic:
+        metricData.weapon = AUTO;
+        break;
+      case eShotgun:
+        metricData.weapon = SHOTGUN;
+        break;
+      }
+      ENGINE->SystemMessage(MetricsMessage(&metricData));
     }
 
     if (OtherObject->archetype == "KillBox" || 

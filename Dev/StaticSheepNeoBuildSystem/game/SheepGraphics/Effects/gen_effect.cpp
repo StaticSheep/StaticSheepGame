@@ -52,7 +52,9 @@ namespace DirectSheep
     m_ambient->setData(pContext, buf);
   }
 
-  GenEffect::GenEffect(ID3D11Device* pDevice) : Effect(pDevice, "content/shaders/VShader.cso", "content/shaders/PShader.cso")
+  GenEffect::GenEffect(ID3D11Device* pDevice)
+    : Effect(pDevice, "content/shaders/VShader.cso",
+    "content/shaders/PShader.cso")
   {
     m_posUV = new CBuffer<PosUV>(pDevice);
 

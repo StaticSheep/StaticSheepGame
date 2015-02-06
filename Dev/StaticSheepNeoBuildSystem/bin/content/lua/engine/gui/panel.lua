@@ -1,3 +1,10 @@
+--[[*****************************************************************
+Filename: Panel.lua
+Project: Giga Gravity Games
+Author(s): Zachary Nawar (Primary)
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+*****************************************************************]]
 local META = GetMeta("Panel")
 
 function META:Init()
@@ -129,31 +136,27 @@ end
 
 function META:GetPriority()
   if not self.parent then
-    return self.priority
+    return self.priority + self.pos.z
   else
-    return self.parent:GetPriority()
+    return self.parent:GetPriority() - 0.01
   end
 end
 
 function META:_PreDraw()
   if not self.parent then
-    surface.ForceZ(true, self.priority)
+    surface.ForceZ(true, self.priority + self.pos.z)
     --surface.SetCamState(self.camMode)
-  end
-
-  if self.pos.z ~= 0 then
+  else
     surface.ForceZ(true, self:GetPriority() + self.pos.z)
   end
+
+  -- if self.pos.z ~= 0 then
+  --   surface.ForceZ(true, self:GetPriority() + self.pos.z)
+  -- end
+  
 end
 
 function META:_PostDraw()
-  if self.pos.z ~= 0 then
-    if self:GetPriority() ~= 0 then
-      surface.ForceZ(true, self:GetPriority())
-    else
-      surface.ForceZ(false, 0)
-    end
-  end
 
   if not self.parent then
     surface.ForceZ(false, 0)

@@ -1,0 +1,54 @@
+GameObject
+{
+  name std::string "SlotMachine"
+  archetype std::string "IntroMachine"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 0.000000
+      y_ float 0.000000
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 0.780000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  SlotMachine
+  {
+    m_stopTexture std::string "ggg_reel_tp.png"
+    m_spinTexture std::string "ggg_reel_blur_tp.png"
+    m_slotBackTexture std::string "slotmachine_slotback_tp.png"
+    numSlots int 16
+    slotSize Vec2
+    {
+      X float 0.550000
+      Y float 0.750000
+    }
+    slotMargin float 40.000000
+    slotOffset Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+    slotBackSize Vec2
+    {
+      X float 2.600000
+      Y float 1.550000
+    }
+    startTime float 1.500000
+    bonusTime float 0.150000
+    useSpriteColor bool false
+    backingColor Vec4
+    {
+      R float 1.000000
+      G float 0.705882
+      B float 0.000000
+      A float 1.000000
+    }
+  }
+}

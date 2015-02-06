@@ -1,3 +1,10 @@
+/*****************************************************************
+Filename: EngineLua.cpp
+Project:
+Author(s): Zachary Nawar (Primary)
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+*****************************************************************/
 #include "pch/precompiled.h"
 
 #include "engine/core/Engine.h"
@@ -16,6 +23,12 @@ namespace Framework
   {
     m_loadLuaLevels = true;
     m_luaLevelsToLoad.push(path);
+  }
+
+  void Engine::LuaChangeLevel(const char* name)
+  {
+    ENGINE->m_levelChange = true;
+    ENGINE->m_nextLevel = name;
   }
 
   void Engine::LoadLuaLevels()

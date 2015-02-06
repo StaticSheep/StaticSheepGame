@@ -18,10 +18,15 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #endif
 #endif
 
+
 #include <d3d11_1.h>
 #include <directxcolors.h>
 #include <FW1FontWrapper.h>
 #include <DirectXPackedVector.h>
 #include "SpriteBatch.h"
-
-
+#include "PrimitiveBatch.h"
+#include "GeometricPrimitive.h"
+#include "SpriteFont.h"
+#include "VertexTypes.h"
+#include "Effects.h"
+#include "DXGI1_2.h"

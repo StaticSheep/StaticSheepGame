@@ -9,6 +9,8 @@ namespace Framework
     virtual ~Laser();
 
     virtual void Fire(GameObject*);
+    virtual void DelayUpdate(float dt);
+    virtual void ResetDelay();
 
   };
 }

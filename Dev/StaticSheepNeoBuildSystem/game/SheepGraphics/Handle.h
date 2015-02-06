@@ -18,17 +18,17 @@ namespace DirectSheep
 class Handle
 {
   public:
-   GFX_API Handle();
+   Handle();
 
-   GFX_API ObjectType GetType(void) const;
-   GFX_API int GetIndex(void) const;
+   ObjectType GetType(void) const;
+   int GetIndex(void) const;
 
     int operator*(void) const;
     operator bool(void) const;
-   GFX_API bool operator==(const Handle& rhs) const;
-   GFX_API bool operator!=(const Handle& rhs) const;
-   GFX_API bool operator<(const Handle& rhs) const; // For STL comparisons
-   GFX_API Handle(ObjectType type, int index);
+   bool operator==(const Handle& rhs) const;
+   bool operator!=(const Handle& rhs) const;
+   bool operator<(const Handle& rhs) const; // For STL comparisons
+   Handle(ObjectType type, int index);
    Handle(ObjectType type, void* ptr);
   private:
 

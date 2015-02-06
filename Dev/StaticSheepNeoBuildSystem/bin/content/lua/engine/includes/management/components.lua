@@ -1,3 +1,10 @@
+--[[*****************************************************************
+Filename: components.lua
+Project: Giga Gravity Games
+Author(s): Zachary Nawar (Primary)
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+*****************************************************************]]
 function RegisterComponent(meta)
   print("Registered LuaComponent: "..meta.__name)
   if LuaComponents[meta.__name] == nil then
@@ -51,6 +58,7 @@ function AttachComponentToObject(space, owner, cid, cname)
   component._space = space
   component._cid = cid
   component._type = cname
+  component._spacePtr = GameSpaces[space]._pointer
 
   print("[GameSpace: "..space.."] Attached LuaComponent: "..cname.." ["..cid.."] to C++ GameObject: "..owner)
 

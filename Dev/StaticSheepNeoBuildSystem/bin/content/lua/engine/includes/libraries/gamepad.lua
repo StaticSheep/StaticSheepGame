@@ -1,3 +1,10 @@
+--[[*****************************************************************
+Filename: gamepad.lua
+Project: Giga Gravity Games
+Author(s): Zachary Nawar (Primary)
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+*****************************************************************]]
 GAMEPAD_A = 0
 GAMEPAD_B = 1
 GAMEPAD_X = 2

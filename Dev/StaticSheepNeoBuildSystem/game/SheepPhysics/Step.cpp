@@ -271,7 +271,7 @@ namespace SheepFizz
       break;
 
     default:
-      return 0;
+      return Vec3D();
       break;
     }
 
@@ -347,7 +347,7 @@ namespace SheepFizz
     {
       for (unsigned i = 0; i < (bodies_).Size(); ++i)
       {
-          if (!(Collisions[(*ray).collisionGroup][((Body*)(bodies_)[i])->collisionGroup_]))
+        if (!(Collisions[(*ray).collisionGroup][((Body*)(bodies_)[i])->collisionGroup_]))
           continue;
 
         rayIntersect = rayCast_.ComplexRayTest((Body*)(bodies_)[i]);
@@ -356,8 +356,11 @@ namespace SheepFizz
           rayCast_.GetRayConfig()->bodyIntersections_.push_back((((Body*)&bodies_)[i]).userData);
       }
       
-      rayCast_.GetRayConfig()->firstCollisionLocation = rayCast_.GetFirstCollisionPoint() * meterScale_;
-      rayCast_.GetRayConfig()->firstCollisionBody = rayCast_.GetFirstCollisionBody()->userData;
+      if (!rayCast_.GetRayConfig()->bodyIntersections_.empty())
+      {
+        rayCast_.GetRayConfig()->firstCollisionLocation = rayCast_.GetFirstCollisionPoint() * meterScale_;
+        rayCast_.GetRayConfig()->firstCollisionBody = rayCast_.GetFirstCollisionBody()->userData;
+      }
 
     }
 

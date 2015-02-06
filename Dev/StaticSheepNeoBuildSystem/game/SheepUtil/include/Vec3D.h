@@ -17,6 +17,8 @@ namespace Framework
     // constructor, defaults to 0 vector
     Vec3D(float _x = 0.0f, float _y = 0.0f, float _z = 0.0f) : Vec2D( _x, _y)
     {z = _z; };
+
+    Vec3D(float* v) : Vec2D(*v, *(v + 1)), z(*(v + 2)) {};
     
     // conversion constructor, assume vector
     Vec3D(const Vec2D& copy) { x = copy.x; y = copy.y; z = 0.0f;};
@@ -50,6 +52,8 @@ namespace Framework
     Vec3D& Vec3D::operator*=(float scalar);       // scalar
     Vec3D operator^(const Vec3D&) const;          // cross product
     Vec3D& operator=(const Vec3D&);               // assignment
+
+    bool operator!=(const Vec3D&);
     
     // data
     union

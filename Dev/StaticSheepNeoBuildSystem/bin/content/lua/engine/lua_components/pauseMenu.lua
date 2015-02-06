@@ -1,3 +1,10 @@
+--[[*****************************************************************
+Filename: pauseMenu.lua
+Project: Giga Gravity Games
+Author(s): Zachary Nawar (Primary)
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+*****************************************************************]]
 local PauseMenu = GetMeta("PauseMenu")
 
 InheritMeta(PauseMenu, "LuaComponent")
@@ -30,7 +37,7 @@ function PauseMenu:AddButton(text)
 
   btn:SetText(text)
 
-  btn:SetFontSize(ScreenScale(12))
+  btn:SetFontSize(ScreenScale(8))
   btn:SetSize(ScreenScale(80), ScreenScale(16))
 
   btn:SetFontColor(Color(200, 200, 200, 255))
@@ -63,14 +70,14 @@ function PauseMenu:MakeMenu()
   self:Register(self.base)
   self.base:SetColor(Color(0, 0, 0, 220))
   self.base:SetSize(ScrW() / 4, ScrH())
-  self.base:SetPos(-self.base.size.x, 0)
+  self.base:SetPos(-self.base.size.x, 0, -1)
   self.base:SetCamMode(2)
 
   local title = gui.Create("Label", self.base)
   self:Register(title)
   title:SetPos(self.base:GetSize().x / 2, ScrH() / 4)
   title:SetText("PAUSE")
-  title:SetFontSize(ScreenScale(32))
+  title:SetFontSize(ScreenScale(20))
   title:SetFont("Consolas")
   title:SetXAlignment(TEXT_ALIGN_CENTER)
   title:SetColor(Color(255, 255, 255))
@@ -78,7 +85,7 @@ function PauseMenu:MakeMenu()
   self.ypos = title:GetPos().y + title:DrawSize().y
 
   local btn
-  btn = self:AddButton("Resume")
+  btn = self:AddButton("Resume Game")
   btn:SetOnPressed(function()
     self:CloseMenu()
   end)
@@ -101,9 +108,10 @@ function PauseMenu:MakeMenu()
 
   local rights = gui.Create("Label", self.base)
   self:Register(rights)
-  rights:SetPos(self.base:GetSize().x / 2, ScrH() - 100)
+  rights:SetPos(20, ScrH() - 100)
+  rights:SetSize(ScreenScale(3))
   rights:SetText("All content (c) 2014 DigiPen (USA) Corporation, all rights reserved.\nFMOD Studio Copyright (c) 2005-2011 Firelight Technologies Pty, Ltd.")
-  rights:SetXAlignment(TEXT_ALIGN_CENTER)
+  rights:SetXAlignment(TEXT_ALIGN_LEFT)
 end
 
 function PauseMenu:MakeHelpMenu()
@@ -124,11 +132,27 @@ function PauseMenu:MakeHelpMenu()
   helpImage:SetPos(helpMenu:GetSize().x * 0.2, helpMenu:GetSize().y * 0.1)
   helpImage:SetTexture("Controller_Instructions.png")
 
+  local requires = gui.Create("Label", helpMenu)
+  self:Register(requires)
+  requires:SetText("This game uses an XBOX game pad.")
+  requires:SetPos(helpMenu:GetSize().x / 2, 30)
+  requires:SetSize(ScreenScale(5))
+  requires:SetColor(Color(255, 20, 20))
+  requires:SetXAlignment(TEXT_ALIGN_CENTER)
+
+  -- local gstart = gui.Create("Label", helpMenu)
+  -- self:Register(gstart)
+  -- gstart:SetText("Press A to start the game.")
+  -- gstart:SetPos(helpMenu:GetSize().x / 2, 80)
+  -- gstart:SetSize(ScreenScale(8))
+  -- gstart:SetColor(Color(255, 255, 255))
+  -- gstart:SetXAlignment(TEXT_ALIGN_CENTER)
+
   local helpText = gui.Create("Label", helpMenu)
   self:Register(helpText)
   helpText:SetText("Keyboard Controls:\nW,A,S,D - Menu Navigation & Movement\nArrow Keys - Aim\nENTER - Menu Selection\nQ - Jump\nSpace - Fire")
   helpText:SetPos(helpMenu:GetSize().x * 0.2, helpMenu:GetSize().y * 0.6 + helpMenu:GetSize().y * 0.1 + 10)
-  helpText:SetSize(24)
+  helpText:SetSize(ScreenScale(5))
 end
 
 function PauseMenu:HideHelpMenu()
@@ -149,12 +173,23 @@ function PauseMenu:Init()
   self._opened = false
 
   self.super.Init(self)
+
+  -- self:PauseSpace(true)
+
+
+  -- self:MakeMenu()
+  -- self:MakeHelpMenu()
+
+  --self.base.pos.x = 0
 end
 
 function PauseMenu:Refresh()
   --self:PauseSpace(true)
   --self:CleanUp()
   
+  self:CleanUp()
+  self:MakeMenu()
+  self:MakeHelpMenu()
 
   --self:PauseSpace(true)
   --self:MakeMenu()

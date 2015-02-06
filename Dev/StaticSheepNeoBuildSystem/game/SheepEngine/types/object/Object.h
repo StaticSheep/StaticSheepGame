@@ -65,7 +65,7 @@ namespace Framework
       ChildArray& GetChildren() { return m_children; }
 
       // Gets the parent of this object
-      GameObject* GetParent() { return space->GetHandles().GetAs<GameObject>(m_parent); }
+      GameObject* GetParent();
 
       // Gets a specific child based on a GUID
       GameObject* GetChild(size_t guid);
@@ -153,6 +153,8 @@ namespace Framework
       // Updates the object name
       void TweakSetName(void* name);
 
+      static void CloseObjectTweak(void* clientData);
+
       /*========================== LUA FUNCTIONS =========================*/
 
       void LuaGetComponent(size_t type);
@@ -191,6 +193,7 @@ namespace Framework
       std::vector<TweakObjComp*>* tweakCCompCallbacks;
       std::vector<TweakObjComp*>* tweakLuaCompCallbacks;
     
+      bool m_editorFocus = false;
 
     private:
 

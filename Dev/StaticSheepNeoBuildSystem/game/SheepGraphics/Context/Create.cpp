@@ -11,6 +11,9 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 #include "WICTextureLoader.h"
 #include <direct.h>
+
+#pragma comment(lib, "dxgi.lib")
+
 using namespace DirectX;
 namespace DirectSheep
 {
@@ -118,7 +121,9 @@ namespace DirectSheep
     texd.Height = m_viewport.dim.height;
     texd.ArraySize = 1;                      // Only one depth buffer
     texd.MipLevels = 1;                      // Mip Mapping
-    texd.SampleDesc.Count = 4;
+    texd.SampleDesc.Count = 1;
+    texd.SampleDesc.Quality = 0;
+    texd.Usage = D3D11_USAGE_DEFAULT;
     texd.Format = DXGI_FORMAT_D32_FLOAT;
     texd.BindFlags = D3D11_BIND_DEPTH_STENCIL; // This is a depth stencil
 
@@ -128,35 +133,22 @@ namespace DirectSheep
     D3D11_DEPTH_STENCIL_VIEW_DESC dsvd;
     ZeroMemory(&dsvd, sizeof(dsvd));   // Zero members
 
-    dsvd.Format = DXGI_FORMAT_D32_FLOAT;
-    dsvd.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2DMS;
+    dsvd.Format = texd.Format;
+    dsvd.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
 
     DXVerify(m_device->CreateDepthStencilView(m_depthBuffer.texture2D, &dsvd, &m_depthBuffer.m_depthBuffer));
 
     return true;
   }
 
-  bool RenderContext::CreateFontWrapper(void)
+  int RenderContext::AddFont(const char* fontname,const char* filename)
   {
-    DXVerify(FW1CreateFactory(FW1_VERSION, &m_font.m_fontFactory));
+    std::string font = std::string(filename);
+    std::wstring wFont(font.begin(), font.end());
 
-    FW1_FONTWRAPPERCREATEPARAMS Params;
-    ZeroMemory(&Params, sizeof(Params));
+    m_font.push_back(Font(new DirectX::SpriteFont(m_device, wFont.c_str())));
 
-    Params.SheetMipLevels = 5;
-    Params.AnisotropicFiltering = TRUE;
-    Params.DefaultFontParams.pszFontFamily = L"Arial";
-    Params.DefaultFontParams.FontWeight = DWRITE_FONT_WEIGHT_NORMAL;
-    Params.DefaultFontParams.FontStyle = DWRITE_FONT_STYLE_NORMAL;
-    Params.DefaultFontParams.FontStretch = DWRITE_FONT_STRETCH_NORMAL;
-
-    DXVerify(m_font.m_fontFactory->CreateFontWrapper(m_device, NULL, &Params, &m_font.m_fontWrapper));
-
-    m_font.m_fontFactory->Release();
-    m_font.m_fontFactory = NULL;
-
-
-    return true;
+    return m_font.size() - 1;
   }
 
   void RenderContext::InitializeDeviceAndSwapChain(void)
@@ -171,7 +163,7 @@ namespace DirectSheep
     UINT deviceFlags = 0; // Flags for registering device
 
 #if defined (_DEBUG)
-    //deviceFlags |= D3D11_CREATE_DEVICE_DEBUG; // If in debug mode set DirectX to debug mode
+    deviceFlags |= D3D11_CREATE_DEVICE_DEBUG; // If in debug mode set DirectX to debug mode
 #endif
 
     // Array of driver types in order of most prefered to least
@@ -209,9 +201,10 @@ namespace DirectSheep
     swapDesc.BufferDesc.Height = m_viewport.dim.height;         // back buffer height
     swapDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;     // use buffer as render target
     swapDesc.OutputWindow = m_hwnd;                             // attach to window
-    swapDesc.SampleDesc.Count = 4;                              // # of multisamples
+    swapDesc.SampleDesc.Count = 1;                              // # of multisamples
+    swapDesc.SampleDesc.Quality = 0;
     swapDesc.Windowed = !m_fullscreen;                          // windowed/full-screen mode
-    swapDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;    // allow full-screen switching
+    //swapDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;    // allow full-screen switching
 
     // create DirectX device, it's context, and swapchain using swapDesc
 
@@ -220,22 +213,27 @@ namespace DirectSheep
     {
       driverType = driverTypes[driverTypeIndex]; // Grabs driver type
 
+      hr = CreateDXGIFactory(__uuidof(IDXGIFactory2), (void**)(&m_factory));
+
+      
+
+      hr = D3D11CreateDevice(nullptr, driverType, NULL, deviceFlags,
+        featureLevels, 1, D3D11_SDK_VERSION, &m_device,
+        &featureLevel, &m_deviceContext);
+
+      
+      
+
       // Attempts to init
-      hr = D3D11CreateDeviceAndSwapChain(NULL,      // No adapter
-        driverType,       // Current driver setting attempt
-        NULL,             // Don't want to use software
-        deviceFlags,      // Special flags(debug)
-        featureLevels,    // Pointer to feature levels
-        numFeatureLevels, // Size of feature level array
-        D3D11_SDK_VERSION,// Use DirectX 11 SDK
-        &swapDesc,        // Struct with all params for device creatiosn
-        &m_swapChain,     // Set swapchain pointer
-        &m_device,        // Set device pointer
-        &featureLevel,    // Give array of fearure levels DX will use best option
-        &m_deviceContext);// Set devic context pointer
+      hr = m_factory->CreateSwapChain(m_device, &swapDesc, &m_swapChain);
 
       if (SUCCEEDED(hr)) // If succeeded then break otherwise try lower driver settings
         break;
+      else
+      {
+        
+      }
+      
     }
     DXVerify(hr); // Check for any DirectX specific error messages
 
@@ -250,7 +248,7 @@ namespace DirectSheep
     rd.DepthClipEnable = TRUE;
     rd.ScissorEnable = FALSE;
     rd.AntialiasedLineEnable = FALSE;
-    rd.MultisampleEnable = TRUE;
+    rd.MultisampleEnable = FALSE;
     rd.DepthBias = 0;
     rd.DepthBiasClamp = 0.0f;
     rd.SlopeScaledDepthBias = 0.0f;
@@ -276,30 +274,67 @@ namespace DirectSheep
 
   void RenderContext::InitializeBlendModes(void)
   {
+    // Alpha blend state
     D3D11_BLEND_DESC bd;
     ZeroMemory(&bd, sizeof(D3D11_BLEND_DESC));
+
     bd.RenderTarget[0].BlendEnable = TRUE;
+
     bd.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
     bd.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
     bd.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
+
+    bd.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+    bd.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
+    bd.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
+
+    bd.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+    bd.AlphaToCoverageEnable = false;
+    bd.IndependentBlendEnable = false;
+    
+
+    // Additive blend state
+    DXVerify(m_device->CreateBlendState(&bd, &m_blendStateMap[BLEND_MODE_ALPHA]));
+
+    ZeroMemory(&bd, sizeof(D3D11_BLEND_DESC));
+    bd.RenderTarget[0].BlendEnable = true;
+    bd.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
+    bd.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
+    bd.RenderTarget[0].DestBlend = D3D11_BLEND_DEST_ALPHA;
+    bd.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+    bd.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
+    bd.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ONE;
+    bd.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+
+    bd.AlphaToCoverageEnable = false;
+    bd.IndependentBlendEnable = false;
+
+    DXVerify(m_device->CreateBlendState(&bd, &m_blendStateMap[BLEND_MODE_ADDITIVE]));
+
+    ZeroMemory(&bd, sizeof(D3D11_BLEND_DESC));
+    bd.RenderTarget[0].BlendEnable = true;
+    bd.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
+    bd.RenderTarget[0].SrcBlend = D3D11_BLEND_ZERO;
+    bd.RenderTarget[0].DestBlend = D3D11_BLEND_SRC_COLOR;
     bd.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
     bd.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
     bd.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
     bd.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
-    bd.IndependentBlendEnable = FALSE;
-    bd.AlphaToCoverageEnable = TRUE;
 
-    DXVerify(m_device->CreateBlendState(&bd, &m_blendStateMap[BLEND_MODE_ALPHA]));
+    bd.AlphaToCoverageEnable = true;
+    bd.IndependentBlendEnable = false;
+
+    DXVerify(m_device->CreateBlendState(&bd, &m_blendStateMap[BLEND_MODE_MULTIPLY]));
   }
 
   void RenderContext::InitializeSamplerState(void)
   {
     D3D11_SAMPLER_DESC sd;
-    sd.Filter = D3D11_FILTER_ANISOTROPIC;
+    sd.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT;// D3D11_FILTER_ANISOTROPIC;
     sd.MaxAnisotropy = 16;
-    sd.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
-    sd.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
-    sd.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
+    sd.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+    sd.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+    sd.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
     sd.BorderColor[0] = 0.0f;
     sd.BorderColor[1] = 0.0f;
     sd.BorderColor[2] = 0.0f;
@@ -318,8 +353,8 @@ namespace DirectSheep
     ZeroMemory(&dsDesc, sizeof(D3D11_DEPTH_STENCIL_DESC));
     // Paramaters for Depth test
     dsDesc.DepthEnable = true;
-    dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
-    dsDesc.DepthFunc = D3D11_COMPARISON_LESS_EQUAL;
+    dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
+    dsDesc.DepthFunc = D3D11_COMPARISON_ALWAYS;
 
     // Paramaters for Stencil test
     dsDesc.StencilEnable = true;

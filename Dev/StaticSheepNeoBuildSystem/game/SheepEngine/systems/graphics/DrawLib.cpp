@@ -8,6 +8,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 *****************************************************************/
 #include "pch/precompiled.h"
 #include "SheepGraphics.h"
+#include "systems/graphics/Debug.h"
 #include <math.h>
 
 namespace Framework
@@ -15,6 +16,8 @@ namespace Framework
   bool Draw::m_useCamera = true;
   Vec4 Draw::m_Color;
   Vec2 Draw::m_TextPos;
+  Vec2 Draw::m_UVMin;
+  Vec2 Draw::m_UVMax;
   unsigned Draw::m_TextureID;
   int Draw::m_whiteTextureID = -1;
   DirectSheep::Handle Draw::m_whiteHandle(DirectSheep::TEXTURE, 0);
@@ -23,7 +26,7 @@ namespace Framework
 
   void Draw::SetCamState(int camState)
   {
-    Draw::m_useCamera = camState != 0;
+    Draw::m_useCamera = camState == 0;
     GRAPHICS->SetCamState(camState);
   }
 
@@ -73,11 +76,17 @@ namespace Framework
     GRAPHICS->SetColor(Draw::m_Color);
   }
 
+  void Draw::SetUVs(Vec2 UVMin, Vec2 UVMax)
+  {
+    m_UVMin = UVMin;
+    m_UVMax = UVMax;
+  }
+
   void Draw::DrawRect(float x, float y, float width, float height)
   {
     GRAPHICS->SetSize(width, height);
     SetPosition(x, y);
-    GRAPHICS->FlipSprite(false, false);
+    GRAPHICS->SetSpriteFlip(false, false);
 
     if (m_whiteTextureID == -1)
     {
@@ -85,22 +94,102 @@ namespace Framework
       new (&m_whiteHandle) DirectSheep::Handle(DirectSheep::TEXTURE, m_whiteTextureID);
     }
     
-    GRAPHICS->SetUV(Vec2(0, 0), Vec2(1, 1));
+    GRAPHICS->SetUV(m_UVMin, m_UVMax);
 
-    GRAPHICS->BindTexture(m_whiteTextureID);
-    GRAPHICS->RawDraw();
-    //GRAPHICS->DrawBatched(m_whiteHandle);
+    //GRAPHICS->BindTexture(m_whiteTextureID);
+    //GRAPHICS->RawDraw();
+    GRAPHICS->DrawBatched(m_whiteHandle);
+
+    SetUVs(Vec2(), Vec2(1, 1));
+  }
+
+  Vec2 Draw::RotateAroundPoint(Vec2 p, Vec2 o, float theta)
+  {
+    return Vec2((p.x - o.x)*cos(theta) - (p.y - o.y)*sin(theta) + o.x,
+      (p.x - o.x)*sin(theta) + (p.y - o.y)*cos(theta) + o.y);
+  }
+
+  void Draw::DrawRectOutline(float x, float y, float width, float height,
+    float theta)
+  {
+    float x1, y1, x2, y2;
+    float xc, yc;
+
+    xc = x + width / 2;
+    yc = y + height / 2;
+
+    x1 = ((x)-xc)*cos(theta) - ((y)-yc)*sin(theta) + xc;
+    y1 = ((x)-xc)*sin(theta) + ((y)-yc)*cos(theta) + yc;
+
+    x2 = ((x + width)-xc)*cos(theta) - ((y)-yc)*sin(theta) + xc;
+    y2 = ((x + width) - xc)*sin(theta) + ((y)-yc)*cos(theta) + yc;
+
+    Draw::DrawLine(x1, y1,
+      x2, y2);
+
+    x1 = ((x + width) - xc)*cos(theta) - ((y)-yc)*sin(theta) + xc;
+    y1 = ((x + width) - xc)*sin(theta) + ((y)-yc)*cos(theta) + yc;
+
+    x2 = ((x + width) - xc)*cos(theta) - ((y + height) - yc)*sin(theta) + xc;
+    y2 = ((x + width) - xc)*sin(theta) + ((y + height) - yc)*cos(theta) + yc;
+
+
+    Draw::DrawLine(x1, y1,
+      x2, y2);
+
+    /*Draw::DrawLine(x + width, y,
+      x + width, y + height);*/
+
+    x1 = ((x + width) - xc)*cos(theta) - ((y + height) - yc)*sin(theta) + xc;
+    y1 = ((x + width) - xc)*sin(theta) + ((y + height) - yc)*cos(theta) + yc;
+
+    x2 = ((x) - xc)*cos(theta) - ((y + height) - yc)*sin(theta) + xc;
+    y2 = ((x) - xc)*sin(theta) + ((y + height) - yc)*cos(theta) + yc;
+
+    Draw::DrawLine(x1, y1,
+      x2, y2);
+
+    /*Draw::DrawLine(x + width, y + height,
+      x, y + height);*/
+
+    x1 = ((x)-xc)*cos(theta) - ((y + height) - yc)*sin(theta) + xc;
+    y1 = ((x)-xc)*sin(theta) + ((y + height) - yc)*cos(theta) + yc;
+
+    x2 = ((x)-xc)*cos(theta) - ((y) - yc)*sin(theta) + xc;
+    y2 = ((x)-xc)*sin(theta) + ((y) - yc)*cos(theta) + yc;
+
+    Draw::DrawLine(x1, y1,
+      x2, y2);
+
+    /*Draw::DrawLine(x, y + height,
+      x, y);*/
+  }
+
+  void Draw::DrawQuad(float x, float y, float width, float height, float theta)
+  {
+    Vec3 v1(x, y),
+      v2(x, y - height),
+      v3(x + width, y - height),
+      v4(x + width, y),
+      center(x + width / 2, y + height / 2);
+
+    v1 = RotateAroundPoint(v1, center, theta);
+    v2 = RotateAroundPoint(v2, center, theta);
+    v3 = RotateAroundPoint(v3, center, theta);
+    v4 = RotateAroundPoint(v4, center, theta);
+
+    GRAPHICS->RC()->DrawQuad(v1, v2, v3, v4);
   }
 
   void Draw::DrawTexturedRect(float x, float y, float width, float height)
   {
     GRAPHICS->SetSize(width, height);
     SetPosition(x, y);
-    GRAPHICS->FlipSprite(false, false);
+    GRAPHICS->SetSpriteFlip(false, false);
     
-//     GRAPHICS->BindTexture(m_TextureID);
-//     GRAPHICS->RawDraw();
-    GRAPHICS->SetUV(Vec2(0, 0), Vec2(1, 1));
+    GRAPHICS->SetUV(m_UVMin, m_UVMax);
+    SetUVs(Vec2(), Vec2(1, 1));
+
     GRAPHICS->DrawBatched(DirectSheep::Handle(DirectSheep::TEXTURE, m_TextureID));
   }
 
@@ -108,26 +197,32 @@ namespace Framework
   {
     GRAPHICS->SetSize(width, height);
     SetPosition(x, y);
-    GRAPHICS->FlipSprite(false, false);
+    GRAPHICS->SetSpriteFlip(false, false);
     //GRAPHICS->BindTexture(m_TextureID);
 
 
-    GRAPHICS->SetUV(Vec2(0, 0), Vec2(1, 1));
+    GRAPHICS->SetUV(m_UVMin, m_UVMax);
+    SetUVs(Vec2(), Vec2(1, 1));
     GRAPHICS->SetRotation(theta);
     GRAPHICS->DrawBatched(DirectSheep::Handle(DirectSheep::TEXTURE, m_TextureID));
     
     GRAPHICS->SetRotation(0);
   }
 
-  void Draw::DrawLine(float sX, float sY, float eX, float eY, float width/* =1 */)
+  void Draw::DrawLine(float sX, float sY, float eX, float eY)
   {
+    if (!m_useCamera)
+    {
+      GRAPHICS->RC()->DrawLine(Vec3(sX, sY, 0), Vec3(eX, eY, 0));
+      return;
+    }
+
     float diffX = eX - sX;
-    float diffY = eY - sY;
+    float diffY = eY - sY; 
 
-    if (m_whiteTextureID == -1)
-      m_whiteTextureID = GRAPHICS->GetTextureID("White.png");
+    
 
-    GRAPHICS->SetSize(sqrt(diffX * diffX + diffY * diffY), width);
+    GRAPHICS->SetSize(sqrt(diffX * diffX + diffY * diffY), 1);
 
     if (m_whiteTextureID == -1)
     {
@@ -142,15 +237,33 @@ namespace Framework
       rotation = atan(diffY / diffX);
      
     float offsetX = diffX * cos(rotation) - diffY * sin(rotation);
-    float offxetY = diffX * sin(rotation) - diffY * cos(rotation);
+    float offsetY = diffX * sin(rotation) - diffY * cos(rotation);
 
     GRAPHICS->SetRotation(rotation);
 
-   SetPosition(sX + diffX / 2, sY + diffY / 2);
+    if (m_useCamera)
+      SetPosition(sX + diffX / 2, sY + diffY / 2);
+    else
+      SetPosition(sX, sY);
+
     GRAPHICS->SetUV(Vec2(0, 0), Vec2(1, 1));
 
     GRAPHICS->DrawBatched(m_whiteHandle);
 
+  }
+
+  void Draw::DrawTriangle(float x0, float y0, float x1, float y1,
+    float x2, float y2)
+  {
+    GRAPHICS->RC()->DrawTriangle(Vec3(x0, y0, 0), Vec3(x1, y1, 0),
+      Vec3(x2, y2, 0));
+  }
+
+  void DrawLine(float sX, float sY, float eX, float eY,
+    Vec4 startColor, Vec4 endColor)
+  {
+    GRAPHICS->RC()->DrawLine(Vec3(sX, sY, 0), Vec3(eX, eY, 0),
+      startColor, endColor);
   }
 
   void Draw::DrawCircle(float x, float y, float radius)
@@ -162,6 +275,9 @@ namespace Framework
     float lineAngle = (2.0f * (float)Framework::PI) / (float)numLines;
 
     Vec3D p2(cosf(theta), sinf(theta));
+
+    //x += radius;
+    //y += radius;
 
     p2 *= radius;
     p2 += Vec3D(x, y);
@@ -182,10 +298,33 @@ namespace Framework
     }
   }
 
-  void Draw::DrawString(const char* text, float size, const char* font)
+  void Draw::DrawString(const char* text, Vec2D scale, int fontIndex)
   {
-    GRAPHICS->DrawSpriteText(text, size, font);
+    GRAPHICS->DrawSpriteText(text, fontIndex, scale);
   }
+
+  void Draw::LuaDrawString(const char* text, float scale, int fontIndex)
+  {
+    GRAPHICS->DrawSpriteText(text, fontIndex, Vec2(scale, scale));
+  }
+
+  int Draw::GetFontIndex(const char* fontName)
+  {
+    return GRAPHICS->GetFontIndex(fontName);
+  }
+
+  Vec3 Draw::ToWorld(Vec2 screenPos)
+  {
+    return Vec3((float*)&GRAPHICS->RetrieveCamera(GRAPHICS->GetActiveCamera())
+      ->ToWorld(DirectSheep::Vec2((float*)&screenPos)));
+  }
+
+  Vec2 Draw::ToScreen(Vec3 worldPos)
+  {
+    return Vec2((float*)&GRAPHICS->RetrieveCamera(GRAPHICS->GetActiveCamera())
+      ->ToScreen(DirectSheep::Vec3((float*)&worldPos)));
+  }
+
 
 
   int Draw::ScreenHeight(void)
@@ -198,9 +337,14 @@ namespace Framework
     return GRAPHICS->_ScreenWidth;
   }
 
-  Vec2 Draw::MeasureString(const char* text, float size, const char* font)
+  Vec2 Draw::MeasureString(const char* text, Vec2D scale, int fontIndex)
   {
-    return GRAPHICS->MeasureString(text, size, font);
+    return GRAPHICS->MeasureString(text, scale, fontIndex);
+  }
+
+  Vec2 Draw::LuaMeasureString(const char* text, float scale, int fontIndex)
+  {
+    return GRAPHICS->MeasureString(text, Vec2(scale, scale), fontIndex);
   }
   
 }

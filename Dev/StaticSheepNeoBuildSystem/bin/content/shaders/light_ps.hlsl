@@ -10,20 +10,33 @@ struct VSOutput
   float4 position : SV_POSITION;
 };
 
-cbuffer LightBuffer : register(cb0)
+cbuffer LightBuffer : register(b0)
 {
-  float4 atten;
-  float4 col;
-  float4 pos;
+  float4 atten[100];
+  float4 col[100];
+  float4 pos[100];
+  int numLights;
 };
+
+float4 combineLights(float4 position, int i)
+{
+  float dist = length(position - pos[i]);
+  float at = col[i].a / (atten[i].x + (atten[i].y * dist) + (atten[i].z * dist * dist));
+  float4 newCol = col[i] * at;
+  newCol.w = 1.0f;
+  return saturate(newCol);
+}
 
 float4 PSMain(VSOutput input) : SV_TARGET
 {
-  float diff = length(input.position - pos);
-  float at = 1. / (atten.x + atten.y * diff + atten.z * diff * diff);
-  float4 newColor = col * at;
+  float4 outputCol = float4(0.0f, 0.0f, 0.0f, 0.0f);
 
-  newColor.w = 1.f;
+  for (int i = 0; i < numLights; ++i)
+  {
+    outputCol += combineLights(input.position, i);
+  }
 
-  return saturate(newColor);
+  outputCol.w = 1.0f;
+
+  return saturate(outputCol);
 }

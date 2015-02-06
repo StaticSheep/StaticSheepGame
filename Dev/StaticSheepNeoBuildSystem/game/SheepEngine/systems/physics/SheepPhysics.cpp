@@ -232,6 +232,7 @@ namespace Framework
 		SheepFizz::Material Fluff(.3f, .2f, .4f, .1f);
 		SheepFizz::Material Bounce(.3f, 4.0f, .3f, .15f);
 		SheepFizz::Material Static(.0f,.2f,.5f,.3f);
+    SheepFizz::Material NoBounce(100.0f, 0.0f, 1.0f, 1.0f);
 
 		//insert materials into the unordered map
 		m_materials.insert(std::pair<std::string, SheepFizz::Material>("Wood", Wood));
@@ -240,6 +241,7 @@ namespace Framework
 		m_materials.insert(std::pair<std::string, SheepFizz::Material>("Fluff", Fluff));
 		m_materials.insert(std::pair<std::string, SheepFizz::Material>("Bounce", Bounce));
 		m_materials.insert(std::pair<std::string, SheepFizz::Material>("Static", Static));
+    m_materials.insert(std::pair<std::string, SheepFizz::Material>("NoBounce", NoBounce));
 
     m_collisionGroup.insert(std::pair<std::string, CollisionGroup>("NonCollide", NonCollide));
     m_collisionGroup.insert(std::pair<std::string, CollisionGroup>("Collide", Collide));
@@ -466,6 +468,7 @@ namespace Framework
 
   bool SheepPhysics::ComplexRayCast(GameSpace* space)
   {
+    ray.findFirstCollision = true;
     return  ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->RayCaster(&ray);
   }
 
@@ -476,13 +479,14 @@ namespace Framework
       GameSpace* space = (GameSpace*)(ray.gameSpace);
       Handle handleObj = (unsigned)(ray.firstCollisionBody);
 
-     // GameObject* obj = space->GetHandles().GetAs<GameObject>(handleObj);
+      //GameObject* obj = space->GetHandles().GetAs<GameObject>(handleObj);
       //((PlayerController*)obj)->health -= 10;
-      if (!debugOn)
-        return;
 
       Draw::SetColor(1, 0, 0, 1);
-      Draw::DrawLine(ray.rayOrigin.x, ray.rayOrigin.y, ray.firstCollisionLocation.x, ray.firstCollisionLocation.y, 1);
+      Vec2 collisionLocation = Draw::ToScreen(ray.firstCollisionLocation);
+      Vec2 origin = Draw::ToScreen(ray.rayOrigin);
+      Draw::DrawLine(origin.x, origin.y, collisionLocation.x, collisionLocation.y);
+      //Draw::DrawLine(origin.x, ray.rayOrigin.y, ray.firstCollisionLocation.x, ray.firstCollisionLocation.y, 1);
     }
 
     else

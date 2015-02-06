@@ -15,7 +15,22 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include <windows.h>
 #include <windowsx.h>
 #include "AntTweakBar.h"
+#include "systems/anttweak/AntTweakModule.h"
 
+
+static void GetDesktopResolution(int& horizontal, int& vertical)
+{
+  RECT desktop;
+  // Get a handle to the desktop window
+  const HWND hDesktop = GetDesktopWindow();
+  // Get the size of screen to the variable desktop
+  GetWindowRect(hDesktop, &desktop);
+  // The top left corner will have coordinates (0,0)
+  // and the bottom right corner will have coordinates
+  // (horizontal, vertical)
+  horizontal = desktop.right;
+  vertical = desktop.bottom;
+}
 
 namespace Framework
 {
@@ -25,7 +40,7 @@ namespace Framework
 
   LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
-  void SheepWindow::MakeWindow(void* hInstance, int nCmdShow)
+  void SheepWindow::MakeWindow(void* hInstance, int nCmdShow, bool fullScreen)
   {
     WNDCLASSEX wcex;                                // Struct containing Window class data
     ZeroMemory(&wcex, sizeof(WNDCLASSEX));          // Null out unused parameters
@@ -44,6 +59,11 @@ namespace Framework
     // Create Window
     width = Config::desiredWidth;
     height = Config::desiredHeight;
+    if (fullScreen)
+    {
+      GetDesktopResolution(width, height);
+    }
+    
     RECT rc = {0, 0, width, height};                     // Defines rectangle dimensions for window
     AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE); // Takes borders into considerations for window size
 
@@ -61,8 +81,9 @@ namespace Framework
       nullptr);
 
     ErrorIf(!Handle, "Window", "Window failed to create!");
+    //SetWindowPos(ENGINE->Window->GetHandle(), NULL, 0, 0, width, height, 0);
 
-    ShowWindow(Handle, nCmdShow);              // Display window
+    //ShowWindow(Handle, nCmdShow);              // Display window
   }
 
   LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -76,7 +97,11 @@ namespace Framework
 
 #if USE_ANTTWEAKBAR
     if (TwEventWin(hWnd, message, wParam, lParam))
+    {
       return 0; // Event has been handled by AntTweakBar
+    }
+    
+      
 #endif
 
     switch( message )                       // Check message
@@ -117,7 +142,7 @@ namespace Framework
         ENGINE->SystemMessage(Message(Message::WindowRestore));
 
         ShowWindow(hWnd, SW_RESTORE);
-
+        ShowCursor(false);
         WINDOW_ACTIVE = true;
       }
       break;

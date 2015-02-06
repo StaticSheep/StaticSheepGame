@@ -20,23 +20,29 @@ namespace DirectSheep
     void SetPosition(Vec2 position);
     void SetPosition(float x, float y, float z);
     void SetPosition(Vec3 position);
-    Vec3 GetPosition();
+    Vec3 GetPosition() const;
 
     // Getters and setters for camera orientation
     void SetOrientation(float orientation);
-    float GetOrientation();
+    float GetOrientation() const;
 
     // getters and setters for camera fov
     void SetFov(float fov);
-    float GetFov();
+    float GetFov() const;
 
     void SetScale(float width, float height);
     void SetScale(Vec2 scale);
     Vec2 GetScale();
 
-    Mat4 getView();
-    Mat4 getProj();
-    Mat4 getViewProj();
+    Mat4 GetView() const;
+    Mat4 GetProj() const;
+    Mat4 GetViewProj() const;
+
+    Vec3 ToWorld(Vec2 screenPos) const;
+    Vec2 ToScreen(Vec3 worldPpos) const;
+
+    static float perspectiveZ;
+    static float perspectiveW;
 
   private:
     void BuildView();
