@@ -5,9 +5,9 @@ Author(s): Greg Walls (Primary)
 
 All content © 2015 DigiPen (USA) Corporation, all rights reserved.
 *****************************************************************/
-
-#include <iostream>
 #include "pch/precompiled.h"
+#include <iostream>
+
 #include "MetricController.h"
 #include <fstream>
 #include <ctime>
