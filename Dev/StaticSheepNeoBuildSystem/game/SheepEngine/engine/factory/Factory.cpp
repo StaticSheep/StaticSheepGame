@@ -674,7 +674,7 @@ namespace Framework
       {
         spaceName = SpaceFilePath + spaceName + SpaceFileExtension;
         GameSpace* sp;
-        sp = LoadSpace(spaceName.c_str());
+        sp = LoadSpaceFilePath(spaceName.c_str());
         if (cb)
           cb(sp);
       }
