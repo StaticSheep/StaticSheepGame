@@ -104,7 +104,7 @@ namespace Framework
 
     if (!editor)
     {
-      ENGINE->ChangeLevel("Asteroid");
+      ENGINE->ChangeLevel("Intro");
     }
 	  //ENGINE->LoadLevel("content/data/spaces/Level1.space");
 #endif

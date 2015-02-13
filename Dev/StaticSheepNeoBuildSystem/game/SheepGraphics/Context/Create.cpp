@@ -203,7 +203,7 @@ namespace DirectSheep
     swapDesc.OutputWindow = m_hwnd;                             // attach to window
     swapDesc.SampleDesc.Count = 1;                              // # of multisamples
     swapDesc.SampleDesc.Quality = 0;
-    swapDesc.Windowed = !m_fullscreen;                          // windowed/full-screen mode
+    swapDesc.Windowed = TRUE;                          // windowed/full-screen mode
     //swapDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;    // allow full-screen switching
 
     // create DirectX device, it's context, and swapchain using swapDesc

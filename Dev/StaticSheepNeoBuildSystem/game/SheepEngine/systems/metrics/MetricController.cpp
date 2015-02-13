@@ -172,8 +172,8 @@ namespace Framework
       }
       outFile.close();
     }
-    else
-      std::cout << "Can not open or print to metrics file!!" << std::endl;
+    //else
+      //std::cout << "Can not open or print to metrics file!!" << std::endl;
   }
 
   void MetricController::ReceiveMessage(Message& msg)
