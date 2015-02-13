@@ -123,7 +123,7 @@ namespace Framework
     // Trace log
     Tracelog TraceLog;
 
-    bool m_editorAcitve = false;
+    bool m_editorActive = false;
     bool m_editorLights = true;
   private:
 

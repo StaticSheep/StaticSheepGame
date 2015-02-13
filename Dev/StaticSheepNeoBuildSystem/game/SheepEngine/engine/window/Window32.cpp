@@ -128,7 +128,7 @@ namespace Framework
       break;
 
     case WM_ACTIVATE:
-      if (wParam == WA_INACTIVE && !ENGINE->m_editorAcitve)
+      if (wParam == WA_INACTIVE && !ENGINE->m_editorActive)
       {
         ENGINE->SystemMessage(Message(Message::WindowMinimize));
 
@@ -137,7 +137,7 @@ namespace Framework
         WINDOW_ACTIVE = false;
       }
       else if ((wParam == WA_CLICKACTIVE || wParam == WA_ACTIVE) &&
-        !ENGINE->m_editorAcitve)
+        !ENGINE->m_editorActive)
       {
         ENGINE->SystemMessage(Message(Message::WindowRestore));
 

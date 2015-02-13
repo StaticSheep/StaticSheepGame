@@ -390,12 +390,18 @@ namespace Framework
     TYPE_REGISTER(SlotMachine);
     TYPE_SET_TWEAK_TYPE(SlotMachine, AntTweak::TW_TYPE_COMPONENT);
 
-    TYPE_ADD_MEMBER(SlotMachine, m_stopTexture, false, true, "Still Texture");
-    TYPE_ADD_MEMBER(SlotMachine, m_spinTexture, false, true, "Spin Texture");
-    TYPE_ADD_MEMBER(SlotMachine, m_slotBackTexture, false, true, "Back Texture");
+    TYPE_ADD_MEMBER(SlotMachine, m_stopTexture, false, true, "Still Texture",
+      BUILD_FUNCTION(SlotMachine::TweakSetupSlots));
+    TYPE_ADD_MEMBER(SlotMachine, m_spinTexture, false, true, "Spin Texture",
+      BUILD_FUNCTION(SlotMachine::TweakSetupSlots));
+    TYPE_ADD_MEMBER(SlotMachine, m_slotBackTexture, false, true, "Back Texture",
+      BUILD_FUNCTION(SlotMachine::TweakSetupSlots));
 
     TYPE_ADD_MEMBER(SlotMachine, numSlots, false, true, "# Reels",
       BUILD_FUNCTION(SlotMachine::TweakSetNumSlots));
+
+    TYPE_ADD_MEMBER(SlotMachine, slotOptions, false, true, "# Options",
+      BUILD_FUNCTION(SlotMachine::TweakSetupSlots));
 
     TYPE_ADD_MEMBER(SlotMachine, slotSize, false, true, "SlotScale");
     TYPE_ADD_MEMBER(SlotMachine, slotMargin, false, true, "Margin");

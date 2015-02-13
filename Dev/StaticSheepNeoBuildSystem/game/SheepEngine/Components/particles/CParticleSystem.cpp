@@ -89,7 +89,7 @@ namespace Framework
   void ParticleSystem::FrameUpdate(float dt)
   {
     // only update the particles if the editor is active so we can see them
-    if(ENGINE->m_editorAcitve && !ENGINE->PlayingInEditor())
+    if(ENGINE->m_editorActive && !ENGINE->PlayingInEditor())
     {
       // if antweak bar changed the direction vectors
       if(directionChange)

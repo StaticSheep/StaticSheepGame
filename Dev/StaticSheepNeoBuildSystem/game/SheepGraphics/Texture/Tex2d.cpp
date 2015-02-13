@@ -8,6 +8,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "precompiled.h"
 #include "Tex2d.h"
 #include "WICTextureLoader.h"
+#include "Context\Context.h"
 
 namespace DirectSheep
 {
@@ -54,7 +55,8 @@ namespace DirectSheep
     dev->CreateShaderResourceView(m_rawTex, NULL, &m_ShaderRes);
   }
 
-  Tex2D::Tex2D(ID3D11Device* dev, const std::string& filename) : m_rawTex(NULL), m_renderTarget(NULL), m_ShaderRes(NULL)
+  Tex2D::Tex2D(ID3D11Device* dev, const std::string& filename) : m_rawTex(NULL), m_renderTarget(NULL), m_ShaderRes(NULL),
+    m_texName(filename)
   {
     std::wstring test(filename.begin(), filename.end());
 
@@ -73,6 +75,30 @@ namespace DirectSheep
     m_width = texDesc.Width;
     m_height = texDesc.Height;
 
+  }
+
+  void Tex2D::RefreshTexture()
+  {
+    Release();
+    std::wstring test(m_texName.begin(), m_texName.end());
+
+    HRESULT hr = DirectX::CreateWICTextureFromFile(RenderContext::Context->
+      GetDevice(),
+      test.c_str(), (ID3D11Resource **)&m_rawTex, &m_ShaderRes, 0);
+
+    if (FAILED(hr))
+    {
+      hr = DirectX::CreateWICTextureFromFile(RenderContext::Context->GetDevice(),
+        L"content\\Default.png", (ID3D11Resource **)&m_rawTex, &m_ShaderRes, 0);
+      if (FAILED(hr))
+        DXVerify(hr);
+    }
+    D3D11_TEXTURE2D_DESC texDesc;
+    m_rawTex->GetDesc(&texDesc);
+
+
+    m_width = texDesc.Width;
+    m_height = texDesc.Height;
   }
 
   void Tex2D::Release(void)
