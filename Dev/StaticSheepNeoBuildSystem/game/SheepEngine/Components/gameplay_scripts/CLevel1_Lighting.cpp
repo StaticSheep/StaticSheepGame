@@ -44,14 +44,14 @@ namespace Framework
 
     if (m_levelTime < Countdown)
     {
-      space->GetGameObject(m_lights[4])->GetComponent<PointLight>(ePointLight)->m_brightness.a = Ease::Linear(m_levelTime / Countdown, 0.0f, 1500.0f);
-      space->GetGameObject(m_lights[5])->GetComponent<PointLight>(ePointLight)->m_brightness.a = Ease::Linear(m_levelTime / Countdown, 0.0f, 1500.0f);
+      space->GetGameObject(m_lights[4])->GetComponent<PointLight>(ePointLight)->m_brightness.a = Ease::Linear(m_levelTime / Countdown, 0.0f, 2000.0f);
+      space->GetGameObject(m_lights[5])->GetComponent<PointLight>(ePointLight)->m_brightness.a = Ease::Linear(m_levelTime / Countdown, 0.0f, 2000.0f);
     }
     else
     {
 
-      space->GetGameObject(m_lights[4])->GetComponent<PointLight>(ePointLight)->m_brightness.a = Ease::Linear(m_PulseT, 600.0f, 1500.0f);
-      space->GetGameObject(m_lights[5])->GetComponent<PointLight>(ePointLight)->m_brightness.a = Ease::Linear(m_PulseT, 600.0f, 1500.0f);
+      space->GetGameObject(m_lights[4])->GetComponent<PointLight>(ePointLight)->m_brightness.a = Ease::Linear(m_PulseT, 750.0f, 2000.0f);
+      space->GetGameObject(m_lights[5])->GetComponent<PointLight>(ePointLight)->m_brightness.a = Ease::Linear(m_PulseT, 750.0f, 2000.0f);
 
       if (m_PulseT > 1.0f || m_PulseT < 0.0f)
         m_PulseFlip = !m_PulseFlip;
