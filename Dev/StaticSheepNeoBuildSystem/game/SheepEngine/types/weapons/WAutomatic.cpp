@@ -11,6 +11,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "Components/colliders/CCircleCollider.h"
 #include "Components/controllers/player/CPlayerController.h"
 #include "components/gameplay_scripts/CBullet_default.h"
+#include "components/particles/CParticleCircleEmitter.h"
+#include "components/particles/CParticleSystem.h"
 #include "../SheepUtil/include/SheepMath.h"
 #include "Matrix3D.h"
 
@@ -39,10 +41,21 @@ namespace Framework
 
     GameObject *bullet = (FACTORY->LoadObjectFromArchetype(player->space, "Bullet"));
     bullet->GetComponent<Bullet_Default>(eBullet_Default)->damage = damage;
+    bullet->GetComponent<ParticleCircleEmitter>(eParticleCircleEmitter)->spawning = false;
+    bullet->GetComponent<ParticleCircleEmitter>(eParticleCircleEmitter)->timedSpawning = true;
+    bullet->GetComponent<ParticleCircleEmitter>(eParticleCircleEmitter)->timed = 0.001f;
     Transform *BT = bullet->GetComponent<Transform>(eTransform);
     CircleCollider *bulletC = bullet->GetComponent <CircleCollider>(eCircleCollider);
     Transform *playerTrans = player->GetComponent <Transform>(eTransform);
     Vec3 AimDir = player->GetComponent<PlayerController>(ePlayerController)->aimDir;
+
+    float theta = atan2f(AimDir.y, AimDir.x) - (PI / 2.0f);
+    Mat3D rotation(theta);
+
+    ParticleSystem* part = bullet->GetComponent<ParticleSystem>(eParticleSystem);
+    part->direction.m_startMin = rotation * part->direction.m_startMin;
+    part->direction.m_startMax = rotation * part->direction.m_startMax;
+
     bulletC->SetBodyCollisionGroup(player->archetype);
     BT->SetTranslation(playerTrans->GetTranslation() + AimDir * 25);
     
