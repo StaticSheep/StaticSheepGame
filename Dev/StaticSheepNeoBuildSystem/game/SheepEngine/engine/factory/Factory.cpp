@@ -622,7 +622,7 @@ namespace Framework
     {
       GameSpace* sp = ENGINE->Spaces()[i];
       file.Write("%s\n", sp->GetName().c_str());
-      SaveSpaceToFile(sp, sp->GetName().c_str(), nullptr, true, true);
+      SaveSpaceToFile(sp, sp->GetName().c_str(), nullptr, true);
     }
 
     file.Close();
@@ -674,7 +674,7 @@ namespace Framework
       {
         spaceName = SpaceFilePath + spaceName + SpaceFileExtension;
         GameSpace* sp;
-        sp = LoadSpace(spaceName.c_str());
+        sp = LoadSpaceFilePath(spaceName.c_str());
         if (cb)
           cb(sp);
       }

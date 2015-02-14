@@ -24,6 +24,8 @@ namespace DirectSheep
 
   float SCREEN_WIDTH = 1337;
   float SCREEN_HEIGHT = 1337;
+
+  RenderContext* RenderContext::Context = nullptr;
   
   /*!
       \brief
@@ -59,6 +61,8 @@ namespace DirectSheep
     m_sampleStates[1] = NULL;
     m_rastState[0] = NULL;
     m_rastState[1] = NULL;
+
+    RenderContext::Context = this;
   }
 
   
@@ -78,6 +82,14 @@ namespace DirectSheep
   bool RenderContext::IsInitialized(void) const
   {
     return m_initialized;
+  }
+
+  void RenderContext::PurgeTextures()
+  {
+    for (auto it = m_textureRes.begin(); it != m_textureRes.end(); ++it)
+    {
+      it->RefreshTexture();
+    }
   }
 
   

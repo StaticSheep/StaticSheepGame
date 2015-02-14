@@ -47,13 +47,16 @@ namespace Framework
   // for seeing the particles in the editor
   void ParticleCircleEmitter::FrameUpdate(float dt)
   {
-    if(ENGINE->m_editorAcitve)
+    if(ENGINE->m_editorActive)
       UpdateEmitter(dt);
   }
 
   // updates the emitter
   void ParticleCircleEmitter::UpdateEmitter(float dt)
   {
+    if(space->Paused())
+      return;
+
     // if we are set to currently spawn
     if(spawning)
     {

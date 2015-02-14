@@ -107,7 +107,6 @@ namespace Framework
 
   void Engine::SystemMessage(Message& msg)
   {
-    void* data = &m_editorAcitve;
     for (unsigned int i = 0; i < m_systems.size(); ++i)
       m_systems[i]->ReceiveMessage(msg);
   }
@@ -160,7 +159,7 @@ namespace Framework
     if (m_returnFromPIE)
       ReloadEditor();
 
-    if (m_editorAcitve)
+    if (m_editorActive || m_PIE)
       CheckPIE();
     
   }
@@ -386,6 +385,7 @@ namespace Framework
     std::string filePath = "cache\\spaces\\";
 
     m_enteringPIE = false;
+    m_editorActive = false;
 
     boost::filesystem::directory_iterator it(filePath), eod;
 

@@ -72,6 +72,8 @@ class RenderContext
     //Uninitializes the RenderContext
     void Uninitialize(RenderContext * rCon);
 
+    void PurgeTextures();
+
     /////////////////////////////////////////////////////////////
     //                     DRAW FUNCTIONS                      //
     /////////////////////////////////////////////////////////////
@@ -205,6 +207,8 @@ class RenderContext
 
     void Release(const Handle &handle);
 
+
+    static RenderContext* Context;
   private:
 
     /////////////////////////////////////////////////////////////

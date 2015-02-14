@@ -99,6 +99,13 @@ namespace Framework
     Draw();
     
     FinishFrame();
+
+#if SHEEP_DEBUG
+    if (SHEEPINPUT->KeyIsPressed(VK_OEM_3) && SHEEPINPUT->KeyIsDown(VK_CONTROL))
+    {
+      m_renderContext->PurgeTextures();
+    }
+#endif
 	}
   
   void SheepGraphics::ActivateDefaultCamera(void)
@@ -147,7 +154,7 @@ namespace Framework
 
       if (msg.MessageId == Message::EngineReady)
       {
-        if (!ENGINE->m_editorAcitve)
+        if (!ENGINE->m_editorActive)
         {
           
           m_renderContext->SetFullscreen(true);
@@ -196,7 +203,7 @@ namespace Framework
     m_renderContext->EndBatch();
 
    
-    DrawPointLights(ENGINE->m_editorAcitve ? 
+    DrawPointLights(ENGINE->m_editorActive ? 
       ENGINE->PlayingInEditor() ? true : ENGINE->m_editorLights : true);
 
     m_renderContext->StartBatch();
