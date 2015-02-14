@@ -225,6 +225,7 @@ namespace SheepFizz
     //if (!rayIntersect)
         //return false;
     bool rayIntersect;
+    bool atLeastOneIntersect = false;
 
     for (unsigned int i = 0; i < ((Rectangle*)(rectangle->shape_))->GetVertexNumber(); ++i)
     {
@@ -247,6 +248,7 @@ namespace SheepFizz
 
       if (rayIntersect)
       {
+        atLeastOneIntersect = true;
         testLength = collisionPoint - position_;
         length = testLength.SquareLength();
 
@@ -259,7 +261,7 @@ namespace SheepFizz
       }
     }
 
-    if (rayIntersect)
+    if (atLeastOneIntersect)
       return true;
 
     return false;
