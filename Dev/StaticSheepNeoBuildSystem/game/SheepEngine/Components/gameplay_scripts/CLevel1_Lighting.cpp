@@ -27,7 +27,8 @@ namespace Framework
     space->hooks.Add("LogicUpdate", self, BUILD_FUNCTION(Level1_Lighting::LogicUpdate));
     //space->hooks.Add("PlayerDied", self, BUILD_FUNCTION(Level1_Lighting::PlayerDied)); // might want this
 
-    CreateSpawnLights();
+    if (!ENGINE->m_editorActive)
+      CreateSpawnLights();
 
     m_levelTime = 0;
     m_PulseT = 1;

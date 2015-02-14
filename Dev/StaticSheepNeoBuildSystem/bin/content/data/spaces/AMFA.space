@@ -36,6 +36,7 @@ GameObject
     }
     m_flipX bool false
     m_flipY bool false
+    m_uvScale bool false
   }
   BackgroundPan
   {
@@ -78,6 +79,7 @@ GameObject
     }
     m_flipX bool false
     m_flipY bool false
+    m_uvScale bool false
   }
   BoxCollider
   {
@@ -125,6 +127,7 @@ GameObject
     }
     m_flipX bool false
     m_flipY bool false
+    m_uvScale bool false
   }
   BoxCollider
   {
@@ -172,6 +175,7 @@ GameObject
     }
     m_flipX bool false
     m_flipY bool false
+    m_uvScale bool false
   }
   BoxCollider
   {
@@ -219,6 +223,7 @@ GameObject
     }
     m_flipX bool false
     m_flipY bool false
+    m_uvScale bool false
   }
   BoxCollider
   {
@@ -266,6 +271,7 @@ GameObject
     }
     m_flipX bool false
     m_flipY bool false
+    m_uvScale bool false
   }
   Camera
   {
@@ -306,672 +312,6 @@ GameObject
 }
 GameObject
 {
-  name std::string "SpawnLight"
-  archetype std::string "SpawnLight"
-  Transform
-  {
-    Translation Vec3
-    {
-      x_ float -795.000000
-      y_ float -361.000000
-      z_ float 0.000000
-    }
-    Rotation float 0.000000
-    Scale Vec3
-    {
-      x_ float 1.000000
-      y_ float 1.000000
-      z_ float 0.000000
-    }
-  }
-  PointLight
-  {
-    m_brightness LightColor
-    {
-      R float 0.000000
-      G float 1.000000
-      B float 0.000000
-      A float 90.000000
-    }
-    m_attenuation LightVec3
-    {
-      X float 1.000000
-      Y float 0.000000
-      Z float 20.000000
-    }
-  }
-}
-GameObject
-{
-  name std::string "SpawnLight"
-  archetype std::string "SpawnLight"
-  Transform
-  {
-    Translation Vec3
-    {
-      x_ float 795.000000
-      y_ float -361.000000
-      z_ float 0.000000
-    }
-    Rotation float 0.000000
-    Scale Vec3
-    {
-      x_ float 1.000000
-      y_ float 1.000000
-      z_ float 0.000000
-    }
-  }
-  PointLight
-  {
-    m_brightness LightColor
-    {
-      R float 1.000000
-      G float 0.000000
-      B float 0.000000
-      A float 90.000000
-    }
-    m_attenuation LightVec3
-    {
-      X float 1.000000
-      Y float 0.000000
-      Z float 20.000000
-    }
-  }
-}
-GameObject
-{
-  name std::string "SpawnLight"
-  archetype std::string "SpawnLight"
-  Transform
-  {
-    Translation Vec3
-    {
-      x_ float 795.000000
-      y_ float 361.000000
-      z_ float 0.000000
-    }
-    Rotation float 0.000000
-    Scale Vec3
-    {
-      x_ float 1.000000
-      y_ float 1.000000
-      z_ float 0.000000
-    }
-  }
-  PointLight
-  {
-    m_brightness LightColor
-    {
-      R float 1.000000
-      G float 0.000000
-      B float 1.000000
-      A float 90.000000
-    }
-    m_attenuation LightVec3
-    {
-      X float 1.000000
-      Y float 0.000000
-      Z float 20.000000
-    }
-  }
-}
-GameObject
-{
-  name std::string "SpawnLight"
-  archetype std::string "SpawnLight"
-  Transform
-  {
-    Translation Vec3
-    {
-      x_ float -795.000000
-      y_ float 361.000000
-      z_ float 0.000000
-    }
-    Rotation float 0.000000
-    Scale Vec3
-    {
-      x_ float 1.000000
-      y_ float 1.000000
-      z_ float 0.000000
-    }
-  }
-  PointLight
-  {
-    m_brightness LightColor
-    {
-      R float 0.000000
-      G float 0.000000
-      B float 1.000000
-      A float 90.000000
-    }
-    m_attenuation LightVec3
-    {
-      X float 1.000000
-      Y float 0.000000
-      Z float 20.000000
-    }
-  }
-}
-GameObject
-{
-  name std::string "SpawnLight"
-  archetype std::string "SpawnLight"
-  Transform
-  {
-    Translation Vec3
-    {
-      x_ float -200.000000
-      y_ float 0.000000
-      z_ float 0.000000
-    }
-    Rotation float 0.000000
-    Scale Vec3
-    {
-      x_ float 1.000000
-      y_ float 1.000000
-      z_ float 0.000000
-    }
-  }
-  PointLight
-  {
-    m_brightness LightColor
-    {
-      R float 1.000000
-      G float 1.000000
-      B float 1.000000
-      A float 1.000000
-    }
-    m_attenuation LightVec3
-    {
-      X float 1.000000
-      Y float 0.000000
-      Z float 20.000000
-    }
-  }
-}
-GameObject
-{
-  name std::string "SpawnLight"
-  archetype std::string "SpawnLight"
-  Transform
-  {
-    Translation Vec3
-    {
-      x_ float 200.000000
-      y_ float 0.000000
-      z_ float 0.000000
-    }
-    Rotation float 0.000000
-    Scale Vec3
-    {
-      x_ float 1.000000
-      y_ float 1.000000
-      z_ float 0.000000
-    }
-  }
-  PointLight
-  {
-    m_brightness LightColor
-    {
-      R float 1.000000
-      G float 1.000000
-      B float 1.000000
-      A float 1.000000
-    }
-    m_attenuation LightVec3
-    {
-      X float 1.000000
-      Y float 0.000000
-      Z float 20.000000
-    }
-  }
-}
-GameObject
-{
-  name std::string "SpawnLight"
-  archetype std::string "SpawnLight"
-  Transform
-  {
-    Translation Vec3
-    {
-      x_ float -795.000000
-      y_ float -361.000000
-      z_ float 0.000000
-    }
-    Rotation float 0.000000
-    Scale Vec3
-    {
-      x_ float 1.000000
-      y_ float 1.000000
-      z_ float 0.000000
-    }
-  }
-  PointLight
-  {
-    m_brightness LightColor
-    {
-      R float 0.000000
-      G float 1.000000
-      B float 0.000000
-      A float 90.000000
-    }
-    m_attenuation LightVec3
-    {
-      X float 1.000000
-      Y float 0.000000
-      Z float 20.000000
-    }
-  }
-}
-GameObject
-{
-  name std::string "SpawnLight"
-  archetype std::string "SpawnLight"
-  Transform
-  {
-    Translation Vec3
-    {
-      x_ float 795.000000
-      y_ float -361.000000
-      z_ float 0.000000
-    }
-    Rotation float 0.000000
-    Scale Vec3
-    {
-      x_ float 1.000000
-      y_ float 1.000000
-      z_ float 0.000000
-    }
-  }
-  PointLight
-  {
-    m_brightness LightColor
-    {
-      R float 1.000000
-      G float 0.000000
-      B float 0.000000
-      A float 90.000000
-    }
-    m_attenuation LightVec3
-    {
-      X float 1.000000
-      Y float 0.000000
-      Z float 20.000000
-    }
-  }
-}
-GameObject
-{
-  name std::string "SpawnLight"
-  archetype std::string "SpawnLight"
-  Transform
-  {
-    Translation Vec3
-    {
-      x_ float 795.000000
-      y_ float 361.000000
-      z_ float 0.000000
-    }
-    Rotation float 0.000000
-    Scale Vec3
-    {
-      x_ float 1.000000
-      y_ float 1.000000
-      z_ float 0.000000
-    }
-  }
-  PointLight
-  {
-    m_brightness LightColor
-    {
-      R float 1.000000
-      G float 0.000000
-      B float 1.000000
-      A float 90.000000
-    }
-    m_attenuation LightVec3
-    {
-      X float 1.000000
-      Y float 0.000000
-      Z float 20.000000
-    }
-  }
-}
-GameObject
-{
-  name std::string "SpawnLight"
-  archetype std::string "SpawnLight"
-  Transform
-  {
-    Translation Vec3
-    {
-      x_ float -795.000000
-      y_ float 361.000000
-      z_ float 0.000000
-    }
-    Rotation float 0.000000
-    Scale Vec3
-    {
-      x_ float 1.000000
-      y_ float 1.000000
-      z_ float 0.000000
-    }
-  }
-  PointLight
-  {
-    m_brightness LightColor
-    {
-      R float 0.000000
-      G float 0.000000
-      B float 1.000000
-      A float 90.000000
-    }
-    m_attenuation LightVec3
-    {
-      X float 1.000000
-      Y float 0.000000
-      Z float 20.000000
-    }
-  }
-}
-GameObject
-{
-  name std::string "SpawnLight"
-  archetype std::string "SpawnLight"
-  Transform
-  {
-    Translation Vec3
-    {
-      x_ float -200.000000
-      y_ float 0.000000
-      z_ float 0.000000
-    }
-    Rotation float 0.000000
-    Scale Vec3
-    {
-      x_ float 1.000000
-      y_ float 1.000000
-      z_ float 0.000000
-    }
-  }
-  PointLight
-  {
-    m_brightness LightColor
-    {
-      R float 1.000000
-      G float 1.000000
-      B float 1.000000
-      A float 1.000000
-    }
-    m_attenuation LightVec3
-    {
-      X float 1.000000
-      Y float 0.000000
-      Z float 20.000000
-    }
-  }
-}
-GameObject
-{
-  name std::string "SpawnLight"
-  archetype std::string "SpawnLight"
-  Transform
-  {
-    Translation Vec3
-    {
-      x_ float 200.000000
-      y_ float 0.000000
-      z_ float 0.000000
-    }
-    Rotation float 0.000000
-    Scale Vec3
-    {
-      x_ float 1.000000
-      y_ float 1.000000
-      z_ float 0.000000
-    }
-  }
-  PointLight
-  {
-    m_brightness LightColor
-    {
-      R float 1.000000
-      G float 1.000000
-      B float 1.000000
-      A float 1.000000
-    }
-    m_attenuation LightVec3
-    {
-      X float 1.000000
-      Y float 0.000000
-      Z float 20.000000
-    }
-  }
-}
-GameObject
-{
-  name std::string "SpawnLight"
-  archetype std::string "SpawnLight"
-  Transform
-  {
-    Translation Vec3
-    {
-      x_ float -795.000000
-      y_ float -361.000000
-      z_ float 0.000000
-    }
-    Rotation float 0.000000
-    Scale Vec3
-    {
-      x_ float 1.000000
-      y_ float 1.000000
-      z_ float 0.000000
-    }
-  }
-  PointLight
-  {
-    m_brightness LightColor
-    {
-      R float 0.000000
-      G float 1.000000
-      B float 0.000000
-      A float 90.000000
-    }
-    m_attenuation LightVec3
-    {
-      X float 1.000000
-      Y float 0.000000
-      Z float 20.000000
-    }
-  }
-}
-GameObject
-{
-  name std::string "SpawnLight"
-  archetype std::string "SpawnLight"
-  Transform
-  {
-    Translation Vec3
-    {
-      x_ float 795.000000
-      y_ float -361.000000
-      z_ float 0.000000
-    }
-    Rotation float 0.000000
-    Scale Vec3
-    {
-      x_ float 1.000000
-      y_ float 1.000000
-      z_ float 0.000000
-    }
-  }
-  PointLight
-  {
-    m_brightness LightColor
-    {
-      R float 1.000000
-      G float 0.000000
-      B float 0.000000
-      A float 90.000000
-    }
-    m_attenuation LightVec3
-    {
-      X float 1.000000
-      Y float 0.000000
-      Z float 20.000000
-    }
-  }
-}
-GameObject
-{
-  name std::string "SpawnLight"
-  archetype std::string "SpawnLight"
-  Transform
-  {
-    Translation Vec3
-    {
-      x_ float 795.000000
-      y_ float 361.000000
-      z_ float 0.000000
-    }
-    Rotation float 0.000000
-    Scale Vec3
-    {
-      x_ float 1.000000
-      y_ float 1.000000
-      z_ float 0.000000
-    }
-  }
-  PointLight
-  {
-    m_brightness LightColor
-    {
-      R float 1.000000
-      G float 0.000000
-      B float 1.000000
-      A float 90.000000
-    }
-    m_attenuation LightVec3
-    {
-      X float 1.000000
-      Y float 0.000000
-      Z float 20.000000
-    }
-  }
-}
-GameObject
-{
-  name std::string "SpawnLight"
-  archetype std::string "SpawnLight"
-  Transform
-  {
-    Translation Vec3
-    {
-      x_ float -795.000000
-      y_ float 361.000000
-      z_ float 0.000000
-    }
-    Rotation float 0.000000
-    Scale Vec3
-    {
-      x_ float 1.000000
-      y_ float 1.000000
-      z_ float 0.000000
-    }
-  }
-  PointLight
-  {
-    m_brightness LightColor
-    {
-      R float 0.000000
-      G float 0.000000
-      B float 1.000000
-      A float 90.000000
-    }
-    m_attenuation LightVec3
-    {
-      X float 1.000000
-      Y float 0.000000
-      Z float 20.000000
-    }
-  }
-}
-GameObject
-{
-  name std::string "SpawnLight"
-  archetype std::string "SpawnLight"
-  Transform
-  {
-    Translation Vec3
-    {
-      x_ float -200.000000
-      y_ float 0.000000
-      z_ float 0.000000
-    }
-    Rotation float 0.000000
-    Scale Vec3
-    {
-      x_ float 1.000000
-      y_ float 1.000000
-      z_ float 0.000000
-    }
-  }
-  PointLight
-  {
-    m_brightness LightColor
-    {
-      R float 1.000000
-      G float 1.000000
-      B float 1.000000
-      A float 1.000000
-    }
-    m_attenuation LightVec3
-    {
-      X float 1.000000
-      Y float 0.000000
-      Z float 20.000000
-    }
-  }
-}
-GameObject
-{
-  name std::string "SpawnLight"
-  archetype std::string "SpawnLight"
-  Transform
-  {
-    Translation Vec3
-    {
-      x_ float 200.000000
-      y_ float 0.000000
-      z_ float 0.000000
-    }
-    Rotation float 0.000000
-    Scale Vec3
-    {
-      x_ float 1.000000
-      y_ float 1.000000
-      z_ float 0.000000
-    }
-  }
-  PointLight
-  {
-    m_brightness LightColor
-    {
-      R float 1.000000
-      G float 1.000000
-      B float 1.000000
-      A float 1.000000
-    }
-    m_attenuation LightVec3
-    {
-      X float 1.000000
-      Y float 0.000000
-      Z float 20.000000
-    }
-  }
-}
-GameObject
-{
   name std::string "PlatformBottomRight"
   archetype std::string "Platform1"
   Transform
@@ -1007,6 +347,7 @@ GameObject
     }
     m_flipX bool false
     m_flipY bool false
+    m_uvScale bool false
   }
   BoxCollider
   {
@@ -1054,6 +395,7 @@ GameObject
     }
     m_flipX bool false
     m_flipY bool false
+    m_uvScale bool false
   }
   BoxCollider
   {
@@ -1101,6 +443,7 @@ GameObject
     }
     m_flipX bool false
     m_flipY bool false
+    m_uvScale bool false
   }
   BoxCollider
   {
@@ -1148,6 +491,7 @@ GameObject
     }
     m_flipX bool false
     m_flipY bool false
+    m_uvScale bool false
   }
   BoxCollider
   {
@@ -1195,6 +539,7 @@ GameObject
     }
     m_flipX bool false
     m_flipY bool false
+    m_uvScale bool false
   }
   BoxCollider
   {
@@ -1242,6 +587,7 @@ GameObject
     }
     m_flipX bool false
     m_flipY bool false
+    m_uvScale bool false
   }
   BoxCollider
   {
@@ -1289,6 +635,7 @@ GameObject
     }
     m_flipX bool false
     m_flipY bool false
+    m_uvScale bool false
   }
   BoxCollider
   {
@@ -1336,6 +683,7 @@ GameObject
     }
     m_flipX bool false
     m_flipY bool false
+    m_uvScale bool false
   }
   BoxCollider
   {
@@ -1383,6 +731,7 @@ GameObject
     }
     m_flipX bool false
     m_flipY bool false
+    m_uvScale bool false
   }
   BoxCollider
   {
@@ -1430,6 +779,7 @@ GameObject
     }
     m_flipX bool false
     m_flipY bool false
+    m_uvScale bool false
   }
   BoxCollider
   {
@@ -1480,6 +830,7 @@ GameObject
     }
     m_flipX bool false
     m_flipY bool false
+    m_uvScale bool false
   }
   BoxCollider
   {
@@ -1530,6 +881,7 @@ GameObject
     }
     m_flipX bool false
     m_flipY bool false
+    m_uvScale bool false
   }
   BoxCollider
   {
@@ -1580,6 +932,7 @@ GameObject
     }
     m_flipX bool false
     m_flipY bool false
+    m_uvScale bool false
   }
   BoxCollider
   {
@@ -1630,6 +983,7 @@ GameObject
     }
     m_flipX bool false
     m_flipY bool false
+    m_uvScale bool false
   }
   BoxCollider
   {
@@ -1680,6 +1034,7 @@ GameObject
     }
     m_flipX bool false
     m_flipY bool false
+    m_uvScale bool false
   }
   BoxCollider
   {
@@ -1727,6 +1082,7 @@ GameObject
     }
     m_flipX bool false
     m_flipY bool false
+    m_uvScale bool false
   }
   BoxCollider
   {
@@ -1777,6 +1133,7 @@ GameObject
     }
     m_flipX bool false
     m_flipY bool false
+    m_uvScale bool false
   }
   BoxCollider
   {
@@ -1824,6 +1181,7 @@ GameObject
     }
     m_flipX bool false
     m_flipY bool false
+    m_uvScale bool false
   }
   BoxCollider
   {
@@ -1874,6 +1232,7 @@ GameObject
     }
     m_flipX bool false
     m_flipY bool false
+    m_uvScale bool false
   }
   BoxCollider
   {
@@ -1924,6 +1283,7 @@ GameObject
     }
     m_flipX bool false
     m_flipY bool false
+    m_uvScale bool false
   }
   BoxCollider
   {
@@ -1974,6 +1334,7 @@ GameObject
     }
     m_flipX bool false
     m_flipY bool false
+    m_uvScale bool false
   }
   BoxCollider
   {
@@ -2021,6 +1382,7 @@ GameObject
     }
     m_flipX bool false
     m_flipY bool false
+    m_uvScale bool false
   }
   BoxCollider
   {
@@ -2071,6 +1433,7 @@ GameObject
     }
     m_flipX bool false
     m_flipY bool false
+    m_uvScale bool false
   }
   BoxCollider
   {
@@ -2121,6 +1484,7 @@ GameObject
     }
     m_flipX bool false
     m_flipY bool false
+    m_uvScale bool false
   }
   BoxCollider
   {
@@ -2132,190 +1496,5 @@ GameObject
   }
   Grinder
   {
-  }
-}
-GameObject
-{
-  name std::string "SpawnLight"
-  archetype std::string "SpawnLight"
-  Transform
-  {
-    Translation Vec3
-    {
-      x_ float -610.000000
-      y_ float -440.000000
-      z_ float 0.000000
-    }
-    Rotation float 0.000000
-    Scale Vec3
-    {
-      x_ float 1.000000
-      y_ float 1.000000
-      z_ float 0.000000
-    }
-  }
-  PointLight
-  {
-    m_brightness LightColor
-    {
-      R float 0.000000
-      G float 1.000000
-      B float 0.000000
-      A float 20.000000
-    }
-    m_attenuation LightVec3
-    {
-      X float 1.000000
-      Y float 500.000000
-      Z float 5.000000
-    }
-  }
-}
-GameObject
-{
-  name std::string "SpawnLight"
-  archetype std::string "SpawnLight"
-  Transform
-  {
-    Translation Vec3
-    {
-      x_ float 610.000000
-      y_ float -440.000000
-      z_ float 0.000000
-    }
-    Rotation float 0.000000
-    Scale Vec3
-    {
-      x_ float 1.000000
-      y_ float 1.000000
-      z_ float 0.000000
-    }
-  }
-  PointLight
-  {
-    m_brightness LightColor
-    {
-      R float 1.000000
-      G float 0.000000
-      B float 0.000000
-      A float 20.000000
-    }
-    m_attenuation LightVec3
-    {
-      X float 1.000000
-      Y float 500.000000
-      Z float 5.000000
-    }
-  }
-}
-GameObject
-{
-  name std::string "SpawnLight"
-  archetype std::string "SpawnLight"
-  Transform
-  {
-    Translation Vec3
-    {
-      x_ float 610.000000
-      y_ float 435.000000
-      z_ float 0.000000
-    }
-    Rotation float 0.000000
-    Scale Vec3
-    {
-      x_ float 1.000000
-      y_ float 1.000000
-      z_ float 0.000000
-    }
-  }
-  PointLight
-  {
-    m_brightness LightColor
-    {
-      R float 1.000000
-      G float 0.000000
-      B float 1.000000
-      A float 20.000000
-    }
-    m_attenuation LightVec3
-    {
-      X float 1.000000
-      Y float 500.000000
-      Z float 5.000000
-    }
-  }
-}
-GameObject
-{
-  name std::string "SpawnLight"
-  archetype std::string "SpawnLight"
-  Transform
-  {
-    Translation Vec3
-    {
-      x_ float -610.000000
-      y_ float 435.000000
-      z_ float 0.000000
-    }
-    Rotation float 0.000000
-    Scale Vec3
-    {
-      x_ float 1.000000
-      y_ float 1.000000
-      z_ float 0.000000
-    }
-  }
-  PointLight
-  {
-    m_brightness LightColor
-    {
-      R float 0.000000
-      G float 0.000000
-      B float 1.000000
-      A float 20.000000
-    }
-    m_attenuation LightVec3
-    {
-      X float 1.000000
-      Y float 500.000000
-      Z float 5.000000
-    }
-  }
-}
-GameObject
-{
-  name std::string "SpawnLight"
-  archetype std::string "SpawnLight"
-  Transform
-  {
-    Translation Vec3
-    {
-      x_ float 0.000000
-      y_ float 0.000000
-      z_ float 0.000000
-    }
-    Rotation float 0.000000
-    Scale Vec3
-    {
-      x_ float 1.000000
-      y_ float 1.000000
-      z_ float 0.000000
-    }
-  }
-  PointLight
-  {
-    m_brightness LightColor
-    {
-      R float 1.000000
-      G float 1.000000
-      B float 1.000000
-      A float 1.000000
-    }
-    m_attenuation LightVec3
-    {
-      X float 1.000000
-      Y float 500.000000
-      Z float 5.000000
-    }
   }
 }
