@@ -104,6 +104,7 @@ namespace Framework
 
     if (!editor)
     {
+      ShowCursor(false);
       ENGINE->ChangeLevel("Intro");
     }
 	  //ENGINE->LoadLevel("content/data/spaces/Level1.space");
