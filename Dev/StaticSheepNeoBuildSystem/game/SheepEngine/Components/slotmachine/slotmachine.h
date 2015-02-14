@@ -24,6 +24,7 @@ namespace Framework
     virtual void Remove();
 
     void TweakSetNumSlots(const void* value);
+    void TweakSetupSlots(const void* value);
 
     void Update(float dt);
     void Draw();

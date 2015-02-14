@@ -12,6 +12,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "SheepMath.h"
 #include "systems/input/Input.h"
 #include "systems/graphics/SheepGraphics.h"
+#include "systems/anttweak/TweakHelper.h"
 
 namespace Framework
 {
@@ -90,6 +91,14 @@ namespace Framework
 
     if (startSpinning)
       Start();
+  }
+
+  void SlotMachine::TweakSetupSlots(const void* value)
+  {
+    AntTweak::Tweaker::currentGeneric->genericMember->Type()->Copy(
+      (char*)this + AntTweak::Tweaker::currentGeneric->realOffset, value);
+    
+    SetupSlots();
   }
 
   void SlotMachine::Start()

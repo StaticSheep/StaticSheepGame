@@ -32,11 +32,14 @@ namespace DirectSheep
 
     void Release(void);
 
+    void RefreshTexture();
 
   private:
     ID3D11Texture2D* m_rawTex;
     ID3D11RenderTargetView* m_renderTarget;
     ID3D11ShaderResourceView* m_ShaderRes;
+
+    std::string m_texName;
 
     unsigned m_width;
     unsigned m_height;

@@ -40,7 +40,7 @@ namespace Framework
   // for seeing the particles in the editor
   void ParticleBoxEmitter::FrameUpdate(float dt)
   {
-    if(ENGINE->m_editorAcitve)
+    if(ENGINE->m_editorActive)
       UpdateEmitter(dt);
   }
 

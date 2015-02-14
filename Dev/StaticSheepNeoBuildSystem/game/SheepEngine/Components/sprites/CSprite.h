@@ -48,6 +48,8 @@ namespace Framework
     bool m_flipX = false;
     bool m_flipY = false;
 
+    bool m_uvScale;
+
     void TweakSetTexture(const void * Texture);
 
     // DO NOT WRITE DIRECTLY TO THIS SILLY

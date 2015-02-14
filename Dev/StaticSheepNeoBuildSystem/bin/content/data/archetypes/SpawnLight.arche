@@ -25,13 +25,13 @@ GameObject
       R float 1.000000
       G float 1.000000
       B float 1.000000
-      A float 1.000000
+      A float 50.000000
     }
     m_attenuation LightVec3
     {
-      X float 1.000000
+      X float 0.000000
       Y float 0.000000
-      Z float 20.000000
+      Z float 2.000000
     }
   }
 }

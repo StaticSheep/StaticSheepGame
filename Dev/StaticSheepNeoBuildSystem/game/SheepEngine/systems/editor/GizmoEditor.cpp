@@ -533,7 +533,7 @@ namespace Framework
 
   void GizmoEditor::Update(float dt)
   {
-    if (ENGINE->m_editorAcitve)
+    if (ENGINE->m_editorActive)
     {
       if (m_object != Handle::null)
       {
