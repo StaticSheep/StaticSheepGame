@@ -43,27 +43,27 @@ GameObject
 }
 GameObject
 {
-  name std::string "PlatformBottomLeft"
-  archetype std::string "Platform1"
+  name std::string "Platform"
+  archetype std::string ""
   Transform
   {
     Translation Vec3
     {
-      x_ float -560.000000
-      y_ float -510.000000
+      x_ float 928.000000
+      y_ float -256.000000
       z_ float 0.000000
     }
-    Rotation float 0.000000
+    Rotation float 1.570796
     Scale Vec3
     {
       x_ float 1.000000
-      y_ float 2.000000
+      y_ float 1.000000
       z_ float 0.000000
     }
   }
   Sprite
   {
-    m_spriteName std::string "grinder_base.png"
+    m_spriteName std::string "light_block_on.png"
     Color Vec4
     {
       R float 1.000000
@@ -73,44 +73,36 @@ GameObject
     }
     Size Vec2
     {
-      X float 1.500000
-      Y float 1.000000
+      X float 2.000000
+      Y float 2.000000
     }
     m_flipX bool false
     m_flipY bool false
   }
-  BoxCollider
-  {
-    m_width float 200.000000
-    m_height float 60.000000
-    m_materialName std::string "Static"
-    m_hasCollisionCallback bool false
-    m_CollisionGroup std::string ""
-  }
 }
 GameObject
 {
-  name std::string "PlatformBottomMid"
-  archetype std::string "Platform1"
+  name std::string "PlatformCorner"
+  archetype std::string ""
   Transform
   {
     Translation Vec3
     {
-      x_ float 0.000000
-      y_ float -515.379211
-      z_ float 0.000000
+      x_ float -830.998779
+      y_ float -416.605225
+      z_ float 1.000000
     }
-    Rotation float 0.000000
+    Rotation float -0.785398
     Scale Vec3
     {
-      x_ float 0.750000
-      y_ float 2.000000
-      z_ float 0.000000
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 1.000000
     }
   }
   Sprite
   {
-    m_spriteName std::string "grinder_base.png"
+    m_spriteName std::string "light_block_on.png"
     Color Vec4
     {
       R float 1.000000
@@ -120,16 +112,16 @@ GameObject
     }
     Size Vec2
     {
-      X float 3.000000
-      Y float 1.000000
+      X float 4.000000
+      Y float 2.000000
     }
     m_flipX bool false
     m_flipY bool false
   }
   BoxCollider
   {
-    m_width float 285.000000
-    m_height float 60.000000
+    m_width float 256.000000
+    m_height float 128.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
     m_CollisionGroup std::string ""
@@ -137,27 +129,66 @@ GameObject
 }
 GameObject
 {
-  name std::string "PlatformLeft"
-  archetype std::string "Platform1"
+  name std::string "Platform"
+  archetype std::string ""
   Transform
   {
     Translation Vec3
     {
-      x_ float -930.000000
+      x_ float -928.000000
+      y_ float 256.000000
+      z_ float 0.000000
+    }
+    Rotation float 1.570796
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "light_block_on.png"
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+    m_flipX bool false
+    m_flipY bool false
+  }
+}
+GameObject
+{
+  name std::string "Platform"
+  archetype std::string ""
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -928.000000
       y_ float 0.000000
       z_ float 0.000000
     }
-    Rotation float 1.570700
+    Rotation float 1.570796
     Scale Vec3
     {
-      x_ float 2.300000
-      y_ float 2.000000
+      x_ float 1.000000
+      y_ float 1.000000
       z_ float 0.000000
     }
   }
   Sprite
   {
-    m_spriteName std::string "grinder_base.png"
+    m_spriteName std::string "light_block_on.png"
     Color Vec4
     {
       R float 1.000000
@@ -167,63 +198,16 @@ GameObject
     }
     Size Vec2
     {
-      X float 1.500000
-      Y float 1.000000
+      X float 2.000000
+      Y float 2.000000
     }
     m_flipX bool false
     m_flipY bool false
   }
   BoxCollider
   {
-    m_width float 400.000000
-    m_height float 64.000000
-    m_materialName std::string "Static"
-    m_hasCollisionCallback bool false
-    m_CollisionGroup std::string ""
-  }
-}
-GameObject
-{
-  name std::string "PlatformRight"
-  archetype std::string "Platform1"
-  Transform
-  {
-    Translation Vec3
-    {
-      x_ float 930.000000
-      y_ float 0.000000
-      z_ float 0.000000
-    }
-    Rotation float 1.570700
-    Scale Vec3
-    {
-      x_ float 2.300000
-      y_ float 2.000000
-      z_ float 0.000000
-    }
-  }
-  Sprite
-  {
-    m_spriteName std::string "grinder_base.png"
-    Color Vec4
-    {
-      R float 1.000000
-      G float 1.000000
-      B float 1.000000
-      A float 1.000000
-    }
-    Size Vec2
-    {
-      X float 1.500000
-      Y float 1.000000
-    }
-    m_flipX bool false
-    m_flipY bool false
-  }
-  BoxCollider
-  {
-    m_width float 400.000000
-    m_height float 64.000000
+    m_width float 602.000000
+    m_height float 128.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
     m_CollisionGroup std::string ""
@@ -528,471 +512,27 @@ GameObject
 }
 GameObject
 {
-  name std::string "SpawnLight"
-  archetype std::string "SpawnLight"
+  name std::string ""
+  archetype std::string ""
   Transform
   {
     Translation Vec3
     {
-      x_ float -795.000000
-      y_ float -361.000000
-      z_ float 0.000000
+      x_ float 920.022339
+      y_ float -523.607483
+      z_ float 1.500000
     }
-    Rotation float 0.000000
+    Rotation float 0.785398
     Scale Vec3
     {
       x_ float 1.000000
       y_ float 1.000000
-      z_ float 0.000000
-    }
-  }
-  PointLight
-  {
-    m_brightness LightColor
-    {
-      R float 0.000000
-      G float 1.000000
-      B float 0.000000
-      A float 90.000000
-    }
-    m_attenuation LightVec3
-    {
-      X float 1.000000
-      Y float 0.000000
-      Z float 20.000000
-    }
-  }
-}
-GameObject
-{
-  name std::string "SpawnLight"
-  archetype std::string "SpawnLight"
-  Transform
-  {
-    Translation Vec3
-    {
-      x_ float 795.000000
-      y_ float -361.000000
-      z_ float 0.000000
-    }
-    Rotation float 0.000000
-    Scale Vec3
-    {
-      x_ float 1.000000
-      y_ float 1.000000
-      z_ float 0.000000
-    }
-  }
-  PointLight
-  {
-    m_brightness LightColor
-    {
-      R float 1.000000
-      G float 0.000000
-      B float 0.000000
-      A float 90.000000
-    }
-    m_attenuation LightVec3
-    {
-      X float 1.000000
-      Y float 0.000000
-      Z float 20.000000
-    }
-  }
-}
-GameObject
-{
-  name std::string "SpawnLight"
-  archetype std::string "SpawnLight"
-  Transform
-  {
-    Translation Vec3
-    {
-      x_ float 795.000000
-      y_ float 361.000000
-      z_ float 0.000000
-    }
-    Rotation float 0.000000
-    Scale Vec3
-    {
-      x_ float 1.000000
-      y_ float 1.000000
-      z_ float 0.000000
-    }
-  }
-  PointLight
-  {
-    m_brightness LightColor
-    {
-      R float 1.000000
-      G float 0.000000
-      B float 1.000000
-      A float 90.000000
-    }
-    m_attenuation LightVec3
-    {
-      X float 1.000000
-      Y float 0.000000
-      Z float 20.000000
-    }
-  }
-}
-GameObject
-{
-  name std::string "SpawnLight"
-  archetype std::string "SpawnLight"
-  Transform
-  {
-    Translation Vec3
-    {
-      x_ float -795.000000
-      y_ float 361.000000
-      z_ float 0.000000
-    }
-    Rotation float 0.000000
-    Scale Vec3
-    {
-      x_ float 1.000000
-      y_ float 1.000000
-      z_ float 0.000000
-    }
-  }
-  PointLight
-  {
-    m_brightness LightColor
-    {
-      R float 0.000000
-      G float 0.000000
-      B float 1.000000
-      A float 90.000000
-    }
-    m_attenuation LightVec3
-    {
-      X float 1.000000
-      Y float 0.000000
-      Z float 20.000000
-    }
-  }
-}
-GameObject
-{
-  name std::string "SpawnLight"
-  archetype std::string "SpawnLight"
-  Transform
-  {
-    Translation Vec3
-    {
-      x_ float -200.000000
-      y_ float 0.000000
-      z_ float 0.000000
-    }
-    Rotation float 0.000000
-    Scale Vec3
-    {
-      x_ float 1.000000
-      y_ float 1.000000
-      z_ float 0.000000
-    }
-  }
-  PointLight
-  {
-    m_brightness LightColor
-    {
-      R float 1.000000
-      G float 1.000000
-      B float 1.000000
-      A float 1.000000
-    }
-    m_attenuation LightVec3
-    {
-      X float 1.000000
-      Y float 0.000000
-      Z float 20.000000
-    }
-  }
-}
-GameObject
-{
-  name std::string "SpawnLight"
-  archetype std::string "SpawnLight"
-  Transform
-  {
-    Translation Vec3
-    {
-      x_ float 200.000000
-      y_ float 0.000000
-      z_ float 0.000000
-    }
-    Rotation float 0.000000
-    Scale Vec3
-    {
-      x_ float 1.000000
-      y_ float 1.000000
-      z_ float 0.000000
-    }
-  }
-  PointLight
-  {
-    m_brightness LightColor
-    {
-      R float 1.000000
-      G float 1.000000
-      B float 1.000000
-      A float 1.000000
-    }
-    m_attenuation LightVec3
-    {
-      X float 1.000000
-      Y float 0.000000
-      Z float 20.000000
-    }
-  }
-}
-GameObject
-{
-  name std::string "SpawnLight"
-  archetype std::string "SpawnLight"
-  Transform
-  {
-    Translation Vec3
-    {
-      x_ float -795.000000
-      y_ float -361.000000
-      z_ float 0.000000
-    }
-    Rotation float 0.000000
-    Scale Vec3
-    {
-      x_ float 1.000000
-      y_ float 1.000000
-      z_ float 0.000000
-    }
-  }
-  PointLight
-  {
-    m_brightness LightColor
-    {
-      R float 0.000000
-      G float 1.000000
-      B float 0.000000
-      A float 90.000000
-    }
-    m_attenuation LightVec3
-    {
-      X float 1.000000
-      Y float 0.000000
-      Z float 20.000000
-    }
-  }
-}
-GameObject
-{
-  name std::string "SpawnLight"
-  archetype std::string "SpawnLight"
-  Transform
-  {
-    Translation Vec3
-    {
-      x_ float 795.000000
-      y_ float -361.000000
-      z_ float 0.000000
-    }
-    Rotation float 0.000000
-    Scale Vec3
-    {
-      x_ float 1.000000
-      y_ float 1.000000
-      z_ float 0.000000
-    }
-  }
-  PointLight
-  {
-    m_brightness LightColor
-    {
-      R float 1.000000
-      G float 0.000000
-      B float 0.000000
-      A float 90.000000
-    }
-    m_attenuation LightVec3
-    {
-      X float 1.000000
-      Y float 0.000000
-      Z float 20.000000
-    }
-  }
-}
-GameObject
-{
-  name std::string "SpawnLight"
-  archetype std::string "SpawnLight"
-  Transform
-  {
-    Translation Vec3
-    {
-      x_ float 795.000000
-      y_ float 361.000000
-      z_ float 0.000000
-    }
-    Rotation float 0.000000
-    Scale Vec3
-    {
-      x_ float 1.000000
-      y_ float 1.000000
-      z_ float 0.000000
-    }
-  }
-  PointLight
-  {
-    m_brightness LightColor
-    {
-      R float 1.000000
-      G float 0.000000
-      B float 1.000000
-      A float 90.000000
-    }
-    m_attenuation LightVec3
-    {
-      X float 1.000000
-      Y float 0.000000
-      Z float 20.000000
-    }
-  }
-}
-GameObject
-{
-  name std::string "SpawnLight"
-  archetype std::string "SpawnLight"
-  Transform
-  {
-    Translation Vec3
-    {
-      x_ float -795.000000
-      y_ float 361.000000
-      z_ float 0.000000
-    }
-    Rotation float 0.000000
-    Scale Vec3
-    {
-      x_ float 1.000000
-      y_ float 1.000000
-      z_ float 0.000000
-    }
-  }
-  PointLight
-  {
-    m_brightness LightColor
-    {
-      R float 0.000000
-      G float 0.000000
-      B float 1.000000
-      A float 90.000000
-    }
-    m_attenuation LightVec3
-    {
-      X float 1.000000
-      Y float 0.000000
-      Z float 20.000000
-    }
-  }
-}
-GameObject
-{
-  name std::string "SpawnLight"
-  archetype std::string "SpawnLight"
-  Transform
-  {
-    Translation Vec3
-    {
-      x_ float -200.000000
-      y_ float 0.000000
-      z_ float 0.000000
-    }
-    Rotation float 0.000000
-    Scale Vec3
-    {
-      x_ float 1.000000
-      y_ float 1.000000
-      z_ float 0.000000
-    }
-  }
-  PointLight
-  {
-    m_brightness LightColor
-    {
-      R float 1.000000
-      G float 1.000000
-      B float 1.000000
-      A float 1.000000
-    }
-    m_attenuation LightVec3
-    {
-      X float 1.000000
-      Y float 0.000000
-      Z float 20.000000
-    }
-  }
-}
-GameObject
-{
-  name std::string "SpawnLight"
-  archetype std::string "SpawnLight"
-  Transform
-  {
-    Translation Vec3
-    {
-      x_ float 200.000000
-      y_ float 0.000000
-      z_ float 0.000000
-    }
-    Rotation float 0.000000
-    Scale Vec3
-    {
-      x_ float 1.000000
-      y_ float 1.000000
-      z_ float 0.000000
-    }
-  }
-  PointLight
-  {
-    m_brightness LightColor
-    {
-      R float 1.000000
-      G float 1.000000
-      B float 1.000000
-      A float 1.000000
-    }
-    m_attenuation LightVec3
-    {
-      X float 1.000000
-      Y float 0.000000
-      Z float 20.000000
-    }
-  }
-}
-GameObject
-{
-  name std::string "PlatformBottomRight"
-  archetype std::string "Platform1"
-  Transform
-  {
-    Translation Vec3
-    {
-      x_ float 560.000000
-      y_ float -510.000000
-      z_ float 0.000000
-    }
-    Rotation float 0.000000
-    Scale Vec3
-    {
-      x_ float 0.950000
-      y_ float 2.000000
       z_ float 0.000000
     }
   }
   Sprite
   {
-    m_spriteName std::string "grinder_base.png"
+    m_spriteName std::string "generic_block_grey.png"
     Color Vec4
     {
       R float 1.000000
@@ -1002,44 +542,153 @@ GameObject
     }
     Size Vec2
     {
-      X float 1.500000
-      Y float 1.000000
+      X float 6.000000
+      Y float 6.000000
     }
     m_flipX bool false
     m_flipY bool false
   }
-  BoxCollider
-  {
-    m_width float 200.000000
-    m_height float 60.000000
-    m_materialName std::string "Static"
-    m_hasCollisionCallback bool false
-    m_CollisionGroup std::string ""
-  }
 }
 GameObject
 {
-  name std::string "PlatformTopLeft"
-  archetype std::string "Platform1"
+  name std::string ""
+  archetype std::string ""
   Transform
   {
     Translation Vec3
     {
-      x_ float -560.000000
-      y_ float 510.000000
+      x_ float -928.031555
+      y_ float -523.607483
+      z_ float 1.500000
+    }
+    Rotation float 0.785398
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "generic_block_grey.png"
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 6.000000
+      Y float 6.000000
+    }
+    m_flipX bool false
+    m_flipY bool false
+  }
+}
+GameObject
+{
+  name std::string ""
+  archetype std::string ""
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -928.031555
+      y_ float 507.676208
+      z_ float 1.500000
+    }
+    Rotation float 0.785398
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "generic_block_grey.png"
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 6.000000
+      Y float 6.000000
+    }
+    m_flipX bool false
+    m_flipY bool false
+  }
+}
+GameObject
+{
+  name std::string ""
+  archetype std::string ""
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 918.020203
+      y_ float 507.676208
+      z_ float 1.500000
+    }
+    Rotation float 0.785398
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "generic_block_grey.png"
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 6.000000
+      Y float 6.000000
+    }
+    m_flipX bool false
+    m_flipY bool false
+  }
+}
+GameObject
+{
+  name std::string ""
+  archetype std::string ""
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -321.001251
+      y_ float 543.752075
       z_ float 0.000000
     }
     Rotation float 0.000000
     Scale Vec3
     {
       x_ float 1.000000
-      y_ float 2.000000
+      y_ float 1.000000
       z_ float 0.000000
     }
   }
   Sprite
   {
-    m_spriteName std::string "grinder_base.png"
+    m_spriteName std::string "generic_block_grey.png"
     Color Vec4
     {
       R float 1.000000
@@ -1049,44 +698,36 @@ GameObject
     }
     Size Vec2
     {
-      X float 1.500000
+      X float 4.000000
       Y float 1.000000
     }
     m_flipX bool false
     m_flipY bool false
   }
-  BoxCollider
-  {
-    m_width float 220.000000
-    m_height float 64.000000
-    m_materialName std::string "Static"
-    m_hasCollisionCallback bool false
-    m_CollisionGroup std::string ""
-  }
 }
 GameObject
 {
-  name std::string "PlatformTopRight"
-  archetype std::string "Platform1"
+  name std::string ""
+  archetype std::string ""
   Transform
   {
     Translation Vec3
     {
-      x_ float 560.000000
-      y_ float 510.000000
+      x_ float 320.712097
+      y_ float 543.752075
       z_ float 0.000000
     }
     Rotation float 0.000000
     Scale Vec3
     {
-      x_ float 0.950000
-      y_ float 2.000000
+      x_ float 1.000000
+      y_ float 1.000000
       z_ float 0.000000
     }
   }
   Sprite
   {
-    m_spriteName std::string "grinder_base.png"
+    m_spriteName std::string "generic_block_grey.png"
     Color Vec4
     {
       R float 1.000000
@@ -1096,16 +737,115 @@ GameObject
     }
     Size Vec2
     {
-      X float 1.500000
+      X float 4.000000
       Y float 1.000000
     }
     m_flipX bool false
     m_flipY bool false
   }
+}
+GameObject
+{
+  name std::string ""
+  archetype std::string ""
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 320.712097
+      y_ float -544.884155
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "generic_block_grey.png"
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 4.000000
+      Y float 1.000000
+    }
+    m_flipX bool false
+    m_flipY bool false
+  }
+}
+GameObject
+{
+  name std::string ""
+  archetype std::string ""
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -320.000000
+      y_ float -544.884155
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "generic_block_grey.png"
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 4.000000
+      Y float 1.000000
+    }
+    m_flipX bool false
+    m_flipY bool false
+  }
+}
+GameObject
+{
+  name std::string "Collider"
+  archetype std::string ""
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -576.000000
+      y_ float 512.000000
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
   BoxCollider
   {
-    m_width float 220.000000
-    m_height float 64.000000
+    m_width float 256.000000
+    m_height float 128.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
     m_CollisionGroup std::string ""
@@ -1113,27 +853,202 @@ GameObject
 }
 GameObject
 {
-  name std::string "PlatformTopMid"
-  archetype std::string "Platform1"
+  name std::string "Collider"
+  archetype std::string ""
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -576.000000
+      y_ float -512.000000
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  BoxCollider
+  {
+    m_width float 256.000000
+    m_height float 128.000000
+    m_materialName std::string "Static"
+    m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
+  }
+}
+GameObject
+{
+  name std::string "Collider"
+  archetype std::string ""
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 576.000000
+      y_ float -512.000000
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  BoxCollider
+  {
+    m_width float 256.000000
+    m_height float 128.000000
+    m_materialName std::string "Static"
+    m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
+  }
+}
+GameObject
+{
+  name std::string "Platform"
+  archetype std::string ""
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -640.000000
+      y_ float 512.000000
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "light_block_on.png"
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+    m_flipX bool false
+    m_flipY bool false
+  }
+}
+GameObject
+{
+  name std::string "Platform"
+  archetype std::string ""
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -512.000000
+      y_ float 512.000000
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "light_block_on.png"
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+    m_flipX bool false
+    m_flipY bool false
+  }
+}
+GameObject
+{
+  name std::string "Platform"
+  archetype std::string ""
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -128.000000
+      y_ float 512.000000
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "light_block_on.png"
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+    m_flipX bool false
+    m_flipY bool false
+  }
+}
+GameObject
+{
+  name std::string "Platform"
+  archetype std::string ""
   Transform
   {
     Translation Vec3
     {
       x_ float 0.000000
-      y_ float 510.000000
+      y_ float 512.000000
       z_ float 0.000000
     }
     Rotation float 0.000000
     Scale Vec3
     {
-      x_ float 0.750000
-      y_ float 2.000000
+      x_ float 1.000000
+      y_ float 1.000000
       z_ float 0.000000
     }
   }
   Sprite
   {
-    m_spriteName std::string "grinder_base.png"
+    m_spriteName std::string "light_block_on.png"
     Color Vec4
     {
       R float 1.000000
@@ -1143,8 +1058,8 @@ GameObject
     }
     Size Vec2
     {
-      X float 3.000000
-      Y float 1.000000
+      X float 2.000000
+      Y float 2.000000
     }
     m_flipX bool false
     m_flipY bool false
@@ -1152,7 +1067,7 @@ GameObject
   BoxCollider
   {
     m_width float 384.000000
-    m_height float 64.000000
+    m_height float 128.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
     m_CollisionGroup std::string ""
@@ -1160,262 +1075,27 @@ GameObject
 }
 GameObject
 {
-  name std::string "BRKillBox"
-  archetype std::string "KillBox"
-  Transform
-  {
-    Translation Vec3
-    {
-      x_ float 319.399994
-      y_ float -530.000000
-      z_ float 1.000000
-    }
-    Rotation float 0.000000
-    Scale Vec3
-    {
-      x_ float 2.100000
-      y_ float 1.500000
-      z_ float 0.000000
-    }
-  }
-  Sprite
-  {
-    m_spriteName std::string "grinder_base.png"
-    Color Vec4
-    {
-      R float 0.666667
-      G float 0.666667
-      B float 0.666667
-      A float 1.000000
-    }
-    Size Vec2
-    {
-      X float 1.100000
-      Y float 0.800000
-    }
-    m_flipX bool false
-    m_flipY bool false
-  }
-  BoxCollider
-  {
-    m_width float 256.000000
-    m_height float 32.000000
-    m_materialName std::string "Static"
-    m_hasCollisionCallback bool false
-    m_CollisionGroup std::string ""
-  }
-}
-GameObject
-{
-  name std::string "BLKillBox"
-  archetype std::string "KillBox"
-  Transform
-  {
-    Translation Vec3
-    {
-      x_ float -319.399994
-      y_ float -530.000000
-      z_ float 1.000000
-    }
-    Rotation float 0.000000
-    Scale Vec3
-    {
-      x_ float 2.100000
-      y_ float 1.500000
-      z_ float 0.000000
-    }
-  }
-  Sprite
-  {
-    m_spriteName std::string "grinder_base.png"
-    Color Vec4
-    {
-      R float 0.666667
-      G float 0.666667
-      B float 0.666667
-      A float 1.000000
-    }
-    Size Vec2
-    {
-      X float 1.100000
-      Y float 0.800000
-    }
-    m_flipX bool false
-    m_flipY bool false
-  }
-  BoxCollider
-  {
-    m_width float 256.000000
-    m_height float 32.000000
-    m_materialName std::string "Static"
-    m_hasCollisionCallback bool false
-    m_CollisionGroup std::string ""
-  }
-}
-GameObject
-{
-  name std::string "TLKillBox"
-  archetype std::string "KillBox"
-  Transform
-  {
-    Translation Vec3
-    {
-      x_ float -319.399994
-      y_ float 530.000000
-      z_ float 1.000000
-    }
-    Rotation float 3.140000
-    Scale Vec3
-    {
-      x_ float 2.100000
-      y_ float 1.500000
-      z_ float 0.000000
-    }
-  }
-  Sprite
-  {
-    m_spriteName std::string "grinder_base.png"
-    Color Vec4
-    {
-      R float 0.666667
-      G float 0.666667
-      B float 0.666667
-      A float 1.000000
-    }
-    Size Vec2
-    {
-      X float 1.100000
-      Y float 0.800000
-    }
-    m_flipX bool false
-    m_flipY bool false
-  }
-  BoxCollider
-  {
-    m_width float 256.000000
-    m_height float 32.000000
-    m_materialName std::string "Static"
-    m_hasCollisionCallback bool false
-    m_CollisionGroup std::string ""
-  }
-}
-GameObject
-{
-  name std::string "TRKillBox"
-  archetype std::string "KillBox"
-  Transform
-  {
-    Translation Vec3
-    {
-      x_ float 320.000000
-      y_ float 530.000000
-      z_ float 1.000000
-    }
-    Rotation float 3.140000
-    Scale Vec3
-    {
-      x_ float 2.100000
-      y_ float 1.500000
-      z_ float 0.000000
-    }
-  }
-  Sprite
-  {
-    m_spriteName std::string "grinder_base.png"
-    Color Vec4
-    {
-      R float 0.666667
-      G float 0.666667
-      B float 0.666667
-      A float 1.000000
-    }
-    Size Vec2
-    {
-      X float 1.100000
-      Y float 0.800000
-    }
-    m_flipX bool false
-    m_flipY bool false
-  }
-  BoxCollider
-  {
-    m_width float 256.000000
-    m_height float 32.000000
-    m_materialName std::string "Static"
-    m_hasCollisionCallback bool false
-    m_CollisionGroup std::string ""
-  }
-}
-GameObject
-{
-  name std::string "BottomRightCorner"
+  name std::string "Platform"
   archetype std::string ""
   Transform
   {
     Translation Vec3
     {
-      x_ float 795.000000
-      y_ float -361.000000
-      z_ float 0.010000
-    }
-    Rotation float 0.785000
-    Scale Vec3
-    {
-      x_ float 1.250000
-      y_ float 2.000000
+      x_ float 128.000000
+      y_ float 512.000000
       z_ float 0.000000
-    }
-  }
-  Sprite
-  {
-    m_spriteName std::string "grinder_base.png"
-    Color Vec4
-    {
-      R float 1.000000
-      G float 1.000000
-      B float 1.000000
-      A float 1.000000
-    }
-    Size Vec2
-    {
-      X float 2.500000
-      Y float 0.500000
-    }
-    m_flipX bool false
-    m_flipY bool false
-  }
-  BoxCollider
-  {
-    m_width float 360.000000
-    m_height float 32.000000
-    m_materialName std::string "Static"
-    m_hasCollisionCallback bool false
-    m_CollisionGroup std::string ""
-  }
-}
-GameObject
-{
-  name std::string "GrinderBL1"
-  archetype std::string "Grinder"
-  Transform
-  {
-    Translation Vec3
-    {
-      x_ float -400.000000
-      y_ float -515.000000
-      z_ float 1.100000
     }
     Rotation float 0.000000
     Scale Vec3
     {
-      x_ float 2.000000
-      y_ float 2.000000
+      x_ float 1.000000
+      y_ float 1.000000
       z_ float 0.000000
     }
   }
   Sprite
   {
-    m_spriteName std::string "Grinder.png"
+    m_spriteName std::string "light_block_on.png"
     Color Vec4
     {
       R float 1.000000
@@ -1425,294 +1105,36 @@ GameObject
     }
     Size Vec2
     {
-      X float 1.000000
-      Y float 1.000000
+      X float 2.000000
+      Y float 2.000000
     }
     m_flipX bool false
     m_flipY bool false
   }
-  BoxCollider
-  {
-    m_width float 64.000000
-    m_height float 64.000000
-    m_materialName std::string "Static"
-    m_hasCollisionCallback bool false
-    m_CollisionGroup std::string ""
-  }
-  Grinder
-  {
-  }
 }
 GameObject
 {
-  name std::string "GrinderBL2"
-  archetype std::string "Grinder"
-  Transform
-  {
-    Translation Vec3
-    {
-      x_ float -320.000000
-      y_ float -515.000000
-      z_ float 1.100000
-    }
-    Rotation float 0.000000
-    Scale Vec3
-    {
-      x_ float 2.000000
-      y_ float 2.000000
-      z_ float 0.000000
-    }
-  }
-  Sprite
-  {
-    m_spriteName std::string "Grinder.png"
-    Color Vec4
-    {
-      R float 1.000000
-      G float 1.000000
-      B float 1.000000
-      A float 1.000000
-    }
-    Size Vec2
-    {
-      X float 1.000000
-      Y float 1.000000
-    }
-    m_flipX bool false
-    m_flipY bool false
-  }
-  BoxCollider
-  {
-    m_width float 64.000000
-    m_height float 64.000000
-    m_materialName std::string "Static"
-    m_hasCollisionCallback bool false
-    m_CollisionGroup std::string ""
-  }
-  Grinder
-  {
-  }
-}
-GameObject
-{
-  name std::string "GrinderBL3"
-  archetype std::string "Grinder"
-  Transform
-  {
-    Translation Vec3
-    {
-      x_ float -240.000000
-      y_ float -515.000000
-      z_ float 1.100000
-    }
-    Rotation float 0.000000
-    Scale Vec3
-    {
-      x_ float 2.000000
-      y_ float 2.000000
-      z_ float 0.000000
-    }
-  }
-  Sprite
-  {
-    m_spriteName std::string "Grinder.png"
-    Color Vec4
-    {
-      R float 1.000000
-      G float 1.000000
-      B float 1.000000
-      A float 1.000000
-    }
-    Size Vec2
-    {
-      X float 1.000000
-      Y float 1.000000
-    }
-    m_flipX bool false
-    m_flipY bool false
-  }
-  BoxCollider
-  {
-    m_width float 64.000000
-    m_height float 64.000000
-    m_materialName std::string "Static"
-    m_hasCollisionCallback bool false
-    m_CollisionGroup std::string ""
-  }
-  Grinder
-  {
-  }
-}
-GameObject
-{
-  name std::string "GrinderTL2"
-  archetype std::string "Grinder"
-  Transform
-  {
-    Translation Vec3
-    {
-      x_ float -320.000000
-      y_ float 515.000000
-      z_ float 1.100000
-    }
-    Rotation float 0.000000
-    Scale Vec3
-    {
-      x_ float 2.000000
-      y_ float 2.000000
-      z_ float 0.000000
-    }
-  }
-  Sprite
-  {
-    m_spriteName std::string "Grinder.png"
-    Color Vec4
-    {
-      R float 1.000000
-      G float 1.000000
-      B float 1.000000
-      A float 1.000000
-    }
-    Size Vec2
-    {
-      X float 1.000000
-      Y float 1.000000
-    }
-    m_flipX bool false
-    m_flipY bool false
-  }
-  BoxCollider
-  {
-    m_width float 64.000000
-    m_height float 64.000000
-    m_materialName std::string "Static"
-    m_hasCollisionCallback bool true
-    m_CollisionGroup std::string ""
-  }
-  Grinder
-  {
-  }
-}
-GameObject
-{
-  name std::string "GrinderTL3"
-  archetype std::string "Grinder"
-  Transform
-  {
-    Translation Vec3
-    {
-      x_ float -240.000000
-      y_ float 515.000000
-      z_ float 1.100000
-    }
-    Rotation float 0.000000
-    Scale Vec3
-    {
-      x_ float 2.000000
-      y_ float 2.000000
-      z_ float 0.000000
-    }
-  }
-  Sprite
-  {
-    m_spriteName std::string "Grinder.png"
-    Color Vec4
-    {
-      R float 1.000000
-      G float 1.000000
-      B float 1.000000
-      A float 1.000000
-    }
-    Size Vec2
-    {
-      X float 1.000000
-      Y float 1.000000
-    }
-    m_flipX bool false
-    m_flipY bool false
-  }
-  BoxCollider
-  {
-    m_width float 64.000000
-    m_height float 64.000000
-    m_materialName std::string "Static"
-    m_hasCollisionCallback bool true
-    m_CollisionGroup std::string ""
-  }
-  Grinder
-  {
-  }
-}
-GameObject
-{
-  name std::string "TopRightCorner"
+  name std::string "Platform"
   archetype std::string ""
   Transform
   {
     Translation Vec3
     {
-      x_ float 795.000000
-      y_ float 361.000000
-      z_ float 0.010000
-    }
-    Rotation float -0.785000
-    Scale Vec3
-    {
-      x_ float 1.250000
-      y_ float 2.000000
+      x_ float 640.000000
+      y_ float -512.000000
       z_ float 0.000000
-    }
-  }
-  Sprite
-  {
-    m_spriteName std::string "grinder_base.png"
-    Color Vec4
-    {
-      R float 1.000000
-      G float 1.000000
-      B float 1.000000
-      A float 1.000000
-    }
-    Size Vec2
-    {
-      X float 2.500000
-      Y float 0.500000
-    }
-    m_flipX bool false
-    m_flipY bool false
-  }
-  BoxCollider
-  {
-    m_width float 360.000000
-    m_height float 32.000000
-    m_materialName std::string "Static"
-    m_hasCollisionCallback bool false
-    m_CollisionGroup std::string ""
-  }
-}
-GameObject
-{
-  name std::string "GrinderTL1"
-  archetype std::string "Grinder"
-  Transform
-  {
-    Translation Vec3
-    {
-      x_ float -400.000000
-      y_ float 515.000000
-      z_ float 1.100000
     }
     Rotation float 0.000000
     Scale Vec3
     {
-      x_ float 2.000000
-      y_ float 2.000000
+      x_ float 1.000000
+      y_ float 1.000000
       z_ float 0.000000
     }
   }
   Sprite
   {
-    m_spriteName std::string "Grinder.png"
+    m_spriteName std::string "light_block_on.png"
     Color Vec4
     {
       R float 1.000000
@@ -1722,47 +1144,36 @@ GameObject
     }
     Size Vec2
     {
-      X float 1.000000
-      Y float 1.000000
+      X float 2.000000
+      Y float 2.000000
     }
     m_flipX bool false
     m_flipY bool false
   }
-  BoxCollider
-  {
-    m_width float 64.000000
-    m_height float 64.000000
-    m_materialName std::string "Static"
-    m_hasCollisionCallback bool false
-    m_CollisionGroup std::string ""
-  }
-  Grinder
-  {
-  }
 }
 GameObject
 {
-  name std::string "TopLeftCorner"
+  name std::string "Platform"
   archetype std::string ""
   Transform
   {
     Translation Vec3
     {
-      x_ float -795.000000
-      y_ float 361.000000
-      z_ float 0.010000
+      x_ float 512.000000
+      y_ float -512.000000
+      z_ float 0.000000
     }
-    Rotation float 0.785000
+    Rotation float 0.000000
     Scale Vec3
     {
-      x_ float 1.250000
-      y_ float 2.000000
+      x_ float 1.000000
+      y_ float 1.000000
       z_ float 0.000000
     }
   }
   Sprite
   {
-    m_spriteName std::string "grinder_base.png"
+    m_spriteName std::string "light_block_on.png"
     Color Vec4
     {
       R float 1.000000
@@ -1772,16 +1183,211 @@ GameObject
     }
     Size Vec2
     {
-      X float 2.500000
-      Y float 0.500000
+      X float 2.000000
+      Y float 2.000000
+    }
+    m_flipX bool false
+    m_flipY bool false
+  }
+}
+GameObject
+{
+  name std::string "Platform"
+  archetype std::string ""
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -640.000000
+      y_ float -512.000000
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "light_block_on.png"
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+    m_flipX bool false
+    m_flipY bool false
+  }
+}
+GameObject
+{
+  name std::string "Platform"
+  archetype std::string ""
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -512.000000
+      y_ float -512.000000
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "light_block_on.png"
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+    m_flipX bool false
+    m_flipY bool false
+  }
+}
+GameObject
+{
+  name std::string "Platform"
+  archetype std::string ""
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -128.000000
+      y_ float -512.000000
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "light_block_on.png"
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+    m_flipX bool false
+    m_flipY bool false
+  }
+}
+GameObject
+{
+  name std::string "Platform"
+  archetype std::string ""
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 128.000000
+      y_ float -512.000000
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "light_block_on.png"
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+    m_flipX bool false
+    m_flipY bool false
+  }
+}
+GameObject
+{
+  name std::string "Platform_BM_Collider"
+  archetype std::string ""
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 0.000000
+      y_ float -512.000000
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "light_block_on.png"
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
     }
     m_flipX bool false
     m_flipY bool false
   }
   BoxCollider
   {
-    m_width float 360.000000
-    m_height float 32.000000
+    m_width float 384.000000
+    m_height float 128.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
     m_CollisionGroup std::string ""
@@ -1789,210 +1395,42 @@ GameObject
 }
 GameObject
 {
-  name std::string "GrinderTR3"
+  name std::string "Collider"
+  archetype std::string ""
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 576.000000
+      y_ float 512.000000
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  BoxCollider
+  {
+    m_width float 256.000000
+    m_height float 128.000000
+    m_materialName std::string "Static"
+    m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
+  }
+}
+GameObject
+{
+  name std::string "GrinderBR3"
   archetype std::string "Grinder"
   Transform
   {
     Translation Vec3
     {
       x_ float 400.000000
-      y_ float 515.000000
-      z_ float 1.100000
-    }
-    Rotation float 0.000000
-    Scale Vec3
-    {
-      x_ float 2.000000
-      y_ float 2.000000
-      z_ float 0.000000
-    }
-  }
-  Sprite
-  {
-    m_spriteName std::string "Grinder.png"
-    Color Vec4
-    {
-      R float 1.000000
-      G float 1.000000
-      B float 1.000000
-      A float 1.000000
-    }
-    Size Vec2
-    {
-      X float 1.000000
-      Y float 1.000000
-    }
-    m_flipX bool false
-    m_flipY bool false
-  }
-  BoxCollider
-  {
-    m_width float 64.000000
-    m_height float 64.000000
-    m_materialName std::string "Static"
-    m_hasCollisionCallback bool false
-    m_CollisionGroup std::string ""
-  }
-  Grinder
-  {
-  }
-}
-GameObject
-{
-  name std::string "GrinderTR1"
-  archetype std::string "Grinder"
-  Transform
-  {
-    Translation Vec3
-    {
-      x_ float 240.000000
-      y_ float 515.000000
-      z_ float 1.100000
-    }
-    Rotation float 0.000000
-    Scale Vec3
-    {
-      x_ float 2.000000
-      y_ float 2.000000
-      z_ float 0.000000
-    }
-  }
-  Sprite
-  {
-    m_spriteName std::string "Grinder.png"
-    Color Vec4
-    {
-      R float 1.000000
-      G float 1.000000
-      B float 1.000000
-      A float 1.000000
-    }
-    Size Vec2
-    {
-      X float 1.000000
-      Y float 1.000000
-    }
-    m_flipX bool false
-    m_flipY bool false
-  }
-  BoxCollider
-  {
-    m_width float 64.000000
-    m_height float 64.000000
-    m_materialName std::string "Static"
-    m_hasCollisionCallback bool false
-    m_CollisionGroup std::string ""
-  }
-  Grinder
-  {
-  }
-}
-GameObject
-{
-  name std::string "GrinderTR2"
-  archetype std::string "Grinder"
-  Transform
-  {
-    Translation Vec3
-    {
-      x_ float 320.000000
-      y_ float 515.000000
-      z_ float 1.100000
-    }
-    Rotation float 0.000000
-    Scale Vec3
-    {
-      x_ float 2.000000
-      y_ float 2.000000
-      z_ float 0.000000
-    }
-  }
-  Sprite
-  {
-    m_spriteName std::string "Grinder.png"
-    Color Vec4
-    {
-      R float 1.000000
-      G float 1.000000
-      B float 1.000000
-      A float 1.000000
-    }
-    Size Vec2
-    {
-      X float 1.000000
-      Y float 1.000000
-    }
-    m_flipX bool false
-    m_flipY bool false
-  }
-  BoxCollider
-  {
-    m_width float 64.000000
-    m_height float 64.000000
-    m_materialName std::string "Static"
-    m_hasCollisionCallback bool false
-    m_CollisionGroup std::string ""
-  }
-  Grinder
-  {
-  }
-}
-GameObject
-{
-  name std::string "BottomLeftCorner"
-  archetype std::string ""
-  Transform
-  {
-    Translation Vec3
-    {
-      x_ float -795.388855
-      y_ float -361.728607
-      z_ float 0.010000
-    }
-    Rotation float -0.785000
-    Scale Vec3
-    {
-      x_ float 1.250000
-      y_ float 2.000000
-      z_ float 0.000000
-    }
-  }
-  Sprite
-  {
-    m_spriteName std::string "grinder_base.png"
-    Color Vec4
-    {
-      R float 1.000000
-      G float 1.000000
-      B float 1.000000
-      A float 1.000000
-    }
-    Size Vec2
-    {
-      X float 2.500000
-      Y float 0.500000
-    }
-    m_flipX bool false
-    m_flipY bool false
-  }
-  BoxCollider
-  {
-    m_width float 360.000000
-    m_height float 32.000000
-    m_materialName std::string "Static"
-    m_hasCollisionCallback bool false
-    m_CollisionGroup std::string ""
-  }
-}
-GameObject
-{
-  name std::string "GrinderBR1"
-  archetype std::string "Grinder"
-  Transform
-  {
-    Translation Vec3
-    {
-      x_ float 240.000000
       y_ float -515.000000
       z_ float 1.100000
     }
@@ -2086,13 +1524,13 @@ GameObject
 }
 GameObject
 {
-  name std::string "GrinderBR3"
+  name std::string "GrinderBR1"
   archetype std::string "Grinder"
   Transform
   {
     Translation Vec3
     {
-      x_ float 400.000000
+      x_ float 240.000000
       y_ float -515.000000
       z_ float 1.100000
     }
@@ -2136,17 +1574,17 @@ GameObject
 }
 GameObject
 {
-  name std::string "SpawnLight"
-  archetype std::string "SpawnLight"
+  name std::string "Platform"
+  archetype std::string ""
   Transform
   {
     Translation Vec3
     {
-      x_ float -610.000000
-      y_ float -440.000000
+      x_ float 928.000000
+      y_ float 128.000000
       z_ float 0.000000
     }
-    Rotation float 0.000000
+    Rotation float 1.570796
     Scale Vec3
     {
       x_ float 1.000000
@@ -2154,168 +1592,933 @@ GameObject
       z_ float 0.000000
     }
   }
-  PointLight
+  Sprite
   {
-    m_brightness LightColor
-    {
-      R float 0.000000
-      G float 1.000000
-      B float 0.000000
-      A float 20.000000
-    }
-    m_attenuation LightVec3
-    {
-      X float 1.000000
-      Y float 500.000000
-      Z float 5.000000
-    }
-  }
-}
-GameObject
-{
-  name std::string "SpawnLight"
-  archetype std::string "SpawnLight"
-  Transform
-  {
-    Translation Vec3
-    {
-      x_ float 610.000000
-      y_ float -440.000000
-      z_ float 0.000000
-    }
-    Rotation float 0.000000
-    Scale Vec3
-    {
-      x_ float 1.000000
-      y_ float 1.000000
-      z_ float 0.000000
-    }
-  }
-  PointLight
-  {
-    m_brightness LightColor
-    {
-      R float 1.000000
-      G float 0.000000
-      B float 0.000000
-      A float 20.000000
-    }
-    m_attenuation LightVec3
-    {
-      X float 1.000000
-      Y float 500.000000
-      Z float 5.000000
-    }
-  }
-}
-GameObject
-{
-  name std::string "SpawnLight"
-  archetype std::string "SpawnLight"
-  Transform
-  {
-    Translation Vec3
-    {
-      x_ float 610.000000
-      y_ float 435.000000
-      z_ float 0.000000
-    }
-    Rotation float 0.000000
-    Scale Vec3
-    {
-      x_ float 1.000000
-      y_ float 1.000000
-      z_ float 0.000000
-    }
-  }
-  PointLight
-  {
-    m_brightness LightColor
-    {
-      R float 1.000000
-      G float 0.000000
-      B float 1.000000
-      A float 20.000000
-    }
-    m_attenuation LightVec3
-    {
-      X float 1.000000
-      Y float 500.000000
-      Z float 5.000000
-    }
-  }
-}
-GameObject
-{
-  name std::string "SpawnLight"
-  archetype std::string "SpawnLight"
-  Transform
-  {
-    Translation Vec3
-    {
-      x_ float -610.000000
-      y_ float 435.000000
-      z_ float 0.000000
-    }
-    Rotation float 0.000000
-    Scale Vec3
-    {
-      x_ float 1.000000
-      y_ float 1.000000
-      z_ float 0.000000
-    }
-  }
-  PointLight
-  {
-    m_brightness LightColor
-    {
-      R float 0.000000
-      G float 0.000000
-      B float 1.000000
-      A float 20.000000
-    }
-    m_attenuation LightVec3
-    {
-      X float 1.000000
-      Y float 500.000000
-      Z float 5.000000
-    }
-  }
-}
-GameObject
-{
-  name std::string "SpawnLight"
-  archetype std::string "SpawnLight"
-  Transform
-  {
-    Translation Vec3
-    {
-      x_ float 0.000000
-      y_ float 0.000000
-      z_ float 0.000000
-    }
-    Rotation float 0.000000
-    Scale Vec3
-    {
-      x_ float 1.000000
-      y_ float 1.000000
-      z_ float 0.000000
-    }
-  }
-  PointLight
-  {
-    m_brightness LightColor
+    m_spriteName std::string "light_block_on.png"
+    Color Vec4
     {
       R float 1.000000
       G float 1.000000
       B float 1.000000
       A float 1.000000
     }
-    m_attenuation LightVec3
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+    m_flipX bool false
+    m_flipY bool false
+  }
+}
+GameObject
+{
+  name std::string "GrinderTR2"
+  archetype std::string "Grinder"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 320.000000
+      y_ float 515.000000
+      z_ float 1.100000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 2.000000
+      y_ float 2.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "Grinder.png"
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
     {
       X float 1.000000
-      Y float 500.000000
-      Z float 5.000000
+      Y float 1.000000
     }
+    m_flipX bool false
+    m_flipY bool false
+  }
+  BoxCollider
+  {
+    m_width float 64.000000
+    m_height float 64.000000
+    m_materialName std::string "Static"
+    m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
+  }
+  Grinder
+  {
+  }
+}
+GameObject
+{
+  name std::string "GrinderTR1"
+  archetype std::string "Grinder"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 240.000000
+      y_ float 515.000000
+      z_ float 1.100000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 2.000000
+      y_ float 2.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "Grinder.png"
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 1.000000
+      Y float 1.000000
+    }
+    m_flipX bool false
+    m_flipY bool false
+  }
+  BoxCollider
+  {
+    m_width float 64.000000
+    m_height float 64.000000
+    m_materialName std::string "Static"
+    m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
+  }
+  Grinder
+  {
+  }
+}
+GameObject
+{
+  name std::string "GrinderTR3"
+  archetype std::string "Grinder"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 400.000000
+      y_ float 515.000000
+      z_ float 1.100000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 2.000000
+      y_ float 2.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "Grinder.png"
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 1.000000
+      Y float 1.000000
+    }
+    m_flipX bool false
+    m_flipY bool false
+  }
+  BoxCollider
+  {
+    m_width float 64.000000
+    m_height float 64.000000
+    m_materialName std::string "Static"
+    m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
+  }
+  Grinder
+  {
+  }
+}
+GameObject
+{
+  name std::string "Platform"
+  archetype std::string ""
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 928.000000
+      y_ float 256.000000
+      z_ float 0.000000
+    }
+    Rotation float 1.570796
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "light_block_on.png"
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+    m_flipX bool false
+    m_flipY bool false
+  }
+}
+GameObject
+{
+  name std::string "GrinderTL1"
+  archetype std::string "Grinder"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -400.000000
+      y_ float 515.000000
+      z_ float 1.100000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 2.000000
+      y_ float 2.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "Grinder.png"
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 1.000000
+      Y float 1.000000
+    }
+    m_flipX bool false
+    m_flipY bool false
+  }
+  BoxCollider
+  {
+    m_width float 64.000000
+    m_height float 64.000000
+    m_materialName std::string "Static"
+    m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
+  }
+  Grinder
+  {
+  }
+}
+GameObject
+{
+  name std::string "Platform"
+  archetype std::string ""
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 928.000000
+      y_ float -128.000000
+      z_ float 0.000000
+    }
+    Rotation float 1.570796
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "light_block_on.png"
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+    m_flipX bool false
+    m_flipY bool false
+  }
+}
+GameObject
+{
+  name std::string "GrinderTL3"
+  archetype std::string "Grinder"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -240.000000
+      y_ float 515.000000
+      z_ float 1.100000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 2.000000
+      y_ float 2.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "Grinder.png"
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 1.000000
+      Y float 1.000000
+    }
+    m_flipX bool false
+    m_flipY bool false
+  }
+  BoxCollider
+  {
+    m_width float 64.000000
+    m_height float 64.000000
+    m_materialName std::string "Static"
+    m_hasCollisionCallback bool true
+    m_CollisionGroup std::string ""
+  }
+  Grinder
+  {
+  }
+}
+GameObject
+{
+  name std::string "GrinderTL2"
+  archetype std::string "Grinder"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -320.000000
+      y_ float 515.000000
+      z_ float 1.100000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 2.000000
+      y_ float 2.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "Grinder.png"
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 1.000000
+      Y float 1.000000
+    }
+    m_flipX bool false
+    m_flipY bool false
+  }
+  BoxCollider
+  {
+    m_width float 64.000000
+    m_height float 64.000000
+    m_materialName std::string "Static"
+    m_hasCollisionCallback bool true
+    m_CollisionGroup std::string ""
+  }
+  Grinder
+  {
+  }
+}
+GameObject
+{
+  name std::string "GrinderBL3"
+  archetype std::string "Grinder"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -240.000000
+      y_ float -515.000000
+      z_ float 1.100000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 2.000000
+      y_ float 2.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "Grinder.png"
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 1.000000
+      Y float 1.000000
+    }
+    m_flipX bool false
+    m_flipY bool false
+  }
+  BoxCollider
+  {
+    m_width float 64.000000
+    m_height float 64.000000
+    m_materialName std::string "Static"
+    m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
+  }
+  Grinder
+  {
+  }
+}
+GameObject
+{
+  name std::string "GrinderBL2"
+  archetype std::string "Grinder"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -320.000000
+      y_ float -515.000000
+      z_ float 1.100000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 2.000000
+      y_ float 2.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "Grinder.png"
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 1.000000
+      Y float 1.000000
+    }
+    m_flipX bool false
+    m_flipY bool false
+  }
+  BoxCollider
+  {
+    m_width float 64.000000
+    m_height float 64.000000
+    m_materialName std::string "Static"
+    m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
+  }
+  Grinder
+  {
+  }
+}
+GameObject
+{
+  name std::string "GrinderBL1"
+  archetype std::string "Grinder"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -400.000000
+      y_ float -515.000000
+      z_ float 1.100000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 2.000000
+      y_ float 2.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "Grinder.png"
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 1.000000
+      Y float 1.000000
+    }
+    m_flipX bool false
+    m_flipY bool false
+  }
+  BoxCollider
+  {
+    m_width float 64.000000
+    m_height float 64.000000
+    m_materialName std::string "Static"
+    m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
+  }
+  Grinder
+  {
+  }
+}
+GameObject
+{
+  name std::string "PlatformCorner"
+  archetype std::string ""
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 829.846985
+      y_ float -421.915771
+      z_ float 1.000000
+    }
+    Rotation float 0.785398
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 1.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "light_block_on.png"
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 4.000000
+      Y float 2.000000
+    }
+    m_flipX bool false
+    m_flipY bool false
+  }
+  BoxCollider
+  {
+    m_width float 256.000000
+    m_height float 128.000000
+    m_materialName std::string "Static"
+    m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
+  }
+}
+GameObject
+{
+  name std::string "Platform"
+  archetype std::string ""
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 640.000000
+      y_ float 512.000000
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "light_block_on.png"
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+    m_flipX bool false
+    m_flipY bool false
+  }
+}
+GameObject
+{
+  name std::string "Platform"
+  archetype std::string ""
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 928.000000
+      y_ float 0.000000
+      z_ float 0.000000
+    }
+    Rotation float 1.570796
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "light_block_on.png"
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+    m_flipX bool false
+    m_flipY bool false
+  }
+  BoxCollider
+  {
+    m_width float 608.000000
+    m_height float 128.000000
+    m_materialName std::string "Static"
+    m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
+  }
+}
+GameObject
+{
+  name std::string "PlatformCorner"
+  archetype std::string ""
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 829.856995
+      y_ float 420.320007
+      z_ float 1.000000
+    }
+    Rotation float -0.785398
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 1.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "light_block_on.png"
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 4.000000
+      Y float 2.000000
+    }
+    m_flipX bool false
+    m_flipY bool false
+  }
+  BoxCollider
+  {
+    m_width float 256.000000
+    m_height float 128.000000
+    m_materialName std::string "Static"
+    m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
+  }
+}
+GameObject
+{
+  name std::string "Platform"
+  archetype std::string ""
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 512.000000
+      y_ float 512.000000
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "light_block_on.png"
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+    m_flipX bool false
+    m_flipY bool false
+  }
+}
+GameObject
+{
+  name std::string "Platform"
+  archetype std::string ""
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -928.000000
+      y_ float 128.000000
+      z_ float 0.000000
+    }
+    Rotation float 1.570796
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "light_block_on.png"
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+    m_flipX bool false
+    m_flipY bool false
+  }
+}
+GameObject
+{
+  name std::string "Platform"
+  archetype std::string ""
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -928.000000
+      y_ float -128.000000
+      z_ float 0.000000
+    }
+    Rotation float 1.570796
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "light_block_on.png"
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+    m_flipX bool false
+    m_flipY bool false
+  }
+}
+GameObject
+{
+  name std::string "Platform"
+  archetype std::string ""
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -928.000000
+      y_ float -256.000000
+      z_ float 0.000000
+    }
+    Rotation float 1.570796
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "light_block_on.png"
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+    m_flipX bool false
+    m_flipY bool false
+  }
+}
+GameObject
+{
+  name std::string "PlatformCorner"
+  archetype std::string ""
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -830.998779
+      y_ float 420.317017
+      z_ float 1.000000
+    }
+    Rotation float 0.785398
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 1.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "light_block_on.png"
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 4.000000
+      Y float 2.000000
+    }
+    m_flipX bool false
+    m_flipY bool false
+  }
+  BoxCollider
+  {
+    m_width float 256.000000
+    m_height float 128.000000
+    m_materialName std::string "Static"
+    m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
   }
 }
