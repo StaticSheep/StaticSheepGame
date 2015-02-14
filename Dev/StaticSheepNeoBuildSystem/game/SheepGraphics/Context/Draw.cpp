@@ -74,7 +74,7 @@ namespace DirectSheep
       m_font[0].m_spriteFont->DrawString(m_batcher.get(),
         L"Invalid Font", Vec2(m_spriteTrans.x,
         m_camUse ? m_spriteTrans.y : -m_spriteTrans.y),
-        255 * m_spriteBlend, m_spriteTrans.theta,
+        m_spriteBlend, m_spriteTrans.theta,
         Vec2(0, 0), Vec2(1,-1), DirectX::SpriteEffects_None,
         m_spriteTrans.z);
 
@@ -86,7 +86,7 @@ namespace DirectSheep
 
     m_font[index].m_spriteFont->DrawString(m_batcher.get(), wText.c_str(),
       Vec2(m_spriteTrans.x, m_camUse ? m_spriteTrans.y : -m_spriteTrans.y),
-      255 * m_spriteBlend, m_spriteTrans.theta, Vec2(0, 0),
+      m_spriteBlend, m_spriteTrans.theta, Vec2(0, 0),
       Vec2(scale.x, -scale.y),
       DirectX::SpriteEffects_None, m_spriteTrans.z - 5);
   }

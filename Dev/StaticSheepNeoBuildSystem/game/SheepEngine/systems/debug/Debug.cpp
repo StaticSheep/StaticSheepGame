@@ -137,7 +137,7 @@ namespace Framework
           Draw::SetColor(1.0f,1.0f,1.0f,1.0f);
           Draw::SetRotation(0.0f);
           Draw::SetPosition(ENGINE->Window->GetWidth() / -4.0f, ENGINE->Window->GetHeight() / 2.0f - 100.0f);
-          Draw::DrawString(string.c_str(), Vec2D(1.0f, 1.0f), fontIndex);
+          Draw::DrawString(string.c_str(), Vec2D(10.0f, 10.0f), fontIndex);
           Draw::SetCamState(0);
 
           
@@ -151,7 +151,7 @@ namespace Framework
           Draw::SetColor(1.0f, 1.0f, 1.0f, 1.0f);
           Draw::SetRotation(3.14159f);
           Draw::SetPosition(ENGINE->Window->GetWidth() / -4.0f, ENGINE->Window->GetHeight() / 2.0f - 100.0f);
-          Draw::DrawString(string.c_str(), Vec2D(1.0f, 1.0f), fontIndex);
+          Draw::DrawString(string.c_str(), Vec2D(10.0f, 10.0f), fontIndex);
           Draw::SetCamState(0);
           break;
 
@@ -166,7 +166,7 @@ namespace Framework
           Draw::SetColor(1.0f, 1.0f, 1.0f, 1.0f);
           Draw::SetRotation(0.0f);
           Draw::SetPosition(ENGINE->Window->GetWidth() / 2.0f, ENGINE->Window->GetHeight() / 2.0f - 100.0f);
-          Draw::DrawString(string.c_str(), Vec2D(1.0f, 1.0f), fontIndex);
+          Draw::DrawString(string.c_str(), Vec2D(10.0f, 10.0f), fontIndex);
           Draw::SetCamState(0);
           break;
           
@@ -326,7 +326,15 @@ namespace Framework
 
           case 7:
             // 251, 177, 23 yellow
-            performance.color[i] = Vec4(0.98f, 0.69f, 0.09f, 1.0f);
+            performance.color[i] = Vec4(1.0f, 0.5f, 0.25f, 1.0f);
+            break;
+
+          case 8:
+            performance.color[i] = Vec4(0.0f, 0.78f, 0.09f, 0.48f);
+            break;
+
+          case 9:
+            performance.color[i] = Vec4(0.98f, 0.0f, 0.80f, 1.0f);
             break;
 
           default:
@@ -360,10 +368,10 @@ namespace Framework
       Draw::SetColor(performance.color[i].R, performance.color[i].G, performance.color[i].B, 1.0f);
       Draw::SetRotation(0.0f);
       
-      Draw::DrawRect((ENGINE->Window->GetWidth() / 2.0f) - performance.pos[i] - 4.0f, (ENGINE->Window->GetHeight() / 2.0f) - 16.0f, performance.width[i], 24.0f);
+      Draw::DrawRect((ENGINE->Window->GetWidth() / 2.0f) - performance.pos[i] - 4.0f, (ENGINE->Window->GetHeight() / 4.0f) - 16.0f, performance.width[i], 24.0f);
 
       float x = (ENGINE->Window->GetWidth() / 2.0f) - 296.0f;
-      float y = (ENGINE->Window->GetHeight() / 2.0f) + (i * -16.0f) - 48.0f;
+      float y = (ENGINE->Window->GetHeight() / 4.0f) + (i * -16.0f) - 48.0f;
 
       Draw::DrawRect(x, y, 16.0f, 16.0f);
       Draw::SetPosition(x + 24.0f, y);
@@ -371,13 +379,13 @@ namespace Framework
       std::string newString(performance.names[i]);
       newString += "   " + std::to_string(performance.times[i] * 1000.0f).erase(4,std::string::npos) + "ms";
 
-      Draw::DrawString(newString.c_str(), fontIndex, 15.0f);
+      Draw::DrawString(newString.c_str(), Vec2(10.0f,10.0f), fontIndex);
     }
     Draw::SetColor(1.0f,1.0f,1.0f,1.0f);
-    Draw::SetPosition((ENGINE->Window->GetWidth() / 2.0f) - 296.0f, (ENGINE->Window->GetHeight() / 2.0f - 16.0f));
+    Draw::SetPosition((ENGINE->Window->GetWidth() / 2.0f) - 296.0f, (ENGINE->Window->GetHeight() / 4.0f - 16.0f));
 
     std::string stringTime = std::to_string(previousTime).erase(4,std::string::npos) + "ms";
-    Draw::DrawString(stringTime.c_str(), Vec2D(1.0f, 1.0f), fontIndex);
+    Draw::DrawString(stringTime.c_str(), Vec2D(10.0f, 10.0f), fontIndex);
 
     Draw::SetCamState(0);
     ++performanceCounter;
