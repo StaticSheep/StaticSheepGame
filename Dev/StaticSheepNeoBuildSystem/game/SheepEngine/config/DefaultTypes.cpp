@@ -278,6 +278,7 @@ namespace Framework
     TYPE_ADD_MEMBER( Sprite, Size, false, true, "Size");
     TYPE_ADD_MEMBER(Sprite, m_flipX, false, true, "FlipX");
     TYPE_ADD_MEMBER(Sprite, m_flipY, false, true, "FlipY");
+    TYPE_ADD_MEMBER(Sprite, m_uvScale, false, true, "Tiled");
     TYPE_SET_TWEAK_TYPE( Sprite, AntTweak::TW_TYPE_COMPONENT );
     TYPE_SET_FROM_LUA( Sprite, Lua::GenericObjectFromLua );
 
