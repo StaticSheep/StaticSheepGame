@@ -40,13 +40,13 @@ function PauseMenu:AddButton(text)
   btn:SetFontSize(ScreenScale(8))
   btn:SetSize(ScreenScale(80), ScreenScale(16))
 
-  btn:SetFontColor(Color(200, 200, 200, 255))
+  btn:SetFontColor(Color(0.8, 0.8, 0.8, 1))
   btn:SetColor(Color(20, 20, 20, 0))
   btn:SetBGColor(Color(20, 20, 20, 0))
 
   btn:SetHoverColor(Color(100, 100, 100, 0))
   btn:SetHoverBGColor(Color(30, 30, 30, 0))
-  btn:SetHoverFontColor(Color(255, 220, 130, 255))
+  btn:SetHoverFontColor(Color(0.8, 0.8, 0.5, 1))
 
   btn:SetClickColor(Color(100, 100, 100, 0))
   btn:SetClickBGColor(Color(20, 20, 20, 50))

@@ -85,7 +85,7 @@ namespace Framework
   
     private:
     
-      Particle* SpawnParticle(const Vec3& location, bool setDirection);
+      Particle& SpawnParticle(const Vec3& location, bool setDirection);
       void RemoveParticle(unsigned index);
       void ClearParticles(void);
 

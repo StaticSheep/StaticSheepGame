@@ -45,9 +45,15 @@ namespace Framework
     // otherwise, make a new instance
     instanceList[name] = *instance;
     instanceList[name].active = true;
+    instanceList[name].mode = PLAY_LOOP;
 
     // and play it
     _soundSystem->Play(name, &instanceList[name]);
+  }
+
+  void SoundPlayer::LuaPlay(const std::string name)
+  {
+    Play(name);
   }
   
   // Stops a specific instance. FadeOut currently does nothing.
@@ -61,6 +67,11 @@ namespace Framework
       // and set the active flag to false
       instanceList[name].active = false;
     }
+  }
+
+  void SoundPlayer::LuaStop(std::string name)
+  {
+    Stop(name, FADE_FAST);
   }
 
   // Pauses a specific instance. Pause = true, Unpause = false

@@ -8,20 +8,20 @@ GameObject
     Translation Vec3
     {
       x_ float 0.000000
-      y_ float 0.000000
-      z_ float 5.000000
+      y_ float 5.379128
+      z_ float 0.000000
     }
     Rotation float 0.000000
     Scale Vec3
     {
-      x_ float 50.000000
-      y_ float 50.000000
-      z_ float 1.000000
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
     }
   }
   Sprite
   {
-    m_spriteName std::string "Default.png"
+    m_spriteName std::string "SlotMachine.png"
     Color Vec4
     {
       R float 1.000000
@@ -37,43 +37,37 @@ GameObject
     m_flipX bool false
     m_flipY bool false
   }
-}
-GameObject
-{
-  name std::string ""
-  archetype std::string ""
-  Transform
+  SlotMachine
   {
-    Translation Vec3
+    m_stopTexture std::string "ggg_reel.png"
+    m_spinTexture std::string "ggg_reel_blur.png"
+    m_slotBackTexture std::string "slotmachine_slotback.png"
+    numSlots int 3
+    slotSize Vec2
     {
-      x_ float 26.429445
-      y_ float 0.000000
-      z_ float 0.000000
+      X float 0.650000
+      Y float 0.800000
     }
-    Rotation float 0.000000
-    Scale Vec3
+    slotMargin float 10.000000
+    slotOffset Vec2
     {
-      x_ float 2.000000
-      y_ float 2.000000
-      z_ float 0.000000
+      X float 0.000000
+      Y float 0.000000
     }
-  }
-  Sprite
-  {
-    m_spriteName std::string "america_head.png"
-    Color Vec4
+    slotBackSize Vec2
+    {
+      X float 2.300000
+      Y float 2.000000
+    }
+    startTime float 3.000000
+    bonusTime float 0.200000
+    useSpriteColor bool true
+    backingColor Vec4
     {
       R float 1.000000
       G float 1.000000
       B float 1.000000
       A float 1.000000
     }
-    Size Vec2
-    {
-      X float 1.000000
-      Y float 1.000000
-    }
-    m_flipX bool false
-    m_flipY bool false
   }
 }

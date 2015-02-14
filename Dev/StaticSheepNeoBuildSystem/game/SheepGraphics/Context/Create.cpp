@@ -163,7 +163,7 @@ namespace DirectSheep
     UINT deviceFlags = 0; // Flags for registering device
 
 #if defined (_DEBUG)
-    deviceFlags |= D3D11_CREATE_DEVICE_DEBUG; // If in debug mode set DirectX to debug mode
+    //deviceFlags |= D3D11_CREATE_DEVICE_DEBUG; // If in debug mode set DirectX to debug mode
 #endif
 
     // Array of driver types in order of most prefered to least
@@ -203,7 +203,7 @@ namespace DirectSheep
     swapDesc.OutputWindow = m_hwnd;                             // attach to window
     swapDesc.SampleDesc.Count = 1;                              // # of multisamples
     swapDesc.SampleDesc.Quality = 0;
-    swapDesc.Windowed = !m_fullscreen;                          // windowed/full-screen mode
+    swapDesc.Windowed = TRUE;                          // windowed/full-screen mode
     //swapDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;    // allow full-screen switching
 
     // create DirectX device, it's context, and swapchain using swapDesc
@@ -321,7 +321,7 @@ namespace DirectSheep
     bd.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
     bd.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
 
-    bd.AlphaToCoverageEnable = true;
+    bd.AlphaToCoverageEnable = false;
     bd.IndependentBlendEnable = false;
 
     DXVerify(m_device->CreateBlendState(&bd, &m_blendStateMap[BLEND_MODE_MULTIPLY]));
@@ -352,12 +352,12 @@ namespace DirectSheep
 
     ZeroMemory(&dsDesc, sizeof(D3D11_DEPTH_STENCIL_DESC));
     // Paramaters for Depth test
-    dsDesc.DepthEnable = true;
+    dsDesc.DepthEnable = false;
     dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
     dsDesc.DepthFunc = D3D11_COMPARISON_ALWAYS;
 
     // Paramaters for Stencil test
-    dsDesc.StencilEnable = true;
+    dsDesc.StencilEnable = false;
     dsDesc.StencilReadMask = 0xFF;
     dsDesc.StencilWriteMask = 0xFF;
 

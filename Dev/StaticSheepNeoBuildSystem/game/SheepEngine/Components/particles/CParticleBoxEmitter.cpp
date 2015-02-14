@@ -40,13 +40,16 @@ namespace Framework
   // for seeing the particles in the editor
   void ParticleBoxEmitter::FrameUpdate(float dt)
   {
-    if(ENGINE->m_editorAcitve)
+    if(ENGINE->m_editorActive)
       UpdateEmitter(dt);
   }
 
   // 
   void ParticleBoxEmitter::UpdateEmitter(float dt)
   {
+    if(space->Paused())
+      return;
+
     // if we are set to currently spawn
     if(spawning)
     {
@@ -102,7 +105,7 @@ namespace Framework
 
         Vec3 location = trans->GetTranslation() + m_spawnOffset;
 
-        Particle* particle = system->SpawnParticle(location + spawnLocation, true);
+        Particle &particle = system->SpawnParticle(location + spawnLocation, true);
 
       }
 

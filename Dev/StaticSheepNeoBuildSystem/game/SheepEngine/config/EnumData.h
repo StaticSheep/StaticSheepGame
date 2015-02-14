@@ -54,6 +54,7 @@ E_NAME(Component)
   E_ENTRY(Bullet_Default)
   E_ENTRY(ElevatorPlat)
   E_ENTRY(Level1_Logic)
+  E_ENTRY(Level1_Lighting)
   E_ENTRY(GiantKillBox)
   E_ENTRY(Grinder)
   E_ENTRY(Explosion)
@@ -63,7 +64,7 @@ E_NAME(Component)
   E_ENTRY(Cheats)
   E_ENTRY(SlotMachine)
   E_ENTRY(AimingArrow)
-
+  E_ENTRY(DashEffect)
 
 
   E_ENTRY(LuaComponent)

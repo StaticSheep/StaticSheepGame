@@ -14,6 +14,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "../../sprites/CSprite.h"
 #include "types/weapons/WPistol.h"
 #include "types/weapons/WLaser.h"
+#include "types/weapons/WShotgun.h"
 #include "../../gameplay_scripts/CBullet_default.h"
 #include "../../sprites/CAniSprite.h"
 #include "../../gameplay_scripts/CCheats.h"
@@ -21,6 +22,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "systems/metrics/MetricInfo.h"
 #include "systems/graphics/SheepGraphics.h"
 #include "../../gameplay_scripts/CAimingArrow.h"
+#include "../../gameplay_scripts/CDashEffect.h"
 
 
 
@@ -558,6 +560,10 @@ namespace Framework
     else
       bc->SetVelocity(aimingDirection(gp, 'L') * 1000);
 
+    GameObject *dash_effect = (FACTORY->LoadObjectFromArchetype(space, "fire_effect1"));
+    dash_effect->GetComponent<DashEffect>(eDashEffect)->pTransform = playerTransform;
+    dash_effect->GetComponent<Transform>(eTransform)->SetTranslation(ps->GetTranslation());
+    se->Play("dash", &SoundInstance(1.0f));
     hasDashed = true;
   }
 
