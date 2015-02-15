@@ -64,7 +64,7 @@ E_NAME(Component)
   E_ENTRY(SlotMachine)
   E_ENTRY(AimingArrow)
   E_ENTRY(DashEffect)
-
+  E_ENTRY(Asteroid)
 
   E_ENTRY(LuaComponent)
   E_ENTRY(countComponents) //keep this at the end

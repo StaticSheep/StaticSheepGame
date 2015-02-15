@@ -8,20 +8,20 @@ GameObject
     Translation Vec3
     {
       x_ float -1.201363
-      y_ float 100.000000
-      z_ float 2.000000
+      y_ float -0.912146
+      z_ float 200.000000
     }
     Rotation float 0.000000
     Scale Vec3
     {
-      x_ float 1.000000
-      y_ float 1.000000
+      x_ float 2.200000
+      y_ float 2.300000
       z_ float 0.000000
     }
   }
   Sprite
   {
-    m_spriteName std::string "spacebg.png"
+    m_spriteName std::string "background_color.png"
     Color Vec4
     {
       R float 1.000000
@@ -31,8 +31,8 @@ GameObject
     }
     Size Vec2
     {
-      X float 1.500000
-      Y float 1.500000
+      X float 1.250000
+      Y float 1.250000
     }
     m_flipX bool false
     m_flipY bool false
