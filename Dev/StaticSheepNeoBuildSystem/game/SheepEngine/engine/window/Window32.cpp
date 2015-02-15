@@ -139,10 +139,13 @@ namespace Framework
       else if ((wParam == WA_CLICKACTIVE || wParam == WA_ACTIVE) &&
         !ENGINE->m_editorActive)
       {
-        ENGINE->SystemMessage(Message(Message::WindowRestore));
+        if (!ENGINE->PlayingInEditor())
+        {
+          ENGINE->SystemMessage(Message(Message::WindowRestore));
+          ShowCursor(false);
+        }
 
         ShowWindow(hWnd, SW_RESTORE);
-        ShowCursor(false);
         WINDOW_ACTIVE = true;
       }
       break;

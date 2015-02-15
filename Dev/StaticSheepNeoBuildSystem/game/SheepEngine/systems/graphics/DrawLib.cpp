@@ -252,6 +252,14 @@ namespace Framework
 
   }
 
+  void Draw::DrawBeam(Vec2 origin, Vec2 dir)
+  {
+    Vec2 end = origin + (dir * 1000);
+
+    
+    Draw::DrawLine(origin.x, origin.y, end.x, end.y);
+  }
+
   void Draw::DrawTriangle(float x0, float y0, float x1, float y1,
     float x2, float y2)
   {
