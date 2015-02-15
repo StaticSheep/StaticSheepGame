@@ -396,7 +396,8 @@ namespace Framework
             std::string foo = it->path().extension().generic_string();
             if (it->path().extension().generic_string() == ".spritefont")
               // This line is gross
-              m_fontMap[it->path().stem().generic_string().c_str()] = m_renderContext->AddFont(it->path().stem().generic_string().c_str(), it->path().generic_string().c_str());
+              m_fontMap[it->path().stem().generic_string().c_str()] = 
+              m_renderContext->AddFont(it->path().stem().generic_string().c_str(), it->path().generic_string().c_str());
           }
         }
         return true;

@@ -42,6 +42,7 @@ namespace Framework
     static void DrawLine(float sX, float sY, float eX, float eY);
     static void DrawLineEx(float sX, float sY, float eX, float eY,
       Vec4 startColor, Vec4 endColor);
+    static void DrawBeam(Vec2 origin, Vec2 dir);
     static void DrawCircle(float x, float y, float radius);
 
     static void DrawString(const char* text, Vec2D scale, int fontIndex);
