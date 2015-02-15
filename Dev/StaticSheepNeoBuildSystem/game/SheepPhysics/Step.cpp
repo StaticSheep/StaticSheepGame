@@ -359,6 +359,7 @@ namespace SheepFizz
       
       if (!rayCast_.GetRayConfig()->bodyIntersections_.empty())
       {
+        Vec3D intersection = rayCast_.GetFirstCollisionPoint();
         rayCast_.GetRayConfig()->firstCollisionLocation = rayCast_.GetFirstCollisionPoint() * meterScale_;
         rayCast_.GetRayConfig()->firstCollisionBody = rayCast_.GetFirstCollisionBody()->userData;
       }

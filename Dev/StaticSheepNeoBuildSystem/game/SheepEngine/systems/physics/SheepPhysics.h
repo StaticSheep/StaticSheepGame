@@ -134,6 +134,9 @@ namespace Framework
 
       SheepFizz::RayConfig ray;
 
+      std::vector<std::pair<Vec2,Vec2>> rayComplexDraws;
+      std::vector<std::pair<Vec2, Vec2>> raySimpleDraws;
+
 	};
 
 	extern SheepPhysics* PHYSICS;

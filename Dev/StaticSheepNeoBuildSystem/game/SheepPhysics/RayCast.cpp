@@ -203,16 +203,33 @@ namespace SheepFizz
     //determines the collision point for ComplexRayRectangleTest
   bool RayCast::RayRectangleIntersect(Vec3D& vertex, Vec3D& segmentDirection, Vec3D& collisionPoint)
   {
+    if (position_.x > vertex.x && direction_.x > 0)
+      return false;
+
+    if (position_.y > vertex.y && direction_.y > 0)
+      return false;
+
+    if (position_.x < vertex.x && direction_.x < 0)
+      return false;
+
+    if (position_.y < vertex.y && direction_.y < 0)
+      return false;
+
+
     float denominator = direction_.x * segmentDirection.y - direction_.y * segmentDirection.x;
     if (!denominator)
       return false;
 
-    float intersection = direction_.y * (vertex.x - position_.x) - direction_.x * (vertex.y - position_.y);
+    float intersection = direction_.y * (vertex.x - position_.x) + direction_.x * (position_.y - vertex.y);
     intersection /= denominator;
     if (intersection <= 0 || intersection >= 1)
       return false;
     segmentDirection.z = 0;
     collisionPoint = segmentDirection * intersection + vertex;
+
+    if (position_.x > vertex.x && direction_.x > 0)
+      return false;
+
 
     return true;
   }//end of RayRectangleIntersect
@@ -235,6 +252,7 @@ namespace SheepFizz
       Vec3D lineOne = ((Rectangle*)(rectangle->shape_))->GetVertex(postsupport);
 
       vertex += rectangle->position_;
+      //Rot(rectangle->orientation_)
       lineOne += rectangle->position_;
 
       lineOne = lineOne - vertex;
@@ -243,7 +261,6 @@ namespace SheepFizz
 
       Vec3D testLength;
       float length;
-
       rayIntersect = RayRectangleIntersect(vertex, lineOne, collisionPoint);
 
       if (rayIntersect)

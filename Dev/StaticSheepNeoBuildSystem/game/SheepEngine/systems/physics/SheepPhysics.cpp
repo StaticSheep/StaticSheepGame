@@ -162,6 +162,15 @@ namespace Framework
             bodyPosition.x + bodyVelocity.x * .5f, bodyPosition.y + bodyVelocity.y * .5f);    
         }
       
+        //go through rays
+        for (int i = 0; i < rayComplexDraws.size(); ++i)
+          Draw::DrawLine(rayComplexDraws[i].first.x, rayComplexDraws[i].first.y, rayComplexDraws[i].second.x, rayComplexDraws[i].second.y);
+
+        for (int i = 0; i < raySimpleDraws.size(); ++i)
+          Draw::DrawBeam(raySimpleDraws[i].first, raySimpleDraws[i].second);
+
+        rayComplexDraws.clear();
+        raySimpleDraws.clear();
       }//end of the space loop
 
     }//end of the if check
@@ -479,13 +488,21 @@ namespace Framework
       GameSpace* space = (GameSpace*)(ray.gameSpace);
       Handle handleObj = (unsigned)(ray.firstCollisionBody);
 
-      //GameObject* obj = space->GetHandles().GetAs<GameObject>(handleObj);
-      //((PlayerController*)obj)->health -= 10;
+      GameObject* obj = space->GetHandles().GetAs<GameObject>(handleObj);
+      //CollisionGroup group = m_collisionGroup[(((RigidBody*)obj)->GetBodyCollisionGroup())];
+      //if (group == Player1 || group == Player2 || group == Player3 || group == Player4)
+        //((PlayerController*)obj)->health -= 10;
 
-      Draw::SetColor(1, 0, 0, 1);
-      Vec2 collisionLocation = Draw::ToScreen(ray.firstCollisionLocation);
-      Vec2 origin = Draw::ToScreen(ray.rayOrigin);
-      Draw::DrawLine(origin.x, origin.y, collisionLocation.x, collisionLocation.y);
+      rayComplexDraws.push_back(std::pair<Vec2, Vec2>(ray.rayOrigin, ray.firstCollisionLocation));
+      //raySimpleDraws.push_back(std::pair<Vec2, Vec2>(ray.rayOrigin, ray.rayDirection));
+      //Draw::SetColor(1, 0, 0, 1);
+      //Vec2 collisionLocation = Draw::ToScreen(ray.firstCollisionLocation);
+      //Vec2 origin = Draw::ToScreen(ray.rayOrigin);
+      //Vec2D direction = ray.rayDirection;
+      //direction.y = -direction.y;
+      //Draw::DrawBeam(origin, direction);
+      //Draw::DrawBeam(Vec2(0, 0), Vec2(1, 1));
+      //Draw::DrawLine(origin.x, origin.y, collisionLocation.x, collisionLocation.y);
       //Draw::DrawLine(origin.x, ray.rayOrigin.y, ray.firstCollisionLocation.x, ray.firstCollisionLocation.y, 1);
     }
 
