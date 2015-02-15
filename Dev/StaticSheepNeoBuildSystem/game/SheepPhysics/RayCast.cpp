@@ -151,7 +151,9 @@ namespace SheepFizz
   {
       //test vertex associated with rectangle
     Vec3D vertex = rectangle->GetVertex(vertexNumber);
-    float rayDist = position_ * normal;
+    Matrix2D rot(((Body*)rectangle)->orientation_);
+    vertex = rot * vertex;
+    float rayDist = (((Body*)rectangle)->position_ - position_) * normal;
     float vertDist = vertex * normal;
 
     if ((vertDist - rayDist) < 0)
@@ -164,7 +166,8 @@ namespace SheepFizz
     vertexNumber = (vertexNumber + 1) < rectangle->GetVertexNumber() ? vertexNumber + 1 : 0;
 
     vertex = rectangle->GetVertex(vertexNumber);
-    rayDist = position_ * normal;
+    vertex = rot * vertex;
+    rayDist = (((Body*)rectangle)->position_ - position_) * normal;
     vertDist = vertex * normal;
 
     if ((vertDist - rayDist) < 0)
@@ -180,6 +183,8 @@ namespace SheepFizz
 
   bool RayCast::SimpleRayRectangleTest(Body* rectangle)
   {
+    return ComplexRayRectangleTest(rectangle);
+    
     Rectangle* rec = (Rectangle*)(rectangle->shape_);
     Vec3D normal;
    
@@ -251,10 +256,12 @@ namespace SheepFizz
       unsigned int postsupport = support_ + 1 < ((Rectangle*)(rectangle->shape_))->GetVertexNumber() ? support_ + 1 : 0;
       Vec3D lineOne = ((Rectangle*)(rectangle->shape_))->GetVertex(postsupport);
 
-      vertex += rectangle->position_;
-      //Rot(rectangle->orientation_)
-      lineOne += rectangle->position_;
+      Matrix2D Rot(rectangle->orientation_);
+      vertex = Rot * vertex;
+      lineOne = Rot * lineOne;
 
+      vertex += rectangle->position_;
+      lineOne += rectangle->position_;
       lineOne = lineOne - vertex;
 
       Vec3D collisionPoint;
