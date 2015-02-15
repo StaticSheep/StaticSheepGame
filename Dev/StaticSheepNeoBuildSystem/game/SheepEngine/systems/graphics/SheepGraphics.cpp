@@ -149,7 +149,10 @@ namespace Framework
 
       if (msg.MessageId == Message::WindowRestore && m_renderContext)
       {
+        if (!ENGINE->PlayingInEditor())
+        {
           m_renderContext->SetFullscreen(true);
+        }
       }
 
       if (msg.MessageId == Message::EngineReady)
