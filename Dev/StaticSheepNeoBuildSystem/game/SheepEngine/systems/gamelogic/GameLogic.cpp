@@ -30,6 +30,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/gameplay_scripts/CAimingArrow.h"
 #include "components/gameplay_scripts/CLevel1_Lighting.h"
 #include "components/gameplay_scripts/CDashEffect.h"
+#include "components/gameplay_scripts/CAsteroid.h"
 
 namespace Framework
 {
@@ -68,6 +69,7 @@ namespace Framework
     REGISTER_COMPONENT(SlotMachine);
     REGISTER_COMPONENT(AimingArrow);
     REGISTER_COMPONENT(DashEffect);
+    REGISTER_COMPONENT(Asteroid);
   }
 
   void GameLogic::Initialize()
