@@ -11,10 +11,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 #include "SheepPhysics/api.h"
 #include "SheepPhysics/Step.h"
-
 #include "systems/System.h"
-
-
 
 namespace Framework
 {
@@ -84,6 +81,12 @@ namespace Framework
       Vec3D GetCollisionPoint(GameSpace* space, SheepFizz::ExternalManifold manifold);
       std::string GetCollisionGroup(GameSpace* space, SheepFizz::Handle handle);
 
+      //raycast
+      void SetRayConfig(Vec3D& rayOrigin, Vec3D& rayDirection, std::string name);
+      bool SimpleRayCast(GameSpace* space);
+      bool ComplexRayCast(GameSpace* space);
+      void RayDestruction();
+
 			//settors
 			void SetBodyPosition(GameSpace* space, SheepFizz::Handle handle, Vec3D position);
 			void SetBodyVelocity(GameSpace* space, SheepFizz::Handle handle, Vec3D velocity);
@@ -128,6 +131,11 @@ namespace Framework
       std::unordered_map<CollisionGroup, std::string> m_collisionGroupNames;
       bool debugOn;
       DebugPhysics debugPhys;
+
+      SheepFizz::RayConfig ray;
+
+      std::vector<std::pair<Vec2,Vec2>> rayComplexDraws;
+      std::vector<std::pair<Vec2, Vec2>> raySimpleDraws;
 
 	};
 

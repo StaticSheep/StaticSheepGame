@@ -10,14 +10,15 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 #ifdef SHEEPPHYSICS
 #include "Manifold.h"
+#include "RayCast.h"
 #endif
 
 #include "CollisionGroups.h"
 #include "Material.h"
 #include "Shape.h"
 #include "Vec3D.h"
+#include "RayConfig.h"
 #include <vector>
-
 
 
 namespace SheepFizz
@@ -112,10 +113,12 @@ namespace SheepFizz
       float orientation = 0,		  //the orientation
 			void* userData = NULL);		
 
+    //raycasting
+    PHY_API bool RayCaster(RayConfig* ray);
+
 		//change a specific body's attributes
 		PHY_API void ChangeBodies(Handle handle, float xradius, float y = 0);
 		PHY_API void ChangeMaterials(Handle handle, Material& material);
-
 
 		//remove bodies and their shapes from the vector
 		PHY_API void RemoveBody(Handle handle);
@@ -159,6 +162,9 @@ namespace SheepFizz
 			HandleManager handles_;
 
 			std::vector<Manifold> manifolds_;
+
+      //raycast is constructed once
+      RayCast rayCast_;
 
       //debug info
       unsigned int manifoldNumber_;

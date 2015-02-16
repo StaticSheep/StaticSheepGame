@@ -17,14 +17,15 @@ namespace SheepFizz
 {
   //Nocollide, Collide, Resolve, Player1, Player2, Player3, Player4, Static
   Collision Collisions[CollGroupLength][CollGroupLength] = { 
-      { NOCOLLIDE, NOCOLLIDE, NOCOLLIDE, NOCOLLIDE, NOCOLLIDE, NOCOLLIDE, NOCOLLIDE, NOCOLLIDE },
-      { NOCOLLIDE, NOCOLLIDE, COLLIDE, COLLIDE, COLLIDE, COLLIDE, COLLIDE, NOCOLLIDE },
-      { NOCOLLIDE, COLLIDE, RESOLVE, RESOLVE, RESOLVE, RESOLVE, RESOLVE, RESOLVE },
-      { NOCOLLIDE, COLLIDE, RESOLVE, NOCOLLIDE, RESOLVE, RESOLVE, RESOLVE, RESOLVE },
-      { NOCOLLIDE, COLLIDE, RESOLVE, RESOLVE, NOCOLLIDE, RESOLVE, RESOLVE, RESOLVE }, 
-      { NOCOLLIDE, COLLIDE, RESOLVE, RESOLVE, RESOLVE, NOCOLLIDE, RESOLVE, RESOLVE },
-      { NOCOLLIDE, COLLIDE, RESOLVE, RESOLVE, RESOLVE, RESOLVE, NOCOLLIDE, RESOLVE }, 
-      { NOCOLLIDE, NOCOLLIDE, RESOLVE, RESOLVE, RESOLVE, RESOLVE, RESOLVE, NOCOLLIDE } };
+      //NoCollide  Collide    Resolve     Player1     Player2     Player3     Player4     Static
+      { NOCOLLIDE, NOCOLLIDE, NOCOLLIDE,  NOCOLLIDE,  NOCOLLIDE,  NOCOLLIDE,  NOCOLLIDE,  NOCOLLIDE },  //NoCollide
+      { NOCOLLIDE, NOCOLLIDE, COLLIDE,    COLLIDE,    COLLIDE,    COLLIDE,    COLLIDE,    NOCOLLIDE },  //Collide
+      { NOCOLLIDE, COLLIDE,   RESOLVE,    RESOLVE,    RESOLVE,    RESOLVE,    RESOLVE,    RESOLVE },    //Resolve
+      { NOCOLLIDE, COLLIDE,   RESOLVE,    NOCOLLIDE,  RESOLVE,    RESOLVE,    RESOLVE,    RESOLVE },    //Player1
+      { NOCOLLIDE, COLLIDE,   RESOLVE,    RESOLVE,    NOCOLLIDE,  RESOLVE,    RESOLVE,    RESOLVE },    //Player2
+      { NOCOLLIDE, COLLIDE,   RESOLVE,    RESOLVE,    RESOLVE,    NOCOLLIDE,  RESOLVE,    RESOLVE },    //Player3
+      { NOCOLLIDE, COLLIDE,   RESOLVE,    RESOLVE,    RESOLVE,    RESOLVE,    NOCOLLIDE,  RESOLVE },    //Player4
+      { NOCOLLIDE, NOCOLLIDE, RESOLVE,    RESOLVE,    RESOLVE,    RESOLVE,    RESOLVE,    NOCOLLIDE } };//Static
 
 	PhysicsSpace* PhysicsSpace::Allocate(float dt, float meterScale)
 	{
@@ -333,6 +334,60 @@ namespace SheepFizz
 		}		
 	}//end of AddBody
 	//*************
+
+  //raycast interface
+  bool PhysicsSpace::RayCaster(RayConfig* ray)
+  {
+    ray->rayOrigin /= meterScale_;
+    rayCast_.Initialize(ray);
+    ray->gameSpace = userData_;
+
+    bool rayIntersect = false;
+
+    if ((*ray).findFirstCollision)
+    {
+      for (unsigned i = 0; i < (bodies_).Size(); ++i)
+      {
+        if (!(Collisions[(*ray).collisionGroup][((Body*)(bodies_)[i])->collisionGroup_]))
+          continue;
+
+        rayIntersect = rayCast_.ComplexRayTest((Body*)(bodies_)[i]);
+
+        if (rayIntersect)
+          rayCast_.GetRayConfig()->bodyIntersections_.push_back((((Body*)&bodies_)[i]).userData);
+      }
+      
+      if (!rayCast_.GetRayConfig()->bodyIntersections_.empty())
+      {
+        Vec3D intersection = rayCast_.GetFirstCollisionPoint();
+        rayCast_.GetRayConfig()->firstCollisionLocation = rayCast_.GetFirstCollisionPoint() * meterScale_;
+        rayCast_.GetRayConfig()->firstCollisionBody = rayCast_.GetFirstCollisionBody()->userData;
+      }
+
+    }
+
+    else
+    {
+        for (unsigned i = 0; i < (bodies_).Size(); ++i)
+        {
+          if (!(Collisions[(*ray).collisionGroup][((Body*)(bodies_)[i])->collisionGroup_]))
+            continue;
+
+          rayIntersect = rayCast_.SimpleRayTest((Body*)(bodies_)[i]);
+
+          if (rayIntersect)
+            rayCast_.GetRayConfig()->bodyIntersections_.push_back((((Body*)(&bodies_))[i]).userData);
+        }
+
+    }
+
+    rayCast_.GetRayConfig()->rayOrigin *= meterScale_;
+
+    if (rayCast_.GetRayConfig()->bodyIntersections_.empty())
+      return false;
+
+    return true;
+  }
 
 	//change bodies
 	void PhysicsSpace::ChangeBodies(Handle handle, float xradius, float y)

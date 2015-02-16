@@ -36,6 +36,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "types/weapons/WPistol.h"
 #include "types/weapons/WShotgun.h"
 #include "types/weapons/WAutomatic.h"
+#include "types/weapons/WLaser.h"
 #include "components/gameplay_scripts/CWarningText.h"
 #include "components/gameplay_scripts/CBackgroundPan.h"
 #include "components/gameplay_scripts/CCheats.h"
@@ -251,6 +252,7 @@ namespace Framework
     TYPE_REGISTER(Pistol);
     TYPE_REGISTER(Shotgun);
     TYPE_REGISTER(Automatic);
+    TYPE_REGISTER(Laser);
 
     TYPE_REGISTER( BoxCollider );
     TYPE_ADD_MEMBER(BoxCollider, m_width, false, true, "Width",

@@ -73,7 +73,7 @@ namespace Framework
     startFlag = true;
     playing = false;
     countDownDone = false;
-    countDownTimer = 4.0f;
+    countDownTimer = 0.0f;
 
     for (int i = 0; i < 4; ++i)
       spawnTimers[i] = 2.0f;

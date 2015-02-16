@@ -10,7 +10,6 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 #include "SheepPhysics\Handle.h"
 #include "SheepPhysics\Shape.h"
-
 #include "systems/physics/SheepPhysics.h"
 
 namespace SheepFizz
@@ -64,6 +63,12 @@ namespace Framework
       virtual Vec3D GetCollisionPoint(SheepFizz::ExternalManifold manifold);
       virtual std::string GetBodyCollisionGroup(void);
 
+      //raycasting
+      virtual void SetRayCast(Vec3D& rayOrigin, Vec3D& rayDirection, std::string name);
+      virtual bool SimpleRayCast();
+      virtual bool ComplexRayCast();
+      virtual void RayDestruction();
+
       //settors
       virtual void SetBodyRotation(Vec3D direction);
 
@@ -82,6 +87,7 @@ namespace Framework
 
       virtual void UpdateWidth(const void* value);
       virtual void UpdateHeight(const void* value);
+
 		// Properties
 		union
 		{
