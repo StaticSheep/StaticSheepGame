@@ -13,7 +13,7 @@ namespace Framework
 {
 
   Sprite::Sprite()
-    :Color(1, 1, 1, 1), Size(1, 1), MaxUV(1, 1)
+    :Color(1, 1, 1, 1), Size(1, 1), MaxUV(1, 1), m_uvScale(false)
   {
     transform = NULL;
   }
@@ -95,7 +95,22 @@ namespace Framework
       trans->GetScale().Y * Size.Y);
 
     GRAPHICS->SetColor(Color);
-    GRAPHICS->SetUV(MinUV, MaxUV);
+
+    if (m_uvScale)
+    {
+      GRAPHICS->SetSize(Size.X,
+        Size.Y);
+
+      GRAPHICS->SetUV(MinUV, Vec2(MaxUV.x * trans->GetScale().X, MaxUV.y * trans->GetScale().y));
+    }
+    else
+    {
+      GRAPHICS->SetSize(trans->GetScale().X * Size.X,
+        trans->GetScale().Y * Size.Y);
+
+      GRAPHICS->SetUV(MinUV, MaxUV);
+    }
+
     GRAPHICS->SetSpriteFlip(m_flipX, m_flipY);
     GRAPHICS->SetCamState(0);
 

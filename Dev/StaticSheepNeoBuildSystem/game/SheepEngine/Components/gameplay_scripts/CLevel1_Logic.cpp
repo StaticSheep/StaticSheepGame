@@ -19,6 +19,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "../camera/CCamera.h"
 #include "../particles/CParticleSystem.h"
 #include "../sprites/CSprite.h"
+#include "types/levelEvents/LEGrinderBig.h"
+#include "types/levelEvents/LEAsteroids.h"
 
 static const char *playerNames[] = { "Player1", "Player2", "Player3", "Player4" };
 static bool warning;
@@ -88,31 +90,7 @@ namespace Framework
 
     if (!countDownDone)
     {
-      Sprite *ls = space->GetHandles().GetAs<Sprite>(levelSprite);
-      //run countdown
-      if (countDownTimer <= 3.0f && countDownTimer > 2.0f)
-      {
-        ls->SetTexture("cd_3.png");
-      }
-      else if (countDownTimer <= 2.0f && countDownTimer > 1.0f)
-      {
-        //change sprite
-        ls->SetTexture("cd_2.png");
-        
-      }
-      else if (countDownTimer <= 1.0f && countDownTimer > 0.0f)
-      {
-        //change sprite
-        ls->SetTexture("cd_1.png");
-
-      }
-
-      countDownTimer -= dt;
-      if (countDownTimer <= 0)
-      {
-        countDownDone = true;
-        ls->SetTexture("blank.png");
-      }
+      LevelCountdown(dt);
       return;
     }
 
@@ -155,20 +133,16 @@ namespace Framework
 
     if (timeLimit <= 0)
     {
-      GameObject *eGiantPlat = (FACTORY->LoadObjectFromArchetype(space, "KillBoxBig"));
-      Transform *GPT = eGiantPlat->GetComponent<Transform>(eTransform);
-      //BoxCollider *gaintPlatC = eGiantPlat->GetComponent <BoxCollider>(eBoxCollider);
+      delete LE;
+      //fire event
       if (GetRandom(0, 1))
-      {
-        eGiantPlat->GetComponent<GiantKillBox>(eGiantKillBox)->direction = true;
-        GPT->SetTranslation(Vec3(1000.0, 0.0, 0.0));
-      }
+        LE = new LEGrinderBig();
       else
-      {
-        eGiantPlat->GetComponent<GiantKillBox>(eGiantKillBox)->direction = false;
-        GPT->SetTranslation(Vec3(-1000.0, 0.0, 0.0));
-      }
-      timeLimit = (float)GetRandom(30, 60);
+        LE = new LEAsteroids();
+
+      LE->FireEvent(space->GetHandles().GetAs<GameObject>(owner));
+
+      timeLimit = (float)GetRandom(20, 30);
       warning = false;
       camShakeTime = 8.5f;
       camShakeMagnitude = 4;
@@ -201,6 +175,9 @@ namespace Framework
     } 
     SoundPlayer *sp = space->GetHandles().GetAs<SoundPlayer>(levelSound);
     sp->SetVolume(0.35f);
+
+    if (LE)
+      LE->Update(dt);
 
 	}
 
@@ -280,6 +257,38 @@ namespace Framework
     }
 
     camShakeTime -= dt;
+  }
+
+  bool Level1_Logic::LevelCountdown(float dt)
+  {
+    Sprite *ls = space->GetHandles().GetAs<Sprite>(levelSprite);
+    //run countdown
+    if (countDownTimer <= 3.0f && countDownTimer > 2.0f)
+    {
+      ls->SetTexture("cd_3.png");
+    }
+    else if (countDownTimer <= 2.0f && countDownTimer > 1.0f)
+    {
+      //change sprite
+      ls->SetTexture("cd_2.png");
+
+    }
+    else if (countDownTimer <= 1.0f && countDownTimer > 0.0f)
+    {
+      //change sprite
+      ls->SetTexture("cd_1.png");
+
+    }
+
+    countDownTimer -= dt;
+    if (countDownTimer <= 0)
+    {
+      countDownDone = true;
+      ls->SetTexture("blank.png");
+      return true;
+    }
+
+    return false;
   }
 
   int Level1_Logic::GetPlayerHealth(int ply)

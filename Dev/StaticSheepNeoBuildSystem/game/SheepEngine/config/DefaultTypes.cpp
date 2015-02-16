@@ -46,7 +46,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/particles/CParticleCircleEmitter.h"
 #include "components/particles/CParticleBoxEmitter.h"
 #include "components/particles/Particles.h"
-
+#include "components/gameplay_scripts/CAsteroid.h"
 
 namespace Framework
 {
@@ -245,6 +245,9 @@ namespace Framework
     TYPE_REGISTER(DashEffect);
     TYPE_SET_TWEAK_TYPE(DashEffect, AntTweak::TW_TYPE_COMPONENT);
 
+    TYPE_REGISTER(Asteroid);
+    TYPE_SET_TWEAK_TYPE(Asteroid, AntTweak::TW_TYPE_COMPONENT);
+
     TYPE_REGISTER(Pistol);
     TYPE_REGISTER(Shotgun);
     TYPE_REGISTER(Automatic);
@@ -279,6 +282,7 @@ namespace Framework
     TYPE_ADD_MEMBER( Sprite, Size, false, true, "Size");
     TYPE_ADD_MEMBER(Sprite, m_flipX, false, true, "FlipX");
     TYPE_ADD_MEMBER(Sprite, m_flipY, false, true, "FlipY");
+    TYPE_ADD_MEMBER(Sprite, m_uvScale, false, true, "Tiled");
     TYPE_SET_TWEAK_TYPE( Sprite, AntTweak::TW_TYPE_COMPONENT );
     TYPE_SET_FROM_LUA( Sprite, Lua::GenericObjectFromLua );
 

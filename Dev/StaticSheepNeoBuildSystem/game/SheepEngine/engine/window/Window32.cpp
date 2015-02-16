@@ -142,8 +142,13 @@ namespace Framework
       {
         ENGINE->SystemMessage(Message(Message::WindowRestore));
 
+        if (!ENGINE->PlayingInEditor())
+        {
+          
+          ShowCursor(false);
+        }
+
         ShowWindow(hWnd, SW_RESTORE);
-        ShowCursor(false);
         WINDOW_ACTIVE = true;
       }
       break;

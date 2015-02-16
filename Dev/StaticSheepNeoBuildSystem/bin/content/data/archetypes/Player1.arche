@@ -13,8 +13,8 @@ GameObject
     Rotation float 0.000000
     Scale Vec3
     {
-      x_ float 0.250000
-      y_ float 0.250000
+      x_ float 0.300000
+      y_ float 0.320000
       z_ float 0.000000
     }
   }
@@ -52,8 +52,8 @@ GameObject
   }
   BoxCollider
   {
-    m_width float 89.000000
-    m_height float 89.000000
+    m_width float 75.000000
+    m_height float 85.000000
     m_materialName std::string "Wood"
     m_hasCollisionCallback bool true
     m_CollisionGroup std::string "Player1"
@@ -69,5 +69,4 @@ GameObject
   {
     enabled bool true
   }
-  
 }

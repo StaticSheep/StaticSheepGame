@@ -54,7 +54,7 @@ namespace Framework
   // updates the emitter
   void ParticleCircleEmitter::UpdateEmitter(float dt)
   {
-    if(space->Paused())
+    if(space->Paused() && !ENGINE->m_editorActive)
       return;
 
     // if we are set to currently spawn

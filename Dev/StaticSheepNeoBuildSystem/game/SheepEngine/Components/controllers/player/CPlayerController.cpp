@@ -544,7 +544,7 @@ namespace Framework
   //************************************
   void PlayerController::Melee(Buttons butt)
   {
-    if (hasDashed)
+    if (hasDashed || isSnapped)
       return;
 
     //zero out all the velocity the player has
