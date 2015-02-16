@@ -21,6 +21,8 @@ namespace Framework
 		void Initialize();
 		void Remove();
 
+    float rate = 0.01f;
+
 		//member variables
     Handle bTransfrom;
 	};
