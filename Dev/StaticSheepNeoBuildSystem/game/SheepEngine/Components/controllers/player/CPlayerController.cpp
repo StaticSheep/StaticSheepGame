@@ -13,8 +13,6 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "../../colliders/CCircleCollider.h"
 #include "../../sprites/CSprite.h"
 #include "types/weapons/WPistol.h"
-#include "types/weapons/WLaser.h"
-#include "types/weapons/WShotgun.h"
 #include "../../gameplay_scripts/CBullet_default.h"
 #include "../../sprites/CAniSprite.h"
 #include "../../gameplay_scripts/CCheats.h"
@@ -91,7 +89,7 @@ namespace Framework
 
     BoxCollider *bc = space->GetHandles().GetAs<BoxCollider>(playerCollider);
     bc->SetGravityOff();
-    weapon = (Laser*)GET_TYPE(Laser)->New();
+    weapon = (Pistol*)GET_TYPE(Pistol)->New();
     SoundEmitter *se = space->GetHandles().GetAs<SoundEmitter>(playerSound);
     se->Play("robot_startup", &SoundInstance(0.50f));
     animCont = AnimationController(playerNum);
