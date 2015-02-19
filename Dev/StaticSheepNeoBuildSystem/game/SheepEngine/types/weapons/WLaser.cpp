@@ -37,7 +37,7 @@ namespace Framework
     BoxCollider *bc = player->space->GetHandles().GetAs<BoxCollider>(playerCollider);
     bc->SetRayCast(playerTrans->GetTranslation(), AimDir, player->archetype);
     //bool death = bc->ComplexRayCast();
-    bool death = bc->SimpleRayCast();
+    bool death = bc->ComplexRayCast();
     if (death)
       bc->RayDestruction();
     SoundEmitter *se = player->GetComponent<SoundEmitter>(eSoundEmitter);
