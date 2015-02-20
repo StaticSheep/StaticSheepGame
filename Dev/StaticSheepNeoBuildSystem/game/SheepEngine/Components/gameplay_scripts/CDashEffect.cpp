@@ -40,7 +40,9 @@ namespace Framework
 
   void DashEffect::LogicUpdate(float dt)
 	{
-    pt = space->GetHandles().GetAs<Transform>(pTransform);
+    //if (pt != nullptr)
+      pt = space->GetHandles().GetAs<Transform>(pTransform);
+
     et = space->GetHandles().GetAs<Transform>(effectTransform);
 
     if(pt != nullptr)
@@ -50,6 +52,8 @@ namespace Framework
 
     if (lifeTime >= 0.5f || pt == nullptr)
     {
+      //make a bool called "alive". Set it to false. when its false call a function
+      //the function will keep it alive for a second and kill it
       space->GetGameObject(owner)->Destroy();
     }
 	}

@@ -43,8 +43,14 @@ namespace Framework
     CircleCollider *ac = space->GetHandles().GetAs <CircleCollider>(aCollider);
 
     at->SetTranslation(at->GetTranslation() + Vec3(0.0f, 0.0f, -3.0f));
-    ac->AddToAngVelocity(20.0f);
-    if (at->GetTranslation().z <= -5.0f)
+    float currZ = at->GetTranslation().z;
+    Vec3 scale(0.0f, 0.0f, 0.0f);
+    if (currZ <= 5.0f)
+      scale = Vec3(0.75f, 0.75f, 0.75f);
+    else
+      scale = Vec3(1/(currZ * 0.10f), 1/(currZ * 0.10f), 1.0f);
+    at->SetScale(scale);
+    if (at->GetTranslation().z <= 0.0f)
     {
       space->GetGameObject(owner)->Destroy();
     }

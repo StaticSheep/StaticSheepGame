@@ -43,7 +43,7 @@ namespace Framework
     spawnPos[5] = Vec3(0.0f, -440.0f, 0.0f);
     deadPlayers = 0;
     for (int i = 0; i < 4; ++i)
-      playerLives[i] = 5;
+      playerFans[i] = 1;
 
     warning = false;
     camShake = false;
@@ -142,7 +142,7 @@ namespace Framework
 
       LE->FireEvent(space->GetHandles().GetAs<GameObject>(owner));
 
-      timeLimit = (float)GetRandom(20, 30);
+      timeLimit = (float)GetRandom(15, 20);
       warning = false;
       camShakeTime = 8.5f;
       camShakeMagnitude = 4;
@@ -199,8 +199,7 @@ namespace Framework
     {
       for (int i = 0; i < numOfPlayers; ++i)
       {
-        if (playerLives[i] <= 0)
-          continue;
+
         int ranStart = GetRandom(0, 5);
         if (Players[i] == Handle::null && spawnTimers[i] <= 0)
         {
@@ -218,21 +217,21 @@ namespace Framework
 
   }
 
-  void Level1_Logic::PlayerDied(int ply)
+  void Level1_Logic::PlayerDied(int ply, int who_killed_him)
   {
     if (ply < 0 || ply > numOfPlayers)
       return;
     
     Players[ply] = Handle::null;
+    if (who_killed_him != -1)
+      playerFans[who_killed_him] += 5000;
     if (!camShake)
     {
       camShakeTime = 0.25f;
       camShakeMagnitude = 10;
       camShake = true;
     }
-    playerLives[ply] -= 1;
-    if (playerLives[ply] <= 0)
-      ++deadPlayers;
+
   }
 
   void Level1_Logic::CameraShake(float dt, float shakeDuration, float magnitude)
@@ -303,7 +302,7 @@ namespace Framework
 
   int Level1_Logic::GetPlayerLives(int ply)
   {
-    return playerLives[ply];
+    return playerFans[ply];
   }
 
   int Level1_Logic::GetWinner()
@@ -313,9 +312,8 @@ namespace Framework
 
     for (int i = 0; i < 4; ++i)
     {
-      if (playerLives[i] > 0)
+      if (playerFans[i] > 0)
       {
-        //restart the level here
         winner = i + 1;
         ++numAlive;
       }
@@ -335,6 +333,6 @@ namespace Framework
   void Level1_Logic::CheatWin()
   {
     for (int i = 0; i < 4; ++i)
-      playerLives[i] = 0;
+      playerFans[i] = 0;
   }
 }

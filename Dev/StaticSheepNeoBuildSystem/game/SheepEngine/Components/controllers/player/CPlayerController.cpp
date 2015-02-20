@@ -381,6 +381,7 @@ namespace Framework
 
         MetricInfo metricData(pn, 0, 0, PLAYER_KILL, Buttons::NONE, Weapons::PISTOL);
         ENGINE->SystemMessage(MetricsMessage(&metricData));
+        PlayerDeath(se, ps, pn);
       }
       return;
     }
@@ -609,14 +610,14 @@ namespace Framework
   // Parameter: SoundEmitter * se
   // Parameter: Transform * ps
   //************************************
-  void PlayerController::PlayerDeath(SoundEmitter *se, Transform *ps)
+  void PlayerController::PlayerDeath(SoundEmitter *se, Transform *ps, int who_killed_me)
   {
     se->Play("death_explosion", &SoundInstance(1.0f));
     Handle explosion = (FACTORY->LoadObjectFromArchetype(space, "explosion"))->self;
     Transform *exT = space->GetGameObject(explosion)->GetComponent<Transform>(eTransform);
     exT->SetTranslation(ps->GetTranslation());
     exT->SetRotation((float)GetRandom(0, (int)(2.0f * (float)PI)));
-    space->hooks.Call("PlayerDied", playerNum); //calling an event called player died
+    space->hooks.Call("PlayerDied", playerNum, who_killed_me); //calling an event called player died
     space->GetGameObject(owner)->Destroy();
   }
 
