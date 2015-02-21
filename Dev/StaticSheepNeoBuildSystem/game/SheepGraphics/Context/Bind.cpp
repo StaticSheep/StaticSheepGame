@@ -58,9 +58,19 @@ namespace DirectSheep
 
       InitializeBackBuffer();
 
+      //Release(m_lightTarget);
+      Release(m_canvasTarget);
+      
+      //CreateRenderTarget(m_lightTarget, DXGI_FORMAT_R8G8B8A8_UNORM,
+      //  Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
+
+      CreateRenderTarget(m_canvasTarget, DXGI_FORMAT_R8G8B8A8_UNORM,
+        Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
+
       SetViewport(0, 0, Dimension((unsigned)width, (unsigned)height));
 
       ((Camera*)m_orthoScreen.ptr)->SetScale(width, height);
+      ((Camera*)m_postEffects.ptr)->SetScale(width, height);
 
       UpdatePrimativeEffect();
     }
@@ -117,6 +127,10 @@ namespace DirectSheep
   void RenderContext::BindRenderTarget(const Handle& rtHandle)
   {
     if (rtHandle.type == RENDER_TARGET)
-      m_deviceContext->OMSetRenderTargets(1, &m_backBuffer, m_depthBuffer.m_depthBuffer);
+      m_deviceContext->OMSetRenderTargets(1,
+      &m_renderTargetRes[rtHandle.index].renderTargetView,
+      m_renderTargetRes[rtHandle.index].hasDepthBuffer ? 
+      m_renderTargetRes[rtHandle.index].depthBuffer.m_depthBuffer : 
+      m_depthBuffer.m_depthBuffer);
   }
 }

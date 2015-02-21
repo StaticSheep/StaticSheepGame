@@ -27,7 +27,8 @@ namespace DirectSheep
 
     void bindLights(ID3D11DeviceContext* pContext,
       const Light* lights,
-      const int numLights);
+      const int numLights,
+      Vec4 screenSize);
 
     PointLight(ID3D11Device* pDevice);
 

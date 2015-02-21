@@ -35,7 +35,8 @@ namespace DirectSheep
 
     m_attenuation(attenuation), 
     m_color(color), 
-    m_position(Vec3(SCREEN_WIDTH / 2.0f + position.x, SCREEN_HEIGHT / 2.0f - position.y, position.z))
+    m_position(Vec3(1920 / 2.0f + position.x,
+    1080 / 2.0f - position.y, position.z))
   {}
 
 }

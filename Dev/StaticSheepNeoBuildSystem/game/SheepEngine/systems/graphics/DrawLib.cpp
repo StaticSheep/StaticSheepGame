@@ -222,7 +222,7 @@ namespace Framework
 
     
 
-    GRAPHICS->SetSize(sqrt(diffX * diffX + diffY * diffY), 1);
+    GRAPHICS->SetSize(sqrt(diffX * diffX + diffY * diffY), 1.5f);
 
     if (m_whiteTextureID == -1)
     {
@@ -249,6 +249,7 @@ namespace Framework
     GRAPHICS->SetUV(Vec2(0, 0), Vec2(1, 1));
 
     GRAPHICS->DrawBatched(m_whiteHandle);
+    GRAPHICS->RC()->DrawLightBatched(m_whiteHandle);
 
   }
 

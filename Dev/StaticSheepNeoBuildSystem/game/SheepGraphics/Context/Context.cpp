@@ -119,10 +119,24 @@ namespace DirectSheep
     m_states = std::unique_ptr<DirectX::CommonStates>(new DirectX::CommonStates(m_device));
 
     // Initialize Sprite Batcher
-    m_batcher = std::unique_ptr<DirectX::SpriteBatch>(
-      new SpriteBatch(m_deviceContext));
+    for (int i = 0; i < MAX_LAYERS; ++i)
+    {
+      m_batcher[i] = new SpriteBatch(m_deviceContext);
+      m_batcher[i]->SetRotation(DXGI_MODE_ROTATION_UNSPECIFIED);
 
-    m_batcher->SetRotation(DXGI_MODE_ROTATION_UNSPECIFIED);
+      m_lightBatcher[i] = new SpriteBatch(m_deviceContext);
+      m_lightBatcher[i]->SetRotation(DXGI_MODE_ROTATION_UNSPECIFIED);
+    }
+
+    CreateRenderTarget(m_lightTarget, DXGI_FORMAT_R8G8B8A8_UNORM,
+      Dimension(1920, 1080), true);
+
+    CreateRenderTarget(m_canvasTarget, DXGI_FORMAT_R8G8B8A8_UNORM,
+      Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
+
+
+
+    
 
     // Initialize Primitive Batcher
     m_primitiveBatch = std::unique_ptr < DirectX::PrimitiveBatch <
@@ -169,11 +183,18 @@ namespace DirectSheep
     // Initialize Effects
     m_genericEffect = new GenEffect(m_device);
 
+    //PositionVertex vertices[4] = {
+    //    { Vec3(-SCREEN_WIDTH / 2.f, SCREEN_HEIGHT / 2.f, 0.f) }, // top left
+    //    { Vec3(SCREEN_WIDTH / 2.f, SCREEN_HEIGHT / 2.f, 0.f) },  // top right
+    //    { Vec3(-SCREEN_WIDTH / 2.f, -SCREEN_HEIGHT / 2.f, 0.f) },// bottom left
+    //    { Vec3(SCREEN_WIDTH / 2.f, -SCREEN_HEIGHT / 2.f, 0.f) } // bottom right
+    //};
+
     PositionVertex vertices[4] = {
-        { Vec3(-SCREEN_WIDTH / 2.f, SCREEN_HEIGHT / 2.f, 0.f) }, // top left
-        { Vec3(SCREEN_WIDTH / 2.f, SCREEN_HEIGHT / 2.f, 0.f) },  // top right
-        { Vec3(-SCREEN_WIDTH / 2.f, -SCREEN_HEIGHT / 2.f, 0.f) },// bottom left
-        { Vec3(SCREEN_WIDTH / 2.f, -SCREEN_HEIGHT / 2.f, 0.f) } // bottom right
+      { Vec3(-1.0f, 1.0f, 0.f) }, // top left
+      { Vec3(1.0f, 1.0f, 0.f) },  // top right
+      { Vec3(-1.0f, -1.0f, 0.f) },// bottom left
+      { Vec3(1.0f, -1.0f, 0.f) } // bottom right
     };
 
     UINT indices[6] = {
@@ -182,6 +203,15 @@ namespace DirectSheep
     };
 
     m_PLightModel = new Model<PositionVertex>(m_device, vertices, 4, indices, 6);
+
+    PositionTextureVertex quadVertices[4] = {
+      { Vec3(-1.0f, 1.0f, 0.f), Vec2(0, 0) }, // top left
+      { Vec3(1.0f, 1.0f, 0.f), Vec2(1, 0) },  // top right
+      { Vec3(-1.0f, -1.0f, 0.f), Vec2(0, 1) },// bottom left
+      { Vec3(1.0f, -1.0f, 0.f), Vec2(1, 1) } // bottom right
+    };
+
+    m_quad = new Model<PositionTextureVertex>(m_device, quadVertices, 4, indices, 6);
 
     m_PointLight = new PointLight(m_device);
 
@@ -257,6 +287,8 @@ namespace DirectSheep
 
     if (m_genericEffect)
       delete m_genericEffect;
+
+    delete m_quad; //eh?
 
     rCon->~RenderContext();
     _aligned_free(rCon);
@@ -512,6 +544,15 @@ namespace DirectSheep
     {
       float clearColor[4] = { 0, 0, 0, 1.0f };
       m_deviceContext->ClearRenderTargetView(m_backBuffer, clearColor);
+    }
+
+    void RenderContext::ClearRenderTarget(const Handle& handle,
+      float r, float g, float b, float a)
+    {
+      float clearColor[4] = { r, g, b, a };
+      m_deviceContext->ClearRenderTargetView(m_renderTargetRes[handle.index]
+        .renderTargetView,
+        clearColor);
     }
 
   

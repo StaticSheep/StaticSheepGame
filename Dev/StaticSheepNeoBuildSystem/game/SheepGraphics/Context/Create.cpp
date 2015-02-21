@@ -32,6 +32,53 @@ namespace DirectSheep
     return true;
   }
 
+  bool RenderContext::CreateRenderTarget(Handle& handle,
+    const DXGI_FORMAT format, const Dimension& dim, bool depthbuffer)
+  {
+    RenderTarget rt;
+
+    CD3D11_TEXTURE2D_DESC textureDesc(format,
+      dim.width, dim.height, 1, 1,
+      D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE);
+
+    DXVerify(m_device->CreateTexture2D(&textureDesc, NULL, &rt.texture2D));
+
+    DXVerify(m_device->CreateRenderTargetView(rt.texture2D,
+      NULL, &rt.renderTargetView));
+
+    DXVerify(m_device->CreateShaderResourceView(rt.texture2D,
+      NULL, &rt.shaderResourceView));
+
+    rt.hasDepthBuffer = depthbuffer;
+
+    if (depthbuffer)
+    {
+      textureDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL; // This is a depth stencil
+      textureDesc.Format = DXGI_FORMAT_D32_FLOAT;
+
+      DXVerify(m_device->CreateTexture2D(&textureDesc, NULL, &rt.depthBuffer.
+        texture2D));
+
+      // create a depth buffer (z-sorting)
+      D3D11_DEPTH_STENCIL_VIEW_DESC dsvd;
+      ZeroMemory(&dsvd, sizeof(dsvd));   // Zero members
+
+      dsvd.Format = textureDesc.Format;
+      dsvd.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
+
+      DXVerify(m_device->CreateDepthStencilView(rt.depthBuffer.texture2D,
+        &dsvd, &rt.depthBuffer.m_depthBuffer));
+    }
+
+    
+
+    m_renderTargetRes.push_back(rt);
+    handle.index = m_renderTargetRes.size() - 1;
+    handle.type = RENDER_TARGET;
+
+    return true;
+  }
+
   bool RenderContext::CreateVertexBuffer(Handle& handle, size_t size)
   {
     ID3D11Buffer *tempBuffer;
@@ -263,7 +310,8 @@ namespace DirectSheep
   {
     // find the address of the backbuffer
     ID3D11Texture2D *pBackBuffer;
-    DXVerify(m_swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer));
+    DXVerify(m_swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D),
+      (LPVOID*)&pBackBuffer));
 
     // create render target using backbuffer address
     DXVerify(m_device->CreateRenderTargetView(pBackBuffer, NULL, &m_backBuffer));
@@ -317,8 +365,8 @@ namespace DirectSheep
     bd.RenderTarget[0].SrcBlend = D3D11_BLEND_ZERO;
     bd.RenderTarget[0].DestBlend = D3D11_BLEND_SRC_COLOR;
     bd.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
-    bd.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
-    bd.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
+    bd.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ZERO;
+    bd.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_DEST_ALPHA;
     bd.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
 
     bd.AlphaToCoverageEnable = false;

@@ -37,7 +37,8 @@ namespace DirectSheep
 
   void PointLight::bindLights(ID3D11DeviceContext* pContext,
     const Light* lights,
-    const int numLights)
+    const int numLights,
+    Vec4 screenSize)
   {
     D3D11_MAPPED_SUBRESOURCE mapResource;
 
@@ -52,11 +53,14 @@ namespace DirectSheep
       data->pos[i] = Vec4(lights[i].getPosition());
     }
     data->numLights = numLights;
+    data->screenSize = screenSize;
 
     pContext->Unmap(m_lightBuffer->m_CBufferRaw, 0);
   }
 
-  PointLight::PointLight(ID3D11Device* pDevice) : Effect(pDevice, "content/shaders/light_vs.cso", "content/shaders/light_ps.cso")
+  PointLight::PointLight(ID3D11Device* pDevice) 
+    : Effect(pDevice, "content/shaders/light_vs.cso",
+    "content/shaders/light_ps.cso")
   {
     m_lightBuffer = new CBuffer<LightsBuffer>(pDevice);
 

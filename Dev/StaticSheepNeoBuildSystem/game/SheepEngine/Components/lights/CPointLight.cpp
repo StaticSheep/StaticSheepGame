@@ -8,6 +8,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "pch/precompiled.h"
 #include "CPointLight.h"
 #include "systems/graphics/SheepGraphics.h"
+#include "Context/Context.h"
 
 namespace Framework
 {
@@ -22,12 +23,12 @@ namespace Framework
   {
     transform = this->GetOwner()->GetComponentHandle(eTransform);
 
-    space->hooks.Add("PostDraw", self, BUILD_FUNCTION(PointLight::Render));
+    space->hooks.Add("Draw", self, BUILD_FUNCTION(PointLight::Render));
   }
 
   void PointLight::Remove()
   {
-    space->hooks.Remove("PostDraw", self);
+    space->hooks.Remove("Draw", self);
   }
 
   void PointLight::Render()
@@ -39,7 +40,7 @@ namespace Framework
         m_brightness.b,
         m_brightness.a);
 
-      GRAPHICS->BatchPointLight(
+      GRAPHICS->RC()->BatchPointLight(
         space->GetHandles().GetAs<Transform>(transform)->GetTranslation(),
         scaledBrightness, m_attenuation);
     }

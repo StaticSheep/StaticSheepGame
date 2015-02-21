@@ -82,8 +82,18 @@ class RenderContext
    void Draw(unsigned vertexCount, unsigned vertexStart = 0);
    void DrawSpriteText(const char * text, int index, Framework::Vec2D& scale);
    void DrawBatched(DirectSheep::Handle texture);
-   void BatchPLight(Framework::Vec3D position, Framework::Vec4D brightness, Framework::Vec3D attenuation);
-   void DrawPLights(bool isLight);
+   void DrawLightBatched(DirectSheep::Handle texture);
+   // Layer: 0 = Background, 1 = Foreground, 2 = Front
+   void BatchPointLight(Framework::Vec3D position,
+     Framework::Vec4D brightness, Framework::Vec3D attenuation);
+
+   void BatchPointLight(Framework::Vec3D position,
+     Framework::Vec4D brightness, Framework::Vec3D attenuation, unsigned layer);
+   
+   void SetLayer(unsigned layer)
+   {
+     m_curLayer = layer;
+   }
 
    /* --- Primitive Draw Functions --- */
    void DrawLine(Vec3 start, Vec3 end, Color startColor, Color endColor);
@@ -91,7 +101,7 @@ class RenderContext
    void DrawQuad(Vec3 v1, Vec3 v2, Vec3 v3, Vec3 v4);
    void DrawTriangle(Vec3 v1, Vec3 v2, Vec3 v3);
 
-   void StartBatch();
+   void StartBatch(unsigned maxSpriteLayers, bool fullBright);
    void EndBatch();
 
    void FrameStart();
@@ -130,7 +140,8 @@ class RenderContext
    bool CreateVertexBuffer(Handle& handle, size_t size);
    bool CreateIndexBuffer(Handle& handle, size_t size);
    bool CreateConstantBuffer(Handle& handle, size_t size);
-   bool CreateRenderTarget(Handle& handle, const RenderTargetMode mode, const Format format, const float downsamplePercentage = 1.0f, const Dimension& dim = Dimension());
+   bool CreateRenderTarget(Handle& handle, const DXGI_FORMAT format,
+     const Dimension& dim = Dimension(), bool depthbuffer = false);
    bool CreateDepthBuffer(void);
    int AddFont(const char* fontname,const char* filename);
 
@@ -236,6 +247,7 @@ class RenderContext
     void ReleaseConstantBufferIntern(const Handle& constantBuffer);
     void ReleaseRenderTargetIntern(const Handle& renderTarget);
 
+    void DrawPointLights(bool isLight, unsigned layer);
     
 
     void UpdatePrimativeEffect();
@@ -277,11 +289,13 @@ class RenderContext
       ID3D11RenderTargetView   *renderTargetView;
       ID3D11ShaderResourceView *shaderResourceView;
       ID3D11Texture2D          *texture2D;
+      DepthBuffer              depthBuffer;
       Format                   format;
 
       float            downsamplePercentage;
       RenderTargetMode mode;
       Dimension        size;
+      bool             hasDepthBuffer;
     };
 
     struct Transform
@@ -352,6 +366,7 @@ class RenderContext
     Handle                                   m_Ortho;
     Handle                                   m_orthoScreen;
     Handle                                   m_editor;
+
     Handle                                   m_postEffects;
     std::vector<DirectSheep::Camera*>         m_CameraPool;
     bool                                     m_camUse;
@@ -367,13 +382,24 @@ class RenderContext
     std::vector<ID3D11Buffer*>               m_constBufferRes;
     std::vector<RenderTarget>                m_renderTargetRes;
 
+    Handle m_canvasTarget;
+    Handle m_lightTarget;
+
     /////////////
     // Batcher //
     /////////////
-    
-    std::vector<Light>                    m_PointLights;
 
-    std::unique_ptr<DirectX::SpriteBatch> m_batcher;
+    static const int MAX_LAYERS = 3;
+
+    unsigned m_curLayer = 1;
+    unsigned m_curMaxLayers = 3;
+    bool m_fullbright = false;
+    
+    std::vector<Light>                    m_PointLights[MAX_LAYERS];
+
+    DirectX::SpriteBatch* m_batcher[MAX_LAYERS];
+    DirectX::SpriteBatch* m_lightBatcher[MAX_LAYERS];
+
     std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>>
       m_primitiveBatch;
     std::unique_ptr<DirectX::BasicEffect> m_primativeEffect;
@@ -396,6 +422,7 @@ class RenderContext
     PointLight*                              m_PointLight;
 
     Model<PositionVertex>*                   m_PLightModel;
+    Model<PositionTextureVertex>*                   m_quad;
 
 
     ///////////

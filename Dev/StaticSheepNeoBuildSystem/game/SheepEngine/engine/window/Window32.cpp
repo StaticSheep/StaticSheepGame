@@ -133,7 +133,7 @@ namespace Framework
       {
         ENGINE->SystemMessage(Message(Message::WindowMinimize));
 
-        ShowWindow(hWnd, SW_MINIMIZE);
+        //ShowWindow(hWnd, SW_MINIMIZE);
 
         WINDOW_ACTIVE = false;
       }
@@ -145,10 +145,10 @@ namespace Framework
         if (!ENGINE->PlayingInEditor())
         {
           
-          ShowCursor(false);
+          //ShowCursor(false);
         }
 
-        ShowWindow(hWnd, SW_RESTORE);
+        //ShowWindow(hWnd, SW_RESTORE);
         WINDOW_ACTIVE = true;
       }
       break;

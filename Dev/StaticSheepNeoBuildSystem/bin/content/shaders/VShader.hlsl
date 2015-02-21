@@ -32,6 +32,7 @@ PSInput VSMain(VSInput input)
   output.position = mul(float4(input.position, 1), cWorld);
   output.position = mul(output.position, cView);
   output.position = mul(output.position, cProj);
-  output.texCoord = lerp(cuvBegin, cuvEnd, input.texCoord);    // set the texture coordinates, unmodified
+  output.texCoord = input.texCoord;    // set the texture coordinates, unmodified
+  
   return output;
 }
