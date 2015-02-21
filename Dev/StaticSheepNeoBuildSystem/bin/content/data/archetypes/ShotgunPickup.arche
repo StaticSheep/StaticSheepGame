@@ -33,17 +33,21 @@ GameObject
       X float 1.000000
       Y float 1.000000
     }
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
   }
   BoxCollider
   {
-    m_width float 32.000000
-    m_height float 32.000000
+    m_width float 85.000000
+    m_height float 85.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool true
+    m_CollisionGroup std::string ""
   }
   WeaponPickup
   {
-    weaponID EWeapons "Pistol"
+    weaponID EWeapons "Shotgun"
     weaponNum int 1
   }
 }

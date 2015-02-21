@@ -8,16 +8,34 @@ GameObject
     Translation Vec3
     {
       x_ float 0.000000
-      y_ float 0.000000
+      y_ float -24.026703
       z_ float 0.000000
     }
     Rotation float 0.000000
     Scale Vec3
     {
-      x_ float 1.000000
-      y_ float 1.000000
+      x_ float 1.400000
+      y_ float 1.200000
       z_ float 0.000000
     }
+  }
+  Sprite
+  {
+    m_spriteName std::string "slotmachine_minimal.png"
+    Color Vec4
+    {
+      R float 1.000000
+      G float 0.705882
+      B float 0.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 1.920000
+      Y float 1.600000
+    }
+    m_flipX bool false
+    m_flipY bool false
   }
   SlotMachine
   {
@@ -25,31 +43,76 @@ GameObject
     m_spinTexture std::string "menu_reel_blur.png"
     m_slotBackTexture std::string "slotmachine_slotback.png"
     numSlots int 4
+    slotOptions int 4
+    startSpeed float 7.000000
     slotSize Vec2
     {
-      X float 1.000000
-      Y float 1.000000
+      X float 0.700000
+      Y float 1.600000
     }
-    slotMargin float 10.000000
+    slotMargin float 55.000000
     slotOffset Vec2
     {
-      X float 0.000000
+      X float -5.000000
       Y float 0.000000
     }
     slotBackSize Vec2
     {
-      X float 1.000000
-      Y float 1.000000
+      X float 3.100000
+      Y float 1.200000
     }
     startTime float 3.000000
     bonusTime float 0.200000
-    useSpriteColor bool true
+    useSpriteColor bool false
     backingColor Vec4
+    {
+      R float 1.000000
+      G float 0.705882
+      B float 0.000000
+      A float 1.000000
+    }
+  }
+}
+GameObject
+{
+  name std::string "BGStars"
+  archetype std::string "IntroStarBG"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 0.000000
+      y_ float 0.000000
+      z_ float 1000.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 11.000000
+      y_ float 11.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "spacebg.png"
+    Color Vec4
     {
       R float 1.000000
       G float 1.000000
       B float 1.000000
       A float 1.000000
     }
+    Size Vec2
+    {
+      X float 1.000000
+      Y float 1.000000
+    }
+    m_flipX bool false
+    m_flipY bool false
+  }
+  BackgroundPan
+  {
+    rate float 0.007000
   }
 }

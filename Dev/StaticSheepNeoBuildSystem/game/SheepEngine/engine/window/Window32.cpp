@@ -128,7 +128,8 @@ namespace Framework
       break;
 
     case WM_ACTIVATE:
-      if (wParam == WA_INACTIVE && !ENGINE->m_editorActive)
+      if (wParam == WA_INACTIVE && !ENGINE->m_editorActive
+        && !ENGINE->PlayingInEditor())
       {
         ENGINE->SystemMessage(Message(Message::WindowMinimize));
 
@@ -137,11 +138,13 @@ namespace Framework
         WINDOW_ACTIVE = false;
       }
       else if ((wParam == WA_CLICKACTIVE || wParam == WA_ACTIVE) &&
-        !ENGINE->m_editorActive)
+        !ENGINE->m_editorActive && !ENGINE->PlayingInEditor())
       {
+        ENGINE->SystemMessage(Message(Message::WindowRestore));
+
         if (!ENGINE->PlayingInEditor())
         {
-          ENGINE->SystemMessage(Message(Message::WindowRestore));
+          
           ShowCursor(false);
         }
 

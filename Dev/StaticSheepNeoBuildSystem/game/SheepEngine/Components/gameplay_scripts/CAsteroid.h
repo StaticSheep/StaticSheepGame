@@ -1,29 +1,29 @@
 /*****************************************************************
-Filename: CBackgroundPan.h
-Project:  Gam200
+Filename: CAsteroid.h
+Project:  Gam250
 Author(s): Greg Walls (Primary)
 
-All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+All content © 2015 DigiPen (USA) Corporation, all rights reserved.
 *****************************************************************/
 #pragma once
 
 #include "components/base/Component.h"
 #include "types/handle/Handle.h"
+#include "../transform/CTransform.h"
 
 namespace Framework
 {
-	class BackgroundPan : public GameComponent
+	class Asteroid : public GameComponent
 	{
 	public:
-    BackgroundPan();
-    ~BackgroundPan();
+    Asteroid();
+    ~Asteroid();
 		void LogicUpdate(float dt);
 		void Initialize();
 		void Remove();
 
-    float rate = 0.01f;
-
 		//member variables
-    Handle bTransfrom;
+    Handle aTransfrom;
+    Handle aCollider;
 	};
 }

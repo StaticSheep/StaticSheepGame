@@ -1,0 +1,48 @@
+GameObject
+{
+  name std::string "RedWarnLight"
+  archetype std::string "RedWarnLight"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 0.000000
+      y_ float 0.000000
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  PointLight
+  {
+    m_brightness LightColor
+    {
+      R float 1.000000
+      G float 0.000000
+      B float 0.000000
+      A float 0.100000
+    }
+    m_attenuation LightVec3
+    {
+      X float 0.010000
+      Y float 0.010000
+      Z float 0.010000
+    }
+  }
+  BoxCollider
+  {
+    m_width float 12.000000
+    m_height float 12.000000
+    m_materialName std::string "Wood"
+    m_hasCollisionCallback bool false
+    m_CollisionGroup std::string "NoCollide"
+  }
+  Grinder
+  {
+  }
+}

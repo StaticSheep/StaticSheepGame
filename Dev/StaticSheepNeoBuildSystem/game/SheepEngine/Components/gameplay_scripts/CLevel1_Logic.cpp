@@ -19,6 +19,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "../camera/CCamera.h"
 #include "../particles/CParticleSystem.h"
 #include "../sprites/CSprite.h"
+#include "types/levelEvents/LEGrinderBig.h"
+#include "types/levelEvents/LEAsteroids.h"
 
 static const char *playerNames[] = { "Player1", "Player2", "Player3", "Player4" };
 static bool warning;
@@ -41,7 +43,7 @@ namespace Framework
     spawnPos[5] = Vec3(0.0f, -440.0f, 0.0f);
     deadPlayers = 0;
     for (int i = 0; i < 4; ++i)
-      playerLives[i] = 5;
+      playerFans[i] = 1;
 
     warning = false;
     camShake = false;
@@ -71,7 +73,7 @@ namespace Framework
     startFlag = true;
     playing = false;
     countDownDone = false;
-    countDownTimer = 0.0f;
+    countDownTimer = 4.0f;
 
     for (int i = 0; i < 4; ++i)
       spawnTimers[i] = 2.0f;
@@ -88,31 +90,7 @@ namespace Framework
 
     if (!countDownDone)
     {
-      Sprite *ls = space->GetHandles().GetAs<Sprite>(levelSprite);
-      //run countdown
-      if (countDownTimer <= 3.0f && countDownTimer > 2.0f)
-      {
-        ls->SetTexture("cd_3.png");
-      }
-      else if (countDownTimer <= 2.0f && countDownTimer > 1.0f)
-      {
-        //change sprite
-        ls->SetTexture("cd_2.png");
-        
-      }
-      else if (countDownTimer <= 1.0f && countDownTimer > 0.0f)
-      {
-        //change sprite
-        ls->SetTexture("cd_1.png");
-
-      }
-
-      countDownTimer -= dt;
-      if (countDownTimer <= 0)
-      {
-        countDownDone = true;
-        ls->SetTexture("blank.png");
-      }
+      LevelCountdown(dt);
       return;
     }
 
@@ -155,20 +133,16 @@ namespace Framework
 
     if (timeLimit <= 0)
     {
-      GameObject *eGiantPlat = (FACTORY->LoadObjectFromArchetype(space, "KillBoxBig"));
-      Transform *GPT = eGiantPlat->GetComponent<Transform>(eTransform);
-      //BoxCollider *gaintPlatC = eGiantPlat->GetComponent <BoxCollider>(eBoxCollider);
+      delete LE;
+      //fire event
       if (GetRandom(0, 1))
-      {
-        eGiantPlat->GetComponent<GiantKillBox>(eGiantKillBox)->direction = true;
-        GPT->SetTranslation(Vec3(1000.0, 0.0, 0.0));
-      }
+        LE = new LEGrinderBig();
       else
-      {
-        eGiantPlat->GetComponent<GiantKillBox>(eGiantKillBox)->direction = false;
-        GPT->SetTranslation(Vec3(-1000.0, 0.0, 0.0));
-      }
-      timeLimit = (float)GetRandom(30, 60);
+        LE = new LEAsteroids();
+
+      LE->FireEvent(space->GetHandles().GetAs<GameObject>(owner));
+
+      timeLimit = (float)GetRandom(15, 20);
       warning = false;
       camShakeTime = 8.5f;
       camShakeMagnitude = 4;
@@ -202,6 +176,9 @@ namespace Framework
     SoundPlayer *sp = space->GetHandles().GetAs<SoundPlayer>(levelSound);
     sp->SetVolume(0.35f);
 
+    if (LE)
+      LE->Update(dt);
+
 	}
 
   void Level1_Logic::SpawnPlayers(float dt)
@@ -222,8 +199,7 @@ namespace Framework
     {
       for (int i = 0; i < numOfPlayers; ++i)
       {
-        if (playerLives[i] <= 0)
-          continue;
+
         int ranStart = GetRandom(0, 5);
         if (Players[i] == Handle::null && spawnTimers[i] <= 0)
         {
@@ -241,21 +217,21 @@ namespace Framework
 
   }
 
-  void Level1_Logic::PlayerDied(int ply)
+  void Level1_Logic::PlayerDied(int ply, int who_killed_him)
   {
     if (ply < 0 || ply > numOfPlayers)
       return;
     
     Players[ply] = Handle::null;
+    if (who_killed_him != -1)
+      playerFans[who_killed_him] += 5000;
     if (!camShake)
     {
       camShakeTime = 0.25f;
       camShakeMagnitude = 10;
       camShake = true;
     }
-    playerLives[ply] -= 1;
-    if (playerLives[ply] <= 0)
-      ++deadPlayers;
+
   }
 
   void Level1_Logic::CameraShake(float dt, float shakeDuration, float magnitude)
@@ -282,6 +258,38 @@ namespace Framework
     camShakeTime -= dt;
   }
 
+  bool Level1_Logic::LevelCountdown(float dt)
+  {
+    Sprite *ls = space->GetHandles().GetAs<Sprite>(levelSprite);
+    //run countdown
+    if (countDownTimer <= 3.0f && countDownTimer > 2.0f)
+    {
+      ls->SetTexture("cd_3.png");
+    }
+    else if (countDownTimer <= 2.0f && countDownTimer > 1.0f)
+    {
+      //change sprite
+      ls->SetTexture("cd_2.png");
+
+    }
+    else if (countDownTimer <= 1.0f && countDownTimer > 0.0f)
+    {
+      //change sprite
+      ls->SetTexture("cd_1.png");
+
+    }
+
+    countDownTimer -= dt;
+    if (countDownTimer <= 0)
+    {
+      countDownDone = true;
+      ls->SetTexture("blank.png");
+      return true;
+    }
+
+    return false;
+  }
+
   int Level1_Logic::GetPlayerHealth(int ply)
   {
     if (Players[ply] == Handle::null)
@@ -294,7 +302,7 @@ namespace Framework
 
   int Level1_Logic::GetPlayerLives(int ply)
   {
-    return playerLives[ply];
+    return playerFans[ply];
   }
 
   int Level1_Logic::GetWinner()
@@ -304,9 +312,8 @@ namespace Framework
 
     for (int i = 0; i < 4; ++i)
     {
-      if (playerLives[i] > 0)
+      if (playerFans[i] > 0)
       {
-        //restart the level here
         winner = i + 1;
         ++numAlive;
       }
@@ -326,6 +333,6 @@ namespace Framework
   void Level1_Logic::CheatWin()
   {
     for (int i = 0; i < 4; ++i)
-      playerLives[i] = 0;
+      playerFans[i] = 0;
   }
 }

@@ -13,8 +13,6 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "../../colliders/CCircleCollider.h"
 #include "../../sprites/CSprite.h"
 #include "types/weapons/WPistol.h"
-#include "types/weapons/WLaser.h"
-#include "types/weapons/WShotgun.h"
 #include "../../gameplay_scripts/CBullet_default.h"
 #include "../../sprites/CAniSprite.h"
 #include "../../gameplay_scripts/CCheats.h"
@@ -91,7 +89,7 @@ namespace Framework
 
     BoxCollider *bc = space->GetHandles().GetAs<BoxCollider>(playerCollider);
     bc->SetGravityOff();
-    weapon = (Laser*)GET_TYPE(Laser)->New();
+    weapon = (Pistol*)GET_TYPE(Pistol)->New();
     SoundEmitter *se = space->GetHandles().GetAs<SoundEmitter>(playerSound);
     se->Play("robot_startup", &SoundInstance(0.50f));
     animCont = AnimationController(playerNum);
@@ -383,6 +381,7 @@ namespace Framework
 
         MetricInfo metricData(pn, 0, 0, PLAYER_KILL, Buttons::NONE, Weapons::PISTOL);
         ENGINE->SystemMessage(MetricsMessage(&metricData));
+        PlayerDeath(se, ps, pn);
       }
       return;
     }
@@ -545,7 +544,7 @@ namespace Framework
   //************************************
   void PlayerController::Melee(Buttons butt)
   {
-    if (hasDashed)
+    if (hasDashed || isSnapped)
       return;
 
     //zero out all the velocity the player has
@@ -611,14 +610,14 @@ namespace Framework
   // Parameter: SoundEmitter * se
   // Parameter: Transform * ps
   //************************************
-  void PlayerController::PlayerDeath(SoundEmitter *se, Transform *ps)
+  void PlayerController::PlayerDeath(SoundEmitter *se, Transform *ps, int who_killed_me)
   {
     se->Play("death_explosion", &SoundInstance(1.0f));
     Handle explosion = (FACTORY->LoadObjectFromArchetype(space, "explosion"))->self;
     Transform *exT = space->GetGameObject(explosion)->GetComponent<Transform>(eTransform);
     exT->SetTranslation(ps->GetTranslation());
     exT->SetRotation((float)GetRandom(0, (int)(2.0f * (float)PI)));
-    space->hooks.Call("PlayerDied", playerNum); //calling an event called player died
+    space->hooks.Call("PlayerDied", playerNum, who_killed_me); //calling an event called player died
     space->GetGameObject(owner)->Destroy();
   }
 

@@ -47,7 +47,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/particles/CParticleCircleEmitter.h"
 #include "components/particles/CParticleBoxEmitter.h"
 #include "components/particles/Particles.h"
-
+#include "components/gameplay_scripts/CAsteroid.h"
 
 namespace Framework
 {
@@ -228,6 +228,7 @@ namespace Framework
 
     TYPE_REGISTER(BackgroundPan);
     TYPE_SET_TWEAK_TYPE(BackgroundPan, AntTweak::TW_TYPE_COMPONENT);
+    TYPE_ADD_MEMBER(BackgroundPan, rate, false, true, "Pan Speed");
 
     TYPE_REGISTER(WeaponPickup);
     TYPE_SET_TWEAK_TYPE(WeaponPickup, AntTweak::TW_TYPE_COMPONENT);
@@ -244,6 +245,9 @@ namespace Framework
 
     TYPE_REGISTER(DashEffect);
     TYPE_SET_TWEAK_TYPE(DashEffect, AntTweak::TW_TYPE_COMPONENT);
+
+    TYPE_REGISTER(Asteroid);
+    TYPE_SET_TWEAK_TYPE(Asteroid, AntTweak::TW_TYPE_COMPONENT);
 
     TYPE_REGISTER(Pistol);
     TYPE_REGISTER(Shotgun);
@@ -401,10 +405,12 @@ namespace Framework
       BUILD_FUNCTION(SlotMachine::TweakSetupSlots));
 
     TYPE_ADD_MEMBER(SlotMachine, numSlots, false, true, "# Reels",
-      BUILD_FUNCTION(SlotMachine::TweakSetNumSlots));
+      BUILD_FUNCTION(SlotMachine::TweakSetNumSlots)); 
 
     TYPE_ADD_MEMBER(SlotMachine, slotOptions, false, true, "# Options",
       BUILD_FUNCTION(SlotMachine::TweakSetupSlots));
+
+    TYPE_ADD_MEMBER(SlotMachine, startSpeed, false, true, "Start Speed");
 
     TYPE_ADD_MEMBER(SlotMachine, slotSize, false, true, "SlotScale");
     TYPE_ADD_MEMBER(SlotMachine, slotMargin, false, true, "Margin");

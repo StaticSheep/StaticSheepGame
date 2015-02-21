@@ -51,7 +51,7 @@ namespace Framework
 
     Handle backgroundSprite = space->GetGameObject(owner)->GetComponentHandle(eSprite);
     Sprite *bgs = space->GetHandles().GetAs<Sprite>(backgroundSprite);
-    bgs->MinUV.x += 0.01f * dt;
+    bgs->MinUV.x += rate * dt;
     bgs->MaxUV.x = bgs->MinUV.x + 5;
 
 	}

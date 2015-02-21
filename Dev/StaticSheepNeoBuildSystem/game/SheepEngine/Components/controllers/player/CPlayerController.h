@@ -32,7 +32,7 @@ namespace Framework
 		Vec3 aimingDirection(GamePad *gp, char stick = 'R');
     void Melee(Buttons butt);
     void RespawnBlink(float dt);
-    void PlayerDeath(SoundEmitter *se, Transform *pt);
+    void PlayerDeath(SoundEmitter *se, Transform *pt, int who_killed_me = -1);
     void SetAnimations();
     void clampVelocity(float clamp);
     int CurrentHealth();
