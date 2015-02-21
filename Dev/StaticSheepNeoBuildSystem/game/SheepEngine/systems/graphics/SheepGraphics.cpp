@@ -18,6 +18,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/particles/CParticleSystem.h"
 #include "components/particles/CParticleCircleEmitter.h"
 #include "components/particles/CParticleBoxEmitter.h"
+#include "components/lights/CSpriteLight.h"
 #include <iostream>
 #include <boost/filesystem.hpp>
 #include "../input/Input.h"
@@ -46,6 +47,7 @@ namespace Framework
     REGISTER_COMPONENT(Camera);
     REGISTER_COMPONENT(AniSprite);
     REGISTER_COMPONENT(PointLight);
+    REGISTER_COMPONENT(SpriteLight);
     REGISTER_COMPONENT(ParticleSystem);
     REGISTER_COMPONENT(ParticleCircleEmitter);
     REGISTER_COMPONENT(ParticleBoxEmitter);

@@ -17,6 +17,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/sprites/CSprite.h"
 #include "components/sprites/CAniSprite.h"
 #include "Components/lights/CPointLight.h"
+#include "components/lights/CSpriteLight.h"
 #include "Components/camera/CCamera.h"
 #include "components/rigidbody/CRigidBody.h"
 #include "components/transform/CTransform.h"
@@ -293,6 +294,14 @@ namespace Framework
     TYPE_ADD_MEMBER(PointLight, m_attenuation, false, true, "Attenuation");
     TYPE_SET_TWEAK_TYPE(PointLight, AntTweak::TW_TYPE_COMPONENT);
     TYPE_SET_FROM_LUA(PointLight, Lua::GenericObjectFromLua);
+
+    TYPE_REGISTER(SpriteLight);
+    TYPE_ADD_MEMBER(SpriteLight, m_spriteName, false, true, "Tex",
+      BUILD_FUNCTION(SpriteLight::TweakSetTexture));
+    TYPE_ADD_MEMBER(SpriteLight, m_brightness, false, true, "Brightness");
+    TYPE_ADD_MEMBER(SpriteLight, m_size, false, true, "SpriteScale");
+    TYPE_SET_TWEAK_TYPE(SpriteLight, AntTweak::TW_TYPE_COMPONENT);
+    TYPE_SET_FROM_LUA(SpriteLight, Lua::GenericObjectFromLua);
 
     TYPE_REGISTER( AniSprite );
     TYPE_ADD_MEMBER(AniSprite, m_spriteName, false, true, "Texture",
