@@ -57,19 +57,20 @@ namespace Framework
 
   void Grinder::OnCollision(Handle otherObject, SheepFizz::ExternalManifold manifold)
   {
+    pt = space->GetHandles().GetAs<Transform>(gTransfrom);
     GameObject *OtherObject = space->GetHandles().GetAs<GameObject>(otherObject);
     if (OtherObject->name == "Player")
     {
       Handle pCollider = space->GetGameObject(otherObject)->GetComponentHandle(eBoxCollider);
       BoxCollider *playT = space->GetHandles().GetAs<BoxCollider>(pCollider);
       float xDir = (float)GetRandom(-500, 500);
-      if (pt->GetTranslation().y < 0)
+      if (pt->GetTranslation().y <= 0)
       {
-        playT->SetVelocity(playT->GetCurrentVelocity() + Vec3(xDir, 1000.0f, 0.0f));
+        playT->SetVelocity(playT->GetCurrentVelocity() + Vec3(xDir, 500.0f, 0.0f));
       }
       else
       {
-        playT->SetVelocity(playT->GetCurrentVelocity() + Vec3(xDir, -1000.0f, 0.0f));
+        playT->SetVelocity(playT->GetCurrentVelocity() + Vec3(xDir, -500.0f, 0.0f));
       }
     }
   }

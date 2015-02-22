@@ -39,7 +39,7 @@ GameObject
     m_width float 64.000000
     m_height float 64.000000
     m_materialName std::string "Static"
-    m_hasCollisionCallback bool false
+    m_hasCollisionCallback bool true
   }
   Grinder
   {
