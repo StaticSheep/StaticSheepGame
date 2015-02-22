@@ -38,6 +38,8 @@ namespace Framework
     Vec2 Size;
     Vec2 TextureSize;
 
+    Vec2 m_origin;
+
     Vec2 MinUV;
     Vec2 MaxUV;
 

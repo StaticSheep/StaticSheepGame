@@ -240,6 +240,11 @@ namespace Framework
     m_renderContext->SetPosition(x,y, Z);
   }
 
+  void SheepGraphics::SetObjectOrigin(float x, float y)
+  {
+    m_renderContext->SetObjectOrigin(x, y);
+  }
+
   void SheepGraphics::SetRotation(float theta)
   {
     m_renderContext->SetRotation(theta);

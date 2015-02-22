@@ -118,12 +118,12 @@ namespace DirectSheep
 
     
     m_batcher->Draw(m_textureRes[texture.index].m_ShaderRes,
-               Vec2(m_spriteTrans.x, m_spriteTrans.y),
+      Vec2(m_spriteTrans.x, m_spriteTrans.y),
                &sourcePos,
                XMLoadFloat4(&m_spriteBlend),
                m_spriteTrans.theta,
-               Vec2((sourcePos.right - sourcePos.left) / 2.0f,
-               (sourcePos.bottom - sourcePos.top) / 2.0f),
+               Vec2(((sourcePos.right - sourcePos.left) / 2.0f) - m_spriteOrigin.x,
+               ((sourcePos.bottom - sourcePos.top) / 2.0f) + m_spriteOrigin.y),
                Vec2(m_spriteTrans.w, -m_spriteTrans.h), m_flip, m_spriteTrans.z);
   }
 
