@@ -85,6 +85,9 @@ namespace Framework
     void SetCamState(int camState);
     void SetSpriteFlip(bool x, bool y);
 
+    // only affects batched draws
+    void SetObjectOrigin(float x, float y);
+
     // Binds a texture to be used in the next draw call (Raw draw only)
     void BindTexture(int ID);
     

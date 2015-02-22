@@ -282,6 +282,7 @@ namespace Framework
       BUILD_FUNCTION(Sprite::TweakSetTexture));
     TYPE_ADD_MEMBER(Sprite, Color, false, true, "Color");
     TYPE_ADD_MEMBER( Sprite, Size, false, true, "Size");
+    TYPE_ADD_MEMBER(Sprite, m_origin, false, true, "origin");
     TYPE_ADD_MEMBER(Sprite, m_flipX, false, true, "FlipX");
     TYPE_ADD_MEMBER(Sprite, m_flipY, false, true, "FlipY");
     TYPE_ADD_MEMBER(Sprite, m_uvScale, false, true, "Tiled");

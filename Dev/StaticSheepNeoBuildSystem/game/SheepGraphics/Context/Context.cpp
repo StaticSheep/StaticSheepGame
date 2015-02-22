@@ -55,6 +55,7 @@ namespace DirectSheep
     m_backBuffer(NULL),
     m_clearColor(Color(Colors::Black .operator const float *())), // Clear color for backbuffer
     m_spriteBlend(Vec4(1, 1, 1, 1)),                             // Start blending color as white
+    m_spriteOrigin(0, 0),
     m_primative(PRIMITIVE_TOPOLOGY_TRIANGLELIST)                 // Draw using triangle lists
   {
     m_sampleStates[0] = NULL;                                    // Null out graphics states
@@ -411,6 +412,10 @@ namespace DirectSheep
      m_spriteTrans.h = h;
    }
 
+   void RenderContext::SetObjectOrigin(const float x, const float y)
+   {
+     m_spriteOrigin = Vec2(x, y);
+   }
   
   /*!
       \brief
