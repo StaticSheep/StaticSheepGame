@@ -164,6 +164,17 @@ namespace Framework
     return PHYSICS->GetBodyPosition(space, m_handle);
   }
 
+  Vec3D RigidBody::GetBodyRotationAsVector(void)
+  {
+    float rotation = PHYSICS->GetBodyRotation(space, m_handle);
+
+    Vec3D direction;
+    direction.x = cos(rotation);
+    direction.y = sin(rotation);
+
+    return direction;
+  }
+
   float RigidBody::GetBodyRotation(void)
   {
     return PHYSICS->GetBodyRotation(space, m_handle);

@@ -90,7 +90,7 @@ namespace Framework
 
     BoxCollider *bc = space->GetHandles().GetAs<BoxCollider>(playerCollider);
     bc->SetGravityOff();
-    weapon = (Laser*)GET_TYPE(Laser)->New();
+    weapon = (WLaser*)GET_TYPE(WLaser)->New();
     SoundEmitter *se = space->GetHandles().GetAs<SoundEmitter>(playerSound);
     se->Play("robot_startup", &SoundInstance(0.50f));
     animCont = AnimationController(playerNum);

@@ -252,7 +252,7 @@ namespace Framework
     TYPE_REGISTER(Pistol);
     TYPE_REGISTER(Shotgun);
     TYPE_REGISTER(Automatic);
-    TYPE_REGISTER(Laser);
+    TYPE_REGISTER(WLaser);
 
     TYPE_REGISTER( BoxCollider );
     TYPE_ADD_MEMBER(BoxCollider, m_width, false, true, "Width",

@@ -3,10 +3,10 @@
 
 namespace Framework
 {
-  struct Laser : public Weapon
+  struct WLaser : public Weapon
   {
-    Laser();
-    virtual ~Laser();
+    WLaser();
+    virtual ~WLaser();
 
     virtual void Fire(GameObject*);
     virtual void DelayUpdate(float dt);
