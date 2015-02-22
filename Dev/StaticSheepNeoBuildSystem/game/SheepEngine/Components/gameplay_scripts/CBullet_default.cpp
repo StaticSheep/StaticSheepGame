@@ -46,12 +46,13 @@ namespace Framework
 
     if (bt->GetTranslation().x > 1000 || bt->GetTranslation().x < -1000 || bt->GetTranslation().y > 700 || bt->GetTranslation().y < -700)
       space->GetGameObject(owner)->Destroy();
+
 	}
 
   void Bullet_Default::OnCollision(Handle otherObject, SheepFizz::ExternalManifold manifold)
 	{
     GameObject *OtherObject = space->GetHandles().GetAs<GameObject>(otherObject);
-    if (OtherObject->name != "Bullet")
+    if (OtherObject->name != "Bullet" && OtherObject->name != "WeaponPickup")
     {
       space->GetGameObject(owner)->Destroy();
     }

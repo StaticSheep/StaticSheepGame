@@ -21,7 +21,7 @@ namespace Framework
   Shotgun::Shotgun()
   {
     delay = 1.0f;
-    damage = 34;
+    damage = 20;
     knockback = 600;
     semi = true;
   }
@@ -41,7 +41,7 @@ namespace Framework
     Transform *BT;
     CircleCollider *bulletC;
 
-    for (int i = 0; i < 2; ++i)
+    for (int i = 0; i < 5; ++i)
     {
       if (i != 0)
       {

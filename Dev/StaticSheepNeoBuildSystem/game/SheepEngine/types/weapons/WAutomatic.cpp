@@ -18,7 +18,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 namespace Framework
 {
-  static float weapDelay = 0.075f;
+  static float weapDelay = 0.050f;
   Automatic::Automatic()
   {
     delay = 0.075f;

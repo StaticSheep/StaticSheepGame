@@ -19,6 +19,7 @@ namespace Framework
     ~Grinder();
 		void LogicUpdate(float dt);
 		void Initialize();
+    void OnCollision(Handle otherObject, SheepFizz::ExternalManifold manifold);
 		void Remove();
 
 		//member variables

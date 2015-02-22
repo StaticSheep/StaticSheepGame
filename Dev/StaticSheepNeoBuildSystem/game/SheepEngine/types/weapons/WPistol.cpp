@@ -20,7 +20,7 @@ namespace Framework
   Pistol::Pistol()
   {
     delay = 0;
-    damage = 20;
+    damage = 10;
     knockback = 60;
     semi = true;
   }

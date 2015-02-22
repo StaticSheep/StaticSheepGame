@@ -10,12 +10,15 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "types/space/Space.h"
 #include "../transform/CTransform.h"
 #include "../colliders/CBoxCollider.h"
+#include "../particles/CParticleCircleEmitter.h"
 
 namespace Framework
 {
   DashEffect::DashEffect()
 	{
     lifeTime = 0.0f;
+    alive = true;
+    deathTimer = 0.5f;
 	}
 
   DashEffect::~DashEffect()
@@ -40,8 +43,17 @@ namespace Framework
 
   void DashEffect::LogicUpdate(float dt)
 	{
-    //if (pt != nullptr)
-      pt = space->GetHandles().GetAs<Transform>(pTransform);
+    if (!alive)
+    {
+      Handle peHandle = space->GetGameObject(owner)->GetComponentHandle(eParticleCircleEmitter);
+      ParticleCircleEmitter *pe = space->GetHandles().GetAs<ParticleCircleEmitter>(peHandle);
+      pe->spawning = false;
+      deathTimer -= dt;
+      if (deathTimer <= 0)
+        space->GetGameObject(owner)->Destroy();
+      return;
+    }
+    pt = space->GetHandles().GetAs<Transform>(pTransform);
 
     et = space->GetHandles().GetAs<Transform>(effectTransform);
 
@@ -51,11 +63,7 @@ namespace Framework
     lifeTime += dt;
 
     if (lifeTime >= 0.5f || pt == nullptr)
-    {
-      //make a bool called "alive". Set it to false. when its false call a function
-      //the function will keep it alive for a second and kill it
-      space->GetGameObject(owner)->Destroy();
-    }
+      alive = false;
 	}
 
 

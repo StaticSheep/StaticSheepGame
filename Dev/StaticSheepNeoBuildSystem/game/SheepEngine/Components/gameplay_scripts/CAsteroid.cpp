@@ -50,6 +50,12 @@ namespace Framework
     else
       scale = Vec3(1/(currZ * 0.10f), 1/(currZ * 0.10f), 1.0f);
     at->SetScale(scale);
+
+    if (currZ > 5.0f)
+      ac->SetBodyCollisionGroup("NonCollide");
+    else
+      ac->SetBodyCollisionGroup("Resolve");
+
     if (at->GetTranslation().z <= 0.0f)
     {
       space->GetGameObject(owner)->Destroy();

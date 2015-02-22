@@ -386,17 +386,35 @@ namespace Framework
       return;
     }
 
-    if ((OtherObject->archetype == "KillBox" || OtherObject->archetype == "KillBoxBig" || OtherObject->name == "GrinderBig") 
-        && !GodMode && !PerfectMachine)
-      health = 0;
+    if ((OtherObject->archetype == "KillBox" || OtherObject->archetype == "KillBoxBig" || OtherObject->name == "GrinderBig")
+      && !GodMode && !PerfectMachine)
+    {
+      isSnapped = false;
+      health -= 10;
+    }
 
     if ((OtherObject->GetComponentHandle(eGrinder) != Handle::null)
       && !hasRespawned && !GodMode && !PerfectMachine)
+    {
+      isSnapped = false;
       health -= 10;
+    }
 
     if (OtherObject->name == "WeaponPickup")
       se->Play("weapon_pickup", &SoundInstance(0.75f));
 
+    if (OtherObject->name == "Asteroid")
+    {
+      health -= 50;
+      float ranY = (float)GetRandom(-500, 500);
+      float ranX = (float)GetRandom(-500, 500);
+      bc->AddToVelocity(Vec3(ranX, ranY, 0.0f));
+    }
+
+    /*if (OtherObject->name == "Player")
+    {
+
+    }*/
 		
 		//get the transform of the thing we are colliding with
 		Transform *OOT = OtherObject->GetComponent<Transform>(eTransform);
@@ -404,7 +422,7 @@ namespace Framework
 		if (!OOT)
 			return;
 
-    if (OtherObject->HasComponent(eBoxCollider) && OtherObject->name != "Player" && OtherObject->name != "WeaponPickup" && OtherObject->name != "Grinder")
+    if (OtherObject->HasComponent(eBoxCollider) && OtherObject->name != "Player" && OtherObject->name != "WeaponPickup" && OtherObject->archetype != "Grinder")
 		{
       float dotNormals;
       Vec3 nextSnappedNormal;
