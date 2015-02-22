@@ -10,12 +10,14 @@ All content © 2015 DigiPen (USA) Corporation, all rights reserved.
 #include "components/base/Component.h"
 #include "types/handle/Handle.h"
 #include "../transform/CTransform.h"
+#include "components/sprites/CSprite.h"
+
 
 namespace Framework
 {
   
 
-  class Laser : public GameComponent
+  class Laser : public Sprite
   {
   public:
     Laser();
@@ -23,14 +25,16 @@ namespace Framework
     void LogicUpdate(float dt);
     void Initialize();
     void Remove();
-    void SimpleCaster(void);
-    void ComplexCaster(void);
+    void SimpleCaster(CircleCollider *lc);
+    void ComplexCaster(CircleCollider *lc);
 
-    void(Laser::*Caster)(void);
+    void(Laser::*Caster)(CircleCollider *lc);
 
     //member variables
     Handle lTransfrom;
     Handle lCollider;
+    Handle lEmitter;
+    Handle lBeam;
 
     unsigned int type;
 
@@ -45,6 +49,7 @@ namespace Framework
     float arcPerSec;
 
     std::vector<Vec3D> positionOffsets; //used for multiple raycasts
+    int numberOfRays;
 
   };
 }

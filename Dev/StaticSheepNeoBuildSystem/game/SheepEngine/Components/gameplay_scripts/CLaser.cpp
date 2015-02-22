@@ -13,10 +13,9 @@ All content © 2015 DigiPen (USA) Corporation, all rights reserved.
 
 namespace Framework
 {
-  Laser::Laser() : startDelay(0), duration(1), damage(1), width(1), arcRotation(0), arcDelay(0)
+  Laser::Laser() : startDelay(0), duration(1), damage(1), width(1), arcRotation(0), arcDelay(0), arcPerSec(0)
   {
-    if (duration > arcDelay)
-      arcPerSec = arcRotation / (duration - arcDelay);
+  
   }
 
   Laser::~Laser()
@@ -32,12 +31,10 @@ namespace Framework
     lTransfrom = space->GetGameObject(owner)->GetComponentHandle(eTransform);
     lCollider = space->GetGameObject(owner)->GetComponentHandle(eCircleCollider);
 
-    Transform *lt = space->GetHandles().GetAs<Transform>(lTransfrom);
+    //lEmitter = FACTORY->
+
     CircleCollider *lc = space->GetHandles().GetAs <CircleCollider>(lCollider);
-
     Vec3D direction = lc->GetBodyRotationAsVector();
-
-    lc->SetRayCast(lc->GetBodyPosition(), direction, "Collide");
 
     if (duration > arcDelay)
       arcPerSec = arcRotation / (duration - arcDelay);
@@ -52,19 +49,19 @@ namespace Framework
     if (width > 4)
     {
       Vec3D offsetDir = direction.CalculateNormal();
-      int numberOfRays = width / 4;
+      numberOfRays = width / 4;
 
       for (int i = 1; i < numberOfRays + 1; ++i)
       {
-        positionOffsets.push_back(offsetDir * 2 * i);
-        positionOffsets.push_back(-offsetDir * 2 * i);
+        positionOffsets.push_back((offsetDir * 2 * i) + lc->GetBodyPosition());
+        positionOffsets.push_back((-offsetDir * 2 * i) + lc->GetBodyPosition());
       }
 
       if (width % 4 != 0)
       {
         float valueOffset = ((float)width) / 2.0f;
-        positionOffsets.push_back(offsetDir * valueOffset);
-        positionOffsets.push_back(-offsetDir * valueOffset);
+        positionOffsets.push_back(offsetDir * valueOffset + lc->GetBodyPosition());
+        positionOffsets.push_back(-offsetDir * valueOffset + lc->GetBodyPosition());
       }
     }
   }
@@ -76,7 +73,6 @@ namespace Framework
 
   void Laser::LogicUpdate(float dt)
   {
-    Transform *lt = space->GetHandles().GetAs<Transform>(lTransfrom);
     CircleCollider *lc = space->GetHandles().GetAs <CircleCollider>(lCollider);
 
     if (startDelay > 0)
@@ -92,21 +88,41 @@ namespace Framework
     arcDelay -= dt;
 
     if (arcDelay < 0)
-      (this->*Caster)();
+      (this->*Caster)(lc);
 
     float curRotation = lc->GetBodyRotation();
     curRotation += arcPerSec;
     lc->SetBodyRotation(curRotation);
   }
 
-  void Laser::SimpleCaster(void)
+  void Laser::SimpleCaster(CircleCollider *lc)
   {
+    Vec3D direction = lc->GetBodyRotationAsVector();
+    lc->SetRayCast(lc->GetBodyPosition(), direction, "Collide");
+    lc->SimpleRayCast();
+    Vec3D offset;
 
+    for (int i = 0; i < positionOffsets.size(); ++i)
+    {
+      lc->SetRayCast(positionOffsets[i], direction, "Collide");
+      lc->SimpleRayCast();
+
+      //check return results
+    }
   }
 
-  void Laser::ComplexCaster(void)
+  void Laser::ComplexCaster(CircleCollider *lc)
   {
+    Vec3D direction = lc->GetBodyRotationAsVector();
+    lc->SetRayCast(lc->GetBodyPosition(), direction, "Collide");
+    lc->ComplexRayCast();
+    Vec3D offset;
 
+    for (int i = 0; i < positionOffsets.size(); ++i)
+    {
+      lc->SetRayCast(positionOffsets[i], direction, "Collide");
+      lc->ComplexRayCast();
+    }
   }
 
 }
