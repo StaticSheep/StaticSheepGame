@@ -154,8 +154,7 @@ namespace Framework
       {
         if (!ENGINE->PlayingInEditor())
         {
-          //ZACHARY REMSCAR NAWAR
-          //m_renderContext->SetFullscreen(true);
+          m_renderContext->SetFullscreen(true);
         }
       }
 
@@ -163,8 +162,7 @@ namespace Framework
       {
         if (!ENGINE->m_editorActive)
         {
-          
-          //m_renderContext->SetFullscreen(true);
+          m_renderContext->SetFullscreen(true);
         }
         ShowWindow(ENGINE->Window->GetHandle(), 1);
       }
