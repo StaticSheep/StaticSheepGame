@@ -12,8 +12,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 namespace Framework
 {
-  SpriteLight::SpriteLight() :m_brightness(1, 1, 1, 1), 
-    m_size(1, 1), m_textureSize(1, 1), m_isOn(true)
+  SpriteLight::SpriteLight()
+    : m_brightness(1, 1, 1, 1), m_isOn(true)
   {
     transform = NULL;
   }
@@ -43,23 +43,6 @@ namespace Framework
     space->hooks.Remove("Draw", self);
   }
 
-  void SpriteLight::SetTexture(const char * Texture)
-  {
-    m_spriteName = Texture;
-    m_texture = GRAPHICS->LoadTexture(Texture);
-    m_textureSize = GRAPHICS->GetTextureDim(m_texture);
-  }
-
-  void SpriteLight::TweakSetTexture(const void * Texture)
-  {
-    SetTexture(((std::string *)Texture)->c_str());
-  }
-
-  DirectSheep::Handle& SpriteLight::GetTexture()
-  {
-    return m_texture;
-  }
-
   void SpriteLight::Render()
   {
     if (!m_isOn)
@@ -72,20 +55,38 @@ namespace Framework
 
     GRAPHICS->SetRotation(trans->GetRotation());
 
-    GRAPHICS->SetSize(trans->GetScale().X * m_size.X,
-      trans->GetScale().Y * m_size.Y);
+    GRAPHICS->SetSize(trans->GetScale().X * Size.X,
+      trans->GetScale().Y * Size.Y);
 
     GRAPHICS->SetColor(m_brightness);
 
-    GRAPHICS->SetSize(trans->GetScale().X * m_size.X,
-      trans->GetScale().Y * m_size.Y);
+    if (m_uvScale)
+    {
+      GRAPHICS->SetSize(Size.X,
+        Size.Y);
 
-      GRAPHICS->SetUV(Vec2(0,0), Vec2(1,1));
+      GRAPHICS->SetObjectOrigin(m_origin.x * trans->GetScale().X,
+        m_origin.y * trans->GetScale().Y);
 
-    GRAPHICS->SetSpriteFlip(false, false);
+      GRAPHICS->SetUV(MinUV, Vec2(MaxUV.x * trans->GetScale().X,
+        MaxUV.y * trans->GetScale().y));
+    }
+    else
+    {
+      GRAPHICS->SetSize(trans->GetScale().X * Size.X,
+        trans->GetScale().Y * Size.Y);
+
+      GRAPHICS->SetObjectOrigin(m_origin.x, m_origin.y);
+
+      GRAPHICS->SetUV(MinUV, MaxUV);
+    }
+
+    GRAPHICS->SetSpriteFlip(m_flipX, m_flipY);
     GRAPHICS->SetCamState(0);
 
-    GRAPHICS->RC()->DrawLightBatched(m_texture);
+    GRAPHICS->RC()->DrawLightBatched(this->m_texture);
+
+    GRAPHICS->SetObjectOrigin(0, 0);
   }
 
   void SpriteLight::TurnOn()

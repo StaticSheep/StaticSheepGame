@@ -182,6 +182,7 @@ class RenderContext
    void SetUV(float x1, float y1, float x2, float y2);
    void SetPosition(const float x, const float y, const float z);
    void SetRotation(const float theta);
+   void SetObjectOrigin(const float x, const float y);
    void SetDimensions(const float w, const float h);
    void SetBlendCol(const float r, const float g, const float b, const float a);
 
@@ -349,6 +350,7 @@ class RenderContext
 
     Transform                    m_spriteTrans;
     Vec4                         m_spriteBlend;
+    Vec2                         m_spriteOrigin;
 
     /////////////////////////////////
     // Other render configurations //

@@ -346,15 +346,15 @@ namespace SheepFizz
 
     if ((*ray).findFirstCollision)
     {
-      for (unsigned i = 0; i < (bodies_).Size(); ++i)
+      for (unsigned i = 0; i < bodies_.Size(); ++i)
       {
         if (!(Collisions[(*ray).collisionGroup][((Body*)(bodies_)[i])->collisionGroup_]))
           continue;
 
         rayIntersect = rayCast_.ComplexRayTest((Body*)(bodies_)[i]);
-
+        Vec3D position = ((Body*)bodies_[i])->position_ * meterScale_;
         if (rayIntersect)
-          rayCast_.GetRayConfig()->bodyIntersections_.push_back((((Body*)&bodies_)[i]).userData);
+          rayCast_.GetRayConfig()->bodyIntersections_.push_back(position);
       }
       
       if (!rayCast_.GetRayConfig()->bodyIntersections_.empty())
@@ -368,15 +368,15 @@ namespace SheepFizz
 
     else
     {
-        for (unsigned i = 0; i < (bodies_).Size(); ++i)
+        for (unsigned i = 0; i < bodies_.Size(); ++i)
         {
           if (!(Collisions[(*ray).collisionGroup][((Body*)(bodies_)[i])->collisionGroup_]))
             continue;
-
-          rayIntersect = rayCast_.SimpleRayTest((Body*)(bodies_)[i]);
-
+          Vec3D position = ((Body*)bodies_[i])->position_ * meterScale_;
+          rayIntersect = rayCast_.SimpleRayTest((Body*)bodies_[i]);
+          //(((Body*)(&bodies_))[i]).userData
           if (rayIntersect)
-            rayCast_.GetRayConfig()->bodyIntersections_.push_back((((Body*)(&bodies_))[i]).userData);
+            rayCast_.GetRayConfig()->bodyIntersections_.push_back(position);
         }
 
     }

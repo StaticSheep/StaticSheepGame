@@ -136,7 +136,8 @@ namespace Framework
 
       std::vector<std::pair<Vec2,Vec2>> rayComplexDraws;
       std::vector<std::pair<Vec2, Vec2>> raySimpleDraws;
-
+      
+      std::vector<Vec3D> debugRayBodyCollisions_;
 	};
 
 	extern SheepPhysics* PHYSICS;

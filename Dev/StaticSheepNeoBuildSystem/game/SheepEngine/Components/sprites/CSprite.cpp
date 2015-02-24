@@ -13,7 +13,7 @@ namespace Framework
 {
 
   Sprite::Sprite()
-    :Color(1, 1, 1, 1), Size(1, 1), MaxUV(1, 1), m_uvScale(false)
+    :Color(1, 1, 1, 1), Size(1, 1), MaxUV(1, 1), m_uvScale(false), m_origin(0,0)
   {
     transform = NULL;
   }
@@ -101,12 +101,18 @@ namespace Framework
       GRAPHICS->SetSize(Size.X,
         Size.Y);
 
-      GRAPHICS->SetUV(MinUV, Vec2(MaxUV.x * trans->GetScale().X, MaxUV.y * trans->GetScale().y));
+      GRAPHICS->SetObjectOrigin(m_origin.x * trans->GetScale().X,
+        m_origin.y * trans->GetScale().Y);
+
+      GRAPHICS->SetUV(MinUV, Vec2(MaxUV.x * trans->GetScale().X,
+        MaxUV.y * trans->GetScale().y));
     }
     else
     {
       GRAPHICS->SetSize(trans->GetScale().X * Size.X,
         trans->GetScale().Y * Size.Y);
+
+      GRAPHICS->SetObjectOrigin(m_origin.x, m_origin.y);
 
       GRAPHICS->SetUV(MinUV, MaxUV);
     }
@@ -115,6 +121,8 @@ namespace Framework
     GRAPHICS->SetCamState(0);
 
     GRAPHICS->DrawBatched(this->m_texture);
+
+    GRAPHICS->SetObjectOrigin(0, 0);
     
   }
 }

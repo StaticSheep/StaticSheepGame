@@ -75,6 +75,9 @@ namespace Framework
     Vec2 uvBegin;
     Vec2 uvEnd;
 
+    unsigned m_layer = 1;
+    void TweakSetLayer(const void* layerNum);
+
   private:
     float m_time;
 

@@ -31,7 +31,7 @@ namespace Framework
 		void Initialize();
 		void Remove();
     void SpawnPlayers(float dt);
-    void PlayerDied(int ply);
+    void PlayerDied(int ply, int who_killed_them);
     void CameraShake(float dt, float shakeDuration, float magnitude);
     bool LevelCountdown(float dt);
 		//member variables
@@ -48,7 +48,7 @@ namespace Framework
     Vec3 spawnPos[6];
     Handle Players[4];
     float spawnTimers[4];
-    int playerLives[4];
+    size_t playerFans[4];
     int deadPlayers;
     int numOfPlayers;
     bool camShake, shake;

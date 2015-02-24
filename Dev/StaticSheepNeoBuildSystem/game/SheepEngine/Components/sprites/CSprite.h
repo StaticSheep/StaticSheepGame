@@ -38,6 +38,8 @@ namespace Framework
     Vec2 Size;
     Vec2 TextureSize;
 
+    Vec2 m_origin;
+
     Vec2 MinUV;
     Vec2 MaxUV;
 
@@ -49,6 +51,9 @@ namespace Framework
     bool m_flipY = false;
 
     bool m_uvScale;
+
+    unsigned m_layer = 1;
+    void TweakSetLayer(const void* layerNum);
 
     void TweakSetTexture(const void * Texture);
 

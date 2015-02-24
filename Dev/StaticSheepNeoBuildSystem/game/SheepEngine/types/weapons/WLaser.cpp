@@ -9,7 +9,7 @@
 
 namespace Framework
 {
-  Laser::Laser()
+  WLaser::WLaser()
   {
     delay = 0.0f;
     damage = 1;
@@ -17,12 +17,12 @@ namespace Framework
     semi = false;
   }
 
-  Laser::~Laser()
+  WLaser::~WLaser()
   {
 
   }
 
-  void Laser::Fire(GameObject *player)
+  void WLaser::Fire(GameObject *player)
   {
     Transform *playerTrans = player->GetComponent <Transform>(eTransform);
     Vec3 AimDir = player->GetComponent<PlayerController>(ePlayerController)->aimDir;
@@ -36,6 +36,7 @@ namespace Framework
     Handle playerCollider = player->GetComponentHandle(eBoxCollider);
     BoxCollider *bc = player->space->GetHandles().GetAs<BoxCollider>(playerCollider);
     bc->SetRayCast(playerTrans->GetTranslation(), AimDir, player->archetype);
+    //bool death = bc->ComplexRayCast();
     bool death = bc->ComplexRayCast();
     if (death)
       bc->RayDestruction();
@@ -43,14 +44,14 @@ namespace Framework
     se->Play("Laser_Shot", &SoundInstance(1.0f));
   }
 
-  void Laser::DelayUpdate(float dt)
+  void WLaser::DelayUpdate(float dt)
   {
     delay -= dt;
     if (delay < -100)
       delay = 0;
   }
 
-  void Laser::ResetDelay()
+  void WLaser::ResetDelay()
   {
     delay = 0;
   }

@@ -16,7 +16,7 @@ namespace Framework
 {
   class Transform;
 
-  class SpriteLight : public GameComponent
+  class SpriteLight : public Sprite
   {
   public:
     SpriteLight();
@@ -25,9 +25,6 @@ namespace Framework
     virtual void Initialize();
     virtual void Remove();
 
-    void SetTexture(const char * Texture);
-    DirectSheep::Handle& GetTexture();
-
     void Render();
 
     void TurnOn();
@@ -35,23 +32,17 @@ namespace Framework
 
     void Toggle();
 
-    // Set and Get brightness
+    // Set and Get brightnessd
     void SetBrightness(Vec4 brightness);
     Vec4 GetBrightness(void);
 
     void TweakSetTexture(const void * Texture);
 
-    DirectSheep::Handle m_texture;
-
     LightColor m_brightness;
-
-    std::string m_spriteName;
-
-    Vec2 m_size;
-    Vec2 m_textureSize;
 
     bool m_isOn;
 
-    Handle transform;
+    bool m_mimicSprite = false;
+    void TweakMimicSprite(const void* mimic);
   };
 }
