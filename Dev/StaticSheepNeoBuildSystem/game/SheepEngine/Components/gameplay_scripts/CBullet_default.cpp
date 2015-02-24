@@ -16,6 +16,7 @@ namespace Framework
 	Bullet_Default::Bullet_Default()
 	{
     damage = 10;
+    ttl = 0.5f;
 	}
 
 	Bullet_Default::~Bullet_Default()
@@ -30,6 +31,7 @@ namespace Framework
 		space->GetGameObject(owner)->hooks.Add("OnCollision", self, BUILD_FUNCTION(Bullet_Default::OnCollision));
 
     bTransfrom = space->GetGameObject(owner)->GetComponentHandle(eTransform);
+    bGameObject = space->GetHandles().GetAs<GameObject>(owner);
     space->GetHandles().GetAs<BoxCollider>(space->GetGameObject(owner)->GetComponentHandle(eCircleCollider))->SetGravityOff();
 	}
 
@@ -43,6 +45,14 @@ namespace Framework
 	void Bullet_Default::LogicUpdate(float dt)
 	{
     Transform *bt = space->GetHandles().GetAs<Transform>(bTransfrom);
+    bGameObject = space->GetHandles().GetAs<GameObject>(owner);
+
+    if (bGameObject->archetype == "Bullet_shot")
+    {
+      ttl -= dt;
+      if (ttl <= 0)
+        space->GetGameObject(owner)->Destroy();
+    }
 
     if (bt->GetTranslation().x > 1000 || bt->GetTranslation().x < -1000 || bt->GetTranslation().y > 700 || bt->GetTranslation().y < -700)
       space->GetGameObject(owner)->Destroy();

@@ -16,6 +16,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "../../colliders/CBoxCollider.h"
 #include "../../gameplay_scripts/CCheats.h"
 #include "systems/metrics/MetricInfo.h"
+#include "types/powerUps/PBase.h"
 
 namespace Framework
 {
@@ -49,6 +50,7 @@ namespace Framework
     std::vector<Vec3> normals;
     AnimationController animCont;
     Weapon *weapon;
+    PowerUp *powerUp;
 		Vec3 aimDir;  //the direction the player is currently aiming
     Vec3 snappedNormal; //the normal of the thing we are currently snapped to
 		Handle playerGamePad; //the players game pad

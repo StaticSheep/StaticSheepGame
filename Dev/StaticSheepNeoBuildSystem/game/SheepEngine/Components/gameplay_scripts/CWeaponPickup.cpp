@@ -91,6 +91,8 @@ namespace Framework
         free(playerController->weapon);
       playerController->weapon = (Weapon *)weaponType->New();
       space->GetGameObject(owner)->Destroy();
+
+      //metric shit
       MetricInfo metricData;
       metricData.mt = WEAP_PICKUP;
       metricData.playerNum = playerController->playerNum;

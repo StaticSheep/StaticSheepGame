@@ -96,6 +96,8 @@ namespace Framework
     animCont.AnimState = IDLE;
     bc->SetBodyCollisionGroup(space->GetGameObject(owner)->archetype);
 
+    powerUp = nullptr;
+
 	}
 
   static Vec2D aim(1.0f, 0.0f); //default aiming direction
@@ -119,7 +121,16 @@ namespace Framework
     bc = space->GetHandles().GetAs<BoxCollider>(playerCollider);
     se = space->GetHandles().GetAs<SoundEmitter>(playerSound);
     ps = space->GetHandles().GetAs<Transform>(playerTransform);
-
+    if (powerUp != nullptr)
+    {
+      if (powerUp->inUse)
+        powerUp->Update(dt);
+      else if (powerUp->inUse == false)
+      {
+        delete powerUp;
+        powerUp = nullptr;
+      }
+    }
     //if the player is out of health run the player death function
     if (health <= 0)
     {
