@@ -31,6 +31,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/gameplay_scripts/CLevel1_Lighting.h"
 #include "components/gameplay_scripts/CDashEffect.h"
 #include "components/gameplay_scripts/CAsteroid.h"
+#include "components/gameplay_scripts/CPowerupPickup.h"
 
 namespace Framework
 {
@@ -70,6 +71,7 @@ namespace Framework
     REGISTER_COMPONENT(AimingArrow);
     REGISTER_COMPONENT(DashEffect);
     REGISTER_COMPONENT(Asteroid);
+    REGISTER_COMPONENT(PowerupPickup);
   }
 
   void GameLogic::Initialize()

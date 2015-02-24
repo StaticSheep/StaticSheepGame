@@ -37,6 +37,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "types/weapons/WShotgun.h"
 #include "types/weapons/WAutomatic.h"
 #include "types/weapons/WLaser.h"
+#include "types/powerUps/PDamage.h"
 #include "components/gameplay_scripts/CWarningText.h"
 #include "components/gameplay_scripts/CBackgroundPan.h"
 #include "components/gameplay_scripts/CCheats.h"
@@ -48,6 +49,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/particles/CParticleBoxEmitter.h"
 #include "components/particles/Particles.h"
 #include "components/gameplay_scripts/CAsteroid.h"
+#include "components/gameplay_scripts/CPowerupPickup.h"
 
 namespace Framework
 {
@@ -235,6 +237,10 @@ namespace Framework
     TYPE_ADD_MEMBER(WeaponPickup, weaponID, false, true, "Weapon Type");
     TYPE_ADD_MEMBER(WeaponPickup, weaponNum, false, true, "Weapon Num");
 
+    TYPE_REGISTER(PowerupPickup);
+    TYPE_SET_TWEAK_TYPE(PowerupPickup, AntTweak::TW_TYPE_COMPONENT);
+    TYPE_ADD_MEMBER(PowerupPickup, powerNum, false, true, "Power Number");
+
     TYPE_REGISTER(Cheats);
     TYPE_SET_TWEAK_TYPE(Cheats, AntTweak::TW_TYPE_COMPONENT);
     TYPE_ADD_MEMBER(Cheats, enabled, false, true, "Enable?");
@@ -253,6 +259,8 @@ namespace Framework
     TYPE_REGISTER(Shotgun);
     TYPE_REGISTER(Automatic);
     TYPE_REGISTER(Laser);
+
+    TYPE_REGISTER(DamageBoost);
 
     TYPE_REGISTER( BoxCollider );
     TYPE_ADD_MEMBER(BoxCollider, m_width, false, true, "Width",

@@ -18,7 +18,7 @@ namespace Framework
   static std::unordered_map<EPowerUps, const char*> PowerUpMap =
   {
     { eShield, "Shield" },
-    { ePower, "Power" },
+    { ePower, "DamageBoost" },
     { eFans, "Fans" },
     { eMiniMe, "MiniMe" }
   };
@@ -35,15 +35,15 @@ namespace Framework
 
   void PowerupPickup::Initialize()
 	{
-    if (powerNum == 1)
+    if (powerNum == 0)
       powerUpID = eShield;
-    else if (powerNum == 2)
+    else if (powerNum == 1)
       powerUpID = ePower;
 
     if (powerUpID == eNoPowerUp)
     {
-      int randomNumber = 0;
-      powerUpID = (EPowerUps)randomNumber;
+      int default_ = 1;
+      powerUpID = (EPowerUps)default_;
       powerUpType = GET_STR_TYPE(PowerUpMap[powerUpID]);
     }
     else
@@ -80,9 +80,10 @@ namespace Framework
     {
       PlayerController *playerController = OtherObject->GetComponent<PlayerController>(ePlayerController);
       if (playerController->powerUp != nullptr)
-        free(playerController->powerUp);
+        delete playerController->powerUp;
 
       playerController->powerUp = (PowerUp *)powerUpType->New();
+      playerController->powerUp->Use(OtherObject);
       space->GetGameObject(owner)->Destroy();
     }
 

@@ -18,6 +18,7 @@ namespace Framework
   {
     timer = 5.0f;
     uses = -1;
+    inUse = true;
   }
 
   DamageBoost::~DamageBoost()

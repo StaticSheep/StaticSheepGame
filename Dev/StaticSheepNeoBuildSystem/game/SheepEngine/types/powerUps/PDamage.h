@@ -13,7 +13,7 @@ namespace Framework
   struct DamageBoost : public PowerUp
   {
     DamageBoost();
-    virtual ~DamageBoost();
+    ~DamageBoost();
 
     virtual void Use(GameObject *player);
     virtual void Update(float dt);

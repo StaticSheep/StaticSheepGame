@@ -72,6 +72,7 @@ E_NAME(Component)
   E_ENTRY(SlotMachine)
   E_ENTRY(AimingArrow)
   E_ENTRY(DashEffect)
+  E_ENTRY(PowerupPickup)
   E_ENTRY(Asteroid)
 
   E_ENTRY(LuaComponent)
