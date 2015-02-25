@@ -22,6 +22,9 @@ GameObject
   Sprite
   {
     m_spriteName std::string "background_color.png"
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
     Color Vec4
     {
       R float 1.000000
@@ -34,9 +37,11 @@ GameObject
       X float 1.250000
       Y float 1.250000
     }
-    m_flipX bool false
-    m_flipY bool false
-    m_uvScale bool false
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
   }
   BackgroundPan
   {
@@ -66,6 +71,9 @@ GameObject
   Sprite
   {
     m_spriteName std::string "light_block_on.png"
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
     Color Vec4
     {
       R float 1.000000
@@ -78,9 +86,11 @@ GameObject
       X float 2.000000
       Y float 2.000000
     }
-    m_flipX bool false
-    m_flipY bool false
-    m_uvScale bool false
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
   }
 }
 GameObject
@@ -106,6 +116,9 @@ GameObject
   Sprite
   {
     m_spriteName std::string "light_block_on.png"
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
     Color Vec4
     {
       R float 1.000000
@@ -118,9 +131,11 @@ GameObject
       X float 4.000000
       Y float 2.000000
     }
-    m_flipX bool false
-    m_flipY bool false
-    m_uvScale bool false
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
   }
   BoxCollider
   {
@@ -154,6 +169,9 @@ GameObject
   Sprite
   {
     m_spriteName std::string "light_block_on.png"
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
     Color Vec4
     {
       R float 1.000000
@@ -166,9 +184,11 @@ GameObject
       X float 2.000000
       Y float 2.000000
     }
-    m_flipX bool false
-    m_flipY bool false
-    m_uvScale bool false
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
   }
 }
 GameObject
@@ -194,6 +214,9 @@ GameObject
   Sprite
   {
     m_spriteName std::string "light_block_on.png"
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
     Color Vec4
     {
       R float 1.000000
@@ -206,9 +229,11 @@ GameObject
       X float 2.000000
       Y float 2.000000
     }
-    m_flipX bool false
-    m_flipY bool false
-    m_uvScale bool false
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
   }
   BoxCollider
   {
@@ -242,6 +267,9 @@ GameObject
   Sprite
   {
     m_spriteName std::string "cd_3.png"
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
     Color Vec4
     {
       R float 1.000000
@@ -254,9 +282,11 @@ GameObject
       X float 1.000000
       Y float 1.000000
     }
-    m_flipX bool false
-    m_flipY bool false
-    m_uvScale bool false
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
   }
   Camera
   {
@@ -318,6 +348,9 @@ GameObject
   Sprite
   {
     m_spriteName std::string "light_block_on.png"
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
     Color Vec4
     {
       R float 1.000000
@@ -330,9 +363,11 @@ GameObject
       X float 4.000000
       Y float 2.000000
     }
-    m_flipX bool false
-    m_flipY bool false
-    m_uvScale bool false
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
   }
   BoxCollider
   {
@@ -366,6 +401,9 @@ GameObject
   Sprite
   {
     m_spriteName std::string "light_block_on.png"
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
     Color Vec4
     {
       R float 1.000000
@@ -378,9 +416,11 @@ GameObject
       X float 2.000000
       Y float 2.000000
     }
-    m_flipX bool false
-    m_flipY bool false
-    m_uvScale bool false
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
   }
 }
 GameObject
@@ -406,6 +446,9 @@ GameObject
   Sprite
   {
     m_spriteName std::string "light_block_on.png"
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
     Color Vec4
     {
       R float 1.000000
@@ -418,9 +461,11 @@ GameObject
       X float 2.000000
       Y float 2.000000
     }
-    m_flipX bool false
-    m_flipY bool false
-    m_uvScale bool false
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
   }
 }
 GameObject
@@ -446,6 +491,9 @@ GameObject
   Sprite
   {
     m_spriteName std::string "light_block_on.png"
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
     Color Vec4
     {
       R float 1.000000
@@ -458,9 +506,11 @@ GameObject
       X float 2.000000
       Y float 2.000000
     }
-    m_flipX bool false
-    m_flipY bool false
-    m_uvScale bool false
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
   }
 }
 GameObject
@@ -486,6 +536,9 @@ GameObject
   Sprite
   {
     m_spriteName std::string "light_block_on.png"
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
     Color Vec4
     {
       R float 1.000000
@@ -498,9 +551,11 @@ GameObject
       X float 2.000000
       Y float 2.000000
     }
-    m_flipX bool false
-    m_flipY bool false
-    m_uvScale bool false
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
   }
 }
 GameObject
@@ -526,6 +581,9 @@ GameObject
   Sprite
   {
     m_spriteName std::string "light_block_on.png"
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
     Color Vec4
     {
       R float 1.000000
@@ -538,9 +596,11 @@ GameObject
       X float 4.000000
       Y float 2.000000
     }
-    m_flipX bool false
-    m_flipY bool false
-    m_uvScale bool false
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
   }
   BoxCollider
   {
@@ -574,6 +634,9 @@ GameObject
   Sprite
   {
     m_spriteName std::string "generic_block_grey.png"
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
     Color Vec4
     {
       R float 1.000000
@@ -586,9 +649,11 @@ GameObject
       X float 6.000000
       Y float 6.000000
     }
-    m_flipX bool false
-    m_flipY bool false
-    m_uvScale bool false
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
   }
 }
 GameObject
@@ -614,6 +679,9 @@ GameObject
   Sprite
   {
     m_spriteName std::string "generic_block_grey.png"
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
     Color Vec4
     {
       R float 1.000000
@@ -626,9 +694,11 @@ GameObject
       X float 6.000000
       Y float 6.000000
     }
-    m_flipX bool false
-    m_flipY bool false
-    m_uvScale bool false
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
   }
 }
 GameObject
@@ -654,6 +724,9 @@ GameObject
   Sprite
   {
     m_spriteName std::string "generic_block_grey.png"
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
     Color Vec4
     {
       R float 1.000000
@@ -666,9 +739,11 @@ GameObject
       X float 6.000000
       Y float 6.000000
     }
-    m_flipX bool false
-    m_flipY bool false
-    m_uvScale bool false
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
   }
 }
 GameObject
@@ -694,6 +769,9 @@ GameObject
   Sprite
   {
     m_spriteName std::string "generic_block_grey.png"
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
     Color Vec4
     {
       R float 1.000000
@@ -706,9 +784,11 @@ GameObject
       X float 6.000000
       Y float 6.000000
     }
-    m_flipX bool false
-    m_flipY bool false
-    m_uvScale bool false
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
   }
 }
 GameObject
@@ -734,6 +814,9 @@ GameObject
   Sprite
   {
     m_spriteName std::string "generic_block_grey.png"
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
     Color Vec4
     {
       R float 1.000000
@@ -746,9 +829,11 @@ GameObject
       X float 4.000000
       Y float 1.000000
     }
-    m_flipX bool false
-    m_flipY bool false
-    m_uvScale bool false
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
   }
 }
 GameObject
@@ -774,6 +859,9 @@ GameObject
   Sprite
   {
     m_spriteName std::string "generic_block_grey.png"
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
     Color Vec4
     {
       R float 1.000000
@@ -786,9 +874,11 @@ GameObject
       X float 4.000000
       Y float 1.000000
     }
-    m_flipX bool false
-    m_flipY bool false
-    m_uvScale bool false
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
   }
 }
 GameObject
@@ -814,6 +904,9 @@ GameObject
   Sprite
   {
     m_spriteName std::string "generic_block_grey.png"
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
     Color Vec4
     {
       R float 1.000000
@@ -826,9 +919,11 @@ GameObject
       X float 4.000000
       Y float 1.000000
     }
-    m_flipX bool false
-    m_flipY bool false
-    m_uvScale bool false
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
   }
 }
 GameObject
@@ -854,6 +949,9 @@ GameObject
   Sprite
   {
     m_spriteName std::string "generic_block_grey.png"
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
     Color Vec4
     {
       R float 1.000000
@@ -866,9 +964,11 @@ GameObject
       X float 4.000000
       Y float 1.000000
     }
-    m_flipX bool false
-    m_flipY bool false
-    m_uvScale bool false
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
   }
 }
 GameObject
@@ -981,6 +1081,9 @@ GameObject
   Sprite
   {
     m_spriteName std::string "light_block_on.png"
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
     Color Vec4
     {
       R float 1.000000
@@ -993,9 +1096,11 @@ GameObject
       X float 2.000000
       Y float 2.000000
     }
-    m_flipX bool false
-    m_flipY bool false
-    m_uvScale bool false
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
   }
 }
 GameObject
@@ -1021,6 +1126,9 @@ GameObject
   Sprite
   {
     m_spriteName std::string "light_block_on.png"
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
     Color Vec4
     {
       R float 1.000000
@@ -1033,9 +1141,11 @@ GameObject
       X float 2.000000
       Y float 2.000000
     }
-    m_flipX bool false
-    m_flipY bool false
-    m_uvScale bool false
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
   }
 }
 GameObject
@@ -1061,6 +1171,9 @@ GameObject
   Sprite
   {
     m_spriteName std::string "light_block_on.png"
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
     Color Vec4
     {
       R float 1.000000
@@ -1073,9 +1186,11 @@ GameObject
       X float 2.000000
       Y float 2.000000
     }
-    m_flipX bool false
-    m_flipY bool false
-    m_uvScale bool false
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
   }
 }
 GameObject
@@ -1101,6 +1216,9 @@ GameObject
   Sprite
   {
     m_spriteName std::string "light_block_on.png"
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
     Color Vec4
     {
       R float 1.000000
@@ -1113,9 +1231,11 @@ GameObject
       X float 2.000000
       Y float 2.000000
     }
-    m_flipX bool false
-    m_flipY bool false
-    m_uvScale bool false
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
   }
   BoxCollider
   {
@@ -1149,6 +1269,9 @@ GameObject
   Sprite
   {
     m_spriteName std::string "light_block_on.png"
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
     Color Vec4
     {
       R float 1.000000
@@ -1161,9 +1284,11 @@ GameObject
       X float 2.000000
       Y float 2.000000
     }
-    m_flipX bool false
-    m_flipY bool false
-    m_uvScale bool false
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
   }
 }
 GameObject
@@ -1189,6 +1314,9 @@ GameObject
   Sprite
   {
     m_spriteName std::string "light_block_on.png"
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
     Color Vec4
     {
       R float 1.000000
@@ -1201,9 +1329,11 @@ GameObject
       X float 2.000000
       Y float 2.000000
     }
-    m_flipX bool false
-    m_flipY bool false
-    m_uvScale bool false
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
   }
 }
 GameObject
@@ -1229,6 +1359,9 @@ GameObject
   Sprite
   {
     m_spriteName std::string "light_block_on.png"
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
     Color Vec4
     {
       R float 1.000000
@@ -1241,9 +1374,11 @@ GameObject
       X float 2.000000
       Y float 2.000000
     }
-    m_flipX bool false
-    m_flipY bool false
-    m_uvScale bool false
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
   }
 }
 GameObject
@@ -1269,6 +1404,9 @@ GameObject
   Sprite
   {
     m_spriteName std::string "light_block_on.png"
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
     Color Vec4
     {
       R float 1.000000
@@ -1281,9 +1419,11 @@ GameObject
       X float 2.000000
       Y float 2.000000
     }
-    m_flipX bool false
-    m_flipY bool false
-    m_uvScale bool false
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
   }
 }
 GameObject
@@ -1309,6 +1449,9 @@ GameObject
   Sprite
   {
     m_spriteName std::string "light_block_on.png"
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
     Color Vec4
     {
       R float 1.000000
@@ -1321,9 +1464,11 @@ GameObject
       X float 2.000000
       Y float 2.000000
     }
-    m_flipX bool false
-    m_flipY bool false
-    m_uvScale bool false
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
   }
 }
 GameObject
@@ -1349,6 +1494,9 @@ GameObject
   Sprite
   {
     m_spriteName std::string "light_block_on.png"
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
     Color Vec4
     {
       R float 1.000000
@@ -1361,9 +1509,11 @@ GameObject
       X float 2.000000
       Y float 2.000000
     }
-    m_flipX bool false
-    m_flipY bool false
-    m_uvScale bool false
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
   }
 }
 GameObject
@@ -1389,6 +1539,9 @@ GameObject
   Sprite
   {
     m_spriteName std::string "light_block_on.png"
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
     Color Vec4
     {
       R float 1.000000
@@ -1401,9 +1554,11 @@ GameObject
       X float 2.000000
       Y float 2.000000
     }
-    m_flipX bool false
-    m_flipY bool false
-    m_uvScale bool false
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
   }
 }
 GameObject
@@ -1429,6 +1584,9 @@ GameObject
   Sprite
   {
     m_spriteName std::string "light_block_on.png"
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
     Color Vec4
     {
       R float 1.000000
@@ -1441,9 +1599,11 @@ GameObject
       X float 2.000000
       Y float 2.000000
     }
-    m_flipX bool false
-    m_flipY bool false
-    m_uvScale bool false
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
   }
   BoxCollider
   {
@@ -1506,6 +1666,9 @@ GameObject
   Sprite
   {
     m_spriteName std::string "Grinder.png"
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
     Color Vec4
     {
       R float 1.000000
@@ -1518,9 +1681,11 @@ GameObject
       X float 1.000000
       Y float 1.000000
     }
-    m_flipX bool false
-    m_flipY bool false
-    m_uvScale bool false
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
   }
   BoxCollider
   {
@@ -1557,6 +1722,9 @@ GameObject
   Sprite
   {
     m_spriteName std::string "Grinder.png"
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
     Color Vec4
     {
       R float 1.000000
@@ -1569,9 +1737,11 @@ GameObject
       X float 1.000000
       Y float 1.000000
     }
-    m_flipX bool false
-    m_flipY bool false
-    m_uvScale bool false
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
   }
   BoxCollider
   {
@@ -1608,6 +1778,9 @@ GameObject
   Sprite
   {
     m_spriteName std::string "Grinder.png"
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
     Color Vec4
     {
       R float 1.000000
@@ -1620,9 +1793,11 @@ GameObject
       X float 1.000000
       Y float 1.000000
     }
-    m_flipX bool false
-    m_flipY bool false
-    m_uvScale bool false
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
   }
   BoxCollider
   {
@@ -1659,6 +1834,9 @@ GameObject
   Sprite
   {
     m_spriteName std::string "light_block_on.png"
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
     Color Vec4
     {
       R float 1.000000
@@ -1671,9 +1849,11 @@ GameObject
       X float 2.000000
       Y float 2.000000
     }
-    m_flipX bool false
-    m_flipY bool false
-    m_uvScale bool false
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
   }
 }
 GameObject
@@ -1699,6 +1879,9 @@ GameObject
   Sprite
   {
     m_spriteName std::string "Grinder.png"
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
     Color Vec4
     {
       R float 1.000000
@@ -1711,9 +1894,11 @@ GameObject
       X float 1.000000
       Y float 1.000000
     }
-    m_flipX bool false
-    m_flipY bool false
-    m_uvScale bool false
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
   }
   BoxCollider
   {
@@ -1750,6 +1935,9 @@ GameObject
   Sprite
   {
     m_spriteName std::string "Grinder.png"
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
     Color Vec4
     {
       R float 1.000000
@@ -1762,9 +1950,11 @@ GameObject
       X float 1.000000
       Y float 1.000000
     }
-    m_flipX bool false
-    m_flipY bool false
-    m_uvScale bool false
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
   }
   BoxCollider
   {
@@ -1801,6 +1991,9 @@ GameObject
   Sprite
   {
     m_spriteName std::string "Grinder.png"
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
     Color Vec4
     {
       R float 1.000000
@@ -1813,9 +2006,11 @@ GameObject
       X float 1.000000
       Y float 1.000000
     }
-    m_flipX bool false
-    m_flipY bool false
-    m_uvScale bool false
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
   }
   BoxCollider
   {
@@ -1852,6 +2047,9 @@ GameObject
   Sprite
   {
     m_spriteName std::string "light_block_on.png"
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
     Color Vec4
     {
       R float 1.000000
@@ -1864,9 +2062,11 @@ GameObject
       X float 2.000000
       Y float 2.000000
     }
-    m_flipX bool false
-    m_flipY bool false
-    m_uvScale bool false
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
   }
 }
 GameObject
@@ -1892,6 +2092,9 @@ GameObject
   Sprite
   {
     m_spriteName std::string "Grinder.png"
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
     Color Vec4
     {
       R float 1.000000
@@ -1904,9 +2107,11 @@ GameObject
       X float 1.000000
       Y float 1.000000
     }
-    m_flipX bool false
-    m_flipY bool false
-    m_uvScale bool false
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
   }
   BoxCollider
   {
@@ -1943,6 +2148,9 @@ GameObject
   Sprite
   {
     m_spriteName std::string "light_block_on.png"
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
     Color Vec4
     {
       R float 1.000000
@@ -1955,9 +2163,11 @@ GameObject
       X float 2.000000
       Y float 2.000000
     }
-    m_flipX bool false
-    m_flipY bool false
-    m_uvScale bool false
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
   }
 }
 GameObject
@@ -1983,6 +2193,9 @@ GameObject
   Sprite
   {
     m_spriteName std::string "Grinder.png"
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
     Color Vec4
     {
       R float 1.000000
@@ -1995,9 +2208,11 @@ GameObject
       X float 1.000000
       Y float 1.000000
     }
-    m_flipX bool false
-    m_flipY bool false
-    m_uvScale bool false
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
   }
   BoxCollider
   {
@@ -2034,6 +2249,9 @@ GameObject
   Sprite
   {
     m_spriteName std::string "Grinder.png"
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
     Color Vec4
     {
       R float 1.000000
@@ -2046,9 +2264,11 @@ GameObject
       X float 1.000000
       Y float 1.000000
     }
-    m_flipX bool false
-    m_flipY bool false
-    m_uvScale bool false
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
   }
   BoxCollider
   {
@@ -2085,6 +2305,9 @@ GameObject
   Sprite
   {
     m_spriteName std::string "Grinder.png"
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
     Color Vec4
     {
       R float 1.000000
@@ -2097,9 +2320,11 @@ GameObject
       X float 1.000000
       Y float 1.000000
     }
-    m_flipX bool false
-    m_flipY bool false
-    m_uvScale bool false
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
   }
   BoxCollider
   {
@@ -2136,6 +2361,9 @@ GameObject
   Sprite
   {
     m_spriteName std::string "Grinder.png"
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
     Color Vec4
     {
       R float 1.000000
@@ -2148,9 +2376,11 @@ GameObject
       X float 1.000000
       Y float 1.000000
     }
-    m_flipX bool false
-    m_flipY bool false
-    m_uvScale bool false
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
   }
   BoxCollider
   {
@@ -2187,6 +2417,9 @@ GameObject
   Sprite
   {
     m_spriteName std::string "Grinder.png"
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
     Color Vec4
     {
       R float 1.000000
@@ -2199,9 +2432,11 @@ GameObject
       X float 1.000000
       Y float 1.000000
     }
-    m_flipX bool false
-    m_flipY bool false
-    m_uvScale bool false
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
   }
   BoxCollider
   {
@@ -2238,6 +2473,9 @@ GameObject
   Sprite
   {
     m_spriteName std::string "light_block_on.png"
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
     Color Vec4
     {
       R float 1.000000
@@ -2250,9 +2488,11 @@ GameObject
       X float 4.000000
       Y float 2.000000
     }
-    m_flipX bool false
-    m_flipY bool false
-    m_uvScale bool false
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
   }
   BoxCollider
   {
@@ -2286,6 +2526,9 @@ GameObject
   Sprite
   {
     m_spriteName std::string "light_block_on.png"
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
     Color Vec4
     {
       R float 1.000000
@@ -2298,9 +2541,11 @@ GameObject
       X float 2.000000
       Y float 2.000000
     }
-    m_flipX bool false
-    m_flipY bool false
-    m_uvScale bool false
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
   }
 }
 GameObject
@@ -2326,6 +2571,9 @@ GameObject
   Sprite
   {
     m_spriteName std::string "light_block_on.png"
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
     Color Vec4
     {
       R float 1.000000
@@ -2338,9 +2586,11 @@ GameObject
       X float 2.000000
       Y float 2.000000
     }
-    m_flipX bool false
-    m_flipY bool false
-    m_uvScale bool false
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
   }
   BoxCollider
   {
@@ -2349,57 +2599,5 @@ GameObject
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
     m_CollisionGroup std::string ""
-  }
-}
-GameObject
-{
-  name std::string "PowerUpPickup"
-  archetype std::string "PowerUpPickup"
-  Transform
-  {
-    Translation Vec3
-    {
-      x_ float -631.902283
-      y_ float -162.180222
-      z_ float 0.000000
-    }
-    Rotation float 0.000000
-    Scale Vec3
-    {
-      x_ float 1.000000
-      y_ float 1.000000
-      z_ float 0.000000
-    }
-  }
-  Sprite
-  {
-    m_spriteName std::string "WeapPickupShotOld.png"
-    Color Vec4
-    {
-      R float 1.000000
-      G float 1.000000
-      B float 1.000000
-      A float 1.000000
-    }
-    Size Vec2
-    {
-      X float 1.000000
-      Y float 1.000000
-    }
-    m_flipX bool false
-    m_flipY bool false
-    m_uvScale bool false
-  }
-  BoxCollider
-  {
-    m_width float 32.000000
-    m_height float 32.000000
-    m_materialName std::string "Static"
-    m_hasCollisionCallback bool true
-    m_CollisionGroup std::string "Collide"
-  }
-  PowerupPickup
-  {
-    powerNum int 1
   }
 }
