@@ -45,6 +45,7 @@ namespace DirectSheep
     Vec4 atten[MAX_LIGHTS];
     Color col[MAX_LIGHTS];
     Vec4 pos[MAX_LIGHTS];
+    Vec4 screenSize;
     int numLights;
     float padding[3];
   };

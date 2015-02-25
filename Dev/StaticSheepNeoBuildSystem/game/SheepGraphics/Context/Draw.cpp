@@ -71,7 +71,7 @@ namespace DirectSheep
   {
     if (index >= m_font.size() || index < 0)
     {
-      m_font[0].m_spriteFont->DrawString(m_batcher.get(),
+      m_font[0].m_spriteFont->DrawString(m_batcher[m_curLayer],
         L"Invalid Font", Vec2(m_spriteTrans.x,
         m_camUse ? m_spriteTrans.y : -m_spriteTrans.y),
         m_spriteBlend, m_spriteTrans.theta,
@@ -84,7 +84,7 @@ namespace DirectSheep
     std::string sText(text);
     std::wstring wText(sText.begin(), sText.end());
 
-    m_font[index].m_spriteFont->DrawString(m_batcher.get(), wText.c_str(),
+    m_font[index].m_spriteFont->DrawString(m_batcher[m_curLayer], wText.c_str(),
       Vec2(m_spriteTrans.x, m_camUse ? m_spriteTrans.y : -m_spriteTrans.y),
       m_spriteBlend, m_spriteTrans.theta, Vec2(0, 0),
       Vec2(scale.x, -scale.y),
@@ -117,14 +117,50 @@ namespace DirectSheep
     sourcePos.bottom = (long)(height * m_spriteTrans.uvEnd.y);
 
     
-    m_batcher->Draw(m_textureRes[texture.index].m_ShaderRes,
+    m_batcher[m_curLayer]->Draw(m_textureRes[texture.index].m_ShaderRes,
                Vec2(m_spriteTrans.x, m_spriteTrans.y),
                &sourcePos,
                XMLoadFloat4(&m_spriteBlend),
                m_spriteTrans.theta,
-               Vec2((sourcePos.right - sourcePos.left) / 2.0f,
-               (sourcePos.bottom - sourcePos.top) / 2.0f),
+               Vec2(((sourcePos.right - sourcePos.left) / 2.0f) - m_spriteOrigin.x,
+               ((sourcePos.bottom - sourcePos.top) / 2.0f) + m_spriteOrigin.y),
                Vec2(m_spriteTrans.w, -m_spriteTrans.h), m_flip, m_spriteTrans.z);
+  }
+
+  void RenderContext::DrawLightBatched(DirectSheep::Handle texture)
+  {
+    unsigned width = GetTextureSize(texture).width;
+    unsigned height = GetTextureSize(texture).height;
+
+    DirectX::SpriteEffects effect = DirectX::SpriteEffects_None;
+
+    m_spriteTrans.x = m_camUse ? m_spriteTrans.x :
+      m_spriteTrans.x + m_spriteTrans.w / 2;
+
+    m_spriteTrans.y = m_camUse ? m_spriteTrans.y :
+      -m_spriteTrans.y - m_spriteTrans.h / 2;
+
+    m_spriteTrans.w = m_camUse ? m_spriteTrans.w :
+      m_spriteTrans.w / width;
+
+    m_spriteTrans.h = m_camUse ? m_spriteTrans.h :
+      m_spriteTrans.h / height;
+
+    RECT sourcePos;
+    sourcePos.left = (long)(width * (m_spriteTrans.uvBegin.x));
+    sourcePos.right = (long)(width * (m_spriteTrans.uvEnd.x));
+    sourcePos.top = (long)(height * m_spriteTrans.uvBegin.y);
+    sourcePos.bottom = (long)(height * m_spriteTrans.uvEnd.y);
+
+    if (!m_fullbright)
+      m_lightBatcher[m_curLayer]->Draw(m_textureRes[texture.index].m_ShaderRes,
+      Vec2(m_spriteTrans.x, m_spriteTrans.y),
+      &sourcePos,
+      XMLoadFloat4(&m_spriteBlend),
+      m_spriteTrans.theta,
+      Vec2((sourcePos.right - sourcePos.left) / 2.0f,
+      (sourcePos.bottom - sourcePos.top) / 2.0f),
+      Vec2(m_spriteTrans.w, -m_spriteTrans.h), m_flip, m_spriteTrans.z);
   }
 
 
@@ -132,27 +168,112 @@ namespace DirectSheep
   {
     ClearBackBuffer();
     ClearDepthBuffer();
-    m_PointLights.clear();
   }
 
-  void RenderContext::StartBatch()
+  void RenderContext::StartBatch(unsigned maxLayers, bool fullBright)
   {
-    m_batcher->Begin(SpriteSortMode_BackToFront, m_states->NonPremultiplied(),
-      m_states->LinearWrap(), m_states->DepthNone(),
-      m_states->CullCounterClockwise(), nullptr,
-      ((Camera*)m_camera.ptr)->GetViewProj());
-    
-    
+    m_curMaxLayers = maxLayers;
+    m_curLayer = 0;
+    m_fullbright = fullBright;
+
+    for (int i = 0; i < maxLayers; ++i)
+    {
+      m_batcher[i]->Begin(SpriteSortMode_BackToFront, m_states->NonPremultiplied(),
+        m_states->LinearWrap(), m_states->DepthNone(),
+        m_states->CullCounterClockwise(), nullptr,
+        ((Camera*)m_camera.ptr)->GetViewProj());
+
+      if (!m_fullbright)
+        m_lightBatcher[i]->Begin(SpriteSortMode_BackToFront,
+        m_states->Additive(),
+        m_states->LinearWrap(), m_states->DepthNone(),
+        m_states->CullCounterClockwise(), nullptr,
+        ((Camera*)m_camera.ptr)->GetViewProj());
+    }
+
   }
 
 
   void RenderContext::EndBatch()
   {
-    m_batcher->End(); 
+    
+    for (int i = 0; i < m_curMaxLayers; ++i)
+    {
+      SetViewport(0, 0, Dimension(1920, 1080));
+      RenderTarget* rt = &m_renderTargetRes[m_lightTarget.index];
+
+      if (!m_fullbright)
+      {
+        ClearRenderTarget(m_lightTarget, 0, 0, 0, 0);
+        BindRenderTarget(m_lightTarget);
+        m_lightBatcher[i]->End();
+        DrawPointLights(true, i); // fix forced true
+      }
+
+      SetViewport(0, 0, Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
+
+      ClearRenderTarget(m_canvasTarget, 0, 0, 0, 0);
+      BindRenderTarget(m_canvasTarget);
+      m_batcher[i]->End();
+
+
+      // Blend render targets
+      
+      SetBlendMode(BLEND_MODE_MULTIPLY);
+
+      m_deviceContext->PSSetSamplers(0, 1, &m_sampleStates[0]);
+
+      Mat4 identity = DirectX::XMMatrixIdentity();
+
+      m_genericEffect->bind(m_deviceContext);
+      m_genericEffect->bindPosUV(m_deviceContext,
+        ((Camera*)m_Ortho.ptr)->GetProj(),
+        ((Camera*)m_Ortho.ptr)->GetView(),
+        DirectX::XMMatrixTranslationFromVector(Vec3(1, -1, 0)) *
+        DirectX::XMMatrixScaling(1920 / 2, 1080 / 2, 0),
+        Vec2(), Vec2());
+
+
+      m_genericEffect->bindAmbient(m_deviceContext, Vec4(1, 1, 1, 1), 1);
+      
+      m_quad->bind(m_deviceContext);
+
+      // Draw lights onto canvas
+      if (!m_fullbright)
+      {
+        m_deviceContext->PSSetShaderResources(0, 1, &(rt->shaderResourceView));
+        m_deviceContext->DrawIndexed(m_quad->getIndexCount(), 0, 0);
+      }
+
+      rt = &m_renderTargetRes[m_canvasTarget.index];
+
+
+      
+      m_deviceContext->OMSetRenderTargets(1,
+        &m_backBuffer, m_depthBuffer.m_depthBuffer);
+
+      m_genericEffect->bindPosUV(m_deviceContext,
+        identity,
+        identity,
+        //DirectX::XMMatrixTranslationFromVector(Vec3(1, -1, 0)) *
+        DirectX::XMMatrixScaling(1, 1, 0),
+        Vec2(), Vec2());
+
+      // Draw canvas onto back buffer
+      SetBlendMode(BLEND_MODE_ALPHA);
+      m_deviceContext->PSSetShaderResources(0, 1, &(rt->shaderResourceView));
+
+      
+
+      m_deviceContext->DrawIndexed(m_quad->getIndexCount(), 0, 0);
+
+      m_PointLights[i].clear();
+    }
   }
 
   void RenderContext::FrameEnd(void)
   {
+
     m_primativeEffect->Apply(m_deviceContext);
     m_deviceContext->IASetInputLayout(m_primativeLayout);
 
@@ -260,10 +381,16 @@ namespace DirectSheep
 
   }
 
-  void RenderContext::BatchPLight(Framework::Vec3D position, Framework::Vec4D brightness, Framework::Vec3D attenuation)
+  void RenderContext::BatchPointLight(Framework::Vec3D position,
+    Framework::Vec4D brightness, Framework::Vec3D attenuation,
+    unsigned layer)
   {
     // Convert stats from into DirectX container, do scalar ratio
     Vec3 pos(position.x, position.y, position.z);
+    //Vec2 screenPos = ((Camera*)m_Perspective.ptr)->ToScreen(pos);
+    //pos.x = screenPos.x;
+    //pos.y = screenPos.y;
+    //pos.z = 0;
 
     Color col(brightness.x / 255.0f, brightness.y / 255.0f,
       brightness.z / 255.0f, brightness.a * 20.0f);
@@ -272,25 +399,36 @@ namespace DirectSheep
       attenuation.z / 15000.0f);
 
     // Store new light in vector, to be drawn at DrawPLights
-    m_PointLights.push_back(Light(pos, col, at));
+    m_PointLights[layer].push_back(Light(pos, col, at));
   }
 
-  void RenderContext::DrawPLights(bool isLight)
+  void RenderContext::BatchPointLight(Framework::Vec3D position,
+    Framework::Vec4D brightness, Framework::Vec3D attenuation)
+  {
+    BatchPointLight(position, brightness, attenuation, m_curLayer);
+  }
+
+  void RenderContext::DrawPointLights(bool isLight, unsigned layer)
   {
     // Are there lights to draw
-    if (!isLight || !m_PointLights.size())
+    if (!isLight || !m_PointLights[layer].size())
       return;
 
     // Bind matrix
     m_PointLight->bindMatrices(m_deviceContext,
-      ((Camera*)m_postEffects.ptr)->GetProj(),
-      ((Camera*)m_postEffects.ptr)->GetView(),
-      DirectX::XMMatrixIdentity());
+      ((Camera*)m_Perspective.ptr)->GetProj(),
+      ((Camera*)m_Perspective.ptr)->GetView(),
+      DirectX::XMMatrixScaling(1920 / 2, 1080 / 2, 0)
+      //DirectX::XMMatrixTranslationFromVector(Vec3(1, -1, 0)) *
+      //DirectX::XMMatrixScaling(1920/2, 1080/2, 0 )
+      );
 
     // Bind lights to shader
     m_PointLight->bindLights(m_deviceContext,
-      m_PointLights.data(),
-      m_PointLights.size() < MAX_LIGHTS ? m_PointLights.size() : MAX_LIGHTS);
+      m_PointLights[layer].data(),
+      m_PointLights[layer].size() < MAX_LIGHTS
+      ? m_PointLights[layer].size() : MAX_LIGHTS,
+      Vec4(1920 / SCREEN_WIDTH, 1080 / SCREEN_HEIGHT, 0, 1));
 
     // Bind light mesh
     m_PLightModel->bind(m_deviceContext);
@@ -299,7 +437,7 @@ namespace DirectSheep
     m_PointLight->bind(m_deviceContext);
 
     // Set appropriate blend mode
-    SetBlendMode(BLEND_MODE_MULTIPLY);
+    SetBlendMode(BLEND_MODE_ADDITIVE);
 
     // Draw lights
     m_deviceContext->DrawIndexed(m_PLightModel->getIndexCount(), 0, 0);

@@ -25,7 +25,7 @@ namespace Framework
     { ePistol, "Pistol" },
     { eAutomatic, "Automatic" },
     { eShotgun, "Shotgun" },
-    { eLaser, "Laser" }
+    { eWLaser, "WLaser" }
   };
 
   WeaponPickup::WeaponPickup()

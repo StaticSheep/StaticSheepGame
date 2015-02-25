@@ -169,8 +169,35 @@ namespace Framework
         for (int i = 0; i < raySimpleDraws.size(); ++i)
           Draw::DrawBeam(raySimpleDraws[i].first, raySimpleDraws[i].second);
 
+        Vec2 vertex1(10, 10);
+        Vec2 vertex2(-10, 10);
+        Vec2 vertex3(-10, -10);
+        Vec2 vertex4(10, -10);
+        Vec2 vertexPos1, vertexPos2, vertexPos3, vertexPos4;
+        for (int i = 0; i < debugRayBodyCollisions_.size(); ++i)
+        {
+          Vec3D position = debugRayBodyCollisions_[i];
+          //move the two vertices
+          vertexPos1 = vertex1 + debugRayBodyCollisions_[i];
+          vertexPos2 = vertex2 + debugRayBodyCollisions_[i];
+          vertexPos3 = vertex3 + debugRayBodyCollisions_[i];
+          vertexPos4 = vertex4 + debugRayBodyCollisions_[i];
+
+          Draw::SetColor(1, 1, 0, 1);
+          Draw::DrawLine(vertexPos1.x, vertexPos1.y, vertexPos2.x, vertexPos2.y);
+          Draw::DrawLine(vertexPos2.x, vertexPos2.y, vertexPos3.x, vertexPos3.y);
+          Draw::DrawLine(vertexPos3.x, vertexPos3.y, vertexPos4.x, vertexPos4.y);
+          Draw::DrawLine(vertexPos4.x, vertexPos4.y, vertexPos1.x, vertexPos1.y);
+          //Handle box = ((unsigned)debugRayBodyCollisions_[i]);
+
+          //GameSpace* space = (GameSpace*)(ray.gameSpace);
+          //GameObject* boxDraw = space->GetHandles().GetAs<GameObject>(box);
+          //boxDraw->GetComponent<BoxCollider>()
+        }
+
         rayComplexDraws.clear();
         raySimpleDraws.clear();
+        debugRayBodyCollisions_.clear();
       }//end of the space loop
 
     }//end of the if check
@@ -485,10 +512,10 @@ namespace Framework
   {
     if (ray.findFirstCollision)
     {
-      GameSpace* space = (GameSpace*)(ray.gameSpace);
-      Handle handleObj = (unsigned)(ray.firstCollisionBody);
+      //GameSpace* space = (GameSpace*)(ray.gameSpace);
+      //Handle handleObj = (unsigned)(ray.firstCollisionBody);
 
-      GameObject* obj = space->GetHandles().GetAs<GameObject>(handleObj);
+      //GameObject* obj = space->GetHandles().GetAs<GameObject>(handleObj);
       //CollisionGroup group = m_collisionGroup[(((RigidBody*)obj)->GetBodyCollisionGroup())];
       //if (group == Player1 || group == Player2 || group == Player3 || group == Player4)
         //((PlayerController*)obj)->health -= 10;
@@ -508,7 +535,10 @@ namespace Framework
 
     else
     {
-
+      if (!ray.bodyIntersections_.empty())
+        for (int i = 0; i < ray.bodyIntersections_.size(); ++i)
+          debugRayBodyCollisions_.push_back(ray.bodyIntersections_[i]);
+      raySimpleDraws.push_back(std::pair<Vec2, Vec2>(ray.rayOrigin, ray.rayDirection));
     }
 
     ray.bodyIntersections_.clear();

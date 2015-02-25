@@ -12,48 +12,48 @@ Core.msvcincludedirs = {}
 Core.msvcdefines = {}
 Core.msvclinks = {}
 
-project "ditfw"
-	SetupNativeDependencyProject()
+-- project "ditfw"
+-- 	SetupNativeDependencyProject()
 	
-	kind "StaticLib"
+-- 	kind "StaticLib"
 
-	pchheader "API.h"
-	pchsource "core/Core.cpp"
+-- 	pchheader "API.h"
+-- 	pchsource "core/Core.cpp"
 
-	files
-	{
-		"*.lua"
-		, "**.cpp"
-		, "**.hpp"
-		, "**.h"
-	}
+-- 	files
+-- 	{
+-- 		"*.lua"
+-- 		, "**.cpp"
+-- 		, "**.hpp"
+-- 		, "**.h"
+-- 	}
 
-	excludes
-	{
-		"platform/wxw/*"
+-- 	excludes
+-- 	{
+-- 		"platform/wxw/*"
 
-		-- exclude glfw
-		-- , "gfx/glfw/*"
-		-- , "input/glfw/*"
-		-- , "platform/glfw/*"
-	}
+-- 		-- exclude glfw
+-- 		-- , "gfx/glfw/*"
+-- 		-- , "input/glfw/*"
+-- 		-- , "platform/glfw/*"
+-- 	}
 
 	Core.includedirs = 
 	{
 		-- collapse header dir structure
 		srcdir
-		, srcdir .. "/core"
-		, srcdir .. "/gfx"
-		, srcdir .. "/input"
-		, srcdir .. "/platform"
+		-- , srcdir .. "/core"
+		-- , srcdir .. "/gfx"
+		-- , srcdir .. "/input"
+		-- , srcdir .. "/platform"
 
-		-- collapse wxw dirs
-		, srcdir .. "/gfx/wxw"
-		, srcdir .. "/input/wxw"
-		, srcdir .. "/platform/wxw"
+		-- -- collapse wxw dirs
+		-- , srcdir .. "/gfx/wxw"
+		-- , srcdir .. "/input/wxw"
+		-- , srcdir .. "/platform/wxw"
 
-		-- deps folders
-		, depsdir .. "/filewatcher/include"
+		-- -- deps folders
+		-- , depsdir .. "/filewatcher/include"
 		, depsdir .. "/boost_1_55"
 		-- , depsdir .. "/glew/glew/include"
 		-- , depsdir .. "/glsdk/glfw/include"
@@ -61,9 +61,9 @@ project "ditfw"
 		-- , depsdir .. "/glsdk/glmesh/include"
 		-- , depsdir .. "/glsdk/glutil/include"
 		-- , depsdir .. "/glsdk/glm"
-		, depsdir .. "/wxwidgets/include"
-		, depsdir .. "/miniformat"
-		, depsdir .. "/FW1FontWrapper/include"
+		--, depsdir .. "/wxwidgets/include"
+		--, depsdir .. "/miniformat"
+		--, depsdir .. "/FW1FontWrapper/include"
 		, srcdir .. "/../game/SheepGraphics/include"
 		, srcdir .. "/../game/SheepUtil/include"
 		, srcdir .. "/../game/SheepGraphics"
@@ -78,10 +78,10 @@ project "ditfw"
 		-- , "glmesh"
 		-- , "glutil"
 		, "dxtk"
-		, "wxWidgets"
-		, "zlib"
+		--, "wxWidgets"
+		--, "zlib"
 		, "SheepGraphics"
-		, "FW1FontWrapper"
+		--, "FW1FontWrapper"
 	}
 
 	Core.libdirs = 
@@ -92,13 +92,13 @@ project "ditfw"
 	Core.defines = 
 	{
 		-- wx defines
-		"USE_OPENGL=0"
-		, "wxMONOLITHIC=1"
-		, "wxUSE_BASE=1"
-		, "wxUSE_GUI=1"
-		, "wxUSE_AUI=1"
-		, "wxUSE_PROPGRID=1"
-		, "wxUSE_GLCANVAS=1"
+		-- "USE_OPENGL=0"
+		-- , "wxMONOLITHIC=1"
+		-- , "wxUSE_BASE=1"
+		-- , "wxUSE_GUI=1"
+		-- , "wxUSE_AUI=1"
+		-- , "wxUSE_PROPGRID=1"
+		-- , "wxUSE_GLCANVAS=1"
 
 		-- glew defines
 		--, "GLEW_STATIC"
@@ -108,13 +108,13 @@ project "ditfw"
 		--, "BOOST_LIB_DIAGNOSTIC"
 
 		-- ditfw defines
-		, "DIT_USE_PCH"
+		-- , "DIT_USE_PCH"
 	}
 
-	configuration "windows"
+	-- configuration "windows"
 		Core.msvcincludedirs = 
 		{
-			depsdir .. "/wxwidgets/include/msvc"
+			-- depsdir .. "/wxwidgets/include/msvc"
 		}
 
 		Core.msvcdefines = 
@@ -150,32 +150,32 @@ project "ditfw"
 			, "glu32"
 		}
 
-		includedirs( Core.msvcincludedirs );
-		defines( Core.msvcdefines );
-		links( Core.msvclinks );
+	-- 	includedirs( Core.msvcincludedirs );
+	-- 	defines( Core.msvcdefines );
+	-- 	links( Core.msvclinks );
 
-	configuration {}
+	-- configuration {}
 
-		includedirs( Core.includedirs );
-		defines( Core.defines );
-		libdirs( Core.libdirs );
-		links( Core.links );
-		deps( Core.deps ) ;
+	-- 	includedirs( Core.includedirs );
+	-- 	defines( Core.defines );
+	-- 	libdirs( Core.libdirs );
+	-- 	links( Core.links );
+	-- 	deps( Core.deps ) ;
 
-	configuration "Debug"
-		defines
-		{
-			"_DEBUG"
-			, "MEMORY_DEBUGGING"
-			,"_HAS_ITERATOR_DEBUGGING=1"
-			, "_SECURE_SCL=1"
-			, "_ITERATOR_DEBUG_LEVEL=2"
-		}
+	-- configuration "Debug"
+	-- 	defines
+	-- 	{
+	-- 		"_DEBUG"
+	-- 		, "MEMORY_DEBUGGING"
+	-- 		,"_HAS_ITERATOR_DEBUGGING=1"
+	-- 		, "_SECURE_SCL=1"
+	-- 		, "_ITERATOR_DEBUG_LEVEL=2"
+	-- 	}
 
-		flags { "Symbols" }
+	-- 	flags { "Symbols" }
 
-	configuration "Release"
-		defines {"NDEBUG", "RELEASE"}
-		flags { "Optimize" }
+	-- configuration "Release"
+	-- 	defines {"NDEBUG", "RELEASE"}
+	-- 	flags { "Optimize" }
 
-	
+	-- 

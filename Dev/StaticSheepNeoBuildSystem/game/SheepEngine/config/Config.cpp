@@ -22,7 +22,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "systems/anttweak/AntTweakModule.h"
 #include "systems/skynet/Skynet.h"
 
-#include "WxWindow.h"
+//#include "WxWindow.h"
 #include "systems/editor/GizmoEditor.h"
 #include "systems/metrics/MetricController.h"
 
@@ -96,8 +96,9 @@ namespace Framework
 
     if (editor)
     {
-      ENGINE->LoadLuaLevel("content/lua/engine/lua_levels/uisandbox.lua");
+      //ENGINE->LoadLuaLevel("content/lua/engine/lua_levels/uisandbox.lua");
       ENGINE->OpenEditor();
+     // ENGINE->ChangeLevel("Asteroid");
     }
 
     ENGINE->SystemMessage(Message(Message::EngineReady));
@@ -106,6 +107,7 @@ namespace Framework
     {
       ShowCursor(false);
       ENGINE->ChangeLevel("Intro");
+      //ENGINE->ChangeLevel("Asteroid");
     }
 	  //ENGINE->LoadLevel("content/data/spaces/Level1.space");
 #endif

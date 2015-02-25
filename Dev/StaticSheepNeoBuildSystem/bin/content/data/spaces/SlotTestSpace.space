@@ -1,0 +1,368 @@
+SlotTestSpace
+GameObject
+{
+  name std::string "TestMenuReel"
+  archetype std::string "MenuReel"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 6.006584
+      y_ float 442.091309
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 2.000000
+      y_ float 2.000000
+      z_ float 0.000000
+    }
+  }
+  SpriteLight
+  {
+    m_spriteName std::string "WHite.png"
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    m_isOn bool true
+    m_brightness LightColor
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+    Size Vec2
+    {
+      X float 1920.000000
+      Y float 1080.000000
+    }
+  }
+  SlotMachine
+  {
+    m_stopTexture std::string "menu_reel2.png"
+    m_spinTexture std::string "menu_reel2_blur.png"
+    m_slotBackTexture std::string "slotmachine_slotback.png"
+    numSlots int 1
+    slotOptions int 4
+    startSpeed float 7.000000
+    slotSize Vec2
+    {
+      X float 1.000000
+      Y float 1.000000
+    }
+    slotMargin float 0.000000
+    slotOffset Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+    slotBackSize Vec2
+    {
+      X float 3.000000
+      Y float 0.600000
+    }
+    startTime float 2.000000
+    bonusTime float 0.200000
+    useSpriteColor bool false
+    backingColor Vec4
+    {
+      R float 1.000000
+      G float 0.427451
+      B float 1.000000
+      A float 0.000000
+    }
+  }
+}
+GameObject
+{
+  name std::string "Backlight"
+  archetype std::string ""
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 0.000000
+      y_ float 0.000000
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  SpriteLight
+  {
+    m_spriteName std::string "white.png"
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    m_isOn bool true
+    m_brightness LightColor
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+    Size Vec2
+    {
+      X float 1920.000000
+      Y float 1080.000000
+    }
+  }
+}
+GameObject
+{
+  name std::string "BigMachine"
+  archetype std::string "BigSlotMachine"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -567.030029
+      y_ float 0.000000
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 0.700000
+      y_ float 0.800000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "SlotMachine.png"
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 0.886275
+      G float 0.674510
+      B float 0.274510
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 1.400000
+      Y float 1.650000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+  SlotMachine
+  {
+    m_stopTexture std::string "slot_test.png"
+    m_spinTexture std::string "slot_test_blur.png"
+    m_slotBackTexture std::string "slotmachine_slotback.png"
+    numSlots int 3
+    slotOptions int 3
+    startSpeed float 6.000000
+    slotSize Vec2
+    {
+      X float 0.800000
+      Y float 1.100000
+    }
+    slotMargin float 50.000000
+    slotOffset Vec2
+    {
+      X float 0.000000
+      Y float -10.000000
+    }
+    slotBackSize Vec2
+    {
+      X float 2.600000
+      Y float 1.800000
+    }
+    startTime float 2.000000
+    bonusTime float 0.200000
+    useSpriteColor bool true
+    backingColor Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+  }
+}
+GameObject
+{
+  name std::string "BigMachine2"
+  archetype std::string "BigSlotMachine"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 19.221443
+      y_ float -3.604000
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 0.700000
+      y_ float 0.800000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "SlotMachine.png"
+    m_flipX bool true
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 0.886275
+      G float 0.674510
+      B float 0.274510
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 1.400000
+      Y float 1.650000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+  SlotMachine
+  {
+    m_stopTexture std::string "ggg_reel.png"
+    m_spinTexture std::string "ggg_reel_blur.png"
+    m_slotBackTexture std::string "slotmachine_slotback.png"
+    numSlots int 3
+    slotOptions int 3
+    startSpeed float 8.000000
+    slotSize Vec2
+    {
+      X float 0.800000
+      Y float 1.300000
+    }
+    slotMargin float 50.000000
+    slotOffset Vec2
+    {
+      X float 0.000000
+      Y float -10.000000
+    }
+    slotBackSize Vec2
+    {
+      X float 2.600000
+      Y float 1.600000
+    }
+    startTime float 2.000000
+    bonusTime float 0.200000
+    useSpriteColor bool true
+    backingColor Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+  }
+}
+GameObject
+{
+  name std::string "BigMachine3"
+  archetype std::string "BigSlotMachine"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 625.895630
+      y_ float -3.604000
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 0.700000
+      y_ float 0.800000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "SlotMachine.png"
+    m_flipX bool true
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 0.886275
+      G float 0.674510
+      B float 0.274510
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 1.400000
+      Y float 1.650000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+  SlotMachine
+  {
+    m_stopTexture std::string "ggg_reel.png"
+    m_spinTexture std::string "ggg_reel_blur.png"
+    m_slotBackTexture std::string "slotmachine_slotback.png"
+    numSlots int 3
+    slotOptions int 3
+    startSpeed float 8.000000
+    slotSize Vec2
+    {
+      X float 0.800000
+      Y float 1.300000
+    }
+    slotMargin float 50.000000
+    slotOffset Vec2
+    {
+      X float 0.000000
+      Y float -10.000000
+    }
+    slotBackSize Vec2
+    {
+      X float 2.600000
+      Y float 1.600000
+    }
+    startTime float 2.000000
+    bonusTime float 0.200000
+    useSpriteColor bool true
+    backingColor Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+  }
+}

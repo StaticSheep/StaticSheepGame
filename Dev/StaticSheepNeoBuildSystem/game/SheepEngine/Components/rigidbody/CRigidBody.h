@@ -77,6 +77,7 @@ namespace Framework
       virtual Vec3D GetGravityNormal(void);
       virtual Vec3D GetBodyPosition(void);
       virtual Vec3D GetBodyUpNormal(void);
+      virtual Vec3D GetBodyRotationAsVector(void);
       virtual float GetBodyRotation(void);
       
       //debug

@@ -17,6 +17,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/sprites/CSprite.h"
 #include "components/sprites/CAniSprite.h"
 #include "Components/lights/CPointLight.h"
+#include "components/lights/CSpriteLight.h"
 #include "Components/camera/CCamera.h"
 #include "components/rigidbody/CRigidBody.h"
 #include "components/transform/CTransform.h"
@@ -260,7 +261,7 @@ namespace Framework
     TYPE_REGISTER(Pistol);
     TYPE_REGISTER(Shotgun);
     TYPE_REGISTER(Automatic);
-    TYPE_REGISTER(Laser);
+    TYPE_REGISTER(WLaser);
 
     TYPE_REGISTER(DamageBoost);
     TYPE_REGISTER(Shield);
@@ -291,11 +292,12 @@ namespace Framework
     TYPE_REGISTER( Sprite );
     TYPE_ADD_MEMBER(Sprite, m_spriteName, false, true, "Texture",
       BUILD_FUNCTION(Sprite::TweakSetTexture));
-    TYPE_ADD_MEMBER(Sprite, Color, false, true, "Color");
-    TYPE_ADD_MEMBER( Sprite, Size, false, true, "Size");
     TYPE_ADD_MEMBER(Sprite, m_flipX, false, true, "FlipX");
     TYPE_ADD_MEMBER(Sprite, m_flipY, false, true, "FlipY");
     TYPE_ADD_MEMBER(Sprite, m_uvScale, false, true, "Tiled");
+    TYPE_ADD_MEMBER(Sprite, Color, false, true, "Color");
+    TYPE_ADD_MEMBER(Sprite, Size, false, true, "ImageScale");
+    TYPE_ADD_MEMBER(Sprite, m_origin, false, true, "SpriteOrigin");
     TYPE_SET_TWEAK_TYPE( Sprite, AntTweak::TW_TYPE_COMPONENT );
     TYPE_SET_FROM_LUA( Sprite, Lua::GenericObjectFromLua );
 
@@ -304,6 +306,19 @@ namespace Framework
     TYPE_ADD_MEMBER(PointLight, m_attenuation, false, true, "Attenuation");
     TYPE_SET_TWEAK_TYPE(PointLight, AntTweak::TW_TYPE_COMPONENT);
     TYPE_SET_FROM_LUA(PointLight, Lua::GenericObjectFromLua);
+
+    TYPE_REGISTER(SpriteLight);
+    TYPE_ADD_MEMBER(SpriteLight, m_spriteName, false, true, "LightTexture",
+      BUILD_FUNCTION(Sprite::TweakSetTexture));
+    TYPE_ADD_MEMBER(SpriteLight, m_flipX, false, true, "FlipX");
+    TYPE_ADD_MEMBER(SpriteLight, m_flipY, false, true, "FlipY");
+    TYPE_ADD_MEMBER(SpriteLight, m_uvScale, false, true, "Tiled");
+    TYPE_ADD_MEMBER(SpriteLight, m_isOn, false, true, "Active");
+    TYPE_ADD_MEMBER(SpriteLight, m_brightness, false, true, "Brightness");
+    TYPE_ADD_MEMBER(SpriteLight, m_origin, false, true, "LightOrigin");
+    TYPE_ADD_MEMBER(SpriteLight, Size, false, true, "LightScale");
+    TYPE_SET_TWEAK_TYPE(SpriteLight, AntTweak::TW_TYPE_COMPONENT);
+    TYPE_SET_FROM_LUA(SpriteLight, Lua::GenericObjectFromLua);
 
     TYPE_REGISTER( AniSprite );
     TYPE_ADD_MEMBER(AniSprite, m_spriteName, false, true, "Texture",

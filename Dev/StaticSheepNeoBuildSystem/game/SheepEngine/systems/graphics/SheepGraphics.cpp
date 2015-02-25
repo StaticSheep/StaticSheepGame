@@ -18,6 +18,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/particles/CParticleSystem.h"
 #include "components/particles/CParticleCircleEmitter.h"
 #include "components/particles/CParticleBoxEmitter.h"
+#include "components/lights/CSpriteLight.h"
 #include <iostream>
 #include <boost/filesystem.hpp>
 #include "../input/Input.h"
@@ -46,6 +47,7 @@ namespace Framework
     REGISTER_COMPONENT(Camera);
     REGISTER_COMPONENT(AniSprite);
     REGISTER_COMPONENT(PointLight);
+    REGISTER_COMPONENT(SpriteLight);
     REGISTER_COMPONENT(ParticleSystem);
     REGISTER_COMPONENT(ParticleCircleEmitter);
     REGISTER_COMPONENT(ParticleBoxEmitter);
@@ -74,7 +76,8 @@ namespace Framework
     if (m_renderContext == nullptr)
     {
       m_renderContext = DirectSheep::RenderContext::Allocate();
-      m_renderContext->Initialize(ENGINE->Window->GetHandle(), (float)_ScreenWidth, (float)_ScreenHeight);
+      m_renderContext->Initialize(ENGINE->Window->GetHandle(),
+        (float)_ScreenWidth, (float)_ScreenHeight);
     }
 
     Message m(Message::GFXDeviceInit);
@@ -159,7 +162,6 @@ namespace Framework
       {
         if (!ENGINE->m_editorActive)
         {
-          
           m_renderContext->SetFullscreen(true);
         }
         ShowWindow(ENGINE->Window->GetHandle(), 1);
@@ -173,7 +175,7 @@ namespace Framework
     GameSpace* space;
     Draw::SetCamState(0);
     
-    m_renderContext->StartBatch();
+    m_renderContext->StartBatch(3, ENGINE->m_editorActive ? !ENGINE->m_editorLights : false);
     // Regular Draw
     for (auto it = ENGINE->Spaces().begin(); it != ENGINE->Spaces().end(); ++it)
     {
@@ -183,45 +185,41 @@ namespace Framework
         continue;
 
       if (!space->Hidden())
+      {
+        RC()->SetLayer(0);
+        space->hooks.Call("PreDraw");
+
+        RC()->SetLayer(1);
         space->hooks.Call("Draw");
-    }
 
-    Lua::CallFunc(ENGINE->Lua(), "hook.Call", "Draw");
-    m_renderContext->EndBatch();
-    m_renderContext->StartBatch();
-
-    // Post Draw
-    for (auto it = ENGINE->Spaces().begin(); it != ENGINE->Spaces().end(); ++it)
-    {
-      space = *it;
-
-      if (!space->Ready())
-        continue;
-
-      if (!space->Hidden())
+        RC()->SetLayer(2);
         space->hooks.Call("PostDraw");
+      }
+        
     }
 
+    RC()->SetLayer(1);
+    Lua::CallFunc(ENGINE->Lua(), "hook.Call", "Draw");
+
+    RC()->SetLayer(2);
     Lua::CallFunc(ENGINE->Lua(), "hook.Call", "PostDraw");
-    m_renderContext->EndBatch();
-
-   
-    DrawPointLights(ENGINE->m_editorActive ? 
-      ENGINE->PlayingInEditor() ? true : ENGINE->m_editorLights : true);
-
-    m_renderContext->StartBatch();
     ENGINE->SystemMessage(Message(Message::PostDraw));
+
     m_renderContext->EndBatch();
+
 
     Draw::SetCamState(2);
 
-    m_renderContext->StartBatch();
+    m_renderContext->StartBatch(2, true);
+
+    RC()->SetLayer(0);
     ENGINE->SystemMessage(Message(Message::GUIDraw));
-    m_renderContext->EndBatch();
-    
-    m_renderContext->StartBatch();
+
+    RC()->SetLayer(1);
     ENGINE->SystemMessage(Message(Message::PostGUIDraw));
+
     m_renderContext->EndBatch();
+
     Draw::SetCamState(2);
 	}
 
@@ -238,6 +236,11 @@ namespace Framework
   void SheepGraphics::SetPosition(float x, float y, float Z)
   {
     m_renderContext->SetPosition(x,y, Z);
+  }
+
+  void SheepGraphics::SetObjectOrigin(float x, float y)
+  {
+    m_renderContext->SetObjectOrigin(x, y);
   }
 
   void SheepGraphics::SetRotation(float theta)
@@ -306,16 +309,6 @@ namespace Framework
 #if SHEEP_DEBUG
     ++(m_debugData.numBatchedCalls);
 #endif
-  }
-
-  void SheepGraphics::BatchPointLight(Vec3D position, Vec4D brightness, Vec3D attenuation)
-  {
-    m_renderContext->BatchPLight(position, brightness, attenuation);
-  }
-
-  void SheepGraphics::DrawPointLights(bool isLight)
-  {
-    m_renderContext->DrawPLights(isLight);
   }
 
   void SheepGraphics::RawDraw(void)

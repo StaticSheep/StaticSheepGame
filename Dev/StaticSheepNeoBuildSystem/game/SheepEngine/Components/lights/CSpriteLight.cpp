@@ -1,89 +1,53 @@
 /******************************************************************************
-Filename: CSprite.cpp
+Filename: CSpriteLight.cpp
 Project:
 Author(s): Scott Nelson (primary)
 
 All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 ******************************************************************************/
 #include "pch/precompiled.h"
-#include "CSprite.h"
+#include "CSpriteLight.h"
 #include "systems/graphics/SheepGraphics.h"
+#include "Context/Context.h"
 
 namespace Framework
 {
-
-  Sprite::Sprite()
-    :Color(1, 1, 1, 1), Size(1, 1), MaxUV(1, 1), m_uvScale(false), m_origin(0,0)
+  SpriteLight::SpriteLight()
+    : m_brightness(1, 1, 1, 1), m_isOn(true)
   {
     transform = NULL;
   }
 
-  Sprite::~Sprite()
-  {
-  }
+  SpriteLight::~SpriteLight() {}
 
-  void Sprite::Initialize()
+  void SpriteLight::Initialize()
   {
     transform = this->GetOwner()->GetComponentHandle(eTransform);
 
     if (m_spriteName.length() == 0)
       m_spriteName = "Default.png";
 
-    if(m_texture.GetType() == DirectSheep::NONE)
+    if (m_texture.GetType() == DirectSheep::NONE)
     {
       SetTexture(m_spriteName.c_str());
     }
     else
       SetTexture(m_spriteName.c_str());
-    
+
     //TODO not sure if we have a GetOwner()->has working
-    space->hooks.Add("Draw", self, BUILD_FUNCTION(Sprite::Draw));
+    space->hooks.Add("Draw", self, BUILD_FUNCTION(SpriteLight::Render));
   }
 
-  void Sprite::SetTexture(const char * Texture)
-  {
-    m_spriteName = Texture;
-    m_texture = GRAPHICS->LoadTexture(Texture);
-    TextureSize = GRAPHICS->GetTextureDim(m_texture);
-  }
-
-  void Sprite::TweakSetTexture(const void * Texture)
-  {
-    SetTexture(((std::string *)Texture)->c_str());
-  }
-
-  DirectSheep::Handle& Sprite::GetTexture()
-  {
-    return m_texture;
-  }
-
-  void Sprite::SetFlipX(bool isFlipped)
-  {
-    m_flipX = isFlipped;
-  }
-
-  void Sprite::SetFlipY(bool isFlipped)
-  {
-    m_flipY = isFlipped;
-  }
-
-  bool Sprite::GetFlipX(void)
-  {
-    return m_flipX;
-  }
-
-  bool Sprite::GetFlipY(void)
-  {
-    return m_flipY;
-  }
-
-  void Sprite::Remove()
+  void SpriteLight::Remove()
   {
     space->hooks.Remove("Draw", self);
   }
 
-  void Sprite::Draw()
+  void SpriteLight::Render()
   {
+    if (!m_isOn)
+      return;
+
     Transform* trans = space->GetHandles().GetAs<Transform>(transform);
 
     GRAPHICS->SetPosition(trans->GetTranslation().X,
@@ -94,7 +58,7 @@ namespace Framework
     GRAPHICS->SetSize(trans->GetScale().X * Size.X,
       trans->GetScale().Y * Size.Y);
 
-    GRAPHICS->SetColor(Color);
+    GRAPHICS->SetColor(m_brightness);
 
     if (m_uvScale)
     {
@@ -120,9 +84,34 @@ namespace Framework
     GRAPHICS->SetSpriteFlip(m_flipX, m_flipY);
     GRAPHICS->SetCamState(0);
 
-    GRAPHICS->DrawBatched(this->m_texture);
+    GRAPHICS->RC()->DrawLightBatched(this->m_texture);
 
     GRAPHICS->SetObjectOrigin(0, 0);
-    
+  }
+
+  void SpriteLight::TurnOn()
+  {
+    m_isOn = true;
+  }
+
+  void SpriteLight::TurnOff()
+  {
+    m_isOn = false;
+  }
+
+  void SpriteLight::Toggle()
+  {
+    m_isOn = !m_isOn;
+  }
+
+  // Set and Get brightness
+  void SpriteLight::SetBrightness(Vec4 brightness)
+  {
+    m_brightness = brightness;
+  }
+
+  Vec4 SpriteLight::GetBrightness(void)
+  {
+    return m_brightness;
   }
 }
