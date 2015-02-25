@@ -68,7 +68,7 @@ namespace Framework
     GPC->SetBodyCollisionGroup("NonCollide");
     GPT->SetScale(Vec3(2.0f, 0.5f, 1.0f));
 
-    float ranY = (float)GetRandom(-500, 500);
+    float ranY = (float)GetRandom(-300, 300);
     if (GetRandom(0, 1))
     {
       eGiantPlat->GetComponent<GiantKillBox>(eGiantKillBox)->direction = true;

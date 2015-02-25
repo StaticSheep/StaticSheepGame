@@ -38,6 +38,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "types/weapons/WAutomatic.h"
 #include "types/weapons/WLaser.h"
 #include "types/powerUps/PDamage.h"
+#include "types/powerUps/PShield.h"
 #include "components/gameplay_scripts/CWarningText.h"
 #include "components/gameplay_scripts/CBackgroundPan.h"
 #include "components/gameplay_scripts/CCheats.h"
@@ -50,6 +51,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/particles/Particles.h"
 #include "components/gameplay_scripts/CAsteroid.h"
 #include "components/gameplay_scripts/CPowerupPickup.h"
+
 
 namespace Framework
 {
@@ -261,6 +263,7 @@ namespace Framework
     TYPE_REGISTER(Laser);
 
     TYPE_REGISTER(DamageBoost);
+    TYPE_REGISTER(Shield);
 
     TYPE_REGISTER( BoxCollider );
     TYPE_ADD_MEMBER(BoxCollider, m_width, false, true, "Width",

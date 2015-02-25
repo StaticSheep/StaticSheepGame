@@ -10,7 +10,6 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "types/space/Space.h"
 #include "../transform/CTransform.h"
 #include "../colliders/CBoxCollider.h"
-#include "types/weapons/WPistol.h"
 #include "../controllers/player/CPlayerController.h"
 
 namespace Framework
