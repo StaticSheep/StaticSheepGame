@@ -12,6 +12,13 @@ All content © 2015 DigiPen (USA) Corporation, all rights reserved.
 
 namespace Framework
 {
+  enum SlotType
+  {
+    GOLD,
+    JACKPOT,
+    INDIVIDUAL
+  };
+
 	class SlotController : public GameComponent
 	{
 	public:
@@ -27,6 +34,8 @@ namespace Framework
 
 		//member variables
     float levelTimer; //keeps track of overall time in the level for slot machine switches
+    SlotType Stype;
+    bool done; 
 
 	};
 }

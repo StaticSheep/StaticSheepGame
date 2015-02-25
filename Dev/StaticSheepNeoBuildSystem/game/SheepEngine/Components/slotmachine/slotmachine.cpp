@@ -241,7 +241,7 @@ namespace Framework
   {
     Transform* tr = (Transform*)space->GetComponent(eTransform, owner);
     Sprite* sp = (Sprite*)space->GetComponent(eSprite, owner);
-
+    Draw::SetRotation(0);
     Vec2 trsc = tr->GetScale();
 
     Vec2 finalSlotSize = slotSize & trsc;

@@ -16,7 +16,9 @@ namespace Framework
 {
   SlotController::SlotController()
 	{
-   
+    Stype = GOLD;
+    done = false;
+    levelTimer = 2.0f;
 	}
 
   SlotController::~SlotController()
@@ -26,14 +28,17 @@ namespace Framework
 
   void SlotController::Initialize()
 	{
+    Stype = GOLD;
 		//logic setup, you're attached and components are in place
     space->hooks.Add("LogicUpdate", self, BUILD_FUNCTION(SlotController::LogicUpdate));
-
     //gTransfrom = space->GetGameObject(owner)->GetComponentHandle(eTransform);
     //gCollider = space->GetGameObject(owner)->GetComponentHandle(eBoxCollider);
-    SlotMachine *sm;
+    Handle SM = space->GetGameObject(owner)->GetComponentHandle(eSlotMachine);
+    SlotMachine *sm = space->GetHandles().GetAs<SlotMachine>(SM);
     sm->SetTextureCB(self, BUILD_FUNCTION(SlotController::SetSMTextures));
-    //when you create a slot machine through an archtype you can set its call backs like this
+    sm->SetFinishedCB(self, BUILD_FUNCTION(SlotController::ReceiveSMResults));
+    //when you create a slot machine through an archetype you can set its call backs like this
+
 	}
 
   void SlotController::Remove()
@@ -43,13 +48,38 @@ namespace Framework
 
   void SlotController::LogicUpdate(float dt)
 	{
-    //Transform *pt = space->GetHandles().GetAs<Transform>(gTransfrom);
-    //BoxCollider *pc = space->GetHandles().GetAs <BoxCollider>(gCollider);
-
+    if (done)
+    {
+      levelTimer -= dt;
+      if (levelTimer <= 0)
+        space->GetGameObject(owner)->Destroy();
+    }
 	}
 
   void SlotController::SetSMTextures(int slotNum, int *spinTexID, int *stopTexID)
   {
+    switch (Stype)
+    {
+    case GOLD:
+      if (slotNum == 1 || slotNum == 2)
+      {
+        *spinTexID = Draw::GetTextureID("slot_test_blur.png");
+        *stopTexID = Draw::GetTextureID("slot_test.png");
+      }
+      else
+      {
+        *spinTexID = Draw::GetTextureID("slot_test_blur.png");
+        *stopTexID = Draw::GetTextureID("slot_test.png");
+      }
+      break;
+    case JACKPOT:
+
+      break;
+    case INDIVIDUAL:
+
+      break;
+    }
+
     //*spinTexID = Draw::GetTextureID(/*string goes here*/);
   }
 
@@ -60,7 +90,12 @@ namespace Framework
 
   void SlotController::ReceiveSMResults(std::vector<int>* results)
   {
-
+    /*
+    if(CheckForJP(results))
+      //run function for special jackpot
+    if(
+    */
+    done = true;
   }
 
 }
