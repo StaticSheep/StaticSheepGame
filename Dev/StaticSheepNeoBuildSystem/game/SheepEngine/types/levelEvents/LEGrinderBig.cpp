@@ -15,6 +15,7 @@ All content © 2015 DigiPen (USA) Corporation, all rights reserved.
 #include "components/particles/CParticleSystem.h"
 #include "../SheepUtil/include/Matrix3D.h"
 #include "components/gameplay_scripts/CGiantKillBox.h"
+#include "Components/sprites/CSprite.h"
 
 namespace Framework
 {
@@ -33,7 +34,7 @@ namespace Framework
     timer -= dt;
     if (timer <= 0)
     {
-      FireEvent(LC);
+      FireEventSmall(LC);
       timer = 7.0f;
     }
   }
@@ -52,6 +53,33 @@ namespace Framework
     {
       eGiantPlat->GetComponent<GiantKillBox>(eGiantKillBox)->direction = false;
       GPT->SetTranslation(Vec3(-1000.0, 0.0, 1.0));
+    }
+  }
+
+  void LEGrinderBig::FireEventSmall(GameObject *LogicController)
+  {
+    int numGrinders = 3;
+    LC = LogicController;
+
+    GameObject *eGiantPlat = (FACTORY->LoadObjectFromArchetype(LogicController->space, "KillBoxBig"));
+    Transform *GPT = eGiantPlat->GetComponent<Transform>(eTransform);
+    BoxCollider *GPC = eGiantPlat->GetComponent<BoxCollider>(eBoxCollider);
+
+    GPC->SetBodyCollisionGroup("NonCollide");
+    GPT->SetScale(Vec3(2.0f, 0.5f, 1.0f));
+
+    float ranY = (float)GetRandom(-500, 500);
+    if (GetRandom(0, 1))
+    {
+      eGiantPlat->GetComponent<GiantKillBox>(eGiantKillBox)->direction = true;
+      eGiantPlat->GetComponent<GiantKillBox>(eGiantKillBox)->numOfGrinders = numGrinders;
+      GPT->SetTranslation(Vec3(1000.0, ranY, 1.0));
+    }
+    else
+    {
+      eGiantPlat->GetComponent<GiantKillBox>(eGiantKillBox)->direction = false;
+      eGiantPlat->GetComponent<GiantKillBox>(eGiantKillBox)->numOfGrinders = numGrinders;
+      GPT->SetTranslation(Vec3(-1000.0, ranY, 1.0));
     }
   }
 

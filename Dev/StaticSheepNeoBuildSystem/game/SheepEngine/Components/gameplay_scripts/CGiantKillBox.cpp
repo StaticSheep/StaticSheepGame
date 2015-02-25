@@ -15,7 +15,10 @@ namespace Framework
 {
   GiantKillBox::GiantKillBox()
 	{
+    //default
     direction = true;
+    numOfGrinders = 11;
+    sizeOfGrinder = 60.0f;
 	}
 
   GiantKillBox::~GiantKillBox()
@@ -43,39 +46,44 @@ namespace Framework
 	{
     Transform *pt = space->GetHandles().GetAs<Transform>(kbTransfrom);
     BoxCollider *pc = space->GetHandles().GetAs <BoxCollider>(kbCollider);
-    if (pt->GetTranslation().x > 1008 || pt->GetTranslation().x < -1008)
-    {
-      for (int i = 0; i < 11; ++i)
-        space->GetGameObject(Grinders[i])->Destroy();
 
-      GrindSpawn = false;
-      space->GetGameObject(owner)->Destroy();
-    }
+    //spawn grinders
     if (!GrindSpawn)
     {
-      for (int i = 0; i < 11; ++i)
+      for (int i = 0; i < numOfGrinders; ++i)
       {
         Grinders[i] = (FACTORY->LoadObjectFromArchetype(space, "GrinderBig"))->self;
       }
       GrindSpawn = true;
     }
+    //move the level event
     if (direction)
     {
       pt->SetTranslation(pt->GetTranslation() + Vec3(-5.0, 0.0, 0.0));
-      for (int i = 0; i < 11; ++i)
+      for (int i = 0; i < numOfGrinders; ++i)
       {
         GT[i] = (space->GetGameObject(Grinders[i])->GetComponent<Transform>(eTransform));
-        GT[i]->SetTranslation(pt->GetTranslation() + Vec3(0.0, ((float)i * 60.0f -300.0f), -0.1));
+        GT[i]->SetTranslation(pt->GetTranslation() + Vec3(0.0, ((float)i * sizeOfGrinder - (sizeOfGrinder * (numOfGrinders / 2))), -0.1));
       }
     }
     else
     {
       pt->SetTranslation(pt->GetTranslation() + Vec3(5.0, 0.0, 0.0));
-      for (int i = 0; i < 11; ++i)
+      for (int i = 0; i < numOfGrinders; ++i)
       {
         GT[i] = (space->GetGameObject(Grinders[i])->GetComponent<Transform>(eTransform));
-        GT[i]->SetTranslation(pt->GetTranslation() + Vec3(0.0, ((float)i * 60.0f - 300.0f), 0.0));
+        GT[i]->SetTranslation(pt->GetTranslation() + Vec3(0.0, ((float)i * sizeOfGrinder - (sizeOfGrinder * (numOfGrinders / 2))), -0.1));
       }
+    }
+
+    //kill grinders that are out of bounds
+    if (pt->GetTranslation().x > 1008 || pt->GetTranslation().x < -1008)
+    {
+      for (int i = 0; i < numOfGrinders; ++i)
+        space->GetGameObject(Grinders[i])->Destroy();
+
+      GrindSpawn = false;
+      space->GetGameObject(owner)->Destroy();
     }
 	}
 

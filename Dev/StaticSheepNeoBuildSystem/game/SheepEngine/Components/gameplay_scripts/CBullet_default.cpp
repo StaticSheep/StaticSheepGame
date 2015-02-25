@@ -16,7 +16,7 @@ namespace Framework
 	Bullet_Default::Bullet_Default()
 	{
     damage = 10;
-    ttl = 0.5f;
+    ttl = 0.375f;
 	}
 
 	Bullet_Default::~Bullet_Default()

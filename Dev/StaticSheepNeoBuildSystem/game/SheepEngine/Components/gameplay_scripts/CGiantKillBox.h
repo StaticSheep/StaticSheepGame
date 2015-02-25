@@ -23,10 +23,12 @@ namespace Framework
 		void Remove();
 
 		//member variables
-    Handle Grinders[12];
+    Handle Grinders[12]; //12 is the max amount of grinders to hold for this level event
     Transform *GT[12];
     Handle kbTransfrom;
     Handle kbCollider;
     bool direction, GrindSpawn;
+    int numOfGrinders;
+    float sizeOfGrinder;
 	};
 }
