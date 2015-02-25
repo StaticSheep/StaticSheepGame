@@ -17,5 +17,8 @@ namespace Framework
 
     void Update(float dt);
     void FireEvent(GameObject *LogicController);
+
+    float timer;
+    GameObject *LC;
   };
 }

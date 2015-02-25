@@ -41,15 +41,26 @@ namespace Framework
 	{
     Transform *at = space->GetHandles().GetAs<Transform>(aTransfrom);
     CircleCollider *ac = space->GetHandles().GetAs <CircleCollider>(aCollider);
+    if (at->GetTranslation().z < 50.0f)
+      at->SetTranslation(at->GetTranslation() + Vec3(0.0f, 0.0f, -1.5f));
+    else
+      at->SetTranslation(at->GetTranslation() + Vec3(0.0f, 0.0f, -2.0f));
 
-    at->SetTranslation(at->GetTranslation() + Vec3(0.0f, 0.0f, -3.0f));
     float currZ = at->GetTranslation().z;
+
     Vec3 scale(0.0f, 0.0f, 0.0f);
     if (currZ <= 5.0f)
       scale = Vec3(0.75f, 0.75f, 0.75f);
     else
       scale = Vec3(1/(currZ * 0.10f), 1/(currZ * 0.10f), 1.0f);
+
     at->SetScale(scale);
+
+    if (currZ > 5.0f)
+      ac->SetBodyCollisionGroup("NonCollide");
+    else
+      ac->SetBodyCollisionGroup("Resolve");
+
     if (at->GetTranslation().z <= 0.0f)
     {
       space->GetGameObject(owner)->Destroy();

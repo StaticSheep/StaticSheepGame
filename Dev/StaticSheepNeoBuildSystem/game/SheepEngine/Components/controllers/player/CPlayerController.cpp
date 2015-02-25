@@ -97,6 +97,8 @@ namespace Framework
     animCont.AnimState = IDLE;
     bc->SetBodyCollisionGroup(space->GetGameObject(owner)->archetype);
 
+    powerUp = nullptr;
+
 	}
 
   static Vec2D aim(1.0f, 0.0f); //default aiming direction
@@ -120,7 +122,16 @@ namespace Framework
     bc = space->GetHandles().GetAs<BoxCollider>(playerCollider);
     se = space->GetHandles().GetAs<SoundEmitter>(playerSound);
     ps = space->GetHandles().GetAs<Transform>(playerTransform);
-
+    if (powerUp != nullptr)
+    {
+      if (powerUp->inUse)
+        powerUp->Update(dt);
+      else if (powerUp->inUse == false)
+      {
+        delete powerUp;
+        powerUp = nullptr;
+      }
+    }
     //if the player is out of health run the player death function
     if (health <= 0)
     {
@@ -387,17 +398,35 @@ namespace Framework
       return;
     }
 
-    if ((OtherObject->archetype == "KillBox" || OtherObject->archetype == "KillBoxBig" || OtherObject->name == "GrinderBig") 
-        && !GodMode && !PerfectMachine)
-      health = 0;
+    if ((OtherObject->archetype == "KillBox" || OtherObject->archetype == "KillBoxBig" || OtherObject->name == "GrinderBig")
+      && !GodMode && !PerfectMachine)
+    {
+      isSnapped = false;
+      health -= 10;
+    }
 
     if ((OtherObject->GetComponentHandle(eGrinder) != Handle::null)
       && !hasRespawned && !GodMode && !PerfectMachine)
+    {
+      isSnapped = false;
       health -= 10;
+    }
 
     if (OtherObject->name == "WeaponPickup")
       se->Play("weapon_pickup", &SoundInstance(0.75f));
 
+    if (OtherObject->name == "Asteroid")
+    {
+      health -= 50;
+      float ranY = (float)GetRandom(-500, 500);
+      float ranX = (float)GetRandom(-500, 500);
+      bc->AddToVelocity(Vec3(ranX, ranY, 0.0f));
+    }
+
+    /*if (OtherObject->name == "Player")
+    {
+
+    }*/
 		
 		//get the transform of the thing we are colliding with
 		Transform *OOT = OtherObject->GetComponent<Transform>(eTransform);
@@ -405,7 +434,7 @@ namespace Framework
 		if (!OOT)
 			return;
 
-    if (OtherObject->HasComponent(eBoxCollider) && OtherObject->name != "Player" && OtherObject->name != "WeaponPickup" && OtherObject->name != "Grinder")
+    if (OtherObject->HasComponent(eBoxCollider) && OtherObject->name != "Player" && OtherObject->name != "WeaponPickup" && OtherObject->archetype != "Grinder")
 		{
       float dotNormals;
       Vec3 nextSnappedNormal;

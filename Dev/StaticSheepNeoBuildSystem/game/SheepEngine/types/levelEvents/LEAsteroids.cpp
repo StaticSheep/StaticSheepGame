@@ -37,6 +37,11 @@ namespace Framework
       numOfSpawns -= 1;
       timer = 1.0f;
     }
+    else if (timer <= 0.0f)
+    {
+      timer = 5.0f;
+      FireEvent(LC);
+    }
   }
 
   void LEAsteroids::FireEvent(GameObject *LogicController)
@@ -47,7 +52,7 @@ namespace Framework
       Handle asteroid = (FACTORY->LoadObjectFromArchetype(LogicController->space, "Asteroid"))->self;
       Transform *aT = (LogicController->space->GetGameObject(asteroid)->GetComponent<Transform>(eTransform));
 
-      aT->SetTranslation(Vec3(GetRandom(-700, 700), GetRandom(-700, 700), GetRandom(200, 250)));
+      aT->SetTranslation(Vec3(GetRandom(-800, 800), GetRandom(-600, 600), GetRandom(175, 250)));
     }
 
   }

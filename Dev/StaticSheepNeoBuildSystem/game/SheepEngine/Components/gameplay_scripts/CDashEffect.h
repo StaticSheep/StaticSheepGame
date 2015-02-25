@@ -25,5 +25,7 @@ namespace Framework
     Handle effectTransform;
     Handle pTransform;
     float lifeTime;
+    bool alive;
+    float deathTimer;
 	};
 }

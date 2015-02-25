@@ -43,7 +43,7 @@ GameObject
     m_height float 85.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool true
-    m_CollisionGroup std::string ""
+    m_CollisionGroup std::string "NonCollide"
   }
   WeaponPickup
   {

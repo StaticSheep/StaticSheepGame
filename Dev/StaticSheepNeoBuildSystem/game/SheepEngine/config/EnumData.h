@@ -34,6 +34,13 @@ E_NAME(Weapons)
   E_ENTRY(NoWeapon) //keep this at the end
 E_END(Weapons)
 
+E_NAME(PowerUps)
+  E_ENTRY(Shield)
+  E_ENTRY(Power)
+  E_ENTRY(Fans)
+  E_ENTRY(MiniMe)
+  E_ENTRY(NoPowerUp) //keep this at the end
+E_END(PowerUps)
 
 E_NAME(Component)
   E_ENTRY(Transform)
@@ -66,6 +73,7 @@ E_NAME(Component)
   E_ENTRY(SlotMachine)
   E_ENTRY(AimingArrow)
   E_ENTRY(DashEffect)
+  E_ENTRY(PowerupPickup)
   E_ENTRY(Asteroid)
 
   E_ENTRY(LuaComponent)

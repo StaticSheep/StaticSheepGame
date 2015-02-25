@@ -142,7 +142,7 @@ namespace Framework
 
       LE->FireEvent(space->GetHandles().GetAs<GameObject>(owner));
 
-      timeLimit = (float)GetRandom(15, 20);
+      timeLimit = (float)GetRandom(20, 30);
       warning = false;
       camShakeTime = 8.5f;
       camShakeMagnitude = 4;
@@ -166,11 +166,11 @@ namespace Framework
       // SoundPlayer keeps track of instances, so if you want to stop a song,
       // you can do sp->Stop("space_brawl") and it'll stop.
 
-      SoundInstance instance;
+      /*SoundInstance instance;
       instance.volume = 0.40f;
       instance.mode = PLAY_LOOP;
 
-      sp->Play("Main Music", &instance);
+      sp->Play("Main Music", &instance);*/
       playing = true;
     } 
     SoundPlayer *sp = space->GetHandles().GetAs<SoundPlayer>(levelSound);

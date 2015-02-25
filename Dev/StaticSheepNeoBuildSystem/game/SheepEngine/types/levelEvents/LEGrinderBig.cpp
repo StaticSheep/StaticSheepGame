@@ -20,7 +20,7 @@ namespace Framework
 {
   LEGrinderBig::LEGrinderBig()
   {
-
+    timer = 5.0f;
   }
 
   LEGrinderBig::~LEGrinderBig()
@@ -30,11 +30,17 @@ namespace Framework
 
   void LEGrinderBig::Update(float dt)
   {
-
+    timer -= dt;
+    if (timer <= 0)
+    {
+      FireEvent(LC);
+      timer = 7.0f;
+    }
   }
 
   void LEGrinderBig::FireEvent(GameObject *LogicController)
   {
+    LC = LogicController;
     GameObject *eGiantPlat = (FACTORY->LoadObjectFromArchetype(LogicController->space, "KillBoxBig"));
     Transform *GPT = eGiantPlat->GetComponent<Transform>(eTransform);
     if (GetRandom(0, 1))
