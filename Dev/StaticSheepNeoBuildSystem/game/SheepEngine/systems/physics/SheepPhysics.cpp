@@ -159,7 +159,9 @@ namespace Framework
           //draw velocity line
           Draw::SetColor(1, 0, 0, 1);
           Draw::DrawLine(bodyPosition.x, bodyPosition.y,
-            bodyPosition.x + bodyVelocity.x * .5f, bodyPosition.y + bodyVelocity.y * .5f);    
+            bodyPosition.x + bodyVelocity.x * .5f, bodyPosition.y + bodyVelocity.y * .5f);
+
+          Draw::DrawCircle(bodyPosition.x, bodyPosition.y, ((CircleCollider*)(*circles)[j])->m_radius);
         }
       
         //go through rays

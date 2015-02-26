@@ -310,7 +310,7 @@ GameObject
   LuaComponent
   {
     name std::string "PauseMenu"
-    loadCommand std::string "return function(self) self.opened = true self.ypos = 456 end"
+    loadCommand std::string "return function(self) self.ypos = 456 self.opened = true end"
   }
 
   LuaComponent
@@ -1643,11 +1643,6 @@ GameObject
     m_CollisionGroup std::string ""
   }
 }
-ach_Grinder
-ach_Grinder
-  name std::string "GrinderBR2"
-ach_Grinder
-  name std::string "GrinderBR1"
 GameObject
 {
   name std::string "Platform"
@@ -1693,12 +1688,6 @@ GameObject
     }
   }
 }
-ach_Grinder
-  name std::string "GrinderTR2"
-ach_Grinder
-  name std::string "GrinderTR1"
-ach_Grinder
-  name std::string "GrinderTR3"
 GameObject
 {
   name std::string "Platform"
@@ -1744,8 +1733,6 @@ GameObject
     }
   }
 }
-ach_Grinder
-  name std::string "GrinderTL1"
 GameObject
 {
   name std::string "Platform"
@@ -1791,16 +1778,6 @@ GameObject
     }
   }
 }
-ach_Grinder
-  name std::string "GrinderTL3"
-ach_Grinder
-  name std::string "GrinderTL2"
-ach_Grinder
-  name std::string "GrinderBL3"
-ach_Grinder
-  name std::string "GrinderBL2"
-ach_Grinder
-  name std::string "GrinderBL1"
 GameObject
 {
   name std::string "PlatformCorner"
@@ -1952,6 +1929,65 @@ GameObject
     m_CollisionGroup std::string ""
   }
 }
-ach_LevelSlotMachine
-ach_Laser
-  name std::string "Laser"
+GameObject
+{
+  name std::string ""
+  archetype std::string ""
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 0.000000
+      y_ float 0.000000
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "Default.png"
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 1.000000
+      Y float 1.000000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+  CircleCollider
+  {
+    m_radius float 20.000000
+    m_materialName std::string "Static"
+    m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
+  }
+  Laser
+  {
+    type unsignedint 1
+    startDelay float 1.000000
+    duration float 30.000000
+    damage float 1.000000
+    width int 30
+    arcRotation float 1.500000
+    arcDelay float 5.000000
+  }
+}

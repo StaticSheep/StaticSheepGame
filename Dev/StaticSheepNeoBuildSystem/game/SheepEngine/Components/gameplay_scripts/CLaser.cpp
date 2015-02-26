@@ -100,15 +100,15 @@ namespace Framework
   void Laser::SimpleCaster(CircleCollider *lc)
   {
     Vec3D direction = lc->GetBodyRotationAsVector();
-    lc->SetRayCast(lc->GetBodyPosition(), direction, "Collide");
+    lc->SetRayCast(lc->GetBodyPosition(), direction, "Resolve");
     lc->SimpleRayCast();
     Vec3D offset;
 
     for (int i = 0; i < positionOffsets.size(); ++i)
     {
-      lc->SetRayCast(positionOffsets[i], direction, "Collide");
+      lc->SetRayCast(positionOffsets[i], direction, "Resolve");
       lc->SimpleRayCast();
-
+      lc->RayDestruction();
       //check return results
     }
   }
@@ -116,14 +116,18 @@ namespace Framework
   void Laser::ComplexCaster(CircleCollider *lc)
   {
     Vec3D direction = lc->GetBodyRotationAsVector();
-    lc->SetRayCast(lc->GetBodyPosition(), direction, "Collide");
-    lc->ComplexRayCast();
+    lc->SetRayCast(lc->GetBodyPosition(), direction, "Resolve");
+    bool death = lc->ComplexRayCast();
+    if (death)
+      lc->RayDestruction();
     Vec3D offset;
 
     for (int i = 0; i < positionOffsets.size(); ++i)
     {
-      lc->SetRayCast(positionOffsets[i], direction, "Collide");
-      lc->ComplexRayCast();
+      lc->SetRayCast(positionOffsets[i], direction, "Resolve");
+      death = lc->ComplexRayCast();
+      if (death)
+        lc->RayDestruction();
     }
   }
 
