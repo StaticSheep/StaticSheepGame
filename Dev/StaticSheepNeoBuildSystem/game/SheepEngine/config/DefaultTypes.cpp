@@ -53,6 +53,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/gameplay_scripts/CAsteroid.h"
 #include "components/gameplay_scripts/CPowerupPickup.h"
 #include "Components/gameplay_scripts/CSlotController.h"
+#include "Components/gameplay_scripts/CLaser.h"
 
 
 namespace Framework
@@ -261,6 +262,16 @@ namespace Framework
 
     TYPE_REGISTER(SlotController);
     TYPE_SET_TWEAK_TYPE(SlotController, AntTweak::TW_TYPE_COMPONENT);
+
+    TYPE_REGISTER(Laser);
+    TYPE_SET_TWEAK_TYPE(Laser, AntTweak::TW_TYPE_COMPONENT);
+    TYPE_ADD_MEMBER(Laser, type, false, true, "Type");
+    TYPE_ADD_MEMBER(Laser, startDelay, false, true, "Delay");
+    TYPE_ADD_MEMBER(Laser, duration, false, true, "Duration");
+    TYPE_ADD_MEMBER(Laser, damage, false, true, "Damage");
+    TYPE_ADD_MEMBER(Laser, width, false, true, "Width");
+    TYPE_ADD_MEMBER(Laser, arcRotation, false, true, "Arc");
+    TYPE_ADD_MEMBER(Laser, arcDelay, false, true, "ArcDelay");
 
     TYPE_REGISTER(Pistol);
     TYPE_REGISTER(Shotgun);
