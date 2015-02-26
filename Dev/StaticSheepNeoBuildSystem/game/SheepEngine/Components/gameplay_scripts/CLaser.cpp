@@ -80,9 +80,6 @@ namespace Framework
         positionOffsets.push_back(-offsetDir * valueOffset + lc->GetBodyPosition());
       }
     }
-
-    
-
   }
 
   void Laser::Remove()
@@ -101,10 +98,12 @@ namespace Framework
       return;
     }
 
+      //duration begins after start delay over
+    duration -= dt;
+
     if (duration < 0)
       space->GetGameObject(owner)->Destroy();
 
-    duration -= dt;
     arcDelay -= dt;
 
     if (arcDelay < 0)
