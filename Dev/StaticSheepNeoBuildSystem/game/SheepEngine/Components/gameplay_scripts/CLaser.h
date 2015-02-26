@@ -18,7 +18,7 @@ namespace Framework
 {
   
 
-  class Laser : public Sprite
+  class Laser : public GameComponent
   {
   public:
     Laser();
@@ -28,6 +28,18 @@ namespace Framework
     void Remove();
     void SimpleCaster(CircleCollider *lc);
     void ComplexCaster(CircleCollider *lc);
+
+    void SetBodyTexture(const char * Texture);
+    DirectSheep::Handle& GetBodyTexture();
+
+    void SetBeamTexture(const char * Texture);
+    DirectSheep::Handle& GetBeamTexture();
+
+    void TweakSetLayer(const void* layerNum);
+    void TweakSetBodyTexture(const void * Texture);
+    void TweakSetBeamTexture(const void * Texture);
+
+    void DrawLaser();
 
     void(Laser::*Caster)(CircleCollider *lc);
 
@@ -51,6 +63,23 @@ namespace Framework
 
     std::vector<Vec3D> positionOffsets; //used for multiple raycasts
     int numberOfRays;
+
+    // Texture names
+    std::string m_bodyTexName;
+    std::string m_beamTexName;
+
+    // Texture handles
+    DirectSheep::Handle m_bodyTex;
+    DirectSheep::Handle m_beamTex;
+
+    Vec2                m_bodyTexDim;
+    Vec2                m_beamTexDim;
+
+    Vec2                m_bodyScale;
+    Vec2                m_beamScale;
+
+    Vec4                m_bodyColor;
+    Vec4                m_beamColor;
 
   };
 }
