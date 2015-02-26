@@ -18,7 +18,8 @@ namespace Framework
 	{
     Stype = GOLD;
     done = false;
-    levelTimer = 2.0f;
+    levelTimer = 3.0f;
+    spawnedSM = nullptr;
 	}
 
   SlotController::~SlotController()
@@ -28,17 +29,17 @@ namespace Framework
 
   void SlotController::Initialize()
 	{
-    Stype = GOLD;
+    Stype = GOLD; //setting a default slot machine type here.
+
 		//logic setup, you're attached and components are in place
     space->hooks.Add("LogicUpdate", self, BUILD_FUNCTION(SlotController::LogicUpdate));
-    //gTransfrom = space->GetGameObject(owner)->GetComponentHandle(eTransform);
-    //gCollider = space->GetGameObject(owner)->GetComponentHandle(eBoxCollider);
+
     Handle SM = space->GetGameObject(owner)->GetComponentHandle(eSlotMachine);
     SlotMachine *sm = space->GetHandles().GetAs<SlotMachine>(SM);
+    //when you create a slot machine through an archetype you can set its call backs like this
     sm->SetTextureCB(self, BUILD_FUNCTION(SlotController::SetSMTextures));
     sm->SetFinishedCB(self, BUILD_FUNCTION(SlotController::ReceiveSMResults));
-    //when you create a slot machine through an archetype you can set its call backs like this
-
+    
 	}
 
   void SlotController::Remove()
@@ -48,7 +49,7 @@ namespace Framework
 
   void SlotController::LogicUpdate(float dt)
 	{
-    if (done)
+    if (done && spawnedSM == nullptr) //if this slot machine is done and there are no spawned slot machine
     {
       levelTimer -= dt;
       if (levelTimer <= 0)
@@ -61,15 +62,20 @@ namespace Framework
     switch (Stype)
     {
     case GOLD:
-      if (slotNum == 1 || slotNum == 2)
+      if (slotNum == 1)
       {
-        *spinTexID = Draw::GetTextureID("slot_test_blur.png");
-        *stopTexID = Draw::GetTextureID("slot_test.png");
+        *spinTexID = Draw::GetTextureID("game_mod1_reel.png");
+        *stopTexID = Draw::GetTextureID("game_mod1_reel.png");
+      }
+      else if (slotNum == 2)
+      {
+        *spinTexID = Draw::GetTextureID("game_mod2_reel.png");
+        *stopTexID = Draw::GetTextureID("game_mod2_reel.png");
       }
       else
       {
-        *spinTexID = Draw::GetTextureID("slot_test_blur.png");
-        *stopTexID = Draw::GetTextureID("slot_test.png");
+        *spinTexID = Draw::GetTextureID("game_mode_reel.png");
+        *stopTexID = Draw::GetTextureID("game_mode_reel.png");
       }
       break;
     case JACKPOT:

@@ -32,10 +32,12 @@ namespace Framework
     void SetSMResults(int, int*);
     void ReceiveSMResults(std::vector<int>*);
 
+    void CheckForJP(std::vector<int>*);
 		//member variables
     float levelTimer; //keeps track of overall time in the level for slot machine switches
     SlotType Stype;
     bool done; 
+    GameObject *spawnedSM;
 
 	};
 }
