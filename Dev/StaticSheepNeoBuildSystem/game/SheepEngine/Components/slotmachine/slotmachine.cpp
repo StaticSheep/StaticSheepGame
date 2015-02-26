@@ -88,9 +88,6 @@ namespace Framework
       BUILD_FUNCTION(SlotMachine::Draw));
 
     SetupSlots();
-
-    if (startSpinning)
-      Start();
   }
 
   void SlotMachine::TweakSetupSlots(const void* value)
@@ -171,6 +168,13 @@ namespace Framework
 
   void SlotMachine::Update(float dt)
   {
+    if (startSpinning && !m_spinning)
+    {
+      Start();
+      startSpinning = false;
+    }
+      
+
     //if (SHEEPINPUT->Keyboard.KeyIsPressed(VK_SPACE) && m_spinning && !m_stopping)
     //  Stop();
     if (m_spinning)
