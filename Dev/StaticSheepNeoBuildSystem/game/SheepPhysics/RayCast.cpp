@@ -93,7 +93,16 @@ namespace SheepFizz
 
   bool RayCast::SimpleRayCircleTest(Body* circle)
   {
-      //create a vector between the circle and the ray's start
+    float intersect = ((circle->position_.x - position_.x) * direction_.y 
+      - (circle->position_.y - position_.y) * direction_.y);
+        
+    intersect = (intersect * intersect) / (direction_.x * direction_.x + direction_.y * direction_.y);
+
+    if (intersect < (circle->shape_->GetRadius() * circle->shape_->GetRadius()))
+      return true;
+
+    return false;
+    /*  //create a vector between the circle and the ray's start
     circleNorm = circle->position_ - position_;
 
       //project it onto the direction
@@ -104,13 +113,15 @@ namespace SheepFizz
     
     if (circleNorm.SquareLength() <= (circle->shape_->GetRadius() * circle->shape_->GetRadius()))
       return true;
-
-    return false;
+      
+    return false;*/
   }//end of SimpleRayCircleTest
 
 
   bool RayCast::ComplexRayCircleTest(Body* circle)
   {
+
+    return SimpleRayCircleTest(circle);
     /*bool rayIntersect = SimpleRayCircleTest(circle);
 
     if (!rayIntersect)
