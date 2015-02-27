@@ -524,6 +524,11 @@ namespace Framework
     return  ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->RayCaster(&ray);
   }
 
+  Vec3D SheepPhysics::GetFirstCollision()
+  {
+    return ray.firstCollisionLocation;
+  }
+
   void SheepPhysics::RayDestruction()
   {
     if (ray.findFirstCollision)

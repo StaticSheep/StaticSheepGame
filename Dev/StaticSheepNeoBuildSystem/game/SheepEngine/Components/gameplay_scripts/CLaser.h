@@ -63,7 +63,11 @@ namespace Framework
     float arcPerSec;
 
     std::vector<Vec3D> positionOffsets; //used for multiple raycasts
+    int raysPerSide;
     int numberOfRays;
+
+
+    std::vector<float> m_beamLengths;
 
     // Texture names
     std::string m_bodyTexName;

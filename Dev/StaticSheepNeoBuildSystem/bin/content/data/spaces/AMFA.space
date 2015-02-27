@@ -1949,30 +1949,6 @@ GameObject
       z_ float 0.000000
     }
   }
-  Sprite
-  {
-    m_spriteName std::string "Default.png"
-    m_flipX bool false
-    m_flipY bool false
-    m_uvScale bool false
-    Color Vec4
-    {
-      R float 1.000000
-      G float 1.000000
-      B float 1.000000
-      A float 1.000000
-    }
-    Size Vec2
-    {
-      X float 1.000000
-      Y float 1.000000
-    }
-    m_origin Vec2
-    {
-      X float 0.000000
-      Y float 0.000000
-    }
-  }
   CircleCollider
   {
     m_radius float 20.000000
@@ -1989,5 +1965,21 @@ GameObject
     width int 50
     arcRotation float 0.100000
     arcDelay float 5.000000
+    m_bodyTexName std::string "light_block_on.png"
+    m_beamTexName std::string "white.png"
+    m_bodyColor Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    m_beamColor Vec4
+    {
+      R float 0.000000
+      G float 1.000000
+      B float 0.000000
+      A float 1.000000
+    }
   }
 }

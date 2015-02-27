@@ -86,6 +86,7 @@ namespace Framework
       bool SimpleRayCast(GameSpace* space);
       bool ComplexRayCast(GameSpace* space);
       void RayDestruction();
+      Vec3D GetFirstCollision();
 
 			//settors
 			void SetBodyPosition(GameSpace* space, SheepFizz::Handle handle, Vec3D position);

@@ -68,12 +68,14 @@ namespace Framework
     else
       Caster = &Framework::Laser::SimpleCaster;
 
+    positionOffsets.push_back(lc->GetBodyPosition());
+
     if (width > 4)
     {
       Vec3D offsetDir = direction.CalculateNormal();
-      numberOfRays = width / 4;
+      raysPerSide = width / 4;
 
-      for (int i = 1; i < numberOfRays + 1; ++i)
+      for (int i = 1; i < raysPerSide + 1; ++i)
       {
         positionOffsets.push_back((offsetDir * 2 * i) + lc->GetBodyPosition());
         positionOffsets.push_back((-offsetDir * 2 * i) + lc->GetBodyPosition());
@@ -86,6 +88,7 @@ namespace Framework
         positionOffsets.push_back(-offsetDir * valueOffset + lc->GetBodyPosition());
       }
     }
+    numberOfRays = positionOffsets.size();
   }
 
   void Laser::Remove()
@@ -113,7 +116,8 @@ namespace Framework
     arcDelay -= dt;
 
     (this->*Caster)(lc);
-    
+
+
     if (arcDelay < 0)
     {
       float curRotation = lc->GetBodyRotation();
@@ -124,13 +128,15 @@ namespace Framework
 
       lc->SetBodyRotation(curRotation);
 
-      if (numberOfRays > 1)
+      positionOffsets.clear();
+      positionOffsets.push_back(lc->GetBodyPosition());
+
+      if (raysPerSide > 1)
       {
-        positionOffsets.clear();
         Vec3D direction = lc->GetBodyRotationAsVector();
         Vec3D offsetDir = direction.CalculateNormal();
 
-        for (int i = 1; i < numberOfRays + 1; ++i)
+        for (int i = 1; i < raysPerSide + 1; ++i)
         {
           positionOffsets.push_back((offsetDir * 2 * i) + lc->GetBodyPosition());
           positionOffsets.push_back((-offsetDir * 2 * i) + lc->GetBodyPosition());
@@ -150,6 +156,7 @@ namespace Framework
   {
     Transform* trans = space->GetHandles().GetAs<Transform>(lTransfrom);
 
+    // Draw body/emitter
     GRAPHICS->SetUV(Vec2(0,0), Vec2(1,1));
 
     GRAPHICS->SetPosition(trans->GetTranslation().X,
@@ -166,55 +173,70 @@ namespace Framework
 
     GRAPHICS->DrawBatched(m_bodyTex);
 
-    GRAPHICS->SetSize((trans->GetScale().X * 500) / m_beamTexDim.x,
-      (trans->GetScale().Y * width) / m_beamTexDim.y);
-
     GRAPHICS->SetColor(m_beamColor);
 
-    GRAPHICS->SetObjectOrigin(((m_bodyTexDim.x * m_bodyScale.x * trans->GetScale().X) / 2.0f) + ((trans->GetScale().X * 500) / 2.0f), 0);
+    float Length = 0;
+    for (int i = 0; i < m_beamLengths.size(); ++i)
+    {
 
-    GRAPHICS->DrawBatched(m_beamTex);
+      if (m_beamLengths[i] != -1)
+        Length = m_beamLengths[i];
+      else
+        Length = GRAPHICS->_ScreenWidth;
+
+      Length -= ((m_bodyTexDim.x * m_bodyScale.x * trans->GetScale().X) / 2.0f);
+
+      GRAPHICS->SetSize(((trans->GetScale().X * Length) / m_beamTexDim.x),
+        (trans->GetScale().Y * width) / m_beamTexDim.y / numberOfRays);
+
+      GRAPHICS->SetObjectOrigin(((m_bodyTexDim.x * m_bodyScale.x * trans->GetScale().X) / 2.0f) +
+        ((trans->GetScale().X * Length) / 2.0f), 0);
+
+      GRAPHICS->SetPosition(trans->GetTranslation().X + positionOffsets[i].x,
+        positionOffsets[i].y, trans->GetTranslation().Z);
+
+      GRAPHICS->DrawBatched(m_beamTex);
+    }
 
     GRAPHICS->SetObjectOrigin(0, 0);
+
+    m_beamLengths.clear();
   }
 
   void Laser::SimpleCaster(CircleCollider *lc)
   {
     Vec3D direction = lc->GetBodyRotationAsVector();
-    lc->SetRayCast(lc->GetBodyPosition(), direction, "Resolve");
-    lc->SimpleRayCast();
-    Vec3D offset;
 
     for (int i = 0; i < positionOffsets.size(); ++i)
     {
-
       lc->SetRayCast(positionOffsets[i], direction, "Resolve");
       lc->SimpleRayCast();
       lc->RayDestruction();
+
+      m_beamLengths.push_back(-1);
       //check return results
     }
   }
 
-  void Laser::ModifyPositionOffsets(void)
-  {
-
-
-  }
-
   void Laser::ComplexCaster(CircleCollider *lc)
   {
+    Transform* trans = space->GetHandles().GetAs<Transform>(lTransfrom);
     Vec3D direction = lc->GetBodyRotationAsVector();
-    lc->SetRayCast(lc->GetBodyPosition(), direction, "Resolve");
-    bool death = lc->ComplexRayCast();
-    if (death)
-      lc->RayDestruction();
+
+    bool death = false;
+
 
     for (int i = 0; i < positionOffsets.size(); ++i)
     {
       lc->SetRayCast(positionOffsets[i], direction, "Resolve");
       death = lc->ComplexRayCast();
       if (death)
+      {
         lc->RayDestruction();
+        m_beamLengths.push_back((Vec3D(PHYSICS->GetFirstCollision()) - trans->GetTranslation()).Length());
+      }
+      else
+        m_beamLengths.push_back(-1);
     }
   }
 
