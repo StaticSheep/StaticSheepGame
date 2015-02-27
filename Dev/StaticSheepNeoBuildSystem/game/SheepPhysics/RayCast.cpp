@@ -93,6 +93,9 @@ namespace SheepFizz
 
   bool RayCast::SimpleRayCircleTest(Body* circle)
   {
+
+    return false;
+
     float intersect = ((circle->position_.x - position_.x) * direction_.y 
       - (circle->position_.y - position_.y) * direction_.y);
         
@@ -121,11 +124,9 @@ namespace SheepFizz
   bool RayCast::ComplexRayCircleTest(Body* circle)
   {
 
-    return SimpleRayCircleTest(circle);
-    /*bool rayIntersect = SimpleRayCircleTest(circle);
-
-    if (!rayIntersect)
+    if (!SimpleRayCircleTest(circle))
       return false;
+
 
     float segmentLength = ((Circle*)(circle->shape_))->GetRadius() *
       ((Circle*)(circle->shape_))->GetRadius() - circleNorm.SquareLength();
@@ -142,7 +143,6 @@ namespace SheepFizz
       firstCollision_ = circle;
     }
 
-    return true;*/
     return false;
   }//end of ComplexRayCircleTest
 
