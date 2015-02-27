@@ -95,7 +95,31 @@ namespace Framework
     {
       float curRotation = lc->GetBodyRotation();
       curRotation += arcPerSec;
+      
+      if (curRotation >= 2 * PI)
+        curRotation = 0;
+
       lc->SetBodyRotation(curRotation);
+
+      if (numberOfRays > 1)
+      {
+        positionOffsets.clear();
+        Vec3D direction = lc->GetBodyRotationAsVector();
+        Vec3D offsetDir = direction.CalculateNormal();
+
+        for (int i = 1; i < numberOfRays + 1; ++i)
+        {
+          positionOffsets.push_back((offsetDir * 2 * i) + lc->GetBodyPosition());
+          positionOffsets.push_back((-offsetDir * 2 * i) + lc->GetBodyPosition());
+        }
+
+        if (width % 4 != 0)
+        {
+          float valueOffset = ((float)width) / 2.0f;
+          positionOffsets.push_back(offsetDir * valueOffset + lc->GetBodyPosition());
+          positionOffsets.push_back(-offsetDir * valueOffset + lc->GetBodyPosition());
+        }
+      }
     } 
   }
 
@@ -108,11 +132,18 @@ namespace Framework
 
     for (int i = 0; i < positionOffsets.size(); ++i)
     {
+
       lc->SetRayCast(positionOffsets[i], direction, "Resolve");
       lc->SimpleRayCast();
       lc->RayDestruction();
       //check return results
     }
+  }
+
+  void Laser::ModifyPositionOffsets(void)
+  {
+
+
   }
 
   void Laser::ComplexCaster(CircleCollider *lc)

@@ -111,7 +111,7 @@ namespace SheepFizz
 
   bool RayCast::ComplexRayCircleTest(Body* circle)
   {
-    bool rayIntersect = SimpleRayCircleTest(circle);
+    /*bool rayIntersect = SimpleRayCircleTest(circle);
 
     if (!rayIntersect)
       return false;
@@ -131,7 +131,8 @@ namespace SheepFizz
       firstCollision_ = circle;
     }
 
-    return true;
+    return true;*/
+    return false;
   }//end of ComplexRayCircleTest
 
     
@@ -185,7 +186,7 @@ namespace SheepFizz
   {
     return ComplexRayRectangleTest(rectangle);
     
-    Rectangle* rec = (Rectangle*)(rectangle->shape_);
+    /*Rectangle* rec = (Rectangle*)(rectangle->shape_);
     Vec3D normal;
    
     for (unsigned int i = 0; i < rec->GetVertexNumber(); ++i)
@@ -202,7 +203,7 @@ namespace SheepFizz
         return true;
     }
 
-    return false;
+    return false;*/
   }//end of SimpleRayRectangleTest
 
     //determines the collision point for ComplexRayRectangleTest
@@ -220,21 +221,18 @@ namespace SheepFizz
     if (position_.y < vertex.y && direction_.y < 0)
       return false;
 
-
     float denominator = direction_.x * segmentDirection.y - direction_.y * segmentDirection.x;
-    if (!denominator)
-      return false;
 
     float intersection = direction_.y * (vertex.x - position_.x) + direction_.x * (position_.y - vertex.y);
+
+    if (!denominator)
+      denominator = 1;
+
     intersection /= denominator;
     if (intersection <= 0 || intersection >= 1)
       return false;
     segmentDirection.z = 0;
     collisionPoint = segmentDirection * intersection + vertex;
-
-    if (position_.x > vertex.x && direction_.x > 0)
-      return false;
-
 
     return true;
   }//end of RayRectangleIntersect

@@ -28,6 +28,7 @@ namespace Framework
     void Remove();
     void SimpleCaster(CircleCollider *lc);
     void ComplexCaster(CircleCollider *lc);
+    void ModifyPositionOffsets(void);
 
     void(Laser::*Caster)(CircleCollider *lc);
 
