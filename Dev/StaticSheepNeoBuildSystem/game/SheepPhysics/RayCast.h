@@ -44,7 +44,7 @@ namespace SheepFizz
       //helper functions for simple rec test detection
       Vec3D RayNormal(Body* rectangle);
       bool RaySupport(Rectangle* rectangle, Vec3D& normal, unsigned int vertex, unsigned int& support);
-      bool RayRectangleIntersect(Vec3D& vertex, Vec3D& segmentDirection, Vec3D& contactPoint);
+      bool RayRectangleIntersect(Vec3D& vertex, Vec3D& nextVertex, Vec3D& segmentDirection, Vec3D& contactPoint);
 
       //determine whether we should search for first collision
       //and where it occurs
