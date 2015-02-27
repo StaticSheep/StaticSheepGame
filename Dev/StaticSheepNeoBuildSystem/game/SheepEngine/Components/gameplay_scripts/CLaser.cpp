@@ -14,7 +14,13 @@ All content © 2015 DigiPen (USA) Corporation, all rights reserved.
 
 namespace Framework
 {
-  Laser::Laser() : startDelay(0), duration(1), damage(1), width(1), arcRotation(0), arcDelay(0), arcPerSec(0)
+  Laser::Laser() : 
+    startDelay(0), duration(1), 
+    damage(1), width(1), 
+    arcRotation(0), arcDelay(0), 
+    arcPerSec(0),
+    m_bodyScale(1, 1), m_bodyColor(1,1,1,1),
+    m_beamColor(1,1,1,1)
   {
     
   }
@@ -106,7 +112,7 @@ namespace Framework
 
     arcDelay -= dt;
 
-    if (arcDelay < 0)
+    if (arcDelay <= 0)
       (this->*Caster)(lc);
 
     float curRotation = lc->GetBodyRotation();
@@ -117,6 +123,8 @@ namespace Framework
   void Laser::DrawLaser()
   {
     Transform* trans = space->GetHandles().GetAs<Transform>(lTransfrom);
+
+    GRAPHICS->SetUV(Vec2(0,0), Vec2(1,1));
 
     GRAPHICS->SetPosition(trans->GetTranslation().X,
       trans->GetTranslation().Y, trans->GetTranslation().Z);
@@ -132,17 +140,16 @@ namespace Framework
 
     GRAPHICS->DrawBatched(m_bodyTex);
 
-    GRAPHICS->SetPosition(trans->GetTranslation().X,
-      trans->GetTranslation().Y, trans->GetTranslation().Z);
+    GRAPHICS->SetSize((trans->GetScale().X * 500) / m_beamTexDim.x,
+      (trans->GetScale().Y * width) / m_beamTexDim.y);
 
-    GRAPHICS->SetSize(trans->GetScale().X * m_beamScale.x,
-      trans->GetScale().Y * m_beamScale.Y);
+    GRAPHICS->SetColor(m_beamColor);
 
-    GRAPHICS->SetColor(m_bodyColor);
-
-    GRAPHICS->SetObjectOrigin(m_bodyTexDim.x / 2.0f + m_beamTexDim.x / 2.0f, 0);
+    GRAPHICS->SetObjectOrigin(((m_bodyTexDim.x * m_bodyScale.x * trans->GetScale().X) / 2.0f) + ((trans->GetScale().X * 500) / 2.0f), 0);
 
     GRAPHICS->DrawBatched(m_beamTex);
+
+    GRAPHICS->SetObjectOrigin(0, 0);
   }
 
   void Laser::SimpleCaster(CircleCollider *lc)

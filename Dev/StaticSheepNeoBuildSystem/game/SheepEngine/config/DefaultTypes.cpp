@@ -272,6 +272,12 @@ namespace Framework
     TYPE_ADD_MEMBER(Laser, width, false, true, "Width");
     TYPE_ADD_MEMBER(Laser, arcRotation, false, true, "Arc");
     TYPE_ADD_MEMBER(Laser, arcDelay, false, true, "ArcDelay");
+    TYPE_ADD_MEMBER(Laser, m_bodyTexName, false, true, "Body Texture",
+      BUILD_FUNCTION(Laser::TweakSetBodyTexture));
+    TYPE_ADD_MEMBER(Laser, m_beamTexName, false, true, "Beam Texture",
+      BUILD_FUNCTION(Laser::TweakSetBeamTexture));
+    TYPE_ADD_MEMBER(Laser, m_bodyColor, false, true, "Body Color");
+    TYPE_ADD_MEMBER(Laser, m_beamColor, false, true, "Beam Color");
 
     TYPE_REGISTER(Pistol);
     TYPE_REGISTER(Shotgun);

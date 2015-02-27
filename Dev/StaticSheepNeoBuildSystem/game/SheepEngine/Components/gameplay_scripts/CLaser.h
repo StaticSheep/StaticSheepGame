@@ -76,7 +76,6 @@ namespace Framework
     Vec2                m_beamTexDim;
 
     Vec2                m_bodyScale;
-    Vec2                m_beamScale;
 
     Vec4                m_bodyColor;
     Vec4                m_beamColor;
