@@ -176,6 +176,7 @@ namespace Framework
     GRAPHICS->SetColor(m_beamColor);
 
     float Length = 0;
+    float numBeams = numberOfRays - numberOfRays % 4;
     for (int i = 0; i < m_beamLengths.size(); ++i)
     {
 
@@ -187,7 +188,7 @@ namespace Framework
       Length -= ((m_bodyTexDim.x * m_bodyScale.x * trans->GetScale().X) / 2.0f);
 
       GRAPHICS->SetSize(((trans->GetScale().X * Length) / m_beamTexDim.x),
-        (trans->GetScale().Y * width) / m_beamTexDim.y / numberOfRays);
+        (trans->GetScale().Y * width) / m_beamTexDim.y / numBeams);
 
       GRAPHICS->SetObjectOrigin(((m_bodyTexDim.x * m_bodyScale.x * trans->GetScale().X) / 2.0f) +
         ((trans->GetScale().X * Length) / 2.0f), 0);
