@@ -89,12 +89,14 @@ namespace Framework
 
     arcDelay -= dt;
 
+    (this->*Caster)(lc);
+    
     if (arcDelay < 0)
-      (this->*Caster)(lc);
-
-    float curRotation = lc->GetBodyRotation();
-    curRotation += arcPerSec;
-    lc->SetBodyRotation(curRotation);
+    {
+      float curRotation = lc->GetBodyRotation();
+      curRotation += arcPerSec;
+      lc->SetBodyRotation(curRotation);
+    } 
   }
 
   void Laser::SimpleCaster(CircleCollider *lc)
@@ -120,7 +122,6 @@ namespace Framework
     bool death = lc->ComplexRayCast();
     if (death)
       lc->RayDestruction();
-    Vec3D offset;
 
     for (int i = 0; i < positionOffsets.size(); ++i)
     {

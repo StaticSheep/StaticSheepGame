@@ -40,7 +40,7 @@ namespace Framework
     unsigned int type;
 
     float startDelay;   //the amount of time to wait before firing
-    float duration;
+    float duration;     //amount of time laser lasts once firing
 
     float damage;
     int width;  //the width of the total laser, will use an algorithm to determine # of rays to cast
