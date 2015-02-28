@@ -154,13 +154,6 @@ namespace Framework
 
   void Laser::DrawLaser()
   {
-    if (ENGINE->m_editorActive)
-    {
-      for (int i = 0; i < numberOfRays; ++i)
-      {
-        m_beamLengths.push_back(-1);
-      }
-    }
     Transform* trans = space->GetHandles().GetAs<Transform>(lTransfrom);
     // Draw body/emitter
     GRAPHICS->SetUV(Vec2(0,0), Vec2(1,1));
@@ -193,14 +186,14 @@ namespace Framework
 
       Length -= ((m_bodyTexDim.x * m_bodyScale.x * trans->GetScale().X) / 2.0f);
 
-      GRAPHICS->SetSize(((trans->GetScale().X * Length) / m_beamTexDim.x),
+      GRAPHICS->SetSize((Length / m_beamTexDim.x),
         (trans->GetScale().Y * width) / m_beamTexDim.y / numBeams);
 
       GRAPHICS->SetObjectOrigin(((m_bodyTexDim.x * m_bodyScale.x * trans->GetScale().X) / 2.0f) +
-        ((trans->GetScale().X * Length) / 2.0f), 0);
+        (Length / 2.0f), 0);
 
-      GRAPHICS->SetPosition(trans->GetTranslation().X + positionOffsets[i].x,
-        positionOffsets[i].y, trans->GetTranslation().Z);
+      GRAPHICS->SetPosition(positionOffsets[i].x,
+        positionOffsets[i].y * trans->GetScale().Y, trans->GetTranslation().Z);
 
       GRAPHICS->DrawBatched(m_beamTex);
     }
