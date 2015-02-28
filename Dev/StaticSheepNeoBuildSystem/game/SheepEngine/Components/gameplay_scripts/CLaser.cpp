@@ -51,6 +51,7 @@ namespace Framework
     space->hooks.Add("LogicUpdate", self, BUILD_FUNCTION(Laser::LogicUpdate));
 
     lTransfrom = space->GetGameObject(owner)->GetComponentHandle(eTransform);
+
     lCollider = space->GetGameObject(owner)->GetComponentHandle(eCircleCollider);
 
     //lEmitter = FACTORY->

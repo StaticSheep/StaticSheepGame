@@ -24,5 +24,6 @@ namespace SheepFizz
     void* firstCollisionBody;
 
     std::vector<Vec3D> bodyIntersections_;   //the bodies the ray collided with - currently set to position for debug info
+    //std::vector<void*> bodiesIntersected_;
   };
 }

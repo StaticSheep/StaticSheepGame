@@ -517,17 +517,16 @@ namespace Framework
     return ray.firstCollisionLocation;
   }
 
-  void SheepPhysics::RayDestruction()
+  void SheepPhysics::RayDestruction(GameSpace* space)
   {
     if (ray.findFirstCollision)
     {
       //GameSpace* space = (GameSpace*)(ray.gameSpace);
-      //Handle handleObj = (unsigned)(ray.firstCollisionBody);
+      Handle handleObj = (unsigned)(ray.firstCollisionBody);
 
-      //GameObject* obj = space->GetHandles().GetAs<GameObject>(handleObj);
-      //CollisionGroup group = m_collisionGroup[(((RigidBody*)obj)->GetBodyCollisionGroup())];
-      //if (group == Player1 || group == Player2 || group == Player3 || group == Player4)
-        //((PlayerController*)obj)->health -= 10;
+      GameObject* obj = space->GetHandles().GetAs<GameObject>(handleObj);
+      if (obj->name == "Player")
+        ((PlayerController*)obj)->health -= 1;
 
       rayComplexDraws.push_back(std::pair<Vec2, Vec2>(ray.rayOrigin, ray.firstCollisionLocation));
       //raySimpleDraws.push_back(std::pair<Vec2, Vec2>(ray.rayOrigin, ray.rayDirection));
