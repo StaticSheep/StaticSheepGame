@@ -154,8 +154,14 @@ namespace Framework
 
   void Laser::DrawLaser()
   {
+    if (ENGINE->m_editorActive)
+    {
+      for (int i = 0; i < numberOfRays; ++i)
+      {
+        m_beamLengths.push_back(-1);
+      }
+    }
     Transform* trans = space->GetHandles().GetAs<Transform>(lTransfrom);
-
     // Draw body/emitter
     GRAPHICS->SetUV(Vec2(0,0), Vec2(1,1));
 
