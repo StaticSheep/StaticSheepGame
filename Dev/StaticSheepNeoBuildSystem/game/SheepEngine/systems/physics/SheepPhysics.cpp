@@ -164,24 +164,11 @@ namespace Framework
           Draw::DrawCircle(bodyPosition.x, bodyPosition.y, ((CircleCollider*)(*circles)[j])->m_radius);
         }
       
-        float slope1 = 0;
-        float slope2 = 0;
         //go through rays
         for (int i = 0; i < rayComplexDraws.size(); ++i)
-        {
-          if (i > 0)
-            slope1 = (rayComplexDraws[i].second.y - rayComplexDraws[i].first.y) / (rayComplexDraws[i].second.x - rayComplexDraws[i].first.x);
+          Draw::DrawLine(rayComplexDraws[i].first.x, rayComplexDraws[i].first.y, 
+            rayComplexDraws[i].second.x, rayComplexDraws[i].second.y);         
           
-          if (i > 0)
-            slope2 = (rayComplexDraws[i - 1].second.y - rayComplexDraws[i - 1].first.y) / (rayComplexDraws[i - 1].second.x - rayComplexDraws[i - 1].first.x);
-
-          if (slope1 != slope2)
-            continue;
-
-          Draw::DrawLine(rayComplexDraws[i].first.x, rayComplexDraws[i].first.y, rayComplexDraws[i].second.x, rayComplexDraws[i].second.y);             
-        }
-          
-
         for (int i = 0; i < raySimpleDraws.size(); ++i)
           Draw::DrawBeam(raySimpleDraws[i].first, raySimpleDraws[i].second);
 
@@ -303,6 +290,7 @@ namespace Framework
     m_collisionGroup.insert(std::pair<std::string, CollisionGroup>("Player3", Player3));
     m_collisionGroup.insert(std::pair<std::string, CollisionGroup>("Player4", Player4));
     m_collisionGroup.insert(std::pair<std::string, CollisionGroup>("Static", CollisionGroup::Static));
+    m_collisionGroup.insert(std::pair<std::string, CollisionGroup>("RayCast", RayCast));
 
     m_collisionGroupNames.insert(std::pair<CollisionGroup, std::string>(NonCollide, "NonCollide"));
     m_collisionGroupNames.insert(std::pair<CollisionGroup, std::string>(Collide, "Collide"));
@@ -311,7 +299,7 @@ namespace Framework
     m_collisionGroupNames.insert(std::pair<CollisionGroup, std::string>(Player2, "Player2"));
     m_collisionGroupNames.insert(std::pair<CollisionGroup, std::string>(Player3, "Player3"));
     m_collisionGroupNames.insert(std::pair<CollisionGroup, std::string>(Player4, "Player4"));
-    m_collisionGroupNames.insert(std::pair<CollisionGroup, std::string>(CollisionGroup::Static, "Static"));
+    m_collisionGroupNames.insert(std::pair<CollisionGroup, std::string>(RayCast, "RayCast"));
 
     ray.collisionGroup = Collide;
     ray.rayDirection = Vec3D(1, 0, 0);

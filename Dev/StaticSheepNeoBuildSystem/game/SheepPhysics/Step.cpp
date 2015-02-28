@@ -17,15 +17,17 @@ namespace SheepFizz
 {
   //Nocollide, Collide, Resolve, Player1, Player2, Player3, Player4, Static
   Collision Collisions[CollGroupLength][CollGroupLength] = { 
-      //NoCollide  Collide    Resolve     Player1     Player2     Player3     Player4     Static
-      { NOCOLLIDE, NOCOLLIDE, NOCOLLIDE,  NOCOLLIDE,  NOCOLLIDE,  NOCOLLIDE,  NOCOLLIDE,  NOCOLLIDE },  //NoCollide
-      { NOCOLLIDE, NOCOLLIDE, COLLIDE,    COLLIDE,    COLLIDE,    COLLIDE,    COLLIDE,    NOCOLLIDE },  //Collide
-      { NOCOLLIDE, COLLIDE,   RESOLVE,    RESOLVE,    RESOLVE,    RESOLVE,    RESOLVE,    RESOLVE },    //Resolve
-      { NOCOLLIDE, COLLIDE,   RESOLVE,    NOCOLLIDE,  RESOLVE,    RESOLVE,    RESOLVE,    RESOLVE },    //Player1
-      { NOCOLLIDE, COLLIDE,   RESOLVE,    RESOLVE,    NOCOLLIDE,  RESOLVE,    RESOLVE,    RESOLVE },    //Player2
-      { NOCOLLIDE, COLLIDE,   RESOLVE,    RESOLVE,    RESOLVE,    NOCOLLIDE,  RESOLVE,    RESOLVE },    //Player3
-      { NOCOLLIDE, COLLIDE,   RESOLVE,    RESOLVE,    RESOLVE,    RESOLVE,    NOCOLLIDE,  RESOLVE },    //Player4
-      { NOCOLLIDE, NOCOLLIDE, RESOLVE,    RESOLVE,    RESOLVE,    RESOLVE,    RESOLVE,    NOCOLLIDE } };//Static
+      //NoCollide  Collide    Resolve     Player1     Player2     Player3     Player4     Static      RayCast
+      { NOCOLLIDE, NOCOLLIDE, NOCOLLIDE,  NOCOLLIDE,  NOCOLLIDE,  NOCOLLIDE,  NOCOLLIDE,  NOCOLLIDE,  NOCOLLIDE},    //NoCollide
+      { NOCOLLIDE, NOCOLLIDE, COLLIDE,    COLLIDE,    COLLIDE,    COLLIDE,    COLLIDE,    NOCOLLIDE,  RESOLVE  },    //Collide
+      { NOCOLLIDE, COLLIDE,   RESOLVE,    RESOLVE,    RESOLVE,    RESOLVE,    RESOLVE,    RESOLVE,    RESOLVE  },    //Resolve
+      { NOCOLLIDE, COLLIDE,   RESOLVE,    NOCOLLIDE,  RESOLVE,    RESOLVE,    RESOLVE,    RESOLVE,    RESOLVE  },    //Player1
+      { NOCOLLIDE, COLLIDE,   RESOLVE,    RESOLVE,    NOCOLLIDE,  RESOLVE,    RESOLVE,    RESOLVE,    RESOLVE  },    //Player2
+      { NOCOLLIDE, COLLIDE,   RESOLVE,    RESOLVE,    RESOLVE,    NOCOLLIDE,  RESOLVE,    RESOLVE,    RESOLVE  },    //Player3
+      { NOCOLLIDE, COLLIDE,   RESOLVE,    RESOLVE,    RESOLVE,    RESOLVE,    NOCOLLIDE,  RESOLVE,    RESOLVE  },    //Player4
+      { NOCOLLIDE, NOCOLLIDE, RESOLVE,    RESOLVE,    RESOLVE,    RESOLVE,    RESOLVE,    NOCOLLIDE,  RESOLVE  },    //Static
+      { NOCOLLIDE, RESOLVE,   RESOLVE,    RESOLVE,    RESOLVE,    RESOLVE,    RESOLVE,    RESOLVE,    NOCOLLIDE} };  //RayCast
+
 
 	PhysicsSpace* PhysicsSpace::Allocate(float dt, float meterScale)
 	{
@@ -343,7 +345,6 @@ namespace SheepFizz
     ray->gameSpace = userData_;
 
     bool rayIntersect = false;
-    Vec3D posPrev;
     if ((*ray).findFirstCollision)
     {
       for (unsigned i = 0; i < bodies_.Size(); ++i)
@@ -356,11 +357,7 @@ namespace SheepFizz
         if (rayIntersect)
         {
           rayCast_.GetRayConfig()->bodyIntersections_.push_back(position);
-          if (posPrev.x == position.x && posPrev.y == position.y)
-            continue;
-          posPrev = position;
-        }
-          
+        }      
       }
       
       if (!rayCast_.GetRayConfig()->bodyIntersections_.empty())
@@ -378,6 +375,7 @@ namespace SheepFizz
         {
           if (!(Collisions[(*ray).collisionGroup][((Body*)(bodies_)[i])->collisionGroup_]))
             continue;
+
           Vec3D position = ((Body*)bodies_[i])->position_ * meterScale_;
           rayIntersect = rayCast_.SimpleRayTest((Body*)bodies_[i]);
           //(((Body*)(&bodies_))[i]).userData

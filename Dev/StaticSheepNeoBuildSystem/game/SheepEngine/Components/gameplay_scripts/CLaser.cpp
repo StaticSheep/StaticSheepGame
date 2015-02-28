@@ -107,6 +107,9 @@ namespace Framework
       return;
     }
 
+    std::string collision = lc->GetBodyCollisionGroup();
+    lc->SetBodyCollisionGroup("NonCollide");
+
       //duration begins after start delay over
     duration -= dt;
 
@@ -117,6 +120,7 @@ namespace Framework
 
     (this->*Caster)(lc);
 
+    lc->SetBodyCollisionGroup(collision);
 
     if (arcDelay < 0)
     {
@@ -210,7 +214,7 @@ namespace Framework
 
     for (int i = 0; i < positionOffsets.size(); ++i)
     {
-      lc->SetRayCast(positionOffsets[i], direction, "Resolve");
+      lc->SetRayCast(positionOffsets[i], direction, "RayCast");
       lc->SimpleRayCast();
       lc->RayDestruction();
 
@@ -226,10 +230,9 @@ namespace Framework
 
     bool death = false;
 
-
     for (int i = 0; i < positionOffsets.size(); ++i)
     {
-      lc->SetRayCast(positionOffsets[i], direction, "Resolve");
+      lc->SetRayCast(positionOffsets[i], direction, "RayCast");
       death = lc->ComplexRayCast();
       if (death)
       {
