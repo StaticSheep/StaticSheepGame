@@ -23,6 +23,10 @@ namespace Framework
     void Initialize();
     void Remove();
 
+    void TurnOn();
+    void TurnOff();
+    void Toggle();
+
     void LogicUpdate(float dt);
 
     void CreateSpawnLights();
@@ -33,9 +37,13 @@ namespace Framework
 
     float m_levelTime;
 
+    bool m_isOn;
+
     float m_PulseT;
 
     bool m_PulseFlip;
+
+
 
   };
 }
