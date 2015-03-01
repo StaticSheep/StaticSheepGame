@@ -13,7 +13,6 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "../../colliders/CCircleCollider.h"
 #include "../../sprites/CSprite.h"
 #include "types/weapons/WPistol.h"
-#include "types/weapons/WLaser.h"
 #include "../../gameplay_scripts/CBullet_default.h"
 #include "../../sprites/CAniSprite.h"
 #include "../../gameplay_scripts/CCheats.h"
@@ -90,7 +89,7 @@ namespace Framework
 
     BoxCollider *bc = space->GetHandles().GetAs<BoxCollider>(playerCollider);
     bc->SetGravityOff();
-    weapon = (WLaser*)GET_TYPE(WLaser)->New();
+    weapon = (Pistol*)GET_TYPE(Pistol)->New();
     SoundEmitter *se = space->GetHandles().GetAs<SoundEmitter>(playerSound);
     se->Play("robot_startup", &SoundInstance(0.50f));
     animCont = AnimationController(playerNum);
@@ -648,6 +647,7 @@ namespace Framework
     exT->SetTranslation(ps->GetTranslation());
     exT->SetRotation((float)GetRandom(0, (int)(2.0f * (float)PI)));
     space->hooks.Call("PlayerDied", playerNum, who_killed_me); //calling an event called player died
+    space->hooks.Call("SpawnCoins", ps->GetTranslation());
     space->GetGameObject(owner)->Destroy();
   }
 

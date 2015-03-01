@@ -1,7 +1,7 @@
 GameObject
 {
-  name std::string "LevelSlotMachine"
-  archetype std::string "LevelSlotMachine"
+  name std::string "JPSlotMachine"
+  archetype std::string "JPSlotMachine"
   Transform
   {
     Translation Vec3
@@ -31,7 +31,7 @@ GameObject
       X float 1.000000
       Y float 1.000000
     }
-    slotMargin float 15.000000
+    slotMargin float 10.000000
     slotOffset Vec2
     {
       X float 0.000000
@@ -55,6 +55,6 @@ GameObject
   }
   SlotController
   {
-    StypeInt int 0
+    StypeInt int 1
   }
 }

@@ -40,6 +40,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "types/weapons/WLaser.h"
 #include "types/powerUps/PDamage.h"
 #include "types/powerUps/PShield.h"
+#include "types/powerUps/PCoin.h"
 #include "components/gameplay_scripts/CWarningText.h"
 #include "components/gameplay_scripts/CBackgroundPan.h"
 #include "components/gameplay_scripts/CCheats.h"
@@ -214,7 +215,7 @@ namespace Framework
 
     TYPE_REGISTER(Level1_Logic);
     TYPE_SET_TWEAK_TYPE(Level1_Logic, AntTweak::TW_TYPE_COMPONENT);
-    TYPE_ADD_MEMBER(Level1_Logic, timeLimit, false, true, "KillBox Timer");
+    TYPE_ADD_MEMBER(Level1_Logic, roundTimer, false, true, "KillBox Timer");
     TYPE_ADD_MEMBER(Level1_Logic, numOfPlayers, false, true, "# of players");
 
     TYPE_REGISTER(Level1_Lighting);
@@ -261,6 +262,7 @@ namespace Framework
 
     TYPE_REGISTER(SlotController);
     TYPE_SET_TWEAK_TYPE(SlotController, AntTweak::TW_TYPE_COMPONENT);
+    TYPE_ADD_MEMBER(SlotController, StypeInt, false, true, "Type");
 
     TYPE_REGISTER(Pistol);
     TYPE_REGISTER(Shotgun);
@@ -269,6 +271,7 @@ namespace Framework
 
     TYPE_REGISTER(DamageBoost);
     TYPE_REGISTER(Shield);
+    TYPE_REGISTER(Coin);
 
     TYPE_REGISTER( BoxCollider );
     TYPE_ADD_MEMBER(BoxCollider, m_width, false, true, "Width",

@@ -12,6 +12,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "../colliders/CBoxCollider.h"
 #include "types/weapons/WPistol.h"
 #include "../controllers/player/CPlayerController.h"
+#include "../sprites/CSprite.h"
 
 namespace Framework
 {
@@ -63,7 +64,11 @@ namespace Framework
     space->GetGameObject(owner)->hooks.Add("OnCollision", self, BUILD_FUNCTION(WeaponPickup::OnCollision));
 
     wpTransfrom = space->GetGameObject(owner)->GetComponentHandle(eTransform);
+    wpSprite = space->GetGameObject(owner)->GetComponentHandle(eSprite);
     space->GetHandles().GetAs<BoxCollider>(space->GetGameObject(owner)->GetComponentHandle(eBoxCollider))->SetGravityOff();
+    timeToLive = 5.0f;
+    blink = false;
+    respawnTimer = 2.0f;
 	}
 
   void WeaponPickup::Remove()
@@ -75,7 +80,21 @@ namespace Framework
 
   void WeaponPickup::LogicUpdate(float dt)
 	{
+    timeToLive -= dt;
+    if (timeToLive <= 2.0f)
+    {
+      //blinking
+      RespawnBlink(dt);
+    }
+    if (timeToLive <= 0)
+      space->GetGameObject(owner)->Destroy();
+
     Transform *bt = space->GetHandles().GetAs<Transform>(wpTransfrom);
+
+    if (bt->GetTranslation().z > 0)
+      bt->SetTranslation(bt->GetTranslation() + Vec3(0.0f, 0.0f, -2.0f));
+    else
+      space->GetGameObject(owner)->GetComponent<BoxCollider>(eBoxCollider)->SetBodyCollisionGroup("Collide");
 
     if (bt->GetTranslation().x > 1000 || bt->GetTranslation().x < -1000 || bt->GetTranslation().y > 700 || bt->GetTranslation().y < -700)
       space->GetGameObject(owner)->Destroy();
@@ -119,5 +138,29 @@ namespace Framework
 
 	}
 
+  void WeaponPickup::RespawnBlink(float dt)
+  {
+    Sprite *ps = space->GetHandles().GetAs<Sprite>(wpSprite);
 
+    if (respawnTimer > 0.0f)
+    {
+      if (!blink)
+        ps->Color.A -= dt * 10.0f;
+      else
+        ps->Color.A += dt * 10.0f;
+
+      respawnTimer -= dt;
+
+      if (ps->Color.A <= 0.0f)
+        blink = true;
+
+      if (ps->Color.A >= 1.0f)
+        blink = false;
+    }
+    else
+    {
+      ps->Color.A = 255.0f;
+      respawnTimer = 2.0f;
+    }
+  }
 }

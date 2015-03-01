@@ -16,10 +16,10 @@ namespace Framework
 {
   SlotController::SlotController()
 	{
-    Stype = GOLD;
     done = false;
     levelTimer = 3.0f;
     spawnedSM = nullptr;
+    Stype = GOLD;
 	}
 
   SlotController::~SlotController()
@@ -29,8 +29,7 @@ namespace Framework
 
   void SlotController::Initialize()
 	{
-    Stype = GOLD; //setting a default slot machine type here.
-
+    Stype = GOLD;
 		//logic setup, you're attached and components are in place
     space->hooks.Add("LogicUpdate", self, BUILD_FUNCTION(SlotController::LogicUpdate));
 
@@ -49,16 +48,31 @@ namespace Framework
 
   void SlotController::LogicUpdate(float dt)
 	{
-    if (done && spawnedSM == nullptr) //if this slot machine is done and there are no spawned slot machine
+    if (done) //if this slot machine is done and there are no spawned slot machine
     {
       levelTimer -= dt;
       if (levelTimer <= 0)
+      {
+        if (Stype == GOLD)
+        {
+          //send message
+          space->hooks.Call("SetMods", mod1, mod2);
+          space->hooks.Call("SlotFinished", mode);
+        }
         space->GetGameObject(owner)->Destroy();
+      }
     }
 	}
 
   void SlotController::SetSMTextures(int slotNum, int *spinTexID, int *stopTexID)
   {
+    if (StypeInt == 0)
+      Stype = GOLD;
+    else if (StypeInt == 1)
+      Stype = JACKPOT;
+    else if (StypeInt == 2)
+      Stype = INDIVIDUAL;
+
     switch (Stype)
     {
     case GOLD:
@@ -79,7 +93,8 @@ namespace Framework
       }
       break;
     case JACKPOT:
-
+        *spinTexID = Draw::GetTextureID("slot_test_blur.png");
+        *stopTexID = Draw::GetTextureID("slot_test.png");
       break;
     case INDIVIDUAL:
 
@@ -96,12 +111,86 @@ namespace Framework
 
   void SlotController::ReceiveSMResults(std::vector<int>* results)
   {
-    /*
-    if(CheckForJP(results))
-      //run function for special jackpot
-    if(
-    */
+    if (Stype == GOLD)
+    {
+      if (CheckForJP(*results))
+      {
+        spawnedSM = SpawnChildSM(JACKPOT);
+        Transform *origin = space->GetGameObject(owner)->GetComponent<Transform>(eTransform);
+        Transform *spawnedTransform = spawnedSM->GetComponent<Transform>(eTransform);
+        spawnedTransform->SetTranslation(origin->GetTranslation() + Vec3(0.0f, -260.0f, 0.0f));
+        spawnedSM->GetComponent<SlotController>(eSlotController)->Stype = JACKPOT;
+        levelTimer += 4.0f;
+      }
+      if ((*results)[0] == 0)
+        mode = FFA;
+      else if ((*results)[0] == 1)
+        mode = JUGGERNAUT;
+      else if ((*results)[0] == 2)
+        mode = SUDDENDEATH;
+
+      if ((*results)[1] == 0)
+        mod1 = LIGHTSOUT;
+      else if ((*results)[1] == 1)
+        mod1 = BONUS;
+      else if ((*results)[1] == 2)
+        mod1 = EXPLOSIVEROUNDS;
+
+      if ((*results)[2] == 0)
+        mod2 = SHOTGUNS;
+      else if ((*results)[2] == 1)
+        mod2 = BONUS;
+      else if ((*results)[2] == 2)
+        mod2 = ROCKETS;
+    }
+    else if (Stype == JACKPOT)
+    {
+      if (CheckForJP(*results))
+      {
+        for (int i = 0; i < 9; ++i)
+        {
+          float ranX = GetRandom(-600, 600);
+          float ranY = GetRandom(-300, 300);
+          Vec3 pos(ranX, ranY, 0.0f);
+          space->hooks.Call("SpawnCoins", pos);
+        }
+        //spawn fan balls
+      }
+    }
+    
     done = true;
   }
 
+  bool SlotController::CheckForJP(std::vector<int> results)
+  {
+    if (Stype == GOLD)
+    {
+      if (results[1] == 1 || results[2] == 1)
+        return true;
+    }
+    else if (Stype == JACKPOT)
+    {
+      if (results[1] == 1 && results[2] == 1 && results[0] == 1)
+        return true;
+    }
+
+    return false;
+  }
+
+  GameObject* SlotController::SpawnChildSM(SlotType type)
+  {
+    if (type == GOLD)
+    {
+      return (FACTORY->LoadObjectFromArchetype(space, "BigSlotMachine"));
+    }
+    else if (type == JACKPOT)
+    {
+      return (FACTORY->LoadObjectFromArchetype(space, "JPSlotMachine"));
+    }
+    else //individual
+    {
+      return (FACTORY->LoadObjectFromArchetype(space, "JPSlotMachine"));
+    }
+
+  }
 }

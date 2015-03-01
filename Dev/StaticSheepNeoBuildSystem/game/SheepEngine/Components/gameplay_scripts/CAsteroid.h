@@ -21,6 +21,7 @@ namespace Framework
 		void LogicUpdate(float dt);
 		void Initialize();
 		void Remove();
+    void CallingSM();
 
 		//member variables
     Handle aTransfrom;

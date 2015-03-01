@@ -30,6 +30,7 @@ namespace Framework
 	{
 		//logic setup, you're attached and components are in place
     space->hooks.Add("LogicUpdate", self, BUILD_FUNCTION(GiantKillBox::LogicUpdate));
+    space->hooks.Add("CallingSM", self, BUILD_FUNCTION(GiantKillBox::CallingSM));
 
     kbTransfrom = space->GetGameObject(owner)->GetComponentHandle(eTransform);
     kbCollider = space->GetGameObject(owner)->GetComponentHandle(eBoxCollider);
@@ -87,5 +88,9 @@ namespace Framework
     }
 	}
 
-
+  void GiantKillBox::CallingSM()
+  {
+    /*if (owner)
+      space->GetGameObject(owner)->Destroy();*/
+  }
 }

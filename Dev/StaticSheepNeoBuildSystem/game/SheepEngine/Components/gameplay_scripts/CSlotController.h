@@ -9,6 +9,7 @@ All content © 2015 DigiPen (USA) Corporation, all rights reserved.
 
 #include "components/base/Component.h"
 #include "types/handle/Handle.h"
+#include "CLevel1_Logic.h"
 
 namespace Framework
 {
@@ -32,12 +33,17 @@ namespace Framework
     void SetSMResults(int, int*);
     void ReceiveSMResults(std::vector<int>*);
 
-    void CheckForJP(std::vector<int>*);
+    bool CheckForJP(std::vector<int>);
+    GameObject* SpawnChildSM(SlotType type);
 		//member variables
     float levelTimer; //keeps track of overall time in the level for slot machine switches
     SlotType Stype;
+    int StypeInt;
     bool done; 
     GameObject *spawnedSM;
+    Handle spawnedSMHandle;
 
+    GameTypes mode;
+    GameMods mod1, mod2;
 	};
 }

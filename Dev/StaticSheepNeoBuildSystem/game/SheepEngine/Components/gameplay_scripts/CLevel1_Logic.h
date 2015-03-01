@@ -13,17 +13,26 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 namespace Framework
 {
+  enum GameTypes
+  {
+    FFA,
+    JUGGERNAUT,
+    SUDDENDEATH,
+    BONUSMODE,
+    SLOTMACHINE
+  };
+  enum GameMods
+  {
+    LIGHTSOUT,
+    BONUS,
+    EXPLOSIVEROUNDS,
+    SHOTGUNS,
+    ROCKETS
+  };
+
+
 	class Level1_Logic : public GameComponent
 	{
-    enum GameTypes
-    {
-      FFA,
-      TEAM,
-      JUGGERNAUT,
-      MINIME,
-      SUMO
-    };
-
 	public:
     Level1_Logic();
     ~Level1_Logic();
@@ -36,8 +45,9 @@ namespace Framework
     bool LevelCountdown(float dt);
 		//member variables
     //Handle bTransfrom;
-    float timeLimit;
+    float eventTimer;
     float spawnTimer;
+    float roundTimer;
     bool playing;
     bool startFlag;
     Handle levelSound;
@@ -45,23 +55,44 @@ namespace Framework
     Handle levelTransform;
     Handle levelEmitter;
     Handle levelSprite;
+    Handle levelSM;
     Vec3 spawnPos[6];
     Handle Players[4];
     float spawnTimers[4];
-    size_t playerFans[4];
+    size_t playerCoins[4];
     int deadPlayers;
     int numOfPlayers;
     bool camShake, shake;
     bool countDownDone;
+    bool slotFinished;
     float shakeTime;
     float countDownTimer;
     LevelEvent *LE;
+    GameTypes mode;
+    GameMods mod1, mod2;
 
     int GetPlayerHealth(int);
     int GetPlayerLives(int);
     int GetWinner();
     void EndMatch();
     void CheatWin();
+    void ResetPlayers();
+    void ResetSpawnTimers();
+    void GivePlayerCoins(int player, int coins);
 
+    void SpawnItem(const char *, Vec3);
+    void SpawnItemSet(Vec3);
+    void SpawnCoins(Vec3);
+    void SpawnLevelEvent();
+
+    void GoToGameMode(float dt);
+    void FFAMode(float dt);
+    void JuggernautMode(float dt);
+    void SuddenDeathMode(float dt);
+    void SlotMachineMode(float dt);
+    void BonusMode(float dt);
+
+    void SlotFinished(GameTypes mode);
+    void SetMods(GameMods mod1, GameMods mod2);
 	};
 }

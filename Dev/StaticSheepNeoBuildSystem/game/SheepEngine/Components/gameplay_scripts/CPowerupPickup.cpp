@@ -11,6 +11,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "../transform/CTransform.h"
 #include "../colliders/CBoxCollider.h"
 #include "../controllers/player/CPlayerController.h"
+#include "../colliders/CCircleCollider.h"
+#include "../sprites/CSprite.h"
 
 namespace Framework
 {
@@ -18,7 +20,7 @@ namespace Framework
   {
     { eShield, "Shield" },
     { ePower, "DamageBoost" },
-    { eFans, "Fans" },
+    { eCoin, "Coin" },
     { eMiniMe, "MiniMe" }
   };
 
@@ -38,10 +40,12 @@ namespace Framework
       powerUpID = eShield;
     else if (powerNum == 1)
       powerUpID = ePower;
+    else if (powerNum == 2)
+      powerUpID = eCoin;
 
     if (powerUpID == eNoPowerUp)
     {
-      int default_ = 1;
+      int default_ = 2;
       powerUpID = (EPowerUps)default_;
       powerUpType = GET_STR_TYPE(PowerUpMap[powerUpID]);
     }
@@ -54,7 +58,22 @@ namespace Framework
     space->GetGameObject(owner)->hooks.Add("OnCollision", self, BUILD_FUNCTION(PowerupPickup::OnCollision));
 
     puTransfrom = space->GetGameObject(owner)->GetComponentHandle(eTransform);
-    space->GetHandles().GetAs<BoxCollider>(space->GetGameObject(owner)->GetComponentHandle(eBoxCollider))->SetGravityOff();
+    if (powerUpID == eCoin)
+    {
+      float ranXvel = GetRandom(-500, 500);
+      float ranYvel = GetRandom(-500, 500);
+      space->GetHandles().GetAs<CircleCollider>(space->GetGameObject(owner)->GetComponentHandle(eCircleCollider))->SetVelocity(Vec3(ranXvel, ranYvel, 0.0f));
+      space->GetHandles().GetAs<CircleCollider>(space->GetGameObject(owner)->GetComponentHandle(eCircleCollider))->SetGravityOff();
+    }
+    else
+      space->GetHandles().GetAs<BoxCollider>(space->GetGameObject(owner)->GetComponentHandle(eBoxCollider))->SetGravityOff();
+
+    puSprite = space->GetGameObject(owner)->GetComponentHandle(eSprite);
+
+    timeToLive = 5.0f;
+    blink = false;
+    respawnTimer = 2.0f;
+
 	}
 
   void PowerupPickup::Remove()
@@ -66,7 +85,28 @@ namespace Framework
 
   void PowerupPickup::LogicUpdate(float dt)
 	{
+    timeToLive -= dt;
+    if (timeToLive <= 2.0f)
+    {
+      //blinking
+      RespawnBlink(dt);
+    }
+    if (timeToLive <= 0)
+      space->GetGameObject(owner)->Destroy();
+
     Transform *bt = space->GetHandles().GetAs<Transform>(puTransfrom);
+
+    if (bt->GetTranslation().z > 0)
+    {
+      bt->SetTranslation(bt->GetTranslation() + Vec3(0.0f, 0.0f, -2.0f));
+    }
+    else
+    {
+      if (powerUpID == eCoin)
+        space->GetGameObject(owner)->GetComponent<CircleCollider>(eCircleCollider)->SetBodyCollisionGroup("Resolve");
+      else
+        space->GetGameObject(owner)->GetComponent<BoxCollider>(eBoxCollider)->SetBodyCollisionGroup("Collide");
+    }
 
     if (bt->GetTranslation().x > 1000 || bt->GetTranslation().x < -1000 || bt->GetTranslation().y > 700 || bt->GetTranslation().y < -700)
       space->GetGameObject(owner)->Destroy();
@@ -88,5 +128,29 @@ namespace Framework
 
 	}
 
+  void PowerupPickup::RespawnBlink(float dt)
+  {
+    Sprite *ps = space->GetHandles().GetAs<Sprite>(puSprite);
 
+    if (respawnTimer > 0.0f)
+    {
+      if (!blink)
+        ps->Color.A -= dt * 10.0f;
+      else
+        ps->Color.A += dt * 10.0f;
+
+      respawnTimer -= dt;
+
+      if (ps->Color.A <= 0.0f)
+        blink = true;
+
+      if (ps->Color.A >= 1.0f)
+        blink = false;
+    }
+    else
+    {
+      ps->Color.A = 255.0f;
+      respawnTimer = 2.0f;
+    }
+  }
 }

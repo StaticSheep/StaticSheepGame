@@ -21,12 +21,16 @@ namespace Framework
     void OnCollision(Handle otherObject, SheepFizz::ExternalManifold manifold);
 		void Initialize();
 		void Remove();
+    void RespawnBlink(float dt);
 
 		//member variables
     EPowerUps powerUpID = eNoPowerUp;
     Handle puTransfrom;
     Handle puCollider;
+    Handle puSprite;
     int powerNum;
+    float timeToLive, respawnTimer;
+    bool blink;
   private:
     const TypeInfo *powerUpType = nullptr;
 	};

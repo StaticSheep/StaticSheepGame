@@ -21,6 +21,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "../sprites/CSprite.h"
 #include "types/levelEvents/LEGrinderBig.h"
 #include "types/levelEvents/LEAsteroids.h"
+#include "CSlotController.h"
+#include "../colliders/CCircleCollider.h"
 
 static const char *playerNames[] = { "Player1", "Player2", "Player3", "Player4" };
 static bool warning;
@@ -32,7 +34,6 @@ namespace Framework
 {
   Level1_Logic::Level1_Logic()
 	{
-    timeLimit = 60;
     spawnTimer = 3;
     numOfPlayers = 1;
     spawnPos[0] = Vec3(-610.0f, -440.0f, 0.0f);
@@ -43,7 +44,7 @@ namespace Framework
     spawnPos[5] = Vec3(0.0f, -440.0f, 0.0f);
     deadPlayers = 0;
     for (int i = 0; i < 4; ++i)
-      playerFans[i] = 1;
+      playerCoins[i] = 1;
 
     warning = false;
     camShake = false;
@@ -51,6 +52,7 @@ namespace Framework
     camShakeTime = 0.25f;
     camShakeMagnitude = 10;
     countDownDone = false;
+    slotFinished = false;
 	}
 
   Level1_Logic::~Level1_Logic()
@@ -63,13 +65,20 @@ namespace Framework
 		space->hooks.Add("LogicUpdate", self, BUILD_FUNCTION(Level1_Logic::LogicUpdate));
     space->hooks.Add("PlayerDied", self, BUILD_FUNCTION(Level1_Logic::PlayerDied));
     space->hooks.Add("CheatWin", self, BUILD_FUNCTION(Level1_Logic::CheatWin));
+    space->hooks.Add("SlotFinished", self, BUILD_FUNCTION(Level1_Logic::SlotFinished));
+    space->hooks.Add("SetMods", self, BUILD_FUNCTION(Level1_Logic::SetMods));
+    space->hooks.Add("SpawnItem", self, BUILD_FUNCTION(Level1_Logic::SpawnItem));
+    space->hooks.Add("SpawnItemSet", self, BUILD_FUNCTION(Level1_Logic::SpawnItemSet));
+    space->hooks.Add("GivePlayerCoins", self, BUILD_FUNCTION(Level1_Logic::GivePlayerCoins));
+    space->hooks.Add("SpawnCoins", self, BUILD_FUNCTION(Level1_Logic::SpawnCoins));
+
     levelSound = space->GetGameObject(owner)->GetComponentHandle(eSoundPlayer);
     levelCamera = space->GetGameObject(owner)->GetComponentHandle(eCamera);
     levelTransform = space->GetGameObject(owner)->GetComponentHandle(eTransform);
     levelEmitter = space->GetGameObject(owner)->GetComponentHandle(eSoundEmitter);
     levelSprite = space->GetGameObject(owner)->GetComponentHandle(eSprite);
 
-    timeLimit = 6;
+    eventTimer = 6;
     startFlag = true;
     playing = false;
     countDownDone = false;
@@ -77,6 +86,8 @@ namespace Framework
 
     for (int i = 0; i < 4; ++i)
       spawnTimers[i] = 2.0f;
+
+    mode = SLOTMACHINE;
 
 	}
 
@@ -88,93 +99,23 @@ namespace Framework
   void Level1_Logic::LogicUpdate(float dt)
 	{
 
-    if (!countDownDone)
-    {
-      LevelCountdown(dt);
-      return;
-    }
-
     if (camShake)
       CameraShake(dt, camShakeTime, camShakeMagnitude);
 
-    SpawnPlayers(dt);
-    
-    
-    spawnTimer -= dt;
-    timeLimit -= dt;
-
-    if (spawnTimer <= 0)
-    {
-      int randomDrop = GetRandom(0, 5);
-
-      if (randomDrop == 0)
-      {
-        GameObject *weap = (FACTORY->LoadObjectFromArchetype(space, "ShotgunPickup"));
-        Transform *WT = weap->GetComponent<Transform>(eTransform);
-        BoxCollider *WC = weap->GetComponent<BoxCollider>(eBoxCollider);
-        WC->SetBodyCollisionGroup("Collide");
-        int ranX = GetRandom(-300, 300);
-        int ranY = GetRandom(-300, 300);
-        WT->SetTranslation(Vec3(ranX, ranY, 0.0f));
-      }
-      else if (randomDrop == 3)
-      {
-        GameObject *weap = (FACTORY->LoadObjectFromArchetype(space, "AutoPickup"));
-        Transform *WT = weap->GetComponent<Transform>(eTransform);
-        BoxCollider *WC = weap->GetComponent<BoxCollider>(eBoxCollider);
-        WC->SetBodyCollisionGroup("Collide");
-        int ranX = GetRandom(-300, 300);
-        int ranY = GetRandom(-300, 300);
-        WT->SetTranslation(Vec3(ranX, ranY, 0.0f));
-      }
-
-      spawnTimer = 2;
-    }
-
-    if (timeLimit <= 0)
-    {
-      delete LE;
-      //fire event
-      if (GetRandom(0, 1))
-        LE = new LEGrinderBig();
-      else
-        LE = new LEAsteroids();
-
-      LE->FireEvent(space->GetHandles().GetAs<GameObject>(owner));
-
-      timeLimit = (float)GetRandom(20, 30);
-      warning = false;
-      camShakeTime = 8.5f;
-      camShakeMagnitude = 4;
-      camShake = true;
-    }
-    else if (timeLimit > 0.0f && timeLimit < 2.0f && warning == false)
-    {
-      (FACTORY->LoadObjectFromArchetype(space, "WarnText"))->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(0.0,0.0,-2.0));
-      warning = true;
-      space->GetHandles().GetAs<SoundEmitter>(levelEmitter)->Play("warning");
-    }
+    GoToGameMode(dt);
     
     if(!playing)
     {
       SoundPlayer *sp = space->GetHandles().GetAs<SoundPlayer>(levelSound);
-
-      // So for SoundPlayers and SoundEmitters, if you want to change the way they 
-      // play things, you will have to make a SoundInstance, and change the things
-      // in the instance and give it to the Play function.
-
-      // SoundPlayer keeps track of instances, so if you want to stop a song,
-      // you can do sp->Stop("space_brawl") and it'll stop.
-
-      /*SoundInstance instance;
-      instance.volume = 0.40f;
+      SoundInstance instance;
+      instance.volume = 0.35f;
       instance.mode = PLAY_LOOP;
 
-      sp->Play("Main Music", &instance);*/
+      sp->Play("Main Music", &instance);
       playing = true;
     } 
-    SoundPlayer *sp = space->GetHandles().GetAs<SoundPlayer>(levelSound);
-    sp->SetVolume(0.35f);
+    //SoundPlayer *sp = space->GetHandles().GetAs<SoundPlayer>(levelSound);
+    //sp->SetVolume(0.35f);
 
     if (LE)
       LE->Update(dt);
@@ -224,11 +165,11 @@ namespace Framework
     
     Players[ply] = Handle::null;
     if (who_killed_him != -1)
-      playerFans[who_killed_him] += 5000;
+      playerCoins[who_killed_him] += 5000;
     if (!camShake)
     {
       camShakeTime = 0.25f;
-      camShakeMagnitude = 10;
+      camShakeMagnitude = 20;
       camShake = true;
     }
 
@@ -302,7 +243,7 @@ namespace Framework
 
   int Level1_Logic::GetPlayerLives(int ply)
   {
-    return playerFans[ply];
+    return playerCoins[ply];
   }
 
   int Level1_Logic::GetWinner()
@@ -312,7 +253,7 @@ namespace Framework
 
     for (int i = 0; i < 4; ++i)
     {
-      if (playerFans[i] > 0)
+      if (playerCoins[i] > 0)
       {
         winner = i + 1;
         ++numAlive;
@@ -333,6 +274,276 @@ namespace Framework
   void Level1_Logic::CheatWin()
   {
     for (int i = 0; i < 4; ++i)
-      playerFans[i] = 0;
+      playerCoins[i] = 0;
+  }
+
+  void Level1_Logic::ResetPlayers()
+  {
+    for (int i = 0; i < 4; ++i)
+    {
+      if (Players[i] != Handle::null)
+      {
+        space->GetGameObject(Players[i])->GetComponent<PlayerController>(ePlayerController)->health = 0;
+      }
+    }
+  }
+
+  void Level1_Logic::ResetSpawnTimers()
+  {
+    for (int i = 0; i < 4; ++i)
+      spawnTimers[i] = 0.0f;
+  }
+
+  void Level1_Logic::GivePlayerCoins(int player, int coins)
+  {
+    playerCoins[player] += coins;
+  }
+
+  void Level1_Logic::SpawnItem(const char *itemName, Vec3 pos)
+  {
+    GameObject *item = (FACTORY->LoadObjectFromArchetype(space, itemName));
+    Transform *ItemTransform = item->GetComponent<Transform>(eTransform);
+    if (itemName != "CoinPickup")
+    {
+      BoxCollider *ItemCollider = item->GetComponent<BoxCollider>(eBoxCollider);
+      ItemCollider->SetBodyCollisionGroup("NonCollide");
+    }
+    else
+    {
+      CircleCollider *ItemCollider = item->GetComponent<CircleCollider>(eCircleCollider);
+      ItemCollider->SetBodyCollisionGroup("NonCollide");
+    }
+
+    ItemTransform->SetTranslation(pos);
+  }
+
+  void Level1_Logic::SpawnItemSet(Vec3 pos)
+  {
+    int drop = GetRandom(0, 9);
+    if (drop == 0 || drop == 1)
+      SpawnItem("AutoPickup", pos);
+    else if (drop == 2 || drop == 3)
+      SpawnItem("ShotgunPickup", pos);
+    else if (drop == 4 || drop == 5)
+      SpawnItem("PowerUpPickup_Damage", pos);
+    else if (drop == 6 || drop == 7)
+      SpawnItem("PowerUpPickup_Shield", pos);
+    else if (drop == 8 || drop == 9)
+      SpawnItem("PowerUpPickup_Damage", pos);
+    if (mod1 == BONUS)
+      SpawnCoins(pos);
+    if (mod2 == BONUS)
+      SpawnCoins(pos);
+  }
+
+  void Level1_Logic::SpawnCoins(Vec3 pos)
+  {
+    for (int i = 0; i < 4; ++i)
+    {
+      SpawnItem("CoinPickup", pos);
+    }
+  }
+
+  void Level1_Logic::SpawnLevelEvent()
+  {
+    if (eventTimer <= 0)
+    {
+      if (LE)
+        delete LE;
+      //fire event
+      if (GetRandom(0, 1))
+        LE = new LEGrinderBig();
+      else
+        LE = new LEAsteroids();
+
+      LE->FireEvent(space->GetHandles().GetAs<GameObject>(owner));
+
+      eventTimer = (float)GetRandom(20, 30);
+      warning = false;
+      camShakeTime = 6.5f;
+      camShakeMagnitude = 4;
+      camShake = true;
+    }
+    else if (eventTimer > 0.0f && eventTimer < 2.0f && warning == false)
+    {
+      (FACTORY->LoadObjectFromArchetype(space, "WarnText"))->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(0.0, 0.0, -2.0));
+      warning = true;
+      space->GetHandles().GetAs<SoundEmitter>(levelEmitter)->Play("warning");
+    }
+  }
+
+  void Level1_Logic::GoToGameMode(float dt)
+  {
+    switch (mode)
+    {
+    case FFA:
+      FFAMode(dt);
+      break;
+    case JUGGERNAUT:
+      JuggernautMode(dt);
+      break;
+    case SUDDENDEATH:
+      SuddenDeathMode(dt);
+      break;
+    case SLOTMACHINE:
+      SlotMachineMode(dt);
+      break;
+    case BONUSMODE:
+      BonusMode(dt);
+      break;
+    }
+  }
+
+  void Level1_Logic::FFAMode(float dt)
+  {
+    if (!countDownDone)
+    {
+      LevelCountdown(dt);
+      return;
+    }
+    else
+      roundTimer -= dt;
+
+    if (roundTimer <= 0)
+    {
+      mode = SLOTMACHINE;
+      return;
+    }
+
+    spawnTimer -= dt;
+    eventTimer -= dt;
+    if (spawnTimer <= 0)
+    {
+      spawnTimer = 3.0f;
+      float ranX = GetRandom(-600, 600);
+      float ranY = GetRandom(-300, 300);
+      float ranZ = GetRandom(150, 200);
+      Vec3 pos(ranX, ranY, ranZ);
+      SpawnItemSet(pos);
+    }
+    SpawnPlayers(dt);
+
+    SpawnLevelEvent();
+  }
+
+  void Level1_Logic::JuggernautMode(float dt)
+  {
+    if (!countDownDone)
+    {
+      LevelCountdown(dt);
+      return;
+    }
+    else
+      roundTimer -= dt;
+
+    if (roundTimer <= 0)
+    {
+      mode = SLOTMACHINE;
+      return;
+    }
+
+    spawnTimer -= dt;
+    eventTimer -= dt;
+    if (spawnTimer <= 0)
+    {
+      spawnTimer = 3.0f;
+      float ranX = GetRandom(-600, 600);
+      float ranY = GetRandom(-300, 300);
+      float ranZ = GetRandom(150, 200);
+      Vec3 pos(ranX, ranY, ranZ);
+      SpawnItemSet(pos);
+    }
+    SpawnPlayers(dt);
+
+    SpawnLevelEvent();
+  }
+
+  void Level1_Logic::SuddenDeathMode(float dt)
+  {
+    if (!countDownDone)
+    {
+      LevelCountdown(dt);
+      return;
+    }
+    else
+      roundTimer -= dt;
+
+    if (roundTimer <= 0)
+    {
+      mode = SLOTMACHINE;
+      return;
+    }
+
+    spawnTimer -= dt;
+    eventTimer -= dt;
+
+    SpawnPlayers(dt);
+
+  }
+
+  void Level1_Logic::SlotMachineMode(float dt)
+  {
+    if (!slotFinished)
+    {
+      ResetPlayers();
+      if (LE)
+      {
+        delete LE;
+        LE = 0;
+      }
+      space->hooks.Call("CallingSM");
+      (FACTORY->LoadObjectFromArchetype(space, "LevelSlotMachine"));
+      slotFinished = true;
+    }
+  }
+
+  void Level1_Logic::BonusMode(float dt)
+  {
+    if (!countDownDone)
+    {
+      LevelCountdown(dt);
+      return;
+    }
+    else
+      roundTimer -= dt;
+
+    if (roundTimer <= 0)
+    {
+      mode = SLOTMACHINE;
+      return;
+    }
+    if (spawnTimer <= 0)
+    {
+      float ranX = GetRandom(-600, 600);
+      float ranY = GetRandom(-300, 300);
+      Vec3 pos(ranX, ranY, 0.0f);
+      SpawnCoins(pos);
+      spawnTimer = 0.5f;
+    }
+    spawnTimer -= dt;
+    eventTimer -= dt;
+    SpawnPlayers(dt);
+
+    SpawnLevelEvent();
+  }
+
+  void Level1_Logic::SlotFinished(GameTypes mode_)
+  {
+    mode = mode_;
+    countDownDone = false;
+    countDownTimer = 3.0f;
+    if (mode != SUDDENDEATH)
+      roundTimer = 60.0f;
+    else
+      roundTimer = 5.0f;
+
+    slotFinished = false;
+    ResetSpawnTimers();
+  }
+
+  void Level1_Logic::SetMods(GameMods mod1_, GameMods mod2_)
+  {
+    mod1 = mod1_;
+    mod2 = mod2_;
   }
 }

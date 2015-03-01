@@ -10,6 +10,8 @@ All content © 2015 DigiPen (USA) Corporation, all rights reserved.
 #include "types/space/Space.h"
 #include "../transform/CTransform.h"
 #include "../colliders/CCircleCollider.h"
+#include "systems/audio/SheepSoundEvent.h"
+#include "../sprites/CSprite.h"
 
 namespace Framework
 {
@@ -27,6 +29,7 @@ namespace Framework
 	{
 		//logic setup, you're attached and components are in place
     space->hooks.Add("LogicUpdate", self, BUILD_FUNCTION(Asteroid::LogicUpdate));
+    space->hooks.Add("CallingSM", self, BUILD_FUNCTION(Asteroid::CallingSM));
 
     aTransfrom = space->GetGameObject(owner)->GetComponentHandle(eTransform);
     aCollider = space->GetGameObject(owner)->GetComponentHandle(eCircleCollider);
@@ -63,9 +66,17 @@ namespace Framework
 
     if (at->GetTranslation().z <= 0.0f)
     {
+      Handle explosion = (FACTORY->LoadObjectFromArchetype(space, "explosion"))->self;
+      Transform *exT = space->GetGameObject(explosion)->GetComponent<Transform>(eTransform);
+      exT->SetTranslation(at->GetTranslation());
+      space->hooks.Call("SpawnItemSet", at->GetTranslation());
       space->GetGameObject(owner)->Destroy();
     }
 	}
 
-
+  void Asteroid::CallingSM()
+  {
+    /*if (owner != Handle::null)
+      space->GetGameObject(owner)->Destroy();*/
+  }
 }
