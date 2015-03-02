@@ -38,6 +38,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "types/weapons/WShotgun.h"
 #include "types/weapons/WAutomatic.h"
 #include "types/weapons/WLaser.h"
+#include "types/weapons/WMissile.h"
 #include "types/powerUps/PDamage.h"
 #include "types/powerUps/PShield.h"
 #include "types/powerUps/PCoin.h"
@@ -273,6 +274,7 @@ namespace Framework
     TYPE_REGISTER(Shotgun);
     TYPE_REGISTER(Automatic);
     TYPE_REGISTER(WLaser);
+    TYPE_REGISTER(Missile);
 
     TYPE_REGISTER(DamageBoost);
     TYPE_REGISTER(Shield);

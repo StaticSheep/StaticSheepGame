@@ -26,7 +26,8 @@ namespace Framework
     { ePistol, "Pistol" },
     { eAutomatic, "Automatic" },
     { eShotgun, "Shotgun" },
-    { eWLaser, "WLaser" }
+    { eWLaser, "WLaser" },
+    { eMissile, "Missile" }
   };
 
   WeaponPickup::WeaponPickup()
@@ -47,6 +48,10 @@ namespace Framework
       weaponID = eShotgun;
     else if (weaponNum == 2)
       weaponID = eAutomatic;
+    else if (weaponNum == 3)
+      weaponID = eWLaser;
+    else if (weaponNum == 4)
+      weaponID = eMissile;
 
     if (weaponID == eNoWeapon)
     {
@@ -127,6 +132,12 @@ namespace Framework
         break;
       case eShotgun:
         metricData.weapon = SHOTGUN;
+        break;
+      case eMissile:
+        metricData.weapon = MISSILE;
+        break;
+      case eWLaser:
+        metricData.weapon = LASER;
         break;
       }
       ENGINE->SystemMessage(MetricsMessage(&metricData));

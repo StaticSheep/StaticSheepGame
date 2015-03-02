@@ -31,6 +31,7 @@ E_NAME(Weapons)
   E_ENTRY(Automatic)
   E_ENTRY(Shotgun)
   E_ENTRY(WLaser)
+  E_ENTRY(Missile)
   E_ENTRY(NoWeapon) //keep this at the end
 E_END(Weapons)
 

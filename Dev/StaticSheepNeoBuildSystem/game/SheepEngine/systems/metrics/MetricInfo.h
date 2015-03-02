@@ -44,7 +44,9 @@ enum Weapons
 {
   PISTOL,
   AUTO,
-  SHOTGUN
+  SHOTGUN,
+  LASER,
+  MISSILE
 };
 
 //this struct will be sent with messages to the metric controller

@@ -39,7 +39,7 @@ namespace Framework
 
   private:
     //an array to record shots from the three different weapons, as well as one for how many times weapons are picked up
-    unsigned int player_fire[4][3], player_pickup[4][3], player_button_press[4][Buttons::TOTALBUTTONS];
+    unsigned int player_fire[4][3], player_pickup[4][5], player_button_press[4][Buttons::TOTALBUTTONS];
     unsigned int player_deaths[4], player_kills[4];
 
     //alright, i know this looks gross, but all it is is a vector of pairs

@@ -19,6 +19,7 @@ namespace Framework
     direction = true;
     numOfGrinders = 11;
     sizeOfGrinder = 60.0f;
+    itemDropTimer = 1.0f;
 	}
 
   GiantKillBox::~GiantKillBox()
@@ -75,6 +76,14 @@ namespace Framework
         GT[i] = (space->GetGameObject(Grinders[i])->GetComponent<Transform>(eTransform));
         GT[i]->SetTranslation(pt->GetTranslation() + Vec3(0.0, ((float)i * sizeOfGrinder - (sizeOfGrinder * (numOfGrinders / 2))), -0.1));
       }
+    }
+
+    itemDropTimer -= dt;
+    if (itemDropTimer <= 0)
+    {
+      if (!GetRandom(0, 1))
+        space->hooks.Call("SpawnItemSet", pt->GetTranslation());
+      itemDropTimer = 1.0f;
     }
 
     //kill grinders that are out of bounds

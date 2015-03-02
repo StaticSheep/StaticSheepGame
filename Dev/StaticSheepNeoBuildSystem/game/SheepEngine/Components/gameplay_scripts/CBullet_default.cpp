@@ -42,6 +42,7 @@ namespace Framework
 		space->hooks.Remove("LogicUpdate", self);
 
 	}
+
   static Transform *bt;
 	void Bullet_Default::LogicUpdate(float dt)
 	{

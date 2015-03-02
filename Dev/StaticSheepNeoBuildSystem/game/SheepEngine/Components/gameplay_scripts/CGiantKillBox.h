@@ -31,5 +31,6 @@ namespace Framework
     bool direction, GrindSpawn;
     int numOfGrinders;
     float sizeOfGrinder;
+    float itemDropTimer;
 	};
 }

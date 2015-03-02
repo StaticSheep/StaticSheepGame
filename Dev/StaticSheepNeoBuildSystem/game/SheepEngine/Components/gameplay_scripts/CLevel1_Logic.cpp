@@ -25,6 +25,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "../colliders/CCircleCollider.h"
 #include "types/powerUps/PDamage.h"
 #include "CJuggernautEffect.h"
+#include "types/weapons/WShotgun.h"
+#include "types/weapons/WMissile.h"
 
 static const char *playerNames[] = { "Player1", "Player2", "Player3", "Player4" };
 static bool warning;
@@ -131,7 +133,23 @@ namespace Framework
       for (int i = 0; i < numOfPlayers; ++i)
       {
         Players[i] = (FACTORY->LoadObjectFromArchetype(space, playerNames[i]))->self;
+        GameObject *temp = space->GetGameObject(Players[i]);
+        if (mod2 == SHOTGUNS)
+        {
+          if (temp->GetComponent<PlayerController>(ePlayerController)->weapon != nullptr)
+            delete temp->GetComponent<PlayerController>(ePlayerController)->weapon;
 
+          temp->GetComponent<PlayerController>(ePlayerController)->weapon = new Shotgun();
+        }
+        else if (mod2 == ROCKETS)
+        {
+          if (temp->GetComponent<PlayerController>(ePlayerController)->weapon != nullptr)
+            delete temp->GetComponent<PlayerController>(ePlayerController)->weapon;
+
+          temp->GetComponent<PlayerController>(ePlayerController)->weapon = new Missile();
+        }
+        if (mod1 == EXPLOSIVEROUNDS)
+          temp->GetComponent<PlayerController>(ePlayerController)->weapon->explosive_ = true;
         playTrans = space->GetGameObject(Players[i])->GetComponent<Transform>(eTransform);
         playTrans->SetTranslation(spawnPos[i]);
       }
@@ -146,9 +164,27 @@ namespace Framework
         if (Players[i] == Handle::null && spawnTimers[i] <= 0)
         {
           Players[i] = (FACTORY->LoadObjectFromArchetype(space, playerNames[i]))->self;
-
+          GameObject *temp = space->GetGameObject(Players[i]);
           playTrans = space->GetGameObject(Players[i])->GetComponent<Transform>(eTransform);
           playTrans->SetTranslation(spawnPos[ranStart]);
+
+          if (mod2 == SHOTGUNS)
+          {
+            if (temp->GetComponent<PlayerController>(ePlayerController)->weapon != nullptr)
+              delete temp->GetComponent<PlayerController>(ePlayerController)->weapon;
+
+            temp->GetComponent<PlayerController>(ePlayerController)->weapon = new Shotgun();
+          }
+          else if (mod2 == ROCKETS)
+          {
+            if (temp->GetComponent<PlayerController>(ePlayerController)->weapon != nullptr)
+              delete temp->GetComponent<PlayerController>(ePlayerController)->weapon;
+
+            temp->GetComponent<PlayerController>(ePlayerController)->weapon = new Missile();
+          }
+          if (mod1 == EXPLOSIVEROUNDS)
+            temp->GetComponent<PlayerController>(ePlayerController)->weapon->explosive_ = true;
+
           spawnTimers[i] = 2.0f;
           space->GetGameObject(Players[i])->GetComponent<PlayerController>(ePlayerController)->hasRespawned = true;
         }
@@ -329,7 +365,7 @@ namespace Framework
 
   void Level1_Logic::SpawnItemSet(Vec3 pos)
   {
-    int drop = GetRandom(0, 11);
+    int drop = GetRandom(0, 13);
     if (drop == 0 || drop == 1)
       SpawnItem("AutoPickup", pos);
     else if (drop == 2 || drop == 3)
@@ -340,10 +376,10 @@ namespace Framework
       SpawnItem("PowerUpPickup_Shield", pos);
     else if (drop == 8 || drop == 9)
       SpawnItem("PowerUpPickup_Explosive", pos);
-    else if (drop == 10 || drop ==11)
+    else if (drop == 10 || drop == 11)
       SpawnItem("CoinPickup", pos);
-    //else if (drop == 12 || drop == 13)
-    //  SpawnItem("CoinPickup", pos);
+    else if (drop == 12 || drop == 13)
+      SpawnItem("MissilePickup", pos);
 
 
     if (mod1 == BONUS || mod2 == BONUS)
@@ -600,6 +636,7 @@ namespace Framework
       roundTimer = 5.0f;
 
     slotFinished = false;
+    startFlag = true;
     ResetSpawnTimers();
   }
 
