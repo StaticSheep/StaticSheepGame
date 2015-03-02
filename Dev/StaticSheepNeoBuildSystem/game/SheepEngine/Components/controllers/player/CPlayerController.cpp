@@ -26,7 +26,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 namespace Framework
 {
-  
+  static int pn = -1;
 	PlayerController::PlayerController() //1
 	{
 		//set defaults
@@ -35,6 +35,7 @@ namespace Framework
 		isSnapped = true;
 		hasFired = false;
     health = 100;
+    shields = 100;
     snappedTo = Handle::null;
     respawnTimer = 2.0f;
     hasRespawned = false;
@@ -67,6 +68,7 @@ namespace Framework
 	{
 		//logic setup, you're attached and components are in place
 		space->hooks.Add("LogicUpdate", self, BUILD_FUNCTION(PlayerController::LogicUpdate));
+    space->hooks.Add("DealDamageToPlayer", self, BUILD_FUNCTION(PlayerController::DealDamage));
 		space->GetGameObject(owner)->hooks.Add("OnCollision", self, BUILD_FUNCTION(PlayerController::OnCollision));
 
     //Generic* gobj = space->GetHandles().GetAs<Generic>(owner);
@@ -97,6 +99,7 @@ namespace Framework
     bc->SetBodyCollisionGroup(space->GetGameObject(owner)->archetype);
 
     powerUp = nullptr;
+    pn = -1;
 
 	}
 
@@ -105,6 +108,7 @@ namespace Framework
   static BoxCollider *bc;       //players box collider
   static SoundEmitter *se;      //players sound emitter
   static Transform *ps;         //players transform
+
 
 	//************************************
 	// Method:    LogicUpdate
@@ -141,7 +145,7 @@ namespace Framework
       metricData.y = (int)ps->GetTranslation().y;
       ENGINE->SystemMessage(MetricsMessage(&metricData));
 
-      PlayerDeath(se, ps);
+      PlayerDeath(se, ps, pn);
     }
 
     //if the player has just respawned, run the blink function
@@ -351,7 +355,6 @@ namespace Framework
 
 	}
 
-
 	//************************************
 	// Method:    OnCollision
 	// FullName:  Framework::PlayerController::OnCollision
@@ -367,7 +370,7 @@ namespace Framework
     GameObject *OtherObject = space->GetHandles().GetAs<GameObject>(otherObject);
     if (OtherObject->name == "Bullet" && !hasRespawned && !GodMode && !PerfectMachine)
     {
-      health -= OtherObject->GetComponent<Bullet_Default>(eBullet_Default)->damage;
+      DealDamage(OtherObject->GetComponent<Bullet_Default>(eBullet_Default)->damage, playerNum);
       float randomX = (float)GetRandom(-25, 25);
       float randomY = (float)GetRandom(-25, 25);
       se->Play("hit1", &SoundInstance(1.0f));
@@ -379,7 +382,7 @@ namespace Framework
       //for metrics, need to determine where the bullet came from by checking its collision group
       if (health <= 0)
       {
-        int pn = 0;
+        pn = -1;
 
         if (OtherObject->GetComponent<CircleCollider>(eCircleCollider)->GetBodyCollisionGroup() == "Player1")
           pn = 0;
@@ -392,7 +395,7 @@ namespace Framework
 
         MetricInfo metricData(pn, 0, 0, PLAYER_KILL, Buttons::NONE, Weapons::PISTOL);
         ENGINE->SystemMessage(MetricsMessage(&metricData));
-        PlayerDeath(se, ps, pn);
+        //PlayerDeath(se, ps, pn);
       }
       return;
     }
@@ -401,14 +404,14 @@ namespace Framework
       && !GodMode && !PerfectMachine)
     {
       isSnapped = false;
-      health -= 10;
+      DealDamage(10, playerNum);
     }
 
     if ((OtherObject->GetComponentHandle(eGrinder) != Handle::null)
       && !hasRespawned && !GodMode && !PerfectMachine)
     {
       isSnapped = false;
-      health -= 10;
+      DealDamage(10, playerNum);
     }
 
     if (OtherObject->name == "WeaponPickup")
@@ -416,17 +419,12 @@ namespace Framework
 
     if (OtherObject->name == "Asteroid")
     {
-      health -= 50;
+      DealDamage(50, playerNum);
       float ranY = (float)GetRandom(-500, 500);
       float ranX = (float)GetRandom(-500, 500);
       bc->AddToVelocity(Vec3(ranX, ranY, 0.0f));
     }
 
-    /*if (OtherObject->name == "Player")
-    {
-
-    }*/
-		
 		//get the transform of the thing we are colliding with
 		Transform *OOT = OtherObject->GetComponent<Transform>(eTransform);
 		//if that thing we collided with's transform is missing, get the fuck outta here, i mean what are you even doing?
@@ -646,8 +644,8 @@ namespace Framework
     Transform *exT = space->GetGameObject(explosion)->GetComponent<Transform>(eTransform);
     exT->SetTranslation(ps->GetTranslation());
     exT->SetRotation((float)GetRandom(0, (int)(2.0f * (float)PI)));
-    space->hooks.Call("PlayerDied", playerNum, who_killed_me); //calling an event called player died
     space->hooks.Call("SpawnCoins", ps->GetTranslation());
+    space->hooks.Call("PlayerDied", playerNum, who_killed_me); //calling an event called player died
     space->GetGameObject(owner)->Destroy();
   }
 
@@ -812,5 +810,21 @@ namespace Framework
   int PlayerController::CurrentHealth()
   {
     return health;
+  }
+
+  void PlayerController::DealDamage(int damage, int playerNum_)
+  {
+    if (playerNum != playerNum_)
+      return;
+
+    if ((shields - damage) < 0) //if the damage would do more than we have shields
+    {
+      int leftOver = damage - shields;
+      shields = 0;
+      health -= leftOver;
+    }
+    else
+      shields -= damage;
+
   }
 }

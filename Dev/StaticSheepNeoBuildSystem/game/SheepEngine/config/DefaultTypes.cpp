@@ -54,6 +54,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/gameplay_scripts/CAsteroid.h"
 #include "components/gameplay_scripts/CPowerupPickup.h"
 #include "Components/gameplay_scripts/CSlotController.h"
+#include "Components/gameplay_scripts/CJuggernautEffect.h"
 
 
 namespace Framework
@@ -256,6 +257,9 @@ namespace Framework
 
     TYPE_REGISTER(DashEffect);
     TYPE_SET_TWEAK_TYPE(DashEffect, AntTweak::TW_TYPE_COMPONENT);
+
+    TYPE_REGISTER(JuggernautEffect);
+    TYPE_SET_TWEAK_TYPE(JuggernautEffect, AntTweak::TW_TYPE_COMPONENT);
 
     TYPE_REGISTER(Asteroid);
     TYPE_SET_TWEAK_TYPE(Asteroid, AntTweak::TW_TYPE_COMPONENT);

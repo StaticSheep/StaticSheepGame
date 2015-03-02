@@ -69,7 +69,8 @@ namespace Framework
       Handle explosion = (FACTORY->LoadObjectFromArchetype(space, "explosion"))->self;
       Transform *exT = space->GetGameObject(explosion)->GetComponent<Transform>(eTransform);
       exT->SetTranslation(at->GetTranslation());
-      space->hooks.Call("SpawnItemSet", at->GetTranslation());
+      if (!GetRandom(0, 2))
+        space->hooks.Call("SpawnItemSet", at->GetTranslation());
       space->GetGameObject(owner)->Destroy();
     }
 	}

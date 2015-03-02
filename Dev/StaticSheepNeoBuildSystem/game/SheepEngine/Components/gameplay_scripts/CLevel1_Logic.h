@@ -60,6 +60,7 @@ namespace Framework
     Handle Players[4];
     float spawnTimers[4];
     size_t playerCoins[4];
+    bool juggernaut[4];
     int deadPlayers;
     int numOfPlayers;
     bool camShake, shake;
@@ -88,6 +89,7 @@ namespace Framework
     void GoToGameMode(float dt);
     void FFAMode(float dt);
     void JuggernautMode(float dt);
+    void MakeJuggernaut();
     void SuddenDeathMode(float dt);
     void SlotMachineMode(float dt);
     void BonusMode(float dt);

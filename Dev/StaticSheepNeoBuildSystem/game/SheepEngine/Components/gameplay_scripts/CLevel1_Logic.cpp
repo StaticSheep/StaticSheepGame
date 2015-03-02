@@ -23,6 +23,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "types/levelEvents/LEAsteroids.h"
 #include "CSlotController.h"
 #include "../colliders/CCircleCollider.h"
+#include "types/powerUps/PDamage.h"
+#include "CJuggernautEffect.h"
 
 static const char *playerNames[] = { "Player1", "Player2", "Player3", "Player4" };
 static bool warning;
@@ -85,7 +87,10 @@ namespace Framework
     countDownTimer = 4.0f;
 
     for (int i = 0; i < 4; ++i)
+    {
       spawnTimers[i] = 2.0f;
+      juggernaut[i] = false;
+    }
 
     mode = SLOTMACHINE;
 
@@ -98,7 +103,6 @@ namespace Framework
 
   void Level1_Logic::LogicUpdate(float dt)
 	{
-
     if (camShake)
       CameraShake(dt, camShakeTime, camShakeMagnitude);
 
@@ -114,12 +118,9 @@ namespace Framework
       sp->Play("Main Music", &instance);
       playing = true;
     } 
-    //SoundPlayer *sp = space->GetHandles().GetAs<SoundPlayer>(levelSound);
-    //sp->SetVolume(0.35f);
 
     if (LE)
       LE->Update(dt);
-
 	}
 
   void Level1_Logic::SpawnPlayers(float dt)
@@ -166,6 +167,15 @@ namespace Framework
     Players[ply] = Handle::null;
     if (who_killed_him != -1)
       playerCoins[who_killed_him] += 5000;
+    if (juggernaut[ply] == true)
+    {
+      juggernaut[ply] = false;
+      if (who_killed_him != -1)
+      {
+        juggernaut[who_killed_him] = true;
+        MakeJuggernaut();
+      }
+    }
     if (!camShake)
     {
       camShakeTime = 0.25f;
@@ -329,10 +339,8 @@ namespace Framework
     else if (drop == 6 || drop == 7)
       SpawnItem("PowerUpPickup_Shield", pos);
     else if (drop == 8 || drop == 9)
-      SpawnItem("PowerUpPickup_Damage", pos);
-    if (mod1 == BONUS)
-      SpawnCoins(pos);
-    if (mod2 == BONUS)
+      SpawnItem("CoinPickup", pos);
+    if (mod1 == BONUS || mod2 == BONUS)
       SpawnCoins(pos);
   }
 
@@ -438,9 +446,23 @@ namespace Framework
 
     if (roundTimer <= 0)
     {
+      for (int i = 0; i < 4; ++i)
+        juggernaut[i] = false;
+
       mode = SLOTMACHINE;
       return;
     }
+
+    SpawnPlayers(dt);
+
+    int i;
+    for (i = 0; i < 4; ++i)
+    {
+      if (juggernaut[i] == true)
+        break;
+    }
+    if (i == 4)
+      MakeJuggernaut();
 
     spawnTimer -= dt;
     eventTimer -= dt;
@@ -453,9 +475,43 @@ namespace Framework
       Vec3 pos(ranX, ranY, ranZ);
       SpawnItemSet(pos);
     }
-    SpawnPlayers(dt);
 
     SpawnLevelEvent();
+  }
+
+  void Level1_Logic::MakeJuggernaut()
+  {
+    int i;
+    for (i = 0; i < 4; ++i)
+    {
+      if (juggernaut[i])
+        break;
+    }
+    GameObject *juggernaut_;
+    if (i == 4) //no one is currently juggernaut
+    {
+      do 
+      {
+        i = GetRandom(0, 3);
+        juggernaut_ = space->GetGameObject(Players[i]);
+      } while (juggernaut_ == NULL);
+      
+      juggernaut[i] = true;
+    }
+    else
+      juggernaut_ = space->GetGameObject(Players[i]);
+
+    PlayerController *playerController = juggernaut_->GetComponent<PlayerController>(ePlayerController);
+    if (playerController->powerUp != nullptr)
+      delete playerController->powerUp;
+    playerController->powerUp = new DamageBoost();
+    playerController->powerUp->Use(juggernaut_);
+    playerController->health = 200;
+    playerController->shields = 100;
+    GameObject *effect = (FACTORY->LoadObjectFromArchetype(space, "fire_effect2"));
+    effect->GetComponent<JuggernautEffect>(eJuggernautEffect)->pTransform = (space->GetGameObject(Players[i]))->GetComponentHandle(eTransform);
+    effect->GetComponent<Transform>(eTransform)->SetTranslation(
+                                   (space->GetGameObject(Players[i]))->GetComponent<Transform>(eTransform)->GetTranslation());
   }
 
   void Level1_Logic::SuddenDeathMode(float dt)

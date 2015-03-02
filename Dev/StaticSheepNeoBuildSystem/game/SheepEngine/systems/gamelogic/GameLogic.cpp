@@ -30,6 +30,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/gameplay_scripts/CAimingArrow.h"
 #include "components/gameplay_scripts/CLevel1_Lighting.h"
 #include "components/gameplay_scripts/CDashEffect.h"
+#include "components/gameplay_scripts/CJuggernautEffect.h"
 #include "components/gameplay_scripts/CAsteroid.h"
 #include "components/gameplay_scripts/CPowerupPickup.h"
 #include "components/gameplay_scripts/CSlotController.h"
@@ -71,6 +72,7 @@ namespace Framework
     REGISTER_COMPONENT(SlotMachine);
     REGISTER_COMPONENT(AimingArrow);
     REGISTER_COMPONENT(DashEffect);
+    REGISTER_COMPONENT(JuggernautEffect);
     REGISTER_COMPONENT(Asteroid);
     REGISTER_COMPONENT(PowerupPickup);
     REGISTER_COMPONENT(SlotController);
