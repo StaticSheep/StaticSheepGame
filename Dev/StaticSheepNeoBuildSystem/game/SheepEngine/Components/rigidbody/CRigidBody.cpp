@@ -104,6 +104,11 @@ namespace Framework
     PHYSICS->SetBodyRotation(space, m_handle, direction);
   }
 
+  void RigidBody::SetBodyRotation(float direction)
+  {
+    PHYSICS->SetBodyRotation(space, m_handle, direction);
+  }
+
   void RigidBody::SetBodyCollisionCallback(bool collisionCallback)
   {
     PHYSICS->SetBodyCollisionCallback(space, m_handle, collisionCallback);

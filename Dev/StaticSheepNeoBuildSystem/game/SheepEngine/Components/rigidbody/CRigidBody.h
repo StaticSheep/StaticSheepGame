@@ -71,6 +71,7 @@ namespace Framework
 
       //settors
       virtual void SetBodyRotation(Vec3D direction);
+      virtual void SetBodyRotation(float direction);
 
       //gettors
       virtual Vec3D GetCurrentVelocity(void);

@@ -93,16 +93,15 @@ namespace SheepFizz
 
   bool RayCast::SimpleRayCircleTest(Body* circle)
   {
-      //create a vector between the circle and the ray's start
-    circleNorm = circle->position_ - position_;
 
-      //project it onto the direction
-    circleNorm = (circleNorm * direction_) * direction_;
+    return false;
 
-      //create a new vector perpendicular to it for test against the radius
-    circleNorm = circleNorm - circle->position_;
-    
-    if (circleNorm.SquareLength() <= (circle->shape_->GetRadius() * circle->shape_->GetRadius()))
+    float intersect = ((circle->position_.x - position_.x) * direction_.y 
+      - (circle->position_.y - position_.y) * direction_.x);
+        
+    intersect = (intersect * intersect) / (direction_.x * direction_.x + direction_.y * direction_.y);
+
+    if (intersect < (circle->shape_->GetRadius() * circle->shape_->GetRadius()))
       return true;
 
     return false;
@@ -111,12 +110,11 @@ namespace SheepFizz
 
   bool RayCast::ComplexRayCircleTest(Body* circle)
   {
-    bool rayIntersect = SimpleRayCircleTest(circle);
-
-    if (!rayIntersect)
+    if (!SimpleRayCircleTest(circle))
       return false;
 
-    float segmentLength = ((Circle*)(circle->shape_))->GetRadius() *
+    
+    /*float segmentLength = ((Circle*)(circle->shape_))->GetRadius() *
       ((Circle*)(circle->shape_))->GetRadius() - circleNorm.SquareLength();
 
     Vec3D collisionPoint = circle->position_ + circleNorm;
@@ -129,7 +127,7 @@ namespace SheepFizz
     {
       firstCollisionSquareLength_ = length;
       firstCollision_ = circle;
-    }
+    }*/
 
     return true;
   }//end of ComplexRayCircleTest
@@ -185,7 +183,7 @@ namespace SheepFizz
   {
     return ComplexRayRectangleTest(rectangle);
     
-    Rectangle* rec = (Rectangle*)(rectangle->shape_);
+    /*Rectangle* rec = (Rectangle*)(rectangle->shape_);
     Vec3D normal;
    
     for (unsigned int i = 0; i < rec->GetVertexNumber(); ++i)
@@ -202,39 +200,36 @@ namespace SheepFizz
         return true;
     }
 
-    return false;
+    return false;*/
   }//end of SimpleRayRectangleTest
 
     //determines the collision point for ComplexRayRectangleTest
-  bool RayCast::RayRectangleIntersect(Vec3D& vertex, Vec3D& segmentDirection, Vec3D& collisionPoint)
+  bool RayCast::RayRectangleIntersect(Vec3D& vertex, Vec3D& nextVertex, Vec3D& segmentDirection, Vec3D& collisionPoint)
   {
-    if (position_.x > vertex.x && direction_.x > 0)
+    if (position_.x > vertex.x && direction_.x > 0 && position_.x > nextVertex.x && direction_.x > 0)
       return false;
 
-    if (position_.y > vertex.y && direction_.y > 0)
+    if (position_.x < vertex.x && direction_.x < 0 && position_.x < nextVertex.x && direction_.x < 0)
       return false;
 
-    if (position_.x < vertex.x && direction_.x < 0)
+    if (position_.y < vertex.y && direction_.y < 0 && position_.y < nextVertex.y && direction_.y < 0)
       return false;
 
-    if (position_.y < vertex.y && direction_.y < 0)
+    if (position_.y > vertex.y && direction_.y > 0 && position_.y > nextVertex.y && direction_.y > 0)
       return false;
-
 
     float denominator = direction_.x * segmentDirection.y - direction_.y * segmentDirection.x;
-    if (!denominator)
-      return false;
 
     float intersection = direction_.y * (vertex.x - position_.x) + direction_.x * (position_.y - vertex.y);
+
+    if (!denominator)
+      denominator = 1;
+
     intersection /= denominator;
     if (intersection <= 0 || intersection >= 1)
       return false;
     segmentDirection.z = 0;
     collisionPoint = segmentDirection * intersection + vertex;
-
-    if (position_.x > vertex.x && direction_.x > 0)
-      return false;
-
 
     return true;
   }//end of RayRectangleIntersect
@@ -255,20 +250,23 @@ namespace SheepFizz
       Vec3D vertex = ((Rectangle*)(rectangle->shape_))->GetVertex(support_);
       unsigned int postsupport = support_ + 1 < ((Rectangle*)(rectangle->shape_))->GetVertexNumber() ? support_ + 1 : 0;
       Vec3D lineOne = ((Rectangle*)(rectangle->shape_))->GetVertex(postsupport);
+      
 
       Matrix2D Rot(rectangle->orientation_);
       vertex = Rot * vertex;
       lineOne = Rot * lineOne;
-
+      
       vertex += rectangle->position_;
       lineOne += rectangle->position_;
+      Vec3D nextVert = lineOne;
+
       lineOne = lineOne - vertex;
 
       Vec3D collisionPoint;
 
       Vec3D testLength;
       float length;
-      rayIntersect = RayRectangleIntersect(vertex, lineOne, collisionPoint);
+      rayIntersect = RayRectangleIntersect(vertex, nextVert, lineOne, collisionPoint);
 
       if (rayIntersect)
       {

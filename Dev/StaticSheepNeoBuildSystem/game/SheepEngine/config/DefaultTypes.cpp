@@ -38,11 +38,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "types/weapons/WShotgun.h"
 #include "types/weapons/WAutomatic.h"
 #include "types/weapons/WLaser.h"
-#include "types/weapons/WMissile.h"
 #include "types/powerUps/PDamage.h"
 #include "types/powerUps/PShield.h"
-#include "types/powerUps/PCoin.h"
-#include "types/powerUps/PExplosive.h"
 #include "components/gameplay_scripts/CWarningText.h"
 #include "components/gameplay_scripts/CBackgroundPan.h"
 #include "components/gameplay_scripts/CCheats.h"
@@ -56,7 +53,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/gameplay_scripts/CAsteroid.h"
 #include "components/gameplay_scripts/CPowerupPickup.h"
 #include "Components/gameplay_scripts/CSlotController.h"
-#include "Components/gameplay_scripts/CJuggernautEffect.h"
+#include "Components/gameplay_scripts/CLaser.h"
 
 
 namespace Framework
@@ -218,7 +215,7 @@ namespace Framework
 
     TYPE_REGISTER(Level1_Logic);
     TYPE_SET_TWEAK_TYPE(Level1_Logic, AntTweak::TW_TYPE_COMPONENT);
-    TYPE_ADD_MEMBER(Level1_Logic, roundTimer, false, true, "KillBox Timer");
+    TYPE_ADD_MEMBER(Level1_Logic, timeLimit, false, true, "KillBox Timer");
     TYPE_ADD_MEMBER(Level1_Logic, numOfPlayers, false, true, "# of players");
 
     TYPE_REGISTER(Level1_Lighting);
@@ -260,26 +257,35 @@ namespace Framework
     TYPE_REGISTER(DashEffect);
     TYPE_SET_TWEAK_TYPE(DashEffect, AntTweak::TW_TYPE_COMPONENT);
 
-    TYPE_REGISTER(JuggernautEffect);
-    TYPE_SET_TWEAK_TYPE(JuggernautEffect, AntTweak::TW_TYPE_COMPONENT);
-
     TYPE_REGISTER(Asteroid);
     TYPE_SET_TWEAK_TYPE(Asteroid, AntTweak::TW_TYPE_COMPONENT);
 
     TYPE_REGISTER(SlotController);
     TYPE_SET_TWEAK_TYPE(SlotController, AntTweak::TW_TYPE_COMPONENT);
-    TYPE_ADD_MEMBER(SlotController, StypeInt, false, true, "Type");
+
+    TYPE_REGISTER(Laser);
+    TYPE_SET_TWEAK_TYPE(Laser, AntTweak::TW_TYPE_COMPONENT);
+    TYPE_ADD_MEMBER(Laser, type, false, true, "Type");
+    TYPE_ADD_MEMBER(Laser, startDelay, false, true, "Delay");
+    TYPE_ADD_MEMBER(Laser, duration, false, true, "Duration");
+    TYPE_ADD_MEMBER(Laser, damage, false, true, "Damage");
+    TYPE_ADD_MEMBER(Laser, width, false, true, "Width");
+    TYPE_ADD_MEMBER(Laser, arcRotation, false, true, "Arc");
+    TYPE_ADD_MEMBER(Laser, arcDelay, false, true, "ArcDelay");
+    TYPE_ADD_MEMBER(Laser, m_bodyTexName, false, true, "Body Texture",
+      BUILD_FUNCTION(Laser::TweakSetBodyTexture));
+    TYPE_ADD_MEMBER(Laser, m_beamTexName, false, true, "Beam Texture",
+      BUILD_FUNCTION(Laser::TweakSetBeamTexture));
+    TYPE_ADD_MEMBER(Laser, m_bodyColor, false, true, "Body Color");
+    TYPE_ADD_MEMBER(Laser, m_beamColor, false, true, "Beam Color");
 
     TYPE_REGISTER(Pistol);
     TYPE_REGISTER(Shotgun);
     TYPE_REGISTER(Automatic);
     TYPE_REGISTER(WLaser);
-    TYPE_REGISTER(Missile);
 
     TYPE_REGISTER(DamageBoost);
     TYPE_REGISTER(Shield);
-    TYPE_REGISTER(Coin);
-    TYPE_REGISTER(Explosive);
 
     TYPE_REGISTER( BoxCollider );
     TYPE_ADD_MEMBER(BoxCollider, m_width, false, true, "Width",

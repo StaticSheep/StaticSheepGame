@@ -343,7 +343,7 @@ namespace SheepFizz
     ray->gameSpace = userData_;
 
     bool rayIntersect = false;
-
+    Vec3D posPrev;
     if ((*ray).findFirstCollision)
     {
       for (unsigned i = 0; i < bodies_.Size(); ++i)
@@ -354,7 +354,13 @@ namespace SheepFizz
         rayIntersect = rayCast_.ComplexRayTest((Body*)(bodies_)[i]);
         Vec3D position = ((Body*)bodies_[i])->position_ * meterScale_;
         if (rayIntersect)
+        {
           rayCast_.GetRayConfig()->bodyIntersections_.push_back(position);
+          if (posPrev.x == position.x && posPrev.y == position.y)
+            continue;
+          posPrev = position;
+        }
+          
       }
       
       if (!rayCast_.GetRayConfig()->bodyIntersections_.empty())

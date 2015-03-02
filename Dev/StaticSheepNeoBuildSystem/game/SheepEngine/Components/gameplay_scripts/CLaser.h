@@ -18,7 +18,7 @@ namespace Framework
 {
   
 
-  class Laser : public Sprite
+  class Laser : public GameComponent
   {
   public:
     Laser();
@@ -28,6 +28,19 @@ namespace Framework
     void Remove();
     void SimpleCaster(CircleCollider *lc);
     void ComplexCaster(CircleCollider *lc);
+    void ModifyPositionOffsets(void);
+
+    void SetBodyTexture(const char * Texture);
+    DirectSheep::Handle& GetBodyTexture();
+
+    void SetBeamTexture(const char * Texture);
+    DirectSheep::Handle& GetBeamTexture();
+
+    void TweakSetLayer(const void* layerNum);
+    void TweakSetBodyTexture(const void * Texture);
+    void TweakSetBeamTexture(const void * Texture);
+
+    void DrawLaser();
 
     void(Laser::*Caster)(CircleCollider *lc);
 
@@ -40,7 +53,7 @@ namespace Framework
     unsigned int type;
 
     float startDelay;   //the amount of time to wait before firing
-    float duration;
+    float duration;     //amount of time laser lasts once firing
 
     float damage;
     int width;  //the width of the total laser, will use an algorithm to determine # of rays to cast
@@ -50,7 +63,27 @@ namespace Framework
     float arcPerSec;
 
     std::vector<Vec3D> positionOffsets; //used for multiple raycasts
+    int raysPerSide;
     int numberOfRays;
+
+
+    std::vector<float> m_beamLengths;
+
+    // Texture names
+    std::string m_bodyTexName;
+    std::string m_beamTexName;
+
+    // Texture handles
+    DirectSheep::Handle m_bodyTex;
+    DirectSheep::Handle m_beamTex;
+
+    Vec2                m_bodyTexDim;
+    Vec2                m_beamTexDim;
+
+    Vec2                m_bodyScale;
+
+    Vec4                m_bodyColor;
+    Vec4                m_beamColor;
 
   };
 }

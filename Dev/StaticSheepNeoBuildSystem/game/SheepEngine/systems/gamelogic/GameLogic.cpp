@@ -34,6 +34,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/gameplay_scripts/CAsteroid.h"
 #include "components/gameplay_scripts/CPowerupPickup.h"
 #include "components/gameplay_scripts/CSlotController.h"
+#include "components/gameplay_scripts/CLaser.h"
 
 namespace Framework
 {
@@ -76,6 +77,7 @@ namespace Framework
     REGISTER_COMPONENT(Asteroid);
     REGISTER_COMPONENT(PowerupPickup);
     REGISTER_COMPONENT(SlotController);
+    REGISTER_COMPONENT(Laser);
   }
 
   void GameLogic::Initialize()

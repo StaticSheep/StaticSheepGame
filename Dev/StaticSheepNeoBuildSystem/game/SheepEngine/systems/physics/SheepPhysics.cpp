@@ -159,12 +159,28 @@ namespace Framework
           //draw velocity line
           Draw::SetColor(1, 0, 0, 1);
           Draw::DrawLine(bodyPosition.x, bodyPosition.y,
-            bodyPosition.x + bodyVelocity.x * .5f, bodyPosition.y + bodyVelocity.y * .5f);    
+            bodyPosition.x + bodyVelocity.x * .5f, bodyPosition.y + bodyVelocity.y * .5f);
+
+          Draw::DrawCircle(bodyPosition.x, bodyPosition.y, ((CircleCollider*)(*circles)[j])->m_radius);
         }
       
+        float slope1 = 0;
+        float slope2 = 0;
         //go through rays
         for (int i = 0; i < rayComplexDraws.size(); ++i)
-          Draw::DrawLine(rayComplexDraws[i].first.x, rayComplexDraws[i].first.y, rayComplexDraws[i].second.x, rayComplexDraws[i].second.y);
+        {
+          if (i > 0)
+            slope1 = (rayComplexDraws[i].second.y - rayComplexDraws[i].first.y) / (rayComplexDraws[i].second.x - rayComplexDraws[i].first.x);
+          
+          if (i > 0)
+            slope2 = (rayComplexDraws[i - 1].second.y - rayComplexDraws[i - 1].first.y) / (rayComplexDraws[i - 1].second.x - rayComplexDraws[i - 1].first.x);
+
+          if (slope1 != slope2)
+            continue;
+
+          Draw::DrawLine(rayComplexDraws[i].first.x, rayComplexDraws[i].first.y, rayComplexDraws[i].second.x, rayComplexDraws[i].second.y);             
+        }
+          
 
         for (int i = 0; i < raySimpleDraws.size(); ++i)
           Draw::DrawBeam(raySimpleDraws[i].first, raySimpleDraws[i].second);
@@ -506,6 +522,11 @@ namespace Framework
   {
     ray.findFirstCollision = true;
     return  ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->RayCaster(&ray);
+  }
+
+  Vec3D SheepPhysics::GetFirstCollision()
+  {
+    return ray.firstCollisionLocation;
   }
 
   void SheepPhysics::RayDestruction()
