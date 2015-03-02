@@ -17,6 +17,7 @@ namespace Framework
 	{
     damage = 10;
     ttl = 0.375f;
+    explosive_ = false;
 	}
 
 	Bullet_Default::~Bullet_Default()
@@ -41,10 +42,10 @@ namespace Framework
 		space->hooks.Remove("LogicUpdate", self);
 
 	}
-
+  static Transform *bt;
 	void Bullet_Default::LogicUpdate(float dt)
 	{
-    Transform *bt = space->GetHandles().GetAs<Transform>(bTransfrom);
+    bt = space->GetHandles().GetAs<Transform>(bTransfrom);
     bGameObject = space->GetHandles().GetAs<GameObject>(owner);
 
     if (bGameObject->archetype == "Bullet_shot")
@@ -64,6 +65,11 @@ namespace Framework
     GameObject *OtherObject = space->GetHandles().GetAs<GameObject>(otherObject);
     if (OtherObject->name != "Bullet" && OtherObject->name != "WeaponPickup")
     {
+      if (explosive_)
+      {
+        GameObject *temp = (FACTORY->LoadObjectFromArchetype(space, "explosion"));
+        temp->GetComponent<Transform>(eTransform)->SetTranslation(bt->GetTranslation());
+      }
       space->GetGameObject(owner)->Destroy();
     }
 	}

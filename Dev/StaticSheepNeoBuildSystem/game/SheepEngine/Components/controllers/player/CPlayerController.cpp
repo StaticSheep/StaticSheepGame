@@ -100,7 +100,7 @@ namespace Framework
 
     powerUp = nullptr;
     pn = -1;
-
+    
 	}
 
   static Vec2D aim(1.0f, 0.0f); //default aiming direction

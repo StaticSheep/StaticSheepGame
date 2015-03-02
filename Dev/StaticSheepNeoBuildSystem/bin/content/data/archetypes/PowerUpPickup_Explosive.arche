@@ -1,7 +1,7 @@
 GameObject
 {
-  name std::string "WeaponPickup"
-  archetype std::string "AutoPickup"
+  name std::string "PowerUpPickup"
+  archetype std::string "PowerUpPickup_Explosive"
   Transform
   {
     Translation Vec3
@@ -20,7 +20,7 @@ GameObject
   }
   Sprite
   {
-    m_spriteName std::string "WeapPickupAuto.png"
+    m_spriteName std::string "ExplosivePickup.png"
     m_flipX bool false
     m_flipY bool false
     m_uvScale bool false
@@ -50,9 +50,8 @@ GameObject
     m_hasCollisionCallback bool true
     m_CollisionGroup std::string "NonCollide"
   }
-  WeaponPickup
+  PowerupPickup
   {
-    weaponID EWeapons "Automatic"
-    weaponNum int 2
+    powerNum int 3
   }
 }

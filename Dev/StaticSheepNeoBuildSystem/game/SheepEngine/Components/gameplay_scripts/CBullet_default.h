@@ -27,5 +27,6 @@ namespace Framework
     GameObject *bGameObject;
     int damage;
     float ttl; //time to live
+    bool explosive_;
 	};
 }

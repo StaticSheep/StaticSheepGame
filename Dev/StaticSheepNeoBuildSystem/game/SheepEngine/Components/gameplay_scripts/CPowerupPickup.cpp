@@ -21,6 +21,7 @@ namespace Framework
     { eShield, "Shield" },
     { ePower, "DamageBoost" },
     { eCoin, "Coin" },
+    { eExplosive, "Explosive" },
     { eMiniMe, "MiniMe" }
   };
 
@@ -42,6 +43,8 @@ namespace Framework
       powerUpID = ePower;
     else if (powerNum == 2)
       powerUpID = eCoin;
+    else if (powerNum == 3)
+      powerUpID = eExplosive;
 
     if (powerUpID == eNoPowerUp)
     {

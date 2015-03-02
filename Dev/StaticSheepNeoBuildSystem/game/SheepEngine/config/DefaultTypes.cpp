@@ -41,6 +41,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "types/powerUps/PDamage.h"
 #include "types/powerUps/PShield.h"
 #include "types/powerUps/PCoin.h"
+#include "types/powerUps/PExplosive.h"
 #include "components/gameplay_scripts/CWarningText.h"
 #include "components/gameplay_scripts/CBackgroundPan.h"
 #include "components/gameplay_scripts/CCheats.h"
@@ -276,6 +277,7 @@ namespace Framework
     TYPE_REGISTER(DamageBoost);
     TYPE_REGISTER(Shield);
     TYPE_REGISTER(Coin);
+    TYPE_REGISTER(Explosive);
 
     TYPE_REGISTER( BoxCollider );
     TYPE_ADD_MEMBER(BoxCollider, m_width, false, true, "Width",

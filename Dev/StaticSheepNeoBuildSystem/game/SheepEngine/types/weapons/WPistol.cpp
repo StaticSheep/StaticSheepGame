@@ -23,6 +23,7 @@ namespace Framework
     damage = 10;
     knockback = 60;
     semi = true;
+    explosive_ = false;
   }
 
   Pistol::~Pistol()
@@ -34,7 +35,13 @@ namespace Framework
   {
 
     GameObject *bullet = (FACTORY->LoadObjectFromArchetype(player->space, "Bullet"));
-    bullet->GetComponent<Bullet_Default>(eBullet_Default)->damage = damage;
+    if (explosive_)
+    {
+      bullet->GetComponent<Bullet_Default>(eBullet_Default)->damage = damage + 20;
+      bullet->GetComponent<Bullet_Default>(eBullet_Default)->explosive_ = true;
+    }
+    else
+      bullet->GetComponent<Bullet_Default>(eBullet_Default)->damage = damage;
     bullet->GetComponent<ParticleCircleEmitter>(eParticleCircleEmitter)->spawning = false;
     bullet->GetComponent<ParticleCircleEmitter>(eParticleCircleEmitter)->timedSpawning = true;
     bullet->GetComponent<ParticleCircleEmitter>(eParticleCircleEmitter)->timed = 0.001f;

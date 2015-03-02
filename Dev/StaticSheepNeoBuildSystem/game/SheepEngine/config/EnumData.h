@@ -38,6 +38,7 @@ E_NAME(PowerUps)
   E_ENTRY(Shield)
   E_ENTRY(Power)
   E_ENTRY(Coin)
+  E_ENTRY(Explosive)
   E_ENTRY(MiniMe)
   E_ENTRY(NoPowerUp) //keep this at the end
 E_END(PowerUps)

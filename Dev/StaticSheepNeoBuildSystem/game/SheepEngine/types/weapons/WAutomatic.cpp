@@ -25,7 +25,7 @@ namespace Framework
     damage = 10;
     knockback = 50;
     semi = false;
-    
+    explosive_ = false;
   }
 
   Automatic::~Automatic()
@@ -40,7 +40,13 @@ namespace Framework
     randomNumber = GetRandom(0, 100);
 
     GameObject *bullet = (FACTORY->LoadObjectFromArchetype(player->space, "Bullet"));
-    bullet->GetComponent<Bullet_Default>(eBullet_Default)->damage = damage;
+    if (explosive_)
+    {
+      bullet->GetComponent<Bullet_Default>(eBullet_Default)->damage = damage + 10;
+      bullet->GetComponent<Bullet_Default>(eBullet_Default)->explosive_ = true;
+    }
+    else
+      bullet->GetComponent<Bullet_Default>(eBullet_Default)->damage = damage;
     bullet->GetComponent<ParticleCircleEmitter>(eParticleCircleEmitter)->spawning = false;
     bullet->GetComponent<ParticleCircleEmitter>(eParticleCircleEmitter)->timedSpawning = true;
     bullet->GetComponent<ParticleCircleEmitter>(eParticleCircleEmitter)->timed = 0.001f;

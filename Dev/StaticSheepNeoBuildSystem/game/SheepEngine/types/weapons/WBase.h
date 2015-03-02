@@ -21,5 +21,6 @@ namespace Framework
     int damage; //damage caused by weapon
     int knockback; //how much the weapon knocks the player back in zero gravity
     bool semi; //is the weapon semi-auto or automatic
+    bool explosive_;
   };
 }
