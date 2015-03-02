@@ -48,6 +48,7 @@ namespace Framework
     float eventTimer;
     float spawnTimer;
     float roundTimer;
+    float juggernautTimer;
     bool playing;
     bool startFlag;
     Handle levelSound;
@@ -90,6 +91,7 @@ namespace Framework
     void FFAMode(float dt);
     void JuggernautMode(float dt);
     void MakeJuggernaut();
+    void ResetJuggernaut();
     void SuddenDeathMode(float dt);
     void SlotMachineMode(float dt);
     void BonusMode(float dt);

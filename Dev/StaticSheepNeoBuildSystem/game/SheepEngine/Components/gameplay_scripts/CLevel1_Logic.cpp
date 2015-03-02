@@ -29,6 +29,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "types/weapons/WMissile.h"
 
 static const char *playerNames[] = { "Player1", "Player2", "Player3", "Player4" };
+static int juggKills[4] = { 0, 0, 0, 0 };
 static bool warning;
 static float camShakeTime;
 static float camShakeMagnitude;
@@ -212,6 +213,9 @@ namespace Framework
         MakeJuggernaut();
       }
     }
+    else if (juggernaut[who_killed_him] == true)
+      ++juggKills[who_killed_him];
+
     if (!camShake)
     {
       camShakeTime = 0.25f;
@@ -476,6 +480,7 @@ namespace Framework
     SpawnLevelEvent();
   }
 
+
   void Level1_Logic::JuggernautMode(float dt)
   {
     if (!countDownDone)
@@ -517,7 +522,12 @@ namespace Framework
       Vec3 pos(ranX, ranY, ranZ);
       SpawnItemSet(pos);
     }
-
+    juggernautTimer -= dt;
+    if (juggernautTimer <= 0)
+    {
+      juggernautTimer = 0.5f;
+      GivePlayerCoins(i, (100 + (100 * juggKills[i])));
+    }
     SpawnLevelEvent();
   }
 
@@ -545,17 +555,31 @@ namespace Framework
     else
       juggernaut_ = space->GetGameObject(Players[i]);
 
-    PlayerController *playerController = juggernaut_->GetComponent<PlayerController>(ePlayerController);
-    if (playerController->powerUp != nullptr)
-      delete playerController->powerUp;
-    playerController->powerUp = new DamageBoost();
-    playerController->powerUp->Use(juggernaut_);
-    playerController->health = 200;
-    playerController->shields = 100;
-    GameObject *effect = (FACTORY->LoadObjectFromArchetype(space, "fire_effect2"));
-    effect->GetComponent<JuggernautEffect>(eJuggernautEffect)->pTransform = (space->GetGameObject(Players[i]))->GetComponentHandle(eTransform);
-    effect->GetComponent<Transform>(eTransform)->SetTranslation(
-                                   (space->GetGameObject(Players[i]))->GetComponent<Transform>(eTransform)->GetTranslation());
+    if (juggernaut_ != NULL)
+    {
+      PlayerController *playerController = juggernaut_->GetComponent<PlayerController>(ePlayerController);
+      if (playerController->powerUp != nullptr)
+        delete playerController->powerUp;
+      playerController->powerUp = new DamageBoost();
+      playerController->powerUp->Use(juggernaut_);
+      playerController->health = 200;
+      playerController->shields = 100;
+      GameObject *effect = (FACTORY->LoadObjectFromArchetype(space, "fire_effect2"));
+      effect->GetComponent<JuggernautEffect>(eJuggernautEffect)->pTransform = (space->GetGameObject(Players[i]))->GetComponentHandle(eTransform);
+      effect->GetComponent<Transform>(eTransform)->SetTranslation(
+        (space->GetGameObject(Players[i]))->GetComponent<Transform>(eTransform)->GetTranslation());
+    }
+    else
+      juggernaut[i] = false;
+  }
+
+  void Level1_Logic::ResetJuggernaut()
+  {
+    for (int i = 0; i < 4; ++i)
+    {
+      juggKills[i] = 0;
+    }
+    juggernautTimer = 0.5f;
   }
 
   void Level1_Logic::SuddenDeathMode(float dt)
@@ -591,6 +615,8 @@ namespace Framework
         delete LE;
         LE = 0;
       }
+      if (mod1 == LIGHTSOUT)
+        space->hooks.Call("ToggleLevelLights");
       space->hooks.Call("CallingSM");
       (FACTORY->LoadObjectFromArchetype(space, "LevelSlotMachine"));
       slotFinished = true;
@@ -640,11 +666,19 @@ namespace Framework
     slotFinished = false;
     startFlag = true;
     ResetSpawnTimers();
+    if (mode_ == JUGGERNAUT)
+    {
+      ResetJuggernaut();
+    }
   }
 
   void Level1_Logic::SetMods(GameMods mod1_, GameMods mod2_)
   {
     mod1 = mod1_;
     mod2 = mod2_;
+    if (mod1 == LIGHTSOUT)
+      space->hooks.Call("ToggleLevelLights");
   }
+
+  
 }

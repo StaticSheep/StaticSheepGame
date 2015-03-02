@@ -1,6 +1,6 @@
 /*****************************************************************
 Filename: DefaultTypes.cpp
-Project: 
+Project:
 Author(s): Zachary Nawar (Primary)
 
 All content © 2014 DigiPen (USA) Corporation, all rights reserved.
@@ -38,8 +38,11 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "types/weapons/WShotgun.h"
 #include "types/weapons/WAutomatic.h"
 #include "types/weapons/WLaser.h"
+#include "types/weapons/WMissile.h"
 #include "types/powerUps/PDamage.h"
 #include "types/powerUps/PShield.h"
+#include "types/powerUps/PCoin.h"
+#include "types/powerUps/PExplosive.h"
 #include "components/gameplay_scripts/CWarningText.h"
 #include "components/gameplay_scripts/CBackgroundPan.h"
 #include "components/gameplay_scripts/CCheats.h"
@@ -53,6 +56,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/gameplay_scripts/CAsteroid.h"
 #include "components/gameplay_scripts/CPowerupPickup.h"
 #include "Components/gameplay_scripts/CSlotController.h"
+#include "Components/gameplay_scripts/CJuggernautEffect.h"
 #include "Components/gameplay_scripts/CLaser.h"
 
 
@@ -66,69 +70,69 @@ namespace Framework
   void EngineTypeRegistration()
   {
 
-    TYPE_REGISTER_POD( int );
-    TYPE_SET_SERIALIZER( int, SerializePOD<int> );
-    TYPE_SET_DESERIALIZER( int, DeserializePOD<int> );
-    TYPE_SET_TO_LUA( int, Lua::IntToLua );
-    TYPE_SET_FROM_LUA( int, Lua::IntFromLua );
-    TYPE_SET_TWEAK_TYPE( int, AntTweak::TW_TYPE_INT32 );
+    TYPE_REGISTER_POD(int);
+    TYPE_SET_SERIALIZER(int, SerializePOD<int>);
+    TYPE_SET_DESERIALIZER(int, DeserializePOD<int>);
+    TYPE_SET_TO_LUA(int, Lua::IntToLua);
+    TYPE_SET_FROM_LUA(int, Lua::IntFromLua);
+    TYPE_SET_TWEAK_TYPE(int, AntTweak::TW_TYPE_INT32);
 
-    TYPE_REGISTER_POD( unsigned int );
-    TYPE_SET_TO_LUA( unsigned int, Lua::UIntToLua );
-    TYPE_SET_FROM_LUA( unsigned int, Lua::IntFromLua );
+    TYPE_REGISTER_POD(unsigned int);
+    TYPE_SET_TO_LUA(unsigned int, Lua::UIntToLua);
+    TYPE_SET_FROM_LUA(unsigned int, Lua::IntFromLua);
     TYPE_SET_SERIALIZER(unsigned int, SerializePOD<unsigned int>);
     TYPE_SET_DESERIALIZER(unsigned int, DeserializePOD<unsigned int>);
-    TYPE_SET_TWEAK_TYPE( unsigned int, AntTweak::TW_TYPE_UINT32 );
+    TYPE_SET_TWEAK_TYPE(unsigned int, AntTweak::TW_TYPE_UINT32);
 
     TYPE_REGISTER_POD(void*);
 
     TYPE_REGISTER_POD(const char*);
     TYPE_SET_TO_LUA(char*, Lua::CharPToLua);
     TYPE_SET_FROM_LUA(char*, Lua::CharPFromLua);
-    TYPE_SET_TWEAK_TYPE( char*, AntTweak::TW_TYPE_CDSTRING );
+    TYPE_SET_TWEAK_TYPE(char*, AntTweak::TW_TYPE_CDSTRING);
 
-    TYPE_REGISTER_POD( float );
-    TYPE_SET_SERIALIZER( float, SerializePOD<float> );
-    TYPE_SET_DESERIALIZER( float, DeserializePOD<float> );
-    TYPE_SET_TO_LUA( float, Lua::FloatToLua );
-    TYPE_SET_FROM_LUA( float, Lua::FloatFromLua );
-    TYPE_SET_TWEAK_TYPE( float, AntTweak::TW_TYPE_FLOAT );
+    TYPE_REGISTER_POD(float);
+    TYPE_SET_SERIALIZER(float, SerializePOD<float>);
+    TYPE_SET_DESERIALIZER(float, DeserializePOD<float>);
+    TYPE_SET_TO_LUA(float, Lua::FloatToLua);
+    TYPE_SET_FROM_LUA(float, Lua::FloatFromLua);
+    TYPE_SET_TWEAK_TYPE(float, AntTweak::TW_TYPE_FLOAT);
 
-    TYPE_REGISTER_POD( bool );
-    TYPE_SET_SERIALIZER( bool, SerializePOD<bool> );
-    TYPE_SET_DESERIALIZER( bool, DeserializePOD<bool> );
+    TYPE_REGISTER_POD(bool);
+    TYPE_SET_SERIALIZER(bool, SerializePOD<bool>);
+    TYPE_SET_DESERIALIZER(bool, DeserializePOD<bool>);
     TYPE_SET_TO_LUA(bool, Lua::BoolToLua);
     TYPE_SET_FROM_LUA(bool, Lua::BoolFromLua);
-    TYPE_SET_TWEAK_TYPE( bool, AntTweak::TW_TYPE_BOOLCPP );
+    TYPE_SET_TWEAK_TYPE(bool, AntTweak::TW_TYPE_BOOLCPP);
 
 
-    TYPE_REGISTER( std::vector<int> );
-    TYPE_SET_SERIALIZER( std::vector<int>, SerializeArray<int> );
-    TYPE_SET_DESERIALIZER( std::vector<int>, DeserializeArray<int> );
-    TYPE_SET_TWEAK_TYPE( std::vector<int>, AntTweak::TW_TYPE_STDVECTOR);
+    TYPE_REGISTER(std::vector<int>);
+    TYPE_SET_SERIALIZER(std::vector<int>, SerializeArray<int>);
+    TYPE_SET_DESERIALIZER(std::vector<int>, DeserializeArray<int>);
+    TYPE_SET_TWEAK_TYPE(std::vector<int>, AntTweak::TW_TYPE_STDVECTOR);
 
-    TYPE_REGISTER( std::string );
-    TYPE_SET_SERIALIZER( std::string, SerializeString );
-    TYPE_SET_DESERIALIZER( std::string, DeserializeString );
-    TYPE_SET_TO_LUA( std::string, Lua::StringToLua );
-    TYPE_SET_FROM_LUA( std::string, Lua::StringFromLua );
-    TYPE_SET_TWEAK( std::string, AntTweak::Tweaker::TweakString );
-    TYPE_SET_TWEAK_TYPE( std::string, AntTweak::TW_TYPE_STDSTRING );
-    
+    TYPE_REGISTER(std::string);
+    TYPE_SET_SERIALIZER(std::string, SerializeString);
+    TYPE_SET_DESERIALIZER(std::string, DeserializeString);
+    TYPE_SET_TO_LUA(std::string, Lua::StringToLua);
+    TYPE_SET_FROM_LUA(std::string, Lua::StringFromLua);
+    TYPE_SET_TWEAK(std::string, AntTweak::Tweaker::TweakString);
+    TYPE_SET_TWEAK_TYPE(std::string, AntTweak::TW_TYPE_STDSTRING);
 
-    TYPE_REGISTER( Handle );
-    TYPE_SET_SERIALIZER( Handle, Handle::Serialize );
+
+    TYPE_REGISTER(Handle);
+    TYPE_SET_SERIALIZER(Handle, Handle::Serialize);
     TYPE_SET_TO_LUA(Handle, Lua::UIntToLua);
     TYPE_SET_FROM_LUA(Handle, Lua::IntFromLua);
-    TYPE_SET_TWEAK_TYPE( Handle, AntTweak::TW_TYPE_HANDLE );
+    TYPE_SET_TWEAK_TYPE(Handle, AntTweak::TW_TYPE_HANDLE);
 
-    TYPE_REGISTER( Generic );
-    TYPE_SET_FROM_LUA( Generic, Lua::GenericObjectFromLua );
-    TYPE_REGISTER_PTR( Generic* );
-    TYPE_SET_FROM_LUA( Generic*, Lua::GenericObjectFromLua );
+    TYPE_REGISTER(Generic);
+    TYPE_SET_FROM_LUA(Generic, Lua::GenericObjectFromLua);
+    TYPE_REGISTER_PTR(Generic*);
+    TYPE_SET_FROM_LUA(Generic*, Lua::GenericObjectFromLua);
 
-    TYPE_REGISTER( Member );
-    TYPE_REGISTER_PTR( Member* );
+    TYPE_REGISTER(Member);
+    TYPE_REGISTER_PTR(Member*);
 
     TYPE_REGISTER(Vec2);
     TYPE_ADD_MEMBER(Vec2, X, false, true, "X");
@@ -155,59 +159,59 @@ namespace Framework
     TYPE_ADD_MEMBER(LightColor, R, false, true, "Red");
     TYPE_ADD_MEMBER(LightColor, G, false, true, "Green");
     TYPE_ADD_MEMBER(LightColor, B, false, true, "Blue");
-    TYPE_ADD_MEMBER(LightColor, A, false, true, "Intensity"); 
+    TYPE_ADD_MEMBER(LightColor, A, false, true, "Intensity");
 
     TYPE_REGISTER(LightVec3);
     TYPE_ADD_MEMBER(LightVec3, X, false, true, "Constant");
     TYPE_ADD_MEMBER(LightVec3, Y, false, true, "Linear");
     TYPE_ADD_MEMBER(LightVec3, Z, false, true, "Quadratic");
 
-    TYPE_REGISTER( GameComponent );
-    TYPE_SET_FROM_LUA( GameComponent, Lua::GenericObjectFromLua );
-    TYPE_SET_TWEAK_TYPE( GameComponent, AntTweak::TW_TYPE_COMPONENT );
-    TYPE_REGISTER_PTR( GameComponent* );
+    TYPE_REGISTER(GameComponent);
+    TYPE_SET_FROM_LUA(GameComponent, Lua::GenericObjectFromLua);
+    TYPE_SET_TWEAK_TYPE(GameComponent, AntTweak::TW_TYPE_COMPONENT);
+    TYPE_REGISTER_PTR(GameComponent*);
     //TYPE_SET_TO_LUA( GameComponent*, Lua::GameComponentToLua);
 
-    TYPE_REGISTER( GameObject );
-    TYPE_ADD_MEMBER( GameObject, name, true, true, "Name",
+    TYPE_REGISTER(GameObject);
+    TYPE_ADD_MEMBER(GameObject, name, true, true, "Name",
       BUILD_FUNCTION(GameObject::TweakSetName));
-    TYPE_ADD_MEMBER( GameObject, archetype, true, true, "Archetype");
-    TYPE_SET_SERIALIZER( GameObject, GameObject::Serialize );
-    TYPE_SET_DESERIALIZER( GameObject, GameObject::Deserialize );
-    TYPE_SET_FROM_LUA( GameObject, Lua::GenericObjectFromLua );
-    TYPE_SET_TWEAK( GameObject, GameObject::CustomTweak );
-    TYPE_SET_TWEAK_TYPE( GameObject, AntTweak::TW_TYPE_OBJECT );
-    TYPE_REGISTER_PTR( GameObject* );
+    TYPE_ADD_MEMBER(GameObject, archetype, true, true, "Archetype");
+    TYPE_SET_SERIALIZER(GameObject, GameObject::Serialize);
+    TYPE_SET_DESERIALIZER(GameObject, GameObject::Deserialize);
+    TYPE_SET_FROM_LUA(GameObject, Lua::GenericObjectFromLua);
+    TYPE_SET_TWEAK(GameObject, GameObject::CustomTweak);
+    TYPE_SET_TWEAK_TYPE(GameObject, AntTweak::TW_TYPE_OBJECT);
+    TYPE_REGISTER_PTR(GameObject*);
     //TYPE_SET_TO_LUA( GameObject*, Lua::GameObjectToLua );
 
-    TYPE_REGISTER( Archetype );
-    TYPE_ADD_MEMBER( Archetype, name );
-    TYPE_ADD_MEMBER( Archetype, archetype );
-    TYPE_SET_SERIALIZER( Archetype, Archetype::Serialize );
-    TYPE_SET_DESERIALIZER( Archetype, Archetype::Deserialize );
+    TYPE_REGISTER(Archetype);
+    TYPE_ADD_MEMBER(Archetype, name);
+    TYPE_ADD_MEMBER(Archetype, archetype);
+    TYPE_SET_SERIALIZER(Archetype, Archetype::Serialize);
+    TYPE_SET_DESERIALIZER(Archetype, Archetype::Deserialize);
 
-    TYPE_REGISTER( GameSpace );
-    TYPE_SET_SERIALIZER( GameSpace, GameSpace::Serialize );
-    TYPE_SET_DESERIALIZER( GameSpace, GameSpace::Deserialize );
-    TYPE_SET_TWEAK_TYPE( GameSpace, AntTweak::TW_TYPE_GAMESPACE );
-    TYPE_SET_TWEAK( GameSpace, GameSpace::CustomTweak );
-    TYPE_REGISTER_PTR( GameSpace* );
+    TYPE_REGISTER(GameSpace);
+    TYPE_SET_SERIALIZER(GameSpace, GameSpace::Serialize);
+    TYPE_SET_DESERIALIZER(GameSpace, GameSpace::Deserialize);
+    TYPE_SET_TWEAK_TYPE(GameSpace, AntTweak::TW_TYPE_GAMESPACE);
+    TYPE_SET_TWEAK(GameSpace, GameSpace::CustomTweak);
+    TYPE_REGISTER_PTR(GameSpace*);
     //TYPE_SET_TO_LUA( GameSpace*, Lua::GameSpaceToLua);
 
-    TYPE_REGISTER( Transform );
+    TYPE_REGISTER(Transform);
     Transform::RegisterMembers();
-    TYPE_SET_FROM_LUA( Transform, Lua::GenericObjectFromLua );
-    TYPE_SET_TWEAK_TYPE( Transform, AntTweak::TW_TYPE_COMPONENT );
-    TYPE_SET_SERIALIZER( Transform, Transform::Serialize );
-    TYPE_SET_DESERIALIZER( Transform, Transform::Deserialize );
-    TYPE_SET_TWEAK( Transform, Transform::ToTweak );
-    
-	  TYPE_REGISTER(PlayerController);
-	  TYPE_SET_TWEAK_TYPE(PlayerController, AntTweak::TW_TYPE_COMPONENT);
-	  TYPE_ADD_MEMBER(PlayerController, playerNum, false, true, "Player Number");
+    TYPE_SET_FROM_LUA(Transform, Lua::GenericObjectFromLua);
+    TYPE_SET_TWEAK_TYPE(Transform, AntTweak::TW_TYPE_COMPONENT);
+    TYPE_SET_SERIALIZER(Transform, Transform::Serialize);
+    TYPE_SET_DESERIALIZER(Transform, Transform::Deserialize);
+    TYPE_SET_TWEAK(Transform, Transform::ToTweak);
 
-	  TYPE_REGISTER(Bullet_Default);
-	  TYPE_SET_TWEAK_TYPE(Bullet_Default, AntTweak::TW_TYPE_COMPONENT);
+    TYPE_REGISTER(PlayerController);
+    TYPE_SET_TWEAK_TYPE(PlayerController, AntTweak::TW_TYPE_COMPONENT);
+    TYPE_ADD_MEMBER(PlayerController, playerNum, false, true, "Player Number");
+
+    TYPE_REGISTER(Bullet_Default);
+    TYPE_SET_TWEAK_TYPE(Bullet_Default, AntTweak::TW_TYPE_COMPONENT);
 
     TYPE_REGISTER(ElevatorPlat);
     TYPE_SET_TWEAK_TYPE(ElevatorPlat, AntTweak::TW_TYPE_COMPONENT);
@@ -215,7 +219,7 @@ namespace Framework
 
     TYPE_REGISTER(Level1_Logic);
     TYPE_SET_TWEAK_TYPE(Level1_Logic, AntTweak::TW_TYPE_COMPONENT);
-    TYPE_ADD_MEMBER(Level1_Logic, timeLimit, false, true, "KillBox Timer");
+    TYPE_ADD_MEMBER(Level1_Logic, roundTimer, false, true, "KillBox Timer");
     TYPE_ADD_MEMBER(Level1_Logic, numOfPlayers, false, true, "# of players");
 
     TYPE_REGISTER(Level1_Lighting);
@@ -257,11 +261,15 @@ namespace Framework
     TYPE_REGISTER(DashEffect);
     TYPE_SET_TWEAK_TYPE(DashEffect, AntTweak::TW_TYPE_COMPONENT);
 
+    TYPE_REGISTER(JuggernautEffect);
+    TYPE_SET_TWEAK_TYPE(JuggernautEffect, AntTweak::TW_TYPE_COMPONENT);
+
     TYPE_REGISTER(Asteroid);
     TYPE_SET_TWEAK_TYPE(Asteroid, AntTweak::TW_TYPE_COMPONENT);
 
     TYPE_REGISTER(SlotController);
     TYPE_SET_TWEAK_TYPE(SlotController, AntTweak::TW_TYPE_COMPONENT);
+    TYPE_ADD_MEMBER(SlotController, StypeInt, false, true, "Type");
 
     TYPE_REGISTER(Laser);
     TYPE_SET_TWEAK_TYPE(Laser, AntTweak::TW_TYPE_COMPONENT);
@@ -283,16 +291,19 @@ namespace Framework
     TYPE_REGISTER(Shotgun);
     TYPE_REGISTER(Automatic);
     TYPE_REGISTER(WLaser);
+    TYPE_REGISTER(Missile);
 
     TYPE_REGISTER(DamageBoost);
     TYPE_REGISTER(Shield);
+    TYPE_REGISTER(Coin);
+    TYPE_REGISTER(Explosive);
 
-    TYPE_REGISTER( BoxCollider );
+    TYPE_REGISTER(BoxCollider);
     TYPE_ADD_MEMBER(BoxCollider, m_width, false, true, "Width",
       BUILD_FUNCTION(RigidBody::UpdateWidth));
     TYPE_ADD_MEMBER(BoxCollider, m_height, false, true, "Height",
       BUILD_FUNCTION(RigidBody::UpdateHeight));
-    TYPE_ADD_MEMBER(BoxCollider, m_materialName, false, true, "Material"); 
+    TYPE_ADD_MEMBER(BoxCollider, m_materialName, false, true, "Material");
     TYPE_ADD_MEMBER(BoxCollider, m_hasCollisionCallback, false, true, "UsesCallback");
     TYPE_ADD_MEMBER(BoxCollider, m_CollisionGroup, false, true, "CollisionGroup");
     TYPE_SET_TWEAK_TYPE(BoxCollider, AntTweak::TW_TYPE_COMPONENT);
@@ -310,7 +321,7 @@ namespace Framework
     TYPE_SET_TWEAK_TYPE(GamePad, AntTweak::TW_TYPE_COMPONENT);
 
 
-    TYPE_REGISTER( Sprite );
+    TYPE_REGISTER(Sprite);
     TYPE_ADD_MEMBER(Sprite, m_spriteName, false, true, "Texture",
       BUILD_FUNCTION(Sprite::TweakSetTexture));
     TYPE_ADD_MEMBER(Sprite, m_flipX, false, true, "FlipX");
@@ -319,8 +330,8 @@ namespace Framework
     TYPE_ADD_MEMBER(Sprite, Color, false, true, "Color");
     TYPE_ADD_MEMBER(Sprite, Size, false, true, "ImageScale");
     TYPE_ADD_MEMBER(Sprite, m_origin, false, true, "SpriteOrigin");
-    TYPE_SET_TWEAK_TYPE( Sprite, AntTweak::TW_TYPE_COMPONENT );
-    TYPE_SET_FROM_LUA( Sprite, Lua::GenericObjectFromLua );
+    TYPE_SET_TWEAK_TYPE(Sprite, AntTweak::TW_TYPE_COMPONENT);
+    TYPE_SET_FROM_LUA(Sprite, Lua::GenericObjectFromLua);
 
     TYPE_REGISTER(PointLight);
     TYPE_ADD_MEMBER(PointLight, m_brightness, false, true, "LightColor");
@@ -341,7 +352,7 @@ namespace Framework
     TYPE_SET_TWEAK_TYPE(SpriteLight, AntTweak::TW_TYPE_COMPONENT);
     TYPE_SET_FROM_LUA(SpriteLight, Lua::GenericObjectFromLua);
 
-    TYPE_REGISTER( AniSprite );
+    TYPE_REGISTER(AniSprite);
     TYPE_ADD_MEMBER(AniSprite, m_spriteName, false, true, "Texture",
       BUILD_FUNCTION(Sprite::TweakSetTexture));
     TYPE_ADD_MEMBER(AniSprite, m_frames, false, true, "Frames",
@@ -356,15 +367,15 @@ namespace Framework
     TYPE_ADD_MEMBER(AniSprite, m_flipX, false, true, "FlipX");
     TYPE_ADD_MEMBER(AniSprite, m_flipY, false, true, "FlipY");
     TYPE_ADD_MEMBER(AniSprite, Color, false, true, "Color");
-    TYPE_ADD_MEMBER( AniSprite, Size, false, true, "Scale");
-    TYPE_SET_TWEAK_TYPE( AniSprite, AntTweak::TW_TYPE_COMPONENT );
-    TYPE_SET_FROM_LUA( AniSprite, Lua::GenericObjectFromLua );
+    TYPE_ADD_MEMBER(AniSprite, Size, false, true, "Scale");
+    TYPE_SET_TWEAK_TYPE(AniSprite, AntTweak::TW_TYPE_COMPONENT);
+    TYPE_SET_FROM_LUA(AniSprite, Lua::GenericObjectFromLua);
 
     TYPE_REGISTER(ParticleSystem);
     TYPE_ADD_MEMBER(ParticleSystem, textureName, false, true, "ParticleTexture");
     TYPE_ADD_MEMBER(ParticleSystem, particleLife, false, true, "ParticleLifetime");
     TYPE_ADD_MEMBER(ParticleSystem, directionEase, false, true, "DirectionEase");
-    TYPE_ADD_MEMBER(ParticleSystem, direction, false, true, "ParticleDirection", 
+    TYPE_ADD_MEMBER(ParticleSystem, direction, false, true, "ParticleDirection",
       BUILD_FUNCTION(ParticleSystem::TweakSetDirection));
     TYPE_ADD_MEMBER(ParticleSystem, angularVelocity, false, true, "ParticleAngularVelocity");
     TYPE_ADD_MEMBER(ParticleSystem, scaleEase, false, true, "ScaleEase");
@@ -373,7 +384,7 @@ namespace Framework
     TYPE_ADD_MEMBER(ParticleSystem, color, false, true, "ParticleColor");
     TYPE_ADD_MEMBER(ParticleSystem, speedEase, false, true, "SpeedEase");
     TYPE_ADD_MEMBER(ParticleSystem, speed, false, true, "ParticleSpeed");
-    
+
     TYPE_SET_TWEAK_TYPE(ParticleSystem, AntTweak::TW_TYPE_COMPONENT);
 
     TYPE_REGISTER(ParticleOptionShort<float>);
@@ -427,18 +438,18 @@ namespace Framework
       BUILD_FUNCTION(Camera::TweakSetFov));
     TYPE_SET_TWEAK_TYPE(Camera, AntTweak::TW_TYPE_COMPONENT);
 
-    TYPE_REGISTER( SoundEmitter );
-    TYPE_SET_FROM_LUA(SoundEmitter, Lua::GenericObjectFromLua );
+    TYPE_REGISTER(SoundEmitter);
+    TYPE_SET_FROM_LUA(SoundEmitter, Lua::GenericObjectFromLua);
 
-    TYPE_REGISTER( SoundPlayer );
-    TYPE_SET_FROM_LUA(SoundPlayer, Lua::GenericObjectFromLua );
+    TYPE_REGISTER(SoundPlayer);
+    TYPE_SET_FROM_LUA(SoundPlayer, Lua::GenericObjectFromLua);
 
-    TYPE_REGISTER( LuaComponent );
-    TYPE_ADD_MEMBER( LuaComponent, name );
-    TYPE_ADD_MEMBER( LuaComponent, loadCommand );
-    TYPE_SET_TWEAK_TYPE( LuaComponent, AntTweak::TW_TYPE_LUACOMPONENT );
-    TYPE_SET_FROM_LUA( LuaComponent, Lua::GenericObjectFromLua );
-    TYPE_REGISTER_PTR( LuaComponent* );
+    TYPE_REGISTER(LuaComponent);
+    TYPE_ADD_MEMBER(LuaComponent, name);
+    TYPE_ADD_MEMBER(LuaComponent, loadCommand);
+    TYPE_SET_TWEAK_TYPE(LuaComponent, AntTweak::TW_TYPE_LUACOMPONENT);
+    TYPE_SET_FROM_LUA(LuaComponent, Lua::GenericObjectFromLua);
+    TYPE_REGISTER_PTR(LuaComponent*);
     //TYPE_SET_TO_LUA( LuaComponent*, Lua::GameComponentToLua);
 
     TYPE_REGISTER(SlotMachine);
@@ -452,7 +463,7 @@ namespace Framework
       BUILD_FUNCTION(SlotMachine::TweakSetupSlots));
 
     TYPE_ADD_MEMBER(SlotMachine, numSlots, false, true, "# Reels",
-      BUILD_FUNCTION(SlotMachine::TweakSetNumSlots)); 
+      BUILD_FUNCTION(SlotMachine::TweakSetNumSlots));
 
     TYPE_ADD_MEMBER(SlotMachine, slotOptions, false, true, "# Options",
       BUILD_FUNCTION(SlotMachine::TweakSetupSlots));
@@ -471,8 +482,8 @@ namespace Framework
     TYPE_ADD_MEMBER(SlotMachine, backingColor, true, true, "BackColor");
 
 
-    TYPE_REGISTER( AntTweak::TBar );
-    TYPE_REGISTER_PTR( AntTweak::TBar* );
+    TYPE_REGISTER(AntTweak::TBar);
+    TYPE_REGISTER_PTR(AntTweak::TBar*);
 
     TYPE_REGISTER(GamePadInput);
     TYPE_REGISTER_PTR(GamePadInput*);

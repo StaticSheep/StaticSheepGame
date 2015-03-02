@@ -310,7 +310,7 @@ GameObject
   LuaComponent
   {
     name std::string "PauseMenu"
-    loadCommand std::string "return function(self) self.opened = true self.ypos = 456 end"
+    loadCommand std::string "return function(self) self.ypos = 456 self.opened = true end"
   }
 
   LuaComponent
@@ -2599,5 +2599,42 @@ GameObject
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
     m_CollisionGroup std::string ""
+  }
+}
+GameObject
+{
+  name std::string "LightsOutLight"
+  archetype std::string ""
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 0.000000
+      y_ float 0.000000
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  PointLight
+  {
+    m_brightness LightColor
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 4.000000
+    }
+    m_attenuation LightVec3
+    {
+      X float 0.010000
+      Y float 0.010000
+      Z float 1.000000
+    }
   }
 }

@@ -25,6 +25,7 @@ namespace Framework
   void Level1_Lighting::Initialize()
   {
     space->hooks.Add("LogicUpdate", self, BUILD_FUNCTION(Level1_Lighting::LogicUpdate));
+    space->hooks.Add("ToggleLevelLights", self, BUILD_FUNCTION(Level1_Lighting::Toggle));
     //space->hooks.Add("PlayerDied", self, BUILD_FUNCTION(Level1_Lighting::PlayerDied)); // might want this
 
     if (!ENGINE->m_editorActive)

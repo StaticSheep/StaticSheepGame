@@ -431,7 +431,8 @@ namespace Framework
 		if (!OOT)
 			return;
 
-    if (OtherObject->HasComponent(eBoxCollider) && OtherObject->name != "Player" && OtherObject->name != "WeaponPickup" && OtherObject->archetype != "Grinder")
+    if (OtherObject->HasComponent(eBoxCollider) && OtherObject->name != "Player" && OtherObject->name != "WeaponPickup" 
+      && OtherObject->archetype != "Grinder" && OtherObject->name != "PowerUpPickup")
 		{
       float dotNormals;
       Vec3 nextSnappedNormal;
@@ -484,7 +485,7 @@ namespace Framework
         snappedNormal = averaged;
       }
 		}
-		else if (OtherObject->HasComponent(eCircleCollider))
+    else if (OtherObject->HasComponent(eCircleCollider) && OtherObject->archetype != "CoinPickup")
 		{
       CircleCollider *OOCc = OtherObject->GetComponent<CircleCollider>(eCircleCollider);
       snappedNormal = OOCc->GetCollisionNormals(manifold);

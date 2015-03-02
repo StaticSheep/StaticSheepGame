@@ -20,7 +20,7 @@ GameObject
   }
   Sprite
   {
-    m_spriteName std::string "ExplosivePickup.png"
+    m_spriteName std::string "WeapPickupShotOld.png"
     m_flipX bool false
     m_flipY bool false
     m_uvScale bool false
@@ -33,8 +33,8 @@ GameObject
     }
     Size Vec2
     {
-      X float 1.000000
-      Y float 1.000000
+      X float 2.000000
+      Y float 2.000000
     }
     m_origin Vec2
     {
