@@ -529,6 +529,8 @@ namespace Framework
       if (juggernaut[i])
         break;
     }
+    if (Players[0] == Handle::null && Players[1] == Handle::null && Players[2] == Handle::null && Players[3] == Handle::null)
+      return;
     GameObject *juggernaut_;
     if (i == 4) //no one is currently juggernaut
     {

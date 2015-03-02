@@ -20,7 +20,7 @@ namespace Framework
   Missile::Missile()
   {
     delay = 1.0f;
-    damage = 40;
+    damage = 90;
     knockback = 600;
     semi = true;
     explosive_ = true;
@@ -60,7 +60,7 @@ namespace Framework
 
     bulletC->SetBodyCollisionGroup(player->archetype);
     BT->SetTranslation(playerTrans->GetTranslation() + AimDir * 25);
-    bulletC->AddToVelocity(AimDir * 800);
+    bulletC->AddToVelocity(AimDir * 1000);
 
     SoundEmitter *se = player->GetComponent<SoundEmitter>(eSoundEmitter);
     se->Play("dash", &SoundInstance(1.0f));

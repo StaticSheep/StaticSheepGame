@@ -31,6 +31,9 @@ namespace Framework
     PlayerController *playerController = player->GetComponent<PlayerController>(ePlayerController);
     playerController->weapon->explosive_ = true;
     uses -= 1;
+
+    SoundEmitter *se = player->GetComponent<SoundEmitter>(eSoundEmitter);
+    se->Play("Pickup_Explosive", &SoundInstance(1.0f));
   }
 
   void Explosive::Update(float dt)

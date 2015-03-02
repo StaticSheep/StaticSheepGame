@@ -31,8 +31,8 @@ namespace Framework
     PlayerController *playerController = player->GetComponent<PlayerController>(ePlayerController);
     playerController->weapon->damage *= 2;
 
-    //SoundEmitter *se = player->GetComponent<SoundEmitter>(eSoundEmitter);
-    //se->Play("Laser_Shot", &SoundInstance(1.0f));
+    SoundEmitter *se = player->GetComponent<SoundEmitter>(eSoundEmitter);
+    se->Play("Pickup_Damage", &SoundInstance(1.0f));
   }
 
   void DamageBoost::Update(float dt)

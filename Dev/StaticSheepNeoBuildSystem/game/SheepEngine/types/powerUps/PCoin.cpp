@@ -33,8 +33,13 @@ namespace Framework
 
     player->space->hooks.Call("GivePlayerCoins", playerController->playerNum, coinAmount);
 
-    //SoundEmitter *se = player->GetComponent<SoundEmitter>(eSoundEmitter);
-    //se->Play("Laser_Shot", &SoundInstance(1.0f));
+    SoundEmitter *se = player->GetComponent<SoundEmitter>(eSoundEmitter);
+    char coinSound[6];
+    strcpy(coinSound, "coin ");
+    int coinNum = GetRandom(0, 9);
+    char coinNumChar = (char)(coinNum + 48);
+    coinSound[4] = coinNumChar;
+    se->Play(coinSound, &SoundInstance(1.0f));
   }
 
   void Coin::Update(float dt)
