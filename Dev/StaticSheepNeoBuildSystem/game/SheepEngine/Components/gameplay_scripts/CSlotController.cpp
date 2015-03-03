@@ -145,16 +145,30 @@ namespace Framework
     }
     else if (Stype == JACKPOT)
     {
+      int coinBallSpawns = 0;
       if (CheckForJP(*results))
       {
-        for (int i = 0; i < 5; ++i)
+        coinBallSpawns += 5;
+      }
+      else
+      {
+        for (int i = 0; i < 3; ++i)
         {
-          float ranX = GetRandom(-600, 600);
-          float ranY = GetRandom(-300, 300);
-          Vec3 pos(ranX, ranY, 0.0f);
-          space->hooks.Call("SpawnItem", "CoinBall", pos);
+          if ((*results)[i] == 0)
+            coinBallSpawns += 2;
+          else if ((*results)[i] == 1)
+            coinBallSpawns += 6;
+          else if ((*results)[i] == 2)
+            coinBallSpawns += 4;
         }
-        //spawn fan balls
+      }
+      coinBallSpawns = coinBallSpawns / 5;
+      for (int i = 0; i < coinBallSpawns; ++i)
+      {
+        float ranX = GetRandom(-600, 600);
+        float ranY = GetRandom(-300, 300);
+        Vec3 pos(ranX, ranY, 0.0f);
+        space->hooks.Call("SpawnItem", "CoinBall", pos);
       }
     }
     
