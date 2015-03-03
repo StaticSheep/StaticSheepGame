@@ -353,7 +353,7 @@ namespace Framework
   {
     GameObject *item = (FACTORY->LoadObjectFromArchetype(space, itemName));
     Transform *ItemTransform = item->GetComponent<Transform>(eTransform);
-    if (itemName != "CoinPickup")
+    if (itemName != "CoinPickup" && itemName != "CoinBall")
     {
       BoxCollider *ItemCollider = item->GetComponent<BoxCollider>(eBoxCollider);
       ItemCollider->SetBodyCollisionGroup("NonCollide");
@@ -361,7 +361,10 @@ namespace Framework
     else
     {
       CircleCollider *ItemCollider = item->GetComponent<CircleCollider>(eCircleCollider);
-      ItemCollider->SetBodyCollisionGroup("NonCollide");
+      if (itemName != "CoinBall")
+        ItemCollider->SetBodyCollisionGroup("NonCollide");
+      else
+        ItemCollider->SetBodyCollisionGroup("Resolve");
     }
 
     ItemTransform->SetTranslation(pos);
@@ -369,7 +372,7 @@ namespace Framework
 
   void Level1_Logic::SpawnItemSet(Vec3 pos)
   {
-    int drop = GetRandom(0, 13);
+    int drop = GetRandom(0, 15);
     if (drop == 0 || drop == 1)
       SpawnItem("AutoPickup", pos);
     else if (drop == 2 || drop == 3)
@@ -384,9 +387,13 @@ namespace Framework
       SpawnItem("CoinPickup", pos);
     else if (drop == 12 || drop == 13)
       SpawnItem("MissilePickup", pos);
+    else if (drop == 14 || drop == 15)
+      SpawnItem("CoinBall", pos);
 
 
     if (mod1 == BONUS || mod2 == BONUS)
+      SpawnCoins(pos);
+    if (mod1 == BONUS && mod2 == BONUS)
       SpawnCoins(pos);
   }
 

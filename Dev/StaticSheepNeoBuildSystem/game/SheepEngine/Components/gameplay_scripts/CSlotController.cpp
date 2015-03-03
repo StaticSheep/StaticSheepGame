@@ -147,12 +147,12 @@ namespace Framework
     {
       if (CheckForJP(*results))
       {
-        for (int i = 0; i < 9; ++i)
+        for (int i = 0; i < 5; ++i)
         {
           float ranX = GetRandom(-600, 600);
           float ranY = GetRandom(-300, 300);
           Vec3 pos(ranX, ranY, 0.0f);
-          space->hooks.Call("SpawnCoins", pos);
+          space->hooks.Call("SpawnItem", "CoinBall", pos);
         }
         //spawn fan balls
       }

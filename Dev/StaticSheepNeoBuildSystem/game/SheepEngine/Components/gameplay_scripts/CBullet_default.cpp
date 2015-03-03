@@ -64,7 +64,8 @@ namespace Framework
   void Bullet_Default::OnCollision(Handle otherObject, SheepFizz::ExternalManifold manifold)
 	{
     GameObject *OtherObject = space->GetHandles().GetAs<GameObject>(otherObject);
-    if (OtherObject->name != "Bullet" && OtherObject->name != "WeaponPickup" && OtherObject->name != "PowerUpPickup" && OtherObject->name != "CoinPickup")
+    if (OtherObject->name != "Bullet" && OtherObject->name != "WeaponPickup" && OtherObject->name != "PowerUpPickup" 
+        && OtherObject->name != "CoinPickup")
     {
       if (explosive_)
       {

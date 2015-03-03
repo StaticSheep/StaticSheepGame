@@ -58,6 +58,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "Components/gameplay_scripts/CSlotController.h"
 #include "Components/gameplay_scripts/CJuggernautEffect.h"
 #include "Components/gameplay_scripts/CLaser.h"
+#include "Components/gameplay_scripts/CCoinBall.h"
 
 
 namespace Framework
@@ -270,6 +271,9 @@ namespace Framework
     TYPE_REGISTER(SlotController);
     TYPE_SET_TWEAK_TYPE(SlotController, AntTweak::TW_TYPE_COMPONENT);
     TYPE_ADD_MEMBER(SlotController, StypeInt, false, true, "Type");
+
+    TYPE_REGISTER(CoinBall);
+    TYPE_SET_TWEAK_TYPE(CoinBall, AntTweak::TW_TYPE_COMPONENT);
 
     TYPE_REGISTER(Laser);
     TYPE_SET_TWEAK_TYPE(Laser, AntTweak::TW_TYPE_COMPONENT);
