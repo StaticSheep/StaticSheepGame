@@ -67,11 +67,11 @@ namespace Framework
     if (OtherObject->name != "Bullet" && OtherObject->name != "WeaponPickup" && OtherObject->name != "PowerUpPickup" 
         && OtherObject->name != "CoinPickup")
     {
-      if (explosive_)
-      {
-        GameObject *temp = (FACTORY->LoadObjectFromArchetype(space, "explosion"));
-        temp->GetComponent<Transform>(eTransform)->SetTranslation(bt->GetTranslation());
-      }
+      //if (explosive_)
+      //{
+      //  GameObject *temp = (FACTORY->LoadObjectFromArchetype(space, "explosion"));
+      //  temp->GetComponent<Transform>(eTransform)->SetTranslation(bt->GetTranslation());
+      //}
       space->GetGameObject(owner)->Destroy();
     }
 	}

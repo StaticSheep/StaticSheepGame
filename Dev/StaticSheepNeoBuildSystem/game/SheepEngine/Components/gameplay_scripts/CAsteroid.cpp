@@ -53,9 +53,9 @@ namespace Framework
 
     Vec3 scale(0.0f, 0.0f, 0.0f);
     if (currZ <= 5.0f)
-      scale = Vec3(1.5f, 1.5f, 1.0f);
+      scale = Vec3(2.5f, 2.5f, 2.0f);
     else
-      scale = Vec3(1/(currZ * 0.50f), 1/(currZ * 0.50f), 1.0f);
+      scale = Vec3(10/(currZ), 10/(currZ), 1.0f);
 
     at->SetScale(scale);
 
