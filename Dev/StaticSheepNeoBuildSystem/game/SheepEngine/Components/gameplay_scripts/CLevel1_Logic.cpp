@@ -34,6 +34,7 @@ static bool warning;
 static float camShakeTime;
 static float camShakeMagnitude;
 static bool playing;
+static float deltaTime;
 
 namespace Framework
 {
@@ -68,6 +69,7 @@ namespace Framework
 	{
 		//logic setup, you're attached and components are in place
 		space->hooks.Add("LogicUpdate", self, BUILD_FUNCTION(Level1_Logic::LogicUpdate));
+    space->hooks.Add("Draw", self, BUILD_FUNCTION(Level1_Logic::Draw));
     space->hooks.Add("PlayerDied", self, BUILD_FUNCTION(Level1_Logic::PlayerDied));
     space->hooks.Add("CheatWin", self, BUILD_FUNCTION(Level1_Logic::CheatWin));
     space->hooks.Add("SlotFinished", self, BUILD_FUNCTION(Level1_Logic::SlotFinished));
@@ -93,6 +95,7 @@ namespace Framework
     {
       spawnTimers[i] = 2.0f;
       juggernaut[i] = false;
+      playerCoinsThisFrame[i] = 0;
     }
 
     mode = SLOTMACHINE;
@@ -108,7 +111,7 @@ namespace Framework
 	{
     if (camShake)
       CameraShake(dt, camShakeTime, camShakeMagnitude);
-
+    deltaTime = dt;
     GoToGameMode(dt);
     
     if(!playing)
@@ -347,6 +350,7 @@ namespace Framework
   void Level1_Logic::GivePlayerCoins(int player, int coins)
   {
     playerCoins[player] += coins;
+    playerCoinsThisFrame[player] += coins;
   }
 
   void Level1_Logic::SpawnItem(const char *itemName, Vec3 pos)
@@ -687,5 +691,37 @@ namespace Framework
       space->hooks.Call("ToggleLevelLights");
   }
 
+  void Level1_Logic::Draw()
+  {
+    Vec3 pos;
+    Vec2D scale(20, 20);
+    char playerCoins[10];
+    for (int i = 0; i < 4; ++i)
+    {
+      if (Players[i] == Handle::null)
+        continue;
+      if (playerCoinsThisFrame[i] != 0)
+      {
+        std::pair<int, float> newCoinString(playerCoinsThisFrame[i], 1.0f);
+        coinStringsAlive[i].push_back(newCoinString);
+        playerCoinsThisFrame[i] = 0;
+      }
+      if (!coinStringsAlive[i].empty())
+      {
+        for (int j = 0; j < coinStringsAlive[i].size(); ++j)
+        {
+          itoa(coinStringsAlive[i][j].first, playerCoins, 10);
+          pos = space->GetGameObject(Players[i])->GetComponent<Transform>(eTransform)->GetTranslation();
+          Draw::SetPosition(pos.x, pos.y + (64 - (coinStringsAlive[i][j].second * 64)));
+          Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
+          Draw::SetRotation(0);
+          Draw::DrawString(playerCoins, scale, 0);
+          coinStringsAlive[i][j].second -= deltaTime;
+          if (coinStringsAlive[i][j].second <= 0.0f)
+            coinStringsAlive[i].pop_front();
+        }
+      }
+    }
+  }
   
 }

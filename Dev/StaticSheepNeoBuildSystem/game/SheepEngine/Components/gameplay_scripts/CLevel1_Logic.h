@@ -61,6 +61,8 @@ namespace Framework
     Handle Players[4];
     float spawnTimers[4];
     size_t playerCoins[4];
+    int playerCoinsThisFrame[4];
+    std::deque<std::pair<int, float>> coinStringsAlive[4];
     bool juggernaut[4];
     int deadPlayers;
     int numOfPlayers;
@@ -98,5 +100,7 @@ namespace Framework
 
     void SlotFinished(GameTypes mode);
     void SetMods(GameMods mod1, GameMods mod2);
+
+    void Draw();
 	};
 }
