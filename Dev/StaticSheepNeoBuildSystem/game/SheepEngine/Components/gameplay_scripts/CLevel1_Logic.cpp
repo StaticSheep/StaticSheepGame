@@ -46,8 +46,8 @@ namespace Framework
     spawnPos[1] = Vec3(610.0f, -440.0f, 0.0f);
     spawnPos[2] = Vec3(610.0f, 435.0f, 0.0f);
     spawnPos[3] = Vec3(-610.0f, 435.0f, 0.0f);
-    spawnPos[4] = Vec3(0.0f, 435.0f, 0.0f);
-    spawnPos[5] = Vec3(0.0f, -440.0f, 0.0f);
+    spawnPos[4] = Vec3(0.0f, 352.0f, 0.0f);
+    spawnPos[5] = Vec3(0.0f, -352.0f, 0.0f);
     deadPlayers = 0;
     for (int i = 0; i < 4; ++i)
       playerCoins[i] = 1;
@@ -96,6 +96,7 @@ namespace Framework
       spawnTimers[i] = 2.0f;
       juggernaut[i] = false;
       playerCoinsThisFrame[i] = 0;
+      playerCoins[i] = 1;
     }
 
     mode = SLOTMACHINE;
@@ -695,9 +696,24 @@ namespace Framework
   {
     Vec3 pos;
     Vec2D scale(20, 20);
-    char playerCoins[10];
+    char playerCoinsString[10];
     for (int i = 0; i < 4; ++i)
     {
+      if (i == 0)
+        pos = Vec3(0.0f, -470.0f, 0.0f);
+      if (i == 1)
+        pos = Vec3(0.0f, -355.0f, 0.0f);
+      if (i == 2)
+        pos = Vec3(0.0f, 384.0f, 0.0f);
+      if (i == 3)
+        pos = Vec3(0.0f, 512.0f, 0.0f);
+
+      itoa(playerCoins[i], playerCoinsString, 10);
+      Draw::SetPosition(pos.x, pos.y);
+      Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
+      Draw::SetRotation(0);
+      Draw::DrawString(playerCoinsString, scale, 0);
+
       if (Players[i] == Handle::null)
         continue;
       if (playerCoinsThisFrame[i] != 0)
@@ -710,12 +726,12 @@ namespace Framework
       {
         for (int j = 0; j < coinStringsAlive[i].size(); ++j)
         {
-          itoa(coinStringsAlive[i][j].first, playerCoins, 10);
+          itoa(coinStringsAlive[i][j].first, playerCoinsString, 10);
           pos = space->GetGameObject(Players[i])->GetComponent<Transform>(eTransform)->GetTranslation();
           Draw::SetPosition(pos.x, pos.y + (64 - (coinStringsAlive[i][j].second * 64)));
           Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
           Draw::SetRotation(0);
-          Draw::DrawString(playerCoins, scale, 0);
+          Draw::DrawString(playerCoinsString, scale, 0);
           coinStringsAlive[i][j].second -= deltaTime;
           if (coinStringsAlive[i][j].second <= 0.0f)
             coinStringsAlive[i].pop_front();
