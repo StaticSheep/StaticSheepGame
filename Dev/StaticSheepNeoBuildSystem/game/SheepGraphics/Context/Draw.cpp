@@ -437,7 +437,7 @@ namespace DirectSheep
     m_PointLight->bind(m_deviceContext);
 
     // Set appropriate blend mode
-    SetBlendMode(BLEND_MODE_ADDITIVE);
+    SetBlendMode(BLEND_MODE_ALPHA_ADDITIVE);
 
     // Draw lights
     m_deviceContext->DrawIndexed(m_PLightModel->getIndexCount(), 0, 0);

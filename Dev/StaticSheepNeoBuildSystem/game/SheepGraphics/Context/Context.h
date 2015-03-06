@@ -401,6 +401,7 @@ class RenderContext
 
     DirectX::SpriteBatch* m_batcher[MAX_LAYERS];
     DirectX::SpriteBatch* m_lightBatcher[MAX_LAYERS];
+    DirectX::SpriteBatch* m_emissiveBatcher[MAX_LAYERS];
 
     std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>>
       m_primitiveBatch;

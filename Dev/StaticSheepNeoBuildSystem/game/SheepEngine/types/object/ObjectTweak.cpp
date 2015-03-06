@@ -118,6 +118,16 @@ namespace Framework
       // Load up the C++ Component callback tables
       for(size_t i=0; i < ecountComponents - 1; ++i)
       {
+        std::string divlabel(EnumComponent.m_literals[i].begin(),
+          EnumComponent.m_literals[i].begin() + 4);
+
+        if (divlabel == "div_")
+        {
+          obj->tweakCCompCallbacks->push_back(nullptr);
+          continue;
+        }
+          
+
         TweakObjComp* userdata = DBG_NEW TweakObjComp();
         userdata->gl.self = obj->self;
         userdata->gl.space = obj->space;
@@ -456,6 +466,23 @@ namespace Framework
         /* ------- C++ Components ------- */
         for (size_t i = 0; i < ecountComponents - 1; ++i)
         {
+          std::string divlabel(EnumComponent.m_literals[i].begin(),
+            EnumComponent.m_literals[i].begin() + 4);
+
+          if (divlabel == "div_")
+          {
+            divlabel = std::string(EnumComponent.m_literals[i].begin() + 4,
+              EnumComponent.m_literals[i].end());
+
+            objectBar->DefineLabel(divlabel.c_str());
+
+            std::string divid = "divider";
+            divid += std::to_string(i);
+
+            objectBar->AddButton(divid.c_str(), nullptr, nullptr);
+            continue;
+          }
+
           if (!HasComponent(i))
           {
             bName = "Add";

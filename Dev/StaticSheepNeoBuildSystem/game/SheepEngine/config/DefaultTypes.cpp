@@ -53,6 +53,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/gameplay_scripts/CAsteroid.h"
 #include "components/gameplay_scripts/CPowerupPickup.h"
 #include "Components/gameplay_scripts/CSlotController.h"
+#include "components/gameplay_scripts/arena/CBlockLights.h"
 
 
 namespace Framework
@@ -453,6 +454,8 @@ namespace Framework
     TYPE_ADD_MEMBER(SlotMachine, useSpriteColor, false, true, "Use Sprite Color");
     TYPE_ADD_MEMBER(SlotMachine, backingColor, true, true, "BackColor");
 
+
+    TYPE_REGISTER(BlockLights);
 
     TYPE_REGISTER( AntTweak::TBar );
     TYPE_REGISTER_PTR( AntTweak::TBar* );

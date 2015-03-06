@@ -127,6 +127,9 @@ namespace DirectSheep
 
       m_lightBatcher[i] = new SpriteBatch(m_deviceContext);
       m_lightBatcher[i]->SetRotation(DXGI_MODE_ROTATION_UNSPECIFIED);
+
+      m_emissiveBatcher[i] = new SpriteBatch(m_deviceContext);
+      m_emissiveBatcher[i]->SetRotation(DXGI_MODE_ROTATION_UNSPECIFIED);
     }
 
     CreateRenderTarget(m_lightTarget, DXGI_FORMAT_R8G8B8A8_UNORM,
