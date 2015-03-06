@@ -256,6 +256,6 @@ namespace Framework
 
   void RigidBody::RayDestruction()
   {
-    PHYSICS->RayDestruction();
+    PHYSICS->RayDestruction(space);
   }
 }

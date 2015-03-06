@@ -93,41 +93,63 @@ namespace SheepFizz
 
   bool RayCast::SimpleRayCircleTest(Body* circle)
   {
+    return ComplexRayCircleTest(circle);
 
-    return false;
-
-    float intersect = ((circle->position_.x - position_.x) * direction_.y 
-      - (circle->position_.y - position_.y) * direction_.x);
+    //return false;
+    //float intersect = ((circle->position_.x - position_.x) * direction_.y 
+      //- (circle->position_.y - position_.y) * direction_.x);
         
-    intersect = (intersect * intersect) / (direction_.x * direction_.x + direction_.y * direction_.y);
+    //intersect = (intersect * intersect) / (direction_.x * direction_.x + direction_.y * direction_.y);
 
-    if (intersect < (circle->shape_->GetRadius() * circle->shape_->GetRadius()))
-      return true;
+    //if (intersect < (circle->shape_->GetRadius() * circle->shape_->GetRadius()))
+      //return true;
 
-    return false;
+    //return false;
   }//end of SimpleRayCircleTest
 
 
   bool RayCast::ComplexRayCircleTest(Body* circle)
   {
-    if (!SimpleRayCircleTest(circle))
+
+    if (position_.x > (circle->position_.x + circle->shape_->GetRadius()) && direction_.x > 0)
       return false;
 
+    if (position_.x < (circle->position_.x - circle->shape_->GetRadius()) && direction_.x < 0)
+      return false;
+
+    if (position_.y > (circle->position_.y + circle->shape_->GetRadius()) && direction_.y > 0)
+      return false;
+
+    if (position_.y < (circle->position_.y - circle->shape_->GetRadius()) && direction_.y < 0)
+      return false;
+
+    Vec3D bodyVec = circle->position_ - position_;
+    bodyVec.z = 0;
+    bodyVec = (direction_ * (bodyVec * direction_)) + position_;
+
+    Vec3D bodyVecLength = bodyVec - circle->position_;
+    bodyVecLength.z = 0;
+    float bodyVecLengthSq = bodyVecLength.SquareLength();
+    float radiusSq = (circle->shape_->GetRadius() * circle->shape_->GetRadius());
     
-    /*float segmentLength = ((Circle*)(circle->shape_))->GetRadius() *
-      ((Circle*)(circle->shape_))->GetRadius() - circleNorm.SquareLength();
+    if (bodyVecLengthSq > radiusSq)
+      return false;
 
-    Vec3D collisionPoint = circle->position_ + circleNorm;
-    collisionPoint += direction_ * -segmentLength;
+      //determine length of segment to outside of circle
+    float length = radiusSq - bodyVecLengthSq;
+    length = sqrt(length);
+    
+    Vec3D collisionPoint = bodyVec - direction_ * length;
 
-    Vec3D testLength = collisionPoint - position_;
-    float length = testLength.SquareLength();
+    Vec3D collisionVec = collisionPoint - position_;
+    float collisionSqLength = collisionVec.SquareLength();
 
-    if (length < firstCollisionSquareLength_)
+    if (collisionSqLength < firstCollisionSquareLength_)
     {
-      firstCollisionSquareLength_ = length;
+      firstCollisionPoint_ = collisionPoint;
       firstCollision_ = circle;
-    }*/
+      firstCollisionSquareLength_ = collisionSqLength;
+    }
 
     return true;
   }//end of ComplexRayCircleTest
@@ -182,25 +204,6 @@ namespace SheepFizz
   bool RayCast::SimpleRayRectangleTest(Body* rectangle)
   {
     return ComplexRayRectangleTest(rectangle);
-    
-    /*Rectangle* rec = (Rectangle*)(rectangle->shape_);
-    Vec3D normal;
-   
-    for (unsigned int i = 0; i < rec->GetVertexNumber(); ++i)
-    {
-      normal = rec->GetNormal(i);
-
-      if ((normal * direction_) >= 0)
-        continue;
-
-        //determine direction of ray normal
-      rayNormal_ = RayNormal(rectangle);
-
-      if (RaySupport(rec, rayNormal_, i, support_))
-        return true;
-    }
-
-    return false;*/
   }//end of SimpleRayRectangleTest
 
     //determines the collision point for ComplexRayRectangleTest
@@ -237,10 +240,6 @@ namespace SheepFizz
 
   bool RayCast::ComplexRayRectangleTest(Body* rectangle)
   {
-    //bool rayIntersect = SimpleRayRectangleTest(rectangle);
-
-    //if (!rayIntersect)
-        //return false;
     bool rayIntersect;
     bool atLeastOneIntersect = false;
 
@@ -286,123 +285,7 @@ namespace SheepFizz
     if (atLeastOneIntersect)
       return true;
 
-    return false;
+    return false;  
+  }//end of ComplexRayRectangleTest
 
-    /*switch (((Rectangle*)(rectangle->shape_))->GetVertexNumber())
-    {
-      case 4:
-        {
-          //use support point to determine the two sides ray could be intersecting
-          unsigned int presupport = (support_ - 1) >= 0 ? support_ - 1 : ((Rectangle*)(rectangle->shape_))->GetVertexNumber() - 1;
-          unsigned int postsupport = support_ + 1 < ((Rectangle*)(rectangle->shape_))->GetVertexNumber() ? support_ + 1 : 0;
-
-
-          //create segments and get their vector directions
-          Vec3D vertex = ((Rectangle*)(rectangle->shape_))->GetVertex(support_);
-          Vec3D lineOne = ((Rectangle*)(rectangle->shape_))->GetVertex(presupport);
-          Vec3D lineTwo = ((Rectangle*)(rectangle->shape_))->GetVertex(postsupport);
-
-          vertex += rectangle->position_;
-          lineOne += rectangle->position_;
-          lineTwo += rectangle->position_;
-
-          lineOne = lineOne - vertex;
-          lineTwo = lineTwo - vertex;
-
-          Vec3D collisionPoint;
-
-          Vec3D testLength;
-          float length;
-
-          //test segment one
-          //if the segment does not intersect, it means that the
-          //ray is passing through the opposite side segment
-          //ugly, but should move faster than standard iteration
-          if (RayRectangleIntersect(vertex, lineOne, collisionPoint))
-          {
-             testLength = collisionPoint - position_;
-             length = testLength.SquareLength();
-
-             if (length < firstCollisionSquareLength_)
-             {
-               firstCollisionSquareLength_ = length;
-               firstCollision_ = rectangle;
-               firstCollisionPoint_ = collisionPoint;
-             }
-          }
-
-          else
-          {
-            unsigned int presupport2 = (presupport - 1) >= 0 ? presupport - 1 : ((Rectangle*)(rectangle->shape_))->GetVertexNumber() - 1;
-            Vec3D vertex2 = ((Rectangle*)(rectangle->shape_))->GetVertex(presupport);
-            lineOne = ((Rectangle*)(rectangle->shape_))->GetVertex(presupport2);
-
-            vertex2 += rectangle->position_;
-            lineOne += rectangle->position_;
-
-            lineOne = lineOne - vertex2;
-
-            if (RayRectangleIntersect(vertex, lineOne, collisionPoint))
-            {
-              testLength = collisionPoint - position_;
-              length = testLength.SquareLength();
-
-              if (length < firstCollisionSquareLength_)
-              {
-                firstCollisionSquareLength_ = length;
-                firstCollision_ = rectangle;
-                firstCollisionPoint_ = collisionPoint;
-              }
-            }
-          }
-
-          //test segment two
-          if (RayRectangleIntersect(vertex, lineTwo, collisionPoint))
-          {
-            testLength = collisionPoint - position_;
-            length = testLength.SquareLength();
-
-            if (length < firstCollisionSquareLength_)
-            {
-              firstCollisionSquareLength_ = length;
-              firstCollision_ = rectangle;
-              firstCollisionPoint_ = collisionPoint;
-            }
-          }
-
-          else
-          {
-            unsigned int postsupport2 = postsupport + 1 < ((Rectangle*)(rectangle->shape_))->GetVertexNumber() ? postsupport + 1 : 0;
-            Vec3D vertex2 = ((Rectangle*)(rectangle->shape_))->GetVertex(postsupport);
-            lineTwo = ((Rectangle*)(rectangle->shape_))->GetVertex(postsupport2);
-
-            vertex2 += rectangle->position_;
-            lineTwo += rectangle->position_;
-            lineTwo = lineTwo - vertex2;
-
-            if (RayRectangleIntersect(vertex, lineTwo, collisionPoint))
-            {
-              testLength = collisionPoint - position_;
-              length = testLength.SquareLength();
-
-              if (length < firstCollisionSquareLength_)
-              {
-                firstCollisionSquareLength_ = length;
-                firstCollision_ = rectangle;
-                firstCollisionPoint_ = collisionPoint;
-              }
-            }
-          }        
-        }
-
-        break;
-
-        //will need to be filled in with basically same as above for polygon collision
-        //will be slower than box
-      default:
-        break;
-    }*/
-    
-  }
-
-}//end of ComplexRayRectangleTest
+}

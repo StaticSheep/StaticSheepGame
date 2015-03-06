@@ -12,6 +12,7 @@ enum CollisionGroup{
   Player3,
   Player4,
   Static,
+  RayCast,
   CollGroupLength
 };
 
