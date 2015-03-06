@@ -97,6 +97,7 @@ namespace Framework
     void SuddenDeathMode(float dt);
     void SlotMachineMode(float dt);
     void BonusMode(float dt);
+    bool LastManStanding();
 
     void SlotFinished(GameTypes mode);
     void SetMods(GameMods mod1, GameMods mod2);

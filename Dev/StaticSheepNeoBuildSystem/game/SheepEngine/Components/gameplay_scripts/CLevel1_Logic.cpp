@@ -157,6 +157,11 @@ namespace Framework
           temp->GetComponent<PlayerController>(ePlayerController)->weapon->explosive_ = true;
         playTrans = space->GetGameObject(Players[i])->GetComponent<Transform>(eTransform);
         playTrans->SetTranslation(spawnPos[i]);
+        if (mode == SUDDENDEATH)
+        {
+          temp->GetComponent<PlayerController>(ePlayerController)->health = 10;
+          temp->GetComponent<PlayerController>(ePlayerController)->shields = 0;
+        }
       }
       startFlag = false;
     }
@@ -599,6 +604,8 @@ namespace Framework
     if (!countDownDone)
     {
       LevelCountdown(dt);
+      if (countDownDone)
+        SpawnPlayers(dt);
       return;
     }
     else
@@ -609,11 +616,10 @@ namespace Framework
       mode = SLOTMACHINE;
       return;
     }
-
+    if (LastManStanding())
+      mode = SLOTMACHINE;
     spawnTimer -= dt;
     eventTimer -= dt;
-
-    SpawnPlayers(dt);
 
   }
 
@@ -670,18 +676,12 @@ namespace Framework
     mode = mode_;
     countDownDone = false;
     countDownTimer = 3.0f;
-    if (mode != SUDDENDEATH)
-      roundTimer = 60.0f;
-    else
-      roundTimer = 5.0f;
-
+    roundTimer = 60.0f;
     slotFinished = false;
     startFlag = true;
     ResetSpawnTimers();
     if (mode_ == JUGGERNAUT)
-    {
       ResetJuggernaut();
-    }
   }
 
   void Level1_Logic::SetMods(GameMods mod1_, GameMods mod2_)
@@ -690,6 +690,26 @@ namespace Framework
     mod2 = mod2_;
     if (mod1 == LIGHTSOUT)
       space->hooks.Call("ToggleLevelLights");
+    if (mod1 == BONUS && mod2 == BONUS)
+    {
+      mode = BONUSMODE;
+      roundTimer = 10.0f;
+    }
+  }
+
+  bool Level1_Logic::LastManStanding()
+  {
+    int deadPlayers = 0;
+    for (int i = 0; i < 4; ++i)
+    {
+      if (Players[i] == Handle::null)
+        ++deadPlayers;
+    }
+
+    if (deadPlayers >= 3)
+      return true;
+    
+    return false;
   }
 
   void Level1_Logic::Draw()
@@ -700,13 +720,13 @@ namespace Framework
     for (int i = 0; i < 4; ++i)
     {
       if (i == 0)
-        pos = Vec3(0.0f, -470.0f, 0.0f);
+        pos = Vec3(-64.0f, -460.0f, 0.0f);
       if (i == 1)
-        pos = Vec3(0.0f, -355.0f, 0.0f);
+        pos = Vec3(-64.0f, -345.0f, 0.0f);
       if (i == 2)
-        pos = Vec3(0.0f, 384.0f, 0.0f);
+        pos = Vec3(-64.0f, 384.0f, 0.0f);
       if (i == 3)
-        pos = Vec3(0.0f, 512.0f, 0.0f);
+        pos = Vec3(-64.0f, 500.0f, 0.0f);
 
       itoa(playerCoins[i], playerCoinsString, 10);
       Draw::SetPosition(pos.x, pos.y);
