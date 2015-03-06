@@ -16,7 +16,7 @@ All content © 2015 DigiPen (USA) Corporation, all rights reserved.
 
 namespace Framework
 {
-  
+  #define LASERWIDTHMOD 4
 
   class Laser : public GameComponent
   {

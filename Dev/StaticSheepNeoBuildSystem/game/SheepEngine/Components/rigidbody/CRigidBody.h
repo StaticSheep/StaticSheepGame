@@ -67,7 +67,7 @@ namespace Framework
       virtual void SetRayCast(Vec3D& rayOrigin, Vec3D& rayDirection, std::string name);
       virtual bool SimpleRayCast();
       virtual bool ComplexRayCast();
-      virtual void RayDestruction();
+      virtual void RayDestruction(float damage);
 
       //settors
       virtual void SetBodyRotation(Vec3D direction);

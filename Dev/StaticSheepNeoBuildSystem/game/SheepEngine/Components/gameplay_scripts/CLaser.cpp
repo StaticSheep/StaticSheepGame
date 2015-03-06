@@ -71,10 +71,10 @@ namespace Framework
 
     positionOffsets.push_back(lc->GetBodyPosition());
 
-    if (width > 4)
+    if (width > LASERWIDTHMOD)
     {
       Vec3D offsetDir = direction.CalculateNormal();
-      raysPerSide = width / 4;
+      raysPerSide = width / LASERWIDTHMOD;
 
       for (int i = 1; i < raysPerSide + 1; ++i)
       {
@@ -82,7 +82,7 @@ namespace Framework
         positionOffsets.push_back((-offsetDir * 2 * i) + lc->GetBodyPosition());
       }
 
-      if (width % 4 != 0)
+      if (width % LASERWIDTHMOD != 0)
       {
         float valueOffset = ((float)width) / 2.0f;
         positionOffsets.push_back(offsetDir * valueOffset + lc->GetBodyPosition());
@@ -147,7 +147,7 @@ namespace Framework
           positionOffsets.push_back((-offsetDir * 2 * i) + lc->GetBodyPosition());
         }
 
-        if (width % 4 != 0)
+        if (width % LASERWIDTHMOD != 0)
         {
           float valueOffset = ((float)width) / 2.0f;
           positionOffsets.push_back(offsetDir * valueOffset + lc->GetBodyPosition());
@@ -180,7 +180,7 @@ namespace Framework
     GRAPHICS->SetColor(m_beamColor);
 
     float Length = 0;
-    float numBeams = numberOfRays - numberOfRays % 4;
+    float numBeams = numberOfRays - numberOfRays % LASERWIDTHMOD;
     for (int i = 0; i < m_beamLengths.size(); ++i)
     {
 
@@ -216,7 +216,7 @@ namespace Framework
     {
       lc->SetRayCast(positionOffsets[i], direction, "RayCast");
       lc->SimpleRayCast();
-      lc->RayDestruction();
+      lc->RayDestruction(damage);
 
       m_beamLengths.push_back(-1);
       //check return results
@@ -236,7 +236,7 @@ namespace Framework
       death = lc->ComplexRayCast();
       if (death)
       {
-        lc->RayDestruction();
+        lc->RayDestruction(damage);
         m_beamLengths.push_back((Vec3D(PHYSICS->GetFirstCollision()) - trans->GetTranslation()).Length());
       }
       else

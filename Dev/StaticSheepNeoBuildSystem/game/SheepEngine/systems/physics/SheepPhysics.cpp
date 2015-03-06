@@ -517,7 +517,7 @@ namespace Framework
     return ray.firstCollisionLocation;
   }
 
-  void SheepPhysics::RayDestruction(GameSpace* space)
+  void SheepPhysics::RayDestruction(GameSpace* space, float damage)
   {
     if (ray.findFirstCollision)
     {
@@ -526,7 +526,14 @@ namespace Framework
 
       GameObject* obj = space->GetHandles().GetAs<GameObject>(handleObj);
       if (obj->name == "Player")
-        ((PlayerController*)obj)->health -= 1;
+      {
+        PlayerController *playerCont = obj->GetComponent<PlayerController>(ePlayerController);
+        int playerNum = playerCont->playerNum;
+        playerCont->DealDamage(damage, playerNum);
+          //DealDamage(50, playerNum);
+        //int playerNum = obj->;
+        //((PlayerController*)obj)->DealDamage(1, playerNum);
+      }
 
       rayComplexDraws.push_back(std::pair<Vec2, Vec2>(ray.rayOrigin, ray.firstCollisionLocation));
       //raySimpleDraws.push_back(std::pair<Vec2, Vec2>(ray.rayOrigin, ray.rayDirection));

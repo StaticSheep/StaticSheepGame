@@ -39,7 +39,7 @@ namespace Framework
     //bool death = bc->ComplexRayCast();
     bool death = bc->ComplexRayCast();
     if (death)
-      bc->RayDestruction();
+      bc->RayDestruction(damage);
     SoundEmitter *se = player->GetComponent<SoundEmitter>(eSoundEmitter);
     se->Play("Laser_Shot", &SoundInstance(1.0f));
   }

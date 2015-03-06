@@ -254,8 +254,8 @@ namespace Framework
     return PHYSICS->ComplexRayCast(space);
   }
 
-  void RigidBody::RayDestruction()
+  void RigidBody::RayDestruction(float damage)
   {
-    PHYSICS->RayDestruction(space);
+    PHYSICS->RayDestruction(space, damage);
   }
 }
