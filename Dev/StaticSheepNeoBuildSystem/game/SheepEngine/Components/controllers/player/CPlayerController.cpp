@@ -27,6 +27,12 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 namespace Framework
 {
   static int pn = -1;
+  static Vec2D aim(1.0f, 0.0f); //default aiming direction
+  static GamePad *gp;           //players controller
+  static BoxCollider *bc;       //players box collider
+  static SoundEmitter *se;      //players sound emitter
+  static Transform *ps;         //players transform
+
 	PlayerController::PlayerController() //1
 	{
 		//set defaults
@@ -38,7 +44,7 @@ namespace Framework
     shields = 100;
     snappedTo = Handle::null;
     respawnTimer = 2.0f;
-    hasRespawned = false;
+    hasRespawned = true;
     blink = false;
     weapon = nullptr;
     GodMode = false;
@@ -80,19 +86,19 @@ namespace Framework
     playerSprite = space->GetGameObject(owner)->GetComponentHandle(eSprite);
     playerAnimation = space->GetGameObject(owner)->GetComponentHandle(eAniSprite);
 
-    Transform *ps = space->GetHandles().GetAs<Transform>(playerTransform);
+    ps = space->GetHandles().GetAs<Transform>(playerTransform);
     ps->SetScale(Vec3(0.35f, 0.365f, 0.0));
 
-		GamePad *gp = space->GetHandles().GetAs<GamePad>(playerGamePad); //actually gets the gamepad
+		gp = space->GetHandles().GetAs<GamePad>(playerGamePad); //actually gets the gamepad
 		gp->SetPad(playerNum); //setting pad number
 
 		aimDir.x = 1;
 		aimDir.y = 0;
 
-    BoxCollider *bc = space->GetHandles().GetAs<BoxCollider>(playerCollider);
+    bc = space->GetHandles().GetAs<BoxCollider>(playerCollider);
     bc->SetGravityOff();
     weapon = (Pistol*)GET_TYPE(Pistol)->New();
-    SoundEmitter *se = space->GetHandles().GetAs<SoundEmitter>(playerSound);
+    se = space->GetHandles().GetAs<SoundEmitter>(playerSound);
     se->Play("robot_startup", &SoundInstance(0.50f));
     animCont = AnimationController(playerNum);
     animCont.AnimState = IDLE;
@@ -100,15 +106,8 @@ namespace Framework
 
     powerUp = nullptr;
     pn = -1;
-    
+    SpawnEffect();
 	}
-
-  static Vec2D aim(1.0f, 0.0f); //default aiming direction
-  static GamePad *gp;           //players controller
-  static BoxCollider *bc;       //players box collider
-  static SoundEmitter *se;      //players sound emitter
-  static Transform *ps;         //players transform
-
 
 	//************************************
 	// Method:    LogicUpdate
@@ -502,13 +501,23 @@ namespace Framework
 	//************************************
 	void PlayerController::Remove() //3
 	{
+    if (spawnEffect != Handle::null)
+    {
+      space->GetGameObject(spawnEffect)->Destroy();
+      spawnEffect = Handle::null;
+    }
 		//opposite of init
 		space->hooks.Remove("LogicUpdate", self);
 
     if (weapon != nullptr)
     {
-      free(weapon); //release dynamic memory
+      delete weapon; //release dynamic memory
       weapon = nullptr;
+    }
+    if (powerUp != nullptr)
+    {
+      delete powerUp; //release dynamic memory
+      powerUp = nullptr;
     }
 	}
 
@@ -604,29 +613,44 @@ namespace Framework
   //************************************
   void PlayerController::RespawnBlink(float dt)
   {
-    AniSprite *ps = space->GetHandles().GetAs<AniSprite>(playerAnimation);
-
+    AniSprite *pa = space->GetHandles().GetAs<AniSprite>(playerAnimation);
+    Transform *effectTrans;
+    if (respawnTimer <= 1.0f)
+    {
+      if (spawnEffect != Handle::null)
+      {
+        space->GetGameObject(spawnEffect)->Destroy();
+        spawnEffect = Handle::null;
+      }
+    }
     if (respawnTimer > 0.0f)
     {
       if (!blink)
-        ps->Color.A -= dt * 10.0f;
+        pa->Color.A -= dt * 10.0f;
       else
-        ps->Color.A += dt * 10.0f;
+        pa->Color.A += dt * 10.0f;
 
       respawnTimer -= dt;
 
-      if (ps->Color.A <= 0.0f)
+      if (pa->Color.A <= 0.0f)
         blink = true;
 
-      if (ps->Color.A >= 1.0f)
+      if (pa->Color.A >= 1.0f)
         blink = false;
+      if (spawnEffect != Handle::null)
+      {
+        effectTrans = space->GetGameObject(spawnEffect)->GetComponent<Transform>(eTransform);
+        effectTrans->SetTranslation(ps->GetTranslation());
+      }
     }
     else
     {
-      ps->Color.A = 255.0f;
+      pa->Color.A = 255.0f;
       hasRespawned = false;
       respawnTimer = 2.0f;
     }
+
+
   }
 
   //************************************
@@ -827,5 +851,28 @@ namespace Framework
     else
       shields -= damage;
 
+  }
+
+  void PlayerController::SpawnEffect()
+  {
+    Transform *effectTrans;
+    switch (playerNum)
+    {
+    case 0:
+      spawnEffect = (FACTORY->LoadObjectFromArchetype(space, "p1_spawnEffect"))->self;
+      break;
+    case 1:
+      spawnEffect = (FACTORY->LoadObjectFromArchetype(space, "p2_spawnEffect"))->self;
+      break;
+    case 2:
+      spawnEffect = (FACTORY->LoadObjectFromArchetype(space, "p3_spawnEffect"))->self;
+      break;
+    case 3:
+      spawnEffect = (FACTORY->LoadObjectFromArchetype(space, "p4_spawnEffect"))->self;
+      break;
+    }
+
+    effectTrans = space->GetGameObject(spawnEffect)->GetComponent<Transform>(eTransform);
+    effectTrans->SetTranslation(ps->GetTranslation());
   }
 }

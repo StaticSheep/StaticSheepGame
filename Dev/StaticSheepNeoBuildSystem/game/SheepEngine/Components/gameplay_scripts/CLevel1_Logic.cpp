@@ -719,6 +719,7 @@ namespace Framework
     char playerCoinsString[10];
     for (int i = 0; i < 4; ++i)
     {
+      //depending on the player, it draws the totals in the correct place
       if (i == 0)
         pos = Vec3(-64.0f, -460.0f, 0.0f);
       if (i == 1)

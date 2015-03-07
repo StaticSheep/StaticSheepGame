@@ -26,5 +26,7 @@ namespace Framework
 		//member variables
     Handle aTransfrom;
     Handle aCollider;
+    GameObject *warn_circle;
+    Handle warn_circle_handle;
 	};
 }

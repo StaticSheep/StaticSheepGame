@@ -33,17 +33,24 @@ namespace Framework
 
     aTransfrom = space->GetGameObject(owner)->GetComponentHandle(eTransform);
     aCollider = space->GetGameObject(owner)->GetComponentHandle(eCircleCollider);
+    warn_circle_handle = (FACTORY->LoadObjectFromArchetype(space, "red_circle_warning"))->self;
+    warn_circle = space->GetGameObject(warn_circle_handle);
 	}
 
   void Asteroid::Remove()
 	{
 		space->hooks.Remove("LogicUpdate", self);
+    space->GetGameObject(warn_circle_handle)->Destroy();
 	}
 
   void Asteroid::LogicUpdate(float dt)
 	{
     Transform *at = space->GetHandles().GetAs<Transform>(aTransfrom);
     CircleCollider *ac = space->GetHandles().GetAs <CircleCollider>(aCollider);
+    warn_circle = space->GetGameObject(warn_circle_handle);
+    warn_circle->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(at->GetTranslation().x, at->GetTranslation().y, 0.0f));
+    //warn_circle->GetComponent<Transform>(eTransform)->SetScale(at->GetScale());
+
     if (at->GetTranslation().z < 50.0f)
       at->SetTranslation(at->GetTranslation() + Vec3(0.0f, 0.0f, -1.0f));
     else

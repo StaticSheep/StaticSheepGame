@@ -40,6 +40,7 @@ namespace Framework
     void jump();
     void PlayerButtonPress();
     void DealDamage(int damage, int playNum);
+    void SpawnEffect();
 		//member variables
 		int playerNum; //the player number, i.e. 1, 2, 3, 4
     int health; //players health
@@ -62,5 +63,6 @@ namespace Framework
     Handle playerSound; //to play sound from the player
     Handle playerSprite; //to adjust the sprite colors and alpha
     Handle playerAnimation;
+    Handle spawnEffect;
 	};
 }
