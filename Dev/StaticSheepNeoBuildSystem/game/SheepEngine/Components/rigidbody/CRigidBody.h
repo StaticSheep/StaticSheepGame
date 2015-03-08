@@ -63,12 +63,6 @@ namespace Framework
       virtual Vec3D GetCollisionPoint(SheepFizz::ExternalManifold manifold);
       virtual std::string GetBodyCollisionGroup(void);
 
-      //raycasting
-      virtual void SetRayCast(Vec3D& rayOrigin, Vec3D& rayDirection, std::string name);
-      virtual bool SimpleRayCast();
-      virtual bool ComplexRayCast();
-      virtual void RayDestruction(float damage);
-
       //settors
       virtual void SetBodyRotation(Vec3D direction);
       virtual void SetBodyRotation(float direction);

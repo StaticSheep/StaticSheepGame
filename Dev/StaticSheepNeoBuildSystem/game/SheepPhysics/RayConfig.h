@@ -10,6 +10,8 @@ namespace SheepFizz
 {
   struct RayConfig
   {
+    RayConfig();
+
     //set by client
     Vec3D rayOrigin;
     Vec3D rayDirection;

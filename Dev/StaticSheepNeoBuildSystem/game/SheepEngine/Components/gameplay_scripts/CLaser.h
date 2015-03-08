@@ -18,7 +18,7 @@ namespace Framework
 {
   #define LASERWIDTHMOD 4
 
-  class Laser : public GameComponent
+  class Laser : public Ray
   {
   public:
     Laser();
