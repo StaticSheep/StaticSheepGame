@@ -29,11 +29,13 @@ namespace Framework
 
   void BlockLights::Remove()
   {
-
+    space->hooks.Remove("LogicUpdate", self);
+    space->hooks.Remove("TriggerLights", self);
   }
 
   void BlockLights::Update(float dt)
   {
+    /* Deactivates after a certain time */
     if (m_activated)
     {
       m_timeLeft -= dt;
@@ -44,28 +46,36 @@ namespace Framework
 
   void BlockLights::Activate(TriggerData* data)
   {
-    m_activated = true;
-    m_timeLeft = data->duration;
-    m_effect = data->fx;
-
     SpriteLight* sl = (SpriteLight*)space->GetGameObject(owner)
       ->GetComponent(eSpriteLight);
 
     if (!sl)
       return;
 
-    m_prevStatus = sl->m_isOn;
-
-    sl->m_isOn = true;
-
-    if (data->overrideColor)
+    if (!m_activated)
     {
-      m_prevColor = sl->Color;
-      sl->Color = data->color;
+      /* Store old data from before we were
+      activated so that we may return to it
+      after a duration of time. */
+      m_prevStatus = sl->m_isOn;
+
+      if (data->overrideColor)
+      {
+        m_prevColor = sl->Color;
+        sl->Color = data->color;
+      }
+      m_overrideColor = data->overrideColor;
     }
 
-    m_overrideColor = data->overrideColor;
-      
+    m_activated = true;
+    m_timeLeft = data->duration;
+    m_effect = data->fx;
+
+    
+
+    
+    
+    sl->m_isOn = true;
   }
 
   void BlockLights::Deactivate()
@@ -79,6 +89,7 @@ namespace Framework
     if (!sl)
       return;
 
+    /* Restore previous settings */
     sl->m_isOn = m_prevStatus;
     if (m_overrideColor)
       sl->Color = m_prevColor;

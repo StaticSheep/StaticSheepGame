@@ -319,6 +319,7 @@ namespace Framework
     TYPE_ADD_MEMBER(SpriteLight, m_flipY, false, true, "FlipY");
     TYPE_ADD_MEMBER(SpriteLight, m_uvScale, false, true, "Tiled");
     TYPE_ADD_MEMBER(SpriteLight, m_isOn, false, true, "Active");
+    TYPE_ADD_MEMBER(SpriteLight, m_emissive, false, true, "Emissive");
     TYPE_ADD_MEMBER(SpriteLight, m_brightness, false, true, "Brightness");
     TYPE_ADD_MEMBER(SpriteLight, m_origin, false, true, "LightOrigin");
     TYPE_ADD_MEMBER(SpriteLight, Size, false, true, "LightScale");

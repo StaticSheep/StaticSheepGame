@@ -42,6 +42,8 @@ namespace Framework
 
     bool m_isOn;
 
+    bool m_emissive = false;
+
     bool m_mimicSprite = false;
     void TweakMimicSprite(const void* mimic);
   };

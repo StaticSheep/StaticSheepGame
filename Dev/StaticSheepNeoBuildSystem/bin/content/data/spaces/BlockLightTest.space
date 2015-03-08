@@ -50,6 +50,7 @@ GameObject
     m_flipY bool false
     m_uvScale bool false
     m_isOn bool true
+    m_emissive bool true
     m_brightness LightColor
     {
       R float 1.000000
@@ -80,7 +81,7 @@ GameObject
   {
     Translation Vec3
     {
-      x_ float -166.985962
+      x_ float -490.145081
       y_ float -2.402679
       z_ float 0.000000
     }

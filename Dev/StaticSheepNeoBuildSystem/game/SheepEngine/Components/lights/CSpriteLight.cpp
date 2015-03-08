@@ -84,7 +84,7 @@ namespace Framework
     GRAPHICS->SetSpriteFlip(m_flipX, m_flipY);
     GRAPHICS->SetCamState(0);
 
-    GRAPHICS->RC()->DrawLightBatched(this->m_texture);
+    GRAPHICS->RC()->DrawLightBatched(this->m_texture, m_emissive);
 
     GRAPHICS->SetObjectOrigin(0, 0);
   }
