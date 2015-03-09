@@ -392,6 +392,9 @@ void SpriteBatch::Impl::End()
         if (mContextResources->inImmediateMode)
             throw std::exception("Cannot end one SpriteBatch while another is using SpriteSortMode_Immediate");
 
+        if (!mSpriteQueueCount)
+          return;
+
         PrepareForRendering();
         FlushBatch();
     }
