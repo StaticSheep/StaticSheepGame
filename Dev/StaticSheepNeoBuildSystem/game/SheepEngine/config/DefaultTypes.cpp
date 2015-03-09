@@ -54,6 +54,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/gameplay_scripts/CPowerupPickup.h"
 #include "Components/gameplay_scripts/CSlotController.h"
 #include "components/gameplay_scripts/arena/CBlockLights.h"
+#include "components/tester/CTester.h"
 
 
 namespace Framework
@@ -456,7 +457,18 @@ namespace Framework
     TYPE_ADD_MEMBER(SlotMachine, backingColor, true, true, "BackColor");
 
 
+    TYPE_REGISTER(Tester);
+
+    TYPE_REGISTER(BlockLights::LightSettings);
+    TYPE_ADD_MEMBER(BlockLights::LightSettings, fx, false, true, "Effect");
+    TYPE_ADD_MEMBER(BlockLights::LightSettings, isOn, false, true, "Activated");
+    TYPE_ADD_MEMBER(BlockLights::LightSettings, useColor, false, true, "Use Color");
+    TYPE_ADD_MEMBER(BlockLights::LightSettings, color, false, true, "Color");
+    
+
     TYPE_REGISTER(BlockLights);
+    TYPE_ADD_MEMBER(BlockLights, m_group, false, true, "Trigger Group");
+    TYPE_ADD_MEMBER(BlockLights, m_defaultSettings, false, true, "Defaults");
 
     TYPE_REGISTER( AntTweak::TBar );
     TYPE_REGISTER_PTR( AntTweak::TBar* );

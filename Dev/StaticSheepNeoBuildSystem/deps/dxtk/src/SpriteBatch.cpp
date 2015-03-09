@@ -393,7 +393,12 @@ void SpriteBatch::Impl::End()
             throw std::exception("Cannot end one SpriteBatch while another is using SpriteSortMode_Immediate");
 
         if (!mSpriteQueueCount)
+        {
+          mSetCustomShaders = nullptr;
+          mInBeginEndPair = false;
           return;
+        }
+          
 
         PrepareForRendering();
         FlushBatch();

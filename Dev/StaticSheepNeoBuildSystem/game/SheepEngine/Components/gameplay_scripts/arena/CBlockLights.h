@@ -9,6 +9,7 @@ All content © 2015 DigiPen (USA) Corporation, all rights reserved.
 #pragma once
 
 #include "components/base/Component.h"
+#include "components/lights/CSpriteLight.h"
 
 namespace Framework
 {
@@ -24,40 +25,47 @@ namespace Framework
       PULSE
     };
 
-    struct TriggerData
+    struct LightSettings
     {
-      int duration = 1;
-      Effect fx = NONE;
-      bool overrideColor = false;
       Vec4 color;
+      unsigned fx = NONE;
+      bool useColor = false;
+      bool isOn = true;
+    };
+
+    struct EventData
+    {
+      float duration = 0;
+      bool overrideDefault = false;
+      LightSettings settings;
     };
 
     void Initialize();
     void Remove();
 
     void Update(float dt);
-    void TriggerLight(int group, TriggerData* data);
+    void LightingEvent(unsigned group, EventData* data);
 
-    void Activate(TriggerData* data);
+    void Activate(EventData* data);
     void Deactivate();
 
     // This is a bit-masked integer
-    int m_group = 0; 
+    int m_group = 0;
 
     // Time left
-    int m_timeLeft = 0;
+    float m_timeLeft = 0;
+    // If an event is happening
+    bool m_active = false;
 
-    // Current effect
-    Effect m_effect;
+    LightSettings m_curSettings;
 
-    
+    LightSettings m_defaultSettings;
 
-    bool m_activated = false;
+    std::stack<EventData> m_eventStack;
+    std::stack<float> m_timeDelay;
 
 
   private:
-    Vec4 m_prevColor;
-    bool m_prevStatus;
-    bool m_overrideColor;
+    void NextEvent(SpriteLight* sl);
   };
 }

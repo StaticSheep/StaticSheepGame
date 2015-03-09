@@ -97,8 +97,8 @@ E_NAME(Component)
   E_ENTRY(GiantKillBox)
   
 
-  
-  
+  E_ENTRY(div_Beta)
+  E_ENTRY(Tester)
 
   E_ENTRY(LuaComponent)
   E_ENTRY(countComponents) //keep this at the end

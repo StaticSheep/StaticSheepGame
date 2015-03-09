@@ -34,6 +34,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/gameplay_scripts/CPowerupPickup.h"
 #include "components/gameplay_scripts/CSlotController.h"
 #include "components/gameplay_scripts/arena/CBlockLights.h"
+#include "components/tester/CTester.h"
 
 namespace Framework
 {
@@ -54,6 +55,7 @@ namespace Framework
 
   void GameLogic::RegisterComponents()
   {
+    REGISTER_COMPONENT(Tester);
     REGISTER_COMPONENT(LuaComponent);
     REGISTER_COMPONENT(GamePad);
 	  REGISTER_COMPONENT(PlayerController);

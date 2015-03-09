@@ -71,11 +71,15 @@ GameObject
   }
   BlockLights
   {
+    m_group int 1
+  }
+  Tester
+  {
   }
 }
 GameObject
 {
-  name std::string ""
+  name std::string "derplight"
   archetype std::string ""
   Transform
   {
