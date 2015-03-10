@@ -75,46 +75,34 @@ namespace Framework
       {
         BlockLights::EventData ed;
 
-        ed.duration = 10;
-        ed.settings.color = Vec4(0.2f, 1.0f, 0.2f, 1);
-        ed.settings.useColor = true;
+        ed.overrideDefault = true;
+
+        ed.settings.color = Vec4(0.2f, 0.8f, 0.2f, 1);
+
+        ed.settings.fx = BlockLights::CUSTOM;
+        ed.settings.customData.duration = 2.0f;
+        ed.settings.customSequence =
+          "jklmnopqrstuvwxyzyxwvutsrqponmlkj";
+
 
         space->hooks.Call("LightingEvent", 0xFFFFFFFF, &ed);
         ++phase;
       }
 
-    {
-      BlockLights::EventData ed;
+      {
+        BlockLights::EventData ed;
 
-      ed.duration = 5;
-      ed.settings.color = Vec4(0.9f, 0.0f, 0.2f, 0.2f);
-      ed.settings.useColor = true;
+        ed.duration = 0.8f;
 
-      space->hooks.Call("LightingEvent", 0xFFFFFFFF, &ed);
-      ++phase;
-    }
+        ed.settings.color = Vec4(1.0f, 0.1f, 0.2f, 1);
+        ed.settings.fx = BlockLights::CUSTOM;
+        ed.settings.customData.duration = 0.4f;
+        ed.settings.customSequence = "zzmzmzzzz";
 
-    {
-      BlockLights::EventData ed;
 
-      ed.duration = 3;
-      ed.settings.color = Vec4(0.2f, 0.2f, 1.0f, 1);
-      ed.settings.useColor = true;
-
-      space->hooks.Call("LightingEvent", 0xFFFFFFFF, &ed);
-      ++phase;
-    }
-
-    {
-      BlockLights::EventData ed;
-
-      ed.duration = 1;
-      ed.settings.color = Vec4(0.2f, 0.2f, 1.0f, 1);
-      ed.settings.useColor = true;
-
-      space->hooks.Call("LightingEvent", 0xFFFFFFFF, &ed);
-      ++phase;
-    }
+        space->hooks.Call("LightingEvent", (unsigned)0x1, &ed);
+        ++phase;
+      }
 
     timer = 1;
   }

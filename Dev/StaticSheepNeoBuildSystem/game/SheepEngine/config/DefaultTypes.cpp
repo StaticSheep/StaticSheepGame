@@ -461,6 +461,7 @@ namespace Framework
 
     TYPE_REGISTER(BlockLights::LightSettings);
     TYPE_ADD_MEMBER(BlockLights::LightSettings, fx, false, true, "Effect");
+    TYPE_ADD_MEMBER(BlockLights::LightSettings, ease, false, true, "Ease");
     TYPE_ADD_MEMBER(BlockLights::LightSettings, isOn, false, true, "Activated");
     TYPE_ADD_MEMBER(BlockLights::LightSettings, useColor, false, true, "Use Color");
     TYPE_ADD_MEMBER(BlockLights::LightSettings, color, false, true, "Color");
