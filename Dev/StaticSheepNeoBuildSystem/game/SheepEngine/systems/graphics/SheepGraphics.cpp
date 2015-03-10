@@ -88,6 +88,8 @@ namespace Framework
     m_renderContext->CreateVertexBuffer(spriteQuad, 120);
 
     ErrorIf(!LoadAssets(std::string("content")), "AssetLoad", "SheepGraphics.cpp");
+
+    ErrorIf(!LoadAtlas(std::string("content")), "AtlasLoad", "SheepGraphics.cpp");
 	}
 
 	void SheepGraphics::Update(float dt)
@@ -362,6 +364,32 @@ namespace Framework
   {
     DirectSheep::Dimension texSize = m_renderContext->GetTextureSize(texture);
     return Vec2((float)texSize.width, (float)texSize.height);
+  }
+
+  bool SheepGraphics::LoadAtlas(const std::string& filepath)
+  {
+    path p(filepath);
+
+    if (exists(p))
+    {
+      if (is_directory(p))
+      {
+        for (directory_iterator it(p), end; it != end; ++it)
+        {
+          std::string foo = it->path().extension().generic_string();
+          if (it->path().extension().generic_string() == ".atlas")
+          {
+            DirectSheep::Handle temp;
+
+            m_renderContext->CreateAtlas(temp, it->path().filename().generic_string());
+
+            m_atlasMap[it->path().filename().generic_string()] = temp;
+
+          }
+        }
+      }
+    }
+    return false;
   }
 
   bool SheepGraphics::LoadAssets(std::string& filepath)

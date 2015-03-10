@@ -32,6 +32,18 @@ namespace DirectSheep
     return true;
   }
 
+  bool RenderContext::CreateAtlas(Handle& handle, const std::string& filename)
+  {
+    SpineAtlas poop;
+    poop.Load(m_contentPath + filename);
+
+    handle.type = ATLAS;
+    handle.index = m_atlasRes.size() - 1;
+    m_handles.push_back(handle);
+    return true;
+
+  }
+
   bool RenderContext::CreateRenderTarget(Handle& handle,
     const DXGI_FORMAT format, const Dimension& dim, bool depthbuffer)
   {

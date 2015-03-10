@@ -73,6 +73,8 @@ namespace Framework
 
     // Returns the width/height of a texture
     Vec2 GetTextureDim(DirectSheep::Handle texture);
+
+    bool LoadAtlas(const std::string& path);
 		
     /* =========== Draw State Functions ============ */
 
@@ -139,6 +141,7 @@ namespace Framework
 		void Draw(void);
 
     std::unordered_map<std::string, DirectSheep::Handle> m_textureMap;
+    std::unordered_map<std::string, DirectSheep::Handle> m_atlasMap;
     std::unordered_map<std::string, int> m_fontMap;
 
     DirectSheep::Handle spriteQuad;
