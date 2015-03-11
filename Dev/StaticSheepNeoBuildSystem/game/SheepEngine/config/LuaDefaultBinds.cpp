@@ -20,7 +20,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "systems/input/devices/GamepadInput.h"
 #include "systems/input/Input.h"
 #include "components/controllers/player/CPlayerController.h"
-#include "components/gameplay_scripts/CLevel1_Logic.h"
+#include "components/gameplay_scripts/Level_Scripts/CLevel1_Logic.h"
 #include "components/sound/CSoundPlayer.h"
 
 namespace Framework

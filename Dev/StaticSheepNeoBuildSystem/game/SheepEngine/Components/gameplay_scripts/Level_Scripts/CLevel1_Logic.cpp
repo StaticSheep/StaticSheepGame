@@ -9,22 +9,22 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "pch/precompiled.h"
 #include "CLevel1_Logic.h"
 #include "types/space/Space.h"
-#include "../transform/CTransform.h"
-#include "../colliders/CBoxCollider.h"
-#include "../sound/CSoundPlayer.h"
-#include "CElevatorPlat.h"
-#include "../controllers/player/CPlayerController.h"
-#include "../SheepUtil/include/SheepMath.h"
-#include "CGiantKillBox.h"
-#include "../camera/CCamera.h"
-#include "../particles/CParticleSystem.h"
-#include "../sprites/CSprite.h"
+#include "../../transform/CTransform.h"
+#include "../../colliders/CBoxCollider.h"
+#include "../../sound/CSoundPlayer.h"
+#include "../Level_Event_Scripts/CElevatorPlat.h"
+#include "../../controllers/player/CPlayerController.h"
+#include "../../SheepUtil/include/SheepMath.h"
+#include "../Level_Event_Scripts/CGiantKillBox.h"
+#include "../../camera/CCamera.h"
+#include "../../particles/CParticleSystem.h"
+#include "../../sprites/CSprite.h"
 #include "types/levelEvents/LEGrinderBig.h"
 #include "types/levelEvents/LEAsteroids.h"
-#include "CSlotController.h"
-#include "../colliders/CCircleCollider.h"
+#include "../Slot_Machine_Scripts/CSlotController.h"
+#include "../../colliders/CCircleCollider.h"
 #include "types/powerUps/PDamage.h"
-#include "CJuggernautEffect.h"
+#include "../FX_Scripts/CJuggernautEffect.h"
 #include "types/weapons/WShotgun.h"
 #include "types/weapons/WMissile.h"
 
@@ -35,6 +35,7 @@ static float camShakeTime;
 static float camShakeMagnitude;
 static bool playing;
 static float deltaTime;
+
 
 namespace Framework
 {
@@ -48,6 +49,10 @@ namespace Framework
     spawnPos[3] = Vec3(-610.0f, 435.0f, 0.0f);
     spawnPos[4] = Vec3(0.0f, 352.0f, 0.0f);
     spawnPos[5] = Vec3(0.0f, -352.0f, 0.0f);
+    CoinStackPos[0] = Vec3(-906.4776f, -650.0f, 0.0f);
+    CoinStackPos[1] = Vec3(906.4776f, -650.0f, 0.0f);
+    CoinStackPos[2] = Vec3(906.4776f, 650.0f, 0.0f);
+    CoinStackPos[3] = Vec3(-906.4776f, 650.0f, 0.0f);
     deadPlayers = 0;
     for (int i = 0; i < 4; ++i)
       playerCoins[i] = 1;
@@ -114,15 +119,16 @@ namespace Framework
       CameraShake(dt, camShakeTime, camShakeMagnitude);
     deltaTime = dt;
     GoToGameMode(dt);
-    
+    UpdateCoinStacks();
     if(!playing)
     {
+      SpawnCoinStacks();
       SoundPlayer *sp = space->GetHandles().GetAs<SoundPlayer>(levelSound);
       SoundInstance instance;
       instance.volume = 0.35f;
       instance.mode = PLAY_LOOP;
 
-      sp->Play("Main Music", &instance);
+      //sp->Play("Main Music", &instance);
       playing = true;
     } 
 
@@ -232,6 +238,15 @@ namespace Framework
       camShake = true;
     }
 
+  }
+
+  void Level1_Logic::SpawnCoinStacks()
+  {
+    for (int i = 0; i < 4; ++i)
+    {
+      playerCoinStack[i] = (FACTORY->LoadObjectFromArchetype(space, "coin_stack"))->self;
+      space->GetGameObject(playerCoinStack[i])->GetComponent<Transform>(eTransform)->SetTranslation(CoinStackPos[i]);
+    }
   }
 
   void Level1_Logic::CameraShake(float dt, float shakeDuration, float magnitude)
@@ -357,6 +372,32 @@ namespace Framework
   {
     playerCoins[player] += coins;
     playerCoinsThisFrame[player] += coins;
+  }
+
+  void Level1_Logic::UpdateCoinStacks()
+  {
+    //88.8 tall
+    //65.6 wide
+    Transform *coinStack;
+    Vec3 offSet(0.0f, 0.0f, 0.0f);
+
+    for (int i = 0; i < 4; ++i)
+    {
+      if (playerCoinStack[i] == Handle::null)
+        continue;
+      offSet.y = 0.0f;
+      coinStack = space->GetGameObject(playerCoinStack[i])->GetComponent<Transform>(eTransform);
+      if (i == 0 || i == 1) //player one and two
+      {
+        offSet.y += (250.0f / 50000.0f) * (float)playerCoins[i];
+        coinStack->SetTranslation(CoinStackPos[i] + offSet);
+      }
+      else //player three and four
+      {
+        offSet.y -= (250.0f / 50000.0f) * (float)playerCoins[i];
+        coinStack->SetTranslation(CoinStackPos[i] + offSet);
+      }
+    }
   }
 
   void Level1_Logic::SpawnItem(const char *itemName, Vec3 pos)
@@ -721,44 +762,44 @@ namespace Framework
     {
       //depending on the player, it draws the totals in the correct place
       if (i == 0)
-        pos = Vec3(-64.0f, -460.0f, 0.0f);
+        pos = Vec3(-764, -457.0f, 0.0f);
       if (i == 1)
-        pos = Vec3(-64.0f, -345.0f, 0.0f);
+        pos = Vec3(572.0f, -457.0f, 0.0f); 
       if (i == 2)
-        pos = Vec3(-64.0f, 384.0f, 0.0f);
+        pos = Vec3(572.0f, 507.0f, 0.0f); 
       if (i == 3)
-        pos = Vec3(-64.0f, 500.0f, 0.0f);
+        pos = Vec3(-764.0f, 507.0f, 0.0f);
 
       itoa(playerCoins[i], playerCoinsString, 10);
       Draw::SetPosition(pos.x, pos.y);
       Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
       Draw::SetRotation(0);
       Draw::DrawString(playerCoinsString, scale, 0);
-
-      if (Players[i] == Handle::null)
-        continue;
-      if (playerCoinsThisFrame[i] != 0)
-      {
-        std::pair<int, float> newCoinString(playerCoinsThisFrame[i], 1.0f);
-        coinStringsAlive[i].push_back(newCoinString);
-        playerCoinsThisFrame[i] = 0;
-      }
-      if (!coinStringsAlive[i].empty())
-      {
-        for (int j = 0; j < coinStringsAlive[i].size(); ++j)
-        {
-          itoa(coinStringsAlive[i][j].first, playerCoinsString, 10);
-          pos = space->GetGameObject(Players[i])->GetComponent<Transform>(eTransform)->GetTranslation();
-          Draw::SetPosition(pos.x, pos.y + (64 - (coinStringsAlive[i][j].second * 64)));
-          Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
-          Draw::SetRotation(0);
-          Draw::DrawString(playerCoinsString, scale, 0);
-          coinStringsAlive[i][j].second -= deltaTime;
-          if (coinStringsAlive[i][j].second <= 0.0f)
-            coinStringsAlive[i].pop_front();
-        }
-      }
     }
+    //  if (Players[i] == Handle::null)
+    //    continue;
+    //  if (playerCoinsThisFrame[i] != 0)
+    //  {
+    //    std::pair<int, float> newCoinString(playerCoinsThisFrame[i], 1.0f);
+    //    coinStringsAlive[i].push_back(newCoinString);
+    //    playerCoinsThisFrame[i] = 0;
+    //  }
+    //  if (!coinStringsAlive[i].empty())
+    //  {
+    //    for (int j = 0; j < coinStringsAlive[i].size(); ++j)
+    //    {
+    //      itoa(coinStringsAlive[i][j].first, playerCoinsString, 10);
+    //      pos = space->GetGameObject(Players[i])->GetComponent<Transform>(eTransform)->GetTranslation();
+    //      Draw::SetPosition(pos.x, pos.y + (64 - (coinStringsAlive[i][j].second * 64)));
+    //      Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
+    //      Draw::SetRotation(0);
+    //      Draw::DrawString(playerCoinsString, scale, 0);
+    //      coinStringsAlive[i][j].second -= deltaTime;
+    //      if (coinStringsAlive[i][j].second <= 0.0f)
+    //        coinStringsAlive[i].pop_front();
+    //    }
+    //  }
+    //}
   }
   
 }

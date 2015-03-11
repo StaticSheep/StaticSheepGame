@@ -8,9 +8,9 @@ All content © 2015 DigiPen (USA) Corporation, all rights reserved.
 #include "pch/precompiled.h"
 #include "CSlotController.h"
 #include "types/space/Space.h"
-#include "../transform/CTransform.h"
-#include "../colliders/CBoxCollider.h"
-#include "../slotmachine/slotmachine.h"
+#include "../../transform/CTransform.h"
+#include "../../colliders/CBoxCollider.h"
+#include "../../slotmachine/slotmachine.h"
 
 namespace Framework
 {

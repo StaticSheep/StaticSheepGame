@@ -8,9 +8,9 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "pch/precompiled.h"
 #include "CWarningText.h"
 #include "types/space/Space.h"
-#include "../transform/CTransform.h"
-#include "../colliders/CBoxCollider.h"
-#include "../sprites/CAniSprite.h"
+#include "../../transform/CTransform.h"
+#include "../../colliders/CBoxCollider.h"
+#include "../../sprites/CAniSprite.h"
 
 namespace Framework
 {

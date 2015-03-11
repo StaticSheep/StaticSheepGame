@@ -8,10 +8,10 @@ All content © 2015 DigiPen (USA) Corporation, all rights reserved.
 #include "pch/precompiled.h"
 #include "CAsteroid.h"
 #include "types/space/Space.h"
-#include "../transform/CTransform.h"
-#include "../colliders/CCircleCollider.h"
+#include "../../transform/CTransform.h"
+#include "../../colliders/CCircleCollider.h"
 #include "systems/audio/SheepSoundEvent.h"
-#include "../sprites/CSprite.h"
+#include "../../sprites/CSprite.h"
 
 namespace Framework
 {
@@ -40,7 +40,6 @@ namespace Framework
   void Asteroid::Remove()
 	{
 		space->hooks.Remove("LogicUpdate", self);
-    space->GetGameObject(warn_circle_handle)->Destroy();
 	}
 
   void Asteroid::LogicUpdate(float dt)
@@ -78,6 +77,7 @@ namespace Framework
       exT->SetTranslation(at->GetTranslation());
       if (!GetRandom(0, 2))
         space->hooks.Call("SpawnItemSet", at->GetTranslation());
+      space->GetGameObject(warn_circle_handle)->Destroy();
       space->GetGameObject(owner)->Destroy();
     }
 	}

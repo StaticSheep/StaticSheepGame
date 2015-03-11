@@ -9,7 +9,7 @@ All content © 2015 DigiPen (USA) Corporation, all rights reserved.
 
 #include "components/base/Component.h"
 #include "types/handle/Handle.h"
-#include "../transform/CTransform.h"
+#include "../../transform/CTransform.h"
 
 namespace Framework
 {

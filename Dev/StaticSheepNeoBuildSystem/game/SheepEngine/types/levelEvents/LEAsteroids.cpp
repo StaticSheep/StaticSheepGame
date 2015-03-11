@@ -10,7 +10,7 @@ All content © 2015 DigiPen (USA) Corporation, all rights reserved.
 #include "Components/transform/CTransform.h"
 #include "Components/colliders/CCircleCollider.h"
 #include "Components/controllers/player/CPlayerController.h"
-#include "components/gameplay_scripts/CBullet_default.h"
+#include "components/gameplay_scripts/Weapon_Scripts/CBullet_default.h"
 #include "components/particles/CParticleCircleEmitter.h"
 #include "components/particles/CParticleSystem.h"
 #include "../SheepUtil/include/Matrix3D.h"
