@@ -13,7 +13,6 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "../../colliders/CCircleCollider.h"
 #include "../../sprites/CSprite.h"
 #include "types/weapons/WPistol.h"
-#include "types/weapons/WLaser.h"
 #include "../../gameplay_scripts/CBullet_default.h"
 #include "../../sprites/CAniSprite.h"
 #include "../../gameplay_scripts/CCheats.h"
@@ -27,7 +26,13 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 namespace Framework
 {
-  
+  static int pn = -1;
+  static Vec2D aim(1.0f, 0.0f); //default aiming direction
+  static GamePad *gp;           //players controller
+  static BoxCollider *bc;       //players box collider
+  static SoundEmitter *se;      //players sound emitter
+  static Transform *ps;         //players transform
+
 	PlayerController::PlayerController() //1
 	{
 		//set defaults
@@ -36,9 +41,10 @@ namespace Framework
 		isSnapped = true;
 		hasFired = false;
     health = 100;
+    shields = 100;
     snappedTo = Handle::null;
     respawnTimer = 2.0f;
-    hasRespawned = false;
+    hasRespawned = true;
     blink = false;
     weapon = nullptr;
     GodMode = false;
@@ -68,6 +74,7 @@ namespace Framework
 	{
 		//logic setup, you're attached and components are in place
 		space->hooks.Add("LogicUpdate", self, BUILD_FUNCTION(PlayerController::LogicUpdate));
+    space->hooks.Add("DealDamageToPlayer", self, BUILD_FUNCTION(PlayerController::DealDamage));
 		space->GetGameObject(owner)->hooks.Add("OnCollision", self, BUILD_FUNCTION(PlayerController::OnCollision));
 
     //Generic* gobj = space->GetHandles().GetAs<Generic>(owner);
@@ -79,33 +86,28 @@ namespace Framework
     playerSprite = space->GetGameObject(owner)->GetComponentHandle(eSprite);
     playerAnimation = space->GetGameObject(owner)->GetComponentHandle(eAniSprite);
 
-    Transform *ps = space->GetHandles().GetAs<Transform>(playerTransform);
+    ps = space->GetHandles().GetAs<Transform>(playerTransform);
     ps->SetScale(Vec3(0.35f, 0.365f, 0.0));
 
-		GamePad *gp = space->GetHandles().GetAs<GamePad>(playerGamePad); //actually gets the gamepad
+		gp = space->GetHandles().GetAs<GamePad>(playerGamePad); //actually gets the gamepad
 		gp->SetPad(playerNum); //setting pad number
 
 		aimDir.x = 1;
 		aimDir.y = 0;
 
-    BoxCollider *bc = space->GetHandles().GetAs<BoxCollider>(playerCollider);
+    bc = space->GetHandles().GetAs<BoxCollider>(playerCollider);
     bc->SetGravityOff();
-    weapon = (WLaser*)GET_TYPE(WLaser)->New();
-    SoundEmitter *se = space->GetHandles().GetAs<SoundEmitter>(playerSound);
+    weapon = (Pistol*)GET_TYPE(Pistol)->New();
+    se = space->GetHandles().GetAs<SoundEmitter>(playerSound);
     se->Play("robot_startup", &SoundInstance(0.50f));
     animCont = AnimationController(playerNum);
     animCont.AnimState = IDLE;
     bc->SetBodyCollisionGroup(space->GetGameObject(owner)->archetype);
 
     powerUp = nullptr;
-
+    pn = -1;
+    SpawnEffect();
 	}
-
-  static Vec2D aim(1.0f, 0.0f); //default aiming direction
-  static GamePad *gp;           //players controller
-  static BoxCollider *bc;       //players box collider
-  static SoundEmitter *se;      //players sound emitter
-  static Transform *ps;         //players transform
 
 	//************************************
 	// Method:    LogicUpdate
@@ -142,7 +144,7 @@ namespace Framework
       metricData.y = (int)ps->GetTranslation().y;
       ENGINE->SystemMessage(MetricsMessage(&metricData));
 
-      PlayerDeath(se, ps);
+      PlayerDeath(se, ps, pn);
     }
 
     //if the player has just respawned, run the blink function
@@ -352,7 +354,6 @@ namespace Framework
 
 	}
 
-
 	//************************************
 	// Method:    OnCollision
 	// FullName:  Framework::PlayerController::OnCollision
@@ -368,7 +369,7 @@ namespace Framework
     GameObject *OtherObject = space->GetHandles().GetAs<GameObject>(otherObject);
     if (OtherObject->name == "Bullet" && !hasRespawned && !GodMode && !PerfectMachine)
     {
-      health -= OtherObject->GetComponent<Bullet_Default>(eBullet_Default)->damage;
+      DealDamage(OtherObject->GetComponent<Bullet_Default>(eBullet_Default)->damage, playerNum);
       float randomX = (float)GetRandom(-25, 25);
       float randomY = (float)GetRandom(-25, 25);
       se->Play("hit1", &SoundInstance(1.0f));
@@ -380,7 +381,7 @@ namespace Framework
       //for metrics, need to determine where the bullet came from by checking its collision group
       if (health <= 0)
       {
-        int pn = 0;
+        pn = -1;
 
         if (OtherObject->GetComponent<CircleCollider>(eCircleCollider)->GetBodyCollisionGroup() == "Player1")
           pn = 0;
@@ -393,7 +394,7 @@ namespace Framework
 
         MetricInfo metricData(pn, 0, 0, PLAYER_KILL, Buttons::NONE, Weapons::PISTOL);
         ENGINE->SystemMessage(MetricsMessage(&metricData));
-        PlayerDeath(se, ps, pn);
+        //PlayerDeath(se, ps, pn);
       }
       return;
     }
@@ -402,14 +403,14 @@ namespace Framework
       && !GodMode && !PerfectMachine)
     {
       isSnapped = false;
-      health -= 10;
+      DealDamage(10, playerNum);
     }
 
     if ((OtherObject->GetComponentHandle(eGrinder) != Handle::null)
       && !hasRespawned && !GodMode && !PerfectMachine)
     {
       isSnapped = false;
-      health -= 10;
+      DealDamage(10, playerNum);
     }
 
     if (OtherObject->name == "WeaponPickup")
@@ -417,24 +418,20 @@ namespace Framework
 
     if (OtherObject->name == "Asteroid")
     {
-      health -= 50;
+      DealDamage(50, playerNum);
       float ranY = (float)GetRandom(-500, 500);
       float ranX = (float)GetRandom(-500, 500);
       bc->AddToVelocity(Vec3(ranX, ranY, 0.0f));
     }
 
-    /*if (OtherObject->name == "Player")
-    {
-
-    }*/
-		
 		//get the transform of the thing we are colliding with
 		Transform *OOT = OtherObject->GetComponent<Transform>(eTransform);
 		//if that thing we collided with's transform is missing, get the fuck outta here, i mean what are you even doing?
 		if (!OOT)
 			return;
 
-    if (OtherObject->HasComponent(eBoxCollider) && OtherObject->name != "Player" && OtherObject->name != "WeaponPickup" && OtherObject->archetype != "Grinder")
+    if (OtherObject->HasComponent(eBoxCollider) && OtherObject->name != "Player" && OtherObject->name != "WeaponPickup" 
+      && OtherObject->archetype != "Grinder" && OtherObject->name != "PowerUpPickup")
 		{
       float dotNormals;
       Vec3 nextSnappedNormal;
@@ -487,7 +484,7 @@ namespace Framework
         snappedNormal = averaged;
       }
 		}
-		else if (OtherObject->HasComponent(eCircleCollider))
+    else if (OtherObject->HasComponent(eCircleCollider) && OtherObject->archetype != "CoinPickup")
 		{
       CircleCollider *OOCc = OtherObject->GetComponent<CircleCollider>(eCircleCollider);
       snappedNormal = OOCc->GetCollisionNormals(manifold);
@@ -504,13 +501,23 @@ namespace Framework
 	//************************************
 	void PlayerController::Remove() //3
 	{
+    if (spawnEffect != Handle::null)
+    {
+      space->GetGameObject(spawnEffect)->Destroy();
+      spawnEffect = Handle::null;
+    }
 		//opposite of init
 		space->hooks.Remove("LogicUpdate", self);
 
     if (weapon != nullptr)
     {
-      free(weapon); //release dynamic memory
+      delete weapon; //release dynamic memory
       weapon = nullptr;
+    }
+    if (powerUp != nullptr)
+    {
+      delete powerUp; //release dynamic memory
+      powerUp = nullptr;
     }
 	}
 
@@ -606,29 +613,44 @@ namespace Framework
   //************************************
   void PlayerController::RespawnBlink(float dt)
   {
-    AniSprite *ps = space->GetHandles().GetAs<AniSprite>(playerAnimation);
-
+    AniSprite *pa = space->GetHandles().GetAs<AniSprite>(playerAnimation);
+    Transform *effectTrans;
+    if (respawnTimer <= 1.0f)
+    {
+      if (spawnEffect != Handle::null)
+      {
+        space->GetGameObject(spawnEffect)->Destroy();
+        spawnEffect = Handle::null;
+      }
+    }
     if (respawnTimer > 0.0f)
     {
       if (!blink)
-        ps->Color.A -= dt * 10.0f;
+        pa->Color.A -= dt * 10.0f;
       else
-        ps->Color.A += dt * 10.0f;
+        pa->Color.A += dt * 10.0f;
 
       respawnTimer -= dt;
 
-      if (ps->Color.A <= 0.0f)
+      if (pa->Color.A <= 0.0f)
         blink = true;
 
-      if (ps->Color.A >= 1.0f)
+      if (pa->Color.A >= 1.0f)
         blink = false;
+      if (spawnEffect != Handle::null)
+      {
+        effectTrans = space->GetGameObject(spawnEffect)->GetComponent<Transform>(eTransform);
+        effectTrans->SetTranslation(ps->GetTranslation());
+      }
     }
     else
     {
-      ps->Color.A = 255.0f;
+      pa->Color.A = 255.0f;
       hasRespawned = false;
       respawnTimer = 2.0f;
     }
+
+
   }
 
   //************************************
@@ -647,6 +669,7 @@ namespace Framework
     Transform *exT = space->GetGameObject(explosion)->GetComponent<Transform>(eTransform);
     exT->SetTranslation(ps->GetTranslation());
     exT->SetRotation((float)GetRandom(0, (int)(2.0f * (float)PI)));
+    space->hooks.Call("SpawnCoins", ps->GetTranslation());
     space->hooks.Call("PlayerDied", playerNum, who_killed_me); //calling an event called player died
     space->GetGameObject(owner)->Destroy();
   }
@@ -812,5 +835,44 @@ namespace Framework
   int PlayerController::CurrentHealth()
   {
     return health;
+  }
+
+  void PlayerController::DealDamage(int damage, int playerNum_)
+  {
+    if (playerNum != playerNum_)
+      return;
+
+    if ((shields - damage) < 0) //if the damage would do more than we have shields
+    {
+      int leftOver = damage - shields;
+      shields = 0;
+      health -= leftOver;
+    }
+    else
+      shields -= damage;
+
+  }
+
+  void PlayerController::SpawnEffect()
+  {
+    Transform *effectTrans;
+    switch (playerNum)
+    {
+    case 0:
+      spawnEffect = (FACTORY->LoadObjectFromArchetype(space, "p1_spawnEffect"))->self;
+      break;
+    case 1:
+      spawnEffect = (FACTORY->LoadObjectFromArchetype(space, "p2_spawnEffect"))->self;
+      break;
+    case 2:
+      spawnEffect = (FACTORY->LoadObjectFromArchetype(space, "p3_spawnEffect"))->self;
+      break;
+    case 3:
+      spawnEffect = (FACTORY->LoadObjectFromArchetype(space, "p4_spawnEffect"))->self;
+      break;
+    }
+
+    effectTrans = space->GetGameObject(spawnEffect)->GetComponent<Transform>(eTransform);
+    effectTrans->SetTranslation(ps->GetTranslation());
   }
 }

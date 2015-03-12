@@ -25,6 +25,7 @@ namespace Framework
   void Level1_Lighting::Initialize()
   {
     space->hooks.Add("LogicUpdate", self, BUILD_FUNCTION(Level1_Lighting::LogicUpdate));
+    space->hooks.Add("ToggleLevelLights", self, BUILD_FUNCTION(Level1_Lighting::Toggle));
     //space->hooks.Add("PlayerDied", self, BUILD_FUNCTION(Level1_Lighting::PlayerDied)); // might want this
 
     if (!ENGINE->m_editorActive)
@@ -50,7 +51,6 @@ namespace Framework
     }
     else
     {
-
       space->GetGameObject(m_lights[4])->GetComponent<PointLight>(ePointLight)->m_brightness.a = Ease::Linear(m_PulseT, 60.0f, 90.0f);
       space->GetGameObject(m_lights[5])->GetComponent<PointLight>(ePointLight)->m_brightness.a = Ease::Linear(m_PulseT, 60.0f, 90.0f);
 
@@ -84,5 +84,32 @@ namespace Framework
     light[1]->SetBrightness(Vec4(1.0f, 0.0f, 0.0f, 50.0f));
     light[2]->SetBrightness(Vec4(1.0f, 0.0f, 1.0f, 50.0f));
     light[3]->SetBrightness(Vec4(0.0f, 0.0f, 1.0f, 50.0f));
+  }
+  void Level1_Lighting::TurnOn()
+  {
+    m_isOn = true;
+
+    for (int i = 0; i < 6; ++i)
+    {
+      space->GetGameObject(m_lights[i])->GetComponent<PointLight>(ePointLight)->TurnOn();
+    }
+  }
+
+  void Level1_Lighting::TurnOff()
+  {
+    m_isOn = false;
+
+    for (int i = 0; i < 6; ++i)
+    {
+      space->GetGameObject(m_lights[i])->GetComponent<PointLight>(ePointLight)->TurnOff();
+    }
+  }
+
+  void Level1_Lighting::Toggle()
+  {
+    if (m_isOn)
+      TurnOff();
+    else
+      TurnOn();
   }
 }

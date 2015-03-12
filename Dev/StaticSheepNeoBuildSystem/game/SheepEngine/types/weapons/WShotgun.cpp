@@ -24,6 +24,7 @@ namespace Framework
     damage = 20;
     knockback = 600;
     semi = true;
+    explosive_ = false;
   }
 
   Shotgun::~Shotgun()
@@ -64,7 +65,13 @@ namespace Framework
         part->direction.m_startMin = rotation * part->direction.m_startMin;
         part->direction.m_startMax = rotation * part->direction.m_startMax;
 
-        bullet->GetComponent<Bullet_Default>(eBullet_Default)->damage = damage;
+        if (explosive_)
+        {
+          bullet->GetComponent<Bullet_Default>(eBullet_Default)->damage = damage + 20;
+          bullet->GetComponent<Bullet_Default>(eBullet_Default)->explosive_ = true;
+        }
+        else
+          bullet->GetComponent<Bullet_Default>(eBullet_Default)->damage = damage;
         BT = bullet->GetComponent<Transform>(eTransform);
         bulletC = bullet->GetComponent <CircleCollider>(eCircleCollider);
         bulletC->SetBodyCollisionGroup(player->archetype);
@@ -79,7 +86,13 @@ namespace Framework
         bullet->GetComponent<ParticleCircleEmitter>(eParticleCircleEmitter)->spawning = false;
         bullet->GetComponent<ParticleCircleEmitter>(eParticleCircleEmitter)->timedSpawning = false;
 
-        bullet->GetComponent<Bullet_Default>(eBullet_Default)->damage = damage;
+        if (explosive_)
+        {
+          bullet->GetComponent<Bullet_Default>(eBullet_Default)->damage = damage + 20;
+          bullet->GetComponent<Bullet_Default>(eBullet_Default)->explosive_ = true;
+        }
+        else
+          bullet->GetComponent<Bullet_Default>(eBullet_Default)->damage = damage;
         BT = bullet->GetComponent<Transform>(eTransform);
         bulletC = bullet->GetComponent <CircleCollider>(eCircleCollider);
         bulletC->SetBodyCollisionGroup(player->archetype);

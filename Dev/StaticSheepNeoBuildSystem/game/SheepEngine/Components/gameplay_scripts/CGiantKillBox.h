@@ -21,6 +21,7 @@ namespace Framework
 		void LogicUpdate(float dt);
 		void Initialize();
 		void Remove();
+    void CallingSM();
 
 		//member variables
     Handle Grinders[12]; //12 is the max amount of grinders to hold for this level event
@@ -30,5 +31,6 @@ namespace Framework
     bool direction, GrindSpawn;
     int numOfGrinders;
     float sizeOfGrinder;
+    float itemDropTimer;
 	};
 }

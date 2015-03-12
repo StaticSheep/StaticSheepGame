@@ -21,12 +21,16 @@ namespace Framework
     void OnCollision(Handle otherObject, SheepFizz::ExternalManifold manifold);
 		void Initialize();
 		void Remove();
+    void RespawnBlink(float dt);
 
 		//member variables
     Handle wpTransfrom;
     Handle wpCollider;
+    Handle wpSprite;
     EWeapons weaponID = eNoWeapon;
     int weaponNum;
+    float timeToLive, respawnTimer;
+    bool blink;
   private:
     const TypeInfo *weaponType = nullptr;
 	};

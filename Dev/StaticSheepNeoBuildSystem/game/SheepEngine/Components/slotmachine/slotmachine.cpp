@@ -87,7 +87,7 @@ namespace Framework
     space->hooks.Add("Draw", self,
       BUILD_FUNCTION(SlotMachine::Draw));
 
-    SetupSlots();
+    //SetupSlots();
   }
 
   void SlotMachine::TweakSetupSlots(const void* value)

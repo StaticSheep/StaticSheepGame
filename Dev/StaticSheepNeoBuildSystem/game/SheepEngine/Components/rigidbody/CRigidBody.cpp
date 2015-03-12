@@ -71,6 +71,8 @@ namespace Framework
       trans->SetRotation(rotation);
     }
 
+    space->GetGameObject(owner)->hooks.Remove("OnCollision", self);
+
 		PHYSICS->RemoveBodies(space, m_handle);
 	}
 
@@ -100,6 +102,11 @@ namespace Framework
   }
 
   void RigidBody::SetBodyRotation(Vec3D direction)
+  {
+    PHYSICS->SetBodyRotation(space, m_handle, direction);
+  }
+
+  void RigidBody::SetBodyRotation(float direction)
   {
     PHYSICS->SetBodyRotation(space, m_handle, direction);
   }

@@ -31,13 +31,15 @@ E_NAME(Weapons)
   E_ENTRY(Automatic)
   E_ENTRY(Shotgun)
   E_ENTRY(WLaser)
+  E_ENTRY(Missile)
   E_ENTRY(NoWeapon) //keep this at the end
 E_END(Weapons)
 
 E_NAME(PowerUps)
   E_ENTRY(Shield)
   E_ENTRY(Power)
-  E_ENTRY(Fans)
+  E_ENTRY(Coin)
+  E_ENTRY(Explosive)
   E_ENTRY(MiniMe)
   E_ENTRY(NoPowerUp) //keep this at the end
 E_END(PowerUps)
@@ -95,10 +97,14 @@ E_NAME(Component)
   E_ENTRY(Cheats)
   E_ENTRY(ElevatorPlat)
   E_ENTRY(GiantKillBox)
-  
+  E_ENTRY(JuggernautEffect)
+  E_ENTRY(Laser)
+  E_ENTRY(CoinBall)
 
   E_ENTRY(div_Beta)
   E_ENTRY(Tester)
+
+  
 
   E_ENTRY(LuaComponent)
   E_ENTRY(countComponents) //keep this at the end

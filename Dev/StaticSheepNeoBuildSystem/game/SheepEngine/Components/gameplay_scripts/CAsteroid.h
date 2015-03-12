@@ -21,9 +21,12 @@ namespace Framework
 		void LogicUpdate(float dt);
 		void Initialize();
 		void Remove();
+    void CallingSM();
 
 		//member variables
     Handle aTransfrom;
     Handle aCollider;
+    GameObject *warn_circle;
+    Handle warn_circle_handle;
 	};
 }

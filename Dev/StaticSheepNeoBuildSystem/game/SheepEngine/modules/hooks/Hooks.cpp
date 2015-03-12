@@ -29,10 +29,6 @@ namespace Framework
 
   HookCollection::~HookCollection()
   {
-    if (m_hooks.size() == 0)
-    {
-      m_hooks.clear();
-    }
 
     for (auto i = m_hooks.begin(); i != m_hooks.end(); ++i)
       delete i->second;
@@ -47,7 +43,7 @@ namespace Framework
     newHook->owner = owner;
 
     // Inserts the hook into the map
-    m_hooks.insert( std::pair<Handle, Hook* >(owner, newHook));
+    m_hooks.emplace( std::pair<Handle, Hook* >(owner, newHook));
   }
 
   void HookCollection::Remove(Handle owner)
@@ -70,14 +66,17 @@ namespace Framework
 
   HookManager::~HookManager()
   {
-    //ClearAll();
+    ClearAll();
   }
 
   void HookManager::Verify(std::string eventName)
   {
     if (HookMap.find(eventName) == HookMap.end())
     {
-      HookCollection* hc = new HookCollection(space);
+      HookCollections.emplace_back(space);
+
+      HookCollection* hc = &HookCollections.back();
+      //new (hc)HookCollection();
       
       HookMap[eventName] = hc;
     }
@@ -129,8 +128,17 @@ namespace Framework
 
   void HookManager::ClearAll()
   {
-    HookMap.empty();
-    HookCollections.Clear();
+    //HookMap.clear();
+
+    if (!HookMap.empty())
+    {
+      for (auto it = HookMap.begin(); it != HookMap.end(); ++it)
+      {
+        HookCollection* col = it->second;
+        col->~HookCollection();
+      }
+    }
+
   }
 
   

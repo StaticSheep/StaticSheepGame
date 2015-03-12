@@ -19,6 +19,7 @@ namespace Framework
     direction = true;
     numOfGrinders = 11;
     sizeOfGrinder = 60.0f;
+    itemDropTimer = 1.0f;
 	}
 
   GiantKillBox::~GiantKillBox()
@@ -30,6 +31,7 @@ namespace Framework
 	{
 		//logic setup, you're attached and components are in place
     space->hooks.Add("LogicUpdate", self, BUILD_FUNCTION(GiantKillBox::LogicUpdate));
+    space->hooks.Add("CallingSM", self, BUILD_FUNCTION(GiantKillBox::CallingSM));
 
     kbTransfrom = space->GetGameObject(owner)->GetComponentHandle(eTransform);
     kbCollider = space->GetGameObject(owner)->GetComponentHandle(eBoxCollider);
@@ -76,6 +78,14 @@ namespace Framework
       }
     }
 
+    itemDropTimer -= dt;
+    if (itemDropTimer <= 0)
+    {
+      if (!GetRandom(0, 1))
+        space->hooks.Call("SpawnItemSet", pt->GetTranslation());
+      itemDropTimer = 1.0f;
+    }
+
     //kill grinders that are out of bounds
     if (pt->GetTranslation().x > 1008 || pt->GetTranslation().x < -1008)
     {
@@ -87,5 +97,9 @@ namespace Framework
     }
 	}
 
-
+  void GiantKillBox::CallingSM()
+  {
+    /*if (owner)
+      space->GetGameObject(owner)->Destroy();*/
+  }
 }

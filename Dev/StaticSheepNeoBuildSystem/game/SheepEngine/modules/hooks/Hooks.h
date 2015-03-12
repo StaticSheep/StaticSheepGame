@@ -1,4 +1,3 @@
-#include <unordered_map>
 /*****************************************************************
 Filename: Hooks.h
 Project: 
@@ -9,6 +8,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 #pragma once
 
+#include <unordered_map>
 #include <boost/unordered_map.hpp>
 
 namespace Framework
@@ -45,8 +45,7 @@ namespace Framework
     void Trigger(Arg1 arg1, Arg2 arg2);
 
     GameSpace* space;
-
-    std::unordered_multimap<unsigned int, Hook* > m_hooks;
+    std::map<unsigned int, Hook> m_hooks;
   };
 
   template <typename Arg1>
@@ -75,7 +74,9 @@ namespace Framework
   class HookManager
   {
   public:
-    HookManager() : HookCollections(sizeof(HookCollection), 10) {};
+    HookManager()
+    {
+    };
     ~HookManager();
 
     void Add(std::string hook, Handle owner, const Function& func);
@@ -100,7 +101,7 @@ namespace Framework
   private:
     void Verify(std::string hook);
 
-    ObjectAllocator HookCollections;
+    std::vector<HookCollection> HookCollections;
     boost::unordered::unordered_map<std::string, HookCollection*> HookMap;
   };
 

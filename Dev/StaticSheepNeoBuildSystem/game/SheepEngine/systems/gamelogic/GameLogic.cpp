@@ -30,11 +30,14 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/gameplay_scripts/CAimingArrow.h"
 #include "components/gameplay_scripts/CLevel1_Lighting.h"
 #include "components/gameplay_scripts/CDashEffect.h"
+#include "components/gameplay_scripts/CJuggernautEffect.h"
 #include "components/gameplay_scripts/CAsteroid.h"
 #include "components/gameplay_scripts/CPowerupPickup.h"
 #include "components/gameplay_scripts/CSlotController.h"
 #include "components/gameplay_scripts/arena/CBlockLights.h"
 #include "components/tester/CTester.h"
+#include "components/gameplay_scripts/CLaser.h"
+#include "components/gameplay_scripts/CCoinBall.h"
 
 namespace Framework
 {
@@ -74,10 +77,13 @@ namespace Framework
     REGISTER_COMPONENT(SlotMachine);
     REGISTER_COMPONENT(AimingArrow);
     REGISTER_COMPONENT(DashEffect);
+    REGISTER_COMPONENT(JuggernautEffect);
     REGISTER_COMPONENT(Asteroid);
     REGISTER_COMPONENT(PowerupPickup);
     REGISTER_COMPONENT(SlotController);
     REGISTER_COMPONENT(BlockLights);
+    REGISTER_COMPONENT(Laser);
+    REGISTER_COMPONENT(CoinBall);
   }
 
   void GameLogic::Initialize()
