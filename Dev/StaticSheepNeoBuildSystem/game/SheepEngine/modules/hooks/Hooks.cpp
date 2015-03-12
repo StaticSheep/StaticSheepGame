@@ -30,8 +30,8 @@ namespace Framework
   HookCollection::~HookCollection()
   {
 
-    for (auto i = m_hooks.begin(); i != m_hooks.end(); ++i)
-      delete i->second;
+    //for (auto i = m_hooks.begin(); i != m_hooks.end(); ++i)
+    //  delete i->second;
 
     m_hooks.clear();
   }
@@ -39,16 +39,15 @@ namespace Framework
   void HookCollection::Add(Handle owner, const Function& fn)
   {
     // Creates a new hook
-    Hook* newHook = new Hook(owner, fn);
-    newHook->owner = owner;
+    Hook newHook(owner, fn);
+    //newHook->owner = owner;
 
     // Inserts the hook into the map
-    m_hooks.emplace( std::pair<Handle, Hook* >(owner, newHook));
+    m_hooks[owner] = newHook;
   }
 
   void HookCollection::Remove(Handle owner)
   {
-    delete m_hooks.find(owner)->second;
     m_hooks.erase(m_hooks.find(owner));
   }
 
@@ -59,8 +58,8 @@ namespace Framework
     // Goes through every hook in the list and pulls them
     for (auto i = m_hooks.begin(); i != m_hooks.end(); ++i)
     {
-      i->second->func.Bind(space->GetHandles().Get(i->second->owner));
-      i->second->func();
+      i->second.func.Bind(space->GetHandles().Get(i->second.owner));
+      i->second.func();
     }
   }
 
@@ -73,11 +72,8 @@ namespace Framework
   {
     if (HookMap.find(eventName) == HookMap.end())
     {
-      HookCollections.emplace_back(space);
 
-      HookCollection* hc = &HookCollections.back();
-      //new (hc)HookCollection();
-      
+      HookCollection* hc = new HookCollection(space);
       HookMap[eventName] = hc;
     }
   }

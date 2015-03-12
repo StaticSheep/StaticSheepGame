@@ -10,6 +10,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 #include <unordered_map>
 #include <boost/unordered_map.hpp>
+#include <map>
 
 namespace Framework
 {
@@ -17,8 +18,11 @@ namespace Framework
   struct Hook
   {
     Hook(Handle owner, const Function& fn);
+    Hook()
+      :func(), owner(Handle::null) {};
 
     bool Hook::operator==(const Hook& rhs) const;
+    bool Hook::operator<(const Hook& rhs) const;
 
     Function func;
     Handle owner;
@@ -45,7 +49,7 @@ namespace Framework
     void Trigger(Arg1 arg1, Arg2 arg2);
 
     GameSpace* space;
-    std::map<unsigned int, Hook> m_hooks;
+    std::map<unsigned, Hook> m_hooks;
   };
 
   template <typename Arg1>
@@ -54,8 +58,8 @@ namespace Framework
     // Goes through every hook in the list and pulls them
     for (auto it = m_hooks.begin(); it != m_hooks.end(); ++it)
     {
-      it->second->func.Bind(space->GetHandles().Get(it->second->owner));
-      it->second->func(arg1);
+      it->second.func.Bind(space->GetHandles().Get(it->second.owner));
+      it->second.func(arg1);
     }
   }
 
@@ -65,8 +69,8 @@ namespace Framework
     // Goes through every hook in the list and pulls them
     for (auto it = m_hooks.begin(); it != m_hooks.end(); ++it)
     {
-      it->second->func.Bind(space->GetHandles().Get(it->second->owner));
-      it->second->func(arg1, arg2);
+      it->second.func.Bind(space->GetHandles().Get(it->second.owner));
+      it->second.func(arg1, arg2);
     }
   }
 
@@ -101,7 +105,6 @@ namespace Framework
   private:
     void Verify(std::string hook);
 
-    std::vector<HookCollection> HookCollections;
     boost::unordered::unordered_map<std::string, HookCollection*> HookMap;
   };
 
