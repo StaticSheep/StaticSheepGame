@@ -8,8 +8,8 @@ All content © 2015 DigiPen (USA) Corporation, all rights reserved.
 #include "pch/precompiled.h"
 #include "CCoinBall.h"
 #include "types/space/Space.h"
-#include "../transform/CTransform.h"
-#include "../colliders/CCircleCollider.h"
+#include "../../transform/CTransform.h"
+#include "../../colliders/CCircleCollider.h"
 
 namespace Framework
 {
@@ -78,22 +78,8 @@ namespace Framework
       beenHit = true;
       if (hits > 4)
         alive = false;
-      Handle pCollider = space->GetGameObject(otherObject)->GetComponentHandle(eCircleCollider);
-      CircleCollider *bullCollider = space->GetHandles().GetAs<CircleCollider>(pCollider);
-      Vec3 BullDir = bullCollider->GetCurrentVelocity();
-
-      pc->AddToVelocity(BullDir);
-      NormalizeSpeed();
     }
     
-  }
-
-  void CoinBall::NormalizeSpeed()
-  {
-    int baseSpeed = 200;
-    Vec3 unitVector = pc->GetCurrentVelocity().Normalize();
-    Vec3 newVector = unitVector * (baseSpeed + (baseSpeed * hits));
-    pc->SetVelocity(newVector);
   }
 
   void CoinBall::DestroyBall()

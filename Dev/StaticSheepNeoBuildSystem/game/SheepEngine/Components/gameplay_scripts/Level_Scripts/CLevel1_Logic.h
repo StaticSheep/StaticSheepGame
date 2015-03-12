@@ -61,6 +61,8 @@ namespace Framework
     Handle Players[4];
     float spawnTimers[4];
     size_t playerCoins[4];
+    Handle playerCoinStack[4];
+    Vec3 CoinStackPos[4];
     int playerCoinsThisFrame[4];
     std::deque<std::pair<int, float>> coinStringsAlive[4];
     bool juggernaut[4];
@@ -83,7 +85,9 @@ namespace Framework
     void ResetPlayers();
     void ResetSpawnTimers();
     void GivePlayerCoins(int player, int coins);
+    void UpdateCoinStacks();
 
+    void SpawnCoinStacks();
     void SpawnItem(const char *, Vec3);
     void SpawnItemSet(Vec3);
     void SpawnCoins(Vec3);

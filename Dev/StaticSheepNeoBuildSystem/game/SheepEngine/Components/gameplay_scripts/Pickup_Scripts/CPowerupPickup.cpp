@@ -8,11 +8,12 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "pch/precompiled.h"
 #include "CPowerupPickup.h"
 #include "types/space/Space.h"
-#include "../transform/CTransform.h"
-#include "../colliders/CBoxCollider.h"
-#include "../controllers/player/CPlayerController.h"
-#include "../colliders/CCircleCollider.h"
-#include "../sprites/CSprite.h"
+#include "../../transform/CTransform.h"
+#include "../../colliders/CBoxCollider.h"
+#include "../../controllers/player/CPlayerController.h"
+#include "../../colliders/CCircleCollider.h"
+#include "../../sprites/CSprite.h"
+#include "../../sprites/CAniSprite.h"
 
 namespace Framework
 {
@@ -71,7 +72,10 @@ namespace Framework
     else
       space->GetHandles().GetAs<BoxCollider>(space->GetGameObject(owner)->GetComponentHandle(eBoxCollider))->SetGravityOff();
 
-    puSprite = space->GetGameObject(owner)->GetComponentHandle(eSprite);
+    if (space->GetGameObject(owner)->name == "CoinPickup")
+      puSprite = space->GetGameObject(owner)->GetComponentHandle(eAniSprite);
+    else
+      puSprite = space->GetGameObject(owner)->GetComponentHandle(eSprite);
 
     timeToLive = 5.0f;
     blink = false;
@@ -133,27 +137,55 @@ namespace Framework
 
   void PowerupPickup::RespawnBlink(float dt)
   {
-    Sprite *ps = space->GetHandles().GetAs<Sprite>(puSprite);
-
-    if (respawnTimer > 0.0f)
+    if (space->GetGameObject(owner)->name == "CoinPickup")
     {
-      if (!blink)
-        ps->Color.A -= dt * 10.0f;
+      AniSprite *ps = space->GetHandles().GetAs<AniSprite>(puSprite);
+      if (respawnTimer > 0.0f)
+      {
+        if (!blink)
+          ps->Color.A -= dt * 10.0f;
+        else
+          ps->Color.A += dt * 10.0f;
+
+        respawnTimer -= dt;
+
+        if (ps->Color.A <= 0.0f)
+          blink = true;
+
+        if (ps->Color.A >= 1.0f)
+          blink = false;
+      }
       else
-        ps->Color.A += dt * 10.0f;
-
-      respawnTimer -= dt;
-
-      if (ps->Color.A <= 0.0f)
-        blink = true;
-
-      if (ps->Color.A >= 1.0f)
-        blink = false;
+      {
+        ps->Color.A = 255.0f;
+        respawnTimer = 2.0f;
+      }
     }
     else
     {
-      ps->Color.A = 255.0f;
-      respawnTimer = 2.0f;
+      Sprite *ps = space->GetHandles().GetAs<Sprite>(puSprite);
+      if (respawnTimer > 0.0f)
+      {
+        if (!blink)
+          ps->Color.A -= dt * 10.0f;
+        else
+          ps->Color.A += dt * 10.0f;
+
+        respawnTimer -= dt;
+
+        if (ps->Color.A <= 0.0f)
+          blink = true;
+
+        if (ps->Color.A >= 1.0f)
+          blink = false;
+      }
+      else
+      {
+        ps->Color.A = 255.0f;
+        respawnTimer = 2.0f;
+      }
     }
+
+    
   }
 }

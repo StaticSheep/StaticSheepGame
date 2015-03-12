@@ -363,6 +363,12 @@ namespace Framework
     return archetype.CreateObject(space);
   }
 
+
+  void Factory::UpdateObjectFromArchetype(GameSpace* space, GameObject* obj)
+  {
+
+  }
+
   /// <summary>
   /// Gets an archetype.
   /// </summary>

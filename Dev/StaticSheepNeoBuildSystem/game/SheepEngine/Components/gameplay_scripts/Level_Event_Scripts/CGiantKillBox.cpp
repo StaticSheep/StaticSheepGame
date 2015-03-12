@@ -8,8 +8,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "pch/precompiled.h"
 #include "CGiantKillBox.h"
 #include "types/space/Space.h"
-#include "../transform/CTransform.h"
-#include "../colliders/CBoxCollider.h"
+#include "../../transform/CTransform.h"
+#include "../../colliders/CBoxCollider.h"
 
 namespace Framework
 {

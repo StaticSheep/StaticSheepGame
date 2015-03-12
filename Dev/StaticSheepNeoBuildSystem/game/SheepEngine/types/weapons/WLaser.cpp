@@ -3,7 +3,7 @@
 #include "Components/transform/CTransform.h"
 #include "Components/colliders/CBoxCollider.h"
 #include "Components/controllers/player/CPlayerController.h"
-#include "components/gameplay_scripts/CBullet_default.h"
+#include "components/gameplay_scripts/Weapon_Scripts/CBullet_default.h"
 #include "Matrix3D.h"
 
 

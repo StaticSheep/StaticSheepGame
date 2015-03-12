@@ -13,14 +13,14 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "../../colliders/CCircleCollider.h"
 #include "../../sprites/CSprite.h"
 #include "types/weapons/WPistol.h"
-#include "../../gameplay_scripts/CBullet_default.h"
+#include "../../gameplay_scripts/Weapon_Scripts/CBullet_default.h"
 #include "../../sprites/CAniSprite.h"
 #include "../../gameplay_scripts/CCheats.h"
 #include "../systems/input/Input.h"
 #include "systems/metrics/MetricInfo.h"
 #include "systems/graphics/SheepGraphics.h"
-#include "../../gameplay_scripts/CAimingArrow.h"
-#include "../../gameplay_scripts/CDashEffect.h"
+#include "../../gameplay_scripts/Player_Scripts/CAimingArrow.h"
+#include "../../gameplay_scripts/Player_Scripts/CDashEffect.h"
 
 
 

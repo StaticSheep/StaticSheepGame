@@ -9,8 +9,8 @@ All content © 2015 DigiPen (USA) Corporation, all rights reserved.
 #include "CLaser.h"
 #include "systems/graphics/SheepGraphics.h"
 #include "types/space/Space.h"
-#include "../transform/CTransform.h"
-#include "../colliders/CCircleCollider.h"
+#include "../../transform/CTransform.h"
+#include "../../colliders/CCircleCollider.h"
 
 namespace Framework
 {
