@@ -48,7 +48,10 @@ namespace Framework
 
   void HookCollection::Remove(Handle owner)
   {
-    m_hooks.erase(m_hooks.find(owner));
+    auto it = m_hooks.find(owner);
+
+    if (it != m_hooks.end())
+      m_hooks.erase(it);
   }
 
   void HookCollection::Trigger()

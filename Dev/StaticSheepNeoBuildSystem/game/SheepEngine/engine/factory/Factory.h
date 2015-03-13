@@ -37,7 +37,7 @@ namespace Framework
     // Creates an object from a virtual archetype.
     GameObject* LoadObjectFromArchetype(GameSpace* space, const Archetype& archetype);
 
-    void UpdateObjectFromArchetype(GameSpace* space, GameObject* obj);
+    //void UpdateArchetypeObjects(GameSpace* space, GameObject* obj);
 
     void UpdateArchetypeObjects(GameSpace* space, const char* name);
 

@@ -202,8 +202,8 @@ namespace DirectSheep
           ((Camera*)m_camera.ptr)->GetViewProj());
 
         m_emissiveBatcher[i]->Begin(SpriteSortMode_BackToFront,
-          //m_blendStateMap[BLEND_MODE_ZACH],
-          m_states->NonPremultiplied(),
+          m_blendStateMap[BLEND_MODE_ZACH],
+          //m_states->NonPremultiplied(),
           m_states->LinearWrap(), m_states->DepthNone(),
           m_states->CullCounterClockwise(), nullptr,
           ((Camera*)m_camera.ptr)->GetViewProj());

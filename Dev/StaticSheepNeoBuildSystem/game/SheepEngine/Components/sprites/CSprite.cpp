@@ -37,7 +37,30 @@ namespace Framework
       SetTexture(m_spriteName.c_str());
     
     //TODO not sure if we have a GetOwner()->has working
-    space->hooks.Add("Draw", self, BUILD_FUNCTION(Sprite::Draw));
+
+    if (m_hooked)
+    {
+      space->hooks.Remove("PreDraw", self);
+      space->hooks.Remove("Draw", self);
+      space->hooks.Remove("PostDraw", self);
+    }
+
+    switch (m_layer)
+    {
+    case 2:
+      space->hooks.Add("PostDraw", self, BUILD_FUNCTION(Sprite::Draw));
+      break;
+    case 0:
+      space->hooks.Add("PreDraw", self, BUILD_FUNCTION(Sprite::Draw));
+      break;
+    case 1:
+    default:
+      space->hooks.Add("Draw", self, BUILD_FUNCTION(Sprite::Draw));
+      break;
+    }
+
+    m_hooked = true;
+    
   }
 
   void Sprite::SetTexture(const char * Texture)
@@ -79,7 +102,21 @@ namespace Framework
 
   void Sprite::Remove()
   {
-    space->hooks.Remove("Draw", self);
+
+    switch (m_layer)
+    {
+    case 2:
+      space->hooks.Remove("PostDraw", self);
+      break;
+    case 0:
+      space->hooks.Remove("PreDraw", self);
+      break;
+    case 1:
+    default:
+      space->hooks.Remove("Draw", self);
+      break;
+    }
+    
   }
 
   void Sprite::Draw()

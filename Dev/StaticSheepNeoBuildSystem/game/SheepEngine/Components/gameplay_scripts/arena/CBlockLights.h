@@ -89,7 +89,7 @@ namespace Framework
       }
 
       /* Color of light (Alpha is intensity) */
-      Vec4 color;
+      LightColor color;
 
       unsigned fx = PULSE;
       unsigned ease = LINEAR;

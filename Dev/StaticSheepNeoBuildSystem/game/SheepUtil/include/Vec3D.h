@@ -15,8 +15,8 @@ namespace Framework
   struct Vec3D : public Vec2D
   {
     // constructor, defaults to 0 vector
-    Vec3D(float _x = 0.0f, float _y = 0.0f, float _z = 0.0f) : Vec2D( _x, _y)
-    {z = _z; };
+    Vec3D(float _x = 0.0f, float _y = 0.0f, float _z = 0.0f)
+      : Vec2D(_x, _y), z(_z) {};
 
     Vec3D(float* v) : Vec2D(*v, *(v + 1)), z(*(v + 2)) {};
     

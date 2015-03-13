@@ -2,7 +2,7 @@ BlockLightTest
 GameObject
 {
   name std::string ""
-  archetype std::string ""
+  archetype std::string "blah"
   Transform
   {
     Translation Vec3
@@ -78,7 +78,7 @@ GameObject
       ease unsignedint 0
       isOn bool true
       useColor bool true
-      color Vec4
+      color LightColor
       {
         R float 1.000000
         G float 1.000000
@@ -131,7 +131,7 @@ GameObject
 GameObject
 {
   name std::string ""
-  archetype std::string ""
+  archetype std::string "blah"
   Transform
   {
     Translation Vec3
@@ -207,7 +207,7 @@ GameObject
       ease unsignedint 0
       isOn bool true
       useColor bool true
-      color Vec4
+      color LightColor
       {
         R float 1.000000
         G float 1.000000
@@ -220,7 +220,7 @@ GameObject
 GameObject
 {
   name std::string ""
-  archetype std::string ""
+  archetype std::string "blah"
   Transform
   {
     Translation Vec3
@@ -272,7 +272,7 @@ GameObject
     m_brightness LightColor
     {
       R float 1.000000
-      G float 0.000000
+      G float 1.000000
       B float 0.000000
       A float 1.000000
     }
@@ -296,7 +296,7 @@ GameObject
       ease unsignedint 0
       isOn bool true
       useColor bool true
-      color Vec4
+      color LightColor
       {
         R float 1.000000
         G float 1.000000
@@ -385,7 +385,7 @@ GameObject
       ease unsignedint 0
       isOn bool true
       useColor bool true
-      color Vec4
+      color LightColor
       {
         R float 1.000000
         G float 1.000000
@@ -474,7 +474,7 @@ GameObject
       ease unsignedint 0
       isOn bool true
       useColor bool true
-      color Vec4
+      color LightColor
       {
         R float 1.000000
         G float 1.000000
@@ -563,7 +563,7 @@ GameObject
       ease unsignedint 0
       isOn bool true
       useColor bool true
-      color Vec4
+      color LightColor
       {
         R float 1.000000
         G float 1.000000

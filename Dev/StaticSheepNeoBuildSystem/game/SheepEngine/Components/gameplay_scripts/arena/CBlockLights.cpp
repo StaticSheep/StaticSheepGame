@@ -16,7 +16,7 @@ namespace Framework
 {
   BlockLights::BlockLights()
   {
-    m_defaultSettings.color = Vec4(1, 1, 1, 1);
+    m_defaultSettings.color = LightColor(1, 1, 1, 1);
     m_defaultSettings.useColor = true;
   }
 
@@ -30,6 +30,8 @@ namespace Framework
 
     space->GetGameObject(owner)->hooks.Add(
       "LightingEvent", self, BUILD_FUNCTION(BlockLights::Activate));
+
+    m_curSettings = m_defaultSettings;
   }
 
   void BlockLights::Remove()

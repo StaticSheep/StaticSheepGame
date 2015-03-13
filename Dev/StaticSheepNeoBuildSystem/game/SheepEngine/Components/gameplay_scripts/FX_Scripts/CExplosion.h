@@ -20,10 +20,20 @@ namespace Framework
 		void LogicUpdate(float dt);
 		void Initialize();
 		void Remove();
+
+    void AnimEnd();
+
     void DestroySelf();
 
 		//member variables
     Handle eTransfrom;
     Handle eAnSprite;
+
+    bool removal = false;
+
+    float timer = 1.0f;
+
+    bool waitForAnim = false;
+    //float animDelay = 1.0f;
 	};
 }

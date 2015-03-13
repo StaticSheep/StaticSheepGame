@@ -92,12 +92,27 @@ namespace Framework
       {
         BlockLights::EventData ed;
 
-        ed.duration = 0.8f;
+        ed.duration = 2.8f;
 
         ed.settings.color = Vec4(1.0f, 0.1f, 0.2f, 1);
         ed.settings.fx = BlockLights::CUSTOM;
         ed.settings.customData.duration = 0.4f;
         ed.settings.customSequence = "zzmzmzzzz";
+
+
+        space->hooks.Call("LightingEvent", (unsigned)0x1, &ed);
+        ++phase;
+      }
+
+      {
+        BlockLights::EventData ed;
+
+        ed.duration = 1.0f;
+
+        ed.settings.color = Vec4(1.0f, 0.1f, 0.2f, 1);
+        ed.settings.fx = BlockLights::CUSTOM;
+        ed.settings.customData.duration = 0.8f;
+        ed.settings.customSequence = "nmonqnmomnmomomno";
 
 
         space->hooks.Call("LightingEvent", (unsigned)0x1, &ed);

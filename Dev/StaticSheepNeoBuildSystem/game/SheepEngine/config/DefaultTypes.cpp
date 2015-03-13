@@ -238,6 +238,9 @@ namespace Framework
     TYPE_SET_TWEAK_TYPE(Grinder, AntTweak::TW_TYPE_COMPONENT);
 
     TYPE_REGISTER(Explosion);
+    TYPE_ADD_MEMBER(Explosion, timer, false, true, "Show Time");
+    TYPE_ADD_MEMBER(Explosion, waitForAnim, false, true, "Wait for anim");
+    //TYPE_ADD_MEMBER(Explosion, animDelay, false, true, "Anim Delay");
     TYPE_SET_TWEAK_TYPE(Explosion, AntTweak::TW_TYPE_COMPONENT);
 
     TYPE_REGISTER(WarningText);
@@ -333,6 +336,7 @@ namespace Framework
     TYPE_REGISTER(Sprite);
     TYPE_ADD_MEMBER(Sprite, m_spriteName, false, true, "Texture",
       BUILD_FUNCTION(Sprite::TweakSetTexture));
+    TYPE_ADD_MEMBER(Sprite, m_layer, false, true, "Layer");
     TYPE_ADD_MEMBER(Sprite, m_flipX, false, true, "FlipX");
     TYPE_ADD_MEMBER(Sprite, m_flipY, false, true, "FlipY");
     TYPE_ADD_MEMBER(Sprite, m_uvScale, false, true, "Tiled");
@@ -343,6 +347,7 @@ namespace Framework
     TYPE_SET_FROM_LUA(Sprite, Lua::GenericObjectFromLua);
 
     TYPE_REGISTER(PointLight);
+    TYPE_ADD_MEMBER(PointLight, m_layer, false, true, "Layer");
     TYPE_ADD_MEMBER(PointLight, m_brightness, false, true, "LightColor");
     TYPE_ADD_MEMBER(PointLight, m_attenuation, false, true, "Attenuation");
     TYPE_SET_TWEAK_TYPE(PointLight, AntTweak::TW_TYPE_COMPONENT);
@@ -351,6 +356,7 @@ namespace Framework
     TYPE_REGISTER(SpriteLight);
     TYPE_ADD_MEMBER(SpriteLight, m_spriteName, false, true, "LightTexture",
       BUILD_FUNCTION(Sprite::TweakSetTexture));
+    TYPE_ADD_MEMBER(SpriteLight, m_layer, false, true, "Layer");
     TYPE_ADD_MEMBER(SpriteLight, m_flipX, false, true, "FlipX");
     TYPE_ADD_MEMBER(SpriteLight, m_flipY, false, true, "FlipY");
     TYPE_ADD_MEMBER(SpriteLight, m_uvScale, false, true, "Tiled");
@@ -365,6 +371,8 @@ namespace Framework
     TYPE_REGISTER(AniSprite);
     TYPE_ADD_MEMBER(AniSprite, m_spriteName, false, true, "Texture",
       BUILD_FUNCTION(Sprite::TweakSetTexture));
+    TYPE_ADD_MEMBER(AniSprite, m_layer, false, true, "Layer");
+    TYPE_ADD_MEMBER(AniSprite, m_frameUpdate, false, true, "Use Frameupdate");
     TYPE_ADD_MEMBER(AniSprite, m_frames, false, true, "Frames",
       BUILD_FUNCTION(AniSprite::Test));
     TYPE_ADD_MEMBER(AniSprite, m_startFrame, false, true, "StartFrame",
@@ -382,7 +390,9 @@ namespace Framework
     TYPE_SET_FROM_LUA(AniSprite, Lua::GenericObjectFromLua);
 
     TYPE_REGISTER(ParticleSystem);
-    TYPE_ADD_MEMBER(ParticleSystem, textureName, false, true, "ParticleTexture");
+    TYPE_ADD_MEMBER(ParticleSystem, textureName, false, true, "ParticleTexture",
+      BUILD_FUNCTION(ParticleSystem::TweakSetTexture));
+    TYPE_ADD_MEMBER(ParticleSystem, m_layer, false, true, "Layer");
     TYPE_ADD_MEMBER(ParticleSystem, particleLife, false, true, "ParticleLifetime");
     TYPE_ADD_MEMBER(ParticleSystem, directionEase, false, true, "DirectionEase");
     TYPE_ADD_MEMBER(ParticleSystem, direction, false, true, "ParticleDirection",
