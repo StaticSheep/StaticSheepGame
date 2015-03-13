@@ -64,6 +64,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "Components/gameplay_scripts/FX_Scripts/CJuggernautEffect.h"
 #include "Components/gameplay_scripts/Weapon_Scripts/CLaser.h"
 #include "Components/gameplay_scripts/Slot_Machine_Scripts/CCoinBall.h"
+#include "components/basicps/CBasicPSystem.h"
 
 
 namespace Framework
@@ -451,6 +452,60 @@ namespace Framework
     TYPE_ADD_MEMBER(ParticleBoxEmitter, timedSpawning, false, true, "Timed Spawning?");
     TYPE_ADD_MEMBER(ParticleBoxEmitter, timed, false, true, "Time!");
 
+    TYPE_REGISTER(BasicParticleSystem::BPSPos);
+    TYPE_ADD_MEMBER(BasicParticleSystem::BPSPos, square, false, true, "Square Spawner");
+    TYPE_ADD_MEMBER(BasicParticleSystem::BPSPos, edgeOnly, false, true, "Spawn on Edge");
+    TYPE_ADD_MEMBER(BasicParticleSystem::BPSPos, radius, false, true, "Circle Radius");
+    TYPE_ADD_MEMBER(BasicParticleSystem::BPSPos, angle, false, true, "Spawn Angle");
+    TYPE_ADD_MEMBER(BasicParticleSystem::BPSPos, randAngle, false, true, "Spawn Angle Variance");
+    TYPE_ADD_MEMBER(BasicParticleSystem::BPSPos, offset, false, true, "Spawn_Offset");
+    TYPE_ADD_MEMBER(BasicParticleSystem::BPSPos, randOffset, false, true, "Spawn_Offset_Variance");
+
+    TYPE_REGISTER(BPartSys::BPSScaling);
+    TYPE_ADD_MEMBER(BPartSys::BPSScaling, scale, false, true, "Spawn_Scale");
+    TYPE_ADD_MEMBER(BPartSys::BPSScaling, randScale, false, true, "Spawn_Scale_Variance");
+
+    TYPE_REGISTER(BPartSys::BPSRotation);
+    TYPE_ADD_MEMBER(BPartSys::BPSRotation, rotation, false, true, "Spawn Rotation");
+    TYPE_ADD_MEMBER(BPartSys::BPSRotation, randRotation, false, true, "Spawn Rotation Variance");
+
+    TYPE_REGISTER(BPartSys::BPSLife);
+    TYPE_ADD_MEMBER(BPartSys::BPSLife, lifetime, false, true, "Lifetime");
+    TYPE_ADD_MEMBER(BPartSys::BPSLife, randLifetime, false, true, "Lifetime Variance");
+
+    TYPE_REGISTER(BPartSys::BPSFade);
+    TYPE_ADD_MEMBER(BPartSys::BPSFade, fadeOut, false, true, "Fades out");
+    TYPE_ADD_MEMBER(BPartSys::BPSFade, fadeOutTime, false, true, "Fadeout time");
+    TYPE_ADD_MEMBER(BPartSys::BPSFade, randFadeoutTime, false, true, "Fadeout time Variance");
+
+    TYPE_REGISTER(BPartSys::BPSVelocity);
+    TYPE_ADD_MEMBER(BPartSys::BPSVelocity, velocity, false, true, "Spawn_Velocity");
+    TYPE_ADD_MEMBER(BPartSys::BPSVelocity, randVelocity, false, true, "Spawn_Velocity_Variance");
+    TYPE_ADD_MEMBER(BPartSys::BPSVelocity, speedIn, false, true, "Inward Spawn Speed*");
+    TYPE_ADD_MEMBER(BPartSys::BPSVelocity, randSpeedIn, false, true, "Inward Spawn Speed Variance");
+
+    TYPE_REGISTER(BPartSys::BPSSystem);
+    TYPE_ADD_MEMBER(BPartSys::BPSSystem, active, false, true, "Activated");
+    TYPE_ADD_MEMBER(BPartSys::BPSSystem, editorActive, false, true, "Editor Preview");
+    TYPE_ADD_MEMBER(BPartSys::BPSSystem, spawnInterval, false, true, "Spawning Interval");
+    TYPE_ADD_MEMBER(BPartSys::BPSSystem, spawnAmount, false, true, "Spawn Amount (Per Interval)");
+    TYPE_ADD_MEMBER(BPartSys::BPSSystem, spawnPerSecond, false, true, "Spawn Amount (Per Second)*");
+    TYPE_ADD_MEMBER(BPartSys::BPSSystem, shutdownTimer, false, true, "Shutdown Timer");
+
+    TYPE_REGISTER(BasicParticleSystem);
+    TYPE_SET_TWEAK_TYPE(BasicParticleSystem, AntTweak::TW_TYPE_COMPONENT);
+    TYPE_ADD_MEMBER(BasicParticleSystem, m_texture, false, true, "Texture",
+      BUILD_FUNCTION(BasicParticleSystem::TweakSetTexture));
+    TYPE_ADD_MEMBER(BasicParticleSystem, m_pos, false, true, "Positioning");
+    TYPE_ADD_MEMBER(BasicParticleSystem, m_scaling, false, true, "Scaling");
+    TYPE_ADD_MEMBER(BasicParticleSystem, m_rot, false, true, "Rotational");
+    TYPE_ADD_MEMBER(BasicParticleSystem, m_life, false, true, "Lifetime/Duration");
+    TYPE_ADD_MEMBER(BasicParticleSystem, m_fade, false, true, "Fading");
+    TYPE_ADD_MEMBER(BasicParticleSystem, m_vel, false, true, "Velocity/Speed");
+    TYPE_ADD_MEMBER(BasicParticleSystem, m_system, false, true, "System");
+    
+
+
     TYPE_REGISTER(Camera);
     TYPE_ADD_MEMBER(Camera, m_active, false, true, "Active",
       BUILD_FUNCTION(Camera::TweakSetActive));
@@ -474,6 +529,8 @@ namespace Framework
 
     TYPE_REGISTER(SlotMachine);
     TYPE_SET_TWEAK_TYPE(SlotMachine, AntTweak::TW_TYPE_COMPONENT);
+
+    TYPE_ADD_MEMBER(SlotMachine, m_layer, false, true, "Layer");
 
     TYPE_ADD_MEMBER(SlotMachine, m_stopTexture, false, true, "Still Texture",
       BUILD_FUNCTION(SlotMachine::TweakSetupSlots));

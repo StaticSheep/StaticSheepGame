@@ -74,6 +74,9 @@ namespace Framework
       //}
       space->GetGameObject(owner)->Destroy();
     }
+
+
+    
 	}
 
 
