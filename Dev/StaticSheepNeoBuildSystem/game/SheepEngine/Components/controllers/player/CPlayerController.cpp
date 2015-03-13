@@ -351,7 +351,11 @@ namespace Framework
 	//************************************
 	void PlayerController::OnCollision(Handle otherObject, SheepFizz::ExternalManifold manifold)
 	{
-    se = space->GetHandles().GetAs<SoundEmitter>(playerSound); //refresh the sound emitter pointer
+    //update all the players pointers
+    gp = space->GetHandles().GetAs<GamePad>(playerGamePad);
+    bc = space->GetHandles().GetAs<BoxCollider>(playerCollider);
+    se = space->GetHandles().GetAs<SoundEmitter>(playerSound);
+    ps = space->GetHandles().GetAs<Transform>(playerTransform);
     GameObject *OtherObject = space->GetHandles().GetAs<GameObject>(otherObject); //get the game object from the handle
     
     CollisionDamage(OtherObject); //determine if the colliding object does damage to the player

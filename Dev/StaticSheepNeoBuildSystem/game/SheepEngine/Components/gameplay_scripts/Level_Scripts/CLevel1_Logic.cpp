@@ -27,6 +27,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "../FX_Scripts/CJuggernautEffect.h"
 #include "types/weapons/WShotgun.h"
 #include "types/weapons/WMissile.h"
+#include "../arena/CBlockLights.h"
 
 static const char *playerNames[] = { "Player1", "Player2", "Player3", "Player4" };
 static int juggKills[4] = { 0, 0, 0, 0 };
@@ -675,9 +676,16 @@ namespace Framework
         LE = 0;
       }
       if (mod1 == LIGHTSOUT)
+      {
         space->hooks.Call("ToggleLevelLights");
+        BlockLights::EventData ed;
+        ed.overrideDefault = true;
+        ed.settings.color = Vec4(0.2f, 0.8f, 0.2f, 0.8f);
+        ed.settings.fx = BlockLights::NONE;
+        space->hooks.Call("LightingEvent", 0xFFFFFFFF, &ed);
+      }
       space->hooks.Call("CallingSM");
-      (FACTORY->LoadObjectFromArchetype(space, "LevelSlotMachine"));
+      (FACTORY->LoadObjectFromArchetype(space, "LevelSlotMachine"))->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(0.0f, 64.0f, -1.0f));
       slotFinished = true;
     }
   }
@@ -730,7 +738,16 @@ namespace Framework
     mod1 = mod1_;
     mod2 = mod2_;
     if (mod1 == LIGHTSOUT)
+    {
       space->hooks.Call("ToggleLevelLights");
+
+      BlockLights::EventData ed;
+      ed.overrideDefault = true;
+      ed.settings.color = Vec4(0.2f, 0.8f, 0.2f, 0.5f);
+      ed.settings.fx = BlockLights::NONE;
+      ed.settings.customData.duration = 60.0f;
+      space->hooks.Call("LightingEvent", 0xFFFFFFFF, &ed);
+    }
     if (mod1 == BONUS && mod2 == BONUS)
     {
       mode = BONUSMODE;

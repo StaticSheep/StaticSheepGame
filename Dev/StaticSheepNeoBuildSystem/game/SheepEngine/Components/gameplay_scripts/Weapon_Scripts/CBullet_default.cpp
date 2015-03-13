@@ -10,6 +10,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "types/space/Space.h"
 #include "../../transform/CTransform.h"
 #include "../../colliders/CBoxCollider.h"
+#include "../arena/CBlockLights.h"
 
 namespace Framework
 {
@@ -64,6 +65,17 @@ namespace Framework
   void Bullet_Default::OnCollision(Handle otherObject, SheepFizz::ExternalManifold manifold)
 	{
     GameObject *OtherObject = space->GetHandles().GetAs<GameObject>(otherObject);
+
+    /*if (OtherObject->archetype == "SmallArenaBlock")
+    {
+    BlockLights::EventData ed;
+    ed.overrideDefault = false;
+    ed.settings.color = Vec4(1.0f, 0.2f, 0.2f, 1.0f);
+    ed.settings.fx = BlockLights::FLICKER;
+    ed.duration = 0.5f;
+    OtherObject->hooks.Call("LightingEvent", &ed);
+    }*/
+
     if (OtherObject->name != "Bullet" && OtherObject->name != "WeaponPickup" && OtherObject->name != "PowerUpPickup" 
         && OtherObject->name != "CoinPickup")
     {
