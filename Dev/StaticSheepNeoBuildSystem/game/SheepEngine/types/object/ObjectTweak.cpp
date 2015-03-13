@@ -118,6 +118,16 @@ namespace Framework
       // Load up the C++ Component callback tables
       for(size_t i=0; i < ecountComponents - 1; ++i)
       {
+        std::string divlabel(EnumComponent.m_literals[i].begin(),
+          EnumComponent.m_literals[i].begin() + 4);
+
+        if (divlabel == "div_")
+        {
+          obj->tweakCCompCallbacks->push_back(nullptr);
+          continue;
+        }
+          
+
         TweakObjComp* userdata = DBG_NEW TweakObjComp();
         userdata->gl.self = obj->self;
         userdata->gl.space = obj->space;
@@ -252,6 +262,15 @@ namespace Framework
     obj->UpdateTweakBar();
   }
 
+  void GameObject::TweakUpdateArchetypes(void* clientData)
+  {
+    GenericLookup* gl = (GenericLookup*)clientData;
+    GameObject* obj = gl->space->GetGameObject(gl->self);
+
+    UpdateArchetype(clientData);
+
+    FACTORY->UpdateArchetypeObjects(obj->space, obj->archetype.c_str());
+  }
 
   /// <summary>
   /// Closes the object tweak bar.
@@ -353,9 +372,13 @@ namespace Framework
     }
 
     objectBar->DefineKeyShortcut("CTRL+u");
-    objectBar->DefineLabel("Update Archetype");
+    objectBar->DefineLabel("Save Archetype");
     objectBar->DefineHelpMessage("Saves this object as an archetype to a file.");
     objectBar->AddButton("ArchetypeUpdate", UpdateArchetype, this->tweakLookup);
+
+    objectBar->DefineLabel("Update Other Objects");
+    objectBar->DefineHelpMessage("Updates other objects with the same archetype to match this object.");
+    objectBar->AddButton("ArchetypeObjectUpdate", GameObject::TweakUpdateArchetypes, this->tweakLookup);
 
     objectBar->DefineLabel("Duplicate Object");
     objectBar->AddButton("Duplicate", DuplicateObject, this->tweakLookup);
@@ -456,6 +479,23 @@ namespace Framework
         /* ------- C++ Components ------- */
         for (size_t i = 0; i < ecountComponents - 1; ++i)
         {
+          std::string divlabel(EnumComponent.m_literals[i].begin(),
+            EnumComponent.m_literals[i].begin() + 4);
+
+          if (divlabel == "div_")
+          {
+            divlabel = std::string(EnumComponent.m_literals[i].begin() + 4,
+              EnumComponent.m_literals[i].end());
+
+            objectBar->DefineLabel(divlabel.c_str());
+
+            std::string divid = "divider";
+            divid += std::to_string(i);
+
+            objectBar->AddButton(divid.c_str(), nullptr, nullptr);
+            continue;
+          }
+
           if (!HasComponent(i))
           {
             bName = "Add";
@@ -550,6 +590,8 @@ namespace Framework
 
     ENGINE->SystemMessage(msg);
   }
+
+  
 
   void GameObject::TweakSetName(void* inname)
   {

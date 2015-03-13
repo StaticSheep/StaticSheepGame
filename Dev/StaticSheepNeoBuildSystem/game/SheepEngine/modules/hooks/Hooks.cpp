@@ -29,13 +29,9 @@ namespace Framework
 
   HookCollection::~HookCollection()
   {
-    if (m_hooks.size() == 0)
-    {
-      m_hooks.clear();
-    }
 
-    for (auto i = m_hooks.begin(); i != m_hooks.end(); ++i)
-      delete i->second;
+    //for (auto i = m_hooks.begin(); i != m_hooks.end(); ++i)
+    //  delete i->second;
 
     m_hooks.clear();
   }
@@ -43,17 +39,19 @@ namespace Framework
   void HookCollection::Add(Handle owner, const Function& fn)
   {
     // Creates a new hook
-    Hook* newHook = new Hook(owner, fn);
-    newHook->owner = owner;
+    Hook newHook(owner, fn);
+    //newHook->owner = owner;
 
     // Inserts the hook into the map
-    m_hooks.insert( std::pair<Handle, Hook* >(owner, newHook));
+    m_hooks[owner] = newHook;
   }
 
   void HookCollection::Remove(Handle owner)
   {
-    delete m_hooks.find(owner)->second;
-    m_hooks.erase(m_hooks.find(owner));
+    auto it = m_hooks.find(owner);
+
+    if (it != m_hooks.end())
+      m_hooks.erase(it);
   }
 
   void HookCollection::Trigger()
@@ -63,22 +61,22 @@ namespace Framework
     // Goes through every hook in the list and pulls them
     for (auto i = m_hooks.begin(); i != m_hooks.end(); ++i)
     {
-      i->second->func.Bind(space->GetHandles().Get(i->second->owner));
-      i->second->func();
+      i->second.func.Bind(space->GetHandles().Get(i->second.owner));
+      i->second.func();
     }
   }
 
   HookManager::~HookManager()
   {
-    //ClearAll();
+    ClearAll();
   }
 
   void HookManager::Verify(std::string eventName)
   {
     if (HookMap.find(eventName) == HookMap.end())
     {
+
       HookCollection* hc = new HookCollection(space);
-      
       HookMap[eventName] = hc;
     }
   }
@@ -129,8 +127,17 @@ namespace Framework
 
   void HookManager::ClearAll()
   {
-    HookMap.empty();
-    HookCollections.Clear();
+    //HookMap.clear();
+
+    if (!HookMap.empty())
+    {
+      for (auto it = HookMap.begin(); it != HookMap.end(); ++it)
+      {
+        HookCollection* col = it->second;
+        col->~HookCollection();
+      }
+    }
+
   }
 
   

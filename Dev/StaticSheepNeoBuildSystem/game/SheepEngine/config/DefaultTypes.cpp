@@ -53,6 +53,11 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/particles/CParticleCircleEmitter.h"
 #include "components/particles/CParticleBoxEmitter.h"
 #include "components/particles/Particles.h"
+
+
+#include "components/gameplay_scripts/arena/CBlockLights.h"
+#include "components/tester/CTester.h"
+
 #include "components/gameplay_scripts/Level_Event_Scripts/CAsteroid.h"
 #include "components/gameplay_scripts/Pickup_Scripts/CPowerupPickup.h"
 #include "Components/gameplay_scripts/Slot_Machine_Scripts/CSlotController.h"
@@ -233,6 +238,9 @@ namespace Framework
     TYPE_SET_TWEAK_TYPE(Grinder, AntTweak::TW_TYPE_COMPONENT);
 
     TYPE_REGISTER(Explosion);
+    TYPE_ADD_MEMBER(Explosion, timer, false, true, "Show Time");
+    TYPE_ADD_MEMBER(Explosion, waitForAnim, false, true, "Wait for anim");
+    //TYPE_ADD_MEMBER(Explosion, animDelay, false, true, "Anim Delay");
     TYPE_SET_TWEAK_TYPE(Explosion, AntTweak::TW_TYPE_COMPONENT);
 
     TYPE_REGISTER(WarningText);
@@ -328,6 +336,7 @@ namespace Framework
     TYPE_REGISTER(Sprite);
     TYPE_ADD_MEMBER(Sprite, m_spriteName, false, true, "Texture",
       BUILD_FUNCTION(Sprite::TweakSetTexture));
+    TYPE_ADD_MEMBER(Sprite, m_layer, false, true, "Layer");
     TYPE_ADD_MEMBER(Sprite, m_flipX, false, true, "FlipX");
     TYPE_ADD_MEMBER(Sprite, m_flipY, false, true, "FlipY");
     TYPE_ADD_MEMBER(Sprite, m_uvScale, false, true, "Tiled");
@@ -338,6 +347,7 @@ namespace Framework
     TYPE_SET_FROM_LUA(Sprite, Lua::GenericObjectFromLua);
 
     TYPE_REGISTER(PointLight);
+    TYPE_ADD_MEMBER(PointLight, m_layer, false, true, "Layer");
     TYPE_ADD_MEMBER(PointLight, m_brightness, false, true, "LightColor");
     TYPE_ADD_MEMBER(PointLight, m_attenuation, false, true, "Attenuation");
     TYPE_SET_TWEAK_TYPE(PointLight, AntTweak::TW_TYPE_COMPONENT);
@@ -346,10 +356,12 @@ namespace Framework
     TYPE_REGISTER(SpriteLight);
     TYPE_ADD_MEMBER(SpriteLight, m_spriteName, false, true, "LightTexture",
       BUILD_FUNCTION(Sprite::TweakSetTexture));
+    TYPE_ADD_MEMBER(SpriteLight, m_layer, false, true, "Layer");
     TYPE_ADD_MEMBER(SpriteLight, m_flipX, false, true, "FlipX");
     TYPE_ADD_MEMBER(SpriteLight, m_flipY, false, true, "FlipY");
     TYPE_ADD_MEMBER(SpriteLight, m_uvScale, false, true, "Tiled");
     TYPE_ADD_MEMBER(SpriteLight, m_isOn, false, true, "Active");
+    TYPE_ADD_MEMBER(SpriteLight, m_emissive, false, true, "Emissive");
     TYPE_ADD_MEMBER(SpriteLight, m_brightness, false, true, "Brightness");
     TYPE_ADD_MEMBER(SpriteLight, m_origin, false, true, "LightOrigin");
     TYPE_ADD_MEMBER(SpriteLight, Size, false, true, "LightScale");
@@ -359,6 +371,8 @@ namespace Framework
     TYPE_REGISTER(AniSprite);
     TYPE_ADD_MEMBER(AniSprite, m_spriteName, false, true, "Texture",
       BUILD_FUNCTION(Sprite::TweakSetTexture));
+    TYPE_ADD_MEMBER(AniSprite, m_layer, false, true, "Layer");
+    TYPE_ADD_MEMBER(AniSprite, m_frameUpdate, false, true, "Use Frameupdate");
     TYPE_ADD_MEMBER(AniSprite, m_frames, false, true, "Frames",
       BUILD_FUNCTION(AniSprite::Test));
     TYPE_ADD_MEMBER(AniSprite, m_startFrame, false, true, "StartFrame",
@@ -376,7 +390,9 @@ namespace Framework
     TYPE_SET_FROM_LUA(AniSprite, Lua::GenericObjectFromLua);
 
     TYPE_REGISTER(ParticleSystem);
-    TYPE_ADD_MEMBER(ParticleSystem, textureName, false, true, "ParticleTexture");
+    TYPE_ADD_MEMBER(ParticleSystem, textureName, false, true, "ParticleTexture",
+      BUILD_FUNCTION(ParticleSystem::TweakSetTexture));
+    TYPE_ADD_MEMBER(ParticleSystem, m_layer, false, true, "Layer");
     TYPE_ADD_MEMBER(ParticleSystem, particleLife, false, true, "ParticleLifetime");
     TYPE_ADD_MEMBER(ParticleSystem, directionEase, false, true, "DirectionEase");
     TYPE_ADD_MEMBER(ParticleSystem, direction, false, true, "ParticleDirection",
@@ -486,8 +502,23 @@ namespace Framework
     TYPE_ADD_MEMBER(SlotMachine, backingColor, true, true, "BackColor");
 
 
-    TYPE_REGISTER(AntTweak::TBar);
-    TYPE_REGISTER_PTR(AntTweak::TBar*);
+    TYPE_REGISTER(Tester);
+
+    TYPE_REGISTER(BlockLights::LightSettings);
+    TYPE_ADD_MEMBER(BlockLights::LightSettings, fx, false, true, "Effect");
+    TYPE_ADD_MEMBER(BlockLights::LightSettings, ease, false, true, "Ease");
+    TYPE_ADD_MEMBER(BlockLights::LightSettings, isOn, false, true, "Activated");
+    TYPE_ADD_MEMBER(BlockLights::LightSettings, useColor, false, true, "Use Color");
+    TYPE_ADD_MEMBER(BlockLights::LightSettings, color, false, true, "Color");
+    
+
+    TYPE_REGISTER(BlockLights);
+    TYPE_ADD_MEMBER(BlockLights, m_group, false, true, "Trigger Group");
+    TYPE_ADD_MEMBER(BlockLights, m_defaultSettings, false, true, "Defaults");
+
+    TYPE_REGISTER( AntTweak::TBar );
+    TYPE_REGISTER_PTR( AntTweak::TBar* );
+
 
     TYPE_REGISTER(GamePadInput);
     TYPE_REGISTER_PTR(GamePadInput*);

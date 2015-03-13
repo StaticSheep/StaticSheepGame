@@ -31,6 +31,9 @@ namespace Framework
 
     void Toggle();
 
+    unsigned m_layer = 1;
+    bool m_hooked = false;
+
     // Manually change attenuation: Falloff
     void SetAttenuation(float constant, float linear, float quadratic);
     void SetConstant(float constant);

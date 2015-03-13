@@ -10,7 +10,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "config/Config.h"
 
 #ifdef _DEBUG
-#define DBG_NEW new ( _NORMAL_BLOCK , __FILE__ , __LINE__ )
+#define DBG_NEW new //( _NORMAL_BLOCK , __FILE__ , __LINE__ )
 #else  // _DEBUG
 #define DBG_NEW new
 #endif

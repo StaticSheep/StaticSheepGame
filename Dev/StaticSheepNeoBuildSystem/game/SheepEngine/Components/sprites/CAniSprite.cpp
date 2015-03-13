@@ -58,8 +58,42 @@ namespace Framework
     
     UpdateFramePosition();
 
-    //TODO not sure if we have a GetOwner()->has working
-    space->hooks.Add("Draw", self, BUILD_FUNCTION(AniSprite::Draw));
+    if (m_hooked)
+    {
+      space->hooks.Remove("PreDraw", self);
+      space->hooks.Remove("Draw", self);
+      space->hooks.Remove("PostDraw", self);
+
+      space->hooks.Remove("LogicUpdate", self);
+      space->hooks.Remove("FrameUpdate", self);
+    }
+
+    switch (m_layer)
+    {
+    case 2:
+      space->hooks.Add("PostDraw", self, BUILD_FUNCTION(AniSprite::Draw));
+      break;
+    case 0:
+      space->hooks.Add("PreDraw", self, BUILD_FUNCTION(AniSprite::Draw));
+      break;
+    case 1:
+    default:
+      space->hooks.Add("Draw", self, BUILD_FUNCTION(AniSprite::Draw));
+      break;
+    }
+
+    switch (m_frameUpdate)
+    {
+    case true:
+      space->hooks.Add("FrameUpdate", self, BUILD_FUNCTION(AniSprite::CheckNextFrame));
+      break;
+    case false:
+    default:
+      space->hooks.Add("LogicUpdate", self, BUILD_FUNCTION(AniSprite::CheckNextFrame));
+      break;
+    }
+
+    m_hooked = true;
   }
 
   /*****************************************************************************/
@@ -234,7 +268,26 @@ namespace Framework
   /*****************************************************************************/
   void AniSprite::Remove(void)
   {
-    space->hooks.Remove("Draw", self);
+    switch (m_layer)
+    {
+    case 2:
+      space->hooks.Remove("PostDraw", self);
+      break;
+    case 0:
+      space->hooks.Remove("PreDraw", self);
+      break;
+    case 1:
+    default:
+      space->hooks.Remove("Draw", self);
+      break;
+    }
+
+    if (m_frameUpdate)
+      space->hooks.Remove("FrameUpdate", self);
+    else
+      space->hooks.Remove("LogicUpdate", self);
+
+
   }
 
   /*****************************************************************************/
@@ -243,14 +296,11 @@ namespace Framework
         AniSprite update checks for change in frame
   */
   /*****************************************************************************/
-  void AniSprite::CheckNextFrame()
+  void AniSprite::CheckNextFrame(float dt)
   {
     // If we are paused or stopped, don't update frames
     if (m_paused || Stopped())
       return;
-
-    // grab dt
-    float dt = ENGINE->Framerate.GetDT();
 
     // update frame dt
     m_time += dt;
@@ -306,6 +356,10 @@ namespace Framework
   /*****************************************************************************/
   void AniSprite::Draw()
   {
+
+    if (m_hidden)
+      return;
+
     Transform* trans = space->GetHandles().GetAs<Transform>(transform);
 
     UpdateUV();
@@ -318,7 +372,7 @@ namespace Framework
     GRAPHICS->SetSpriteFlip(m_flipX, m_flipY);
     GRAPHICS->DrawBatched(m_texture);
 
-    CheckNextFrame();
+    //CheckNextFrame();
   }
 
   /*****************************************************************************/

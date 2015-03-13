@@ -71,6 +71,8 @@ namespace Framework
       trans->SetRotation(rotation);
     }
 
+    space->GetGameObject(owner)->hooks.Remove("OnCollision", self);
+
 		PHYSICS->RemoveBodies(space, m_handle);
 	}
 

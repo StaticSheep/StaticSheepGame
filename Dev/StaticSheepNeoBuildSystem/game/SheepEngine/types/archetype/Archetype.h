@@ -35,6 +35,8 @@ namespace Framework
 
     GameObject* CreateObject(GameSpace* space) const;
 
+    void UpdateObject(GameObject* obj) const;
+
     static const Archetype null;
 
     Archetype& operator=(const Archetype& rhs);

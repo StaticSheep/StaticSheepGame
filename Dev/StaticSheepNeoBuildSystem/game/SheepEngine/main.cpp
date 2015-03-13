@@ -7,15 +7,15 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 *****************************************************************/
 #include "pch/precompiled.h"
 
-#define _CRTDBG_MAP_ALLOC
-#include <stdlib.h>
-#include <crtdbg.h>
+//#define _CRTDBG_MAP_ALLOC
+//#include <stdlib.h>
+//#include <crtdbg.h>
 
 
 //#include <wtypes.h>
 #include <Windows.h>
 
-//#include <vld.h>
+#include <vld.h>
 
 #include "systems/input/Input.h"
 #include "systems/debug/Debug.h"

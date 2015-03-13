@@ -37,7 +37,7 @@ GameObject
   }
   ParticleSystem
   {
-    textureName std::string "explosion_pfx.png"
+    textureName std::string "explosion_pfx2.png"
     m_layer int 2
     particleLife ParticleOptionShort<float>
     {
@@ -145,7 +145,7 @@ GameObject
     }
     m_rate ParticleOptionShort<float>
     {
-      m_startMin float 5.000000
+      m_startMin float 4.000000
       m_startMax float 0.000000
     }
     spawning bool true
@@ -156,7 +156,7 @@ GameObject
   }
   Explosion
   {
-    timer float 0.210000
+    timer float 1.000000
     waitForAnim bool false
   }
 }

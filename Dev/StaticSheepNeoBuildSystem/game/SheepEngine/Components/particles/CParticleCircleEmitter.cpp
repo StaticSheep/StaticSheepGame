@@ -132,6 +132,8 @@ namespace Framework
 
       time -= 1.0f / (m_rate.m_startMin);
     }
+
+    //system->ResetZ();
   }
 
   // toggles spawning on or off
