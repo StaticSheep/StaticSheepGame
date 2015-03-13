@@ -39,8 +39,8 @@ GameObject
     textureName std::string "White.png"
     particleLife ParticleOptionShort<float>
     {
-      m_startMin float 0.500000
-      m_startMax float 1.000000
+      m_startMin float 0.100000
+      m_startMax float 0.300000
     }
     directionEase int 1
     direction ParticleOption<Vec3>

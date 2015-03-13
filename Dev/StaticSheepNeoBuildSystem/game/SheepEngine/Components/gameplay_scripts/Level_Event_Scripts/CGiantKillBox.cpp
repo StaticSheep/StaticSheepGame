@@ -17,7 +17,7 @@ namespace Framework
 	{
     //default
     direction = true;
-    numOfGrinders = 11;
+    numOfGrinders = 9;
     sizeOfGrinder = 60.0f;
     itemDropTimer = 1.0f;
 	}
