@@ -1,0 +1,96 @@
+bstest
+GameObject
+{
+  name std::string ""
+  archetype std::string ""
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 0.000000
+      y_ float 0.000000
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  BasicParticleSystem
+  {
+    m_pos BasicParticleSystem::BPSPos
+    {
+      square bool false
+      edgeOnly bool false
+      radius float 200.000000
+      angle float 1.000000
+      randAngle float 0.000000
+      offset Vec2
+      {
+        X float 0.000000
+        Y float 0.000000
+      }
+      randOffset Vec2
+      {
+        X float 0.000000
+        Y float 0.000000
+      }
+    }
+    m_scaling BPartSys::BPSScaling
+    {
+      scale Vec2
+      {
+        X float 32.000000
+        Y float 32.000000
+      }
+      randScale Vec2
+      {
+        X float 0.000000
+        Y float 0.000000
+      }
+    }
+    m_rot BPartSys::BPSRotation
+    {
+      rotation float 0.000000
+      randRotation float 90.000000
+    }
+    m_life BPartSys::BPSLife
+    {
+      lifetime float 0.500000
+      randLifetime float 0.000000
+    }
+    m_fade BPartSys::BPSFade
+    {
+      fadeOut bool true
+      fadeOutTime float 0.500000
+      randFadeoutTime float 0.000000
+    }
+    m_vel BPartSys::BPSVelocity
+    {
+      velocity Vec2
+      {
+        X float 0.000000
+        Y float 0.000000
+      }
+      randVelocity Vec2
+      {
+        X float 0.000000
+        Y float 0.000000
+      }
+      speedIn float 1.000000
+      randSpeedIn float 0.100000
+    }
+    m_system BPartSys::BPSSystem
+    {
+      active bool true
+      editorActive bool false
+      spawnInterval float 60.000000
+      spawnAmount float 5.000000
+      spawnPerSecond float 0.000000
+      shutdownTimer float 0.000000
+    }
+  }
+}

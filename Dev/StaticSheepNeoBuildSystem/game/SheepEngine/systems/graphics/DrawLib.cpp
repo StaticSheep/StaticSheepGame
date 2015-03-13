@@ -76,6 +76,12 @@ namespace Framework
     GRAPHICS->SetColor(Draw::m_Color);
   }
 
+  void Draw::SetAlpha(float a)
+  {
+    m_Color.a = a;
+    GRAPHICS->SetColor(Draw::m_Color);
+  }
+
   void Draw::SetUVs(Vec2 UVMin, Vec2 UVMax)
   {
     m_UVMin = UVMin;

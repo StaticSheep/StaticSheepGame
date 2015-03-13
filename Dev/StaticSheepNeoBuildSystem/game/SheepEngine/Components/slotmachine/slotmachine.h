@@ -64,6 +64,9 @@ namespace Framework
 
     void TestFunction(int slotNum, int* spinID, int* stopID);
 
+    int m_layer = 1;
+    bool m_hooked = false;
+
     int m_order = 0;
   private:
 

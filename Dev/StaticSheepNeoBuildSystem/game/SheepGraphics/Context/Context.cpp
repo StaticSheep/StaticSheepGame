@@ -462,6 +462,11 @@ namespace DirectSheep
      m_spriteBlend = Vec4(r, g, b, a);
    }
 
+   void RenderContext::SetAlpha(float a)
+   {
+     m_spriteBlend.w = a;
+   }
+
   
   /*!
       \brief

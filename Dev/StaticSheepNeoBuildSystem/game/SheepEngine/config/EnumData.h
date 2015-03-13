@@ -58,6 +58,7 @@ E_NAME(Component)
   E_ENTRY(Level1_Lighting)
   
   E_ENTRY(div_Particles)
+  E_ENTRY(BasicParticleSystem)
   E_ENTRY(ParticleSystem)
   E_ENTRY(ParticleCircleEmitter)
   E_ENTRY(ParticleBoxEmitter)

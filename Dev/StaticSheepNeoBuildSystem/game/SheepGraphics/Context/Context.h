@@ -185,6 +185,7 @@ class RenderContext
    void SetObjectOrigin(const float x, const float y);
    void SetDimensions(const float w, const float h);
    void SetBlendCol(const float r, const float g, const float b, const float a);
+   void SetAlpha(float a);
 
     /////////////////////////////////////////////////////////////
     //                    GETTER FUNCTIONS                     //
