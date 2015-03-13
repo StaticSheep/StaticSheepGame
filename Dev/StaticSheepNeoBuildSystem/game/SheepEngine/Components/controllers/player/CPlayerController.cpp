@@ -775,7 +775,8 @@ namespace Framework
         }
       }
 
-      animCont.Update(spine, animationFlip, playerColor, snappedNormal, aimDir, arrowSpawn);
+      Transform* trans = space->GetHandles().GetAs<Transform>(playerTransform);
+      animCont.Update(spine, animationFlip, playerColor, trans->GetRotation(), aimDir, arrowSpawn);
 
       return;
     }

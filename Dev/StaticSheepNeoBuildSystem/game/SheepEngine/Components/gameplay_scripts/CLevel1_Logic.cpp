@@ -633,8 +633,8 @@ namespace Framework
         delete LE;
         LE = 0;
       }
-      if (mod1 == LIGHTSOUT)
-        space->hooks.Call("ToggleLevelLights");
+      //if (mod1 == LIGHTSOUT)
+        //space->hooks.Call("ToggleLevelLights");
       space->hooks.Call("CallingSM");
       (FACTORY->LoadObjectFromArchetype(space, "LevelSlotMachine"));
       slotFinished = true;
@@ -688,8 +688,8 @@ namespace Framework
   {
     mod1 = mod1_;
     mod2 = mod2_;
-    if (mod1 == LIGHTSOUT)
-      space->hooks.Call("ToggleLevelLights");
+    //if (mod1 == LIGHTSOUT)
+      //space->hooks.Call("ToggleLevelLights");
     if (mod1 == BONUS && mod2 == BONUS)
     {
       mode = BONUSMODE;

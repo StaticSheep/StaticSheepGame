@@ -58,6 +58,13 @@ namespace DirectSheep
           {
             std::getline(file, temp);
 
+            if(temp.find("frame size:") != std::string::npos)
+            {
+              begin = temp.find(":") + 2;
+              atlas[buffer][reader].offset.x = atoi(temp.substr(begin, temp.find(",") - begin).c_str());
+              atlas[buffer][reader].offset.y = atoi(temp.substr(temp.find(",") + 2, std::string::npos).c_str());
+            }
+
             if(temp.find("{") != std::string::npos)
             {
               ++braces;

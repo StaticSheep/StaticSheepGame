@@ -3,7 +3,7 @@
 #include "systems/graphics/SheepGraphics.h"
 #include "systems/graphics/Debug.h"
 #include "systems/input/input.h"
-
+#include "../SheepUtil/include/Matrix2D.h"
 
 namespace Framework
 {
@@ -36,8 +36,10 @@ namespace Framework
 
     if(sheet)
     {
-      sequenceIt = &sheet->find(sequenceName)->second.sequence;
-      sequenceFrames = sequenceIt->size();
+      sequenceIt = &sheet->find(sequenceName)->second;
+      sequenceFrames = sequenceIt->sequence.size();
+      offset.x = sequenceIt->offset.x;
+      offset.y = sequenceIt->offset.y;
     }
 
     currentTime = 0;
@@ -94,19 +96,37 @@ namespace Framework
 
     Vec2 begin;
     Vec2 end;
+    Vec2 frameOffset;
+    Vec3 position = trans->GetTranslation();
+    Vec3 scale = trans->GetScale();
+    float theta = trans->GetRotation();
+
+    Mat2D rot(theta);
 
     if(previousSequence != sequenceName)
     {
-      sequenceIt = &sheet->find(sequenceName)->second.sequence;
-      sequenceFrames = sequenceIt->size();
+      sequenceIt = &sheet->find(sequenceName)->second;
+      sequenceFrames = sequenceIt->sequence.size();
 
       previousSequence = sequenceName;
     }
 
     if(sequenceIt)
     {
-      begin = (*sequenceIt)[currentFrame].start_uv;
-      end = (*sequenceIt)[currentFrame].end_uv;
+      begin = (*sequenceIt).sequence[currentFrame].start_uv;
+      end = (*sequenceIt).sequence[currentFrame].end_uv;
+      frameOffset = (offset - (*sequenceIt).offset) * 0.5f;
+
+      if(flipX)
+        frameOffset = Vec2(-frameOffset.x, frameOffset.y);
+
+      frameOffset = rot * frameOffset;
+
+      ENGINE->TraceLog.Log(Framework::TraceLevel::DBG, "x %f, y %f", frameOffset.x, frameOffset.y);
+
+      
+
+      //frameOffset = (*sequenceIt).offset - offset;
     }
     else
     {
@@ -114,10 +134,10 @@ namespace Framework
       end = Vec2(1.0f, 1.0f);
     }
     
-    GRAPHICS->SetPosition(trans->GetTranslation().x, trans->GetTranslation().y, trans->GetTranslation().z);
-    GRAPHICS->SetRotation(trans->GetRotation());
-    GRAPHICS->SetSize(trans->GetScale().x, trans->GetScale().y);
-    GRAPHICS->SetColor(Vec4(color.r, color.g, color.b, color.a));
+    GRAPHICS->SetPosition(position.x - frameOffset.x, position.y - frameOffset.y, position.z);
+    GRAPHICS->SetRotation(theta);
+    GRAPHICS->SetSize(scale.x, scale.y);
+    GRAPHICS->SetColor(color);
     GRAPHICS->SetUV(begin, end);
     GRAPHICS->SetCamState(0);
     GRAPHICS->SetSpriteFlip(flipX, flipY);

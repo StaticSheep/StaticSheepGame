@@ -9,6 +9,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "types/space/Space.h"
 #include "components/colliders/CBoxCollider.h"
 #include "types/vectors/Vec3.h"
+#include "../SheepUtil/include/Matrix3D.h"
 #include "AnimationController.h"
 
 
@@ -78,20 +79,21 @@ namespace Framework
 	}
 
   //enum AnimationState {IDLE, RUN, JUMP, ATTACK};
-  void AnimationController::Update(SpineSprite* spine, bool flip, Vec4& color, Vec3& normal, Vec3& aimDir, bool aiming)
+  void AnimationController::Update(SpineSprite* spine, bool flip, Vec4& color, float rotation, Vec3& aimDir, bool aiming)
   {
     spine->SetColor(color);
-    //spine->FlipX(flip);
+    aimDir.Normalize();    
 
-    aimDir.Normalize();
+    Mat3D rot(-rotation);
 
+    Vec3 temp = rot * aimDir;
     float theta = 0.0f;
-    float aim = 0.0f;
-    float degrees = 57.29577f;
 
     switch(AnimState)
     {
     case IDLE:
+      //spine->SetSequence(std::string("idle"));
+      //break;
     case RUN:
       if(!aiming)
       {
@@ -99,34 +101,74 @@ namespace Framework
       }
       else
       {
-        aim = atan2(aimDir.y, aimDir.x) * degrees;
-        theta = atan2(-normal.y, -normal.x) * degrees;
 
-        if(theta < 0.0f)
+        theta = atan2f(temp.y, temp.x) * 57.2957795;
+
+        //ENGINE->TraceLog.Log(Framework::TraceLevel::DBG, "theta = %f", theta);
+
+        if(theta > 0.0f)
         {
-          spine->FlipX(true);
-          theta *= -1.0f;
+
+          if(theta < 90.0f)
+            spine->FlipX(false);
+          else
+            spine->FlipX(true);
+
+          if(theta < 22.5f)
+          {
+            spine->SetSequence(std::string("run_shoot_right"));
+          }
+          else
+          if(theta < 67.5f)
+          {
+            spine->SetSequence(std::string("run_shoot_upright"));
+          }
+          else
+          if(theta < 112.5f)
+          {
+            spine->SetSequence(std::string("run_shoot_up"));
+          }
+          else
+          if(theta < 157.5f)
+          {
+            spine->SetSequence(std::string("run_shoot_upright"));
+          }
+          else
+          {
+            spine->SetSequence(std::string("run_shoot_right"));
+          }
         }
         else
         {
-          spine->FlipX(false);
+          if(theta > -90.0f)
+            spine->FlipX(false);
+          else
+            spine->FlipX(true);
+
+          if(theta > -22.5f)
+          {
+            spine->SetSequence(std::string("run_shoot_right"));
+          }
+          else
+          if(theta > -67.5f)
+          {
+            spine->SetSequence(std::string("run_shoot_downright"));
+          }
+          else
+          if(theta > -112.5f)
+          {
+            spine->SetSequence(std::string("run_shoot_down"));
+          }
+          else
+          if(theta > -157.5f)
+          {
+            spine->SetSequence(std::string("run_shoot_downright"));
+          }
+          else
+          {
+            spine->SetSequence(std::string("run_shoot_right"));
+          }
         }
-
-        ENGINE->TraceLog.Log(Framework::TraceLevel::DBG, "theta = %f", theta);
-
-        if(theta > 157.5f)
-          spine->SetSequence(std::string("run_shoot_down"));
-        else
-        if(theta > 112.5f)
-          spine->SetSequence(std::string("run_shoot_downright"));
-        else
-        if(theta > 67.5f)
-          spine->SetSequence(std::string("run_shoot_right"));
-        else
-        if(theta > 22.5f)
-          spine->SetSequence(std::string("run_shoot_upright"));
-        else
-          spine->SetSequence(std::string("run_shoot_up"));
       }
       break;
     case JUMP:

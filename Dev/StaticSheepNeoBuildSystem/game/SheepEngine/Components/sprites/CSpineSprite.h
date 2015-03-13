@@ -59,9 +59,10 @@ namespace Framework
       DirectSheep::Handle atlasHandle;
       DirectSheep::Handle textureHandle;
       //std::unordered_map<std::string, DirectSheep::SequenceData>::const_iterator sequenceIt;
-      const DirectSheep::Sequence* sequenceIt;
+      const DirectSheep::SequenceData* sequenceIt;
 
       Vec4 color;
+      Vec2 offset;
       
   };
 }
