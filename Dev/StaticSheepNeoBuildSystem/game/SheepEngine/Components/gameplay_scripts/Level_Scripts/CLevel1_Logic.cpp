@@ -21,6 +21,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "../../sprites/CSprite.h"
 #include "types/levelEvents/LEGrinderBig.h"
 #include "types/levelEvents/LEAsteroids.h"
+#include "types/levelEvents/LEPinwheel.h"
 #include "../Slot_Machine_Scripts/CSlotController.h"
 #include "../../colliders/CCircleCollider.h"
 #include "types/powerUps/PDamage.h"
@@ -463,10 +464,24 @@ namespace Framework
       if (LE)
         delete LE;
       //fire event
-      if (GetRandom(0, 1))
+
+      int event = GetRandom(0, 2);
+
+      switch (event)
+      {
+        case 0:
+          LE = new LEGrinderBig();
+          break;
+        case 1:
+          LE = new LEAsteroids();
+          break;
+        case 2:
+          LE = new LEPinwheel();
+          break;
+      default:
         LE = new LEGrinderBig();
-      else
-        LE = new LEAsteroids();
+        break;
+      }
 
       LE->FireEvent(space->GetHandles().GetAs<GameObject>(owner));
 

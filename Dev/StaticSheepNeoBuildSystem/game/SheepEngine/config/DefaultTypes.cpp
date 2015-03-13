@@ -32,6 +32,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/gameplay_scripts/Level_Scripts/CLevel1_Lighting.h"
 #include "components/gameplay_scripts/Level_Event_Scripts/CGiantKillBox.h"
 #include "components/gameplay_scripts/Level_Scripts/CGrinder.h"
+#include "components/gameplay_scripts/Level_Scripts/CPinwheel.h"
 #include "components/gameplay_scripts/FX_Scripts/CExplosion.h"
 #include "components/gameplay_scripts/Pickup_Scripts/CWeaponPickup.h"
 #include "types/weapons/WPistol.h"
@@ -231,6 +232,9 @@ namespace Framework
 
     TYPE_REGISTER(Grinder);
     TYPE_SET_TWEAK_TYPE(Grinder, AntTweak::TW_TYPE_COMPONENT);
+
+    TYPE_REGISTER(Pinwheel);
+    TYPE_SET_TWEAK_TYPE(Pinwheel, AntTweak::TW_TYPE_COMPONENT);
 
     TYPE_REGISTER(Explosion);
     TYPE_SET_TWEAK_TYPE(Explosion, AntTweak::TW_TYPE_COMPONENT);
