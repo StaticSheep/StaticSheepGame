@@ -204,6 +204,9 @@ class RenderContext
    const std::string& GetGraphicsCardInfo(void) const;
    const Dimension GetTextureSize(const Handle& texHandle) const;
 
+   const AnimationSheet* GetAnimationSheet(const Handle& atlasHandle, std::string& entityName);
+   const std::string& GetAtlasTexture(const Handle& atlasHandle);
+
     /////////////////////////////////////////////////////////////
     //                    UTILITY FUNCTIONS                    //
     /////////////////////////////////////////////////////////////

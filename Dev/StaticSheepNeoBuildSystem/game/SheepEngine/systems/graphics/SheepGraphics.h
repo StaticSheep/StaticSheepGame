@@ -17,6 +17,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/camera/CCamera.h"
 #include "components/lights/CPointLight.h"
 
+#include "../SheepGraphics/Atlas/SpineAtlas.h"
+
 #include "systems/System.h"
 
 #include "Handle.h"
@@ -75,6 +77,9 @@ namespace Framework
     Vec2 GetTextureDim(DirectSheep::Handle texture);
 
     bool LoadAtlas(const std::string& path);
+    //DirectSheep::AnimationSheet* GetAnimationSheet(std::string& name);
+
+    DirectSheep::Handle GetAtlasHandle(const std::string& atlas);
 		
     /* =========== Draw State Functions ============ */
 

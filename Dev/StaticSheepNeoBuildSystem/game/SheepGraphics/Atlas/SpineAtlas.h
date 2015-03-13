@@ -7,13 +7,22 @@ namespace DirectSheep
 {
   struct FrameData
   {
+    FrameData() : start_uv(), end_uv() {};
+    FrameData(Framework::Vec2D& start, Framework::Vec2D& end) : start_uv(start), end_uv(end) {};
+
     Framework::Vec2D start_uv;
     Framework::Vec2D end_uv;
-    Framework::Vec2D root;
   };
 
   typedef std::vector< FrameData > Sequence;
-  typedef std::unordered_map< std::string, Sequence > AnimationSheet;
+
+  struct SequenceData
+  {
+    Framework::Vec2D offset;
+    Sequence sequence;
+  };
+
+  typedef std::unordered_map< std::string, SequenceData > AnimationSheet;
   typedef std::unordered_map< std::string, AnimationSheet > Atlas;
 
 
@@ -27,14 +36,15 @@ namespace DirectSheep
       ~SpineAtlas();
     
       void Load(const std::string& path);
+      std::string& GetTextureName();
 
       const AnimationSheet* GetAnimationSheet(std::string& entity);
-      const Sequence* GetSequence(std::string& entity, std::string& sequence);
+      const SequenceData* GetSequence(std::string& entity, std::string& sequence);
       const FrameData* GetFrame(std::string& entity, std::string& sequence, int frame);
     
     private:
     
-      int textureID;
+      std::string texName;
       Atlas atlas;
   };
 }

@@ -234,8 +234,6 @@ namespace Framework
   // Spawns a particle at the passed in location. 
   Particle& ParticleSystem::SpawnParticle(const Vec3& location, bool setDirection)
   {
-    
-
     ParticleOption<Vec3> newDir;
 
     // If the system is handling the direction of the particle

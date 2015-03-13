@@ -662,5 +662,23 @@ namespace DirectSheep
     return Framework::Vec2D(XMVectorGetX(fontSize) * scale.x, XMVectorGetY(fontSize) * scale.y);
   }
 
+  const AnimationSheet* RenderContext::GetAnimationSheet(const Handle& atlasHandle, std::string& entityName)
+  {
+    if(atlasHandle.type == ATLAS)
+    {
+      return m_atlasRes[atlasHandle.GetIndex()].GetAnimationSheet(entityName);
+    }
+
+    return nullptr;
+  }
+
+  const std::string& RenderContext::GetAtlasTexture(const Handle& atlasHandle)
+  {
+    if(atlasHandle.type == ATLAS)
+    {
+      return m_atlasRes[atlasHandle.GetIndex()].GetTextureName();
+    }
+  }
+
 
 }

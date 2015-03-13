@@ -15,6 +15,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "types/weapons/WPistol.h"
 #include "../../gameplay_scripts/CBullet_default.h"
 #include "../../sprites/CAniSprite.h"
+//#include "../../sprites/CSpineSprite.h"
 #include "../../gameplay_scripts/CCheats.h"
 #include "../systems/input/Input.h"
 #include "systems/metrics/MetricInfo.h"
@@ -85,9 +86,10 @@ namespace Framework
     playerSound = space->GetGameObject(owner)->GetComponentHandle(eSoundEmitter);
     playerSprite = space->GetGameObject(owner)->GetComponentHandle(eSprite);
     playerAnimation = space->GetGameObject(owner)->GetComponentHandle(eAniSprite);
+    spineHandle = space->GetGameObject(owner)->GetComponentHandle(eSpineSprite);
 
     ps = space->GetHandles().GetAs<Transform>(playerTransform);
-    ps->SetScale(Vec3(0.35f, 0.365f, 0.0));
+    ps->SetScale(Vec3(1.0f, 1.0f, 0.0));
 
 		gp = space->GetHandles().GetAs<GamePad>(playerGamePad); //actually gets the gamepad
 		gp->SetPad(playerNum); //setting pad number
@@ -106,6 +108,23 @@ namespace Framework
 
     powerUp = nullptr;
     pn = -1;
+    
+    switch(playerNum)
+    {
+      case 0:
+        playerColor = Vec4(0.87f, 0.2f, 0.12f, 1.0f); 
+        break;
+      case 1:
+        playerColor = Vec4(0.12f, 0.87f, 0.2f, 1.0f);
+        break;
+      case 2:
+        playerColor = Vec4(0.2f, 0.12f, 0.87f, 1.0f);
+        break;
+      case 3:
+        playerColor = Vec4(0.7f, 0.12f, 0.7f, 1.0f);
+        break;
+    }
+
     SpawnEffect();
 	}
 
@@ -155,6 +174,9 @@ namespace Framework
     {
       aimDir = aimingDirection(gp);           //get the direction the player is currently aiming;
 
+      arrowSpawn = true;
+
+      /*
       if (!arrowSpawn)
       {
         //draw aiming arrow
@@ -163,11 +185,10 @@ namespace Framework
         AA->GetComponent<AimingArrow>(eAimingArrow)->playerTransform = playerTransform;
         AA->GetComponent<Transform>(eTransform)->SetTranslation(ps->GetTranslation());
 
-        AniSprite *playerS = space->GetHandles().GetAs<AniSprite>(playerAnimation); //get the player's ani-sprite
-        AA->GetComponent<Sprite>(eSprite)->Color = playerS->Color; //set the colors equal
+        AA->GetComponent<Sprite>(eSprite)->Color = playerColor; //set the colors equal
         AA->GetComponent<Sprite>(eSprite)->Color.a = 0.7f; //make sure the alpha isn't low (happens during respawn)
         arrowSpawn = true;
-      }
+      }*/
     }
     else
       arrowSpawn = false;
@@ -238,10 +259,14 @@ namespace Framework
         else if (snappedNormal.y < 0)
           bc->AddToVelocity(-(snappedNormal.CalculateNormal() * 450));
         AniSprite *ps = space->GetHandles().GetAs<AniSprite>(playerAnimation);
+
+        
         if (snappedNormal.y > 0)
-          ps->SetFlipX(true);
+          animationFlip = true;
+          //ps->SetFlipX(true);
         else
-          ps->SetFlipX(false);
+          animationFlip = false;
+          //ps->SetFlipX(false);
       }
       else if (gp->LeftStick_X() < -0.2 /*&& snappedNormal.x == 0*/ || (SHEEPINPUT->KeyIsDown(0x41) && gp->GetIndex() == 0))
       {
@@ -251,10 +276,14 @@ namespace Framework
         if (snappedNormal.y < 0)
           bc->AddToVelocity((snappedNormal.CalculateNormal() * 450));
         AniSprite *ps = space->GetHandles().GetAs<AniSprite>(playerAnimation);
+
+        
         if (snappedNormal.y > 0)
-          ps->SetFlipX(false);
+          animationFlip = false;
+          //ps->SetFlipX(false);
         else
-          ps->SetFlipX(true);
+          animationFlip = true;
+          //ps->SetFlipX(true);
       }
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -265,10 +294,14 @@ namespace Framework
         else if (snappedNormal.x < 0)
           bc->AddToVelocity((snappedNormal.CalculateNormal() * 450));
         AniSprite *ps = space->GetHandles().GetAs<AniSprite>(playerAnimation);
+
+        
         if (snappedNormal.x > 0)
-          ps->SetFlipX(false);
+          animationFlip = false;
+          //ps->SetFlipX(false);
         else
-          ps->SetFlipX(true);
+          animationFlip = true;
+          //ps->SetFlipX(true);
       }
       else if (gp->LeftStick_Y() < -0.2 || (SHEEPINPUT->KeyIsDown(0x53) && gp->GetIndex() == 0))
       {
@@ -277,10 +310,14 @@ namespace Framework
         if (snappedNormal.x < 0)
           bc->AddToVelocity(-(snappedNormal.CalculateNormal() * 450));
         AniSprite *ps = space->GetHandles().GetAs<AniSprite>(playerAnimation);
+
+        
         if (snappedNormal.x > 0)
-          ps->SetFlipX(true);
+          animationFlip = true;
+          //ps->SetFlipX(true);
         else
-          ps->SetFlipX(false);
+          animationFlip = false;
+          //ps->SetFlipX(false);
       }
 
       //clamp the players velocity
@@ -403,7 +440,7 @@ namespace Framework
       && !GodMode && !PerfectMachine)
     {
       isSnapped = false;
-      DealDamage(10, playerNum);
+        DealDamage(10, playerNum);
     }
 
     if ((OtherObject->GetComponentHandle(eGrinder) != Handle::null)
@@ -614,7 +651,11 @@ namespace Framework
   void PlayerController::RespawnBlink(float dt)
   {
     AniSprite *pa = space->GetHandles().GetAs<AniSprite>(playerAnimation);
+
     Transform *effectTrans;
+
+    respawnTimer -= dt;
+
     if (respawnTimer <= 1.0f)
     {
       if (spawnEffect != Handle::null)
@@ -623,20 +664,22 @@ namespace Framework
         spawnEffect = Handle::null;
       }
     }
+    
     if (respawnTimer > 0.0f)
     {
+      
       if (!blink)
-        pa->Color.A -= dt * 10.0f;
+        playerColor.A -= dt * 10.0f;
       else
-        pa->Color.A += dt * 10.0f;
+        playerColor.A += dt * 10.0f;
 
-      respawnTimer -= dt;
-
-      if (pa->Color.A <= 0.0f)
+      if (playerColor.A <= 0.0f)
         blink = true;
 
-      if (pa->Color.A >= 1.0f)
+      if (playerColor.A >= 1.0f)
         blink = false;
+
+
       if (spawnEffect != Handle::null)
       {
         effectTrans = space->GetGameObject(spawnEffect)->GetComponent<Transform>(eTransform);
@@ -645,7 +688,7 @@ namespace Framework
     }
     else
     {
-      pa->Color.A = 255.0f;
+      //pa->Color.A = 255.0f;
       hasRespawned = false;
       respawnTimer = 2.0f;
     }
@@ -687,6 +730,56 @@ namespace Framework
     //get animated sprite component
     AniSprite *pa = space->GetHandles().GetAs<AniSprite>(playerAnimation);
 
+    if(!pa)
+    {
+      SpineSprite* spine = space->GetHandles().GetAs<SpineSprite>(spineHandle);
+      
+      if(!spine)
+        return;
+
+      int index = gp->GetIndex();
+
+      if ((isSnapped && !(gp->LStick_InDeadZone())) || (isSnapped && gp->GetIndex() == 0 && (SHEEPINPUT->KeyIsDown('D') || SHEEPINPUT->KeyIsDown('A') || SHEEPINPUT->KeyIsDown('W') || SHEEPINPUT->KeyIsDown('S'))))
+      {
+        //set animated sprite to run
+        if (animCont.AnimState != RUN)
+        {
+          //pa->SetRange(Vec2((float)animCont.run.beginFrame, (float)animCont.run.endFrame));
+
+          //spine->SetSequence(std::string("run"));
+
+          animCont.AnimState = RUN;
+        }
+      }
+      else if (!isSnapped)
+      {
+        if (animCont.AnimState != JUMP)
+        {
+          //set animated sprite to jump
+          //pa->SetRange(Vec2((float)animCont.jump.beginFrame, (float)animCont.jump.endFrame));
+
+          //spine->SetComplexSequence(std::string("jump"), 24.0f, 3, 11);
+
+          animCont.AnimState = JUMP;
+        }
+      }
+      else
+      {
+        if (animCont.AnimState != IDLE)
+        {
+          //set animated sprite to idle
+          //pa->SetRange(Vec2((float)animCont.idle.beginFrame, (float)animCont.idle.endFrame));
+
+          //spine->SetSequence(std::string("idle"));
+          animCont.AnimState = IDLE;
+        }
+      }
+
+      animCont.Update(spine, animationFlip, playerColor, snappedNormal, aimDir, arrowSpawn);
+
+      return;
+    }
+
     if ((isSnapped && !(gp->LStick_InDeadZone())) || (isSnapped && gp->GetIndex() == 0 && (SHEEPINPUT->KeyIsDown('D') || SHEEPINPUT->KeyIsDown('A') || SHEEPINPUT->KeyIsDown('W') || SHEEPINPUT->KeyIsDown('S'))))
     {
       //set animated sprite to run
@@ -714,6 +807,8 @@ namespace Framework
         animCont.AnimState = IDLE;
       }
     }
+    
+
     
   }
 

@@ -22,6 +22,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include <iostream>
 #include <boost/filesystem.hpp>
 #include "../input/Input.h"
+#include "components/sprites/CSpineSprite.h"
 using namespace boost::filesystem;
 
 
@@ -51,6 +52,7 @@ namespace Framework
     REGISTER_COMPONENT(ParticleSystem);
     REGISTER_COMPONENT(ParticleCircleEmitter);
     REGISTER_COMPONENT(ParticleBoxEmitter);
+    REGISTER_COMPONENT(SpineSprite);
   }
 
 	SheepGraphics::~SheepGraphics()
@@ -383,13 +385,28 @@ namespace Framework
 
             m_renderContext->CreateAtlas(temp, it->path().filename().generic_string());
 
-            m_atlasMap[it->path().filename().generic_string()] = temp;
+            m_atlasMap[it->path().filename().leaf().generic_string()] = temp;
 
           }
         }
       }
+
+      return true;
     }
     return false;
+  }
+
+  DirectSheep::Handle SheepGraphics::GetAtlasHandle(const std::string& atlas)
+  {
+    std::string realName = atlas + ".atlas";
+
+    for(auto it : m_atlasMap)
+    {
+      if (it.first == realName)
+        return it.second;
+    }
+
+    return DirectSheep::Handle(); 
   }
 
   bool SheepGraphics::LoadAssets(std::string& filepath)

@@ -11,6 +11,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "types/vectors/Vec3.h"
 #include "AnimationController.h"
 
+
 namespace Framework
 {
   
@@ -76,5 +77,64 @@ namespace Framework
 
 	}
 
+  //enum AnimationState {IDLE, RUN, JUMP, ATTACK};
+  void AnimationController::Update(SpineSprite* spine, bool flip, Vec4& color, Vec3& normal, Vec3& aimDir, bool aiming)
+  {
+    spine->SetColor(color);
+    //spine->FlipX(flip);
+
+    aimDir.Normalize();
+
+    float theta = 0.0f;
+    float aim = 0.0f;
+    float degrees = 57.29577f;
+
+    switch(AnimState)
+    {
+    case IDLE:
+    case RUN:
+      if(!aiming)
+      {
+        spine->SetSequence(std::string("run"));
+      }
+      else
+      {
+        aim = atan2(aimDir.y, aimDir.x) * degrees;
+        theta = atan2(-normal.y, -normal.x) * degrees;
+
+        if(theta < 0.0f)
+        {
+          spine->FlipX(true);
+          theta *= -1.0f;
+        }
+        else
+        {
+          spine->FlipX(false);
+        }
+
+        ENGINE->TraceLog.Log(Framework::TraceLevel::DBG, "theta = %f", theta);
+
+        if(theta > 157.5f)
+          spine->SetSequence(std::string("run_shoot_down"));
+        else
+        if(theta > 112.5f)
+          spine->SetSequence(std::string("run_shoot_downright"));
+        else
+        if(theta > 67.5f)
+          spine->SetSequence(std::string("run_shoot_right"));
+        else
+        if(theta > 22.5f)
+          spine->SetSequence(std::string("run_shoot_upright"));
+        else
+          spine->SetSequence(std::string("run_shoot_up"));
+      }
+      break;
+    case JUMP:
+      spine->SetComplexSequence(std::string("jump"), 24.0f, 2, 11);
+      break;
+    case ATTACK:
+      break;
+    }
+  }
 
 }
