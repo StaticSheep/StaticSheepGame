@@ -28,6 +28,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "../FX_Scripts/CJuggernautEffect.h"
 #include "types/weapons/WShotgun.h"
 #include "types/weapons/WMissile.h"
+#include "../arena/CBlockLights.h"
 
 static const char *playerNames[] = { "Player1", "Player2", "Player3", "Player4" };
 static int juggKills[4] = { 0, 0, 0, 0 };
@@ -95,7 +96,7 @@ namespace Framework
     startFlag = true;
     playing = false;
     countDownDone = false;
-    countDownTimer = 4.0f;
+    countDownTimer = 2.5f;
 
     for (int i = 0; i < 4; ++i)
     {
@@ -129,7 +130,7 @@ namespace Framework
       instance.volume = 0.35f;
       instance.mode = PLAY_LOOP;
 
-      //sp->Play("Main Music", &instance);
+      sp->Play("Main Music", &instance);
       playing = true;
     } 
 
@@ -278,17 +279,17 @@ namespace Framework
   {
     Sprite *ls = space->GetHandles().GetAs<Sprite>(levelSprite);
     //run countdown
-    if (countDownTimer <= 3.0f && countDownTimer > 2.0f)
+    if (countDownTimer <= 2.0f && countDownTimer > 1.33f)
     {
       ls->SetTexture("cd_3.png");
     }
-    else if (countDownTimer <= 2.0f && countDownTimer > 1.0f)
+    else if (countDownTimer <= 1.33f && countDownTimer > 0.66f)
     {
       //change sprite
       ls->SetTexture("cd_2.png");
 
     }
-    else if (countDownTimer <= 1.0f && countDownTimer > 0.0f)
+    else if (countDownTimer <= 0.66f && countDownTimer > 0.0f)
     {
       //change sprite
       ls->SetTexture("cd_1.png");
@@ -384,7 +385,7 @@ namespace Framework
 
     for (int i = 0; i < 4; ++i)
     {
-      if (playerCoinStack[i] == Handle::null)
+      if (playerCoinStack[i] == Handle::null || playerCoins[i] >= 50000.0f)
         continue;
       offSet.y = 0.0f;
       coinStack = space->GetGameObject(playerCoinStack[i])->GetComponent<Transform>(eTransform);
@@ -543,7 +544,7 @@ namespace Framework
     {
       spawnTimer = 3.0f;
       float ranX = GetRandom(-600, 600);
-      float ranY = GetRandom(-300, 300);
+      float ranY = GetRandom(-200, 200);
       float ranZ = GetRandom(150, 200);
       Vec3 pos(ranX, ranY, ranZ);
       SpawnItemSet(pos);
@@ -590,7 +591,7 @@ namespace Framework
     {
       spawnTimer = 3.0f;
       float ranX = GetRandom(-600, 600);
-      float ranY = GetRandom(-300, 300);
+      float ranY = GetRandom(-200, 200);
       float ranZ = GetRandom(150, 200);
       Vec3 pos(ranX, ranY, ranZ);
       SpawnItemSet(pos);
@@ -690,9 +691,16 @@ namespace Framework
         LE = 0;
       }
       if (mod1 == LIGHTSOUT)
+      {
         space->hooks.Call("ToggleLevelLights");
+        BlockLights::EventData ed;
+        ed.overrideDefault = true;
+        ed.settings.color = Vec4(0.2f, 0.8f, 0.2f, 0.8f);
+        ed.settings.fx = BlockLights::NONE;
+        space->hooks.Call("LightingEvent", 0xFFFFFFFF, &ed);
+      }
       space->hooks.Call("CallingSM");
-      (FACTORY->LoadObjectFromArchetype(space, "LevelSlotMachine"));
+      (FACTORY->LoadObjectFromArchetype(space, "LevelSlotMachine"))->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(0.0f, 64.0f, -1.0f));
       slotFinished = true;
     }
   }
@@ -715,7 +723,7 @@ namespace Framework
     if (spawnTimer <= 0)
     {
       float ranX = GetRandom(-600, 600);
-      float ranY = GetRandom(-300, 300);
+      float ranY = GetRandom(-200, 200);
       Vec3 pos(ranX, ranY, 0.0f);
       SpawnCoins(pos);
       spawnTimer = 0.5f;
@@ -731,7 +739,7 @@ namespace Framework
   {
     mode = mode_;
     countDownDone = false;
-    countDownTimer = 3.0f;
+    countDownTimer = 2.0f;
     roundTimer = 60.0f;
     slotFinished = false;
     startFlag = true;
@@ -745,7 +753,16 @@ namespace Framework
     mod1 = mod1_;
     mod2 = mod2_;
     if (mod1 == LIGHTSOUT)
+    {
       space->hooks.Call("ToggleLevelLights");
+
+      BlockLights::EventData ed;
+      ed.overrideDefault = true;
+      ed.settings.color = Vec4(0.2f, 0.8f, 0.2f, 0.5f);
+      ed.settings.fx = BlockLights::NONE;
+      ed.settings.customData.duration = 60.0f;
+      space->hooks.Call("LightingEvent", 0xFFFFFFFF, &ed);
+    }
     if (mod1 == BONUS && mod2 == BONUS)
     {
       mode = BONUSMODE;
@@ -790,31 +807,31 @@ namespace Framework
       Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
       Draw::SetRotation(0);
       Draw::DrawString(playerCoinsString, scale, 0);
+
+      if (Players[i] == Handle::null)
+        continue;
+      if (playerCoinsThisFrame[i] != 0)
+      {
+        std::pair<int, float> newCoinString(playerCoinsThisFrame[i], 1.0f);
+        coinStringsAlive[i].push_back(newCoinString);
+        playerCoinsThisFrame[i] = 0;
+      }
+      if (!coinStringsAlive[i].empty())
+      {
+        for (int j = 0; j < coinStringsAlive[i].size(); ++j)
+        {
+          itoa(coinStringsAlive[i][j].first, playerCoinsString, 10);
+          pos = space->GetGameObject(Players[i])->GetComponent<Transform>(eTransform)->GetTranslation();
+          Draw::SetPosition(pos.x, pos.y + (64 - (coinStringsAlive[i][j].second * 64)));
+          Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
+          Draw::SetRotation(0);
+          Draw::DrawString(playerCoinsString, scale, 0);
+          coinStringsAlive[i][j].second -= deltaTime;
+          if (coinStringsAlive[i][j].second <= 0.0f)
+            coinStringsAlive[i].pop_front();
+        }
+      }
     }
-    //  if (Players[i] == Handle::null)
-    //    continue;
-    //  if (playerCoinsThisFrame[i] != 0)
-    //  {
-    //    std::pair<int, float> newCoinString(playerCoinsThisFrame[i], 1.0f);
-    //    coinStringsAlive[i].push_back(newCoinString);
-    //    playerCoinsThisFrame[i] = 0;
-    //  }
-    //  if (!coinStringsAlive[i].empty())
-    //  {
-    //    for (int j = 0; j < coinStringsAlive[i].size(); ++j)
-    //    {
-    //      itoa(coinStringsAlive[i][j].first, playerCoinsString, 10);
-    //      pos = space->GetGameObject(Players[i])->GetComponent<Transform>(eTransform)->GetTranslation();
-    //      Draw::SetPosition(pos.x, pos.y + (64 - (coinStringsAlive[i][j].second * 64)));
-    //      Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
-    //      Draw::SetRotation(0);
-    //      Draw::DrawString(playerCoinsString, scale, 0);
-    //      coinStringsAlive[i][j].second -= deltaTime;
-    //      if (coinStringsAlive[i][j].second <= 0.0f)
-    //        coinStringsAlive[i].pop_front();
-    //    }
-    //  }
-    //}
   }
   
 }

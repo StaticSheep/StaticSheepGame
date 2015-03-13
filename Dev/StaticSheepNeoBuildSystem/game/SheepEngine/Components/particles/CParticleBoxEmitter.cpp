@@ -111,6 +111,8 @@ namespace Framework
 
       time -= 1.0f / (m_rate.m_startMin);
     }
+
+    //system->ResetZ();
   }
 
   void ParticleBoxEmitter::Toggle(bool state)

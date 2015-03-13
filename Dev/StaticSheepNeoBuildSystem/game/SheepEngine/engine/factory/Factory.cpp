@@ -363,6 +363,29 @@ namespace Framework
     return archetype.CreateObject(space);
   }
 
+
+  void Factory::UpdateArchetypeObjects(GameSpace* space, const char* name)
+  {
+    // Grab the archetype of the object
+    const Archetype& atype = GetArchetype(name);
+
+    if (&atype == &Archetype::null) // The hackiest == operator on earth
+      return;
+
+    GameObject* it;
+    for (int i = 0; i < space->m_objects.Size(); ++i)
+    {
+      it = (GameObject*)space->m_objects[i];
+
+      if (it->archetype != atype.archetype)
+        continue;
+
+      // Update the values
+      atype.UpdateObject(it);
+
+    }
+  }
+
   /// <summary>
   /// Gets an archetype.
   /// </summary>

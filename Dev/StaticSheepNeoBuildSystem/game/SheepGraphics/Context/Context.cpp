@@ -127,6 +127,9 @@ namespace DirectSheep
 
       m_lightBatcher[i] = new SpriteBatch(m_deviceContext);
       m_lightBatcher[i]->SetRotation(DXGI_MODE_ROTATION_UNSPECIFIED);
+
+      m_emissiveBatcher[i] = new SpriteBatch(m_deviceContext);
+      m_emissiveBatcher[i]->SetRotation(DXGI_MODE_ROTATION_UNSPECIFIED);
     }
 
     CreateRenderTarget(m_lightTarget, DXGI_FORMAT_R8G8B8A8_UNORM,
@@ -457,6 +460,11 @@ namespace DirectSheep
    void RenderContext::SetBlendCol(const float r, const float g, const float b, const float a)
    {
      m_spriteBlend = Vec4(r, g, b, a);
+   }
+
+   void RenderContext::SetAlpha(float a)
+   {
+     m_spriteBlend.w = a;
    }
 
   

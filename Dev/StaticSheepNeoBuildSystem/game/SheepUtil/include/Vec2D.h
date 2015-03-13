@@ -16,7 +16,7 @@ namespace Framework
   {
     // constructor, defaults to 0 vector
     Vec2D(float _x = 0.0f, float _y = 0.0f)
-    {x = _x; y = _y;};
+      : x(_x), y(_y) {};
 
     Vec2D(float* v) : x(*v), y(*(v + 1)) {};
     

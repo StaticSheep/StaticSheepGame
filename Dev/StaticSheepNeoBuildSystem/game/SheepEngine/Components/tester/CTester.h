@@ -14,10 +14,12 @@ namespace Framework
   {
   public:
     virtual void Initialize();
+    void Remove();
 
     void Update(float dt);
 
-    int testvalue1;
-    int testvalue2;
+    float timer = 0;
+    int phase = 0;
+
   };
 }

@@ -72,6 +72,10 @@ namespace Framework
     int m_loop;
     bool m_paused;
 
+    bool m_hidden = false;
+
+    bool m_frameUpdate = false;
+
     Vec2 uvBegin;
     Vec2 uvEnd;
 
@@ -90,7 +94,7 @@ namespace Framework
     Vec2 m_framePos;
     Vec2 m_startFramePos;
 
-    void CheckNextFrame();
+    void CheckNextFrame(float dt);
 
     void UpdateUV(void);
     

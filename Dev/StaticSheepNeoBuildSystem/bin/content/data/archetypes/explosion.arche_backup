@@ -1,0 +1,184 @@
+GameObject
+{
+  name std::string "explosion"
+  archetype std::string "explosion"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 0.000000
+      y_ float 0.000000
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  AniSprite
+  {
+    m_spriteName std::string "explosion_sheet_temp_256.png"
+    m_frames Vec2
+    {
+      X float 12.000000
+      Y float 1.000000
+    }
+    m_startFrame unsignedint 0
+    m_endFrame unsignedint 9
+    m_frameRate float 20.000000
+    m_loop int 1
+    m_paused bool false
+    m_flipX bool false
+    m_flipY bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 0.450000
+      B float 0.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 1.000000
+      Y float 1.000000
+    }
+  }
+  PointLight
+  {
+    m_brightness LightColor
+    {
+      R float 1.000000
+      G float 0.500000
+      B float 0.000000
+      A float 30.000000
+    }
+    m_attenuation LightVec3
+    {
+      X float 0.000000
+      Y float 0.000000
+      Z float 1.000000
+    }
+  }
+  ParticleSystem
+  {
+    textureName std::string "White.png"
+    particleLife ParticleOptionShort<float>
+    {
+      m_startMin float 0.500000
+      m_startMax float 1.000000
+    }
+    directionEase int 1
+    direction ParticleOption<Vec3>
+    {
+      m_startMin Vec3
+      {
+        x_ float -0.899586
+        y_ float -0.436744
+        z_ float 0.000000
+      }
+      m_startMax Vec3
+      {
+        x_ float 1.000000
+        y_ float 1.000000
+        z_ float 0.000000
+      }
+      m_endMin Vec3
+      {
+        x_ float -1.000000
+        y_ float -1.000000
+        z_ float 0.000000
+      }
+      m_endMax Vec3
+      {
+        x_ float 1.000000
+        y_ float 1.000000
+        z_ float 0.000000
+      }
+    }
+    angularVelocity ParticleOption<float>
+    {
+      m_startMin float 0.000000
+      m_startMax float 0.000000
+      m_endMin float 0.000000
+      m_endMax float 0.000000
+    }
+    scaleEase int 1
+    scale ParticleOption<float>
+    {
+      m_startMin float 5.000000
+      m_startMax float 10.000000
+      m_endMin float 8.000000
+      m_endMax float 10.000000
+    }
+    colorEase int 1
+    color ParticleOption<Vec4>
+    {
+      m_startMin Vec4
+      {
+        R float 0.901961
+        G float 0.478431
+        B float 0.000000
+        A float 0.901961
+      }
+      m_startMax Vec4
+      {
+        R float 1.000000
+        G float 1.000000
+        B float 0.000000
+        A float 1.000000
+      }
+      m_endMin Vec4
+      {
+        R float 0.900000
+        G float 0.125000
+        B float 0.125000
+        A float 0.100000
+      }
+      m_endMax Vec4
+      {
+        R float 1.000000
+        G float 0.250000
+        B float 0.250000
+        A float 0.125000
+      }
+    }
+    speedEase int 1
+    speed ParticleOption<float>
+    {
+      m_startMin float 100.000000
+      m_startMax float 300.000000
+      m_endMin float 0.000000
+      m_endMax float 0.000000
+    }
+  }
+  ParticleBoxEmitter
+  {
+    m_width float 256.000000
+    m_height float 256.000000
+    m_spawnOffset Vec3
+    {
+      x_ float 0.000000
+      y_ float 0.000000
+      z_ float 0.000000
+    }
+    m_amount ParticleOptionShort<float>
+    {
+      m_startMin float 1.000000
+      m_startMax float 5.000000
+    }
+    m_rate ParticleOptionShort<float>
+    {
+      m_startMin float 30.000000
+      m_startMax float 50.000000
+    }
+    spawning bool true
+    timedSpawning bool false
+    timed float 0.000000
+  }
+  Explosion
+  {
+  }
+}

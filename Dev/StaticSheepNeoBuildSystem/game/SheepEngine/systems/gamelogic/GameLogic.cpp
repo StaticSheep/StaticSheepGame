@@ -28,6 +28,10 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/gameplay_scripts/Level_Scripts/CBackgroundPan.h"
 #include "components/gameplay_scripts/CCheats.h"
 #include "components/slotmachine/slotmachine.h"
+
+#include "components/gameplay_scripts/arena/CBlockLights.h"
+#include "components/tester/CTester.h"
+
 #include "components/gameplay_scripts/Player_Scripts/CAimingArrow.h"
 #include "components/gameplay_scripts/Level_Scripts/CLevel1_Lighting.h"
 #include "components/gameplay_scripts/Player_Scripts/CDashEffect.h"
@@ -37,6 +41,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/gameplay_scripts/Slot_Machine_Scripts/CSlotController.h"
 #include "components/gameplay_scripts/Weapon_Scripts/CLaser.h"
 #include "components/gameplay_scripts/Slot_Machine_Scripts/CCoinBall.h"
+
 
 namespace Framework
 {
@@ -57,6 +62,7 @@ namespace Framework
 
   void GameLogic::RegisterComponents()
   {
+    REGISTER_COMPONENT(Tester);
     REGISTER_COMPONENT(LuaComponent);
     REGISTER_COMPONENT(GamePad);
 	  REGISTER_COMPONENT(PlayerController);
@@ -80,6 +86,7 @@ namespace Framework
     REGISTER_COMPONENT(Asteroid);
     REGISTER_COMPONENT(PowerupPickup);
     REGISTER_COMPONENT(SlotController);
+    REGISTER_COMPONENT(BlockLights);
     REGISTER_COMPONENT(Laser);
     REGISTER_COMPONENT(CoinBall);
   }
