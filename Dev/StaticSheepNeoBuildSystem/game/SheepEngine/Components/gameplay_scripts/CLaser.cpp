@@ -19,8 +19,8 @@ namespace Framework
     damage(1), width(1), 
     arcRotation(0), arcDelay(0), 
     arcPerSec(0),
-    m_bodyScale(1, 1), m_bodyColor(1,1,1,1),
-    m_beamColor(1,1,1,1)
+    m_beamColor(1,1,1,1),
+    m_beamOffset(0,0)
   {
     
   }
@@ -32,12 +32,6 @@ namespace Framework
 
   void Laser::Initialize()
   {
-
-    if (m_bodyTexName.length() == 0)
-      m_bodyTexName = "Default.png";
-
-    SetBodyTexture(m_bodyTexName.c_str());
-
     if (m_beamTexName.length() == 0)
       m_beamTexName = "Default.png";
 
@@ -100,7 +94,6 @@ namespace Framework
   void Laser::LogicUpdate(float dt)
   {
     CircleCollider *lc = space->GetHandles().GetAs <CircleCollider>(lCollider);
-
     if (startDelay > 0)
     {
       startDelay -= dt;
@@ -155,45 +148,31 @@ namespace Framework
   void Laser::DrawLaser()
   {
     Transform* trans = space->GetHandles().GetAs<Transform>(lTransfrom);
-    // Draw body/emitter
-    GRAPHICS->SetUV(Vec2(0,0), Vec2(1,1));
-
-    GRAPHICS->SetPosition(trans->GetTranslation().X,
-      trans->GetTranslation().Y, trans->GetTranslation().Z);
 
     GRAPHICS->SetRotation(trans->GetRotation());
 
-    GRAPHICS->SetSize(trans->GetScale().X * m_bodyScale.x,
-      trans->GetScale().Y * m_bodyScale.Y);
-
-    GRAPHICS->SetColor(m_bodyColor);
-
     GRAPHICS->SetCamState(0);
-
-    GRAPHICS->DrawBatched(m_bodyTex);
-
-    GRAPHICS->SetColor(m_beamColor);
 
     float Length = 0;
     float numBeams = numberOfRays - numberOfRays % 4;
     for (int i = 0; i < m_beamLengths.size(); ++i)
     {
-
       if (m_beamLengths[i] != -1)
         Length = m_beamLengths[i];
       else
         Length = GRAPHICS->_ScreenWidth;
 
-      Length -= ((m_bodyTexDim.x * m_bodyScale.x * trans->GetScale().X) / 2.0f);
+      Length -= m_beamOffset.x;
 
       GRAPHICS->SetSize((Length / m_beamTexDim.x),
-        (trans->GetScale().Y * width) / m_beamTexDim.y / numBeams);
+        width / m_beamTexDim.y / numBeams);
 
-      GRAPHICS->SetObjectOrigin(((m_bodyTexDim.x * m_bodyScale.x * trans->GetScale().X) / 2.0f) +
-        (Length / 2.0f), 0);
+      GRAPHICS->SetObjectOrigin((Length / 2.0f) + m_beamOffset.x, m_beamOffset.y);
 
       GRAPHICS->SetPosition(positionOffsets[i].x,
-        positionOffsets[i].y * trans->GetScale().Y, trans->GetTranslation().Z);
+        positionOffsets[i].y, trans->GetTranslation().Z);
+
+      GRAPHICS->SetUV(Vec2(0, 0), Vec2(1, 1));
 
       GRAPHICS->DrawBatched(m_beamTex);
     }
@@ -240,18 +219,6 @@ namespace Framework
     }
   }
 
-  void Laser::SetBodyTexture(const char * Texture)
-  {
-    m_bodyTexName = Texture;
-    m_bodyTex = GRAPHICS->LoadTexture(Texture);
-    m_bodyTexDim = GRAPHICS->GetTextureDim(m_bodyTex);
-  }
-
-  DirectSheep::Handle& Laser::GetBodyTexture()
-  {
-    return m_bodyTex;
-  }
-
   void Laser::SetBeamTexture(const char * Texture)
   {
     m_beamTexName = Texture;
@@ -262,11 +229,6 @@ namespace Framework
   DirectSheep::Handle& Laser::GetBeamTexture()
   {
     return m_beamTex;
-  }
-
-  void Laser::TweakSetBodyTexture(const void * Texture)
-  {
-    SetBodyTexture(((std::string *)Texture)->c_str());
   }
 
   void Laser::TweakSetBeamTexture(const void * Texture)

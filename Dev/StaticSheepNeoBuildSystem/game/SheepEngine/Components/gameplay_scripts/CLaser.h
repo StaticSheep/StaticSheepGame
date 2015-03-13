@@ -30,14 +30,10 @@ namespace Framework
     void ComplexCaster(CircleCollider *lc);
     void ModifyPositionOffsets(void);
 
-    void SetBodyTexture(const char * Texture);
-    DirectSheep::Handle& GetBodyTexture();
-
     void SetBeamTexture(const char * Texture);
     DirectSheep::Handle& GetBeamTexture();
 
     void TweakSetLayer(const void* layerNum);
-    void TweakSetBodyTexture(const void * Texture);
     void TweakSetBeamTexture(const void * Texture);
 
     void DrawLaser();
@@ -69,20 +65,13 @@ namespace Framework
 
     std::vector<float> m_beamLengths;
 
-    // Texture names
-    std::string m_bodyTexName;
     std::string m_beamTexName;
 
-    // Texture handles
-    DirectSheep::Handle m_bodyTex;
-    DirectSheep::Handle m_beamTex;
+    Vec2 m_beamOffset;
 
-    Vec2                m_bodyTexDim;
+    DirectSheep::Handle m_beamTex;
     Vec2                m_beamTexDim;
 
-    Vec2                m_bodyScale;
-
-    Vec4                m_bodyColor;
     Vec4                m_beamColor;
 
   };
