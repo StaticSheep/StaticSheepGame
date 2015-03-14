@@ -57,7 +57,7 @@ namespace Framework
 
       //collision
       virtual void SetBodyCollisionCallback(bool collisionCallback);
-      virtual void SetBodyCollisionGroup(std::string);
+      virtual void SetBodyCollisionGroup(std::string group);
 
       virtual Vec3D GetCollisionNormals(SheepFizz::ExternalManifold manifold);
       virtual Vec3D GetCollisionPoint(SheepFizz::ExternalManifold manifold);

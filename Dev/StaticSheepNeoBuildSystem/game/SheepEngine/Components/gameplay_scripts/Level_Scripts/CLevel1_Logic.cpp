@@ -107,6 +107,8 @@ namespace Framework
 
     mode = SLOTMACHINE;
 
+    fontIndex = Draw::GetFontIndex("BN_Jinx");
+
 	}
 
   void Level1_Logic::Remove()
@@ -484,7 +486,7 @@ namespace Framework
       space->GetHandles().GetAs<SoundEmitter>(levelEmitter)->Play("warning");
     }
   }
-
+  /*idea for bonus slot machine. have it spin for bonus star awards when the round ends. things like most kills, or most coins*/
   void Level1_Logic::GoToGameMode(float dt)
   {
     switch (mode)
@@ -519,7 +521,7 @@ namespace Framework
 
     if (roundTimer <= 0)
     {
-      mode = SLOTMACHINE;
+      mode = SLOTMACHINE;//ROUNDOVER
       return;
     }
 
@@ -555,7 +557,7 @@ namespace Framework
       for (int i = 0; i < 4; ++i)
         juggernaut[i] = false;
 
-      mode = SLOTMACHINE;
+      mode = SLOTMACHINE;//ROUNDOVER
       return;
     }
 
@@ -655,11 +657,11 @@ namespace Framework
 
     if (roundTimer <= 0)
     {
-      mode = SLOTMACHINE;
+      mode = SLOTMACHINE;//ROUNDOVER
       return;
     }
     if (LastManStanding())
-      mode = SLOTMACHINE;
+      mode = SLOTMACHINE;//ROUNDOVER
     spawnTimer -= dt;
     eventTimer -= dt;
 
@@ -667,7 +669,9 @@ namespace Framework
 
   void Level1_Logic::SlotMachineMode(float dt)
   {
-    if (!slotFinished)
+    //if(round == maxRounds)
+      //mode = GAMEOVER
+/*else*/if (!slotFinished)
     {
       ResetPlayers();
       if (LE)
@@ -702,7 +706,7 @@ namespace Framework
 
     if (roundTimer <= 0)
     {
-      mode = SLOTMACHINE;
+      mode = SLOTMACHINE; //ROUNDOVER
       return;
     }
     if (spawnTimer <= 0)
@@ -773,7 +777,7 @@ namespace Framework
   void Level1_Logic::Draw()
   {
     Vec3 pos;
-    Vec2D scale(20, 20);
+    Vec2D scale(50, 50);
     char playerCoinsString[10];
     for (int i = 0; i < 4; ++i)
     {
@@ -791,10 +795,11 @@ namespace Framework
       Draw::SetPosition(pos.x, pos.y);
       Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
       Draw::SetRotation(0);
-      Draw::DrawString(playerCoinsString, scale, 0);
+      Draw::DrawString(playerCoinsString, scale, 1);
 
       if (Players[i] == Handle::null)
         continue;
+
       if (playerCoinsThisFrame[i] != 0)
       {
         std::pair<int, float> newCoinString(playerCoinsThisFrame[i], 1.0f);
@@ -808,9 +813,9 @@ namespace Framework
           itoa(coinStringsAlive[i][j].first, playerCoinsString, 10);
           pos = space->GetGameObject(Players[i])->GetComponent<Transform>(eTransform)->GetTranslation();
           Draw::SetPosition(pos.x, pos.y + (64 - (coinStringsAlive[i][j].second * 64)));
-          Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
+          Draw::SetColor(0.9, 0.9, 0.15f, fontIndex); //yellow-ish color
           Draw::SetRotation(0);
-          Draw::DrawString(playerCoinsString, scale, 0);
+          Draw::DrawString(playerCoinsString, scale, fontIndex);
           coinStringsAlive[i][j].second -= deltaTime;
           if (coinStringsAlive[i][j].second <= 0.0f)
             coinStringsAlive[i].pop_front();

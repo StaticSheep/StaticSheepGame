@@ -78,6 +78,7 @@ E_NAME(Component)
   E_ENTRY(div_Controllers)
   E_ENTRY(SlotController)
   E_ENTRY(PlayerController)
+  E_ENTRY(StarController)
   
   E_ENTRY(div_Effects)
   E_ENTRY(AimingArrow)

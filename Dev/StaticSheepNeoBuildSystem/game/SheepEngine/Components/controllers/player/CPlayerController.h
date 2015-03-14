@@ -53,11 +53,13 @@ namespace Framework
 		int playerNum; //the player number, i.e. 1, 2, 3, 4
     int health; //players health
     int shields;
-		bool hasFired, isSnapped, hasRespawned, blink; //has fired is a flag to prevent fully auto fire, is snapped is a bool to see if the player is snapped to something
+		bool hasFired, isSnapped, hasRespawned, blink, stoppedFX, firstUpdate; //has fired is a flag to prevent fully auto fire, is snapped is a bool to see if the player is snapped to something
     bool GodMode, GoldenGun, PerfectMachine;  //the cheats 
     bool frameSkip, arrowSpawn, hasDashed;
     float rotation, lastRotation;
     float respawnTimer;
+
+    std::string weaponGroup;
 
     std::vector<Vec3> normals;
     AnimationController animCont;

@@ -67,6 +67,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "Components/gameplay_scripts/Weapon_Scripts/CLaser.h"
 #include "Components/gameplay_scripts/Slot_Machine_Scripts/CCoinBall.h"
 #include "components/basicps/CBasicPSystem.h"
+#include "Components/controllers/stars/CStarController.h"
 
 namespace Framework
 {
@@ -284,6 +285,9 @@ namespace Framework
 
     TYPE_REGISTER(CoinBall);
     TYPE_SET_TWEAK_TYPE(CoinBall, AntTweak::TW_TYPE_COMPONENT);
+    
+    TYPE_REGISTER(StarController);
+    TYPE_SET_TWEAK_TYPE(StarController, AntTweak::TW_TYPE_COMPONENT);
 
     TYPE_REGISTER(Laser);
     TYPE_SET_TWEAK_TYPE(Laser, AntTweak::TW_TYPE_COMPONENT);

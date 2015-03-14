@@ -82,6 +82,9 @@ namespace Framework
       space->hooks.Remove("Draw", self);
       break;
     }
+
+    space->hooks.Remove("LogicUpdate", self);
+    space->hooks.Remove("FrameUpdate", self);
   }
 
   void BasicParticleSystem::SetTexture(std::string texname)
@@ -136,9 +139,16 @@ namespace Framework
 
       // Fill with the right-most element
       if (i != m_particles.size() - 1)
-        m_particles[i] = m_particles.back();
+      {
+        Particle pt = m_particles[m_particles.size() - 1];
+        m_particles.pop_back();
+        m_particles[i] = pt;
+      }
+      else
+        m_particles.pop_back();
+        
 
-      m_particles.pop_back();
+      
     }
   }
 
@@ -147,9 +157,9 @@ namespace Framework
     Transform* trans = space->GetGameObject(owner)->
       GetComponent<Transform>(eTransform);
 
-    m_particles.emplace_back();
+    
 
-    Particle& prt = m_particles.back();
+    Particle prt;
 
     prt.life = m_life.lifetime + GetRandom(-m_life.randLifetime, m_life.randLifetime);
     prt.maxLife = prt.life;
@@ -236,6 +246,8 @@ namespace Framework
       prt.fadeStart = m_fade.fadeOutTime +
         GetRandom(-m_fade.randFadeoutTime, m_fade.randFadeoutTime);
     }
+
+    m_particles.push_back(prt);
   }
 
   void BasicParticleSystem::Draw()
