@@ -53,6 +53,9 @@ namespace Framework
     bool m_uvScale;
 
     unsigned m_layer = 1;
+    bool m_hooked = false;
+
+
     void TweakSetLayer(const void* layerNum);
 
     void TweakSetTexture(const void * Texture);

@@ -153,6 +153,9 @@ namespace Framework
       // Updates the object name
       void TweakSetName(void* name);
 
+      // Updates all other instances of this archetype with this object
+      static void TweakUpdateArchetypes(void* clientData);
+
       static void CloseObjectTweak(void* clientData);
 
       /*========================== LUA FUNCTIONS =========================*/

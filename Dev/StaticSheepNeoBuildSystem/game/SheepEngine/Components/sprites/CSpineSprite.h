@@ -37,6 +37,7 @@ namespace Framework
       std::string sequenceName;
 
       float framerate;
+      Vec4 Color;
 
     private:
 
@@ -61,7 +62,7 @@ namespace Framework
       //std::unordered_map<std::string, DirectSheep::SequenceData>::const_iterator sequenceIt;
       const DirectSheep::SequenceData* sequenceIt;
 
-      Vec4 color;
+      
       Vec2 offset;
       
   };

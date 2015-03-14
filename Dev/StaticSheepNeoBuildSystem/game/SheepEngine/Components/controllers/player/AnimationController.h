@@ -33,7 +33,7 @@ namespace Framework
     AnimationController(int playerNum);
     ~AnimationController();
 
-    void Update(SpineSprite* spine, bool flip, Vec4& color, float rotation, Vec3& aimDir, bool aiming);
+    void Update(SpineSprite* spine, Vec4& color, float rotation, Vec3& aimDir, bool aiming);
 		
 		//member variables
     const char *spriteSheet;

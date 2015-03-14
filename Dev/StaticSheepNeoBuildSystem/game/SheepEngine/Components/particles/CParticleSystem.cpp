@@ -56,9 +56,34 @@ namespace Framework
   {
     transform = this->GetOwner()->GetComponentHandle(eTransform);
 
+    SetTexture(textureName);
+
     space->hooks.Add("FrameUpdate", self, BUILD_FUNCTION(ParticleSystem::FrameUpdate));
     space->hooks.Add("LogicUpdate", self, BUILD_FUNCTION(ParticleSystem::UpdateParticles));
-    space->hooks.Add("Draw", self, BUILD_FUNCTION(ParticleSystem::DrawParticles));
+    
+    
+    if (m_hooked)
+    {
+      space->hooks.Remove("PreDraw", self);
+      space->hooks.Remove("Draw", self);
+      space->hooks.Remove("PostDraw", self);
+    }
+
+    switch (m_layer)
+    {
+    case 2:
+      space->hooks.Add("PostDraw", self, BUILD_FUNCTION(ParticleSystem::DrawParticles));
+      break;
+    case 0:
+      space->hooks.Add("PreDraw", self, BUILD_FUNCTION(ParticleSystem::DrawParticles));
+      break;
+    case 1:
+    default:
+      space->hooks.Add("Draw", self, BUILD_FUNCTION(ParticleSystem::DrawParticles));
+      break;
+    }
+
+    m_hooked = true;
   }
 
   // Currently not used
@@ -80,7 +105,21 @@ namespace Framework
     particles.clear();
     space->hooks.Remove("FrameUpdate", self);
     space->hooks.Remove("LogicUpdate", self);
-    space->hooks.Remove("Draw", self);
+
+    switch (m_layer)
+    {
+    case 2:
+      space->hooks.Remove("PostDraw", self);
+      break;
+    case 0:
+      space->hooks.Remove("PreDraw", self);
+      break;
+    case 1:
+    default:
+      space->hooks.Remove("Draw", self);
+      break;
+    }
+
     particles.clear();
   }
 
@@ -144,10 +183,10 @@ namespace Framework
   {
     DirectSheep::Handle texHandle =
       DirectSheep::Handle(DirectSheep::TEXTURE,
-      Draw::GetTextureID(textureName.c_str()));
+      textureID);
 
     // also set the texture
-    Draw::SetTexture(Draw::GetTextureID(textureName.c_str()));
+    Draw::SetTexture(textureID);
 
     // but also get the scale of the texture for normalizing the scale for particles
     Vec2 scale = GRAPHICS->GetTextureDim(texHandle);
@@ -157,9 +196,17 @@ namespace Framework
       Vec4 color = particles[i].currentColor;
       Draw::SetColor(color.x, color.y, color.z, color.w);
 
+      Draw::ForceZ(true, particles[i].position.z);
+
       //                                x screen coords    ,    y screen coords     ,  particle scale / texture scale x,    particle scale / scale y          , rotation 
-      Draw::DrawTexturedRectRotated(particles[i].position.x, particles[i].position.y, particles[i].currentScale / scale.x, particles[i].currentScale / scale.y, particles[i].theta);
+      Draw::DrawTexturedRectRotated(particles[i].position.x,
+        particles[i].position.y,
+        particles[i].currentScale / scale.x,
+        particles[i].currentScale / scale.y,
+        particles[i].theta);
     }
+
+    Draw::ForceZ(false, 0);
   }
     
   void ParticleSystem::DestroyParticles(void)
@@ -168,10 +215,16 @@ namespace Framework
   }
     
   /*----- Setters (mostly unused) ----- */
-    
-  void ParticleSystem::SetTexture(unsigned int newTexture)
+
+  void ParticleSystem::TweakSetTexture(const void* newTexture)
   {
-    textureID = newTexture;
+    SetTexture(*(std::string*)newTexture);
+  }
+    
+  void ParticleSystem::SetTexture(std::string newTexture)
+  {
+    textureName = newTexture;
+    textureID = Draw::GetTextureID(newTexture.c_str());
   }
 
   void ParticleSystem::SetLifetime(ParticleOptionShort<float>& op)
@@ -230,10 +283,18 @@ namespace Framework
   {
     SetDirection((Vec3*)value);
   }
+
+  void ParticleSystem::ResetZ()
+  {
+    curZ = 0;
+  }
   
   // Spawns a particle at the passed in location. 
   Particle& ParticleSystem::SpawnParticle(const Vec3& location, bool setDirection)
   {
+    
+    curZ -= 0.001f;
+
     ParticleOption<Vec3> newDir;
 
     // If the system is handling the direction of the particle
@@ -246,6 +307,11 @@ namespace Framework
       particles.emplace_back(scale, color, newDir, speed, particleLife);
       Particle& part = particles[particles.size() - 1];
       part.position = location;
+      part.position.z = curZ;
+
+      if (curZ > 0.9f)
+        ResetZ();
+
       return part;
     }
     else // else the other component is handling the direction of the particle
@@ -258,9 +324,15 @@ namespace Framework
 
       Particle& part = particles[particles.size() - 1]; //particles.back();
       part.position = location;
+      part.position.z = curZ;
+
+      if (curZ < -0.5f)
+        ResetZ();
 
       return part;
     }
+
+    
   }
 
   // Moves the right most particle in the vector to the index

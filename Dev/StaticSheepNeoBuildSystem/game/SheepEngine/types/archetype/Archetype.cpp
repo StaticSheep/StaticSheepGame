@@ -277,6 +277,81 @@ namespace Framework
     return obj; // return the object
   }
 
+  void Archetype::UpdateObject(GameObject* obj) const
+  {
+    // Force override the archetype cause why not
+    obj->archetype = archetype;
+
+    GameSpace* space = obj->space;
+
+    for (unsigned int i = 0; i < ecountComponents; ++i)
+    {
+      if (i == eTransform || i == eLuaComponent)
+        continue;
+
+      if (HasComponent(EComponent(i)))
+      {
+        
+        GameComponent* comp;
+        
+        // If the object doesn't have the component then add it
+        if (!obj->HasComponent(EComponent(i)))
+        {
+          comp = space->CreateComponent(EComponent(i));
+
+          // Add the component to the object
+          obj->AddComponent(comp);
+
+          //comp->Initialize();
+        }
+        else // Otherwise grab it
+          comp = obj->GetComponent(i);
+        
+
+        // Copy over the data from the archetype to the component
+        const TypeInfo *typeInfo = FACTORY->GetComponentType(EComponent(i));
+        typeInfo->Copy(comp, m_components[i]);
+
+      }
+    } // End component iteration
+
+    const TypeInfo* typeInfo = GET_TYPE(LuaComponent);
+
+    for (unsigned int i = 0; i < m_luaComponents.size(); ++i)
+    {
+      LuaComponent* comp;
+      
+      if (!obj->HasLuaComponent(m_luaComponents[i]->name.c_str()))
+      {
+        comp = (LuaComponent*)space->CreateComponent(eLuaComponent);
+        obj->AddComponent(comp);
+      }
+      else
+      {
+        comp = obj->GetLuaComponent(m_luaComponents[i]->name.c_str());
+      }
+
+      // Iterate through all members in the component that are registered to be serialized
+      for (unsigned int m = 0; m < typeInfo->GetMembers().size(); ++m)
+      {
+        // Get the actual member
+        const Member member = typeInfo->GetMembers()[m];
+        // Copy over the member data from the archetype into the object
+        Variable LVar = Variable(member.Type(), (char*)comp + member.Offset());
+        Variable RVar = Variable(member.Type(), (char*)m_luaComponents[i] + member.Offset());
+
+        member.Type()->PlacementDelete(LVar.GetData());
+        member.Type()->PlacementCopy(LVar.GetData(), RVar.GetData());
+      }
+
+      //comp->Initialize(); // Initalize (or reinitialize) the lua component
+
+    }
+
+
+    obj->Initialize();
+  }
+
   void Archetype::Serialize(File& file, Variable var)
   {
     Archetype* o = (Archetype*)var.GetData();

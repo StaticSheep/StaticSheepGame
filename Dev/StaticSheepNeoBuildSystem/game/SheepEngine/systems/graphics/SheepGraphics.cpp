@@ -23,6 +23,9 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include <boost/filesystem.hpp>
 #include "../input/Input.h"
 #include "components/sprites/CSpineSprite.h"
+
+#include "components/basicps/CBasicPSystem.h"
+
 using namespace boost::filesystem;
 
 
@@ -49,6 +52,7 @@ namespace Framework
     REGISTER_COMPONENT(AniSprite);
     REGISTER_COMPONENT(PointLight);
     REGISTER_COMPONENT(SpriteLight);
+    REGISTER_COMPONENT(BasicParticleSystem);
     REGISTER_COMPONENT(ParticleSystem);
     REGISTER_COMPONENT(ParticleCircleEmitter);
     REGISTER_COMPONENT(ParticleBoxEmitter);

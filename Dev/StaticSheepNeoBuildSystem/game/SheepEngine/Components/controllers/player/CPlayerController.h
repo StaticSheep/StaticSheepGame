@@ -35,12 +35,20 @@ namespace Framework
     void RespawnBlink(float dt);
     void PlayerDeath(SoundEmitter *se, Transform *pt, int who_killed_me = -1);
     void SetAnimations();
+
     void clampVelocity(float clamp);
     int CurrentHealth();
     void jump();
     void PlayerButtonPress();
     void DealDamage(int damage, int playNum);
     void SpawnEffect();
+
+    void CollisionDamage(GameObject *OtherObject);
+    void DetermineSnap(GameObject *OtherObject, Handle otherObject, SheepFizz::ExternalManifold manifold);
+    void SpawnAimArrow();
+    void SnappedMovement();
+
+
 		//member variables
 		int playerNum; //the player number, i.e. 1, 2, 3, 4
     int health; //players health
@@ -50,6 +58,7 @@ namespace Framework
     bool frameSkip, arrowSpawn, hasDashed;
     float rotation, lastRotation;
     float respawnTimer;
+
     std::vector<Vec3> normals;
     AnimationController animCont;
     Weapon *weapon;

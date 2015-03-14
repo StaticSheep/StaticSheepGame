@@ -74,6 +74,7 @@ namespace DirectSheep
     BLEND_MODE_NONE = -1,
     BLEND_MODE_ALPHA,
     BLEND_MODE_ADDITIVE,
+    BLEND_MODE_ZACH,
     BLEND_MODE_MULTIPLY,
   };
 

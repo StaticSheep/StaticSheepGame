@@ -29,6 +29,7 @@ namespace Framework
     static void SetPosition(float x, float y);
     static void SetPositionEx(float x, float y, float z);
     static void SetColor(float r, float g, float b, float a);
+    static void SetAlpha(float a);
     static void SetUVs(Vec2 UVMin, Vec2 UVMax);
 
     static void DrawRect(float x, float y, float width, float height);

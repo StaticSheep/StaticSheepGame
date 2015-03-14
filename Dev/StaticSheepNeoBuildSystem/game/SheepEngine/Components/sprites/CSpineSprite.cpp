@@ -7,7 +7,7 @@
 
 namespace Framework
 {
-  SpineSprite::SpineSprite() : color(1.0f, 1.0f, 1.0f, 1.0f)
+  SpineSprite::SpineSprite() : Color(1.0f, 1.0f, 1.0f, 1.0f)
   {
     sequenceName = std::string("idle"); // note to self, every animation needs idle
     atlasName = std::string("master");
@@ -137,7 +137,7 @@ namespace Framework
     GRAPHICS->SetPosition(position.x - frameOffset.x, position.y - frameOffset.y, position.z);
     GRAPHICS->SetRotation(theta);
     GRAPHICS->SetSize(scale.x, scale.y);
-    GRAPHICS->SetColor(color);
+    GRAPHICS->SetColor(Color);
     GRAPHICS->SetUV(begin, end);
     GRAPHICS->SetCamState(0);
     GRAPHICS->SetSpriteFlip(flipX, flipY);
@@ -165,7 +165,7 @@ namespace Framework
 
   void SpineSprite::SetColor(Vec4& color_)
   {
-    color = color_;
+    Color = color_;
   }
 
   void SpineSprite::FlipX(bool flip)

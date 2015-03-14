@@ -10,18 +10,18 @@ All content © 2015 DigiPen (USA) Corporation, all rights reserved.
 #include "Components/transform/CTransform.h"
 #include "Components/colliders/CCircleCollider.h"
 #include "Components/controllers/player/CPlayerController.h"
-#include "components/gameplay_scripts/CBullet_default.h"
+#include "components/gameplay_scripts/Weapon_Scripts/CBullet_default.h"
 #include "components/particles/CParticleCircleEmitter.h"
 #include "components/particles/CParticleSystem.h"
 #include "../SheepUtil/include/Matrix3D.h"
-#include "components/gameplay_scripts/CGiantKillBox.h"
+#include "components/gameplay_scripts/Level_Event_Scripts/CGiantKillBox.h"
 #include "Components/sprites/CSprite.h"
 
 namespace Framework
 {
   LEGrinderBig::LEGrinderBig()
   {
-    timer = 5.0f;
+    timer = 7.0f;
   }
 
   LEGrinderBig::~LEGrinderBig()
@@ -68,7 +68,7 @@ namespace Framework
     GPC->SetBodyCollisionGroup("NonCollide");
     GPT->SetScale(Vec3(2.0f, 0.5f, 1.0f));
 
-    float ranY = (float)GetRandom(-300, 300);
+    float ranY = (float)GetRandom(-250, 250);
     if (GetRandom(0, 1))
     {
       eGiantPlat->GetComponent<GiantKillBox>(eGiantKillBox)->direction = true;

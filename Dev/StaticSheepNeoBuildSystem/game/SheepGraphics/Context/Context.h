@@ -83,13 +83,13 @@ class RenderContext
    void Draw(unsigned vertexCount, unsigned vertexStart = 0);
    void DrawSpriteText(const char * text, int index, Framework::Vec2D& scale);
    void DrawBatched(DirectSheep::Handle texture);
-   void DrawLightBatched(DirectSheep::Handle texture);
+   void DrawLightBatched(DirectSheep::Handle texture, bool emissive = false);
    // Layer: 0 = Background, 1 = Foreground, 2 = Front
    void BatchPointLight(Framework::Vec3D position,
-     Framework::Vec4D brightness, Framework::Vec3D attenuation);
+     Framework::Vec4D brightness, Framework::Vec3D attenuation, bool emissive = false);
 
    void BatchPointLight(Framework::Vec3D position,
-     Framework::Vec4D brightness, Framework::Vec3D attenuation, unsigned layer);
+     Framework::Vec4D brightness, Framework::Vec3D attenuation, unsigned layer, bool emissive = false);
    
    void SetLayer(unsigned layer)
    {
@@ -188,6 +188,7 @@ class RenderContext
    void SetObjectOrigin(const float x, const float y);
    void SetDimensions(const float w, const float h);
    void SetBlendCol(const float r, const float g, const float b, const float a);
+   void SetAlpha(float a);
 
     /////////////////////////////////////////////////////////////
     //                    GETTER FUNCTIONS                     //
@@ -404,10 +405,12 @@ class RenderContext
     unsigned m_curMaxLayers = 3;
     bool m_fullbright = false;
     
-    std::vector<Light>                    m_PointLights[MAX_LAYERS];
+    std::vector<Light>    m_PointLights[MAX_LAYERS];
+    std::vector<Light>    m_emissivePointLights[MAX_LAYERS];
 
     DirectX::SpriteBatch* m_batcher[MAX_LAYERS];
     DirectX::SpriteBatch* m_lightBatcher[MAX_LAYERS];
+    DirectX::SpriteBatch* m_emissiveBatcher[MAX_LAYERS];
 
     std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>>
       m_primitiveBatch;

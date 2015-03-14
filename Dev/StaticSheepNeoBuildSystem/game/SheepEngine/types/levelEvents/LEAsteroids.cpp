@@ -10,7 +10,7 @@ All content © 2015 DigiPen (USA) Corporation, all rights reserved.
 #include "Components/transform/CTransform.h"
 #include "Components/colliders/CCircleCollider.h"
 #include "Components/controllers/player/CPlayerController.h"
-#include "components/gameplay_scripts/CBullet_default.h"
+#include "components/gameplay_scripts/Weapon_Scripts/CBullet_default.h"
 #include "components/particles/CParticleCircleEmitter.h"
 #include "components/particles/CParticleSystem.h"
 #include "../SheepUtil/include/Matrix3D.h"
@@ -52,7 +52,7 @@ namespace Framework
       Handle asteroid = (FACTORY->LoadObjectFromArchetype(LogicController->space, "Asteroid"))->self;
       Transform *aT = (LogicController->space->GetGameObject(asteroid)->GetComponent<Transform>(eTransform));
 
-      aT->SetTranslation(Vec3(GetRandom(-800, 800), GetRandom(-600, 600), GetRandom(175, 250)));
+      aT->SetTranslation(Vec3(GetRandom(-800, 800), GetRandom(-300, 300), GetRandom(175, 250)));
     }
 
   }

@@ -52,7 +52,9 @@ namespace Framework
     
       /*----- Setters ----- */
     
-      void SetTexture(unsigned int newTexture);
+      void SetTexture(std::string newTexture);
+      void TweakSetTexture(const void* newTexture);
+
       void SetLifetime(ParticleOptionShort<float>& op);
       void SetSpawnRate(ParticleOptionShort<float>& op);
       void SetDirection(void* op);
@@ -82,6 +84,9 @@ namespace Framework
       int directionEase;
       int colorEase;
       int speedEase;
+
+      int m_layer = 1;
+      bool m_hooked = false;
   
     private:
     
@@ -96,6 +101,9 @@ namespace Framework
       void UpdateScale(unsigned index, float t);
       void UpdateRotation(unsigned index, float t);
       void UpdateColor(unsigned index, float t);
+
+      void ResetZ();
+      float curZ = 0;
     
       std::vector<Particle> particles; // bucket of particles
       

@@ -80,7 +80,17 @@ namespace Framework
     else
     {
       // Make sure that both our types align
-      assert( var.GetTypeInfo( ) == info );
+      if (std::string(var.GetTypeInfo()->Name()) == "LightColor"
+        && std::string(info->Name()) == "Vec4")
+      {
+        
+      }
+      else
+      {
+        assert(var.GetTypeInfo() == info);
+      }
+        
+      
     }
 
     // Our peek function was nice enough to figure out the starting level for us

@@ -79,7 +79,7 @@ namespace Framework
 	}
 
   //enum AnimationState {IDLE, RUN, JUMP, ATTACK};
-  void AnimationController::Update(SpineSprite* spine, bool flip, Vec4& color, float rotation, Vec3& aimDir, bool aiming)
+  void AnimationController::Update(SpineSprite* spine, Vec4& color, float rotation, Vec3& aimDir, bool aiming)
   {
     spine->SetColor(color);
     aimDir.Normalize();    
@@ -92,8 +92,8 @@ namespace Framework
     switch(AnimState)
     {
     case IDLE:
-      //spine->SetSequence(std::string("idle"));
-      //break;
+      spine->SetSequence(std::string("idle"));
+      break;
     case RUN:
       if(!aiming)
       {
