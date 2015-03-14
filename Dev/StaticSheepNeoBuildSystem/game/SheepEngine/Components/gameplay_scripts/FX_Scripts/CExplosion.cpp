@@ -12,6 +12,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "../../colliders/CBoxCollider.h"
 #include "../../sprites/CAniSprite.h"
 #include "../../particles/CParticleCircleEmitter.h"
+#include "../../basicps/CBasicPSystem.h"
 
 namespace Framework
 {
@@ -61,6 +62,12 @@ namespace Framework
         if (psc)
           psc->Toggle(false);
 
+        BasicParticleSystem* bsc = (BasicParticleSystem*)space->GetComponent
+          (eBasicParticleSystem, owner);
+
+        if (bsc)
+          bsc->Toggle(false);
+
 
         removal = true;
         timer = 2.0f;
@@ -79,10 +86,15 @@ namespace Framework
 
     ParticleCircleEmitter* psc = (ParticleCircleEmitter*)space->GetComponent
       (eParticleCircleEmitter, owner);
-
+    
     if (psc)
       psc->Toggle(false);
 
+    BasicParticleSystem* bsc = (BasicParticleSystem*)space->GetComponent
+      (eBasicParticleSystem, owner);
+
+    if (bsc)
+      bsc->Toggle(false);
     
 
     timer = 2.0f;

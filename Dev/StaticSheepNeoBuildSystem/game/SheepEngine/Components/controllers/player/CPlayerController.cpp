@@ -21,6 +21,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "systems/graphics/SheepGraphics.h"
 #include "../../gameplay_scripts/Player_Scripts/CAimingArrow.h"
 #include "../../gameplay_scripts/Player_Scripts/CDashEffect.h"
+#include "../../particles/CParticleSystem.h"
 
 
 
@@ -43,8 +44,9 @@ namespace Framework
     health = 100;
     shields = 100;
     snappedTo = Handle::null;
-    respawnTimer = 2.0f;
+    respawnTimer = 3.0f;
     hasRespawned = true;
+    stoppedFX = false;
     blink = false;
     weapon = nullptr;
     GodMode = false;
@@ -55,6 +57,7 @@ namespace Framework
     frameSkip = false;
     arrowSpawn = false;
     hasDashed = false;
+    firstUpdate = true;
 	}
 
 	PlayerController::~PlayerController() //4
@@ -106,7 +109,7 @@ namespace Framework
 
     powerUp = nullptr;
     pn = -1;
-    SpawnEffect();
+    //SpawnEffect();
 	}
 
 	//************************************
@@ -124,6 +127,13 @@ namespace Framework
     bc = space->GetHandles().GetAs<BoxCollider>(playerCollider);
     se = space->GetHandles().GetAs<SoundEmitter>(playerSound);
     ps = space->GetHandles().GetAs<Transform>(playerTransform);
+
+    if (firstUpdate)
+    {
+      SpawnEffect();
+      firstUpdate = false;
+    }
+
     if (powerUp != nullptr)
     {
       if (powerUp->inUse)
@@ -615,39 +625,52 @@ namespace Framework
   {
     AniSprite *pa = space->GetHandles().GetAs<AniSprite>(playerAnimation);
     Transform *effectTrans;
-    if (respawnTimer <= 1.0f)
+
+    if (respawnTimer < 0.0f)
     {
       if (spawnEffect != Handle::null)
       {
         space->GetGameObject(spawnEffect)->Destroy();
         spawnEffect = Handle::null;
+
+        pa->Color.A = 255.0f;
+
+        hasRespawned = false;
       }
     }
+
     if (respawnTimer > 0.0f)
     {
-      if (!blink)
-        pa->Color.A -= dt * 10.0f;
-      else
-        pa->Color.A += dt * 10.0f;
+      if (hasRespawned)
+      {
+        if (!blink)
+          pa->Color.A -= dt * 10.0f;
+        else
+          pa->Color.A += dt * 10.0f;
 
-      respawnTimer -= dt;
+        respawnTimer -= dt;
 
-      if (pa->Color.A <= 0.0f)
-        blink = true;
+        if (pa->Color.A <= 0.5f)
+          blink = true;
 
-      if (pa->Color.A >= 1.0f)
-        blink = false;
+        if (pa->Color.A >= 1.0f)
+          blink = false;
+      }
+      
       if (spawnEffect != Handle::null)
       {
         effectTrans = space->GetGameObject(spawnEffect)->GetComponent<Transform>(eTransform);
         effectTrans->SetTranslation(ps->GetTranslation());
+
+        if (respawnTimer < 1.5f && !stoppedFX)
+        {
+          ParticleCircleEmitter* psys = space->GetGameObject(spawnEffect)->
+            GetComponent<ParticleCircleEmitter>(eParticleCircleEmitter);
+          if (psys)
+            psys->Toggle(false);
+          stoppedFX = true;
+        }
       }
-    }
-    else
-    {
-      pa->Color.A = 255.0f;
-      hasRespawned = false;
-      respawnTimer = 2.0f;
     }
 
 
@@ -874,5 +897,7 @@ namespace Framework
 
     effectTrans = space->GetGameObject(spawnEffect)->GetComponent<Transform>(eTransform);
     effectTrans->SetTranslation(ps->GetTranslation());
+
+    stoppedFX = false;
   }
 }

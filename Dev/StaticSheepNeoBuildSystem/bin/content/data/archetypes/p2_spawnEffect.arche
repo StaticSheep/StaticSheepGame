@@ -1,6 +1,6 @@
 GameObject
 {
-  name std::string "p2_spawnEffect"
+  name std::string ""
   archetype std::string "p2_spawnEffect"
   Transform
   {
@@ -20,26 +20,28 @@ GameObject
   }
   PointLight
   {
+    m_layer unsignedint 1
     m_brightness LightColor
     {
       R float 1.000000
-      G float 0.000000
-      B float 0.000000
-      A float 0.250000
+      G float 1.000000
+      B float 1.000000
+      A float 5.000000
     }
     m_attenuation LightVec3
     {
-      X float 0.010000
-      Y float 0.010000
-      Z float 0.010000
+      X float 0.000000
+      Y float -100.000000
+      Z float 1.000000
     }
   }
   ParticleSystem
   {
-    textureName std::string "White.png"
+    textureName std::string "SpawnParticle.png"
+    m_layer int 1
     particleLife ParticleOptionShort<float>
     {
-      m_startMin float 0.500000
+      m_startMin float 1.000000
       m_startMax float 1.000000
     }
     directionEase int 1
@@ -47,26 +49,26 @@ GameObject
     {
       m_startMin Vec3
       {
-        x_ float -1.000000
-        y_ float 1.000000
+        x_ float 0.000000
+        y_ float 0.000000
         z_ float 0.000000
       }
       m_startMax Vec3
       {
-        x_ float 1.000000
-        y_ float 1.000000
+        x_ float 0.000000
+        y_ float 0.000000
         z_ float 0.000000
       }
       m_endMin Vec3
       {
         x_ float 0.000000
-        y_ float 1.000000
+        y_ float 0.000000
         z_ float 0.000000
       }
       m_endMax Vec3
       {
         x_ float 0.000000
-        y_ float 1.000000
+        y_ float 0.000000
         z_ float 0.000000
       }
     }
@@ -77,29 +79,29 @@ GameObject
       m_endMin float 0.000000
       m_endMax float 0.000000
     }
-    scaleEase int 1
+    scaleEase int 3
     scale ParticleOption<float>
     {
-      m_startMin float 3.000000
-      m_startMax float 5.000000
-      m_endMin float 8.000000
-      m_endMax float 10.000000
+      m_startMin float 82.000000
+      m_startMax float 82.000000
+      m_endMin float 300.000000
+      m_endMax float 400.000000
     }
-    colorEase int 1
+    colorEase int 2
     color ParticleOption<Vec4>
     {
       m_startMin Vec4
       {
         R float 1.000000
-        G float 0.392157
-        B float 0.392157
-        A float 1.000000
+        G float 0.000000
+        B float 0.000000
+        A float 0.901961
       }
       m_startMax Vec4
       {
         R float 1.000000
-        G float 0.392157
-        B float 0.392157
+        G float 0.078431
+        B float 0.078431
         A float 1.000000
       }
       m_endMin Vec4
@@ -107,29 +109,29 @@ GameObject
         R float 1.000000
         G float 0.000000
         B float 0.000000
-        A float 0.098039
+        A float 0.078431
       }
       m_endMax Vec4
       {
         R float 1.000000
         G float 0.000000
-        B float 0.250980
-        A float 0.125490
+        B float 0.000000
+        A float 0.078431
       }
     }
-    speedEase int 2
+    speedEase int 1
     speed ParticleOption<float>
     {
-      m_startMin float 300.000000
-      m_startMax float 600.000000
+      m_startMin float 0.000000
+      m_startMax float 0.000000
       m_endMin float 0.000000
       m_endMax float 0.000000
     }
   }
   ParticleCircleEmitter
   {
-    m_innerRadius float 10.000000
-    m_outerRadius float 64.000000
+    m_innerRadius float 0.000000
+    m_outerRadius float 0.000000
     m_spawnOffset Vec3
     {
       x_ float 0.000000
@@ -138,18 +140,18 @@ GameObject
     }
     m_amount ParticleOptionShort<float>
     {
-      m_startMin float 20.000000
+      m_startMin float 1.000000
       m_startMax float 0.000000
     }
     m_rate ParticleOptionShort<float>
     {
-      m_startMin float 60.000000
+      m_startMin float 8.000000
       m_startMax float 0.000000
     }
     spawning bool true
     timedSpawning bool true
     timed float 0.250000
-    outward bool true
+    outward bool false
     inward bool false
   }
 }
