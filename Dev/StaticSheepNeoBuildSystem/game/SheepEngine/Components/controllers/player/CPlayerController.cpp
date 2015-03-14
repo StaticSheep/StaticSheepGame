@@ -88,9 +88,23 @@ namespace Framework
     playerAnimation = space->GetGameObject(owner)->GetComponentHandle(eSpineSprite);
 
     ps = space->GetHandles().GetAs<Transform>(playerTransform);
-    ps->SetScale(Vec3(1.0f, 1.0f, 0.0));
+    ps->SetScale(Vec3(.8f, .8f, 0.0));
 
-    playerColor = Vec4(1.0f, 1.0f, 1.0f, 1.0f);
+    switch(playerNum)
+    {
+      case 0:
+        playerColor = Vec4(0.12f, 0.87f, 0.25f, 1.0f);
+        break;
+      case 1:
+        playerColor = Vec4(0.87f, 0.25f, 0.12f, 1.0f);
+        break;
+      case 2:
+        playerColor = Vec4(0.70f, 0.25f, 0.70f, 1.0f);
+        break;
+      case 3:
+        playerColor = Vec4(0.25f, 0.12f, 0.87f, 1.0f);
+        break;
+    }
 
 		gp = space->GetHandles().GetAs<GamePad>(playerGamePad); //actually gets the gamepad
 		gp->SetPad(playerNum); //setting pad number
@@ -100,6 +114,7 @@ namespace Framework
 
     bc = space->GetHandles().GetAs<BoxCollider>(playerCollider);
     bc->SetGravityOff();
+
     weapon = (Pistol*)GET_TYPE(Pistol)->New();
     se = space->GetHandles().GetAs<SoundEmitter>(playerSound);
     se->Play("robot_startup", &SoundInstance(0.50f));

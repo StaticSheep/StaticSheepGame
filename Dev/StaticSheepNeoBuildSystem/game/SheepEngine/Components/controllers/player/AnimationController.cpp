@@ -89,11 +89,17 @@ namespace Framework
     Vec3 temp = rot * aimDir;
     float theta = 0.0f;
 
+    int start = 0;
+    int end = 12;
+
     switch(AnimState)
     {
     case IDLE:
       spine->SetSequence(std::string("idle"));
       break;
+    case JUMP:
+      start = 6;
+      end = 6;
     case RUN:
       if(!aiming)
       {
@@ -116,26 +122,26 @@ namespace Framework
 
           if(theta < 22.5f)
           {
-            spine->SetSequence(std::string("run_shoot_right"));
+            spine->SetComplexSequence(std::string("run_shoot_right"), 24.0f, start, end);
           }
           else
           if(theta < 67.5f)
           {
-            spine->SetSequence(std::string("run_shoot_upright"));
+            spine->SetComplexSequence(std::string("run_shoot_upright"), 24.0f, start, end);
           }
           else
           if(theta < 112.5f)
           {
-            spine->SetSequence(std::string("run_shoot_up"));
+            spine->SetComplexSequence(std::string("run_shoot_up"), 24.0f, start, end);
           }
           else
           if(theta < 157.5f)
           {
-            spine->SetSequence(std::string("run_shoot_upright"));
+            spine->SetComplexSequence(std::string("run_shoot_upright"), 24.0f, start, end);
           }
           else
           {
-            spine->SetSequence(std::string("run_shoot_right"));
+            spine->SetComplexSequence(std::string("run_shoot_right"), 24.0f, start, end);
           }
         }
         else
@@ -147,33 +153,33 @@ namespace Framework
 
           if(theta > -22.5f)
           {
-            spine->SetSequence(std::string("run_shoot_right"));
+            spine->SetComplexSequence(std::string("run_shoot_right"), 24.0f, start, end);
           }
           else
           if(theta > -67.5f)
           {
-            spine->SetSequence(std::string("run_shoot_downright"));
+            spine->SetComplexSequence(std::string("run_shoot_downright"), 24.0f, start, end);
           }
           else
           if(theta > -112.5f)
           {
-            spine->SetSequence(std::string("run_shoot_down"));
+            spine->SetComplexSequence(std::string("run_shoot_down"), 24.0f, start, end);
           }
           else
           if(theta > -157.5f)
           {
-            spine->SetSequence(std::string("run_shoot_downright"));
+            spine->SetComplexSequence(std::string("run_shoot_downright"), 24.0f, start, end);
           }
           else
           {
-            spine->SetSequence(std::string("run_shoot_right"));
+            spine->SetComplexSequence(std::string("run_shoot_right"), 24.0f, start, end);
           }
         }
       }
       break;
-    case JUMP:
-      spine->SetComplexSequence(std::string("jump"), 24.0f, 2, 11);
-      break;
+    //case JUMP:
+    //  spine->SetComplexSequence(std::string("jump"), 24.0f, 2, 11);
+    //  break;
     case ATTACK:
       break;
     }

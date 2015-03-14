@@ -76,8 +76,15 @@ namespace Framework
       }
       else
       {
-        ++currentFrame;
-        currentFrame = (currentFrame % (endLoop - startLoop)) + startLoop;
+        int temp = endLoop - startLoop;
+
+        if(temp == 0)
+          currentFrame = startLoop;
+        else
+        {
+          ++currentFrame;
+          currentFrame = (currentFrame % (endLoop - startLoop)) + startLoop;
+        }
         currentTime = 0.0f;
       }
     }
