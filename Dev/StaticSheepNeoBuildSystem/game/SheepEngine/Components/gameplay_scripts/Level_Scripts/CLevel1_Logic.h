@@ -77,6 +77,8 @@ namespace Framework
     GameTypes mode;
     GameMods mod1, mod2;
 
+    int fontIndex;
+
     int GetPlayerHealth(int);
     int GetPlayerLives(int);
     int GetWinner();

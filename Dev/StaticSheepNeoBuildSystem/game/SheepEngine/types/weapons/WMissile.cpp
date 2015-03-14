@@ -58,7 +58,8 @@ namespace Framework
     part->direction.m_startMin = rotation * part->direction.m_startMin;
     part->direction.m_startMax = rotation * part->direction.m_startMax;
 
-    bulletC->SetBodyCollisionGroup(player->archetype);
+    bulletC->SetBodyCollisionGroup(player->GetComponent<PlayerController>(ePlayerController)->weaponGroup);
+
     BT->SetTranslation(playerTrans->GetTranslation() + AimDir * 25);
     bulletC->AddToVelocity(AimDir * 1000);
 

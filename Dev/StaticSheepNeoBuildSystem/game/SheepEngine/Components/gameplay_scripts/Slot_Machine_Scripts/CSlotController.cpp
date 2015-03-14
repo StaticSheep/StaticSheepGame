@@ -93,8 +93,8 @@ namespace Framework
       }
       break;
     case JACKPOT:
-        *spinTexID = Draw::GetTextureID("slot_test_blur.png");
-        *stopTexID = Draw::GetTextureID("slot_test.png");
+        *spinTexID = Draw::GetTextureID("slot_coin_blur.png");
+        *stopTexID = Draw::GetTextureID("slot_coin.png");
       break;
     case INDIVIDUAL:
 
@@ -184,7 +184,7 @@ namespace Framework
     }
     else if (Stype == JACKPOT)
     {
-      if (results[1] == 1 && results[2] == 1 && results[0] == 1)
+      if (results[0] == 2 && results[1] == 2 && results[2] == 2)
         return true;
     }
 

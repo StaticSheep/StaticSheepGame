@@ -311,13 +311,13 @@ namespace Framework
         was passed over during our previous event. */
         if (ed.duration <= lostTime)
         {
-          m_eventStack.pop();
           ed = m_eventStack.top();
+          m_eventStack.pop();
 
           /* Remove the time delay from the event we skipped and
           then fill it with the (greater) time delay. */
-          m_timeDelay.pop();
           m_timeDelay.push(lostTime);
+          m_timeDelay.pop();
           lostTime = 0;
         }
         else

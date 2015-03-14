@@ -110,7 +110,7 @@ namespace Framework
     else
     {
       if (powerUpID == eCoin)
-        space->GetGameObject(owner)->GetComponent<CircleCollider>(eCircleCollider)->SetBodyCollisionGroup("Resolve");
+        space->GetGameObject(owner)->GetComponent<CircleCollider>(eCircleCollider)->SetBodyCollisionGroup("Item");
       else
         space->GetGameObject(owner)->GetComponent<BoxCollider>(eBoxCollider)->SetBodyCollisionGroup("Collide");
     }

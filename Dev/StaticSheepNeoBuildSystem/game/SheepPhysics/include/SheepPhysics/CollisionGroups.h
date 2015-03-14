@@ -11,6 +11,11 @@ enum CollisionGroup{
   Player2,
   Player3,
   Player4,
+  Player1Weapon,
+  Player2Weapon,
+  Player3Weapon,
+  Player4Weapon,
+  Item,
   Static,
   CollGroupLength
 };
