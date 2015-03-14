@@ -486,7 +486,7 @@ namespace Framework
       space->GetHandles().GetAs<SoundEmitter>(levelEmitter)->Play("warning");
     }
   }
-
+  /*idea for bonus slot machine. have it spin for bonus star awards when the round ends. things like most kills, or most coins*/
   void Level1_Logic::GoToGameMode(float dt)
   {
     switch (mode)
@@ -521,7 +521,7 @@ namespace Framework
 
     if (roundTimer <= 0)
     {
-      mode = SLOTMACHINE;
+      mode = SLOTMACHINE;//ROUNDOVER
       return;
     }
 
@@ -557,7 +557,7 @@ namespace Framework
       for (int i = 0; i < 4; ++i)
         juggernaut[i] = false;
 
-      mode = SLOTMACHINE;
+      mode = SLOTMACHINE;//ROUNDOVER
       return;
     }
 
@@ -657,11 +657,11 @@ namespace Framework
 
     if (roundTimer <= 0)
     {
-      mode = SLOTMACHINE;
+      mode = SLOTMACHINE;//ROUNDOVER
       return;
     }
     if (LastManStanding())
-      mode = SLOTMACHINE;
+      mode = SLOTMACHINE;//ROUNDOVER
     spawnTimer -= dt;
     eventTimer -= dt;
 
@@ -669,7 +669,9 @@ namespace Framework
 
   void Level1_Logic::SlotMachineMode(float dt)
   {
-    if (!slotFinished)
+    //if(round == maxRounds)
+      //mode = GAMEOVER
+/*else*/if (!slotFinished)
     {
       ResetPlayers();
       if (LE)
@@ -704,7 +706,7 @@ namespace Framework
 
     if (roundTimer <= 0)
     {
-      mode = SLOTMACHINE;
+      mode = SLOTMACHINE; //ROUNDOVER
       return;
     }
     if (spawnTimer <= 0)
