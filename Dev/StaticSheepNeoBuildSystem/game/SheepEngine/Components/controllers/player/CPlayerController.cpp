@@ -580,6 +580,10 @@ namespace Framework
   {
     aimDir = aimingDirection(gp); //get the direction the player is currently aiming;
 
+    if(!arrowSpawn)
+      arrowSpawn = true;
+
+    /*
     if (!arrowSpawn)
     {
       //draw aiming arrow
@@ -592,7 +596,7 @@ namespace Framework
       AA->GetComponent<Sprite>(eSprite)->Color = playerS->Color; //set the colors equal
       AA->GetComponent<Sprite>(eSprite)->Color.a = 0.7f; //make sure the alpha isn't low (happens during respawn)
       arrowSpawn = true;
-    }
+    }*/
   }
 
   //************************************

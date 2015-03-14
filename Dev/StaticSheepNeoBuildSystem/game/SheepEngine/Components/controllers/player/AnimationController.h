@@ -25,6 +25,7 @@ namespace Framework
   };
 
   enum AnimationState {IDLE, RUN, JUMP, ATTACK};
+  enum AimDirection {UP, UPRIGHT, RIGHT, DOWNRIGHT, DOWN};
 
 	class AnimationController
 	{
