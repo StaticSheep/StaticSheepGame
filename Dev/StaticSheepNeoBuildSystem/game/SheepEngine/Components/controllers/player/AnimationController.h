@@ -11,6 +11,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "../../sound/CSoundEmitter.h"
 #include "../../transform/CTransform.h"
 #include "types/weapons/WBase.h"
+#include "components/sprites/CSpineSprite.h"
 
 namespace Framework
 {
@@ -31,6 +32,8 @@ namespace Framework
     AnimationController();
     AnimationController(int playerNum);
     ~AnimationController();
+
+    void Update(SpineSprite* spine, Vec4& color, float rotation, Vec3& aimDir, bool aiming);
 		
 		//member variables
     const char *spriteSheet;

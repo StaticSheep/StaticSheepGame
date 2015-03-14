@@ -49,6 +49,7 @@ E_NAME(Component)
   E_ENTRY(div_Graphics)
   E_ENTRY(Sprite)
   E_ENTRY(AniSprite)
+  E_ENTRY(SpineSprite)
   E_ENTRY(Camera)
 
   E_ENTRY(div_Lighting)

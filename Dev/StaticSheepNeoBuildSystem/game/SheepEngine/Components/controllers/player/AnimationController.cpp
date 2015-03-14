@@ -9,7 +9,9 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "types/space/Space.h"
 #include "components/colliders/CBoxCollider.h"
 #include "types/vectors/Vec3.h"
+#include "../SheepUtil/include/Matrix3D.h"
 #include "AnimationController.h"
+
 
 namespace Framework
 {
@@ -76,5 +78,111 @@ namespace Framework
 
 	}
 
+  //enum AnimationState {IDLE, RUN, JUMP, ATTACK};
+  void AnimationController::Update(SpineSprite* spine, Vec4& color, float rotation, Vec3& aimDir, bool aiming)
+  {
+    spine->SetColor(color);
+    aimDir.Normalize();    
+
+    Mat3D rot(-rotation);
+
+    Vec3 temp = rot * aimDir;
+    float theta = 0.0f;
+
+    int start = 0;
+    int end = 12;
+
+    switch(AnimState)
+    {
+    case IDLE:
+      spine->SetSequence(std::string("idle"));
+      break;
+    case JUMP:
+      start = 6;
+      end = 6;
+    case RUN:
+      if(!aiming)
+      {
+        spine->SetSequence(std::string("run"));
+      }
+      else
+      {
+
+        theta = atan2f(temp.y, temp.x) * 57.2957795;
+
+        //ENGINE->TraceLog.Log(Framework::TraceLevel::DBG, "theta = %f", theta);
+
+        if(theta > 0.0f)
+        {
+
+          if(theta < 90.0f)
+            spine->FlipX(false);
+          else
+            spine->FlipX(true);
+
+          if(theta < 22.5f)
+          {
+            spine->SetComplexSequence(std::string("run_shoot_right"), 24.0f, start, end);
+          }
+          else
+          if(theta < 67.5f)
+          {
+            spine->SetComplexSequence(std::string("run_shoot_upright"), 24.0f, start, end);
+          }
+          else
+          if(theta < 112.5f)
+          {
+            spine->SetComplexSequence(std::string("run_shoot_up"), 24.0f, start, end);
+          }
+          else
+          if(theta < 157.5f)
+          {
+            spine->SetComplexSequence(std::string("run_shoot_upright"), 24.0f, start, end);
+          }
+          else
+          {
+            spine->SetComplexSequence(std::string("run_shoot_right"), 24.0f, start, end);
+          }
+        }
+        else
+        {
+          if(theta > -90.0f)
+            spine->FlipX(false);
+          else
+            spine->FlipX(true);
+
+          if(theta > -22.5f)
+          {
+            spine->SetComplexSequence(std::string("run_shoot_right"), 24.0f, start, end);
+          }
+          else
+          if(theta > -67.5f)
+          {
+            spine->SetComplexSequence(std::string("run_shoot_downright"), 24.0f, start, end);
+          }
+          else
+          if(theta > -112.5f)
+          {
+            spine->SetComplexSequence(std::string("run_shoot_down"), 24.0f, start, end);
+          }
+          else
+          if(theta > -157.5f)
+          {
+            spine->SetComplexSequence(std::string("run_shoot_downright"), 24.0f, start, end);
+          }
+          else
+          {
+            spine->SetComplexSequence(std::string("run_shoot_right"), 24.0f, start, end);
+          }
+        }
+      }
+      break;
+    //case JUMP:
+    //  spine->SetComplexSequence(std::string("jump"), 24.0f, 2, 11);
+    //  break;
+    case ATTACK:
+      break;
+    }
+  }
 
 }

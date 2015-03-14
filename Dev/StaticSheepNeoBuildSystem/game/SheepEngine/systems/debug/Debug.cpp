@@ -50,13 +50,13 @@ namespace Framework
     if(AUDIO)
     {
       audio = (DebugAudio*)AUDIO->GetDebugData();
-      TRACELOG->Log(TraceLevel::DEBUG, "Debugger linked to Audio system");
+      TRACELOG->Log(TraceLevel::DBG, "Debugger linked to Audio system");
     }
 
     if(GRAPHICS)
     {
       graphics = (DebugGraphics*)GRAPHICS->GetDebugData();
-      TRACELOG->Log(TraceLevel::DEBUG, "Debugger linked to Graphics system");
+      TRACELOG->Log(TraceLevel::DBG, "Debugger linked to Graphics system");
       fontIndex = Draw::GetFontIndex("Helvetica");
     }
     
@@ -71,7 +71,7 @@ namespace Framework
     }
     
     framerate = (DebugFramerate*)ENGINE->Framerate.GetDebugData();
-    TRACELOG->Log(TraceLevel::DEBUG, "Debugger linked to Framerate Controller");
+    TRACELOG->Log(TraceLevel::DBG, "Debugger linked to Framerate Controller");
   }
 
   void Debug::Update(float dt)

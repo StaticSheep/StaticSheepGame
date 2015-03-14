@@ -20,7 +20,7 @@ namespace Framework
   {
     file = NULL;
     TRACELOG = this;
-    _level = DEBUG;
+    _level = DBG;
 
     Log(INFO, "TraceLog Started\n");
   }
@@ -162,7 +162,7 @@ namespace Framework
       case WARNING:
         fprintf(file, "%s [WARNING]  ", begin);
         break;
-      case DEBUG:
+      case DBG:
         fprintf(file, "%s [DEBUG]    ", begin);
         break;
       case INFO:
@@ -182,7 +182,7 @@ namespace Framework
       case WARNING:
         printf("%s [WARNING]  ", begin);
         break;
-      case DEBUG:
+      case DBG:
         printf("%s [DEBUG]    ", begin);
         break;
       case INFO:
