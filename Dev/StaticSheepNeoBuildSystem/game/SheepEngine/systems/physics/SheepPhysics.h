@@ -60,7 +60,7 @@ namespace Framework
 			//access to bodies for changing the bodies
 			void ChangePhysBodies(GameSpace* space, SheepFizz::Handle handle, float xradius, float y);
 			void ChangePhysMaterials(GameSpace* space, SheepFizz::Handle handle, SheepFizz::Material& material);
-      void ChangeCollisionGroup(GameSpace* space, SheepFizz::Handle handle, std::string name);
+      void ChangeCollisionGroup(GameSpace* space, SheepFizz::Handle handle, std::string& name);
 
 			//gettors
 			Vec3D GetBodyPosition(GameSpace* space, SheepFizz::Handle handle);
@@ -82,7 +82,7 @@ namespace Framework
       std::string GetCollisionGroup(GameSpace* space, SheepFizz::Handle handle);
 
       //raycast
-      void SetRayConfig(Vec3D& rayOrigin, Vec3D& rayDirection, std::string name);
+      void SetRayConfig(Vec3D& rayOrigin, Vec3D& rayDirection, std::string& name);
       bool SimpleRayCast(GameSpace* space);
       bool ComplexRayCast(GameSpace* space);
       void RayDestruction();
@@ -115,7 +115,7 @@ namespace Framework
 			//remove bodies from the bodies held in the physics engine
 			void RemoveBodies(GameSpace* space, SheepFizz::Handle handle);
 
-			SheepFizz::Material* GetMaterial(std::string name);
+			SheepFizz::Material* GetMaterial(std::string& name);
 
       //shape info
       unsigned int GetBodyVertexNumber(GameSpace* space, SheepFizz::Handle handle);

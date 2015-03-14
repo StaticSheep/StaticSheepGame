@@ -93,6 +93,27 @@ namespace Framework
 		gp = space->GetHandles().GetAs<GamePad>(playerGamePad); //actually gets the gamepad
 		gp->SetPad(playerNum); //setting pad number
 
+    //intialize the playerWeaponGroup - used for Collisions in physics
+    switch (playerNum)
+    {
+      case 0:
+        weaponGroup = "Player1Weapon";
+        break;
+
+      case 1:
+        weaponGroup = "Player2Weapon";
+        break;
+
+      case 2:
+        weaponGroup = "Player3Weapon";
+        break;
+
+      case 3:
+        weaponGroup = "Player4Weapon";
+        break;
+    }
+
+
 		aimDir.x = 1;
 		aimDir.y = 0;
 

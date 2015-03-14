@@ -59,6 +59,8 @@ namespace Framework
     float rotation, lastRotation;
     float respawnTimer;
 
+    std::string weaponGroup;
+
     std::vector<Vec3> normals;
     AnimationController animCont;
     Weapon *weapon;
