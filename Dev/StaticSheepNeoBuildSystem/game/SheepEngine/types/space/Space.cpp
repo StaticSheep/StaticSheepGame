@@ -23,7 +23,7 @@ namespace Framework
   unsigned int GameSpace::maxGuid = 0;
 
   GameSpace::GameSpace() :
-    m_objects(sizeof(GameObject), 250),
+    m_objects(sizeof(GameObject), 1000),
     m_shuttingDown(false),
     m_paused(false),
     m_hidden(false),
@@ -35,7 +35,7 @@ namespace Framework
     for(unsigned i = 0; i < ecountComponents; ++i)
     {
       if (FACTORY->m_componentCreators[i])
-        m_components[i].Initialize(FACTORY->m_componentCreators[i]->m_size, 250);
+        m_components[i].Initialize(FACTORY->m_componentCreators[i]->m_size, 1000);
     }
     
     hooks.space = this;

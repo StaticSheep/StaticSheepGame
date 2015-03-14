@@ -513,7 +513,9 @@ namespace Framework
 	{
     if (spawnEffect != Handle::null)
     {
-      space->GetGameObject(spawnEffect)->Destroy();
+      GameObject* obj = space->GetGameObject(spawnEffect);
+      if (obj)
+        obj->Destroy();
       spawnEffect = Handle::null;
     }
 		//opposite of init
@@ -843,6 +845,14 @@ namespace Framework
     {
       space->GetGameObject(owner)->hooks.Call("ButtonPressed", Buttons::RIGHT);
       playerButton.button = Buttons::RIGHT;
+    }
+
+    if (SHEEPINPUT->Keyboard.KeyIsPressed('V'))
+    {
+      Handle explosion = (FACTORY->LoadObjectFromArchetype(space, "explosion"))->self;
+      Transform *exT = space->GetGameObject(explosion)->GetComponent<Transform>(eTransform);
+      exT->SetTranslation(ps->GetTranslation());
+      exT->SetRotation((float)GetRandom(0, (int)(2.0f * (float)PI)));
     }
     
     ENGINE->SystemMessage(MetricsMessage(&playerButton));

@@ -87,8 +87,13 @@ local function FileReloaded()
   uimenu.UpdateMeta()
 end
 
+local counter = 0
 function CheckOldFiles()
-  filesystem.UpdateOldFiles(FileReloaded)
+  counter = counter + 1
+  if (counter > 90) then
+    filesystem.UpdateOldFiles(FileReloaded)
+    counter = 0
+  end
 end
 
 function LuaLoaded()
