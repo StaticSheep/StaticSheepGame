@@ -797,6 +797,7 @@ namespace Framework
 
       if (Players[i] == Handle::null)
         continue;
+
       if (playerCoinsThisFrame[i] != 0)
       {
         std::pair<int, float> newCoinString(playerCoinsThisFrame[i], 1.0f);
