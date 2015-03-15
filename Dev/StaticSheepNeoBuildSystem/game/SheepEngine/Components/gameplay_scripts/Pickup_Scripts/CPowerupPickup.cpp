@@ -143,13 +143,13 @@ namespace Framework
       if (respawnTimer > 0.0f)
       {
         if (!blink)
-          ps->Color.A -= dt * 10.0f;
+          ps->Color.A -= dt * 1.0f;
         else
-          ps->Color.A += dt * 10.0f;
+          ps->Color.A += dt * 1.0f;
 
         respawnTimer -= dt;
 
-        if (ps->Color.A <= 0.0f)
+        if (ps->Color.A <= 0.7f)
           blink = true;
 
         if (ps->Color.A >= 1.0f)
@@ -167,13 +167,13 @@ namespace Framework
       if (respawnTimer > 0.0f)
       {
         if (!blink)
-          ps->Color.A -= dt * 10.0f;
+          ps->Color.A -= dt * 1.0f;
         else
-          ps->Color.A += dt * 10.0f;
+          ps->Color.A += dt * 1.0f;
 
         respawnTimer -= dt;
 
-        if (ps->Color.A <= 0.0f)
+        if (ps->Color.A <= 0.7f)
           blink = true;
 
         if (ps->Color.A >= 1.0f)

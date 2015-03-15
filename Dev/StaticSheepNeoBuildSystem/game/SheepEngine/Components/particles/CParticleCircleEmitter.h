@@ -40,6 +40,7 @@ namespace Framework
       bool timedSpawning;
       bool outward;
       bool inward;
+      bool parentToOwner;
       float timed;
 
       Vec3 m_spawnOffset;

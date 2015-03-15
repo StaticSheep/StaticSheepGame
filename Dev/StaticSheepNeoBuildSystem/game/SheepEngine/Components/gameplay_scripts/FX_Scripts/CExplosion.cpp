@@ -13,6 +13,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "../../sprites/CAniSprite.h"
 #include "../../particles/CParticleCircleEmitter.h"
 #include "../../basicps/CBasicPSystem.h"
+#include "../../lights/CPointLight.h"
 
 namespace Framework
 {
@@ -43,6 +44,31 @@ namespace Framework
 		space->hooks.Remove("LogicUpdate", self);
 	}
 
+  void Explosion::PrepRemoval()
+  {
+    ParticleCircleEmitter* psc = (ParticleCircleEmitter*)space->GetComponent
+      (eParticleCircleEmitter, owner);
+
+    if (psc)
+      psc->Toggle(false);
+
+    BasicParticleSystem* bsc = (BasicParticleSystem*)space->GetComponent
+      (eBasicParticleSystem, owner);
+
+    if (bsc)
+      bsc->Toggle(false);
+
+    PointLight* pl = (PointLight*)space->GetComponent
+      (ePointLight, owner);
+
+    if (pl)
+      lightDropStep = pl->m_brightness.a / lightFadeTime;
+
+    removal = true;
+    waitForAnim = false;
+    timer = 2.0f;
+  }
+
   void Explosion::LogicUpdate(float dt)
 	{
     if (waitForAnim)
@@ -56,22 +82,21 @@ namespace Framework
         DestroySelf();
       else
       {
-        ParticleCircleEmitter* psc = (ParticleCircleEmitter*)space->GetComponent
-          (eParticleCircleEmitter, owner);
-
-        if (psc)
-          psc->Toggle(false);
-
-        BasicParticleSystem* bsc = (BasicParticleSystem*)space->GetComponent
-          (eBasicParticleSystem, owner);
-
-        if (bsc)
-          bsc->Toggle(false);
-
-
-        removal = true;
-        timer = 2.0f;
+        PrepRemoval();
       }
+    }
+    else
+    {
+      PointLight* pl = (PointLight*)space->GetComponent
+        (ePointLight, owner);
+
+      if (pl)
+      {
+        pl->m_brightness.a -= lightDropStep * dt;
+        if (pl->m_brightness.a < 0.0f)
+          pl->m_brightness.a = 0;
+      }
+        
     }
 
     //Transform *pt = space->GetHandles().GetAs<Transform>(eTransfrom);
@@ -81,25 +106,7 @@ namespace Framework
 
   void Explosion::AnimEnd()
   {
-    AniSprite *ea = space->GetHandles().GetAs <AniSprite>(eAnSprite);
-    ea->m_hidden = true;
-
-    ParticleCircleEmitter* psc = (ParticleCircleEmitter*)space->GetComponent
-      (eParticleCircleEmitter, owner);
-    
-    if (psc)
-      psc->Toggle(false);
-
-    BasicParticleSystem* bsc = (BasicParticleSystem*)space->GetComponent
-      (eBasicParticleSystem, owner);
-
-    if (bsc)
-      bsc->Toggle(false);
-    
-
-    timer = 2.0f;
-    waitForAnim = false;
-    removal = true;
+    PrepRemoval();
   }
 
   void Explosion::DestroySelf()

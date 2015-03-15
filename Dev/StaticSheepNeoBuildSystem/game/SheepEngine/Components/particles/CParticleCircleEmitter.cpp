@@ -34,6 +34,12 @@ namespace Framework
   { 
     transform = this->GetOwner()->GetComponentHandle(eTransform);
 
+    ParticleSystem* system = (ParticleSystem*)space->GetComponent(eParticleSystem, owner);
+
+    // and a particle system is actually on this object
+    if (system)
+      system->parentToOwner = parentToOwner;
+
     space->hooks.Add("LogicUpdate", self, BUILD_FUNCTION(ParticleCircleEmitter::UpdateEmitter));
     space->hooks.Add("FrameUpdate", self, BUILD_FUNCTION(ParticleCircleEmitter::FrameUpdate));
   }
@@ -108,7 +114,11 @@ namespace Framework
 
         Vec3 direction = Vec3(randX, randY, 0.0f).Normalize();
 
-        Vec3 location = trans->GetTranslation() + m_spawnOffset;
+        Vec3 location;
+        if (parentToOwner)
+          location = m_spawnOffset;
+        else
+          location = trans->GetTranslation() + m_spawnOffset;
 
         if(!outward && !inward)
           Particle &particle = system->SpawnParticle(location + direction * randLength, true);

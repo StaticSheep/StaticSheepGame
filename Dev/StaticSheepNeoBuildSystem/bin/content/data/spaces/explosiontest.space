@@ -22,7 +22,7 @@ GameObject
   Sprite
   {
     m_spriteName std::string "white.png"
-    m_layer unsignedint 2
+    m_layer unsignedint 1
     m_flipX bool false
     m_flipY bool false
     m_uvScale bool false
@@ -31,12 +31,12 @@ GameObject
       R float 1.000000
       G float 1.000000
       B float 1.000000
-      A float 0.000000
+      A float 1.000000
     }
     Size Vec2
     {
-      X float 1.000000
-      Y float 1.000000
+      X float 1920.000000
+      Y float 1080.000000
     }
     m_origin Vec2
     {
@@ -47,8 +47,8 @@ GameObject
 }
 GameObject
 {
-  name std::string "explosion"
-  archetype std::string "explosion3"
+  name std::string "explosionFX"
+  archetype std::string "explosion"
   Transform
   {
     Translation Vec3
@@ -67,144 +67,128 @@ GameObject
   }
   PointLight
   {
-    m_layer unsignedint 2
+    m_layer unsignedint 1
     m_brightness LightColor
     {
       R float 1.000000
-      G float 0.500000
-      B float 0.000000
-      A float 30.000000
+      G float 0.600000
+      B float 0.100000
+      A float 0.050000
     }
     m_attenuation LightVec3
     {
       X float 0.000000
       Y float 0.000000
-      Z float 1.000000
+      Z float 0.001000
     }
   }
-  ParticleSystem
+  SpriteLight
   {
-    textureName std::string "explosion_pfx.png"
+    m_spriteName std::string "red_circle_light.png"
+    m_layer unsignedint 2
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    m_isOn bool true
+    m_emissive bool false
+    m_brightness LightColor
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+    Size Vec2
+    {
+      X float 3.000000
+      Y float 3.000000
+    }
+  }
+  BasicParticleSystem
+  {
+    m_texture std::string "explosion_pfx2.png"
     m_layer int 2
-    particleLife ParticleOptionShort<float>
+    m_pos BasicParticleSystem::BPSPos
     {
-      m_startMin float 0.300000
-      m_startMax float 0.500000
-    }
-    directionEase int 1
-    direction ParticleOption<Vec3>
-    {
-      m_startMin Vec3
+      square bool false
+      edgeOnly bool false
+      radius float 15.000000
+      angle float 1.000000
+      randAngle float 0.000000
+      offset Vec2
       {
-        x_ float -0.899586
-        y_ float -0.436744
-        z_ float 0.000000
+        X float 0.000000
+        Y float 0.000000
       }
-      m_startMax Vec3
+      randOffset Vec2
       {
-        x_ float 1.000000
-        y_ float 1.000000
-        z_ float 0.000000
-      }
-      m_endMin Vec3
-      {
-        x_ float -1.000000
-        y_ float -1.000000
-        z_ float 0.000000
-      }
-      m_endMax Vec3
-      {
-        x_ float 1.000000
-        y_ float 1.000000
-        z_ float 0.000000
+        X float 0.000000
+        Y float 0.000000
       }
     }
-    angularVelocity ParticleOption<float>
+    m_scaling BPartSys::BPSScaling
     {
-      m_startMin float 0.000000
-      m_startMax float 0.000000
-      m_endMin float 0.000000
-      m_endMax float 0.000000
-    }
-    scaleEase int 2
-    scale ParticleOption<float>
-    {
-      m_startMin float 64.000000
-      m_startMax float 92.000000
-      m_endMin float 16.000000
-      m_endMax float 64.000000
-    }
-    colorEase int 2
-    color ParticleOption<Vec4>
-    {
-      m_startMin Vec4
+      scale Vec2
       {
-        R float 0.901961
-        G float 0.478431
-        B float 0.000000
-        A float 0.901961
+        X float 60.000000
+        Y float 60.000000
       }
-      m_startMax Vec4
+      randScale Vec2
       {
-        R float 1.000000
-        G float 1.000000
-        B float 0.000000
-        A float 1.000000
-      }
-      m_endMin Vec4
-      {
-        R float 0.901961
-        G float 0.478431
-        B float 0.000000
-        A float 0.588235
-      }
-      m_endMax Vec4
-      {
-        R float 1.000000
-        G float 1.000000
-        B float 0.000000
-        A float 0.588235
+        X float 5.000000
+        Y float 5.000000
       }
     }
-    speedEase int 2
-    speed ParticleOption<float>
+    m_rot BPartSys::BPSRotation
     {
-      m_startMin float 200.000000
-      m_startMax float 300.000000
-      m_endMin float 0.000000
-      m_endMax float 0.000000
+      rotation float 0.000000
+      randRotation float 5.000000
     }
-  }
-  ParticleCircleEmitter
-  {
-    m_innerRadius float 0.000000
-    m_outerRadius float 20.000000
-    m_spawnOffset Vec3
+    m_life BPartSys::BPSLife
     {
-      x_ float 0.000000
-      y_ float 0.000000
-      z_ float 0.000000
+      lifetime float 0.800000
+      randLifetime float 0.000000
     }
-    m_amount ParticleOptionShort<float>
+    m_fade BPartSys::BPSFade
     {
-      m_startMin float 100.000000
-      m_startMax float 0.000000
+      fadeOut bool true
+      fadeOutTime float 0.500000
+      randFadeoutTime float 0.000000
     }
-    m_rate ParticleOptionShort<float>
+    m_vel BPartSys::BPSVelocity
     {
-      m_startMin float 4.000000
-      m_startMax float 0.000000
+      velocity Vec2
+      {
+        X float 0.000000
+        Y float 0.000000
+      }
+      randVelocity Vec2
+      {
+        X float 0.000000
+        Y float 0.000000
+      }
+      speedIn float -10.000000
+      randSpeedIn float 1.000000
     }
-    spawning bool true
-    timedSpawning bool false
-    timed float 2.000000
-    outward bool true
-    inward bool false
+    m_system BPartSys::BPSSystem
+    {
+      active bool true
+      editorActive bool true
+      spawnInterval float 20.000000
+      spawnAmount float 10.000000
+      spawnPerSecond float 0.000000
+      shutdownTimer float 0.000000
+    }
   }
   Explosion
   {
-    timer float 1.000000
+    timer float 0.300000
+    lightFadeTime float 1.000000
     waitForAnim bool false
-    animDelay float 1.000000
   }
 }

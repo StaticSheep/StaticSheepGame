@@ -164,7 +164,12 @@ namespace Framework
     prt.life = m_life.lifetime + GetRandom(-m_life.randLifetime, m_life.randLifetime);
     prt.maxLife = prt.life;
     
-    Vec2 center = trans->GetTranslation() + m_pos.offset;
+    Vec2 center;
+    
+    if (m_system.parentToOwner)
+      center = m_pos.offset;
+    else
+      center = trans->GetTranslation() + m_pos.offset;
 
     if (m_pos.square)
     {
@@ -263,13 +268,23 @@ namespace Framework
     float z = 0;
     float zStep = 0.2f / m_particles.size();
 
+
+    Vec2 center;
+
+    if (m_system.parentToOwner)
+    {
+      Transform* pTrans = space->GetGameObject(owner)->GetComponent<Transform>(eTransform);
+      if (pTrans)
+        center = pTrans->GetTranslation();
+    }
+
     for (int i = 0; i < m_particles.size(); ++i)
     {
       Particle& prt = m_particles[i];
 
       GRAPHICS->SetSize(prt.scale.x / scaleMult.x,
         prt.scale.y / scaleMult.x);
-      GRAPHICS->SetPosition(prt.pos.x, prt.pos.y, z += zStep);
+      GRAPHICS->SetPosition(center.x + prt.pos.x, center.y + prt.pos.y, z += zStep);
 
       if (m_fade.fadeOut)
       {
