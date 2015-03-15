@@ -14,19 +14,20 @@ All content © 2015 DigiPen (USA) Corporation, all rights reserved.
 
 namespace Framework
 {
-  class StarController : public GameComponent
+  class ChipController : public GameComponent
   {
   public:
-    StarController();
-    ~StarController();
+    ChipController();
+    ~ChipController();
     void Initialize();
     void LogicUpdate(float dt);
     void Remove();
 
-    void GivePlayerStar(int player, int stars);
-    void DrawStars();
+    void GivePlayerChip(int player, int chips);
+    void DrawChips();
+    void Draw();
 
     Handle LevelLogic;
-    int playerStars[4];
+    int playerChips[4];
   };
 }

@@ -70,7 +70,7 @@ namespace Framework
     int numOfPlayers;
     bool camShake, shake;
     bool countDownDone;
-    bool slotFinished;
+    bool slotFinished, roundStart;
     float shakeTime;
     float countDownTimer;
     LevelEvent *LE;

@@ -478,7 +478,7 @@ GameObject
   }
   Sprite
   {
-    m_spriteName std::string "cd_3.png"
+    m_spriteName std::string "blank.png"
     m_layer unsignedint 1
     m_flipX bool false
     m_flipY bool false
@@ -515,7 +515,10 @@ GameObject
   SoundPlayer
   {
   }
-  StarController
+  ChipController
+  {
+  }
+  RoundController
   {
   }
   Level1_Logic
@@ -526,7 +529,7 @@ GameObject
   LuaComponent
   {
     name std::string "PauseMenu"
-    loadCommand std::string "return function(self) self.ypos = 456 self.opened = true end"
+    loadCommand std::string "return function(self) self.opened = true self.ypos = 456 end"
   }
 
   LuaComponent

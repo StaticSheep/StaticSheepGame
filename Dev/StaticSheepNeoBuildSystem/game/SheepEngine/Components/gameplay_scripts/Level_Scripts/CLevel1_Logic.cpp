@@ -65,6 +65,7 @@ namespace Framework
     camShakeMagnitude = 10;
     countDownDone = false;
     slotFinished = false;
+    roundStart = false;
 	}
 
   Level1_Logic::~Level1_Logic()
@@ -519,12 +520,6 @@ namespace Framework
     else
       roundTimer -= dt;
 
-    if (roundTimer <= 0)
-    {
-      mode = SLOTMACHINE;//ROUNDOVER
-      return;
-    }
-
     spawnTimer -= dt;
     eventTimer -= dt;
     if (spawnTimer <= 0)
@@ -556,9 +551,6 @@ namespace Framework
     {
       for (int i = 0; i < 4; ++i)
         juggernaut[i] = false;
-
-      mode = SLOTMACHINE;//ROUNDOVER
-      return;
     }
 
     SpawnPlayers(dt);
@@ -655,11 +647,6 @@ namespace Framework
     else
       roundTimer -= dt;
 
-    if (roundTimer <= 0)
-    {
-      mode = SLOTMACHINE;//ROUNDOVER
-      return;
-    }
     if (LastManStanding())
       mode = SLOTMACHINE;//ROUNDOVER
     spawnTimer -= dt;
@@ -669,9 +656,9 @@ namespace Framework
 
   void Level1_Logic::SlotMachineMode(float dt)
   {
-    //if(round == maxRounds)
-      //mode = GAMEOVER
-/*else*/if (!slotFinished)
+    if (!roundStart)
+      return;
+    else if (!slotFinished)
     {
       ResetPlayers();
       if (LE)
@@ -704,11 +691,6 @@ namespace Framework
     else
       roundTimer -= dt;
 
-    if (roundTimer <= 0)
-    {
-      mode = SLOTMACHINE; //ROUNDOVER
-      return;
-    }
     if (spawnTimer <= 0)
     {
       float ranX = GetRandom(-600, 600);
@@ -782,20 +764,20 @@ namespace Framework
     for (int i = 0; i < 4; ++i)
     {
       //depending on the player, it draws the totals in the correct place
-      if (i == 0)
-        pos = Vec3(-764, -457.0f, 0.0f);
-      if (i == 1)
-        pos = Vec3(572.0f, -457.0f, 0.0f); 
-      if (i == 2)
-        pos = Vec3(572.0f, 507.0f, 0.0f); 
-      if (i == 3)
-        pos = Vec3(-764.0f, 507.0f, 0.0f);
+      //if (i == 0)
+      //  pos = Vec3(-764, -457.0f, 0.0f);
+      //if (i == 1)
+      //  pos = Vec3(572.0f, -457.0f, 0.0f); 
+      //if (i == 2)
+      //  pos = Vec3(572.0f, 507.0f, 0.0f); 
+      //if (i == 3)
+      //  pos = Vec3(-764.0f, 507.0f, 0.0f);
 
-      itoa(playerCoins[i], playerCoinsString, 10);
-      Draw::SetPosition(pos.x, pos.y);
-      Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
-      Draw::SetRotation(0);
-      Draw::DrawString(playerCoinsString, scale, 1);
+      //itoa(playerCoins[i], playerCoinsString, 10);
+      //Draw::SetPosition(pos.x, pos.y);
+      //Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
+      //Draw::SetRotation(0);
+      //Draw::DrawString(playerCoinsString, scale, 1);
 
       if (Players[i] == Handle::null)
         continue;
