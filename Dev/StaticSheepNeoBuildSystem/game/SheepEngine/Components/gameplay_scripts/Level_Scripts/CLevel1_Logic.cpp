@@ -28,6 +28,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "types/weapons/WShotgun.h"
 #include "types/weapons/WMissile.h"
 #include "../arena/CBlockLights.h"
+#include "../Components/sprites/CAniSprite.h"
 
 static const char *playerNames[] = { "Player1", "Player2", "Player3", "Player4" };
 static int juggKills[4] = { 0, 0, 0, 0 };
@@ -415,10 +416,25 @@ namespace Framework
     else
     {
       CircleCollider *ItemCollider = item->GetComponent<CircleCollider>(eCircleCollider);
-      if (itemName != "CoinBall")
+      if (itemName != "CoinBall") // is a coin
+      {
         ItemCollider->SetBodyCollisionGroup("NonCollide");
+        AniSprite* sprite = item->GetComponent<AniSprite>(eAniSprite);
+
+        // random rotation
+        ItemTransform->SetRotation(GetRandom(0.0f, PI));
+
+        // random framerate
+        sprite->SetFrameRate(GetRandom(8.0f, 32.0f));
+        int rand = GetRandom(0, 7);
+
+        // this grabs one of the 8 colors of the coins, get rid of this for getting a specific color coin
+        sprite->SetRange(Vec2(0 + rand * 8, 7 + rand * 8)); // <----- DERP, Zak
+      }
       else
+      {
         ItemCollider->SetBodyCollisionGroup("Resolve");
+      }
     }
 
     ItemTransform->SetTranslation(pos);

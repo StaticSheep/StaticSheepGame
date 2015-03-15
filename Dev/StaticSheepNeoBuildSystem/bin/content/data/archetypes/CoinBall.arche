@@ -20,17 +20,19 @@ GameObject
   }
   AniSprite
   {
-    m_spriteName std::string "coin_sheet.png"
+    m_spriteName std::string "coin_sheet_8frame.png"
+    m_layer unsignedint 1
+    m_frameUpdate bool false
     m_frames Vec2
     {
-      X float 4.000000
-      Y float 4.000000
+      X float 8.000000
+      Y float 8.000000
     }
-    m_startFrame unsignedint 12
-    m_endFrame unsignedint 15
+    m_startFrame unsignedint 40
+    m_endFrame unsignedint 40
     m_frameRate float 12.000000
     m_loop int -1
-    m_paused bool false
+    m_paused bool true
     m_flipX bool false
     m_flipY bool false
     Color Vec4

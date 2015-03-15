@@ -128,12 +128,6 @@ namespace Framework
         frameOffset = Vec2(-frameOffset.x, frameOffset.y);
 
       frameOffset = rot * frameOffset;
-
-      ENGINE->TraceLog.Log(Framework::TraceLevel::DBG, "x %f, y %f", frameOffset.x, frameOffset.y);
-
-      
-
-      //frameOffset = (*sequenceIt).offset - offset;
     }
     else
     {
