@@ -12,26 +12,26 @@ namespace Framework
 {
   struct Beam
   {
-    Beam() : m_beamCol(1,1,1,1), m_dirVec(1,0), m_numBeams(0), m_texID(0) {}
+    Beam() : beamColor(1,1,1,1), direction(1,0), numBeams(0), texID(0) {}
 
     // lenght of each subbeam
-    std::vector<float> m_lengths;
+    std::vector<float> beamLengths;
 
     // Total number of subbeams to draw
-    int m_numBeams;
+    int numBeams;
 
     // Total width of beam
-    float m_totalWidth;
+    float totalWidth;
 
     // start of beam
-    Vec3 m_origin;
+    Vec3 origin;
 
     // Orientation of beam
-    Vec2 m_dirVec;
+    Vec2 direction;
 
-    Vec4 m_beamCol;
+    Vec4 beamColor;
 
     // Texture of beam
-    int m_texID;
+    int texID;
   };
 }

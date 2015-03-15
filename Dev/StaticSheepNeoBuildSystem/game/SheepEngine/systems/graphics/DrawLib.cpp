@@ -90,24 +90,31 @@ namespace Framework
 
   void Draw::DrawBeam(Beam* beam)
   {
-    GRAPHICS->SetRotation(atan2f(beam->m_dirVec.y, beam->m_dirVec.x));
-    GRAPHICS->SetColor(beam->m_beamCol);
-    Vec2 texDim = GRAPHICS->GetTextureDim(DirectSheep::Handle(DirectSheep::TEXTURE, beam->m_texID));
+    GRAPHICS->SetRotation(atan2f(beam->direction.y, beam->direction.x));
+    GRAPHICS->SetColor(beam->beamColor);
+    Vec2 texDim = GRAPHICS->GetTextureDim(DirectSheep::Handle(DirectSheep::TEXTURE, beam->texID));
+
     float Length = 0;
-    float subBeamWidth = beam->m_totalWidth / texDim.y / beam->m_numBeams;
-    GRAPHICS->SetUV(Vec2(0, 0), Vec2(1, 1));
-    for (int i = 0; i < beam->m_numBeams; ++i)
+    float width = beam->totalWidth / texDim.y;
+    float subBeamWidth = beam->totalWidth / beam->numBeams;
+    float startOffset = (beam->totalWidth / 2.0f) - (subBeamWidth / 2);
+    float numBeamsInv = 1.0f / beam->numBeams;
+
+    for (int i = 0; i < beam->numBeams; ++i)
     {
-      Length = beam->m_lengths[i];
-      GRAPHICS->SetSize((Length / texDim.x),
-        subBeamWidth);
+      Length = beam->beamLengths[i];
 
-      GRAPHICS->SetObjectOrigin((Length / 2.0f), beam->m_origin.y + (beam->m_totalWidth / 2) - (subBeamWidth * i));
+      GRAPHICS->SetSize((Length / texDim.x), width);
 
-      GRAPHICS->SetPosition(beam->m_origin.x,
-        beam->m_origin.y, beam->m_origin.z);
+      GRAPHICS->SetObjectOrigin((Length / 2.0f), startOffset - (i * subBeamWidth));
 
-      GRAPHICS->DrawBatched(DirectSheep::Handle(DirectSheep::TEXTURE, beam->m_texID));
+      GRAPHICS->SetPosition(beam->origin.x,
+        beam->origin.y, beam->origin.z);
+
+      GRAPHICS->SetUV(Vec2(0, ((numBeamsInv)* i)),
+                      Vec2(1, ((numBeamsInv)* (i + 1))));
+
+      GRAPHICS->DrawBatched(DirectSheep::Handle(DirectSheep::TEXTURE, beam->texID));
     }
 
     GRAPHICS->SetObjectOrigin(0, 0);
