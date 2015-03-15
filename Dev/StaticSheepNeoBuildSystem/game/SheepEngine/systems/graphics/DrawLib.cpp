@@ -88,6 +88,31 @@ namespace Framework
     m_UVMax = UVMax;
   }
 
+  void Draw::DrawBeam(Beam* beam)
+  {
+    GRAPHICS->SetRotation(atan2f(beam->m_dirVec.y, beam->m_dirVec.x));
+    GRAPHICS->SetColor(beam->m_beamCol);
+    Vec2 texDim = GRAPHICS->GetTextureDim(DirectSheep::Handle(DirectSheep::TEXTURE, beam->m_texID));
+    float Length = 0;
+    float subBeamWidth = beam->m_totalWidth / texDim.y / beam->m_numBeams;
+    GRAPHICS->SetUV(Vec2(0, 0), Vec2(1, 1));
+    for (int i = 0; i < beam->m_numBeams; ++i)
+    {
+      Length = beam->m_lengths[i];
+      GRAPHICS->SetSize((Length / texDim.x),
+        subBeamWidth);
+
+      GRAPHICS->SetObjectOrigin((Length / 2.0f), beam->m_origin.y + (beam->m_totalWidth / 2) - (subBeamWidth * i));
+
+      GRAPHICS->SetPosition(beam->m_origin.x,
+        beam->m_origin.y, beam->m_origin.z);
+
+      GRAPHICS->DrawBatched(DirectSheep::Handle(DirectSheep::TEXTURE, beam->m_texID));
+    }
+
+    GRAPHICS->SetObjectOrigin(0, 0);
+  }
+
   void Draw::DrawRect(float x, float y, float width, float height)
   {
     GRAPHICS->SetSize(width, height);

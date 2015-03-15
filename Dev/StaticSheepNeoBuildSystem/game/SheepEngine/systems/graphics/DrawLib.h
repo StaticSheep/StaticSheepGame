@@ -11,6 +11,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 #include "types/vectors/Vec2.h"
 #include "types/vectors/Vec4.h"
+#include "Beam.h"
 #include "Handle.h"
 
 namespace Framework
@@ -32,6 +33,7 @@ namespace Framework
     static void SetAlpha(float a);
     static void SetUVs(Vec2 UVMin, Vec2 UVMax);
 
+    static void DrawBeam(Beam* beam);
     static void DrawRect(float x, float y, float width, float height);
     static void DrawRectOutline(float x, float y, float width, float height,
       float theta = 0);
