@@ -1,5 +1,5 @@
 /*****************************************************************
-Filename: CStarController.h
+Filename: CChipController.h
 Project:  Gam200
 Author(s): Greg Walls (Primary)
 
@@ -25,9 +25,14 @@ namespace Framework
 
     void GivePlayerChip(int player, int chips);
     void DrawChips();
+    void PlayerDied(int ply, int who_killed_them);
+
     void Draw();
 
     Handle LevelLogic;
     int playerChips[4];
+
+    int totalPlayerKills[4], roundPlayerKills[4];
+    float totalTimeAsJugg[4], roundTimeAsJugg[4];
   };
 }

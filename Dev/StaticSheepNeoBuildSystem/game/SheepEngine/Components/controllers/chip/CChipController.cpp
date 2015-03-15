@@ -1,9 +1,9 @@
 /*****************************************************************
-Filename: CStarController.cpp
+Filename: CChipController.cpp
 Project:  Gam200
 Author(s): Greg Walls (Primary)
 
-All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+All content © 2015 DigiPen (USA) Corporation, all rights reserved.
 *****************************************************************/
 #include "pch/precompiled.h"
 #include "CChipController.h"
@@ -30,6 +30,7 @@ namespace Framework
     space->hooks.Add("LogicUpdate", self, BUILD_FUNCTION(ChipController::LogicUpdate));
     space->hooks.Add("GivePlayerChip", self, BUILD_FUNCTION(ChipController::GivePlayerChip));
     space->hooks.Add("Draw", self, BUILD_FUNCTION(ChipController::Draw));
+    space->hooks.Add("PlayerDied", self, BUILD_FUNCTION(ChipController::PlayerDied));
 
     LevelLogic = space->GetGameObject(owner)->GetComponentHandle(eLevel1_Logic);
   }
@@ -52,6 +53,11 @@ namespace Framework
         continue;
       //draw sprites
     }
+  }
+
+  void ChipController::PlayerDied(int ply, int who_killed_them)
+  {
+
   }
 
   void ChipController::Draw()

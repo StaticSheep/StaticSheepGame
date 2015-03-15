@@ -46,5 +46,6 @@ namespace Framework
     float round_state_timer;
     bool spawned_round_start, slotMachineDone, roundUp_spawned;
     bool num_spawned[5];
+    GameTypes mode_;
   };
 }

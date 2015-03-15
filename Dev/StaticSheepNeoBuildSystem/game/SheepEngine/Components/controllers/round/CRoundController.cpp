@@ -8,7 +8,6 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "pch/precompiled.h"
 #include "CRoundController.h"
 #include "types/space/Space.h"
-#include "../../gameplay_scripts/Level_Scripts/CLevel1_Logic.h"
 #include "CRoundText.h"
 #include "../../sprites/CSprite.h"
 
@@ -153,6 +152,7 @@ namespace Framework
     slotMachineDone = true;
     state_ = ROUNDINPRO;
     round_state_timer = 20.0f;
+    mode_ = mode;
   }
 
   void RoundController::RoundCountDown()
