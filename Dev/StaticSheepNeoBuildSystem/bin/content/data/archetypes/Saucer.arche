@@ -21,6 +21,7 @@ GameObject
   Sprite
   {
     m_spriteName std::string "saucer.png"
+    m_layer unsignedint 1
     m_flipX bool false
     m_flipY bool false
     m_uvScale bool false
@@ -41,5 +42,12 @@ GameObject
       X float 0.000000
       Y float 0.000000
     }
+  }
+  GamePad
+  {
+    GamepadIndex int 0
+  }
+  Saucer
+  {
   }
 }

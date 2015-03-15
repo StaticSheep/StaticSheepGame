@@ -414,6 +414,14 @@ namespace Framework
       bc->AddToVelocity(Vec3(ranX, ranY, 0.0f));
     }
 
+    else if (OtherObject->name == "SaucerMissile")
+    {
+      DealDamage(50, playerNum);
+      float ranY = (float)GetRandom(-500, 500);
+      float ranX = (float)GetRandom(-500, 500);
+      bc->AddToVelocity(Vec3(ranX, ranY, 0.0f));
+    }
+
     if ((OtherObject->GetComponentHandle(eGrinder) != Handle::null)
       && !hasRespawned && !GodMode && !PerfectMachine)
     {

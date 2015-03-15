@@ -21,6 +21,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/gameplay_scripts/Level_Event_Scripts/CGiantKillBox.h"
 #include "components/gameplay_scripts/Level_Scripts/CGrinder.h"
 #include "components/gameplay_scripts/Level_Scripts/CPinwheel.h"
+#include "components/gameplay_scripts/Level_Event_Scripts/CSaucer.h"
+#include "components/gameplay_scripts/Level_Event_Scripts/CSaucerMissile.h"
 #include "components/gameplay_scripts/FX_Scripts/CExplosion.h"
 #include "components/sound/CSoundEmitter.h"
 #include "components/gameplay_scripts/Pickup_Scripts/CWeaponPickup.h"
@@ -72,6 +74,8 @@ namespace Framework
     REGISTER_COMPONENT(Level1_Lighting);
     REGISTER_COMPONENT(SoundEmitter);
     REGISTER_COMPONENT(GiantKillBox);
+    REGISTER_COMPONENT(Saucer);
+    REGISTER_COMPONENT(SaucerMissile);
     REGISTER_COMPONENT(Grinder);
     REGISTER_COMPONENT(Pinwheel);
     REGISTER_COMPONENT(Explosion);

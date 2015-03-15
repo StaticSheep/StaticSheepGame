@@ -33,6 +33,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/gameplay_scripts/Level_Event_Scripts/CGiantKillBox.h"
 #include "components/gameplay_scripts/Level_Scripts/CGrinder.h"
 #include "components/gameplay_scripts/Level_Scripts/CPinwheel.h"
+#include "components/gameplay_scripts/Level_Event_Scripts/CSaucer.h"
+#include "components/gameplay_scripts/Level_Event_Scripts/CSaucerMissile.h"
 #include "components/gameplay_scripts/FX_Scripts/CExplosion.h"
 #include "components/gameplay_scripts/Pickup_Scripts/CWeaponPickup.h"
 #include "types/weapons/WPistol.h"
@@ -241,6 +243,12 @@ namespace Framework
 
     TYPE_REGISTER(Pinwheel);
     TYPE_SET_TWEAK_TYPE(Pinwheel, AntTweak::TW_TYPE_COMPONENT);
+
+    TYPE_REGISTER(Saucer);
+    TYPE_SET_TWEAK_TYPE(Saucer, AntTweak::TW_TYPE_COMPONENT);
+
+    TYPE_REGISTER(SaucerMissile);
+    TYPE_SET_TWEAK_TYPE(SaucerMissile, AntTweak::TW_TYPE_COMPONENT);
 
     TYPE_REGISTER(Explosion);
     TYPE_ADD_MEMBER(Explosion, timer, false, true, "Show Time");
