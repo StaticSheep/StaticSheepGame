@@ -8,7 +8,6 @@ All content © 2015 DigiPen (USA) Corporation, all rights reserved.
 #include "pch/precompiled.h"
 #include "CLaser.h"
 #include "systems/graphics/SheepGraphics.h"
-#include "types/space/Space.h"
 #include "../transform/CTransform.h"
 #include "../colliders/CCircleCollider.h"
 
@@ -43,21 +42,20 @@ namespace Framework
 
     SetBeamTexture(m_beamTexName.c_str());
 
-
     //TODO not sure if we have a GetOwner()->has working
     space->hooks.Add("Draw", self, BUILD_FUNCTION(Laser::DrawLaser));
 
     //logic setup, you're attached and components are in place
     space->hooks.Add("LogicUpdate", self, BUILD_FUNCTION(Laser::LogicUpdate));
 
-    lTransfrom = space->GetGameObject(owner)->GetComponentHandle(eTransform);
+    lTransform = space->GetGameObject(owner)->GetComponentHandle(eTransform);
 
-    lCollider = space->GetGameObject(owner)->GetComponentHandle(eCircleCollider);
 
     //lEmitter = FACTORY->
 
-    CircleCollider *lc = space->GetHandles().GetAs <CircleCollider>(lCollider);
-    Vec3D direction = lc->GetBodyRotationAsVector();
+    Transform *trans = space->GetHandles().GetAs <Transform>(lTransform);
+    float rotation = trans->GetRotation();
+    Vec3D direction(rotation);
 
     if (duration > arcDelay)
       arcPerSec = arcRotation / (duration - arcDelay);
@@ -69,7 +67,7 @@ namespace Framework
     else
       Caster = &Framework::Laser::SimpleCaster;
 
-    positionOffsets.push_back(lc->GetBodyPosition());
+    positionOffsets.push_back(trans->GetTranslation());
 
     if (width > LASERWIDTHMOD)
     {
@@ -78,15 +76,15 @@ namespace Framework
 
       for (int i = 1; i < raysPerSide + 1; ++i)
       {
-        positionOffsets.push_back((offsetDir * 2 * i) + lc->GetBodyPosition());
-        positionOffsets.push_back((-offsetDir * 2 * i) + lc->GetBodyPosition());
+        positionOffsets.push_back((offsetDir * 2 * i) + trans->GetTranslation());
+        positionOffsets.push_back((-offsetDir * 2 * i) + trans->GetTranslation());
       }
 
       if (width % LASERWIDTHMOD != 0)
       {
         float valueOffset = ((float)width) / 2.0f;
-        positionOffsets.push_back(offsetDir * valueOffset + lc->GetBodyPosition());
-        positionOffsets.push_back(-offsetDir * valueOffset + lc->GetBodyPosition());
+        positionOffsets.push_back(offsetDir * valueOffset + trans->GetTranslation());
+        positionOffsets.push_back(-offsetDir * valueOffset + trans->GetTranslation());
       }
     }
     numberOfRays = positionOffsets.size();
@@ -100,16 +98,11 @@ namespace Framework
 
   void Laser::LogicUpdate(float dt)
   {
-    CircleCollider *lc = space->GetHandles().GetAs <CircleCollider>(lCollider);
-
     if (startDelay > 0)
     {
       startDelay -= dt;
       return;
     }
-
-    std::string collision = lc->GetBodyCollisionGroup();
-    lc->SetBodyCollisionGroup("NonCollide");
 
       //duration begins after start delay over
     duration -= dt;
@@ -119,39 +112,38 @@ namespace Framework
 
     arcDelay -= dt;
 
-    (this->*Caster)(lc);
-
-    lc->SetBodyCollisionGroup(collision);
+    Transform *trans = space->GetHandles().GetAs <Transform>(lTransform);
+    (this->*Caster)(trans);
 
     if (arcDelay < 0)
     {
-      float curRotation = lc->GetBodyRotation();
+      float curRotation = trans->GetRotation();
       curRotation += arcPerSec;
       
       if (curRotation >= 2 * PI)
         curRotation = 0;
 
-      lc->SetBodyRotation(curRotation);
-
       positionOffsets.clear();
-      positionOffsets.push_back(lc->GetBodyPosition());
+      positionOffsets.push_back(trans->GetTranslation());
 
       if (raysPerSide > 1)
       {
-        Vec3D direction = lc->GetBodyRotationAsVector();
+        float rotation = trans->GetRotation();
+        Vec3D direction(rotation);
+
         Vec3D offsetDir = direction.CalculateNormal();
 
         for (int i = 1; i < raysPerSide + 1; ++i)
         {
-          positionOffsets.push_back((offsetDir * 2 * i) + lc->GetBodyPosition());
-          positionOffsets.push_back((-offsetDir * 2 * i) + lc->GetBodyPosition());
+          positionOffsets.push_back((offsetDir * 2 * i) + trans->GetTranslation());
+          positionOffsets.push_back((-offsetDir * 2 * i) + trans->GetTranslation());
         }
 
         if (width % LASERWIDTHMOD != 0)
         {
           float valueOffset = ((float)width) / 2.0f;
-          positionOffsets.push_back(offsetDir * valueOffset + lc->GetBodyPosition());
-          positionOffsets.push_back(-offsetDir * valueOffset + lc->GetBodyPosition());
+          positionOffsets.push_back(offsetDir * valueOffset + trans->GetTranslation());
+          positionOffsets.push_back(-offsetDir * valueOffset + trans->GetTranslation());
         }
       }
     } 
@@ -159,7 +151,7 @@ namespace Framework
 
   void Laser::DrawLaser()
   {
-    Transform* trans = space->GetHandles().GetAs<Transform>(lTransfrom);
+    Transform* trans = space->GetHandles().GetAs<Transform>(lTransform);
     // Draw body/emitter
     GRAPHICS->SetUV(Vec2(0,0), Vec2(1,1));
 
@@ -208,35 +200,35 @@ namespace Framework
     m_beamLengths.clear();
   }
 
-  void Laser::SimpleCaster(CircleCollider *lc)
+  void Laser::SimpleCaster(Transform* trans)
   {
-    Vec3D direction = lc->GetBodyRotationAsVector();
+    float rotation = trans->GetRotation();
+    Vec3D direction(rotation);
 
     for (int i = 0; i < positionOffsets.size(); ++i)
     {
-      lc->SetRayCast(positionOffsets[i], direction, "RayCast");
-      lc->SimpleRayCast();
-      lc->RayDestruction(damage);
+      PHYSICS->SetRayConfig(positionOffsets[i], direction, "RayCast");
+      PHYSICS->SimpleRayCast(space);
+      PHYSICS->RayDestruction(space, damage);
 
       m_beamLengths.push_back(-1);
-      //check return results
     }
   }
 
-  void Laser::ComplexCaster(CircleCollider *lc)
+  void Laser::ComplexCaster(Transform* trans)
   {
-    Transform* trans = space->GetHandles().GetAs<Transform>(lTransfrom);
-    Vec3D direction = lc->GetBodyRotationAsVector();
+    float rotation = trans->GetRotation();
+    Vec3D direction(rotation);
 
     bool death = false;
 
     for (int i = 0; i < positionOffsets.size(); ++i)
     {
-      lc->SetRayCast(positionOffsets[i], direction, "RayCast");
-      death = lc->ComplexRayCast();
+      PHYSICS->SetRayConfig(positionOffsets[i], direction, "RayCast");
+      death = PHYSICS->ComplexRayCast(space);
       if (death)
       {
-        lc->RayDestruction(damage);
+        PHYSICS->RayDestruction(space, damage);
         m_beamLengths.push_back((Vec3D(PHYSICS->GetFirstCollision()) - trans->GetTranslation()).Length());
       }
       else

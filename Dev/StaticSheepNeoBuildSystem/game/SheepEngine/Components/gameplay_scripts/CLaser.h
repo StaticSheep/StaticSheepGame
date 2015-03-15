@@ -12,13 +12,14 @@ All content © 2015 DigiPen (USA) Corporation, all rights reserved.
 #include "../transform/CTransform.h"
 #include "components/sprites/CSprite.h"
 #include "../colliders/CCircleCollider.h"
+#include "components/ray/CRay.h"
 
 
 namespace Framework
 {
   #define LASERWIDTHMOD 4
 
-  class Laser : public Ray
+  class Laser : public GameComponent
   {
   public:
     Laser();
@@ -26,8 +27,8 @@ namespace Framework
     void LogicUpdate(float dt);
     void Initialize();
     void Remove();
-    void SimpleCaster(CircleCollider *lc);
-    void ComplexCaster(CircleCollider *lc);
+    void SimpleCaster(Transform* trans);
+    void ComplexCaster(Transform* trans);
     void ModifyPositionOffsets(void);
 
     void SetBodyTexture(const char * Texture);
@@ -42,11 +43,10 @@ namespace Framework
 
     void DrawLaser();
 
-    void(Laser::*Caster)(CircleCollider *lc);
+    void(Laser::*Caster)(Transform* trans);
 
     //member variables
-    Handle lTransfrom;
-    Handle lCollider;
+    Handle lTransform;
     Handle lEmitter;
     Handle lBeam;
 

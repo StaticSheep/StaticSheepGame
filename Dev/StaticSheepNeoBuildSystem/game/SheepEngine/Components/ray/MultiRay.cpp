@@ -1,27 +1,27 @@
 #pragma once
 #include "pch/precompiled.h"
 
-#include "CRay.h"
+#include "MultiRay.h"
 #include "components/transform/CTransform.h"
 
 namespace Framework
 {
-  void Ray::SetRayCast(Vec3D& rayOrigin, Vec3D& rayDirection, std::string name)
+  void MultiRay::SetRayCast(Vec3D& rayOrigin, Vec3D& rayDirection, std::string name)
   {
     PHYSICS->SetRayConfig(rayOrigin, rayDirection, name);
   }
 
-  bool Ray::SimpleRayCast()
+  bool MultiRay::SimpleRayCast()
   {
     return PHYSICS->SimpleRayCast(space);
   }
 
-  bool Ray::ComplexRayCast()
+  bool MultiRay::ComplexRayCast()
   {
     return PHYSICS->ComplexRayCast(space);
   }
 
-  void Ray::RayDestruction(float damage)
+  void MultiRay::RayDestruction(float damage)
   {
     PHYSICS->RayDestruction(space, damage);
   }

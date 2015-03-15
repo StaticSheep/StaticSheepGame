@@ -3,6 +3,7 @@
 #include "SheepPhysics\Handle.h"
 #include "SheepPhysics\Shape.h"
 #include "systems/physics/SheepPhysics.h"
+#include "components/base/Component.h"
 
 namespace SheepFizz
 {
@@ -14,7 +15,7 @@ namespace Framework
 
   class Transform;
 
-  class Ray : public GameComponent
+  class MultiRay
   {
 
     //raycasting
