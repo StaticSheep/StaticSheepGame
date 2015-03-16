@@ -191,19 +191,33 @@ namespace Framework
     // but also get the scale of the texture for normalizing the scale for particles
     Vec2 scale = GRAPHICS->GetTextureDim(texHandle);
 
+    Vec2 location;
+
+    if (parentToOwner)
+    {
+      Transform* ptrans = space->GetGameObject(owner)->
+        GetComponent<Transform>(eTransform);
+
+      location = ptrans->GetTranslation();
+
+    }
+    
+
     for(unsigned i = 0; i < particles.size(); ++i)
     {
-      Vec4 color = particles[i].currentColor;
+      const Particle& part = particles[i];
+
+      Vec4 color = part.currentColor;
       Draw::SetColor(color.x, color.y, color.z, color.w);
 
-      Draw::ForceZ(true, particles[i].position.z);
+      Draw::ForceZ(true, part.position.z);
 
       //                                x screen coords    ,    y screen coords     ,  particle scale / texture scale x,    particle scale / scale y          , rotation 
-      Draw::DrawTexturedRectRotated(particles[i].position.x,
-        particles[i].position.y,
-        particles[i].currentScale / scale.x,
-        particles[i].currentScale / scale.y,
-        particles[i].theta);
+      Draw::DrawTexturedRectRotated(part.position.x + location.x,
+        part.position.y + location.y,
+        part.currentScale / scale.x,
+        part.currentScale / scale.y,
+        part.theta);
     }
 
     Draw::ForceZ(false, 0);

@@ -125,6 +125,7 @@ namespace Framework
       bool gravity;                 // if gravity is being used
       bool physics;                 // if trying to simulate physics
       bool directionChange;
+      bool parentToOwner;
 
       friend ParticleCircleEmitter;
       friend ParticleBoxEmitter;

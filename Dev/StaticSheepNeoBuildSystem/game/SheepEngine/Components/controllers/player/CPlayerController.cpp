@@ -395,9 +395,12 @@ namespace Framework
 
   void PlayerController::CollisionDamage(GameObject *OtherObject)
   {
-    if (OtherObject->name == "Bullet" && !hasRespawned && !GodMode && !PerfectMachine)
+
+    Bullet_Default* bullet = OtherObject->GetComponent<Bullet_Default>(eBullet_Default);
+
+    if (bullet && !hasRespawned && !GodMode && !PerfectMachine)
     {
-      DealDamage(OtherObject->GetComponent<Bullet_Default>(eBullet_Default)->damage, playerNum);
+      DealDamage(bullet->damage, playerNum);
       float randomX = (float)GetRandom(-25, 25);
       float randomY = (float)GetRandom(-25, 25);
       se->Play("hit1", &SoundInstance(1.0f));
@@ -532,7 +535,9 @@ namespace Framework
 	{
     if (spawnEffect != Handle::null)
     {
-      space->GetGameObject(spawnEffect)->Destroy();
+      GameObject* obj = space->GetGameObject(spawnEffect);
+      if (obj)
+        obj->Destroy();
       spawnEffect = Handle::null;
     }
 		//opposite of init
@@ -678,7 +683,7 @@ namespace Framework
         space->GetGameObject(spawnEffect)->Destroy();
         spawnEffect = Handle::null;
 
-        pa->Color.A = 255.0f;
+        pa->Color.A = 1.0f;
 
         hasRespawned = false;
       }
@@ -893,6 +898,14 @@ namespace Framework
     {
       space->GetGameObject(owner)->hooks.Call("ButtonPressed", Buttons::RIGHT);
       playerButton.button = Buttons::RIGHT;
+    }
+
+    if (SHEEPINPUT->Keyboard.KeyIsPressed('V'))
+    {
+      Handle explosion = (FACTORY->LoadObjectFromArchetype(space, "explosion"))->self;
+      Transform *exT = space->GetGameObject(explosion)->GetComponent<Transform>(eTransform);
+      exT->SetTranslation(ps->GetTranslation());
+      exT->SetRotation((float)GetRandom(0, (int)(2.0f * (float)PI)));
     }
     
     ENGINE->SystemMessage(MetricsMessage(&playerButton));

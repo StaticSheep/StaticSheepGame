@@ -188,7 +188,7 @@ namespace DirectSheep
 
     for (int i = 0; i < maxLayers; ++i)
     {
-      m_batcher[i]->Begin(SpriteSortMode_BackToFront, m_states->NonPremultiplied(),
+      m_batcher[i]->Begin(SpriteSortMode_BackToFront, m_states->AlphaBlend(),
         m_states->LinearWrap(), m_states->DepthNone(),
         m_states->CullCounterClockwise(), nullptr,
         ((Camera*)m_camera.ptr)->GetViewProj());

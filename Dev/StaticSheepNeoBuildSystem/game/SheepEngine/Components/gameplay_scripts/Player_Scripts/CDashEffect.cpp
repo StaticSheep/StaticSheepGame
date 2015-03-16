@@ -11,6 +11,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "../../transform/CTransform.h"
 #include "../../colliders/CBoxCollider.h"
 #include "../../particles/CParticleCircleEmitter.h"
+#include "../../basicps/CBasicPSystem.h"
 
 namespace Framework
 {
@@ -45,14 +46,12 @@ namespace Framework
 	{
     if (!alive)
     {
-      Handle peHandle = space->GetGameObject(owner)->GetComponentHandle(eParticleCircleEmitter);
-      ParticleCircleEmitter *pe = space->GetHandles().GetAs<ParticleCircleEmitter>(peHandle);
-      pe->spawning = false;
       deathTimer -= dt;
       if (deathTimer <= 0)
         space->GetGameObject(owner)->Destroy();
       return;
     }
+
     pt = space->GetHandles().GetAs<Transform>(pTransform);
 
     et = space->GetHandles().GetAs<Transform>(effectTransform);
@@ -63,7 +62,16 @@ namespace Framework
     lifeTime += dt;
 
     if (lifeTime >= 0.5f || pt == nullptr)
+    {
       alive = false;
+      BasicParticleSystem* bps = space->GetGameObject(owner)->
+        GetComponent<BasicParticleSystem>(eBasicParticleSystem);
+
+      if (bps)
+        bps->Toggle(false);
+
+    }
+      
 	}
 
 

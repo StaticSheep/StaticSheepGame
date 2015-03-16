@@ -88,6 +88,7 @@ namespace Framework
     space->hooks.Add("GivePlayerCoins", self, BUILD_FUNCTION(Level1_Logic::GivePlayerCoins));
     space->hooks.Add("SpawnCoins", self, BUILD_FUNCTION(Level1_Logic::SpawnCoins));
     space->hooks.Add("RoundOver", self, BUILD_FUNCTION(Level1_Logic::RoundOver));
+    space->hooks.Add("SpawnCoinsEx", self, BUILD_FUNCTION(Level1_Logic::SpawnCoinsEx));
 
     levelSound = space->GetGameObject(owner)->GetComponentHandle(eSoundPlayer);
     levelCamera = space->GetGameObject(owner)->GetComponentHandle(eCamera);
@@ -396,6 +397,13 @@ namespace Framework
     {
       if (playerCoinStack[i] == Handle::null || playerCoins[i] >= 50000.0f)
         continue;
+
+      if (!space->GetGameObject(playerCoinStack[i]))
+      {
+        playerCoinStack[i] = Handle::null;
+        continue;
+      }
+
       offSet.y = 0.0f;
       coinStack = space->GetGameObject(playerCoinStack[i])->GetComponent<Transform>(eTransform);
       if (i == 0 || i == 1) //player one and two
@@ -462,6 +470,14 @@ namespace Framework
   void Level1_Logic::SpawnCoins(Vec3 pos)
   {
     for (int i = 0; i < 4; ++i)
+    {
+      SpawnItem("CoinPickup", pos);
+    }
+  }
+
+  void Level1_Logic::SpawnCoinsEx(Vec3 pos, int amount)
+  {
+    for (int i = 0; i < amount; ++i)
     {
       SpawnItem("CoinPickup", pos);
     }

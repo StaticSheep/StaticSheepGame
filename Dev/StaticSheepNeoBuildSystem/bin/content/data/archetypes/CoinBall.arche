@@ -13,14 +13,16 @@ GameObject
     Rotation float 0.000000
     Scale Vec3
     {
-      x_ float 2.000000
-      y_ float 2.000000
+      x_ float 1.600000
+      y_ float 1.600000
       z_ float 0.000000
     }
   }
   AniSprite
   {
     m_spriteName std::string "coin_sheet.png"
+    m_layer unsignedint 1
+    m_frameUpdate bool false
     m_frames Vec2
     {
       X float 4.000000
@@ -48,7 +50,7 @@ GameObject
   }
   CircleCollider
   {
-    m_radius float 65.000000
+    m_radius float 48.000000
     m_materialName std::string "Bounce"
     m_hasCollisionCallback bool true
     m_CollisionGroup std::string "NonCollide"

@@ -27,6 +27,11 @@ namespace DirectSheep
     Vec2 uvEnd;
   };
 
+  struct PreMultBuffer
+  {
+    Mat4 m_world;
+  };
+
   struct Ambient
   {
     Vec4 m_ambientCol;
