@@ -82,16 +82,21 @@ E_NAME(Component)
   E_ENTRY(div_Effects)
   E_ENTRY(AimingArrow)
   E_ENTRY(DashEffect)
-  E_ENTRY(Explosion)
   E_ENTRY(BackgroundPan)
   E_ENTRY(WarningText)
+  E_ENTRY(Explosion)
+  E_ENTRY(ImpactEffect)
+  
 
   E_ENTRY(div_Gameplay)
   E_ENTRY(PowerupPickup)
   E_ENTRY(Asteroid)
-  E_ENTRY(Bullet_Default)
   E_ENTRY(GamePad)
   E_ENTRY(WeaponPickup)
+
+  E_ENTRY(div_Weaponry)
+  E_ENTRY(Bullet_Default)
+  E_ENTRY(AOEDamage)
   
   E_ENTRY(div_LevelLogic)
   E_ENTRY(Level1_Logic)
