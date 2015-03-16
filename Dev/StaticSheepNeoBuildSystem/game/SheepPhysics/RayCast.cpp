@@ -4,10 +4,6 @@
 
 namespace SheepFizz
 {
-
-  //bool(*simpleraytests[2])(Body* body) = { SimpleRayCircleTest, SimpleRayRectangleTest };
-  //bool(*complexraytests[2])(Body* body) = { ComplexRayCircleTest, ComplexRayRectangleTest };
-
   RayCast::RayCast(){}
 
   RayCast::~RayCast(){}

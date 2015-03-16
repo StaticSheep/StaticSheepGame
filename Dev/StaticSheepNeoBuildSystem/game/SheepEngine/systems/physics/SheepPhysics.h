@@ -12,6 +12,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "SheepPhysics/api.h"
 #include "SheepPhysics/Step.h"
 #include "systems/System.h"
+#include "SheepPhysics/RayConfig.h"
 
 namespace Framework
 {
@@ -83,9 +84,9 @@ namespace Framework
 
       //raycast
       void SetRayConfig(Vec3D& rayOrigin, Vec3D& rayDirection, std::string name);
-      bool SimpleRayCast(GameSpace* space);
-      bool ComplexRayCast(GameSpace* space);
-      void RayDestruction(GameSpace* space, float damage);
+      bool SimpleRayCast(GameSpace* space, RayConfig* ray);
+      bool ComplexRayCast(GameSpace* space, RayConfig* ray);
+      void RayDestruction(GameSpace* space);
       Vec3D GetFirstCollision();
 
 			//settors

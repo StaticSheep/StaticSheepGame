@@ -489,27 +489,14 @@ namespace Framework
 
   //raycast
   //********************
-  void SheepPhysics::SetRayConfig(Vec3D& rayOrigin, Vec3D& rayDirection, std::string name)
+  bool SheepPhysics::SimpleRayCast(RayConfig* ray)
   {
-    if (m_collisionGroup.find(name) != m_collisionGroup.end())
-      ray.collisionGroup = m_collisionGroup[name];
-
-    else
-      ray.collisionGroup = Collide;
-    
-    ray.rayDirection = rayDirection;
-    ray.rayOrigin = rayOrigin;
+    return  ((SheepFizz::PhysicsSpace*)(ray->gamespace->m_pSpace))->RayCaster(ray);
   }
 
-  bool SheepPhysics::SimpleRayCast(GameSpace* space)
+  bool SheepPhysics::ComplexRayCast(RayConfig* ray)
   {
-    return  ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->RayCaster(&ray);
-  }
-
-  bool SheepPhysics::ComplexRayCast(GameSpace* space)
-  {
-    ray.findFirstCollision = true;
-    return  ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->RayCaster(&ray);
+    return  ((SheepFizz::PhysicsSpace*)(ray->gamespace->m_pSpace))->RayCaster(ray);
   }
 
   Vec3D SheepPhysics::GetFirstCollision()
@@ -517,35 +504,11 @@ namespace Framework
     return ray.firstCollisionLocation;
   }
 
-  void SheepPhysics::RayDestruction(GameSpace* space, float damage)
+  void SheepPhysics::RayDestruction(GameSpace* space)
   {
     if (ray.findFirstCollision)
     {
-      //GameSpace* space = (GameSpace*)(ray.gameSpace);
-      Handle handleObj = (unsigned)(ray.firstCollisionBody);
-
-      GameObject* obj = space->GetHandles().GetAs<GameObject>(handleObj);
-      if (obj->name == "Player")
-      {
-        PlayerController *playerCont = obj->GetComponent<PlayerController>(ePlayerController);
-        int playerNum = playerCont->playerNum;
-        playerCont->DealDamage(damage, playerNum);
-          //DealDamage(50, playerNum);
-        //int playerNum = obj->;
-        //((PlayerController*)obj)->DealDamage(1, playerNum);
-      }
-
       rayComplexDraws.push_back(std::pair<Vec2, Vec2>(ray.rayOrigin, ray.firstCollisionLocation));
-      //raySimpleDraws.push_back(std::pair<Vec2, Vec2>(ray.rayOrigin, ray.rayDirection));
-      //Draw::SetColor(1, 0, 0, 1);
-      //Vec2 collisionLocation = Draw::ToScreen(ray.firstCollisionLocation);
-      //Vec2 origin = Draw::ToScreen(ray.rayOrigin);
-      //Vec2D direction = ray.rayDirection;
-      //direction.y = -direction.y;
-      //Draw::DrawBeam(origin, direction);
-      //Draw::DrawBeam(Vec2(0, 0), Vec2(1, 1));
-      //Draw::DrawLine(origin.x, origin.y, collisionLocation.x, collisionLocation.y);
-      //Draw::DrawLine(origin.x, ray.rayOrigin.y, ray.firstCollisionLocation.x, ray.firstCollisionLocation.y, 1);
     }
 
     else

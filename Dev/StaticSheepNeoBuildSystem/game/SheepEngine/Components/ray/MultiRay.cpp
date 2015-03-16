@@ -6,23 +6,49 @@
 
 namespace Framework
 {
-  void MultiRay::SetRayCast(Vec3D& rayOrigin, Vec3D& rayDirection, std::string name)
+  MultiRay::MultiRay(Vec3D& rayOrigin, Vec3D& rayDirection, void* space, int width, int collisionGroup, std::vector<MCData>& results, int resolution)
   {
-    PHYSICS->SetRayConfig(rayOrigin, rayDirection, name);
+    m_ray.collisionGroup = (CollisionGroup)collisionGroup;
+    m_ray.rayDirection = rayDirection;
+    m_ray.rayOrigin = rayOrigin;
+
+    m_ray.findFirstCollision = true;
+    m_ray.gameSpace = space;
+
+
   }
 
-  bool MultiRay::SimpleRayCast()
+  void MultiRay::Initialize()
   {
-    return PHYSICS->SimpleRayCast(space);
+
+
   }
 
-  bool MultiRay::ComplexRayCast()
+  void MultiRay::SetWidth(int width)
   {
-    return PHYSICS->ComplexRayCast(space);
+    m_width = width;
   }
 
-  void MultiRay::RayDestruction(float damage)
+  void MultiRay::ComplexCaster()
   {
-    PHYSICS->RayDestruction(space, damage);
+    bool death = false;
+
+    for (int i = 0; i < positionOffsets.size(); ++i)
+    {
+      PHYSICS->SetRayConfig(positionOffsets[i], direction, "RayCast");
+      death = PHYSICS->ComplexRayCast(space, m_ray);
+      if (death)
+      {
+        PHYSICS->RayDestruction(space);
+        m_beamLengths.push_back((Vec3D(PHYSICS->GetFirstCollision()) - trans->GetTranslation()).Length());
+      }
+      else
+        m_beamLengths.push_back(-1);
+    }
+  }
+
+  void MultiRay::RayDestruction()
+  {
+    PHYSICS->RayDestruction(space);
   }
 }
