@@ -10,6 +10,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "types/space/Space.h"
 #include "CRoundText.h"
 #include "../../sprites/CSprite.h"
+#include "../chip/CChipController.h"
 
 namespace Framework
 {
@@ -36,7 +37,9 @@ namespace Framework
       num_spawned[i] = false;
 
     LevelLogic = space->GetGameObject(owner)->GetComponentHandle(eLevel1_Logic);
+    ChipController_ = space->GetGameObject(owner)->GetComponentHandle(eChipController);
     round_state_timer = 2.0f;
+    EORAwarded = false;
   }
 
   void RoundController::LogicUpdate(float dt)
@@ -72,12 +75,14 @@ namespace Framework
       round_number->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(1000.0f, -64.0f, 0.0f));
       round_number->GetComponent<RoundText>(eRoundText)->roundNum = current_round;
       spawned_round_start = true;
+      space->hooks.Call("RoundStart");
     }
     round_state_timer -= dt;
     if (round_state_timer <= 0)
     {
       state_ = ROUNDINPRO;
       slotMachineDone = false;
+      EORAwarded = false;
       space->GetGameObject(owner)->GetComponent<Level1_Logic>(eLevel1_Logic)->roundStart = true;
       for (int i = 0; i < 4; ++i)
         num_spawned[i] = false;
@@ -113,11 +118,14 @@ namespace Framework
       GameObject *round_number = (FACTORY->LoadObjectFromArchetype(space, "roundUp_text"));
       round_number->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(-1000.0f, 64.0f, 0.0f));
       roundUp_spawned = true;
+      space->hooks.Call("RoundOver");
     }
     else
     {
       //display results
-      //award stars
+
+      if (!EORAwarded)
+        AwardEndOfRoundChips();
     }
 
     round_state_timer -= dt;
@@ -143,7 +151,7 @@ namespace Framework
 
     if (round_state_timer <= 0)
     {
-      //manual restart
+      ENGINE->ChangeLevel("Asteroid");
     }
   }
 
@@ -195,6 +203,26 @@ namespace Framework
       num_spawned[0] = true;
     }
 
+  }
+
+  void RoundController::AwardEndOfRoundChips()
+  {
+    ChipController *CC = space->GetGameObject(owner)->GetComponent<ChipController>(eChipController);
+    switch (mode_)
+    {
+    case FFA:
+      CC->FFAAwards();
+      break;
+    case JUGGERNAUT:
+      CC->JuggAwards();
+      break;
+    case SUDDENDEATH:
+      CC->SDAwards();
+      break;
+    case BONUSMODE:
+      break;
+    }
+    EORAwarded = true;
   }
 
   void RoundController::Draw()

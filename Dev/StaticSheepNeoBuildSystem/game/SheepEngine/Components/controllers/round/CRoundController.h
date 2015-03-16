@@ -17,6 +17,7 @@ namespace Framework
 {
   class RoundController : public GameComponent
   {
+  public:
     enum RoundState
     {
       ROUNDSTART,
@@ -24,7 +25,6 @@ namespace Framework
       ROUNDOVER,
       GAMEOVER
     };
-  public:
     RoundController();
     ~RoundController();
     void Initialize();
@@ -39,12 +39,13 @@ namespace Framework
     void GameOver(float dt);
     void SlotMachineDone(GameTypes mode);
     void RoundCountDown();
+    void AwardEndOfRoundChips();
 
-    Handle LevelLogic;
+    Handle LevelLogic, ChipController_;
     int current_round, max_rounds;
     RoundState state_;
     float round_state_timer;
-    bool spawned_round_start, slotMachineDone, roundUp_spawned;
+    bool spawned_round_start, slotMachineDone, roundUp_spawned, EORAwarded;
     bool num_spawned[5];
     GameTypes mode_;
   };

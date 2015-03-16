@@ -28,6 +28,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "types/weapons/WShotgun.h"
 #include "types/weapons/WMissile.h"
 #include "../arena/CBlockLights.h"
+#include "../../controllers/round/CRoundController.h"
+#include "../../controllers/chip/CChipController.h"
 
 static const char *playerNames[] = { "Player1", "Player2", "Player3", "Player4" };
 static int juggKills[4] = { 0, 0, 0, 0 };
@@ -85,6 +87,7 @@ namespace Framework
     space->hooks.Add("SpawnItemSet", self, BUILD_FUNCTION(Level1_Logic::SpawnItemSet));
     space->hooks.Add("GivePlayerCoins", self, BUILD_FUNCTION(Level1_Logic::GivePlayerCoins));
     space->hooks.Add("SpawnCoins", self, BUILD_FUNCTION(Level1_Logic::SpawnCoins));
+    space->hooks.Add("RoundOver", self, BUILD_FUNCTION(Level1_Logic::RoundOver));
 
     levelSound = space->GetGameObject(owner)->GetComponentHandle(eSoundPlayer);
     levelCamera = space->GetGameObject(owner)->GetComponentHandle(eCamera);
@@ -97,6 +100,7 @@ namespace Framework
     playing = false;
     countDownDone = false;
     countDownTimer = 2.5f;
+    timeAsJugg = 0;
 
     for (int i = 0; i < 4; ++i)
     {
@@ -219,10 +223,11 @@ namespace Framework
   {
     if (ply < 0 || ply > numOfPlayers)
       return;
-    
+    RoundController *RC = space->GetGameObject(owner)->GetComponent<RoundController>(eRoundController);
+
     Players[ply] = Handle::null;
-    if (who_killed_him != -1)
-      playerCoins[who_killed_him] += 5000;
+    if (who_killed_him != -1 && RC->state_ == RoundController::RoundState::ROUNDINPRO)
+      playerCoins[who_killed_him] += 500;
     if (juggernaut[ply] == true)
     {
       juggernaut[ply] = false;
@@ -231,6 +236,8 @@ namespace Framework
         juggernaut[who_killed_him] = true;
         MakeJuggernaut();
       }
+      space->hooks.Call("JuggDied", ply, timeAsJugg);
+      timeAsJugg = 0;
     }
     else if (juggernaut[who_killed_him] == true)
       ++juggKills[who_killed_him];
@@ -566,6 +573,7 @@ namespace Framework
 
     spawnTimer -= dt;
     eventTimer -= dt;
+    timeAsJugg += dt;
     if (spawnTimer <= 0)
     {
       spawnTimer = 3.0f;
@@ -648,7 +656,7 @@ namespace Framework
       roundTimer -= dt;
 
     if (LastManStanding())
-      mode = SLOTMACHINE;//ROUNDOVER
+      space->GetGameObject(owner)->GetComponent<RoundController>(eRoundController)->round_state_timer = 0;
     spawnTimer -= dt;
     eventTimer -= dt;
 
@@ -744,16 +752,44 @@ namespace Framework
   bool Level1_Logic::LastManStanding()
   {
     int deadPlayers = 0;
+    int lms = 0;
     for (int i = 0; i < 4; ++i)
     {
       if (Players[i] == Handle::null)
         ++deadPlayers;
+      else
+        lms = i;
     }
 
-    if (deadPlayers >= 3)
+    if (deadPlayers == 3)
+    {
+      space->GetGameObject(owner)->GetComponent<ChipController>(eChipController)->LMSThisRound = lms;
+      return true;
+    }
+    else if (deadPlayers > 3) //died at same time
       return true;
     
     return false;
+  }
+
+  void Level1_Logic::RoundOver()
+  {
+    if (mode == JUGGERNAUT)
+    {
+      int theJugg;
+      for (int i = 0; i < 4; ++i)
+      {
+        if (juggernaut[i])
+        {
+          theJugg = i;
+          juggernaut[i] = false;
+          break;
+        }
+      }
+
+      space->hooks.Call("JuggDied", theJugg, timeAsJugg);
+      timeAsJugg = 0;
+    }
   }
 
   void Level1_Logic::Draw()
