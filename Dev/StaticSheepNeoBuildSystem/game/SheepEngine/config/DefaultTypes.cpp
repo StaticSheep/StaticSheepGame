@@ -219,6 +219,10 @@ namespace Framework
     TYPE_ADD_MEMBER(PlayerController, playerNum, false, true, "Player Number");
 
     TYPE_REGISTER(Bullet_Default);
+    TYPE_ADD_MEMBER(Bullet_Default, limitedLife, false, true, "Limited Life");
+    TYPE_ADD_MEMBER(Bullet_Default, ttl, false, true, "Lifespan");
+    TYPE_ADD_MEMBER(Bullet_Default, lightFade, false, true, "Light Fade Time");
+    TYPE_ADD_MEMBER(Bullet_Default, fadeTime, false, true, "Object Despawn Timer");
     TYPE_SET_TWEAK_TYPE(Bullet_Default, AntTweak::TW_TYPE_COMPONENT);
 
     TYPE_REGISTER(ElevatorPlat);
@@ -392,7 +396,7 @@ namespace Framework
     TYPE_ADD_MEMBER(AniSprite, m_flipX, false, true, "FlipX");
     TYPE_ADD_MEMBER(AniSprite, m_flipY, false, true, "FlipY");
     TYPE_ADD_MEMBER(AniSprite, Color, false, true, "Color");
-    TYPE_ADD_MEMBER(AniSprite, Size, false, true, "Scale");
+    TYPE_ADD_MEMBER(AniSprite, Size, false, true, "Sprite_Scale");
     TYPE_SET_TWEAK_TYPE(AniSprite, AntTweak::TW_TYPE_COMPONENT);
     TYPE_SET_FROM_LUA(AniSprite, Lua::GenericObjectFromLua);
 

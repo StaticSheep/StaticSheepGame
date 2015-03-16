@@ -75,6 +75,8 @@ namespace DirectSheep
     BLEND_MODE_ADDITIVE,
     BLEND_MODE_ZACH,
     BLEND_MODE_MULTIPLY,
+    BLEND_MODE_PREMULTIPLY,
+    BLEND_MODE_OVERRIDE,
   };
 
   enum RenderTargetMode

@@ -84,6 +84,8 @@ namespace Framework
     space->hooks.Add("SpawnItemSet", self, BUILD_FUNCTION(Level1_Logic::SpawnItemSet));
     space->hooks.Add("GivePlayerCoins", self, BUILD_FUNCTION(Level1_Logic::GivePlayerCoins));
     space->hooks.Add("SpawnCoins", self, BUILD_FUNCTION(Level1_Logic::SpawnCoins));
+    space->hooks.Add("SpawnCoinsEx", self, BUILD_FUNCTION(Level1_Logic::SpawnCoinsEx));
+
 
     levelSound = space->GetGameObject(owner)->GetComponentHandle(eSoundPlayer);
     levelCamera = space->GetGameObject(owner)->GetComponentHandle(eCamera);
@@ -454,6 +456,14 @@ namespace Framework
   void Level1_Logic::SpawnCoins(Vec3 pos)
   {
     for (int i = 0; i < 4; ++i)
+    {
+      SpawnItem("CoinPickup", pos);
+    }
+  }
+
+  void Level1_Logic::SpawnCoinsEx(Vec3 pos, int amount)
+  {
+    for (int i = 0; i < amount; ++i)
     {
       SpawnItem("CoinPickup", pos);
     }

@@ -1,6 +1,6 @@
 GameObject
 {
-  name std::string "Bullet"
+  name std::string "Missile"
   archetype std::string "Missile"
   Transform
   {
@@ -21,6 +21,7 @@ GameObject
   Sprite
   {
     m_spriteName std::string "energy_ball.png"
+    m_layer unsignedint 1
     m_flipX bool false
     m_flipY bool false
     m_uvScale bool false
@@ -28,7 +29,7 @@ GameObject
     {
       R float 1.000000
       G float 1.000000
-      B float 0.000000
+      B float 0.078431
       A float 1.000000
     }
     Size Vec2
@@ -44,23 +45,102 @@ GameObject
   }
   PointLight
   {
+    m_layer unsignedint 1
     m_brightness LightColor
     {
-      R float 1.000000
+      R float 0.700000
       G float 1.000000
-      B float 0.000000
-      A float 0.030000
+      B float 0.200000
+      A float 0.020000
     }
     m_attenuation LightVec3
     {
-      X float 17.010000
-      Y float -0.990000
-      Z float 0.009900
+      X float 0.000000
+      Y float -0.900000
+      Z float 0.010000
+    }
+  }
+  BasicParticleSystem
+  {
+    m_texture std::string "missilefuzz.png"
+    m_layer int 1
+    m_pos BasicParticleSystem::BPSPos
+    {
+      square bool false
+      edgeOnly bool false
+      radius float 8.000000
+      angle float 1.000000
+      randAngle float 0.000000
+      offset Vec2
+      {
+        X float 0.000000
+        Y float 0.000000
+      }
+      randOffset Vec2
+      {
+        X float 0.000000
+        Y float 0.000000
+      }
+    }
+    m_scaling BPartSys::BPSScaling
+    {
+      scale Vec2
+      {
+        X float 10.000000
+        Y float 10.000000
+      }
+      randScale Vec2
+      {
+        X float 2.000000
+        Y float 2.000000
+      }
+    }
+    m_rot BPartSys::BPSRotation
+    {
+      rotation float 0.000000
+      randRotation float 5.000000
+    }
+    m_life BPartSys::BPSLife
+    {
+      lifetime float 1.200000
+      randLifetime float 0.200000
+    }
+    m_fade BPartSys::BPSFade
+    {
+      fadeOut bool true
+      fadeOutTime float 0.500000
+      randFadeoutTime float 0.000000
+    }
+    m_vel BPartSys::BPSVelocity
+    {
+      velocity Vec2
+      {
+        X float 0.000000
+        Y float 0.000000
+      }
+      randVelocity Vec2
+      {
+        X float 0.000000
+        Y float 0.000000
+      }
+      speedIn float -2.000000
+      randSpeedIn float 0.000000
+    }
+    m_system BPartSys::BPSSystem
+    {
+      active bool true
+      editorActive bool true
+      spawnInterval float 60.000000
+      spawnAmount float 2.000000
+      spawnPerSecond float 0.000000
+      shutdownTimer float 0.000000
+      parentToOwner bool false
     }
   }
   ParticleSystem
   {
     textureName std::string "White.png"
+    m_layer int 1
     particleLife ParticleOptionShort<float>
     {
       m_startMin float 0.500000
@@ -152,6 +232,7 @@ GameObject
   }
   ParticleCircleEmitter
   {
+    parentToOwner bool false
     m_innerRadius float 0.000000
     m_outerRadius float 0.000000
     m_spawnOffset Vec3
@@ -185,5 +266,9 @@ GameObject
   }
   Bullet_Default
   {
+    limitedLife bool false
+    ttl float 0.000000
+    lightFade float 0.300000
+    fadeTime float 2.000000
   }
 }

@@ -20,6 +20,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "Matrix4D.h"
 #include <stack>
 #include "CommonStates.h"
+#include "Effects/premult_effect.h"
 
 namespace DirectSheep
 {
@@ -424,6 +425,7 @@ class RenderContext
     /////////////
 
     GenEffect*                               m_genericEffect;
+    PreMultFilter*                           m_preMultFilter;
     PointLight*                              m_PointLight;
 
     Model<PositionVertex>*                   m_PLightModel;
@@ -435,6 +437,8 @@ class RenderContext
     ///////////
 
     std::vector<DirectSheep::Handle>         m_handles;
+
+    friend class Tex2D;
 #endif
 };
 

@@ -395,9 +395,12 @@ namespace Framework
 
   void PlayerController::CollisionDamage(GameObject *OtherObject)
   {
-    if (OtherObject->name == "Bullet" && !hasRespawned && !GodMode && !PerfectMachine)
+
+    Bullet_Default* bullet = OtherObject->GetComponent<Bullet_Default>(eBullet_Default);
+
+    if (bullet && !hasRespawned && !GodMode && !PerfectMachine)
     {
-      DealDamage(OtherObject->GetComponent<Bullet_Default>(eBullet_Default)->damage, playerNum);
+      DealDamage(bullet->damage, playerNum);
       float randomX = (float)GetRandom(-25, 25);
       float randomY = (float)GetRandom(-25, 25);
       se->Play("hit1", &SoundInstance(1.0f));
@@ -680,7 +683,7 @@ namespace Framework
         space->GetGameObject(spawnEffect)->Destroy();
         spawnEffect = Handle::null;
 
-        pa->Color.A = 255.0f;
+        pa->Color.A = 1.0f;
 
         hasRespawned = false;
       }

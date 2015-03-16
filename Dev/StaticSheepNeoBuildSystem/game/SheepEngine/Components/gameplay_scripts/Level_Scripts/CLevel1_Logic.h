@@ -93,6 +93,7 @@ namespace Framework
     void SpawnItem(const char *, Vec3);
     void SpawnItemSet(Vec3);
     void SpawnCoins(Vec3);
+    void SpawnCoinsEx(Vec3, int);
     void SpawnLevelEvent();
 
     void GoToGameMode(float dt);
