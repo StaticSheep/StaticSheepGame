@@ -95,11 +95,15 @@ namespace Framework
   void Bullet_Default::Impact()
   {
 
+    GameObject* obj = space->GetGameObject(owner);
+
+    obj->hooks.Call("BulletImpact");
+
     if (fadeTime > 0 && !fading)
     {
       fading = true;
 
-      GameObject* obj = space->GetGameObject(owner);
+      
 
       
       
