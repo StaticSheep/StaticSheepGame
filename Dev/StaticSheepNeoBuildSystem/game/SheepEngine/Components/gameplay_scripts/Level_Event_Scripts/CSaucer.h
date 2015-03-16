@@ -27,15 +27,17 @@ namespace Framework
     void Remove();
 
     //member variables
-    Handle sTransform;
-    Handle controller;
+    Handle m_sTransform;
+    Handle m_controller;
 
-    DirectSheep::Handle crosshairTex;
+    DirectSheep::Handle m_crosshairTex;
 
-    Vec2                TexDim;
+    Vec2                m_TexDim;
 
-    bool                hasFired;
+    bool                m_hasFired;
 
-    Vec4                crosshairColor;
+    Vec4                m_crosshairColor;
+
+    int                 m_shotsLeft;
   };
 }

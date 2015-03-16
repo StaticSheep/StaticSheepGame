@@ -7,7 +7,7 @@
 
 namespace Framework
 {
-  Saucer::Saucer() : crosshairColor(1,1,1,1)
+  Saucer::Saucer() : m_crosshairColor(1, 1, 1, 1), m_shotsLeft(10)
   {
 
   }
@@ -19,8 +19,8 @@ namespace Framework
 
   void Saucer::LogicUpdate(float dt)
   {
-    GamePad* gp = space->GetHandles().GetAs<GamePad>(controller);
-    Transform* trans = space->GetHandles().GetAs<Transform>(sTransform);
+    GamePad* gp = space->GetHandles().GetAs<GamePad>(m_controller);
+    Transform* trans = space->GetHandles().GetAs<Transform>(m_sTransform);
 
     Vec3 newTrans = trans->GetTranslation();
 
@@ -30,16 +30,16 @@ namespace Framework
     }
 
     if (gp->RightTrigger() == 0)
-      hasFired = false;
+      m_hasFired = false;
 
-    if (gp->RightTrigger() && !hasFired)
+    if (gp->RightTrigger() && !m_hasFired)
       Fire();
 
-    if (crosshairColor.g < 1)
-      crosshairColor.g += dt / 2;
+    if (m_crosshairColor.g < 1)
+      m_crosshairColor.g += dt / 2;
 
-    if (crosshairColor.b < 1)
-      crosshairColor.b += dt / 2;
+    if (m_crosshairColor.b < 1)
+      m_crosshairColor.b += dt / 2;
 
     newTrans.x = Clamp(newTrans.x, -Draw::ScreenWidth() / 2, Draw::ScreenWidth() / 2);
     newTrans.y = Clamp(newTrans.y, -Draw::ScreenHeight() / 2, Draw::ScreenHeight() / 2);
@@ -48,7 +48,7 @@ namespace Framework
 
   void Saucer::Draw()
   {
-    Transform* trans = space->GetHandles().GetAs<Transform>(sTransform);
+    Transform* trans = space->GetHandles().GetAs<Transform>(m_sTransform);
 
     GRAPHICS->SetPosition(trans->GetTranslation().X,
       trans->GetTranslation().Y, 0);
@@ -58,7 +58,7 @@ namespace Framework
     GRAPHICS->SetSize(.75,
       .75);
 
-    GRAPHICS->SetColor(crosshairColor);
+    GRAPHICS->SetColor(m_crosshairColor);
 
     GRAPHICS->SetObjectOrigin(0, 0);
 
@@ -68,7 +68,7 @@ namespace Framework
 
     GRAPHICS->SetCamState(0);
 
-    GRAPHICS->DrawBatched(crosshairTex);
+    GRAPHICS->DrawBatched(m_crosshairTex);
   }
 
   void Saucer::Initialize()
@@ -76,22 +76,22 @@ namespace Framework
     space->hooks.Add("LogicUpdate", self, BUILD_FUNCTION(Saucer::LogicUpdate));
     space->hooks.Add("Draw", self, BUILD_FUNCTION(Saucer::Draw));
 
-    sTransform = space->GetGameObject(owner)->GetComponentHandle(eTransform);
+    m_sTransform = space->GetGameObject(owner)->GetComponentHandle(eTransform);
 
-    controller = space->GetGameObject(owner)->GetComponentHandle(eGamePad);
+    m_controller = space->GetGameObject(owner)->GetComponentHandle(eGamePad);
 
-    crosshairTex = GRAPHICS->LoadTexture(std::string("Crosshair.png"));
-    TexDim = GRAPHICS->GetTextureDim(crosshairTex);
+    m_crosshairTex = GRAPHICS->LoadTexture(std::string("Crosshair.png"));
+    m_TexDim = GRAPHICS->GetTextureDim(m_crosshairTex);
   }
 
 
   void Saucer::Fire()
   {
-    crosshairColor = Vec4(1, 0, 0, 1);
-    hasFired = true;
+    m_crosshairColor = Vec4(1, 0, 0, 1);
+    m_hasFired = true;
     Handle asteroid = (FACTORY->LoadObjectFromArchetype(space, "SaucerMissile"))->self;
     Transform *aT = (space->GetGameObject(asteroid)->GetComponent<Transform>(eTransform));
-    Transform *trans = space->GetHandles().GetAs<Transform>(sTransform);
+    Transform *trans = space->GetHandles().GetAs<Transform>(m_sTransform);
 
     aT->SetTranslation(trans->GetTranslation());
   }
