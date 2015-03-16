@@ -9,7 +9,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 #include "components/base/Component.h"
 #include "types/handle/Handle.h"
-#include "SheepPhysics/step.h"
+#include "systems/physics/SheepPhysics.h"
 
 namespace Framework
 {
