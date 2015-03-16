@@ -21,7 +21,7 @@ GameObject
   AniSprite
   {
     m_spriteName std::string "round_numbers.png"
-    m_layer unsignedint 1
+    m_layer unsignedint 2
     m_frameUpdate bool true
     m_frames Vec2
     {
@@ -50,7 +50,7 @@ GameObject
   }
   PointLight
   {
-    m_layer unsignedint 1
+    m_layer unsignedint 2
     m_brightness LightColor
     {
       R float 0.500000

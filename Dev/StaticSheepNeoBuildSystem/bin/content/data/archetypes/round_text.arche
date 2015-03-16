@@ -21,7 +21,7 @@ GameObject
   Sprite
   {
     m_spriteName std::string "round_text.png"
-    m_layer unsignedint 1
+    m_layer unsignedint 2
     m_flipX bool false
     m_flipY bool false
     m_uvScale bool false
@@ -45,7 +45,7 @@ GameObject
   }
   PointLight
   {
-    m_layer unsignedint 1
+    m_layer unsignedint 2
     m_brightness LightColor
     {
       R float 0.500000
