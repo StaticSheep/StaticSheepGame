@@ -390,6 +390,13 @@ namespace Framework
     {
       if (playerCoinStack[i] == Handle::null || playerCoins[i] >= 50000.0f)
         continue;
+
+      if (!space->GetGameObject(playerCoinStack[i]))
+      {
+        playerCoinStack[i] = Handle::null;
+        continue;
+      }
+
       offSet.y = 0.0f;
       coinStack = space->GetGameObject(playerCoinStack[i])->GetComponent<Transform>(eTransform);
       if (i == 0 || i == 1) //player one and two

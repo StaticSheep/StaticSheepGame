@@ -151,13 +151,13 @@ GameObject
     }
     m_life BPartSys::BPSLife
     {
-      lifetime float 0.800000
+      lifetime float 0.700000
       randLifetime float 0.000000
     }
     m_fade BPartSys::BPSFade
     {
       fadeOut bool true
-      fadeOutTime float 0.500000
+      fadeOutTime float 0.400000
       randFadeoutTime float 0.000000
     }
     m_vel BPartSys::BPSVelocity
@@ -179,10 +179,11 @@ GameObject
     {
       active bool true
       editorActive bool true
-      spawnInterval float 20.000000
+      spawnInterval float 15.000000
       spawnAmount float 10.000000
       spawnPerSecond float 0.000000
       shutdownTimer float 0.000000
+      parentToOwner bool false
     }
   }
   Explosion

@@ -7,7 +7,7 @@ GameObject
   {
     Translation Vec3
     {
-      x_ float 55.261482
+      x_ float 153.771042
       y_ float -4.805305
       z_ float 0.000000
     }
@@ -198,15 +198,15 @@ GameObject
 }
 GameObject
 {
-  name std::string "bg"
-  archetype std::string ""
+  name std::string "missile_explode"
+  archetype std::string "missile_explosion"
   Transform
   {
     Translation Vec3
     {
-      x_ float 0.000000
-      y_ float 0.000000
-      z_ float 1.000000
+      x_ float 324.360474
+      y_ float -327.964447
+      z_ float 0.000000
     }
     Rotation float 0.000000
     Scale Vec3
@@ -216,30 +216,105 @@ GameObject
       z_ float 0.000000
     }
   }
-  Sprite
+  PointLight
   {
-    m_spriteName std::string "white.png"
     m_layer unsignedint 1
-    m_flipX bool false
-    m_flipY bool false
-    m_uvScale bool false
-    Color Vec4
+    m_brightness LightColor
     {
-      R float 1.000000
+      R float 0.800000
       G float 1.000000
-      B float 1.000000
-      A float 0.000000
+      B float 0.200000
+      A float 0.010000
     }
-    Size Vec2
-    {
-      X float 1920.000000
-      Y float 1080.000000
-    }
-    m_origin Vec2
+    m_attenuation LightVec3
     {
       X float 0.000000
-      Y float 0.000000
+      Y float -0.100000
+      Z float 0.001000
     }
+  }
+  BasicParticleSystem
+  {
+    m_texture std::string "missileboom.png"
+    m_layer int 1
+    m_pos BasicParticleSystem::BPSPos
+    {
+      square bool false
+      edgeOnly bool false
+      radius float 1.000000
+      angle float 1.000000
+      randAngle float 0.000000
+      offset Vec2
+      {
+        X float 0.000000
+        Y float 0.000000
+      }
+      randOffset Vec2
+      {
+        X float 0.000000
+        Y float 0.000000
+      }
+    }
+    m_scaling BPartSys::BPSScaling
+    {
+      scale Vec2
+      {
+        X float 32.000000
+        Y float 32.000000
+      }
+      randScale Vec2
+      {
+        X float 6.000000
+        Y float 6.000000
+      }
+    }
+    m_rot BPartSys::BPSRotation
+    {
+      rotation float 0.000000
+      randRotation float 5.000000
+    }
+    m_life BPartSys::BPSLife
+    {
+      lifetime float 0.700000
+      randLifetime float 0.200000
+    }
+    m_fade BPartSys::BPSFade
+    {
+      fadeOut bool true
+      fadeOutTime float 0.500000
+      randFadeoutTime float 0.000000
+    }
+    m_vel BPartSys::BPSVelocity
+    {
+      velocity Vec2
+      {
+        X float 0.000000
+        Y float 0.000000
+      }
+      randVelocity Vec2
+      {
+        X float 0.000000
+        Y float 0.000000
+      }
+      speedIn float -110.000000
+      randSpeedIn float 3.000000
+    }
+    m_system BPartSys::BPSSystem
+    {
+      active bool true
+      editorActive bool true
+      spawnInterval float 30.000000
+      spawnAmount float 10.000000
+      spawnPerSecond float 0.000000
+      shutdownTimer float 0.000000
+      parentToOwner bool false
+    }
+  }
+  Explosion
+  {
+    timer float 0.500000
+    lightFadeTime float 0.800000
+    waitForAnim bool false
   }
 }
 GameObject
@@ -447,8 +522,8 @@ GameObject
   {
     Translation Vec3
     {
-      x_ float -166.984589
-      y_ float -136.952209
+      x_ float -307.541687
+      y_ float -169.388245
       z_ float 0.000000
     }
     Rotation float 0.000000
@@ -475,8 +550,8 @@ GameObject
     }
     Size Vec2
     {
-      X float 3.000000
-      Y float 3.000000
+      X float 2.500000
+      Y float 2.500000
     }
     m_origin Vec2
     {
@@ -543,14 +618,14 @@ GameObject
     }
     m_life BPartSys::BPSLife
     {
-      lifetime float 1.200000
-      randLifetime float 0.200000
+      lifetime float 0.600000
+      randLifetime float 0.000000
     }
     m_fade BPartSys::BPSFade
     {
       fadeOut bool true
       fadeOutTime float 0.500000
-      randFadeoutTime float 0.000000
+      randFadeoutTime float 0.200000
     }
     m_vel BPartSys::BPSVelocity
     {
@@ -564,7 +639,7 @@ GameObject
         X float 0.000000
         Y float 0.000000
       }
-      speedIn float -2.000000
+      speedIn float -3.000000
       randSpeedIn float 0.000000
     }
     m_system BPartSys::BPSSystem
@@ -715,257 +790,27 @@ GameObject
 }
 GameObject
 {
-  name std::string "missile_explode"
-  archetype std::string "missile_explosion"
-  Transform
-  {
-    Translation Vec3
-    {
-      x_ float 506.963501
-      y_ float 0.000000
-      z_ float 0.000000
-    }
-    Rotation float 0.000000
-    Scale Vec3
-    {
-      x_ float 1.000000
-      y_ float 1.000000
-      z_ float 0.000000
-    }
-  }
-  PointLight
-  {
-    m_layer unsignedint 1
-    m_brightness LightColor
-    {
-      R float 0.800000
-      G float 1.000000
-      B float 0.200000
-      A float 0.010000
-    }
-    m_attenuation LightVec3
-    {
-      X float 0.000000
-      Y float -0.100000
-      Z float 0.001000
-    }
-  }
-  BasicParticleSystem
-  {
-    m_texture std::string "missileboom.png"
-    m_layer int 1
-    m_pos BasicParticleSystem::BPSPos
-    {
-      square bool false
-      edgeOnly bool false
-      radius float 10.000000
-      angle float 1.000000
-      randAngle float 0.000000
-      offset Vec2
-      {
-        X float 0.000000
-        Y float 0.000000
-      }
-      randOffset Vec2
-      {
-        X float 0.000000
-        Y float 0.000000
-      }
-    }
-    m_scaling BPartSys::BPSScaling
-    {
-      scale Vec2
-      {
-        X float 32.000000
-        Y float 32.000000
-      }
-      randScale Vec2
-      {
-        X float 0.000000
-        Y float 0.000000
-      }
-    }
-    m_rot BPartSys::BPSRotation
-    {
-      rotation float 0.000000
-      randRotation float 5.000000
-    }
-    m_life BPartSys::BPSLife
-    {
-      lifetime float 1.200000
-      randLifetime float 0.200000
-    }
-    m_fade BPartSys::BPSFade
-    {
-      fadeOut bool true
-      fadeOutTime float 0.500000
-      randFadeoutTime float 0.000000
-    }
-    m_vel BPartSys::BPSVelocity
-    {
-      velocity Vec2
-      {
-        X float 0.000000
-        Y float 0.000000
-      }
-      randVelocity Vec2
-      {
-        X float 0.000000
-        Y float 0.000000
-      }
-      speedIn float -5.000000
-      randSpeedIn float 0.000000
-    }
-    m_system BPartSys::BPSSystem
-    {
-      active bool true
-      editorActive bool true
-      spawnInterval float 30.000000
-      spawnAmount float 15.000000
-      spawnPerSecond float 0.000000
-      shutdownTimer float 0.000000
-      parentToOwner bool false
-    }
-  }
-}
-GameObject
-{
-  name std::string "missile_explode"
-  archetype std::string "missile_explosion"
-  Transform
-  {
-    Translation Vec3
-    {
-      x_ float 324.360474
-      y_ float -327.964447
-      z_ float 0.000000
-    }
-    Rotation float 0.000000
-    Scale Vec3
-    {
-      x_ float 1.000000
-      y_ float 1.000000
-      z_ float 0.000000
-    }
-  }
-  PointLight
-  {
-    m_layer unsignedint 1
-    m_brightness LightColor
-    {
-      R float 0.800000
-      G float 1.000000
-      B float 0.200000
-      A float 0.010000
-    }
-    m_attenuation LightVec3
-    {
-      X float 0.000000
-      Y float -0.100000
-      Z float 0.001000
-    }
-  }
-  BasicParticleSystem
-  {
-    m_texture std::string "missileboom.png"
-    m_layer int 1
-    m_pos BasicParticleSystem::BPSPos
-    {
-      square bool false
-      edgeOnly bool false
-      radius float 10.000000
-      angle float 1.000000
-      randAngle float 0.000000
-      offset Vec2
-      {
-        X float 0.000000
-        Y float 0.000000
-      }
-      randOffset Vec2
-      {
-        X float 0.000000
-        Y float 0.000000
-      }
-    }
-    m_scaling BPartSys::BPSScaling
-    {
-      scale Vec2
-      {
-        X float 32.000000
-        Y float 32.000000
-      }
-      randScale Vec2
-      {
-        X float 0.000000
-        Y float 0.000000
-      }
-    }
-    m_rot BPartSys::BPSRotation
-    {
-      rotation float 0.000000
-      randRotation float 5.000000
-    }
-    m_life BPartSys::BPSLife
-    {
-      lifetime float 1.200000
-      randLifetime float 0.200000
-    }
-    m_fade BPartSys::BPSFade
-    {
-      fadeOut bool true
-      fadeOutTime float 0.500000
-      randFadeoutTime float 0.000000
-    }
-    m_vel BPartSys::BPSVelocity
-    {
-      velocity Vec2
-      {
-        X float 0.000000
-        Y float 0.000000
-      }
-      randVelocity Vec2
-      {
-        X float 0.000000
-        Y float 0.000000
-      }
-      speedIn float -5.000000
-      randSpeedIn float 0.000000
-    }
-    m_system BPartSys::BPSSystem
-    {
-      active bool true
-      editorActive bool true
-      spawnInterval float 30.000000
-      spawnAmount float 15.000000
-      spawnPerSecond float 0.000000
-      shutdownTimer float 0.000000
-      parentToOwner bool false
-    }
-  }
-}
-GameObject
-{
-  name std::string ""
+  name std::string "bg"
   archetype std::string ""
   Transform
   {
     Translation Vec3
     {
-      x_ float 44.449394
-      y_ float -174.193512
-      z_ float 0.000000
+      x_ float 0.000000
+      y_ float 0.000000
+      z_ float 1.000000
     }
     Rotation float 0.000000
     Scale Vec3
     {
-      x_ float 10.000000
-      y_ float 10.000000
+      x_ float 1.000000
+      y_ float 1.000000
       z_ float 0.000000
     }
   }
   Sprite
   {
-    m_spriteName std::string "missilefuzz.png"
+    m_spriteName std::string "white.png"
     m_layer unsignedint 1
     m_flipX bool false
     m_flipY bool false
@@ -975,12 +820,12 @@ GameObject
       R float 1.000000
       G float 1.000000
       B float 1.000000
-      A float 1.000000
+      A float 0.196078
     }
     Size Vec2
     {
-      X float 1.000000
-      Y float 1.000000
+      X float 1920.000000
+      Y float 1080.000000
     }
     m_origin Vec2
     {
