@@ -19,13 +19,15 @@ namespace Framework
 
   struct MCData
   {
-    float length;
-    Handle obj;
+    MCData(float length, Handle obj) : mc_length(length), mc_obj(obj){};
+    float mc_length;
+    Handle mc_obj;
   };
 
   class MultiRay
   {
-    MultiRay(Vec3D origin, Vec3D direction, void* space, int width, int collisionGroup, std::vector<MCData>& results, int resolution = LASERWIDTHMOD);
+    MultiRay(Vec3D& origin, Vec3D& direction, void* space, int width, 
+      int collisionGroup, std::vector<MCData>& results, int resolution = LASERWIDTHMOD);
 
     ~MultiRay();
 
@@ -33,17 +35,16 @@ namespace Framework
     void SetWidth(int width);
 
     //raycasting
-    bool ComplexRayCast();
-    void RayDestruction();
+    bool ComplexCaster();
 
 
     private:
-      int m_width;
-      int resolution;
+      float m_width;
+      int m_resolution;
       RayConfig m_ray;
 
-      std::vector<MCData>* results;
-      std::vector<Vec3D> positionOffsets;
+      std::vector<MCData>* m_results;
+      std::vector<Vec3D> m_positionOffsets;
 
   };
 
