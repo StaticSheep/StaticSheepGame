@@ -410,7 +410,7 @@ namespace Framework
       exT->SetTranslation(ps->GetTranslation() + Vec3(randomX, randomY, -1.0f));
 
       //for metrics, need to determine where the bullet came from by checking its collision group
-      if (health <= 0)
+      if (health <= 0 && OtherObject->GetComponent<CircleCollider>(eCircleCollider) != nullptr)
       {
         pn = -1;
 

@@ -68,6 +68,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "Components/controllers/chip/CChipController.h"
 #include "Components/controllers/round/CRoundController.h"
 #include "Components/controllers/round/CRoundText.h"
+#include "Components/controllers/round/CRoundResults.h"
 
 
 namespace Framework
@@ -302,6 +303,9 @@ namespace Framework
     TYPE_REGISTER(RoundText);
     TYPE_SET_TWEAK_TYPE(RoundText, AntTweak::TW_TYPE_COMPONENT);
     TYPE_ADD_MEMBER(RoundText, text, false, true, "Left to Right");
+
+    TYPE_REGISTER(RoundResults);
+    TYPE_SET_TWEAK_TYPE(RoundResults, AntTweak::TW_TYPE_COMPONENT);
 
     TYPE_REGISTER(Laser);
     TYPE_SET_TWEAK_TYPE(Laser, AntTweak::TW_TYPE_COMPONENT);

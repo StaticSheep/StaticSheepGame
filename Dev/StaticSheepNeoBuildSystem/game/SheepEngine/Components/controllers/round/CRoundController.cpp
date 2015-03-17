@@ -11,6 +11,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "CRoundText.h"
 #include "../../sprites/CSprite.h"
 #include "../chip/CChipController.h"
+#include "CRoundResults.h"
 
 namespace Framework
 {
@@ -75,6 +76,7 @@ namespace Framework
       round_number->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(1000.0f, -64.0f, 0.0f));
       round_number->GetComponent<RoundText>(eRoundText)->roundNum = current_round;
       spawned_round_start = true;
+      ResultsSpawned = false;
       space->hooks.Call("RoundStart");
     }
     round_state_timer -= dt;
@@ -98,7 +100,7 @@ namespace Framework
     if (round_state_timer <= 0)
     {
       state_ = ROUNDOVER;
-      round_state_timer = 7.0f;
+      round_state_timer = 10.0f;
       space->GetGameObject(owner)->GetComponent<Level1_Logic>(eLevel1_Logic)->roundStart = false;
       space->GetGameObject(owner)->GetComponent<Level1_Logic>(eLevel1_Logic)->mode = SLOTMACHINE;
       spawned_round_start = false;
@@ -112,7 +114,7 @@ namespace Framework
 
   void RoundController::RoundOver(float dt)
   {
-    if (round_state_timer >= 5.0f && !roundUp_spawned)
+    if (round_state_timer >= 8.0f && !roundUp_spawned)
     {
       //display "round over"
       GameObject *round_number = (FACTORY->LoadObjectFromArchetype(space, "roundUp_text"));
@@ -120,10 +122,19 @@ namespace Framework
       roundUp_spawned = true;
       space->hooks.Call("RoundOver");
     }
-    else
+    else if (round_state_timer >= 6.0f && round_state_timer <= 6.8f)
     {
       //display results
+      if (!ResultsSpawned)
+      {
 
+        GameObject *ResultsTV = (FACTORY->LoadObjectFromArchetype(space, "ResultsTV"));
+        ResultsTV->GetComponent<RoundResults>(eRoundResults)->ChipCont = space->GetGameObject(owner)->GetComponent<ChipController>(eChipController)->owner;
+        ResultsTV->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(0.0f, 950.0f, 1.0f));
+        ResultsTV->GetComponent<RoundResults>(eRoundResults)->mode_ = mode_;
+        ResultsSpawned = true;
+      }
+      
       if (!EORAwarded)
         AwardEndOfRoundChips();
     }
@@ -138,6 +149,7 @@ namespace Framework
       else
         state_ = ROUNDSTART;
       round_state_timer = 2.0f;
+      ResultsSpawned = false;
     }
 
   }
@@ -159,7 +171,7 @@ namespace Framework
   {
     slotMachineDone = true;
     state_ = ROUNDINPRO;
-    round_state_timer = 20.0f;
+    round_state_timer = 10.0f;
     mode_ = mode;
   }
 
@@ -227,7 +239,7 @@ namespace Framework
 
   void RoundController::Draw()
   {
-    
+
   }
 
   void RoundController::Remove()

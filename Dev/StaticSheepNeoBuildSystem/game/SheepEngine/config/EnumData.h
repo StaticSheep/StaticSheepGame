@@ -87,6 +87,7 @@ E_NAME(Component)
   E_ENTRY(BackgroundPan)
   E_ENTRY(WarningText)
   E_ENTRY(RoundText)
+  E_ENTRY(RoundResults)
 
   E_ENTRY(div_Gameplay)
   E_ENTRY(PowerupPickup)

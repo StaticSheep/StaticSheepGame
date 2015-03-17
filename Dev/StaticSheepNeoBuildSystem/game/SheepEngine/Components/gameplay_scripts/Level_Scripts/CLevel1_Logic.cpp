@@ -120,6 +120,17 @@ namespace Framework
   void Level1_Logic::Remove()
 	{
 		space->hooks.Remove("LogicUpdate", self);
+    space->hooks.Remove("Draw", self);
+    space->hooks.Remove("PlayerDied", self);
+    space->hooks.Remove("CheatWin", self);
+    space->hooks.Remove("SlotFinished", self);
+    space->hooks.Remove("SetMods", self);
+    space->hooks.Remove("SpawnItem", self);
+    space->hooks.Remove("SpawnItemSet", self);
+    space->hooks.Remove("GivePlayerCoins", self);
+    space->hooks.Remove("SpawnCoins", self);
+    space->hooks.Remove("RoundOver", self);
+    space->hooks.Remove("SpawnCoinsEx", self);
 	}
 
   void Level1_Logic::LogicUpdate(float dt)
@@ -137,7 +148,7 @@ namespace Framework
       instance.volume = 0.35f;
       instance.mode = PLAY_LOOP;
 
-      sp->Play("Main Music", &instance);
+      sp->Play("tripg", &instance);
       playing = true;
     } 
 

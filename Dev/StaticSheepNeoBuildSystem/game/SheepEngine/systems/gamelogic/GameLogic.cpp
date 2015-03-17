@@ -43,6 +43,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "Components/controllers/chip/CChipController.h"
 #include "Components/controllers/round/CRoundController.h"
 #include "Components/controllers/round/CRoundText.h"
+#include "Components/controllers/round/CRoundResults.h"
 
 
 namespace Framework
@@ -93,6 +94,7 @@ namespace Framework
     REGISTER_COMPONENT(ChipController);
     REGISTER_COMPONENT(RoundController);
     REGISTER_COMPONENT(RoundText);
+    REGISTER_COMPONENT(RoundResults);
   }
 
   void GameLogic::Initialize()
