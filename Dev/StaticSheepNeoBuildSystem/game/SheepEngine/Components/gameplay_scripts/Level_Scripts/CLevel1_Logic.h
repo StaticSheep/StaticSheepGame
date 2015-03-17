@@ -66,6 +66,7 @@ namespace Framework
     int playerCoinsThisFrame[4];
     std::deque<std::pair<int, float>> coinStringsAlive[4];
     bool juggernaut[4];
+    bool num_spawned[4];
     float timeAsJugg;
     int deadPlayers;
     int numOfPlayers;

@@ -302,7 +302,13 @@ namespace Framework
 
     TYPE_REGISTER(RoundText);
     TYPE_SET_TWEAK_TYPE(RoundText, AntTweak::TW_TYPE_COMPONENT);
-    TYPE_ADD_MEMBER(RoundText, text, false, true, "Left to Right");
+    TYPE_ADD_MEMBER(RoundText, timer, false, true, "Timer");
+    TYPE_ADD_MEMBER(RoundText, text, false, true, "Is Text?");
+    TYPE_ADD_MEMBER(RoundText, number, false, true, "Number");
+    TYPE_ADD_MEMBER(RoundText, LeftToRight, false, true, "Left to Right?");
+    TYPE_ADD_MEMBER(RoundText, initialSpeed, false, true, "Initial Speed");
+    TYPE_ADD_MEMBER(RoundText, middleSpeed, false, true, "Middle Speed");
+    TYPE_ADD_MEMBER(RoundText, killRange, false, true, "Kill Range");
 
     TYPE_REGISTER(RoundResults);
     TYPE_SET_TWEAK_TYPE(RoundResults, AntTweak::TW_TYPE_COMPONENT);

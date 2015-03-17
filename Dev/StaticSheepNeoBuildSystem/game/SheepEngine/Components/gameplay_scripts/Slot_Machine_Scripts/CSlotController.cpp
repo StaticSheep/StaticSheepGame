@@ -71,7 +71,6 @@ namespace Framework
             rt->SetTranslation(rt->GetTranslation() + Vec3(-40.0f, 0.0f, 0.0f));
         }
 
-        //if (rt->GetTranslation().y >= 950.0f ||  (rt->GetTranslation().x <= 40.0f && rt->GetTranslation().x >= -40.0f))
         if (Stype == GOLD)
         {
           if (rt->GetTranslation().y >= 950.0f)

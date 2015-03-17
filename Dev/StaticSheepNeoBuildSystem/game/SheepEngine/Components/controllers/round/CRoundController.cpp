@@ -71,10 +71,13 @@ namespace Framework
   {
     if (!spawned_round_start)
     {
-      (FACTORY->LoadObjectFromArchetype(space, "round_text"))->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(-1000.0f, 64.0f, 0.0f));
+      GameObject *roundText = (FACTORY->LoadObjectFromArchetype(space, "round_text"));
       GameObject *round_number = (FACTORY->LoadObjectFromArchetype(space, "round_number"));
+      roundText->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(-1000.0f, 64.0f, 0.0f));
+      roundText->GetComponent<RoundText>(eRoundText)->LeftToRight = true;
+      roundText->GetComponent<RoundText>(eRoundText)->text = true;
       round_number->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(1000.0f, -64.0f, 0.0f));
-      round_number->GetComponent<RoundText>(eRoundText)->roundNum = current_round;
+      round_number->GetComponent<RoundText>(eRoundText)->number = current_round;
       spawned_round_start = true;
       ResultsSpawned = false;
       space->hooks.Call("RoundStart");
@@ -119,6 +122,8 @@ namespace Framework
       //display "round over"
       GameObject *round_number = (FACTORY->LoadObjectFromArchetype(space, "roundUp_text"));
       round_number->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(-1000.0f, 64.0f, 0.0f));
+      round_number->GetComponent<RoundText>(eRoundText)->LeftToRight = true;
+      round_number->GetComponent<RoundText>(eRoundText)->text = true;
       roundUp_spawned = true;
       space->hooks.Call("RoundOver");
     }
@@ -184,35 +189,40 @@ namespace Framework
     {
       GameObject *round_number = (FACTORY->LoadObjectFromArchetype(space, "round_number"));
       round_number->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(1000.0f, -64.0f, 0.0f));
-      round_number->GetComponent<RoundText>(eRoundText)->roundNum = 5;
+      round_number->GetComponent<RoundText>(eRoundText)->number = 5;
+      round_number->GetComponent<RoundText>(eRoundText)->middleSpeed = 10.0f;
       num_spawned[4] = true;
     }
     else if (round_state_timer <= 4.0f && round_state_timer > 3.0f && !num_spawned[3])
     {
       GameObject *round_number = (FACTORY->LoadObjectFromArchetype(space, "round_number"));
       round_number->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(1000.0f, -64.0f, 0.0f));
-      round_number->GetComponent<RoundText>(eRoundText)->roundNum = 4;
+      round_number->GetComponent<RoundText>(eRoundText)->number = 4;
+      round_number->GetComponent<RoundText>(eRoundText)->middleSpeed = 10.0f;
       num_spawned[3] = true;
     }
     else if (round_state_timer <= 3.0f && round_state_timer > 2.0f && !num_spawned[2])
     {
       GameObject *round_number = (FACTORY->LoadObjectFromArchetype(space, "round_number"));
       round_number->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(1000.0f, -64.0f, 0.0f));
-      round_number->GetComponent<RoundText>(eRoundText)->roundNum = 3;
+      round_number->GetComponent<RoundText>(eRoundText)->number = 3;
+      round_number->GetComponent<RoundText>(eRoundText)->middleSpeed = 10.0f;
       num_spawned[2] = true;
     }
     else if (round_state_timer <= 2.0f && round_state_timer > 1.0f && !num_spawned[1])
     {
       GameObject *round_number = (FACTORY->LoadObjectFromArchetype(space, "round_number"));
       round_number->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(1000.0f, -64.0f, 0.0f));
-      round_number->GetComponent<RoundText>(eRoundText)->roundNum = 2;
+      round_number->GetComponent<RoundText>(eRoundText)->number = 2;
+      round_number->GetComponent<RoundText>(eRoundText)->middleSpeed = 10.0f;
       num_spawned[1] = true;
     }
     else if (round_state_timer <= 1.0f && round_state_timer > 0.0f && !num_spawned[0])
     {
       GameObject *round_number = (FACTORY->LoadObjectFromArchetype(space, "round_number"));
       round_number->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(1000.0f, -64.0f, 0.0f));
-      round_number->GetComponent<RoundText>(eRoundText)->roundNum = 1;
+      round_number->GetComponent<RoundText>(eRoundText)->number = 1;
+      round_number->GetComponent<RoundText>(eRoundText)->middleSpeed = 10.0f;
       num_spawned[0] = true;
     }
 
@@ -240,7 +250,18 @@ namespace Framework
 
   void RoundController::Draw()
   {
+    if (state_ == ROUNDINPRO)
+    {
+      Vec2D scale(60, 60);
+      Vec3 pos(-100.0f, 600.0f, 0.0f);
+      char playerString[10];
 
+      sprintf(playerString, "%5.2f", round_state_timer);
+      Draw::SetPosition(pos.x, pos.y);
+      Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
+      Draw::SetRotation(0);
+      Draw::DrawString(playerString, scale, 1);
+    }
   }
 
   void RoundController::Remove()

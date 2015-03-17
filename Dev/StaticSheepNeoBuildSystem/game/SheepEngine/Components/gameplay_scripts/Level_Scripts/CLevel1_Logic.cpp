@@ -30,6 +30,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "../arena/CBlockLights.h"
 #include "../../controllers/round/CRoundController.h"
 #include "../../controllers/chip/CChipController.h"
+#include "../../controllers/round/CRoundText.h"
 
 static const char *playerNames[] = { "Player1", "Player2", "Player3", "Player4" };
 static int juggKills[4] = { 0, 0, 0, 0 };
@@ -100,7 +101,7 @@ namespace Framework
     startFlag = true;
     playing = false;
     countDownDone = false;
-    countDownTimer = 2.5f;
+    countDownTimer = 3.5f;
     timeAsJugg = 0;
 
     for (int i = 0; i < 4; ++i)
@@ -109,6 +110,7 @@ namespace Framework
       juggernaut[i] = false;
       playerCoinsThisFrame[i] = 0;
       playerCoins[i] = 1;
+      num_spawned[i] = false;
     }
 
     mode = SLOTMACHINE;
@@ -298,30 +300,51 @@ namespace Framework
 
   bool Level1_Logic::LevelCountdown(float dt)
   {
-    Sprite *ls = space->GetHandles().GetAs<Sprite>(levelSprite);
+    Sprite *ls = space->GetGameObject(owner)->GetComponent<Sprite>(eSprite);
     //run countdown
-    if (countDownTimer <= 2.0f && countDownTimer > 1.33f)
+    if (countDownTimer > 3.0f && !num_spawned[3])
     {
-      ls->SetTexture("cd_3.png");
+      GameObject *round_number = (FACTORY->LoadObjectFromArchetype(space, "round_number"));
+      round_number->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(1000.0f, -64.0f, 0.0f));
+      round_number->GetComponent<RoundText>(eRoundText)->number = 4;
+      round_number->GetComponent<RoundText>(eRoundText)->middleSpeed = 30.0f;
+      num_spawned[3] = true;
     }
-    else if (countDownTimer <= 1.33f && countDownTimer > 0.66f)
+    else if (countDownTimer <= 3.0f && countDownTimer > 2.0f && !num_spawned[2])
     {
-      //change sprite
-      ls->SetTexture("cd_2.png");
+      GameObject *round_number = (FACTORY->LoadObjectFromArchetype(space, "round_number"));
+      round_number->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(1000.0f, -64.0f, 0.0f));
+      round_number->GetComponent<RoundText>(eRoundText)->number = 3;
+      round_number->GetComponent<RoundText>(eRoundText)->middleSpeed = 30.0f;
+      num_spawned[2] = true;
+    }
+    else if (countDownTimer <= 2.0f && countDownTimer > 1.0f && !num_spawned[1])
+    {
+      GameObject *round_number = (FACTORY->LoadObjectFromArchetype(space, "round_number"));
+      round_number->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(1000.0f, -64.0f, 0.0f));
+      round_number->GetComponent<RoundText>(eRoundText)->number = 2;
+      round_number->GetComponent<RoundText>(eRoundText)->middleSpeed = 30.0f;
+      num_spawned[1] = true;
+    }
+    else if (countDownTimer <= 1.0f && countDownTimer > 0.0f && !num_spawned[0])
+    {
+      GameObject *round_number = (FACTORY->LoadObjectFromArchetype(space, "round_number"));
+      round_number->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(1000.0f, -64.0f, 0.0f));
+      round_number->GetComponent<RoundText>(eRoundText)->number = 1;
+      round_number->GetComponent<RoundText>(eRoundText)->middleSpeed = 30.0f;
+      num_spawned[0] = true;
+    }
 
-    }
-    else if (countDownTimer <= 0.66f && countDownTimer > 0.0f)
-    {
-      //change sprite
-      ls->SetTexture("cd_1.png");
-
-    }
 
     countDownTimer -= dt;
     if (countDownTimer <= 0)
     {
       countDownDone = true;
       ls->SetTexture("blank.png");
+      for (int i = 0; i < 4; ++i)
+        num_spawned[i] = false;
+      //spawn GO text
+
       return true;
     }
 
@@ -745,7 +768,7 @@ namespace Framework
   {
     mode = mode_;
     countDownDone = false;
-    countDownTimer = 2.0f;
+    countDownTimer = 3.0f;
     roundTimer = 60.0f;
     slotFinished = false;
     startFlag = true;

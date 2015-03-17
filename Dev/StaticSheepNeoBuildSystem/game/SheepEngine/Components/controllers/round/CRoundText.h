@@ -26,7 +26,10 @@ namespace Framework
     Handle rTransfrom;
     Handle roundSprite;
     float timer;
-    bool text;
-    int roundNum;
+    bool text; //is it text or a number?
+    int number; //if it is a number, this is a 0-9 value
+    bool LeftToRight; //if true goes left to right, otherwise it will go right to left
+    //intitialSpeed is when it comes in and out. middle speed is when it passes through center
+    float initialSpeed, middleSpeed, killRange; 
 	};
 }
