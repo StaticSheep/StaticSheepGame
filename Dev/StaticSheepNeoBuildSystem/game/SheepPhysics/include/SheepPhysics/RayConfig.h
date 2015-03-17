@@ -10,6 +10,7 @@ namespace SheepFizz
 {
   struct RayConfig
   {
+
     //set by client
     Vec3D rayOrigin;
     Vec3D rayDirection;
@@ -21,7 +22,7 @@ namespace SheepFizz
 
     //returned by engine
     Vec3D firstCollisionLocation;
-    void* firstCollisionBody;
+    void* firstCollisionObject;
 
     std::vector<Vec3D> bodyIntersections_;   //the bodies the ray collided with - currently set to position for debug info
     //std::vector<void*> bodiesIntersected_;

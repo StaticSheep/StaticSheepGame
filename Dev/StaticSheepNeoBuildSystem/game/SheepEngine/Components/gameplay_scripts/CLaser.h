@@ -11,12 +11,13 @@ All content © 2015 DigiPen (USA) Corporation, all rights reserved.
 #include "types/handle/Handle.h"
 #include "../transform/CTransform.h"
 #include "components/sprites/CSprite.h"
-#include "../colliders/CCircleCollider.h"
-#include "components/ray/CRay.h"
+
+
 
 
 namespace Framework
 {
+  /*
   #define LASERWIDTHMOD 4
 
   class Laser : public GameComponent
@@ -85,5 +86,5 @@ namespace Framework
     Vec4                m_bodyColor;
     Vec4                m_beamColor;
 
-  };
+  };*/
 }

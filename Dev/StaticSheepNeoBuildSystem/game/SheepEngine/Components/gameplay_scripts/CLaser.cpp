@@ -13,6 +13,7 @@ All content © 2015 DigiPen (USA) Corporation, all rights reserved.
 
 namespace Framework
 {
+  /*
   Laser::Laser() : 
     startDelay(0), duration(1), 
     damage(1), width(1), 
@@ -268,5 +269,5 @@ namespace Framework
   void Laser::TweakSetBeamTexture(const void * Texture)
   {
     SetBeamTexture(((std::string *)Texture)->c_str());
-  }
+  }*/
 }

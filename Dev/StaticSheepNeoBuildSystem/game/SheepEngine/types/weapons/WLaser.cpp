@@ -9,6 +9,7 @@
 
 namespace Framework
 {
+  /*
   WLaser::WLaser()
   {
     delay = 0.0f;
@@ -33,7 +34,7 @@ namespace Framework
       arrowTransform->SetRotation((float)atan(aimDir.y / aimDir.x) + PI);*/
 
 
-    Handle playerCollider = player->GetComponentHandle(eBoxCollider);
+ /*   Handle playerCollider = player->GetComponentHandle(eBoxCollider);
     BoxCollider *bc = player->space->GetHandles().GetAs<BoxCollider>(playerCollider);
     bc->SetRayCast(playerTrans->GetTranslation(), AimDir, player->archetype);
     //bool death = bc->ComplexRayCast();
@@ -55,4 +56,5 @@ namespace Framework
   {
     delay = 0;
   }
+  */
 }

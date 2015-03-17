@@ -275,26 +275,9 @@ namespace Framework
     TYPE_REGISTER(CoinBall);
     TYPE_SET_TWEAK_TYPE(CoinBall, AntTweak::TW_TYPE_COMPONENT);
 
-    TYPE_REGISTER(Laser);
-    TYPE_SET_TWEAK_TYPE(Laser, AntTweak::TW_TYPE_COMPONENT);
-    TYPE_ADD_MEMBER(Laser, type, false, true, "Type");
-    TYPE_ADD_MEMBER(Laser, startDelay, false, true, "Delay");
-    TYPE_ADD_MEMBER(Laser, duration, false, true, "Duration");
-    TYPE_ADD_MEMBER(Laser, damage, false, true, "Damage");
-    TYPE_ADD_MEMBER(Laser, width, false, true, "Width");
-    TYPE_ADD_MEMBER(Laser, arcRotation, false, true, "Arc");
-    TYPE_ADD_MEMBER(Laser, arcDelay, false, true, "ArcDelay");
-    TYPE_ADD_MEMBER(Laser, m_bodyTexName, false, true, "Body Texture",
-      BUILD_FUNCTION(Laser::TweakSetBodyTexture));
-    TYPE_ADD_MEMBER(Laser, m_beamTexName, false, true, "Beam Texture",
-      BUILD_FUNCTION(Laser::TweakSetBeamTexture));
-    TYPE_ADD_MEMBER(Laser, m_bodyColor, false, true, "Body Color");
-    TYPE_ADD_MEMBER(Laser, m_beamColor, false, true, "Beam Color");
-
     TYPE_REGISTER(Pistol);
     TYPE_REGISTER(Shotgun);
     TYPE_REGISTER(Automatic);
-    TYPE_REGISTER(WLaser);
     TYPE_REGISTER(Missile);
 
     TYPE_REGISTER(DamageBoost);

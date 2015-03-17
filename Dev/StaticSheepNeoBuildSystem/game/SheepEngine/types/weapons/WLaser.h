@@ -3,6 +3,7 @@
 
 namespace Framework
 {
+  /*
   struct WLaser : public Weapon
   {
     WLaser();
@@ -12,5 +13,5 @@ namespace Framework
     virtual void DelayUpdate(float dt);
     virtual void ResetDelay();
 
-  };
+  };*/
 }

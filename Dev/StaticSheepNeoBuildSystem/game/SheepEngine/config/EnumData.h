@@ -79,7 +79,6 @@ E_NAME(Component)
   E_ENTRY(PowerupPickup)
   E_ENTRY(Asteroid)
   E_ENTRY(SlotController)
-  E_ENTRY(Laser)
   E_ENTRY(CoinBall)
   E_ENTRY(LuaComponent)
   E_ENTRY(countComponents) //keep this at the end
