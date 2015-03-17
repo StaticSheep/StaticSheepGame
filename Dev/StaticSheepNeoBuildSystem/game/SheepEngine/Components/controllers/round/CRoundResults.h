@@ -28,6 +28,7 @@ namespace Framework
     void DrawKills();
     void DrawDeaths();
     void DrawJuggTime();
+    void DrawLMSTime();
     void DrawChipsAwarded();
     void DrawTotalChips();
 

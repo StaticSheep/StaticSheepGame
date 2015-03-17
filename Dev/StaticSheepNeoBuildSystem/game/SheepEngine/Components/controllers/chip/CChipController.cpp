@@ -25,6 +25,7 @@ namespace Framework
       roundPlayerDeaths[i] = 0;
       roundPlayerKills[i] = 0;
       roundTimeAsJugg[i] = 0;
+      LMSTimeAlive[i] = 0;
     }
   }
 
@@ -106,6 +107,7 @@ namespace Framework
       roundPlayerDeaths[i] = 0;
       roundPlayerKills[i] = 0;
       roundTimeAsJugg[i] = 0;
+      LMSTimeAlive[i] = 0;
     }
   }
 

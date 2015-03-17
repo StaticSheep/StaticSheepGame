@@ -105,16 +105,17 @@ namespace Framework
       case FFA:
         DrawKills();
         DrawDeaths();
-        DrawChipsAwarded();
+        //DrawChipsAwarded();
         DrawTotalChips();
         break;
       case JUGGERNAUT:
         DrawJuggTime();
-        DrawChipsAwarded();
+        //DrawChipsAwarded();
         DrawTotalChips();
         break;
       case SUDDENDEATH:
-        DrawChipsAwarded();
+        DrawLMSTime();
+        //DrawChipsAwarded();
         DrawTotalChips();
         break;
       }
@@ -204,6 +205,36 @@ namespace Framework
         pos = Vec3(-100.0f, -172.0f, 0.0f);
 
       sprintf(playerString, "%5.2f", (space->GetGameObject(ChipCont)->GetComponent<ChipController>(eChipController)->roundTimeAsJugg[i]));
+      Draw::SetPosition(pos.x, pos.y);
+      Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
+      Draw::SetRotation(0);
+      Draw::DrawString(playerString, scale, 1);
+    }
+  }
+
+  void RoundResults::DrawLMSTime()
+  {
+    Vec2D scale(40, 40);
+    Draw::SetPosition(-100.0f, 310.0f);
+    Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
+    Draw::SetRotation(0);
+    Draw::DrawString("Time Alive", scale, 1);
+    Vec3 pos;
+    char playerString[10];
+    scale = Vec2D(50, 50);
+    for (int i = 0; i < 4; ++i)
+    {
+      //depending on the player, it draws the totals in the correct place
+      if (i == 0)
+        pos = Vec3(-100.0f, 232.0f, 0.0f);
+      if (i == 1)
+        pos = Vec3(-100.0f, 106.0f, 0.0f);
+      if (i == 2)
+        pos = Vec3(-100.0f, -32.0f, 0.0f);
+      if (i == 3)
+        pos = Vec3(-100.0f, -172.0f, 0.0f);
+
+      sprintf(playerString, "%5.2f", (space->GetGameObject(ChipCont)->GetComponent<ChipController>(eChipController)->LMSTimeAlive[i]));
       Draw::SetPosition(pos.x, pos.y);
       Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
       Draw::SetRotation(0);

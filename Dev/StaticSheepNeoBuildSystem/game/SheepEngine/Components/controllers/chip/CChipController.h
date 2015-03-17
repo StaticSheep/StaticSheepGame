@@ -44,5 +44,6 @@ namespace Framework
     float totalTimeAsJugg[4], roundTimeAsJugg[4];
     int totalPlayerLMS[4];
     int LMSThisRound;
+    float LMSTimeAlive[4];
   };
 }

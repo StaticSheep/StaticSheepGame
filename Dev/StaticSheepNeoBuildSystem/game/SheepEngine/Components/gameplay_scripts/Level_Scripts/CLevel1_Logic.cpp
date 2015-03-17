@@ -682,7 +682,7 @@ namespace Framework
     else
       roundTimer -= dt;
 
-    if (LastManStanding())
+    if (LastManStanding(dt))
       space->GetGameObject(owner)->GetComponent<RoundController>(eRoundController)->round_state_timer = 0;
     spawnTimer -= dt;
     eventTimer -= dt;
@@ -776,7 +776,7 @@ namespace Framework
     }
   }
 
-  bool Level1_Logic::LastManStanding()
+  bool Level1_Logic::LastManStanding(float dt)
   {
     int deadPlayers = 0;
     int lms = 0;
@@ -785,7 +785,10 @@ namespace Framework
       if (Players[i] == Handle::null)
         ++deadPlayers;
       else
+      {
         lms = i;
+        space->GetGameObject(owner)->GetComponent<ChipController>(eChipController)->LMSTimeAlive[i] += dt;
+      }
     }
 
     if (deadPlayers == 3)
