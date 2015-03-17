@@ -414,13 +414,18 @@ namespace Framework
       {
         pn = -1;
 
-        if (OtherObject->GetComponent<CircleCollider>(eCircleCollider)->GetBodyCollisionGroup() == "Player1Weapon")
+        CircleCollider* cc = OtherObject->GetComponent<CircleCollider>(eCircleCollider);
+
+        if (!cc)
+          return;
+
+        if (cc->GetBodyCollisionGroup() == "Player1Weapon")
           pn = 0;
-        else if (OtherObject->GetComponent<CircleCollider>(eCircleCollider)->GetBodyCollisionGroup() == "Player2Weapon")
+        else if (cc->GetBodyCollisionGroup() == "Player2Weapon")
           pn = 1;
-        else if (OtherObject->GetComponent<CircleCollider>(eCircleCollider)->GetBodyCollisionGroup() == "Player3Weapon")
+        else if (cc->GetBodyCollisionGroup() == "Player3Weapon")
           pn = 2;
-        else if (OtherObject->GetComponent<CircleCollider>(eCircleCollider)->GetBodyCollisionGroup() == "Player4Weapon")
+        else if (cc->GetBodyCollisionGroup() == "Player4Weapon")
           pn = 3;
 
         MetricInfo metricData(pn, 0, 0, PLAYER_KILL, Buttons::NONE, Weapons::PISTOL);

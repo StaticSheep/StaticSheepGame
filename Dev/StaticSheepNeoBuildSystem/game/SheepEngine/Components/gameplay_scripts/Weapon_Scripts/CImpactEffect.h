@@ -21,6 +21,7 @@ namespace Framework
 
     void Initialize();
     void OnImpact();
+    void LogicUpdate(float dt);
     void Remove();
 
     std::string m_effect;

@@ -15,6 +15,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "../Pickup_Scripts/CWeaponPickup.h"
 #include "../../basicps/CBasicPSystem.h"
 #include "../../lights/CPointLight.h"
+#include "../../colliders/CCircleCollider.h"
 
 namespace Framework
 {
@@ -39,7 +40,8 @@ namespace Framework
 
     bTransfrom = space->GetGameObject(owner)->GetComponentHandle(eTransform);
     bGameObject = space->GetHandles().GetAs<GameObject>(owner);
-    space->GetHandles().GetAs<BoxCollider>(space->GetGameObject(owner)->GetComponentHandle(eCircleCollider))->SetGravityOff();
+    space->GetHandles().GetAs<CircleCollider>(space->GetGameObject(owner)
+      ->GetComponentHandle(eCircleCollider))->SetGravityOff();
 	}
 
 	void Bullet_Default::Remove()
@@ -60,6 +62,12 @@ namespace Framework
       bt->GetTranslation().y > 700 ||
       bt->GetTranslation().y < -700)
       Impact();
+
+    if (m_firstImpact)
+    {
+      bGameObject->hooks.Call("BulletImpact");
+      m_firstImpact = false;
+    }
 
     if (fading)
     {
@@ -97,15 +105,10 @@ namespace Framework
 
     GameObject* obj = space->GetGameObject(owner);
 
-    obj->hooks.Call("BulletImpact");
-
     if (fadeTime > 0 && !fading)
     {
+      m_firstImpact = true;
       fading = true;
-
-      
-
-      
       
       { /* Proper way to detach a circle collider from an object*/
         Transform* trans = (space->GetHandles().GetAs<GameObject>(owner))

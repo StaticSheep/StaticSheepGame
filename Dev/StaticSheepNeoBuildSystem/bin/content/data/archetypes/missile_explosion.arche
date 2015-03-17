@@ -128,7 +128,7 @@ GameObject
   AOEDamage
   {
     m_radius float 70.000000
-    m_damagePerSecond float 100.000000
+    m_damagePerSecond float 500.000000
     m_shrinks bool true
     m_shrinkTime float 0.400000
     m_shrinkDelay float 0.100000

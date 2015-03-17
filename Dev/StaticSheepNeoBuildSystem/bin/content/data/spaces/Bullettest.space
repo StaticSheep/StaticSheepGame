@@ -326,7 +326,7 @@ GameObject
   AOEDamage
   {
     m_radius float 70.000000
-    m_damagePerSecond float 100.000000
+    m_damagePerSecond float 500.000000
     m_shrinks bool true
     m_shrinkTime float 0.400000
     m_shrinkDelay float 0.100000
@@ -795,6 +795,10 @@ GameObject
     m_hasCollisionCallback bool true
     m_CollisionGroup std::string ""
   }
+  ImpactEffect
+  {
+    m_effect std::string "missile_explosion"
+  }
   Bullet_Default
   {
     limitedLife bool false
@@ -847,5 +851,107 @@ GameObject
       X float 0.000000
       Y float 0.000000
     }
+  }
+}
+GameObject
+{
+  name std::string ""
+  archetype std::string ""
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 0.000000
+      y_ float -63.670750
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  CircleCollider
+  {
+    m_radius float 12.000000
+    m_materialName std::string "Metal"
+    m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
+  }
+}
+GameObject
+{
+  name std::string "Player"
+  archetype std::string "Player1"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -223.448380
+      y_ float -169.388245
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 0.350000
+      y_ float 0.365000
+      z_ float 0.000000
+    }
+  }
+  AniSprite
+  {
+    m_spriteName std::string "ninja_sprite_sheet.png"
+    m_layer unsignedint 1
+    m_frameUpdate bool false
+    m_frames Vec2
+    {
+      X float 12.000000
+      Y float 4.000000
+    }
+    m_startFrame unsignedint 0
+    m_endFrame unsignedint 0
+    m_frameRate float 20.000000
+    m_loop int -1
+    m_paused bool false
+    m_flipX bool false
+    m_flipY bool false
+    Color Vec4
+    {
+      R float 0.000000
+      G float 1.000000
+      B float 0.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 1.000000
+      Y float 1.000000
+    }
+  }
+  BoxCollider
+  {
+    m_width float 75.000000
+    m_height float 85.000000
+    m_materialName std::string "Wood"
+    m_hasCollisionCallback bool true
+    m_CollisionGroup std::string "Player1"
+  }
+  SoundEmitter
+  {
+  }
+  PlayerController
+  {
+    playerNum int 0
+  }
+  GamePad
+  {
+    GamepadIndex int 0
+  }
+  Cheats
+  {
+    enabled bool true
   }
 }

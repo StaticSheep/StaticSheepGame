@@ -37,7 +37,7 @@ namespace Framework
         FACTORY->LoadObjectFromArchetype(space, m_effect.c_str());
 
       Transform* sTrans = obj->GetComponent<Transform>(eTransform);
-      Transform* ourTrans = obj->GetComponent<Transform>(eTransform);
+      Transform* ourTrans = space->GetGameObject(owner)->GetComponent<Transform>(eTransform);
 
       sTrans->SetTranslation(ourTrans->GetTranslation());
     }

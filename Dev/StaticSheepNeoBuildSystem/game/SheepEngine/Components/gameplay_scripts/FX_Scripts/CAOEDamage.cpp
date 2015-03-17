@@ -95,6 +95,7 @@ namespace Framework
           }
           else
           {
+            cl->SetVelocity(Vec3(0, 0, 0));
             cl->SetBodyRadius(m_radius);
           }
         }
