@@ -130,9 +130,10 @@ namespace Framework
 
         GameObject *ResultsTV = (FACTORY->LoadObjectFromArchetype(space, "ResultsTV"));
         ResultsTV->GetComponent<RoundResults>(eRoundResults)->ChipCont = space->GetGameObject(owner)->GetComponent<ChipController>(eChipController)->owner;
-        ResultsTV->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(0.0f, 950.0f, 1.0f));
+        ResultsTV->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(0.0f, 950.0f, -1.0f));
         ResultsTV->GetComponent<RoundResults>(eRoundResults)->mode_ = mode_;
         ResultsSpawned = true;
+        space->GetGameObject(owner)->GetComponent<Level1_Logic>(eLevel1_Logic)->ResetPlayers();
       }
       
       if (!EORAwarded)

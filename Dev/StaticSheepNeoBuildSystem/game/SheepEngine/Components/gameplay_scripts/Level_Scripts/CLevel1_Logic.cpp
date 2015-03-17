@@ -695,7 +695,7 @@ namespace Framework
       return;
     else if (!slotFinished)
     {
-      ResetPlayers();
+      //ResetPlayers();
       if (LE)
       {
         delete LE;
@@ -821,26 +821,11 @@ namespace Framework
 
   void Level1_Logic::Draw()
   {
-    Vec3 pos;
+    Vec3 pos(0.0f, 0.0f, 0.0f);
     Vec2D scale(50, 50);
     char playerCoinsString[10];
     for (int i = 0; i < 4; ++i)
     {
-      //depending on the player, it draws the totals in the correct place
-      //if (i == 0)
-      //  pos = Vec3(-764, -457.0f, 0.0f);
-      //if (i == 1)
-      //  pos = Vec3(572.0f, -457.0f, 0.0f); 
-      //if (i == 2)
-      //  pos = Vec3(572.0f, 507.0f, 0.0f); 
-      //if (i == 3)
-      //  pos = Vec3(-764.0f, 507.0f, 0.0f);
-
-      //itoa(playerCoins[i], playerCoinsString, 10);
-      //Draw::SetPosition(pos.x, pos.y);
-      //Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
-      //Draw::SetRotation(0);
-      //Draw::DrawString(playerCoinsString, scale, 1);
 
       if (Players[i] == Handle::null)
         continue;
@@ -856,7 +841,9 @@ namespace Framework
         for (int j = 0; j < coinStringsAlive[i].size(); ++j)
         {
           itoa(coinStringsAlive[i][j].first, playerCoinsString, 10);
-          pos = space->GetGameObject(Players[i])->GetComponent<Transform>(eTransform)->GetTranslation();
+          if (Players[i] != Handle::null)
+            pos = space->GetGameObject(Players[i])->GetComponent<Transform>(eTransform)->GetTranslation();
+
           Draw::SetPosition(pos.x, pos.y + (64 - (coinStringsAlive[i][j].second * 64)));
           Draw::SetColor(0.9, 0.9, 0.15f, fontIndex); //yellow-ish color
           Draw::SetRotation(0);

@@ -41,6 +41,7 @@ namespace Framework
     space->hooks.Add("PlayerDied", self, BUILD_FUNCTION(ChipController::PlayerDied));
     space->hooks.Add("JuggDied", self, BUILD_FUNCTION(ChipController::JuggDied));
     space->hooks.Add("RoundStart", self, BUILD_FUNCTION(ChipController::ResetRoundStats));
+    space->hooks.Add("RoundOver", self, BUILD_FUNCTION(ChipController::RoundOver));
 
     space->hooks.Add("FFAAwards", self, BUILD_FUNCTION(ChipController::FFAAwards));
     space->hooks.Add("JuggAwards", self, BUILD_FUNCTION(ChipController::JuggAwards));
@@ -91,11 +92,11 @@ namespace Framework
   {
     RoundController *RC = space->GetGameObject(owner)->GetComponent<RoundController>(eRoundController);
 
-    if (RC->state_ == RoundController::RoundState::ROUNDINPRO)
-    {
+    /*if (RC->state_ == RoundController::RoundState::ROUNDINPRO)
+    {*/
       totalTimeAsJugg[jugg] += timeAsJugg;
       roundTimeAsJugg[jugg] += timeAsJugg;
-    }
+   // }
   }
 
   void ChipController::ResetRoundStats()
@@ -105,6 +106,21 @@ namespace Framework
       roundPlayerDeaths[i] = 0;
       roundPlayerKills[i] = 0;
       roundTimeAsJugg[i] = 0;
+    }
+  }
+
+  void ChipController::RoundOver()
+  {
+    Level1_Logic *LL = space->GetGameObject(owner)->GetComponent<Level1_Logic>(eLevel1_Logic);
+    for (int i = 0; i < 4; ++i)
+    {
+      if (LL->juggernaut[i])
+      {
+        roundTimeAsJugg[i] += LL->timeAsJugg;
+        totalTimeAsJugg[i] += LL->timeAsJugg;
+        LL->timeAsJugg = 0;
+        break;
+      }
     }
   }
 
@@ -121,7 +137,7 @@ namespace Framework
 
     for (int i = 0; i < 4; ++i)
     {
-      if (roundPlayerKills[i] >= mostKills)
+      if (roundPlayerKills[i] >= mostKills && roundPlayerKills[i] != 0)
         GivePlayerChip(i, 1);
     }
   }
@@ -137,7 +153,7 @@ namespace Framework
 
     for (int i = 0; i < 4; ++i)
     {
-      if (roundTimeAsJugg[i] >= mostTime)
+      if (roundTimeAsJugg[i] >= mostTime && roundTimeAsJugg[i] > 0.0f)
         GivePlayerChip(i, 1);
     }
   }

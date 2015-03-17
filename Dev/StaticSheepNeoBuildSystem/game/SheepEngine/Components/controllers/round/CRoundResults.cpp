@@ -109,6 +109,7 @@ namespace Framework
         DrawTotalChips();
         break;
       case JUGGERNAUT:
+        DrawJuggTime();
         DrawChipsAwarded();
         DrawTotalChips();
         break;
@@ -202,7 +203,7 @@ namespace Framework
       if (i == 3)
         pos = Vec3(-100.0f, -172.0f, 0.0f);
 
-      sprintf(playerString, "%f", (space->GetGameObject(ChipCont)->GetComponent<ChipController>(eChipController)->roundTimeAsJugg[i]));
+      sprintf(playerString, "%5.2f", (space->GetGameObject(ChipCont)->GetComponent<ChipController>(eChipController)->roundTimeAsJugg[i]));
       Draw::SetPosition(pos.x, pos.y);
       Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
       Draw::SetRotation(0);
