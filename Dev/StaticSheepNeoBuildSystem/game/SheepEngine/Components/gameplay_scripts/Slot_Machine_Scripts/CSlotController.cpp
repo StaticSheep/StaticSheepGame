@@ -38,7 +38,10 @@ namespace Framework
     //when you create a slot machine through an archetype you can set its call backs like this
     sm->SetTextureCB(self, BUILD_FUNCTION(SlotController::SetSMTextures));
     sm->SetFinishedCB(self, BUILD_FUNCTION(SlotController::ReceiveSMResults));
-    
+    bounceDownTimer = 0.5f;
+    bounceDownDone = false;
+    spawnLeftBonus = false;
+    spawnRightBonus = false;
 	}
 
   void SlotController::Remove()
@@ -48,21 +51,96 @@ namespace Framework
 
   void SlotController::LogicUpdate(float dt)
 	{
+    if (!bounceDownDone)
+      BounceDown(dt);
+
     if (done) //if this slot machine is done and there are no spawned slot machine
     {
       levelTimer -= dt;
       if (levelTimer <= 0)
       {
+        Transform *rt = space->GetGameObject(owner)->GetComponent<Transform>(eTransform);
+        if (Stype == GOLD)
+          rt->SetTranslation(rt->GetTranslation() + Vec3(0.0f, 80.0f, 0.0f));
+
+        else if (Stype == JACKPOT)
+        {
+          if (LeftHandBonus)
+            rt->SetTranslation(rt->GetTranslation() + Vec3(40.0f, 0.0f, 0.0f));
+          else
+            rt->SetTranslation(rt->GetTranslation() + Vec3(-40.0f, 0.0f, 0.0f));
+        }
+
+        //if (rt->GetTranslation().y >= 950.0f ||  (rt->GetTranslation().x <= 40.0f && rt->GetTranslation().x >= -40.0f))
         if (Stype == GOLD)
         {
-          //send message
-          space->hooks.Call("SetMods", mod1, mod2);
-          space->hooks.Call("SlotFinished", mode);
+          if (rt->GetTranslation().y >= 950.0f)
+          {
+            //send message
+            space->hooks.Call("SetMods", mod1, mod2);
+            space->hooks.Call("SlotFinished", mode);
+            space->GetGameObject(owner)->Destroy();
+          }
         }
-        space->GetGameObject(owner)->Destroy();
+        else if (Stype == JACKPOT)
+        {
+          if (rt->GetTranslation().x <= 40.0f && rt->GetTranslation().x >= -40.0f)
+            space->GetGameObject(owner)->Destroy();
+        }
       }
     }
 	}
+
+  void SlotController::BounceDown(float dt)
+  {
+    Transform *rt = space->GetGameObject(owner)->GetComponent<Transform>(eTransform);
+    if (Stype == GOLD)
+    {
+      if (bounceDownTimer >= 0.3f)
+        rt->SetTranslation(rt->GetTranslation() + Vec3(0.0f, -80.0f, 0.0f));
+      else if (bounceDownTimer >= 0.2)
+      {
+        rt->SetTranslation(rt->GetTranslation() + Vec3(0.0f, 40.0f, 0.0f));
+        rt->SetRotation(rt->GetRotation() + 0.035f);
+      }
+      else
+      {
+        rt->SetTranslation(rt->GetTranslation() + Vec3(0.0f, -20.0f, 0.0f));
+        rt->SetRotation(rt->GetRotation() - 0.017f);
+      }
+    }
+    else if (Stype == JACKPOT)
+    {
+      if (bounceDownTimer >= 0.3f)
+      {
+        if (LeftHandBonus)
+          rt->SetTranslation(rt->GetTranslation() + Vec3(-50.0f, 0.0f, 0.0f));
+        else
+          rt->SetTranslation(rt->GetTranslation() + Vec3(50.0f, 0.0f, 0.0f));
+      }
+      else if (bounceDownTimer >= 0.2)
+      {
+        if (LeftHandBonus)
+          rt->SetTranslation(rt->GetTranslation() + Vec3(20.0f, 0.0f, 0.0f));
+        else
+          rt->SetTranslation(rt->GetTranslation() + Vec3(-20.0f, 0.0f, 0.0f));
+      }
+      else
+      {
+        if (LeftHandBonus)
+          rt->SetTranslation(rt->GetTranslation() + Vec3(-10.0f, 0.0f, 0.0f));
+        else
+          rt->SetTranslation(rt->GetTranslation() + Vec3(10.0f, 0.0f, 0.0f));
+      }
+    }
+
+    bounceDownTimer -= dt;
+    if (bounceDownTimer <= 0)
+    {
+      rt->SetRotation(0.0f);
+      bounceDownDone = true;
+    }
+  }
 
   void SlotController::SetSMTextures(int slotNum, int *spinTexID, int *stopTexID)
   {
@@ -115,12 +193,26 @@ namespace Framework
     {
       if (CheckForJP(*results))
       {
-        spawnedSM = SpawnChildSM(JACKPOT);
-        Transform *origin = space->GetGameObject(owner)->GetComponent<Transform>(eTransform);
-        Transform *spawnedTransform = spawnedSM->GetComponent<Transform>(eTransform);
-        spawnedTransform->SetTranslation(origin->GetTranslation() + Vec3(0.0f, -260.0f, 0.0f));
-        spawnedSM->GetComponent<SlotController>(eSlotController)->Stype = JACKPOT;
+        if (spawnLeftBonus)
+        {
+          spawnedSM = SpawnChildSM(JACKPOT);
+          Transform *origin = space->GetGameObject(owner)->GetComponent<Transform>(eTransform);
+          Transform *spawnedTransform = spawnedSM->GetComponent<Transform>(eTransform);
+          spawnedTransform->SetTranslation(origin->GetTranslation() + Vec3(0.0f, 0.0f, 0.0f));
+          spawnedSM->GetComponent<SlotController>(eSlotController)->Stype = JACKPOT;
+          spawnedSM->GetComponent<SlotController>(eSlotController)->LeftHandBonus = true;
+        }
+        if (spawnRightBonus)
+        {
+          spawnedSM = SpawnChildSM(JACKPOT);
+          Transform *origin = space->GetGameObject(owner)->GetComponent<Transform>(eTransform);
+          Transform *spawnedTransform = spawnedSM->GetComponent<Transform>(eTransform);
+          spawnedTransform->SetTranslation(origin->GetTranslation() + Vec3(0.0f, 0.0f, 0.0f));
+          spawnedSM->GetComponent<SlotController>(eSlotController)->Stype = JACKPOT;
+          spawnedSM->GetComponent<SlotController>(eSlotController)->LeftHandBonus = false;
+        }
         levelTimer += 4.0f;
+
       }
       if ((*results)[0] == 0)
         mode = FFA;
@@ -179,8 +271,19 @@ namespace Framework
   {
     if (Stype == GOLD)
     {
-      if (results[1] == 1 || results[2] == 1)
-        return true;
+      bool retValue = false;
+      if (results[1] == 1)
+      {
+        spawnLeftBonus = true;
+        retValue = true;
+      }
+      if (results[2] == 1)
+      {
+        spawnRightBonus = true;
+        retValue = true;
+      }
+      
+      return retValue;
     }
     else if (Stype == JACKPOT)
     {

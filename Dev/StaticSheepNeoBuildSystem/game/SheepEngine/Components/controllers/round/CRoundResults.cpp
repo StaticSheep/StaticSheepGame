@@ -58,7 +58,10 @@ namespace Framework
     timeToLive -= dt;
     if (timeToLive <= 0)
     {
-      DestroySelf();
+      Transform *thisTrans = space->GetGameObject(owner)->GetComponent<Transform>(eTransform);
+      thisTrans->SetTranslation(thisTrans->GetTranslation() + Vec3(0.0f, 80.0f, 0.0f));
+      if (thisTrans->GetTranslation().y >= 950.0f)
+        DestroySelf();
     }
 
 	}
@@ -95,7 +98,7 @@ namespace Framework
 
   void RoundResults::Draw()
   {
-    if (startDrawing)
+    if (startDrawing && timeToLive > 0)
     {
       Vec3 pos;
       Vec2D scale(50, 50);
