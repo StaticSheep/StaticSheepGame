@@ -20,6 +20,7 @@ enum CollisionGroup{
   Player3Weapon,
   Player4Weapon,
   Item,
+  PlayerHitOnly,
   Static,
   CollGroupLength
 };

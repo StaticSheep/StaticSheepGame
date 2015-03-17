@@ -307,6 +307,7 @@ namespace Framework
     m_collisionGroup.insert(std::pair<std::string, CollisionGroup>("Player3Weapon", Player3Weapon));
     m_collisionGroup.insert(std::pair<std::string, CollisionGroup>("Player4Weapon", Player4Weapon));
     m_collisionGroup.insert(std::pair<std::string, CollisionGroup>("Item", Item));
+    m_collisionGroup.insert(std::pair<std::string, CollisionGroup>("PlayerHitOnly", PlayerHitOnly));
     m_collisionGroup.insert(std::pair<std::string, CollisionGroup>("Static", CollisionGroup::Static));
 
     m_collisionGroupNames.insert(std::pair<CollisionGroup, std::string>(NonCollide, "NonCollide"));
@@ -321,6 +322,7 @@ namespace Framework
     m_collisionGroupNames.insert(std::pair<CollisionGroup, std::string>(Player3Weapon, "Player3Weapon"));
     m_collisionGroupNames.insert(std::pair<CollisionGroup, std::string>(Player4Weapon, "Player4Weapon"));
     m_collisionGroupNames.insert(std::pair<CollisionGroup, std::string>(Item, "Item"));
+    m_collisionGroupNames.insert(std::pair<CollisionGroup, std::string>(PlayerHitOnly, "PlayerHitOnly"));
     m_collisionGroupNames.insert(std::pair<CollisionGroup, std::string>(CollisionGroup::Static, "Static"));
 
     ray.collisionGroup = Collide;
