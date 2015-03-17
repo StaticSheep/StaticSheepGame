@@ -469,7 +469,9 @@ namespace DirectSheep
 
    void RenderContext::SetAlpha(float a)
    {
-     m_spriteBlend /= m_spriteBlend.w;
+     if (m_spriteBlend.w > 0)
+       m_spriteBlend /= m_spriteBlend.w;
+
      m_spriteBlend *= a;
      m_spriteBlend.w = a;
    }
