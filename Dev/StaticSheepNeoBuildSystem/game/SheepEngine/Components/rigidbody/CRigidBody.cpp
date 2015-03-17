@@ -229,6 +229,14 @@ namespace Framework
     normals_.push_back(location);
   }
 
+  void RigidBody::SetBodyRadius(float radius)
+  {
+    m_width = radius;
+
+    if (m_handle != SheepFizz::Handle::null)
+      PHYSICS->ChangePhysBodies(space, m_handle, m_width, m_height);
+  }
+
   void RigidBody::UpdateWidth(const void* value)
   {
     m_width = *(float*)value;

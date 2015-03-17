@@ -72,6 +72,7 @@ namespace Framework
       //settors
       virtual void SetBodyRotation(Vec3D direction);
       virtual void SetBodyRotation(float direction);
+      virtual void SetBodyRadius(float radius);
 
       //gettors
       virtual Vec3D GetCurrentVelocity(void);
@@ -118,7 +119,7 @@ namespace Framework
 			SheepFizz::Shapes m_shape; 
 			
 			// Handle to created physics
-			SheepFizz::Handle m_handle;
+      SheepFizz::Handle m_handle = SheepFizz::Handle::null;
 
 	};
 	

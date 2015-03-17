@@ -28,5 +28,17 @@ namespace Framework
 
     void Remove();
 
+    float m_radius = 30;
+
+    float m_damagePerSecond = 10;
+    
+    bool m_shrinks = true;
+    float m_shrinkTime = 0.2f;
+    float m_shrinkDelay = 0.0f;
+
+  private:
+    bool m_firstRun = true;
+    float m_radiusPerSecond = 0;
+
   };
 }

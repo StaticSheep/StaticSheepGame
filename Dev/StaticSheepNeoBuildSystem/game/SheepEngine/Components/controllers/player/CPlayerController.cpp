@@ -923,14 +923,14 @@ namespace Framework
     return health;
   }
 
-  void PlayerController::DealDamage(int damage, int playerNum_)
+  void PlayerController::DealDamage(float damage, int playerNum_)
   {
     if (playerNum != playerNum_)
       return;
 
     if ((shields - damage) < 0) //if the damage would do more than we have shields
     {
-      int leftOver = damage - shields;
+      float leftOver = damage - shields;
       shields = 0;
       health -= leftOver;
     }
@@ -942,6 +942,9 @@ namespace Framework
   void PlayerController::SpawnEffect()
   {
     Transform *effectTrans;
+    //ParticleSystem* ps;
+
+
     switch (playerNum)
     {
     case 0:
