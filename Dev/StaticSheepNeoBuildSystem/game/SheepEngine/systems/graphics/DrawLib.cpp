@@ -90,15 +90,24 @@ namespace Framework
 
   void Draw::DrawBeam(Beam* beam)
   {
-    GRAPHICS->SetRotation(atan2f(beam->direction.y, beam->direction.x));
-    GRAPHICS->SetColor(beam->beamColor);
+    if (!beam->numBeams)
+      return;
+
     Vec2 texDim = GRAPHICS->GetTextureDim(DirectSheep::Handle(DirectSheep::TEXTURE, beam->texID));
 
-    float Length = 0;
-    float width = beam->totalWidth / texDim.y;
-    float subBeamWidth = beam->totalWidth / beam->numBeams;
-    float startOffset = (beam->totalWidth / 2.0f) - (subBeamWidth / 2);
-    float numBeamsInv = 1.0f / beam->numBeams;
+    double Length = 0;
+    double numBeamsInv = 1.0 / beam->numBeams;
+    double remainder = (numBeamsInv * texDim.y - int(numBeamsInv * texDim.y));
+    double subBeamWidth = (beam->totalWidth / beam->numBeams)+(remainder / 2.0);
+    double startOffset = (beam->totalWidth - subBeamWidth) / 2.0;
+    double width = (beam->totalWidth / texDim.y) + (remainder * beam->numBeams);
+
+    GRAPHICS->SetPosition(beam->origin.x,
+      beam->origin.y, beam->origin.z);
+
+    GRAPHICS->SetRotation(atan2f(beam->direction.y, beam->direction.x));
+
+    GRAPHICS->SetColor(beam->beamColor);
 
     for (int i = 0; i < beam->numBeams; ++i)
     {
@@ -106,13 +115,11 @@ namespace Framework
 
       GRAPHICS->SetSize((Length / texDim.x), width);
 
-      GRAPHICS->SetObjectOrigin((Length / 2.0f), startOffset - (i * subBeamWidth));
+      GRAPHICS->SetObjectOrigin((Length / 2.0f), (startOffset - (i * (subBeamWidth))));
 
-      GRAPHICS->SetPosition(beam->origin.x,
-        beam->origin.y, beam->origin.z);
+      GRAPHICS->SetUV(Vec2(0, (i * numBeamsInv)),
+                      Vec2(1, ((i + 1) * numBeamsInv)));
 
-      GRAPHICS->SetUV(Vec2(0, ((numBeamsInv)* i)),
-                      Vec2(1, ((numBeamsInv)* (i + 1))));
 
       GRAPHICS->DrawBatched(DirectSheep::Handle(DirectSheep::TEXTURE, beam->texID));
     }
