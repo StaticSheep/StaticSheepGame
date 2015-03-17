@@ -45,6 +45,7 @@ GameObject
   }
   SlotMachine
   {
+    m_layer int 1
     m_stopTexture std::string "ggg_reel.png"
     m_spinTexture std::string "ggg_reel_blur.png"
     m_slotBackTexture std::string "slotmachine_slotback.png"
@@ -67,8 +68,8 @@ GameObject
       X float 2.300000
       Y float 1.800000
     }
-    startTime float 3.000000
-    bonusTime float 0.200000
+    startTime float 1.500000
+    bonusTime float 0.700000
     useSpriteColor bool true
     backingColor Vec4
     {
