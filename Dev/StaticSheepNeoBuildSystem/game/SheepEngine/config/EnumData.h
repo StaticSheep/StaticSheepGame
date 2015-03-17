@@ -77,7 +77,8 @@ E_NAME(Component)
   E_ENTRY(div_Controllers)
   E_ENTRY(SlotController)
   E_ENTRY(PlayerController)
-  E_ENTRY(StarController)
+  E_ENTRY(ChipController)
+  E_ENTRY(RoundController)
   
   E_ENTRY(div_Effects)
   E_ENTRY(AimingArrow)
@@ -86,7 +87,7 @@ E_NAME(Component)
   E_ENTRY(WarningText)
   E_ENTRY(Explosion)
   E_ENTRY(ImpactEffect)
-  
+  E_ENTRY(RoundText)
 
   E_ENTRY(div_Gameplay)
   E_ENTRY(PowerupPickup)
