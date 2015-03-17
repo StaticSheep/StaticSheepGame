@@ -40,21 +40,21 @@ namespace Framework
 
     //caster of rays
     //**************
-    bool death = false;
+    bool collision = false;
 
     for (int i = 0; i < m_positionOffsets.size(); ++i)
     {
       m_ray.rayOrigin = m_positionOffsets[i];
-      death = PHYSICS->ComplexRayCast(&m_ray);
-      if (death)
+      collision = PHYSICS->ComplexRayCast(&m_ray);
+      if (collision)
       {
-        PHYSICS->RayDestruction((GameSpace*)m_ray.gameSpace);
-        float length = (m_ray.firstCollisionLocation - m_ray.rayOrigin).Length();
+        PHYSICS->RayDestruction((GameSpace*)m_ray.gameSpace);  //for debugging
 
+        float length = (m_ray.firstCollisionLocation - m_ray.rayOrigin).Length();
         results.push_back(MCData(length, (unsigned)m_ray.firstCollisionObject));
       }
     }
 
-    return death;
+    return collision;
   }
 }
