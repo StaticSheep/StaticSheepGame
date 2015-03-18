@@ -121,6 +121,12 @@ namespace Framework
         //DrawChipsAwarded();
         DrawTotalChips();
         break;
+      case GAMEOVER:
+        DrawTotalKills();
+        DrawTotalDeaths();
+        DraowTotalJuggTime();
+        DrawTotalChips();
+        break;
       }
     }
   }
@@ -273,6 +279,96 @@ namespace Framework
         pos = Vec3(300.0f, -172.0f, 0.0f);
 
       itoa(space->GetGameObject(ChipCont)->GetComponent<ChipController>(eChipController)->playerChips[i], playerString, 10);
+      Draw::SetPosition(pos.x, pos.y);
+      Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
+      Draw::SetRotation(0);
+      Draw::DrawString(playerString, scale, 1);
+    }
+  }
+
+  void RoundResults::DrawTotalKills()
+  {
+    Vec2D scale(40, 40);
+    Draw::SetPosition(-425.0f, 310.0f);
+    Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
+    Draw::SetRotation(0);
+    Draw::DrawString("Total Kills", scale, 1);
+    Vec3 pos;
+    char playerString[10];
+    scale = Vec2D(50, 50);
+    for (int i = 0; i < 4; ++i)
+    {
+      //depending on the player, it draws the totals in the correct place
+      if (i == 0)
+        pos = Vec3(-375.0f, 232.0f, 0.0f);
+      if (i == 1)
+        pos = Vec3(-375.0f, 106.0f, 0.0f);
+      if (i == 2)
+        pos = Vec3(-375.0f, -32.0f, 0.0f);
+      if (i == 3)
+        pos = Vec3(-375.0f, -172.0f, 0.0f);
+
+      itoa(space->GetGameObject(ChipCont)->GetComponent<ChipController>(eChipController)->totalPlayerKills[i], playerString, 10);
+      Draw::SetPosition(pos.x, pos.y);
+      Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
+      Draw::SetRotation(0);
+      Draw::DrawString(playerString, scale, 1);
+    }
+  }
+
+  void RoundResults::DrawTotalDeaths()
+  {
+    Vec2D scale(40, 40);
+    Draw::SetPosition(-225.0f, 310.0f);
+    Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
+    Draw::SetRotation(0);
+    Draw::DrawString("Total Deaths", scale, 1);
+    Vec3 pos;
+    char playerString[10];
+    scale = Vec2D(50, 50);
+    for (int i = 0; i < 4; ++i)
+    {
+      //depending on the player, it draws the totals in the correct place
+      if (i == 0)
+        pos = Vec3(-175.0f, 232.0f, 0.0f);
+      if (i == 1)
+        pos = Vec3(-175.0f, 106.0f, 0.0f);
+      if (i == 2)
+        pos = Vec3(-175.0f, -32.0f, 0.0f);
+      if (i == 3)
+        pos = Vec3(-175.0f, -172.0f, 0.0f);
+
+      itoa(space->GetGameObject(ChipCont)->GetComponent<ChipController>(eChipController)->totalPlayerDeaths[i], playerString, 10);
+      Draw::SetPosition(pos.x, pos.y);
+      Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
+      Draw::SetRotation(0);
+      Draw::DrawString(playerString, scale, 1);
+    }
+  }
+
+  void RoundResults::DraowTotalJuggTime()
+  {
+    Vec2D scale(40, 40);
+    Draw::SetPosition(25.0f, 310.0f);
+    Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
+    Draw::SetRotation(0);
+    Draw::DrawString("Tagged Time", scale, 1);
+    Vec3 pos;
+    char playerString[10];
+    scale = Vec2D(50, 50);
+    for (int i = 0; i < 4; ++i)
+    {
+      //depending on the player, it draws the totals in the correct place
+      if (i == 0)
+        pos = Vec3(50.0f, 232.0f, 0.0f);
+      if (i == 1)
+        pos = Vec3(50.0f, 106.0f, 0.0f);
+      if (i == 2)
+        pos = Vec3(50.0f, -32.0f, 0.0f);
+      if (i == 3)
+        pos = Vec3(50.0f, -172.0f, 0.0f);
+
+      sprintf(playerString, "%5.2f", (space->GetGameObject(ChipCont)->GetComponent<ChipController>(eChipController)->totalTimeAsJugg[i]));
       Draw::SetPosition(pos.x, pos.y);
       Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
       Draw::SetRotation(0);

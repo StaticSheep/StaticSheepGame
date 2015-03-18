@@ -19,7 +19,8 @@ namespace Framework
     JUGGERNAUT,
     SUDDENDEATH,
     BONUSMODE,
-    SLOTMACHINE
+    SLOTMACHINE,
+    GAMEOVER
   };
   enum GameMods
   {
@@ -107,6 +108,7 @@ namespace Framework
     void MakeJuggernaut();
     void ResetJuggernaut();
     void SuddenDeathMode(float dt);
+    void GameOverMode(float dt);
     void SlotMachineMode(float dt);
     void BonusMode(float dt);
     bool LastManStanding(float dt);

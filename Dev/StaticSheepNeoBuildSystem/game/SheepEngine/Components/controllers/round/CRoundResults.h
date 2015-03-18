@@ -31,6 +31,9 @@ namespace Framework
     void DrawLMSTime();
     void DrawChipsAwarded();
     void DrawTotalChips();
+    void DrawTotalKills();
+    void DrawTotalDeaths();
+    void DraowTotalJuggTime();
 
 		//member variables
     Handle rTransfrom;

@@ -593,6 +593,8 @@ namespace Framework
     case BONUSMODE:
       BonusMode(dt);
       break;
+    case GAMEOVER:
+      GameOverMode(dt);
     }
   }
 
@@ -759,6 +761,11 @@ namespace Framework
 
   }
 
+  void Level1_Logic::GameOverMode(float dt)
+  {
+
+  }
+
   void Level1_Logic::SlotMachineMode(float dt)
   {
     if (!roundStart)
@@ -816,7 +823,7 @@ namespace Framework
     mode = mode_;
     countDownDone = false;
     countDownTimer = 3.0f;
-    roundTimer = 60.0f;
+    roundTimer = space->GetGameObject(owner)->GetComponent<RoundController>(eRoundController)->timeOfRound;
     slotFinished = false;
     startFlag = true;
     ResetSpawnTimers();
