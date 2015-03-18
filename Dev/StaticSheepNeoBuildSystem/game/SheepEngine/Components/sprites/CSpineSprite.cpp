@@ -46,6 +46,8 @@ namespace Framework
     currentFrame = 0;
     flipX = false;
     flipY = false;
+    doneLoop = false;
+    finishedComplex = true;
   }
 
   void SpineSprite::FrameUpdate(float dt)
@@ -82,9 +84,13 @@ namespace Framework
         if(temp == 0)
           currentFrame = startLoop;
         else
+        if(currentFrame < startLoop)
+          ++currentFrame;
+        else
         {
           ++currentFrame;
           currentFrame = currentFrame % temp;
+          doneLoop = true;
         }
         currentTime = 0.0f;
       }
@@ -129,10 +135,21 @@ namespace Framework
       else
       {
 
-        int temp = endLoop - startLoop;
+        //int temp = endLoop - startLoop;
 
-        begin = (*sequenceIt).sequence[(currentFrame % temp) + startLoop].start_uv;
-        end = (*sequenceIt).sequence[(currentFrame % temp) + startLoop].end_uv;
+        //begin = (*sequenceIt).sequence[(currentFrame % temp) + startLoop].start_uv;
+        ///end = (*sequenceIt).sequence[(currentFrame % temp) + startLoop].end_uv;
+
+        if(doneLoop)
+        {
+          begin = (*sequenceIt).sequence[currentFrame + startLoop].start_uv;
+          end = (*sequenceIt).sequence[currentFrame + startLoop].end_uv;
+        }
+        else
+        {
+          begin = (*sequenceIt).sequence[currentFrame].start_uv;
+          end = (*sequenceIt).sequence[currentFrame].end_uv;
+        }
       }
 
       frameOffset = (offset - (*sequenceIt).offset) * 0.5f;
@@ -162,8 +179,9 @@ namespace Framework
   {
     framerate = fps;
     sequenceName = sequence;
-
+    doneLoop = false;
     complexLoop = false;
+    finishedComplex = true;
   }
 
   void SpineSprite::SetComplexSequence(std::string& sequence, float fps, int loopStart, int loopEnd)
@@ -175,6 +193,12 @@ namespace Framework
     endLoop = loopEnd;
 
     complexLoop = true;
+
+    if(finishedComplex)
+    {
+      finishedComplex = false;
+      currentFrame = 0;
+    }
   }
 
   void SpineSprite::SetColor(Vec4& color_)
