@@ -32,6 +32,9 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/gameplay_scripts/Level_Scripts/CLevel1_Lighting.h"
 #include "components/gameplay_scripts/Level_Event_Scripts/CGiantKillBox.h"
 #include "components/gameplay_scripts/Level_Scripts/CGrinder.h"
+#include "components/gameplay_scripts/Level_Scripts/CPinwheel.h"
+#include "components/gameplay_scripts/Level_Event_Scripts/CSaucer.h"
+#include "components/gameplay_scripts/Level_Event_Scripts/CSaucerMissile.h"
 #include "components/gameplay_scripts/FX_Scripts/CExplosion.h"
 #include "components/gameplay_scripts/Pickup_Scripts/CWeaponPickup.h"
 #include "types/weapons/WPistol.h"
@@ -250,6 +253,15 @@ namespace Framework
     TYPE_REGISTER(Grinder);
     TYPE_SET_TWEAK_TYPE(Grinder, AntTweak::TW_TYPE_COMPONENT);
 
+    TYPE_REGISTER(Pinwheel);
+    TYPE_SET_TWEAK_TYPE(Pinwheel, AntTweak::TW_TYPE_COMPONENT);
+
+    TYPE_REGISTER(Saucer);
+    TYPE_SET_TWEAK_TYPE(Saucer, AntTweak::TW_TYPE_COMPONENT);
+
+    TYPE_REGISTER(SaucerMissile);
+    TYPE_SET_TWEAK_TYPE(SaucerMissile, AntTweak::TW_TYPE_COMPONENT);
+
     TYPE_REGISTER(Explosion);
     TYPE_ADD_MEMBER(Explosion, timer, false, true, "Show Time");
     TYPE_ADD_MEMBER(Explosion, lightFadeTime, false, true, "Light Fade Time");
@@ -436,6 +448,7 @@ namespace Framework
     TYPE_ADD_MEMBER(ParticleSystem, textureName, false, true, "ParticleTexture",
       BUILD_FUNCTION(ParticleSystem::TweakSetTexture));
     TYPE_ADD_MEMBER(ParticleSystem, m_layer, false, true, "Layer");
+    TYPE_ADD_MEMBER(ParticleSystem, m_useZ, false, true, "use z?");
     TYPE_ADD_MEMBER(ParticleSystem, particleLife, false, true, "ParticleLifetime");
     TYPE_ADD_MEMBER(ParticleSystem, directionEase, false, true, "DirectionEase");
     TYPE_ADD_MEMBER(ParticleSystem, direction, false, true, "ParticleDirection",

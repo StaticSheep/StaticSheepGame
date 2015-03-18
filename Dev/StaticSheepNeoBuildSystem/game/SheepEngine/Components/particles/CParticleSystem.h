@@ -87,6 +87,7 @@ namespace Framework
 
       int m_layer = 1;
       bool m_hooked = false;
+      bool m_useZ = false;
   
     private:
     
