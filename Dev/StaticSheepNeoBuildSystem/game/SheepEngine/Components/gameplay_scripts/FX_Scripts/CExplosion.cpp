@@ -59,15 +59,22 @@ namespace Framework
     if (bsc)
       bsc->Toggle(false);
 
+    
+    AniSprite* ans = (AniSprite*)space->GetComponent(eAniSprite, owner);
+
+    if (ans)
+      ans->Color.a = 0;
+
+
+    removal = true;
+    waitForAnim = false;
+    timer = lightFadeTime + 0.02f;
+
     PointLight* pl = (PointLight*)space->GetComponent
       (ePointLight, owner);
 
     if (pl)
       lightDropStep = pl->m_brightness.a / lightFadeTime;
-
-    removal = true;
-    waitForAnim = false;
-    timer = 2.0f;
   }
 
   void Explosion::LogicUpdate(float dt)

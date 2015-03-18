@@ -1,7 +1,7 @@
 GameObject
 {
-  name std::string "explosionFX"
-  archetype std::string "explosion"
+  name std::string "JuggernautEffect"
+  archetype std::string "jugg_effect"
   Transform
   {
     Translation Vec3
@@ -13,9 +13,34 @@ GameObject
     Rotation float 0.000000
     Scale Vec3
     {
-      x_ float 1.000000
-      y_ float 1.000000
+      x_ float 0.500000
+      y_ float 0.500000
       z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "target.png"
+    m_layer unsignedint 2
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 0.450000
+      Y float 0.450000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
     }
   }
   PointLight
@@ -24,15 +49,15 @@ GameObject
     m_brightness LightColor
     {
       R float 1.000000
-      G float 0.600000
-      B float 0.100000
-      A float 0.050000
+      G float 0.250000
+      B float 0.250000
+      A float 1.000000
     }
     m_attenuation LightVec3
     {
       X float 0.000000
-      Y float 0.000000
-      Z float 0.001000
+      Y float -5.000000
+      Z float 0.100000
     }
   }
   SpriteLight
@@ -64,13 +89,13 @@ GameObject
   }
   BasicParticleSystem
   {
-    m_texture std::string "explosion_pfx2.png"
-    m_layer int 2
+    m_texture std::string "glean2.png"
+    m_layer int 1
     m_pos BasicParticleSystem::BPSPos
     {
       square bool false
       edgeOnly bool false
-      radius float 10.000000
+      radius float 30.000000
       angle float 1.000000
       randAngle float 0.000000
       offset Vec2
@@ -88,13 +113,13 @@ GameObject
     {
       scale Vec2
       {
-        X float 60.000000
-        Y float 60.000000
+        X float 16.000000
+        Y float 16.000000
       }
       randScale Vec2
       {
-        X float 5.000000
-        Y float 5.000000
+        X float 0.000000
+        Y float 0.000000
       }
     }
     m_rot BPartSys::BPSRotation
@@ -104,13 +129,13 @@ GameObject
     }
     m_life BPartSys::BPSLife
     {
-      lifetime float 0.700000
+      lifetime float 0.500000
       randLifetime float 0.000000
     }
     m_fade BPartSys::BPSFade
     {
       fadeOut bool true
-      fadeOutTime float 0.400000
+      fadeOutTime float 0.600000
       randFadeoutTime float 0.000000
     }
     m_vel BPartSys::BPSVelocity
@@ -125,24 +150,30 @@ GameObject
         X float 0.000000
         Y float 0.000000
       }
-      speedIn float -15.000000
-      randSpeedIn float 1.000000
+      speedIn float -5.000000
+      randSpeedIn float 0.000000
     }
     m_system BPartSys::BPSSystem
     {
       active bool true
       editorActive bool true
-      spawnInterval float 15.000000
-      spawnAmount float 10.000000
+      spawnInterval float 30.000000
+      spawnAmount float 1.000000
       spawnPerSecond float 0.000000
       shutdownTimer float 0.000000
       parentToOwner bool false
     }
   }
-  Explosion
+  Pulser
   {
-    timer float 0.300000
-    lightFadeTime float 1.000000
-    waitForAnim bool false
+    m_amount Vec2
+    {
+      X float 0.400000
+      Y float 0.400000
+    }
+    m_time float 1.000000
+  }
+  JuggernautEffect
+  {
   }
 }

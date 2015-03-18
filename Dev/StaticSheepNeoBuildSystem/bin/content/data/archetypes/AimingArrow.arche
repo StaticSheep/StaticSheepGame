@@ -21,6 +21,10 @@ GameObject
   Sprite
   {
     m_spriteName std::string "AimingDir.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
     Color Vec4
     {
       R float 1.000000
@@ -33,8 +37,28 @@ GameObject
       X float 0.500000
       Y float 0.500000
     }
-    m_flipX bool false
-    m_flipY bool false
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+  PointLight
+  {
+    m_layer unsignedint 1
+    m_brightness LightColor
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 0.100000
+    }
+    m_attenuation LightVec3
+    {
+      X float 0.000000
+      Y float 0.000000
+      Z float 0.100000
+    }
   }
   AimingArrow
   {
