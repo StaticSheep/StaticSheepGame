@@ -66,6 +66,7 @@ namespace Framework
 
 		//logic setup, you're attached and components are in place
     space->hooks.Add("LogicUpdate", self, BUILD_FUNCTION(WeaponPickup::LogicUpdate));
+    space->hooks.Add("DestroyPickups", self, BUILD_FUNCTION(WeaponPickup::DestroySelf));
     space->GetGameObject(owner)->hooks.Add("OnCollision", self, BUILD_FUNCTION(WeaponPickup::OnCollision));
 
     wpTransfrom = space->GetGameObject(owner)->GetComponentHandle(eTransform);
@@ -80,7 +81,7 @@ namespace Framework
 	{
     space->GetGameObject(owner)->hooks.Remove("OnCollision", self);
 		space->hooks.Remove("LogicUpdate", self);
-
+    space->hooks.Remove("DestroyPickups", self);
 	}
 
   void WeaponPickup::LogicUpdate(float dt)
@@ -173,5 +174,10 @@ namespace Framework
       ps->Color.A = 255.0f;
       respawnTimer = 2.0f;
     }
+  }
+
+  void WeaponPickup::DestroySelf()
+  {
+    space->GetGameObject(owner)->Destroy();
   }
 }

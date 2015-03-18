@@ -22,6 +22,7 @@ namespace Framework
 		void Initialize();
 		void Remove();
     void CallingSM();
+    void DestroySelf();
 
 		//member variables
     Handle aTransfrom;
