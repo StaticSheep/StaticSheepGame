@@ -21,6 +21,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include <stack>
 #include "CommonStates.h"
 #include "Effects/premult_effect.h"
+#include "Atlas/SpineAtlas.h"
 
 namespace DirectSheep
 {
@@ -146,6 +147,8 @@ class RenderContext
    bool CreateDepthBuffer(void);
    int AddFont(const char* fontname,const char* filename);
 
+   bool CreateAtlas(Handle& handle, const std::string& filename);
+
     /////////////////////////////////////////////////////////////
     //                    BIND FUNCTIONS                       //
     /////////////////////////////////////////////////////////////
@@ -202,6 +205,9 @@ class RenderContext
    int GetCurrentDisplayModeIndex(void) const;
    const std::string& GetGraphicsCardInfo(void) const;
    const Dimension GetTextureSize(const Handle& texHandle) const;
+
+   const AnimationSheet* GetAnimationSheet(const Handle& atlasHandle, std::string& entityName);
+   const std::string& GetAtlasTexture(const Handle& atlasHandle);
 
     /////////////////////////////////////////////////////////////
     //                    UTILITY FUNCTIONS                    //
@@ -385,6 +391,7 @@ class RenderContext
     std::vector<ID3D11Buffer*>               m_indexBufferRes;
     std::vector<ID3D11Buffer*>               m_constBufferRes;
     std::vector<RenderTarget>                m_renderTargetRes;
+    std::vector<SpineAtlas>                  m_atlasRes;
 
     Handle m_canvasTarget;
     Handle m_lightTarget;

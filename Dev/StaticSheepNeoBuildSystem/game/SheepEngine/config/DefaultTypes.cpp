@@ -54,6 +54,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/particles/CParticleBoxEmitter.h"
 #include "components/particles/Particles.h"
 
+#include "Components/sprites/CSpineSprite.h"
+
 
 #include "components/gameplay_scripts/arena/CBlockLights.h"
 #include "components/tester/CTester.h"
@@ -72,7 +74,6 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/gameplay_scripts/Weapon_Scripts/CImpactEffect.h"
 #include "Components/controllers/round/CRoundResults.h"
 #include "components/gameplay_scripts/FX_Scripts/CPulser.h"
-
 
 namespace Framework
 {
@@ -421,6 +422,15 @@ namespace Framework
     TYPE_ADD_MEMBER(AniSprite, Size, false, true, "Sprite_Scale");
     TYPE_SET_TWEAK_TYPE(AniSprite, AntTweak::TW_TYPE_COMPONENT);
     TYPE_SET_FROM_LUA(AniSprite, Lua::GenericObjectFromLua);
+
+    TYPE_REGISTER(SpineSprite);
+    TYPE_ADD_MEMBER(SpineSprite, atlasName, false, true, "Atlas");
+    TYPE_ADD_MEMBER(SpineSprite, entityName, false, true, "Entity");
+    TYPE_ADD_MEMBER(SpineSprite, sequenceName, false, true, "Sequence");
+    TYPE_ADD_MEMBER(SpineSprite, framerate, false, true, "Framerate");
+    TYPE_ADD_MEMBER(SpineSprite, Color, false, true, "ColoursRainbow");
+    TYPE_SET_TWEAK_TYPE(SpineSprite, AntTweak::TW_TYPE_COMPONENT);
+    //TYPE_SET_FROM_LUA(SpineSprite, Lua::GenericObjectFromLua);
 
     TYPE_REGISTER(ParticleSystem);
     TYPE_ADD_MEMBER(ParticleSystem, textureName, false, true, "ParticleTexture",

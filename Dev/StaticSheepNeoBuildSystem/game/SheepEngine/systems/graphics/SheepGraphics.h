@@ -17,6 +17,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/camera/CCamera.h"
 #include "components/lights/CPointLight.h"
 
+#include "../SheepGraphics/Atlas/SpineAtlas.h"
+
 #include "systems/System.h"
 
 #include "Handle.h"
@@ -73,6 +75,11 @@ namespace Framework
 
     // Returns the width/height of a texture
     Vec2 GetTextureDim(DirectSheep::Handle texture);
+
+    bool LoadAtlas(const std::string& path);
+    //DirectSheep::AnimationSheet* GetAnimationSheet(std::string& name);
+
+    DirectSheep::Handle GetAtlasHandle(const std::string& atlas);
 		
     /* =========== Draw State Functions ============ */
 
@@ -139,6 +146,7 @@ namespace Framework
 		void Draw(void);
 
     std::unordered_map<std::string, DirectSheep::Handle> m_textureMap;
+    std::unordered_map<std::string, DirectSheep::Handle> m_atlasMap;
     std::unordered_map<std::string, int> m_fontMap;
 
     DirectSheep::Handle spriteQuad;

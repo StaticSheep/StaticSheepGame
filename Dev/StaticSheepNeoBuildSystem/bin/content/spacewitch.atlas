@@ -1,0 +1,1195 @@
+spacewitch.png
+size: 4020, 818
+{
+  entity: spacewitch
+  {
+    sequence: run_shoot_down
+    number of frames: 12
+    frame size: 126, 139
+    {
+      Frame_0
+      {
+        begin_uv: 0, 0.830073
+        end_uv: 0.0313433, 1
+      }
+      Frame_1
+      {
+        begin_uv: 0.0313433, 0.830073
+        end_uv: 0.0626866, 1
+      }
+      Frame_2
+      {
+        begin_uv: 0.0626866, 0.830073
+        end_uv: 0.0940299, 1
+      }
+      Frame_3
+      {
+        begin_uv: 0.0940299, 0.830073
+        end_uv: 0.125373, 1
+      }
+      Frame_4
+      {
+        begin_uv: 0.125373, 0.830073
+        end_uv: 0.156716, 1
+      }
+      Frame_5
+      {
+        begin_uv: 0.156716, 0.830073
+        end_uv: 0.18806, 1
+      }
+      Frame_6
+      {
+        begin_uv: 0.18806, 0.830073
+        end_uv: 0.219403, 1
+      }
+      Frame_7
+      {
+        begin_uv: 0.219403, 0.830073
+        end_uv: 0.250746, 1
+      }
+      Frame_8
+      {
+        begin_uv: 0.250746, 0.830073
+        end_uv: 0.28209, 1
+      }
+      Frame_9
+      {
+        begin_uv: 0.28209, 0.830073
+        end_uv: 0.313433, 1
+      }
+      Frame_10
+      {
+        begin_uv: 0.313433, 0.830073
+        end_uv: 0.344776, 1
+      }
+      Frame_11
+      {
+        begin_uv: 0.344776, 0.830073
+        end_uv: 0.376119, 1
+      }
+    }
+
+    sequence: idle
+    number of frames: 12
+    frame size: 84, 121
+    {
+      Frame_0
+      {
+        begin_uv: 0.737313, 0.694377
+        end_uv: 0.758209, 0.842298
+      }
+      Frame_1
+      {
+        begin_uv: 0.758209, 0.694377
+        end_uv: 0.779104, 0.842298
+      }
+      Frame_2
+      {
+        begin_uv: 0.779105, 0.694377
+        end_uv: 0.8, 0.842298
+      }
+      Frame_3
+      {
+        begin_uv: 0.8, 0.694377
+        end_uv: 0.820896, 0.842298
+      }
+      Frame_4
+      {
+        begin_uv: 0.820896, 0.694377
+        end_uv: 0.841791, 0.842298
+      }
+      Frame_5
+      {
+        begin_uv: 0.841791, 0.694377
+        end_uv: 0.862687, 0.842298
+      }
+      Frame_6
+      {
+        begin_uv: 0.862687, 0.694377
+        end_uv: 0.883582, 0.842298
+      }
+      Frame_7
+      {
+        begin_uv: 0.883582, 0.694377
+        end_uv: 0.904478, 0.842298
+      }
+      Frame_8
+      {
+        begin_uv: 0.904478, 0.694377
+        end_uv: 0.925373, 0.842298
+      }
+      Frame_9
+      {
+        begin_uv: 0.925373, 0.694377
+        end_uv: 0.946269, 0.842298
+      }
+      Frame_10
+      {
+        begin_uv: 0.946269, 0.694377
+        end_uv: 0.967164, 0.842298
+      }
+      Frame_11
+      {
+        begin_uv: 0.967164, 0.694377
+        end_uv: 0.98806, 0.842298
+      }
+    }
+
+    sequence: jump_shoot_right
+    number of frames: 12
+    frame size: 113, 134
+    {
+      Frame_0
+      {
+        begin_uv: 0.659701, 0.332518
+        end_uv: 0.687811, 0.496333
+      }
+      Frame_1
+      {
+        begin_uv: 0.687811, 0.332518
+        end_uv: 0.71592, 0.496333
+      }
+      Frame_2
+      {
+        begin_uv: 0.71592, 0.332518
+        end_uv: 0.74403, 0.496333
+      }
+      Frame_3
+      {
+        begin_uv: 0.74403, 0.332518
+        end_uv: 0.772139, 0.496333
+      }
+      Frame_4
+      {
+        begin_uv: 0.772139, 0.332518
+        end_uv: 0.800249, 0.496333
+      }
+      Frame_5
+      {
+        begin_uv: 0.800249, 0.332518
+        end_uv: 0.828358, 0.496333
+      }
+      Frame_6
+      {
+        begin_uv: 0.828358, 0.332518
+        end_uv: 0.856468, 0.496333
+      }
+      Frame_7
+      {
+        begin_uv: 0.856467, 0.332518
+        end_uv: 0.884577, 0.496333
+      }
+      Frame_8
+      {
+        begin_uv: 0.884577, 0.332518
+        end_uv: 0.912686, 0.496333
+      }
+      Frame_9
+      {
+        begin_uv: 0.912686, 0.332518
+        end_uv: 0.940796, 0.496333
+      }
+      Frame_10
+      {
+        begin_uv: 0.940796, 0.332518
+        end_uv: 0.968905, 0.496333
+      }
+      Frame_11
+      {
+        begin_uv: 0.968905, 0.332518
+        end_uv: 0.997015, 0.496333
+      }
+    }
+
+    sequence: idle_shoot_down
+    number of frames: 12
+    frame size: 107, 129
+    {
+      Frame_0
+      {
+        begin_uv: 0.638806, 0.00366748
+        end_uv: 0.665423, 0.161369
+      }
+      Frame_1
+      {
+        begin_uv: 0.665423, 0.00366748
+        end_uv: 0.69204, 0.161369
+      }
+      Frame_2
+      {
+        begin_uv: 0.69204, 0.00366748
+        end_uv: 0.718657, 0.161369
+      }
+      Frame_3
+      {
+        begin_uv: 0.718657, 0.00366748
+        end_uv: 0.745274, 0.161369
+      }
+      Frame_4
+      {
+        begin_uv: 0.745274, 0.00366748
+        end_uv: 0.771891, 0.161369
+      }
+      Frame_5
+      {
+        begin_uv: 0.771891, 0.00366748
+        end_uv: 0.798508, 0.161369
+      }
+      Frame_6
+      {
+        begin_uv: 0.798508, 0.00366748
+        end_uv: 0.825124, 0.161369
+      }
+      Frame_7
+      {
+        begin_uv: 0.825125, 0.00366748
+        end_uv: 0.851741, 0.161369
+      }
+      Frame_8
+      {
+        begin_uv: 0.851741, 0.00366748
+        end_uv: 0.878358, 0.161369
+      }
+      Frame_9
+      {
+        begin_uv: 0.878358, 0.00366748
+        end_uv: 0.904975, 0.161369
+      }
+      Frame_10
+      {
+        begin_uv: 0.904975, 0.00366748
+        end_uv: 0.931592, 0.161369
+      }
+      Frame_11
+      {
+        begin_uv: 0.931592, 0.00366748
+        end_uv: 0.958209, 0.161369
+      }
+    }
+
+    sequence: idle_shoot_right
+    number of frames: 12
+    frame size: 104, 121
+    {
+      Frame_0
+      {
+        begin_uv: 0.304478, 0.00488998
+        end_uv: 0.330348, 0.152812
+      }
+      Frame_1
+      {
+        begin_uv: 0.330348, 0.00488998
+        end_uv: 0.356219, 0.152812
+      }
+      Frame_2
+      {
+        begin_uv: 0.356219, 0.00488998
+        end_uv: 0.38209, 0.152812
+      }
+      Frame_3
+      {
+        begin_uv: 0.38209, 0.00488998
+        end_uv: 0.40796, 0.152812
+      }
+      Frame_4
+      {
+        begin_uv: 0.40796, 0.00488998
+        end_uv: 0.433831, 0.152812
+      }
+      Frame_5
+      {
+        begin_uv: 0.433831, 0.00488998
+        end_uv: 0.459702, 0.152812
+      }
+      Frame_6
+      {
+        begin_uv: 0.459702, 0.00488998
+        end_uv: 0.485572, 0.152812
+      }
+      Frame_7
+      {
+        begin_uv: 0.485572, 0.00488998
+        end_uv: 0.511443, 0.152812
+      }
+      Frame_8
+      {
+        begin_uv: 0.511443, 0.00488998
+        end_uv: 0.537313, 0.152812
+      }
+      Frame_9
+      {
+        begin_uv: 0.537313, 0.00488998
+        end_uv: 0.563184, 0.152812
+      }
+      Frame_10
+      {
+        begin_uv: 0.563184, 0.00488998
+        end_uv: 0.589055, 0.152812
+      }
+      Frame_11
+      {
+        begin_uv: 0.589055, 0.00488998
+        end_uv: 0.614925, 0.152812
+      }
+    }
+
+    sequence: idle_shoot_downright
+    number of frames: 12
+    frame size: 98, 128
+    {
+      Frame_0
+      {
+        begin_uv: 0.707463, 0.508557
+        end_uv: 0.731841, 0.665037
+      }
+      Frame_1
+      {
+        begin_uv: 0.731841, 0.508557
+        end_uv: 0.756219, 0.665037
+      }
+      Frame_2
+      {
+        begin_uv: 0.756219, 0.508557
+        end_uv: 0.780597, 0.665037
+      }
+      Frame_3
+      {
+        begin_uv: 0.780597, 0.508557
+        end_uv: 0.804975, 0.665037
+      }
+      Frame_4
+      {
+        begin_uv: 0.804975, 0.508557
+        end_uv: 0.829353, 0.665037
+      }
+      Frame_5
+      {
+        begin_uv: 0.829353, 0.508557
+        end_uv: 0.853731, 0.665037
+      }
+      Frame_6
+      {
+        begin_uv: 0.853731, 0.508557
+        end_uv: 0.87811, 0.665037
+      }
+      Frame_7
+      {
+        begin_uv: 0.87811, 0.508557
+        end_uv: 0.902488, 0.665037
+      }
+      Frame_8
+      {
+        begin_uv: 0.902488, 0.508557
+        end_uv: 0.926866, 0.665037
+      }
+      Frame_9
+      {
+        begin_uv: 0.926866, 0.508557
+        end_uv: 0.951244, 0.665037
+      }
+      Frame_10
+      {
+        begin_uv: 0.951244, 0.508557
+        end_uv: 0.975622, 0.665037
+      }
+      Frame_11
+      {
+        begin_uv: 0.975622, 0.508557
+        end_uv: 1, 0.665037
+      }
+    }
+
+    sequence: jump
+    number of frames: 12
+    frame size: 100, 134
+    {
+      Frame_0
+      {
+        begin_uv: 0, 0.158924
+        end_uv: 0.0248756, 0.322738
+      }
+      Frame_1
+      {
+        begin_uv: 0.0248756, 0.158924
+        end_uv: 0.0497512, 0.322738
+      }
+      Frame_2
+      {
+        begin_uv: 0.0497512, 0.158924
+        end_uv: 0.0746269, 0.322738
+      }
+      Frame_3
+      {
+        begin_uv: 0.0746269, 0.158924
+        end_uv: 0.0995025, 0.322738
+      }
+      Frame_4
+      {
+        begin_uv: 0.0995025, 0.158924
+        end_uv: 0.124378, 0.322738
+      }
+      Frame_5
+      {
+        begin_uv: 0.124378, 0.158924
+        end_uv: 0.149254, 0.322738
+      }
+      Frame_6
+      {
+        begin_uv: 0.149254, 0.158924
+        end_uv: 0.174129, 0.322738
+      }
+      Frame_7
+      {
+        begin_uv: 0.174129, 0.158924
+        end_uv: 0.199005, 0.322738
+      }
+      Frame_8
+      {
+        begin_uv: 0.199005, 0.158924
+        end_uv: 0.223881, 0.322738
+      }
+      Frame_9
+      {
+        begin_uv: 0.223881, 0.158924
+        end_uv: 0.248756, 0.322738
+      }
+      Frame_10
+      {
+        begin_uv: 0.248756, 0.158924
+        end_uv: 0.273632, 0.322738
+      }
+      Frame_11
+      {
+        begin_uv: 0.273632, 0.158924
+        end_uv: 0.298507, 0.322738
+      }
+    }
+
+    sequence: idle_shoot_up
+    number of frames: 12
+    frame size: 83, 129
+    {
+      Frame_0
+      {
+        begin_uv: 0.737313, 0.842298
+        end_uv: 0.75796, 1
+      }
+      Frame_1
+      {
+        begin_uv: 0.75796, 0.842298
+        end_uv: 0.778607, 1
+      }
+      Frame_2
+      {
+        begin_uv: 0.778607, 0.842298
+        end_uv: 0.799254, 1
+      }
+      Frame_3
+      {
+        begin_uv: 0.799254, 0.842298
+        end_uv: 0.8199, 1
+      }
+      Frame_4
+      {
+        begin_uv: 0.8199, 0.842298
+        end_uv: 0.840547, 1
+      }
+      Frame_5
+      {
+        begin_uv: 0.840547, 0.842298
+        end_uv: 0.861194, 1
+      }
+      Frame_6
+      {
+        begin_uv: 0.861194, 0.842298
+        end_uv: 0.881841, 1
+      }
+      Frame_7
+      {
+        begin_uv: 0.881841, 0.842298
+        end_uv: 0.902487, 1
+      }
+      Frame_8
+      {
+        begin_uv: 0.902487, 0.842298
+        end_uv: 0.923134, 1
+      }
+      Frame_9
+      {
+        begin_uv: 0.923134, 0.842298
+        end_uv: 0.943781, 1
+      }
+      Frame_10
+      {
+        begin_uv: 0.943781, 0.842298
+        end_uv: 0.964428, 1
+      }
+      Frame_11
+      {
+        begin_uv: 0.964428, 0.842298
+        end_uv: 0.985074, 1
+      }
+    }
+
+    sequence: idle_shoot_upright
+    number of frames: 12
+    frame size: 102, 125
+    {
+      Frame_0
+      {
+        begin_uv: 0, 0
+        end_uv: 0.0253731, 0.152812
+      }
+      Frame_1
+      {
+        begin_uv: 0.0253731, 0
+        end_uv: 0.0507463, 0.152812
+      }
+      Frame_2
+      {
+        begin_uv: 0.0507463, 0
+        end_uv: 0.0761194, 0.152812
+      }
+      Frame_3
+      {
+        begin_uv: 0.0761194, 0
+        end_uv: 0.101493, 0.152812
+      }
+      Frame_4
+      {
+        begin_uv: 0.101493, 0
+        end_uv: 0.126866, 0.152812
+      }
+      Frame_5
+      {
+        begin_uv: 0.126866, 0
+        end_uv: 0.152239, 0.152812
+      }
+      Frame_6
+      {
+        begin_uv: 0.152239, 0
+        end_uv: 0.177612, 0.152812
+      }
+      Frame_7
+      {
+        begin_uv: 0.177612, 0
+        end_uv: 0.202985, 0.152812
+      }
+      Frame_8
+      {
+        begin_uv: 0.202985, 0
+        end_uv: 0.228358, 0.152812
+      }
+      Frame_9
+      {
+        begin_uv: 0.228358, 0
+        end_uv: 0.253731, 0.152812
+      }
+      Frame_10
+      {
+        begin_uv: 0.253731, 0
+        end_uv: 0.279104, 0.152812
+      }
+      Frame_11
+      {
+        begin_uv: 0.279104, 0
+        end_uv: 0.304478, 0.152812
+      }
+    }
+
+    sequence: jump_shoot_down
+    number of frames: 12
+    frame size: 117, 138
+    {
+      Frame_0
+      {
+        begin_uv: 0.358209, 0.496333
+        end_uv: 0.387313, 0.665037
+      }
+      Frame_1
+      {
+        begin_uv: 0.387313, 0.496333
+        end_uv: 0.416418, 0.665037
+      }
+      Frame_2
+      {
+        begin_uv: 0.416418, 0.496333
+        end_uv: 0.445522, 0.665037
+      }
+      Frame_3
+      {
+        begin_uv: 0.445522, 0.496333
+        end_uv: 0.474627, 0.665037
+      }
+      Frame_4
+      {
+        begin_uv: 0.474627, 0.496333
+        end_uv: 0.503731, 0.665037
+      }
+      Frame_5
+      {
+        begin_uv: 0.503731, 0.496333
+        end_uv: 0.532836, 0.665037
+      }
+      Frame_6
+      {
+        begin_uv: 0.532836, 0.496333
+        end_uv: 0.56194, 0.665037
+      }
+      Frame_7
+      {
+        begin_uv: 0.56194, 0.496333
+        end_uv: 0.591045, 0.665037
+      }
+      Frame_8
+      {
+        begin_uv: 0.591045, 0.496333
+        end_uv: 0.620149, 0.665037
+      }
+      Frame_9
+      {
+        begin_uv: 0.620149, 0.496333
+        end_uv: 0.649254, 0.665037
+      }
+      Frame_10
+      {
+        begin_uv: 0.649254, 0.496333
+        end_uv: 0.678358, 0.665037
+      }
+      Frame_11
+      {
+        begin_uv: 0.678358, 0.496333
+        end_uv: 0.707463, 0.665037
+      }
+    }
+
+    sequence: jump_shoot_downright
+    number of frames: 12
+    frame size: 109, 141
+    {
+      Frame_0
+      {
+        begin_uv: 0.334328, 0.323961
+        end_uv: 0.361443, 0.496333
+      }
+      Frame_1
+      {
+        begin_uv: 0.361443, 0.323961
+        end_uv: 0.388557, 0.496333
+      }
+      Frame_2
+      {
+        begin_uv: 0.388557, 0.323961
+        end_uv: 0.415672, 0.496333
+      }
+      Frame_3
+      {
+        begin_uv: 0.415672, 0.323961
+        end_uv: 0.442786, 0.496333
+      }
+      Frame_4
+      {
+        begin_uv: 0.442786, 0.323961
+        end_uv: 0.4699, 0.496333
+      }
+      Frame_5
+      {
+        begin_uv: 0.4699, 0.323961
+        end_uv: 0.497015, 0.496333
+      }
+      Frame_6
+      {
+        begin_uv: 0.497015, 0.323961
+        end_uv: 0.524129, 0.496333
+      }
+      Frame_7
+      {
+        begin_uv: 0.524129, 0.323961
+        end_uv: 0.551244, 0.496333
+      }
+      Frame_8
+      {
+        begin_uv: 0.551244, 0.323961
+        end_uv: 0.578358, 0.496333
+      }
+      Frame_9
+      {
+        begin_uv: 0.578358, 0.323961
+        end_uv: 0.605473, 0.496333
+      }
+      Frame_10
+      {
+        begin_uv: 0.605473, 0.323961
+        end_uv: 0.632587, 0.496333
+      }
+      Frame_11
+      {
+        begin_uv: 0.632587, 0.323961
+        end_uv: 0.659702, 0.496333
+      }
+    }
+
+    sequence: jump_shoot_up
+    number of frames: 12
+    frame size: 102, 140
+    {
+      Frame_0
+      {
+        begin_uv: 0.334328, 0.152812
+        end_uv: 0.359701, 0.323961
+      }
+      Frame_1
+      {
+        begin_uv: 0.359701, 0.152812
+        end_uv: 0.385075, 0.323961
+      }
+      Frame_2
+      {
+        begin_uv: 0.385075, 0.152812
+        end_uv: 0.410448, 0.323961
+      }
+      Frame_3
+      {
+        begin_uv: 0.410448, 0.152812
+        end_uv: 0.435821, 0.323961
+      }
+      Frame_4
+      {
+        begin_uv: 0.435821, 0.152812
+        end_uv: 0.461194, 0.323961
+      }
+      Frame_5
+      {
+        begin_uv: 0.461194, 0.152812
+        end_uv: 0.486567, 0.323961
+      }
+      Frame_6
+      {
+        begin_uv: 0.486567, 0.152812
+        end_uv: 0.51194, 0.323961
+      }
+      Frame_7
+      {
+        begin_uv: 0.51194, 0.152812
+        end_uv: 0.537313, 0.323961
+      }
+      Frame_8
+      {
+        begin_uv: 0.537313, 0.152812
+        end_uv: 0.562687, 0.323961
+      }
+      Frame_9
+      {
+        begin_uv: 0.562687, 0.152812
+        end_uv: 0.58806, 0.323961
+      }
+      Frame_10
+      {
+        begin_uv: 0.58806, 0.152812
+        end_uv: 0.613433, 0.323961
+      }
+      Frame_11
+      {
+        begin_uv: 0.613433, 0.152812
+        end_uv: 0.638806, 0.323961
+      }
+    }
+
+    sequence: jump_shoot_upright
+    number of frames: 12
+    frame size: 106, 140
+    {
+      Frame_0
+      {
+        begin_uv: 0.659701, 0.161369
+        end_uv: 0.68607, 0.332518
+      }
+      Frame_1
+      {
+        begin_uv: 0.68607, 0.161369
+        end_uv: 0.712438, 0.332518
+      }
+      Frame_2
+      {
+        begin_uv: 0.712438, 0.161369
+        end_uv: 0.738806, 0.332518
+      }
+      Frame_3
+      {
+        begin_uv: 0.738806, 0.161369
+        end_uv: 0.765174, 0.332518
+      }
+      Frame_4
+      {
+        begin_uv: 0.765174, 0.161369
+        end_uv: 0.791542, 0.332518
+      }
+      Frame_5
+      {
+        begin_uv: 0.791542, 0.161369
+        end_uv: 0.81791, 0.332518
+      }
+      Frame_6
+      {
+        begin_uv: 0.81791, 0.161369
+        end_uv: 0.844279, 0.332518
+      }
+      Frame_7
+      {
+        begin_uv: 0.844278, 0.161369
+        end_uv: 0.870647, 0.332518
+      }
+      Frame_8
+      {
+        begin_uv: 0.870647, 0.161369
+        end_uv: 0.897015, 0.332518
+      }
+      Frame_9
+      {
+        begin_uv: 0.897015, 0.161369
+        end_uv: 0.923383, 0.332518
+      }
+      Frame_10
+      {
+        begin_uv: 0.923383, 0.161369
+        end_uv: 0.949751, 0.332518
+      }
+      Frame_11
+      {
+        begin_uv: 0.949751, 0.161369
+        end_uv: 0.976119, 0.332518
+      }
+    }
+
+    sequence: run
+    number of frames: 12
+    frame size: 112, 134
+    {
+      Frame_0
+      {
+        begin_uv: 0, 0.322738
+        end_uv: 0.0278607, 0.486553
+      }
+      Frame_1
+      {
+        begin_uv: 0.0278607, 0.322738
+        end_uv: 0.0557214, 0.486553
+      }
+      Frame_2
+      {
+        begin_uv: 0.0557214, 0.322738
+        end_uv: 0.0835821, 0.486553
+      }
+      Frame_3
+      {
+        begin_uv: 0.0835821, 0.322738
+        end_uv: 0.111443, 0.486553
+      }
+      Frame_4
+      {
+        begin_uv: 0.111443, 0.322738
+        end_uv: 0.139303, 0.486553
+      }
+      Frame_5
+      {
+        begin_uv: 0.139303, 0.322738
+        end_uv: 0.167164, 0.486553
+      }
+      Frame_6
+      {
+        begin_uv: 0.167164, 0.322738
+        end_uv: 0.195025, 0.486553
+      }
+      Frame_7
+      {
+        begin_uv: 0.195025, 0.322738
+        end_uv: 0.222886, 0.486553
+      }
+      Frame_8
+      {
+        begin_uv: 0.222886, 0.322738
+        end_uv: 0.250746, 0.486553
+      }
+      Frame_9
+      {
+        begin_uv: 0.250746, 0.322738
+        end_uv: 0.278607, 0.486553
+      }
+      Frame_10
+      {
+        begin_uv: 0.278607, 0.322738
+        end_uv: 0.306468, 0.486553
+      }
+      Frame_11
+      {
+        begin_uv: 0.306468, 0.322738
+        end_uv: 0.334328, 0.486553
+      }
+    }
+
+    sequence: run_shoot_downright
+    number of frames: 12
+    frame size: 121, 140
+    {
+      Frame_0
+      {
+        begin_uv: 0.376119, 0.828851
+        end_uv: 0.406219, 1
+      }
+      Frame_1
+      {
+        begin_uv: 0.406219, 0.828851
+        end_uv: 0.436318, 1
+      }
+      Frame_2
+      {
+        begin_uv: 0.436318, 0.828851
+        end_uv: 0.466418, 1
+      }
+      Frame_3
+      {
+        begin_uv: 0.466418, 0.828851
+        end_uv: 0.496517, 1
+      }
+      Frame_4
+      {
+        begin_uv: 0.496517, 0.828851
+        end_uv: 0.526617, 1
+      }
+      Frame_5
+      {
+        begin_uv: 0.526617, 0.828851
+        end_uv: 0.556716, 1
+      }
+      Frame_6
+      {
+        begin_uv: 0.556716, 0.828851
+        end_uv: 0.586816, 1
+      }
+      Frame_7
+      {
+        begin_uv: 0.586816, 0.828851
+        end_uv: 0.616915, 1
+      }
+      Frame_8
+      {
+        begin_uv: 0.616915, 0.828851
+        end_uv: 0.647015, 1
+      }
+      Frame_9
+      {
+        begin_uv: 0.647015, 0.828851
+        end_uv: 0.677114, 1
+      }
+      Frame_10
+      {
+        begin_uv: 0.677114, 0.828851
+        end_uv: 0.707214, 1
+      }
+      Frame_11
+      {
+        begin_uv: 0.707214, 0.828851
+        end_uv: 0.737314, 1
+      }
+    }
+
+    sequence: run_shoot_right
+    number of frames: 12
+    frame size: 125, 134
+    {
+      Frame_0
+      {
+        begin_uv: 0.358209, 0.665037
+        end_uv: 0.389303, 0.828851
+      }
+      Frame_1
+      {
+        begin_uv: 0.389303, 0.665037
+        end_uv: 0.420398, 0.828851
+      }
+      Frame_2
+      {
+        begin_uv: 0.420398, 0.665037
+        end_uv: 0.451493, 0.828851
+      }
+      Frame_3
+      {
+        begin_uv: 0.451493, 0.665037
+        end_uv: 0.482587, 0.828851
+      }
+      Frame_4
+      {
+        begin_uv: 0.482587, 0.665037
+        end_uv: 0.513682, 0.828851
+      }
+      Frame_5
+      {
+        begin_uv: 0.513682, 0.665037
+        end_uv: 0.544776, 0.828851
+      }
+      Frame_6
+      {
+        begin_uv: 0.544776, 0.665037
+        end_uv: 0.575871, 0.828851
+      }
+      Frame_7
+      {
+        begin_uv: 0.575871, 0.665037
+        end_uv: 0.606965, 0.828851
+      }
+      Frame_8
+      {
+        begin_uv: 0.606965, 0.665037
+        end_uv: 0.63806, 0.828851
+      }
+      Frame_9
+      {
+        begin_uv: 0.63806, 0.665037
+        end_uv: 0.669154, 0.828851
+      }
+      Frame_10
+      {
+        begin_uv: 0.669154, 0.665037
+        end_uv: 0.700249, 0.828851
+      }
+      Frame_11
+      {
+        begin_uv: 0.700249, 0.665037
+        end_uv: 0.731343, 0.828851
+      }
+    }
+
+    sequence: run_shoot_up
+    number of frames: 12
+    frame size: 112, 141
+    {
+      Frame_0
+      {
+        begin_uv: 0, 0.486553
+        end_uv: 0.0278607, 0.658924
+      }
+      Frame_1
+      {
+        begin_uv: 0.0278607, 0.486553
+        end_uv: 0.0557214, 0.658924
+      }
+      Frame_2
+      {
+        begin_uv: 0.0557214, 0.486553
+        end_uv: 0.0835821, 0.658924
+      }
+      Frame_3
+      {
+        begin_uv: 0.0835821, 0.486553
+        end_uv: 0.111443, 0.658924
+      }
+      Frame_4
+      {
+        begin_uv: 0.111443, 0.486553
+        end_uv: 0.139303, 0.658924
+      }
+      Frame_5
+      {
+        begin_uv: 0.139303, 0.486553
+        end_uv: 0.167164, 0.658924
+      }
+      Frame_6
+      {
+        begin_uv: 0.167164, 0.486553
+        end_uv: 0.195025, 0.658924
+      }
+      Frame_7
+      {
+        begin_uv: 0.195025, 0.486553
+        end_uv: 0.222886, 0.658924
+      }
+      Frame_8
+      {
+        begin_uv: 0.222886, 0.486553
+        end_uv: 0.250746, 0.658924
+      }
+      Frame_9
+      {
+        begin_uv: 0.250746, 0.486553
+        end_uv: 0.278607, 0.658924
+      }
+      Frame_10
+      {
+        begin_uv: 0.278607, 0.486553
+        end_uv: 0.306468, 0.658924
+      }
+      Frame_11
+      {
+        begin_uv: 0.306468, 0.486553
+        end_uv: 0.334328, 0.658924
+      }
+    }
+
+    sequence: run_shoot_upright
+    number of frames: 12
+    frame size: 120, 140
+    {
+      Frame_0
+      {
+        begin_uv: 0, 0.658924
+        end_uv: 0.0298507, 0.830073
+      }
+      Frame_1
+      {
+        begin_uv: 0.0298507, 0.658924
+        end_uv: 0.0597015, 0.830073
+      }
+      Frame_2
+      {
+        begin_uv: 0.0597015, 0.658924
+        end_uv: 0.0895522, 0.830073
+      }
+      Frame_3
+      {
+        begin_uv: 0.0895522, 0.658924
+        end_uv: 0.119403, 0.830073
+      }
+      Frame_4
+      {
+        begin_uv: 0.119403, 0.658924
+        end_uv: 0.149254, 0.830073
+      }
+      Frame_5
+      {
+        begin_uv: 0.149254, 0.658924
+        end_uv: 0.179104, 0.830073
+      }
+      Frame_6
+      {
+        begin_uv: 0.179104, 0.658924
+        end_uv: 0.208955, 0.830073
+      }
+      Frame_7
+      {
+        begin_uv: 0.208955, 0.658924
+        end_uv: 0.238806, 0.830073
+      }
+      Frame_8
+      {
+        begin_uv: 0.238806, 0.658924
+        end_uv: 0.268657, 0.830073
+      }
+      Frame_9
+      {
+        begin_uv: 0.268657, 0.658924
+        end_uv: 0.298507, 0.830073
+      }
+      Frame_10
+      {
+        begin_uv: 0.298507, 0.658924
+        end_uv: 0.328358, 0.830073
+      }
+      Frame_11
+      {
+        begin_uv: 0.328358, 0.658924
+        end_uv: 0.358209, 0.830073
+      }
+    }
+
+  }
+}

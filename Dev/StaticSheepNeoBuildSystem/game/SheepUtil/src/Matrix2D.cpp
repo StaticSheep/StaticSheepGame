@@ -172,7 +172,7 @@ namespace Framework
     Vec2D result;
     
     result.x = _matrix[0][0] * rhs.x + _matrix[0][1] * rhs.y;
-    result.x = _matrix[1][0] * rhs.x + _matrix[1][1] * rhs.y;
+    result.y = _matrix[1][0] * rhs.x + _matrix[1][1] * rhs.y;
     
     return result;
   }

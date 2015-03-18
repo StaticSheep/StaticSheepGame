@@ -24,6 +24,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "Effects\gen_effect.h"
 #include "Camera\Camera.h"
 #include "Handle.h"
+#include "Atlas\SpineAtlas.h"
+#include "..\SheepEngine\engine\tracelog\TraceLog.h"
 
 
 

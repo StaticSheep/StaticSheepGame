@@ -1,0 +1,23 @@
+Default.png
+size: 32, 32
+{
+  entity: Default
+  {
+    sequence: idle
+    number of frames: 2
+    frame size: 16, 32
+    {
+      Frame_0
+      {
+        begin_uv: 0, 0
+        end_uv: 0.5, 1
+      }
+      
+      Frame_1
+      {
+        begin_uv: 0.5, 0
+        end_uv: 1, 1
+      }
+    }
+  }
+}
