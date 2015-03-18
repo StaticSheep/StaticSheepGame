@@ -39,6 +39,7 @@ namespace DirectSheep
     RENDER_TARGET,
     BACK_BUFFER,
     CAMERA,
+    ATLAS,
     oTypecount,
   };
 

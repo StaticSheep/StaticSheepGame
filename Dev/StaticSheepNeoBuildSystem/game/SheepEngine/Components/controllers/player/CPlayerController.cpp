@@ -87,10 +87,32 @@ namespace Framework
 		playerTransform = space->GetGameObject(owner)->GetComponentHandle(eTransform);
     playerSound = space->GetGameObject(owner)->GetComponentHandle(eSoundEmitter);
     playerSprite = space->GetGameObject(owner)->GetComponentHandle(eSprite);
-    playerAnimation = space->GetGameObject(owner)->GetComponentHandle(eAniSprite);
+    playerAnimation = space->GetGameObject(owner)->GetComponentHandle(eSpineSprite);
 
     ps = space->GetHandles().GetAs<Transform>(playerTransform);
-    ps->SetScale(Vec3(0.35f, 0.365f, 0.0));
+    ps->SetScale(Vec3(1.0f, 1.0f, 0.0));
+
+    switch(playerNum)
+    {
+      case 0: // ninja
+        //ps->SetScale(Vec3(1.5f, 1.5f, 0.0f));
+        playerColor = Vec4(0.5f, 1.0f, 0.5f, 1.0f);
+        break;
+      case 1: // ruiser
+        playerColor = Vec4(0.75f, 0.15f, 0.1f, 1.0f);
+        //ps->SetScale(Vec3(1.0f, 1.0f, 0.0f));
+        break;
+      case 2: // spacewitch
+        playerColor = Vec4(0.6f, 0.25f, 0.6f, 1.0f);
+        //ps->SetScale(Vec3(1.25f, 1.25f, 0.0f));
+        break;
+      case 3: // steve
+        playerColor = Vec4(0.4f, 0.78f, 0.78f, 1.0f);
+        //ps->SetScale(Vec3(1.0f, 1.0f, 0.0f));
+        break;
+    }
+
+    //playerColor = Vec4(1.0f, 1.0f, 1.0f, 1.0f);
 
 		gp = space->GetHandles().GetAs<GamePad>(playerGamePad); //actually gets the gamepad
 		gp->SetPad(playerNum); //setting pad number
@@ -121,6 +143,7 @@ namespace Framework
 
     bc = space->GetHandles().GetAs<BoxCollider>(playerCollider);
     bc->SetGravityOff();
+
     weapon = (Pistol*)GET_TYPE(Pistol)->New();
     se = space->GetHandles().GetAs<SoundEmitter>(playerSound);
     se->Play("robot_startup", &SoundInstance(0.50f));
@@ -310,11 +333,6 @@ namespace Framework
         bc->AddToVelocity((snappedNormal.CalculateNormal() * 450));
       else if (snappedNormal.y < 0)
         bc->AddToVelocity(-(snappedNormal.CalculateNormal() * 450));
-      AniSprite *ps = space->GetHandles().GetAs<AniSprite>(playerAnimation);
-      if (snappedNormal.y > 0)
-        ps->SetFlipX(true);
-      else
-        ps->SetFlipX(false);
     }
     else if (gp->LeftStick_X() < -0.2 || (SHEEPINPUT->KeyIsDown(0x41) && gp->GetIndex() == 0))
     {
@@ -322,11 +340,6 @@ namespace Framework
         bc->AddToVelocity(-(snappedNormal.CalculateNormal() * 450));
       if (snappedNormal.y < 0)
         bc->AddToVelocity((snappedNormal.CalculateNormal() * 450));
-      AniSprite *ps = space->GetHandles().GetAs<AniSprite>(playerAnimation);
-      if (snappedNormal.y > 0)
-        ps->SetFlipX(false);
-      else
-        ps->SetFlipX(true);
     }
 
     //left stick movement in the Y
@@ -336,11 +349,6 @@ namespace Framework
         bc->AddToVelocity(-(snappedNormal.CalculateNormal() * 450));
       else if (snappedNormal.x < 0)
         bc->AddToVelocity((snappedNormal.CalculateNormal() * 450));
-      AniSprite *ps = space->GetHandles().GetAs<AniSprite>(playerAnimation);
-      if (snappedNormal.x > 0)
-        ps->SetFlipX(false);
-      else
-        ps->SetFlipX(true);
     }
     else if (gp->LeftStick_Y() < -0.2 || (SHEEPINPUT->KeyIsDown(0x53) && gp->GetIndex() == 0))
     {
@@ -348,11 +356,6 @@ namespace Framework
         bc->AddToVelocity((snappedNormal.CalculateNormal() * 450));
       if (snappedNormal.x < 0)
         bc->AddToVelocity(-(snappedNormal.CalculateNormal() * 450));
-      AniSprite *ps = space->GetHandles().GetAs<AniSprite>(playerAnimation);
-      if (snappedNormal.x > 0)
-        ps->SetFlipX(true);
-      else
-        ps->SetFlipX(false);
     }
 
     //clamp the players velocity
@@ -630,6 +633,10 @@ namespace Framework
   {
     aimDir = aimingDirection(gp); //get the direction the player is currently aiming;
 
+    if(!arrowSpawn)
+      arrowSpawn = true;
+
+    /*
     if (!arrowSpawn)
     {
       //draw aiming arrow
@@ -642,7 +649,7 @@ namespace Framework
       AA->GetComponent<Sprite>(eSprite)->Color = playerS->Color; //set the colors equal
       AA->GetComponent<Sprite>(eSprite)->Color.a = 0.7f; //make sure the alpha isn't low (happens during respawn)
       arrowSpawn = true;
-    }
+    }*/
   }
 
   //************************************
@@ -686,7 +693,7 @@ namespace Framework
   //************************************
   void PlayerController::RespawnBlink(float dt)
   {
-    AniSprite *pa = space->GetHandles().GetAs<AniSprite>(playerAnimation);
+    SpineSprite *pa = space->GetHandles().GetAs<SpineSprite>(playerAnimation);
     Transform *effectTrans;
 
     if (respawnTimer < 0.0f)
@@ -776,14 +783,14 @@ namespace Framework
   {
     GamePad *gp = space->GetHandles().GetAs<GamePad>(playerGamePad);
     //get animated sprite component
-    AniSprite *pa = space->GetHandles().GetAs<AniSprite>(playerAnimation);
+    SpineSprite *pa = space->GetHandles().GetAs<SpineSprite>(playerAnimation);
 
     if ((isSnapped && !(gp->LStick_InDeadZone())) || (isSnapped && gp->GetIndex() == 0 && (SHEEPINPUT->KeyIsDown('D') || SHEEPINPUT->KeyIsDown('A') || SHEEPINPUT->KeyIsDown('W') || SHEEPINPUT->KeyIsDown('S'))))
     {
       //set animated sprite to run
       if (animCont.AnimState != RUN)
       {
-        pa->SetRange(Vec2((float)animCont.run.beginFrame, (float)animCont.run.endFrame));
+        //pa->SetRange(Vec2((float)animCont.run.beginFrame, (float)animCont.run.endFrame));
         animCont.AnimState = RUN;
       }
     }
@@ -792,7 +799,7 @@ namespace Framework
       if (animCont.AnimState != JUMP)
       {
         //set animated sprite to jump
-        pa->SetRange(Vec2((float)animCont.jump.beginFrame, (float)animCont.jump.endFrame));
+        //pa->SetRange(Vec2((float)animCont.jump.beginFrame, (float)animCont.jump.endFrame));
         animCont.AnimState = JUMP;
       }
     }
@@ -801,11 +808,15 @@ namespace Framework
       if (animCont.AnimState != IDLE)
       {
         //set animated sprite to idle
-        pa->SetRange(Vec2((float)animCont.idle.beginFrame, (float)animCont.idle.endFrame));
+        //pa->SetRange(Vec2((float)animCont.idle.beginFrame, (float)animCont.idle.endFrame));
         animCont.AnimState = IDLE;
       }
     }
+
+    Transform* trans = space->GetHandles().GetAs<Transform>(playerTransform);
     
+    animCont.Update(pa, playerColor, trans->GetRotation(), aimDir, arrowSpawn);
+
   }
 
   //Takes a players box collider and clamps the velocity of that box collider

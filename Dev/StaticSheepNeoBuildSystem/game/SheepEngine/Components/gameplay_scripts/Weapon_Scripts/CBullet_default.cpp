@@ -61,11 +61,28 @@ namespace Framework
       bt->GetTranslation().x < -1000 ||
       bt->GetTranslation().y > 700 ||
       bt->GetTranslation().y < -700)
-      Impact();
+    {
+      space->GetGameObject(owner)->Destroy();
+      return;
+    }
 
     if (m_firstImpact)
     {
       bGameObject->hooks.Call("BulletImpact");
+
+      if (explosive_)
+      {
+        GameObject *temp = (FACTORY->LoadObjectFromArchetype(space, "miniExplosion"));
+        temp->GetComponent<Transform>(eTransform)->SetTranslation(bt->GetTranslation());
+      }
+
+      if (fadeTime <= 0)
+      {
+        space->GetGameObject(owner)->Destroy();
+        return;
+      }
+        
+
       m_firstImpact = false;
     }
 
@@ -84,17 +101,20 @@ namespace Framework
       }
 
       if (fadeTime < 0)
-        Impact();
+        space->GetGameObject(owner)->Destroy();
 
       return;
     }
+
+    
 
     if (limitedLife && !fading)
     {
       ttl -= dt;
       if (ttl <= 0)
       {
-        Impact();
+        space->GetGameObject(owner)->Destroy();
+        return;
       }
     }
 
@@ -107,7 +127,6 @@ namespace Framework
 
     if (fadeTime > 0 && !fading)
     {
-      m_firstImpact = true;
       fading = true;
       
       { /* Proper way to detach a circle collider from an object*/
@@ -146,8 +165,7 @@ namespace Framework
     }
     else
     {
-      if (fadeTime <= 0)
-        space->GetGameObject(owner)->Destroy();
+
     }
       
     
@@ -173,12 +191,8 @@ namespace Framework
 
     if (!blt && !wpi & !pp)
     {
-      //if (explosive_)
-      //{
-      //  GameObject *temp = (FACTORY->LoadObjectFromArchetype(space, "explosion"));
-      //  temp->GetComponent<Transform>(eTransform)->SetTranslation(bt->GetTranslation());
-      //}
-
+      
+      m_firstImpact = true;
       Impact();
       //space->GetGameObject(owner)->Destroy();
     }

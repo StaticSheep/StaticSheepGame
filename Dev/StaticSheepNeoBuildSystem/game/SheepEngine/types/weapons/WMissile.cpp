@@ -23,7 +23,7 @@ namespace Framework
     damage = 90;
     knockback = 600;
     semi = true;
-    explosive_ = true;
+    explosive_ = false;
   }
 
   Missile::~Missile()

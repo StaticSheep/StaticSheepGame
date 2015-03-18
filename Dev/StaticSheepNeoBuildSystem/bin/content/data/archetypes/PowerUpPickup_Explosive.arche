@@ -21,6 +21,7 @@ GameObject
   Sprite
   {
     m_spriteName std::string "ExplosivePickup.png"
+    m_layer unsignedint 1
     m_flipX bool false
     m_flipY bool false
     m_uvScale bool false
@@ -40,6 +41,33 @@ GameObject
     {
       X float 0.000000
       Y float 0.000000
+    }
+  }
+  SpriteLight
+  {
+    m_spriteName std::string "PowerUpLight.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    m_isOn bool true
+    m_emissive bool false
+    m_brightness LightColor
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 0.500000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+    Size Vec2
+    {
+      X float 1.000000
+      Y float 1.000000
     }
   }
   BoxCollider

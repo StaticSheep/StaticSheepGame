@@ -37,7 +37,7 @@ local function CoinsPaint(self)
 end
 
 local headFiles = {"p1_score.png", "p2_score.png", "p3_score.png", "p4_score.png"}
-local headColors = {Color(0, 200, 0), Color(200, 0, 0), Color(200, 0, 200), Color(0, 120, 220)}
+local headColors = {Color(0, 200, 0, 255), Color(200, 0, 0, 255), Color(200, 0, 200, 255), Color(0, 120, 220, 255)}
 
 function PlayerHUD:Create(i)
   self.base[i] = gui.Create("Frame")
@@ -75,6 +75,7 @@ function PlayerHUD:Create(i)
   coinsprite:SetSize(88, 180)
   coinsprite:SetTexture(coinFile)
   coinsprite.coins = 0
+  coinsprite.border = head
 
   self.coinstack[i] = coinsprite
 
@@ -94,6 +95,7 @@ function PlayerHUD:Init()
   self.panels = {}
   self.base = {}
   self.coinstack = {}
+  self.showDelay = {0, 0, 0, 0}
 
   self:Make()
 
@@ -120,11 +122,14 @@ local SPAZ_COLORS = {
   Color(255, 255, 255), Color(0, 255, 0), Color(50, 255, 255), Color(255, 150, 20)
 }
 
-local MAX_COINS = 50000
+local MAX_COINS = 35000
 local BOT_MIN = 170
 local BOT_MAX = 0
 local TOP_MIN = -162
 local TOP_MAX = 0
+
+local MIN_ALPHA = 50
+local ALPHA_DEC_AMOUNT = 205 / 60 / 2
 
 local DEC_AMOUNT = MAX_COINS / 60
 local INC_AMOUNT = MAX_COINS / 60 / 5
@@ -134,6 +139,7 @@ function PlayerHUD:FrameUpdate(deltaTime)
   local logic = self:Owner().Level1_Logic
   local pcoins
   local t
+  local curColor
 
   local stack
 
@@ -143,11 +149,38 @@ function PlayerHUD:FrameUpdate(deltaTime)
 
     if stack.coins < pcoins then
       stack.coins = math.Approach(stack.coins, pcoins, INC_AMOUNT)
+
       stack:SetColor(SPAZ_COLORS[math.random(#SPAZ_COLORS)])
+      
+      curColor = headColors[i]
+      curColor.a = 255
+      stack.border:SetColor(curColor)
+
+      self.showDelay[i] = 3
     elseif stack.coins > pcoins then
       stack.coins = math.Approach(stack.coins, pcoins, DEC_AMOUNT)
+
+      stack:SetColor(SPAZ_COLORS[math.random(#SPAZ_COLORS)])
+
+      curColor = headColors[i]
+      curColor.a = 255
+      stack.border:SetColor(curColor)
+
+      self.showDelay[i] = 3
     else
-      stack:SetColor(Color(255, 255, 255, 255))
+      self.showDelay[i] = self.showDelay[i] - deltaTime
+
+      if self.showDelay[i] < 0 then
+        curColor = stack:GetColor()
+        curColor.a = math.Approach(curColor.a, MIN_ALPHA, ALPHA_DEC_AMOUNT)
+        stack:SetColor(curColor)
+
+        curColor = stack.border:GetColor()
+        curColor.a = math.Approach(curColor.a, MIN_ALPHA, ALPHA_DEC_AMOUNT)
+        stack.border:SetColor(curColor)
+      else
+        stack:SetColor(Color(255, 255, 255, 255))
+      end
     end
 
     t = stack.coins / MAX_COINS

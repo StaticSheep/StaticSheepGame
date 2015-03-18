@@ -725,7 +725,7 @@ namespace Framework
       playerController->powerUp->Use(juggernaut_);
       playerController->health = 200;
       playerController->shields = 100;
-      GameObject *effect = (FACTORY->LoadObjectFromArchetype(space, "fire_effect2"));
+      GameObject *effect = (FACTORY->LoadObjectFromArchetype(space, "jugg_effect"));
       effect->GetComponent<JuggernautEffect>(eJuggernautEffect)->pTransform = (space->GetGameObject(Players[i]))->GetComponentHandle(eTransform);
       effect->GetComponent<Transform>(eTransform)->SetTranslation(
         (space->GetGameObject(Players[i]))->GetComponent<Transform>(eTransform)->GetTranslation());

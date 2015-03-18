@@ -46,6 +46,10 @@ function META:SetColor(color)
   self.color = color
 end
 
+function META:GetColor()
+  return self.color
+end
+
 function META:SetBGColor(color)
   self.bgColor = color
 end

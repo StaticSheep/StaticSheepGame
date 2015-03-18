@@ -20,14 +20,16 @@ GameObject
   }
   AniSprite
   {
-    m_spriteName std::string "coin_sheet.png"
+    m_spriteName std::string "coin_sheet_8frame.png"
+    m_layer unsignedint 1
+    m_frameUpdate bool false
     m_frames Vec2
     {
-      X float 4.000000
-      Y float 4.000000
+      X float 8.000000
+      Y float 8.000000
     }
     m_startFrame unsignedint 0
-    m_endFrame unsignedint 3
+    m_endFrame unsignedint 7
     m_frameRate float 12.000000
     m_loop int -1
     m_paused bool false
@@ -49,7 +51,7 @@ GameObject
   CircleCollider
   {
     m_radius float 30.000000
-    m_materialName std::string "Wood"
+    m_materialName std::string "Iron"
     m_hasCollisionCallback bool true
     m_CollisionGroup std::string ""
   }

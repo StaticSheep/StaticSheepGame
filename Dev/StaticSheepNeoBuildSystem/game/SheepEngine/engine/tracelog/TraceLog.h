@@ -5,9 +5,8 @@ Author(s): Zakary Wilson
 
 All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 *****************************************************************/
-#include <stdio.h>
-
 #pragma once
+#include <stdio.h>
 
 namespace Framework
 {
@@ -18,7 +17,7 @@ namespace Framework
     {
       ERR = 0,
       WARNING,
-      DEBUG,
+      DBG,
       INFO,
       VERBOSE
     };

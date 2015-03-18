@@ -1,6 +1,6 @@
 GameObject
 {
-  name std::string ""
+  name std::string "ruiser"
   archetype std::string "test"
   Transform
   {
@@ -18,32 +18,27 @@ GameObject
       z_ float 0.000000
     }
   }
-  AniSprite
+  SpineSprite
   {
-    m_spriteName std::string "spritesheet.png"
-    m_frames Vec2
-    {
-      X float 1.000000
-      Y float 1.000000
-    }
-    m_startFrame unsignedint
-    {
-    }
-    m_endFrame unsignedint
-    {
-    }
-    m_frameRate float 20.000000
-    Color Vec4
+    atlasName std::string "master"
+    entityName std::string "ruiser"
+    sequenceName std::string "run"
+    framerate float 24.000000
+  }
+  PointLight
+  {
+    m_brightness LightColor
     {
       R float 1.000000
       G float 1.000000
       B float 1.000000
       A float 1.000000
     }
-    Size Vec2
+    m_attenuation LightVec3
     {
-      X float 1.000000
-      Y float 1.000000
+      X float 0.010000
+      Y float 0.010000
+      Z float 0.010000
     }
   }
 }

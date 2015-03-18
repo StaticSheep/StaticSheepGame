@@ -75,5 +75,10 @@ namespace Framework
     Handle playerSprite; //to adjust the sprite colors and alpha
     Handle playerAnimation;
     Handle spawnEffect;
+    Handle spineHandle;
+
+    Vec4 playerColor;
+    bool animationFlip;
+
 	};
 }
