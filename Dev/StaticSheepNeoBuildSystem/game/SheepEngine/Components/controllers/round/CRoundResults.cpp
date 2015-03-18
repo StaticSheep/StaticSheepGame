@@ -15,8 +15,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 namespace Framework
 {
-  static Vec2D wordSize(30.0f, 30.0f);
-  static Vec2D numberSize(40.0f, 40.0f);
+  static Vec2D wordSize(21.0f, 21.0f);
+  static Vec2D numberSize(50.0f, 50.0f);
 
   RoundResults::RoundResults()
 	{
@@ -40,6 +40,9 @@ namespace Framework
     timeToLive = 6.0f;
     bounceDownDone = false;
     startDrawing = false;
+
+    wordFontIndex = Draw::GetFontIndex("aircruiser");
+    numberFontIndex = Draw::GetFontIndex("BN_Jinx");
 	}
 
   void RoundResults::Remove()
@@ -139,7 +142,7 @@ namespace Framework
     Draw::SetPosition(-300.0f, 310.0f);
     Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
     Draw::SetRotation(0);
-    Draw::DrawString("Kills", wordSize, 1);
+    Draw::DrawString("Kills", wordSize, wordFontIndex);
     Vec3 pos;
     char playerString[10];
     for (int i = 0; i < 4; ++i)
@@ -158,7 +161,7 @@ namespace Framework
       Draw::SetPosition(pos.x, pos.y);
       Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
       Draw::SetRotation(0);
-      Draw::DrawString(playerString, numberSize, 1);
+      Draw::DrawString(playerString, numberSize, numberFontIndex);
     }
   }
 
@@ -167,7 +170,7 @@ namespace Framework
     Draw::SetPosition(0.0f, 310.0f);
     Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
     Draw::SetRotation(0);
-    Draw::DrawString("Deaths", wordSize, 1);
+    Draw::DrawString("Deaths", wordSize, wordFontIndex);
     Vec3 pos;
     char playerString[10];
     for (int i = 0; i < 4; ++i)
@@ -186,35 +189,35 @@ namespace Framework
       Draw::SetPosition(pos.x, pos.y);
       Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
       Draw::SetRotation(0);
-      Draw::DrawString(playerString, numberSize, 1);
+      Draw::DrawString(playerString, numberSize, numberFontIndex);
     }
   }
 
   void RoundResults::DrawJuggTime()
   {
-    Draw::SetPosition(-100.0f, 310.0f);
+    Draw::SetPosition(-300.0f, 310.0f);
     Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
     Draw::SetRotation(0);
-    Draw::DrawString("Time Being IT", wordSize, 1);
+    Draw::DrawString("Time Being IT", wordSize, wordFontIndex);
     Vec3 pos;
     char playerString[10];
     for (int i = 0; i < 4; ++i)
     {
       //depending on the player, it draws the totals in the correct place
       if (i == 0)
-        pos = Vec3(-100.0f, 232.0f, 0.0f);
+        pos = Vec3(-300.0f, 232.0f, 0.0f);
       if (i == 1)
-        pos = Vec3(-100.0f, 106.0f, 0.0f);
+        pos = Vec3(-300.0f, 106.0f, 0.0f);
       if (i == 2)
-        pos = Vec3(-100.0f, -32.0f, 0.0f);
+        pos = Vec3(-300.0f, -32.0f, 0.0f);
       if (i == 3)
-        pos = Vec3(-100.0f, -172.0f, 0.0f);
+        pos = Vec3(-300.0f, -172.0f, 0.0f);
 
       sprintf(playerString, "%5.2f", (space->GetGameObject(ChipCont)->GetComponent<ChipController>(eChipController)->roundTimeAsJugg[i]));
       Draw::SetPosition(pos.x, pos.y);
       Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
       Draw::SetRotation(0);
-      Draw::DrawString(playerString, numberSize, 1);
+      Draw::DrawString(playerString, numberSize, numberFontIndex);
     }
   }
 
@@ -223,7 +226,7 @@ namespace Framework
     Draw::SetPosition(-100.0f, 310.0f);
     Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
     Draw::SetRotation(0);
-    Draw::DrawString("Time Alive", wordSize, 1);
+    Draw::DrawString("Time Alive", wordSize, wordFontIndex);
     Vec3 pos;
     char playerString[10];
     for (int i = 0; i < 4; ++i)
@@ -242,7 +245,7 @@ namespace Framework
       Draw::SetPosition(pos.x, pos.y);
       Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
       Draw::SetRotation(0);
-      Draw::DrawString(playerString, numberSize, 1);
+      Draw::DrawString(playerString, numberSize, numberFontIndex);
     }
   }
 
@@ -253,10 +256,11 @@ namespace Framework
 
   void RoundResults::DrawTotalChips()
   {
-    Draw::SetPosition(300.0f, 310.0f);
+    
+    Draw::SetPosition(275.0f, 310.0f);
     Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
     Draw::SetRotation(0);
-    Draw::DrawString("Total Chips", wordSize, 1);
+    Draw::DrawString("Total Chips", wordSize, wordFontIndex);
     Vec3 pos;
     char playerString[10];
     for (int i = 0; i < 4; ++i)
@@ -275,7 +279,7 @@ namespace Framework
       Draw::SetPosition(pos.x, pos.y);
       Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
       Draw::SetRotation(0);
-      Draw::DrawString(playerString, numberSize, 1);
+      Draw::DrawString(playerString, numberSize, numberFontIndex);
     }
   }
 
@@ -284,7 +288,7 @@ namespace Framework
     Draw::SetPosition(-425.0f, 310.0f);
     Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
     Draw::SetRotation(0);
-    Draw::DrawString("Total Kills", wordSize, 1);
+    Draw::DrawString("Total Kills", wordSize, wordFontIndex);
     Vec3 pos;
     char playerString[10];
     for (int i = 0; i < 4; ++i)
@@ -303,7 +307,7 @@ namespace Framework
       Draw::SetPosition(pos.x, pos.y);
       Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
       Draw::SetRotation(0);
-      Draw::DrawString(playerString, numberSize, 1);
+      Draw::DrawString(playerString, numberSize, numberFontIndex);
     }
   }
 
@@ -312,7 +316,7 @@ namespace Framework
     Draw::SetPosition(-225.0f, 310.0f);
     Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
     Draw::SetRotation(0);
-    Draw::DrawString("Total Deaths", wordSize, 1);
+    Draw::DrawString("Total Deaths", wordSize, wordFontIndex);
     Vec3 pos;
     char playerString[10];
     for (int i = 0; i < 4; ++i)
@@ -331,7 +335,7 @@ namespace Framework
       Draw::SetPosition(pos.x, pos.y);
       Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
       Draw::SetRotation(0);
-      Draw::DrawString(playerString, numberSize, 1);
+      Draw::DrawString(playerString, numberSize, numberFontIndex);
     }
   }
 
@@ -340,7 +344,7 @@ namespace Framework
     Draw::SetPosition(25.0f, 310.0f);
     Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
     Draw::SetRotation(0);
-    Draw::DrawString("Tagged Time", wordSize, 1);
+    Draw::DrawString("Tagged Time", wordSize, wordFontIndex);
     Vec3 pos;
     char playerString[10];
     for (int i = 0; i < 4; ++i)
@@ -359,7 +363,7 @@ namespace Framework
       Draw::SetPosition(pos.x, pos.y);
       Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
       Draw::SetRotation(0);
-      Draw::DrawString(playerString, numberSize, 1);
+      Draw::DrawString(playerString, numberSize, numberFontIndex);
     }
   }
 
