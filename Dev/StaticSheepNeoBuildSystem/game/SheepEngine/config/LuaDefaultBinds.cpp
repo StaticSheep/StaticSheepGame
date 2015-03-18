@@ -22,6 +22,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/controllers/player/CPlayerController.h"
 #include "components/gameplay_scripts/Level_Scripts/CLevel1_Logic.h"
 #include "components/sound/CSoundPlayer.h"
+#include "Components/controllers/chip/CChipController.h"
 
 namespace Framework
 {
