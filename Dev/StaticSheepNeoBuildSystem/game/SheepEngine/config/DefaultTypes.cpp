@@ -427,6 +427,7 @@ namespace Framework
     TYPE_ADD_MEMBER(ParticleSystem, textureName, false, true, "ParticleTexture",
       BUILD_FUNCTION(ParticleSystem::TweakSetTexture));
     TYPE_ADD_MEMBER(ParticleSystem, m_layer, false, true, "Layer");
+    TYPE_ADD_MEMBER(ParticleSystem, m_useZ, false, true, "use z?");
     TYPE_ADD_MEMBER(ParticleSystem, particleLife, false, true, "ParticleLifetime");
     TYPE_ADD_MEMBER(ParticleSystem, directionEase, false, true, "DirectionEase");
     TYPE_ADD_MEMBER(ParticleSystem, direction, false, true, "ParticleDirection",

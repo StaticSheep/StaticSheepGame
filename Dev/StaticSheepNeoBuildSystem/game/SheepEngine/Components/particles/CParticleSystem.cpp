@@ -191,7 +191,7 @@ namespace Framework
     // but also get the scale of the texture for normalizing the scale for particles
     Vec2 scale = GRAPHICS->GetTextureDim(texHandle);
 
-    Vec2 location;
+    Vec3 location;
 
     if (parentToOwner)
     {
@@ -210,7 +210,7 @@ namespace Framework
       Vec4 color = part.currentColor;
       Draw::SetColor(color.x, color.y, color.z, color.w);
 
-      Draw::ForceZ(true, part.position.z);
+      Draw::ForceZ(true, part.position.z + location.z);
 
       //                                x screen coords    ,    y screen coords     ,  particle scale / texture scale x,    particle scale / scale y          , rotation 
       Draw::DrawTexturedRectRotated(part.position.x + location.x,
@@ -321,7 +321,9 @@ namespace Framework
       particles.emplace_back(scale, color, newDir, speed, particleLife);
       Particle& part = particles[particles.size() - 1];
       part.position = location;
-      part.position.z = curZ;
+
+      if (!m_useZ)
+        part.position.z = curZ;
 
       if (curZ > 0.9f)
         ResetZ();

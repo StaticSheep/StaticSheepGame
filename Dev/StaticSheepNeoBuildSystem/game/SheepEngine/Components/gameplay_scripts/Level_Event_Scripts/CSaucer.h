@@ -10,6 +10,9 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/base/Component.h"
 #include "types/handle/Handle.h"
 #include "components/gamepad/CGamePad.h"
+#include "components/particles/CParticleCircleEmitter.h"
+#include"components/gameplay_scripts/FX_Scripts/CAOEDamage.h"
+#include "components/particles/CParticleSystem.h"
 #include "../../transform/CTransform.h"
 #include "../systems/graphics/SheepGraphics.h"
 
@@ -21,23 +24,31 @@ namespace Framework
     Saucer();
     ~Saucer();
     void LogicUpdate(float dt);
+    void InitBeam();
     void Draw();
-    void Fire();
     void Initialize();
     void Remove();
 
     //member variables
     Handle m_sTransform;
     Handle m_controller;
+    Handle m_emitter;
+    Handle m_particleSystem;
+    Handle m_AOE;
 
     DirectSheep::Handle m_crosshairTex;
 
     Vec2                m_TexDim;
 
-    bool                m_hasFired;
-
     Vec4                m_crosshairColor;
 
     int                 m_shotsLeft;
+
+    Vec4                m_beamColor;
+
+    bool                m_isFiring;
+
+  private:
+    void UpdateBeamColor();
   };
 }

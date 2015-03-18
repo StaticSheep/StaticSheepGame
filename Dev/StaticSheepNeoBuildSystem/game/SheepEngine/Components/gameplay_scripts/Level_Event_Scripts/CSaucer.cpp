@@ -7,7 +7,7 @@
 
 namespace Framework
 {
-  Saucer::Saucer() : m_crosshairColor(1, 1, 1, 1), m_shotsLeft(10)
+  Saucer::Saucer() : m_crosshairColor(1, 1, 1, 1), m_shotsLeft(10), m_beamColor(1, 0, 0, .5), m_isFiring(false)
   {
 
   }
@@ -21,6 +21,9 @@ namespace Framework
   {
     GamePad* gp = space->GetHandles().GetAs<GamePad>(m_controller);
     Transform* trans = space->GetHandles().GetAs<Transform>(m_sTransform);
+    ParticleSystem* system = space->GetHandles().GetAs<ParticleSystem>(m_particleSystem);
+    ParticleCircleEmitter* emitter = space->GetHandles().GetAs<ParticleCircleEmitter>(m_emitter);
+    AOEDamage* aoe = space->GetHandles().GetAs<AOEDamage>(m_AOE);
 
     Vec3 newTrans = trans->GetTranslation();
 
@@ -29,11 +32,20 @@ namespace Framework
      newTrans += (Vec3(gp->LeftStick_X(), gp->LeftStick_Y(), 0) * 20);
     }
 
-    if (gp->RightTrigger() == 0)
-      m_hasFired = false;
+    if (gp->RightTrigger() == 0 && m_isFiring)
+    {
+      m_isFiring = false;
+      emitter->spawning = false;
+      aoe->m_damagePerSecond = 0;
+      system->DestroyParticles();
+    }
 
-    if (gp->RightTrigger() && !m_hasFired)
-      Fire();
+    if (gp->RightTrigger() && !m_isFiring)
+    {
+      emitter->spawning = true;
+      aoe->m_damagePerSecond = 300;
+      m_isFiring = true;
+    }
 
     if (m_crosshairColor.g < 1)
       m_crosshairColor.g += dt / 2;
@@ -80,25 +92,56 @@ namespace Framework
 
     m_controller = space->GetGameObject(owner)->GetComponentHandle(eGamePad);
 
+    m_emitter = space->GetGameObject(owner)->GetComponentHandle(eParticleCircleEmitter);
+
+    m_particleSystem = space->GetGameObject(owner)->GetComponentHandle(eParticleSystem);
+
+    m_AOE = space->GetGameObject(owner)->GetComponentHandle(eAOEDamage);
+
     m_crosshairTex = GRAPHICS->LoadTexture(std::string("Crosshair.png"));
     m_TexDim = GRAPHICS->GetTextureDim(m_crosshairTex);
+
+    InitBeam();
   }
 
-
-  void Saucer::Fire()
-  {
-    m_crosshairColor = Vec4(1, 0, 0, 1);
-    m_hasFired = true;
-    Handle asteroid = (FACTORY->LoadObjectFromArchetype(space, "SaucerMissile"))->self;
-    Transform *aT = (space->GetGameObject(asteroid)->GetComponent<Transform>(eTransform));
-    Transform *trans = space->GetHandles().GetAs<Transform>(m_sTransform);
-
-    aT->SetTranslation(trans->GetTranslation());
-  }
 
   void Saucer::Remove()
   {
     space->hooks.Remove("LogicUpdate", self);
     space->hooks.Remove("Draw", self);
+  }
+
+  void Saucer::InitBeam()
+  {
+    ParticleSystem* system = space->GetHandles().GetAs<ParticleSystem>(m_particleSystem);
+    ParticleCircleEmitter* emitter = space->GetHandles().GetAs<ParticleCircleEmitter>(m_emitter);
+    Transform* trans = space->GetHandles().GetAs<Transform>(m_sTransform);
+
+    emitter->spawning = false;
+    emitter->parentToOwner = true;
+    emitter->m_amount.m_startMin = emitter->m_amount.m_startMin = trans->GetTranslation().z;
+
+    system->m_useZ = true;
+    
+    system->direction.m_startMin = Vec3(0, 0, -1.0f);
+    system->direction.m_startMax = Vec3(0, 0, -1.0f);
+    system->direction.m_endMin = Vec3(0, 0, -1.0f);
+    system->direction.m_endMax = Vec3(0, 0, -1.0f);
+
+    system->speed.m_startMin = system->speed.m_startMax = system->speed.m_endMin = system->speed.m_endMax = trans->GetTranslation().z;
+
+    system->scale.m_startMin = system->scale.m_startMax = 10;
+    system->scale.m_endMin = system->scale.m_endMax = 50;
+    system->amount.m_startMin = system->amount.m_startMax = trans->GetTranslation().z;
+
+    system->particleLife.m_startMin = system->particleLife.m_startMin = 1;
+    UpdateBeamColor();
+  }
+
+  void Saucer::UpdateBeamColor()
+  {
+    ParticleSystem* system = space->GetHandles().GetAs<ParticleSystem>(m_particleSystem);
+
+    system->color.m_startMin = system->color.m_startMax = system->color.m_endMin = system->color.m_endMax = m_beamColor;
   }
 }
