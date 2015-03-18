@@ -550,6 +550,12 @@ namespace SheepFizz
 		body.velocity_ += ((body.force_ *= body.massData_.inverseMass) 
 			+ Vec3D(0,modifiedGravity_) * (float)body.gravityScale_ * (float)body.gravityOn_) * dt_;
 
+    if (body.velocity_.SquareLength() > SPEEDLIMIT * SPEEDLIMIT)
+    {
+      body.velocity_.Normalize();
+      body.velocity_ *= SPEEDLIMIT;
+    }
+
 		//Position changed last
 		body.position_ += body.velocity_ * dt_;
 
