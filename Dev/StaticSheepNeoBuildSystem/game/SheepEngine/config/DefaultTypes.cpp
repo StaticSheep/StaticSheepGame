@@ -68,7 +68,10 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "Components/controllers/chip/CChipController.h"
 #include "Components/controllers/round/CRoundController.h"
 #include "Components/controllers/round/CRoundText.h"
+#include "components/gameplay_scripts/FX_Scripts/CAOEDamage.h"
+#include "components/gameplay_scripts/Weapon_Scripts/CImpactEffect.h"
 #include "Components/controllers/round/CRoundResults.h"
+#include "components/gameplay_scripts/FX_Scripts/CPulser.h"
 
 
 namespace Framework
@@ -590,6 +593,17 @@ namespace Framework
     TYPE_ADD_MEMBER(SlotMachine, useSpriteColor, false, true, "Use Sprite Color");
     TYPE_ADD_MEMBER(SlotMachine, backingColor, true, true, "BackColor");
 
+    TYPE_REGISTER(AOEDamage);
+    TYPE_ADD_MEMBER(AOEDamage, m_radius, false, true, "Radius");
+    TYPE_ADD_MEMBER(AOEDamage, m_damagePerSecond, false, true, "DPS");
+    TYPE_ADD_MEMBER(AOEDamage, m_shrinks, false, true, "Shrinks");
+    TYPE_ADD_MEMBER(AOEDamage, m_shrinkTime, false, true, "Shrink Time");
+    TYPE_ADD_MEMBER(AOEDamage, m_shrinkDelay, false, true, "Shrink Delay");
+
+
+    TYPE_REGISTER(ImpactEffect);
+    TYPE_ADD_MEMBER(ImpactEffect, m_effect, false, true, "Effect Archetype");
+
 
     TYPE_REGISTER(Tester);
 
@@ -604,6 +618,10 @@ namespace Framework
     TYPE_REGISTER(BlockLights);
     TYPE_ADD_MEMBER(BlockLights, m_group, false, true, "Trigger Group");
     TYPE_ADD_MEMBER(BlockLights, m_defaultSettings, false, true, "Defaults");
+
+    TYPE_REGISTER(Pulser);
+    TYPE_ADD_MEMBER(Pulser, m_amount, false, true, "Pulse_Amount");
+    TYPE_ADD_MEMBER(Pulser, m_time, false, true, "Pulse Time");
 
     TYPE_REGISTER( AntTweak::TBar );
     TYPE_REGISTER_PTR( AntTweak::TBar* );

@@ -36,6 +36,7 @@ namespace Framework
 
     eTransfrom = space->GetGameObject(owner)->GetComponentHandle(eTransform);
     eAnSprite = space->GetGameObject(owner)->GetComponentHandle(eAniSprite);
+
 	}
 
   void Explosion::Remove()

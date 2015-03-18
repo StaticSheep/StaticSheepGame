@@ -45,5 +45,8 @@ namespace Framework
     bool fading;
 
     bool explosive_;
+
+  private:
+    bool m_firstImpact = false;
 	};
 }

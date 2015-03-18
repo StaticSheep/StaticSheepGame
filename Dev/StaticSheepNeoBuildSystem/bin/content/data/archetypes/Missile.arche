@@ -264,6 +264,10 @@ GameObject
     m_hasCollisionCallback bool true
     m_CollisionGroup std::string ""
   }
+  ImpactEffect
+  {
+    m_effect std::string "missile_explosion"
+  }
   Bullet_Default
   {
     limitedLife bool false

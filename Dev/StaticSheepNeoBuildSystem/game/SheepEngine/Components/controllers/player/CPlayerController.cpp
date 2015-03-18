@@ -414,13 +414,18 @@ namespace Framework
       {
         pn = -1;
 
-        if (OtherObject->GetComponent<CircleCollider>(eCircleCollider)->GetBodyCollisionGroup() == "Player1Weapon")
+        CircleCollider* cc = OtherObject->GetComponent<CircleCollider>(eCircleCollider);
+
+        if (!cc)
+          return;
+
+        if (cc->GetBodyCollisionGroup() == "Player1Weapon")
           pn = 0;
-        else if (OtherObject->GetComponent<CircleCollider>(eCircleCollider)->GetBodyCollisionGroup() == "Player2Weapon")
+        else if (cc->GetBodyCollisionGroup() == "Player2Weapon")
           pn = 1;
-        else if (OtherObject->GetComponent<CircleCollider>(eCircleCollider)->GetBodyCollisionGroup() == "Player3Weapon")
+        else if (cc->GetBodyCollisionGroup() == "Player3Weapon")
           pn = 2;
-        else if (OtherObject->GetComponent<CircleCollider>(eCircleCollider)->GetBodyCollisionGroup() == "Player4Weapon")
+        else if (cc->GetBodyCollisionGroup() == "Player4Weapon")
           pn = 3;
 
         MetricInfo metricData(pn, 0, 0, PLAYER_KILL, Buttons::NONE, Weapons::PISTOL);
@@ -923,14 +928,14 @@ namespace Framework
     return health;
   }
 
-  void PlayerController::DealDamage(int damage, int playerNum_)
+  void PlayerController::DealDamage(float damage, int playerNum_)
   {
     if (playerNum != playerNum_)
       return;
 
     if ((shields - damage) < 0) //if the damage would do more than we have shields
     {
-      int leftOver = damage - shields;
+      float leftOver = damage - shields;
       shields = 0;
       health -= leftOver;
     }
@@ -942,6 +947,9 @@ namespace Framework
   void PlayerController::SpawnEffect()
   {
     Transform *effectTrans;
+    //ParticleSystem* ps;
+
+
     switch (playerNum)
     {
     case 0:

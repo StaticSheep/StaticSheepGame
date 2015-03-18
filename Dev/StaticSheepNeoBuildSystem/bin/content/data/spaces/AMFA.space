@@ -150,7 +150,7 @@ GameObject
   }
   BlockLights
   {
-    m_group int 0
+    m_group int 16384
     m_defaultSettings BlockLights::LightSettings
     {
       fx unsignedint 0
@@ -241,7 +241,7 @@ GameObject
   }
   BlockLights
   {
-    m_group int 0
+    m_group int 32
     m_defaultSettings BlockLights::LightSettings
     {
       fx unsignedint 0
@@ -340,7 +340,7 @@ GameObject
   }
   BlockLights
   {
-    m_group int 0
+    m_group int 1
     m_defaultSettings BlockLights::LightSettings
     {
       fx unsignedint 0
@@ -431,7 +431,7 @@ GameObject
   }
   BlockLights
   {
-    m_group int 0
+    m_group int 4
     m_defaultSettings BlockLights::LightSettings
     {
       fx unsignedint 0
@@ -785,7 +785,7 @@ GameObject
     Translation Vec3
     {
       x_ float 695.000000
-      y_ float -507.000000
+      y_ float -503.395996
       z_ float -0.010000
     }
     Rotation float 0.000000
@@ -973,7 +973,7 @@ GameObject
     Translation Vec3
     {
       x_ float -695.000000
-      y_ float -507.000000
+      y_ float -502.194672
       z_ float -0.010000
     }
     Rotation float 0.000000
@@ -1115,7 +1115,7 @@ GameObject
     Translation Vec3
     {
       x_ float -905.802612
-      y_ float 385.873352
+      y_ float 394.282684
       z_ float -0.010000
     }
     Rotation float 0.000000
@@ -1226,7 +1226,7 @@ GameObject
   }
   BlockLights
   {
-    m_group int 0
+    m_group int 524288
     m_defaultSettings BlockLights::LightSettings
     {
       fx unsignedint 0
@@ -1325,7 +1325,7 @@ GameObject
   }
   BlockLights
   {
-    m_group int 0
+    m_group int 2097152
     m_defaultSettings BlockLights::LightSettings
     {
       fx unsignedint 0
@@ -1416,7 +1416,7 @@ GameObject
   }
   BlockLights
   {
-    m_group int 0
+    m_group int 2
     m_defaultSettings BlockLights::LightSettings
     {
       fx unsignedint 0
@@ -1507,7 +1507,7 @@ GameObject
   }
   BlockLights
   {
-    m_group int 0
+    m_group int 8
     m_defaultSettings BlockLights::LightSettings
     {
       fx unsignedint 0
@@ -1598,7 +1598,7 @@ GameObject
   }
   BlockLights
   {
-    m_group int 0
+    m_group int 16
     m_defaultSettings BlockLights::LightSettings
     {
       fx unsignedint 0
@@ -1689,7 +1689,7 @@ GameObject
   }
   BlockLights
   {
-    m_group int 0
+    m_group int 134217728
     m_defaultSettings BlockLights::LightSettings
     {
       fx unsignedint 0
@@ -2243,7 +2243,7 @@ GameObject
   }
   BlockLights
   {
-    m_group int 0
+    m_group int 67108864
     m_defaultSettings BlockLights::LightSettings
     {
       fx unsignedint 0
@@ -2334,7 +2334,7 @@ GameObject
   }
   BlockLights
   {
-    m_group int 0
+    m_group int 33554432
     m_defaultSettings BlockLights::LightSettings
     {
       fx unsignedint 0
@@ -2425,7 +2425,7 @@ GameObject
   }
   BlockLights
   {
-    m_group int 0
+    m_group int 16777216
     m_defaultSettings BlockLights::LightSettings
     {
       fx unsignedint 0
@@ -2516,7 +2516,7 @@ GameObject
   }
   BlockLights
   {
-    m_group int 0
+    m_group int 8388608
     m_defaultSettings BlockLights::LightSettings
     {
       fx unsignedint 0
@@ -2615,7 +2615,7 @@ GameObject
   }
   BlockLights
   {
-    m_group int 0
+    m_group int 4194304
     m_defaultSettings BlockLights::LightSettings
     {
       fx unsignedint 0
@@ -2706,7 +2706,7 @@ GameObject
   }
   BlockLights
   {
-    m_group int 0
+    m_group int 4096
     m_defaultSettings BlockLights::LightSettings
     {
       fx unsignedint 0
@@ -2797,7 +2797,7 @@ GameObject
   }
   BlockLights
   {
-    m_group int 0
+    m_group int 2048
     m_defaultSettings BlockLights::LightSettings
     {
       fx unsignedint 0
@@ -2888,7 +2888,7 @@ GameObject
   }
   BlockLights
   {
-    m_group int 0
+    m_group int 64
     m_defaultSettings BlockLights::LightSettings
     {
       fx unsignedint 0
@@ -2979,7 +2979,7 @@ GameObject
   }
   BlockLights
   {
-    m_group int 0
+    m_group int 128
     m_defaultSettings BlockLights::LightSettings
     {
       fx unsignedint 0
@@ -3070,7 +3070,7 @@ GameObject
   }
   BlockLights
   {
-    m_group int 0
+    m_group int 256
     m_defaultSettings BlockLights::LightSettings
     {
       fx unsignedint 0
@@ -3161,7 +3161,7 @@ GameObject
   }
   BlockLights
   {
-    m_group int 0
+    m_group int 1024
     m_defaultSettings BlockLights::LightSettings
     {
       fx unsignedint 0
@@ -3252,7 +3252,7 @@ GameObject
   }
   BlockLights
   {
-    m_group int 0
+    m_group int 512
     m_defaultSettings BlockLights::LightSettings
     {
       fx unsignedint 0
@@ -3551,7 +3551,7 @@ GameObject
   }
   BlockLights
   {
-    m_group int 0
+    m_group int 131072
     m_defaultSettings BlockLights::LightSettings
     {
       fx unsignedint 0
@@ -3813,7 +3813,7 @@ GameObject
   }
   BlockLights
   {
-    m_group int 0
+    m_group int 262144
     m_defaultSettings BlockLights::LightSettings
     {
       fx unsignedint 0
@@ -3961,7 +3961,7 @@ GameObject
   }
   BlockLights
   {
-    m_group int 0
+    m_group int 32768
     m_defaultSettings BlockLights::LightSettings
     {
       fx unsignedint 0
@@ -4337,7 +4337,7 @@ GameObject
   }
   BlockLights
   {
-    m_group int 0
+    m_group int 8192
     m_defaultSettings BlockLights::LightSettings
     {
       fx unsignedint 0
@@ -4436,7 +4436,7 @@ GameObject
   }
   BlockLights
   {
-    m_group int 0
+    m_group int 1048576
     m_defaultSettings BlockLights::LightSettings
     {
       fx unsignedint 0
@@ -4527,7 +4527,7 @@ GameObject
   }
   BlockLights
   {
-    m_group int 0
+    m_group int 65536
     m_defaultSettings BlockLights::LightSettings
     {
       fx unsignedint 0
@@ -4664,7 +4664,7 @@ GameObject
   }
   BlockLights
   {
-    m_group int 0
+    m_group int 8388608
     m_defaultSettings BlockLights::LightSettings
     {
       fx unsignedint 0
@@ -4763,7 +4763,7 @@ GameObject
   }
   BlockLights
   {
-    m_group int 0
+    m_group int 4194304
     m_defaultSettings BlockLights::LightSettings
     {
       fx unsignedint 0
@@ -4854,7 +4854,7 @@ GameObject
   }
   BlockLights
   {
-    m_group int 0
+    m_group int 16777216
     m_defaultSettings BlockLights::LightSettings
     {
       fx unsignedint 0
@@ -4945,7 +4945,7 @@ GameObject
   }
   BlockLights
   {
-    m_group int 0
+    m_group int 256
     m_defaultSettings BlockLights::LightSettings
     {
       fx unsignedint 0
@@ -5036,7 +5036,7 @@ GameObject
   }
   BlockLights
   {
-    m_group int 0
+    m_group int 1024
     m_defaultSettings BlockLights::LightSettings
     {
       fx unsignedint 0
@@ -5127,7 +5127,7 @@ GameObject
   }
   BlockLights
   {
-    m_group int 0
+    m_group int 512
     m_defaultSettings BlockLights::LightSettings
     {
       fx unsignedint 0

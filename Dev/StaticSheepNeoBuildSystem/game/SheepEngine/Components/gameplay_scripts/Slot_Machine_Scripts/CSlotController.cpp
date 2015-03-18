@@ -17,7 +17,7 @@ namespace Framework
   SlotController::SlotController()
 	{
     done = false;
-    levelTimer = 3.0f;
+    levelTimer = 2.5f;
     spawnedSM = nullptr;
     Stype = GOLD;
 	}
@@ -66,9 +66,9 @@ namespace Framework
         else if (Stype == JACKPOT)
         {
           if (LeftHandBonus)
-            rt->SetTranslation(rt->GetTranslation() + Vec3(40.0f, 0.0f, 0.0f));
+            rt->SetTranslation(rt->GetTranslation() + Vec3(60.0f, 0.0f, 0.0f));
           else
-            rt->SetTranslation(rt->GetTranslation() + Vec3(-40.0f, 0.0f, 0.0f));
+            rt->SetTranslation(rt->GetTranslation() + Vec3(-60.0f, 0.0f, 0.0f));
         }
 
         if (Stype == GOLD)
@@ -210,7 +210,8 @@ namespace Framework
           spawnedSM->GetComponent<SlotController>(eSlotController)->Stype = JACKPOT;
           spawnedSM->GetComponent<SlotController>(eSlotController)->LeftHandBonus = false;
         }
-        levelTimer += 4.0f;
+        if (spawnRightBonus || spawnLeftBonus)
+          levelTimer += 2.5f;
 
       }
       if ((*results)[0] == 0)

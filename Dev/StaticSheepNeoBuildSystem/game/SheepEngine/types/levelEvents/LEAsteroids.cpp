@@ -35,7 +35,7 @@ namespace Framework
     {
       FireEvent(LC);
       numOfSpawns -= 1;
-      timer = 1.0f;
+      timer = 2.0f;
     }
     else if (timer <= 0.0f)
     {
@@ -47,7 +47,7 @@ namespace Framework
   void LEAsteroids::FireEvent(GameObject *LogicController)
   {
     LC = LogicController;
-    for (int i = 0; i < 5; ++i)
+    for (int i = 0; i < 3; ++i)
     {
       Handle asteroid = (FACTORY->LoadObjectFromArchetype(LogicController->space, "Asteroid"))->self;
       Transform *aT = (LogicController->space->GetGameObject(asteroid)->GetComponent<Transform>(eTransform));
