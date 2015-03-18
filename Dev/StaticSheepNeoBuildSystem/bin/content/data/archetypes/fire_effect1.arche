@@ -20,6 +20,7 @@ GameObject
   }
   PointLight
   {
+    m_layer unsignedint 1
     m_brightness LightColor
     {
       R float 1.000000
@@ -34,123 +35,81 @@ GameObject
       Z float 0.050000
     }
   }
-  ParticleSystem
+  BasicParticleSystem
   {
-    textureName std::string "White.png"
-    particleLife ParticleOptionShort<float>
+    m_texture std::string "glean.png"
+    m_layer int 1
+    m_pos BasicParticleSystem::BPSPos
     {
-      m_startMin float 0.250000
-      m_startMax float 0.500000
-    }
-    directionEase int 1
-    direction ParticleOption<Vec3>
-    {
-      m_startMin Vec3
+      square bool false
+      edgeOnly bool true
+      radius float 50.000000
+      angle float 1.000000
+      randAngle float 0.000000
+      offset Vec2
       {
-        x_ float -1.000000
-        y_ float 1.000000
-        z_ float 0.000000
+        X float 0.000000
+        Y float 0.000000
       }
-      m_startMax Vec3
+      randOffset Vec2
       {
-        x_ float 1.000000
-        y_ float 1.000000
-        z_ float 0.000000
-      }
-      m_endMin Vec3
-      {
-        x_ float 0.000000
-        y_ float 1.000000
-        z_ float 0.000000
-      }
-      m_endMax Vec3
-      {
-        x_ float 0.000000
-        y_ float 1.000000
-        z_ float 0.000000
+        X float 0.000000
+        Y float 0.000000
       }
     }
-    angularVelocity ParticleOption<float>
+    m_scaling BPartSys::BPSScaling
     {
-      m_startMin float 0.000000
-      m_startMax float 0.000000
-      m_endMin float 0.000000
-      m_endMax float 0.000000
-    }
-    scaleEase int 1
-    scale ParticleOption<float>
-    {
-      m_startMin float 15.000000
-      m_startMax float 10.000000
-      m_endMin float 2.000000
-      m_endMax float 5.000000
-    }
-    colorEase int 0
-    color ParticleOption<Vec4>
-    {
-      m_startMin Vec4
+      scale Vec2
       {
-        R float 1.000000
-        G float 1.000000
-        B float 1.000000
-        A float 1.000000
+        X float 16.000000
+        Y float 16.000000
       }
-      m_startMax Vec4
+      randScale Vec2
       {
-        R float 1.000000
-        G float 0.980392
-        B float 0.000000
-        A float 1.000000
-      }
-      m_endMin Vec4
-      {
-        R float 1.000000
-        G float 1.000000
-        B float 1.000000
-        A float 1.000000
-      }
-      m_endMax Vec4
-      {
-        R float 1.000000
-        G float 0.000000
-        B float 0.000000
-        A float 1.000000
+        X float 8.000000
+        Y float 8.000000
       }
     }
-    speedEase int 0
-    speed ParticleOption<float>
+    m_rot BPartSys::BPSRotation
     {
-      m_startMin float 100.000000
-      m_startMax float 300.000000
-      m_endMin float 100.000000
-      m_endMax float 300.000000
+      rotation float 0.000000
+      randRotation float 1.000000
     }
-  }
-  ParticleCircleEmitter
-  {
-    m_innerRadius float 16.000000
-    m_outerRadius float 32.000000
-    m_spawnOffset Vec3
+    m_life BPartSys::BPSLife
     {
-      x_ float 0.000000
-      y_ float 0.000000
-      z_ float 0.000000
+      lifetime float 0.500000
+      randLifetime float 0.300000
     }
-    m_amount ParticleOptionShort<float>
+    m_fade BPartSys::BPSFade
     {
-      m_startMin float 10.000000
-      m_startMax float 0.000000
+      fadeOut bool true
+      fadeOutTime float 0.200000
+      randFadeoutTime float 0.000000
     }
-    m_rate ParticleOptionShort<float>
+    m_vel BPartSys::BPSVelocity
     {
-      m_startMin float 30.000000
-      m_startMax float 0.000000
+      velocity Vec2
+      {
+        X float 0.000000
+        Y float 0.000000
+      }
+      randVelocity Vec2
+      {
+        X float 0.000000
+        Y float 0.000000
+      }
+      speedIn float -3.000000
+      randSpeedIn float 1.000000
     }
-    spawning bool true
-    timedSpawning bool false
-    timed float 0.000000
-    outward bool true
-    inward bool false
+    m_system BPartSys::BPSSystem
+    {
+      active bool true
+      editorActive bool true
+      spawnInterval float 30.000000
+      spawnAmount float 5.000000
+      spawnPerSecond float 0.000000
+      shutdownTimer float 0.000000
+    }
   }
   DashEffect
   {

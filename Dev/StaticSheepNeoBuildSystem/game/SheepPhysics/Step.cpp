@@ -15,17 +15,23 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 namespace SheepFizz
 {
-  //Nocollide, Collide, Resolve, Player1, Player2, Player3, Player4, Static
+  //Nocollide, Collide, Resolve, Player1, Player2, Player3, Player4, Player1Weapon, Player2Weapon, Player3Weapon, Player4Weapon, Item, PlayerHitOnly, Static
   Collision Collisions[CollGroupLength][CollGroupLength] = { 
-      //NoCollide  Collide    Resolve     Player1     Player2     Player3     Player4     Static
-      { NOCOLLIDE, NOCOLLIDE, NOCOLLIDE,  NOCOLLIDE,  NOCOLLIDE,  NOCOLLIDE,  NOCOLLIDE,  NOCOLLIDE },  //NoCollide
-      { NOCOLLIDE, NOCOLLIDE, COLLIDE,    COLLIDE,    COLLIDE,    COLLIDE,    COLLIDE,    NOCOLLIDE },  //Collide
-      { NOCOLLIDE, COLLIDE,   RESOLVE,    RESOLVE,    RESOLVE,    RESOLVE,    RESOLVE,    RESOLVE },    //Resolve
-      { NOCOLLIDE, COLLIDE,   RESOLVE,    NOCOLLIDE,  RESOLVE,    RESOLVE,    RESOLVE,    RESOLVE },    //Player1
-      { NOCOLLIDE, COLLIDE,   RESOLVE,    RESOLVE,    NOCOLLIDE,  RESOLVE,    RESOLVE,    RESOLVE },    //Player2
-      { NOCOLLIDE, COLLIDE,   RESOLVE,    RESOLVE,    RESOLVE,    NOCOLLIDE,  RESOLVE,    RESOLVE },    //Player3
-      { NOCOLLIDE, COLLIDE,   RESOLVE,    RESOLVE,    RESOLVE,    RESOLVE,    NOCOLLIDE,  RESOLVE },    //Player4
-      { NOCOLLIDE, NOCOLLIDE, RESOLVE,    RESOLVE,    RESOLVE,    RESOLVE,    RESOLVE,    NOCOLLIDE } };//Static
+      //NoCollide  Collide    Resolve     Player1     Player2     Player3     Player4     Player1Weapon Player2Weapon Player3Weapon Player4Weapon Item        PlayerHitOnly Static
+      { NOCOLLIDE, NOCOLLIDE, NOCOLLIDE,  NOCOLLIDE,  NOCOLLIDE,  NOCOLLIDE,  NOCOLLIDE,  NOCOLLIDE,    NOCOLLIDE,    NOCOLLIDE,    NOCOLLIDE,    NOCOLLIDE,  NOCOLLIDE,    NOCOLLIDE },    //NoCollide
+      { NOCOLLIDE, NOCOLLIDE, COLLIDE,    COLLIDE,    COLLIDE,    COLLIDE,    COLLIDE,    COLLIDE,      COLLIDE,      COLLIDE,      COLLIDE,      COLLIDE,    NOCOLLIDE,    COLLIDE   },    //Collide
+      { NOCOLLIDE, COLLIDE,   RESOLVE,    RESOLVE,    RESOLVE,    RESOLVE,    RESOLVE,    RESOLVE,      RESOLVE,      RESOLVE,      RESOLVE,      RESOLVE,    NOCOLLIDE,    RESOLVE   },    //Resolve
+      { NOCOLLIDE, COLLIDE,   RESOLVE,    NOCOLLIDE,  RESOLVE,    RESOLVE,    RESOLVE,    NOCOLLIDE,    RESOLVE,      RESOLVE,      RESOLVE,      RESOLVE,    COLLIDE,      RESOLVE   },    //Player1
+      { NOCOLLIDE, COLLIDE,   RESOLVE,    RESOLVE,    NOCOLLIDE,  RESOLVE,    RESOLVE,    RESOLVE,      NOCOLLIDE,    RESOLVE,      RESOLVE,      RESOLVE,    COLLIDE,      RESOLVE   },    //Player2
+      { NOCOLLIDE, COLLIDE,   RESOLVE,    RESOLVE,    RESOLVE,    NOCOLLIDE,  RESOLVE,    RESOLVE,      RESOLVE,      NOCOLLIDE,    RESOLVE,      RESOLVE,    COLLIDE,      RESOLVE   },    //Player3
+      { NOCOLLIDE, COLLIDE,   RESOLVE,    RESOLVE,    RESOLVE,    RESOLVE,    NOCOLLIDE,  RESOLVE,      RESOLVE,      RESOLVE,      NOCOLLIDE,    RESOLVE,    COLLIDE,      RESOLVE   },    //Player4
+      { NOCOLLIDE, COLLIDE,   RESOLVE,    NOCOLLIDE,  RESOLVE,    RESOLVE,    RESOLVE,    NOCOLLIDE,    NOCOLLIDE,    NOCOLLIDE,    NOCOLLIDE,    NOCOLLIDE,  NOCOLLIDE,    RESOLVE   },    //Player1Weapon
+      { NOCOLLIDE, COLLIDE,   RESOLVE,    RESOLVE,    NOCOLLIDE,  RESOLVE,    RESOLVE,    NOCOLLIDE,    NOCOLLIDE,    NOCOLLIDE,    NOCOLLIDE,    NOCOLLIDE,  NOCOLLIDE,    RESOLVE   },    //Player2Weapon
+      { NOCOLLIDE, COLLIDE,   RESOLVE,    RESOLVE,    RESOLVE,    NOCOLLIDE,  RESOLVE,    NOCOLLIDE,    NOCOLLIDE,    NOCOLLIDE,    NOCOLLIDE,    NOCOLLIDE,  NOCOLLIDE,    RESOLVE   },    //Player3Weapon
+      { NOCOLLIDE, COLLIDE,   RESOLVE,    RESOLVE,    RESOLVE,    RESOLVE,    NOCOLLIDE,  NOCOLLIDE,    NOCOLLIDE,    NOCOLLIDE,    NOCOLLIDE,    NOCOLLIDE,  NOCOLLIDE,    RESOLVE   },    //Player4Weapon
+      { NOCOLLIDE, COLLIDE,   RESOLVE,    RESOLVE,    RESOLVE,    RESOLVE,    NOCOLLIDE,  NOCOLLIDE,    NOCOLLIDE,    NOCOLLIDE,    NOCOLLIDE,    NOCOLLIDE,  NOCOLLIDE,    RESOLVE   },    //Item
+      { NOCOLLIDE, NOCOLLIDE, NOCOLLIDE,  COLLIDE,    COLLIDE,    COLLIDE,    COLLIDE,    NOCOLLIDE,    NOCOLLIDE,    NOCOLLIDE,    NOCOLLIDE,    NOCOLLIDE,  NOCOLLIDE,    NOCOLLIDE },    //PlayerHitOnly
+      { NOCOLLIDE, NOCOLLIDE, RESOLVE,    RESOLVE,    RESOLVE,    RESOLVE,    RESOLVE,    RESOLVE,      RESOLVE,      RESOLVE,      RESOLVE,      RESOLVE,    NOCOLLIDE,    NOCOLLIDE } };  //Static
 
 	PhysicsSpace* PhysicsSpace::Allocate(float dt, float meterScale)
 	{

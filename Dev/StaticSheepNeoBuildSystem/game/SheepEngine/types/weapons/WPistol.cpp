@@ -35,13 +35,17 @@ namespace Framework
   {
 
     GameObject *bullet = (FACTORY->LoadObjectFromArchetype(player->space, "Bullet"));
+    Bullet_Default* bd = bullet->GetComponent<Bullet_Default>(eBullet_Default);
+
+
     if (explosive_)
     {
-      bullet->GetComponent<Bullet_Default>(eBullet_Default)->damage = damage + 20;
-      bullet->GetComponent<Bullet_Default>(eBullet_Default)->explosive_ = true;
+      bd->damage = damage + 20;
+      bd->explosive_ = true;
     }
     else
-      bullet->GetComponent<Bullet_Default>(eBullet_Default)->damage = damage;
+      bd->damage = damage;
+
     bullet->GetComponent<ParticleCircleEmitter>(eParticleCircleEmitter)->spawning = false;
     bullet->GetComponent<ParticleCircleEmitter>(eParticleCircleEmitter)->timedSpawning = true;
     bullet->GetComponent<ParticleCircleEmitter>(eParticleCircleEmitter)->timed = 0.001f;
@@ -58,7 +62,8 @@ namespace Framework
     part->direction.m_startMin = rotation * part->direction.m_startMin;
     part->direction.m_startMax = rotation * part->direction.m_startMax;
 
-    bulletC->SetBodyCollisionGroup(player->archetype);
+    bulletC->SetBodyCollisionGroup(player->GetComponent<PlayerController>(ePlayerController)->weaponGroup);
+
     BT->SetTranslation(playerTrans->GetTranslation() + AimDir * 25);
     bulletC->AddToVelocity(AimDir * 1000);
 

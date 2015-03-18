@@ -10,12 +10,13 @@ All content © 2015 DigiPen (USA) Corporation, all rights reserved.
 #include "types/space/Space.h"
 #include "../../transform/CTransform.h"
 #include "../../colliders/CCircleCollider.h"
+#include "../Weapon_Scripts/CBullet_default.h"
 
 namespace Framework
 {
   CoinBall::CoinBall()
+    :hp(60), lasthp(hp), alive(true)
 	{
-    hits = 0;
 	}
 
   CoinBall::~CoinBall()
@@ -38,9 +39,6 @@ namespace Framework
     pc->SetGravityOff();
     Vec3 startingVel((float)GetRandom(-100, 100), (float)GetRandom(-100, 100), 0.0f);
     pc->SetVelocity(startingVel);
-    hits = 0;
-    beenHit = false;
-    alive = true;
 	}
 
   void CoinBall::Remove()
@@ -52,10 +50,15 @@ namespace Framework
 	{
     pt = space->GetHandles().GetAs<Transform>(cbTransfrom);
     pc = space->GetHandles().GetAs <CircleCollider>(cbCollider);
-    if (beenHit)
+
+    if (hp < lasthp)
     {
-      beenHit = false;
-      space->hooks.Call("SpawnCoins", pt->GetTranslation());
+      space->hooks.Call("SpawnCoinsEx", pt->GetTranslation(),
+        (lasthp - hp) / 12);
+
+      lasthp = hp;
+      if (hp < 0)
+        alive = false;
     }
     if (!alive)
       DestroyBall();
@@ -72,20 +75,21 @@ namespace Framework
   {
     pt = space->GetHandles().GetAs<Transform>(cbTransfrom);
     GameObject *OtherObject = space->GetHandles().GetAs<GameObject>(otherObject);
-    if (OtherObject->name == "Bullet")
+    Bullet_Default* bd = OtherObject->GetComponent<Bullet_Default>(eBullet_Default);
+
+
+
+    if (bd)
     {
-      ++hits;
-      beenHit = true;
-      if (hits > 4)
-        alive = false;
+      hp -= bd->damage;
     }
     
   }
 
   void CoinBall::DestroyBall()
   {
-    for (int i = 0; i < 5; ++i)
-      space->hooks.Call("SpawnCoins", pt->GetTranslation());
+    space->hooks.Call("SpawnCoinsEx", pt->GetTranslation(),
+      10);
 
     space->GetGameObject(owner)->Destroy();
   }

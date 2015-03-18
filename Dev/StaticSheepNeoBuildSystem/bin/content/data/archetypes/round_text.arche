@@ -1,0 +1,67 @@
+GameObject
+{
+  name std::string "round_text"
+  archetype std::string "round_text"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 0.000000
+      y_ float 0.000000
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "round_text.png"
+    m_layer unsignedint 2
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 0.800000
+      Y float 0.800000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+  PointLight
+  {
+    m_layer unsignedint 2
+    m_brightness LightColor
+    {
+      R float 0.500000
+      G float 0.500000
+      B float 1.000000
+      A float 0.500000
+    }
+    m_attenuation LightVec3
+    {
+      X float 0.010000
+      Y float 0.010000
+      Z float 0.050000
+    }
+  }
+  RoundText
+  {
+    text bool true
+  }
+}

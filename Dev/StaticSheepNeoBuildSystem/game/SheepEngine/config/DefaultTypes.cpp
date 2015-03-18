@@ -68,6 +68,11 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "Components/gameplay_scripts/Weapon_Scripts/CLaser.h"
 #include "Components/gameplay_scripts/Slot_Machine_Scripts/CCoinBall.h"
 #include "components/basicps/CBasicPSystem.h"
+#include "Components/controllers/chip/CChipController.h"
+#include "Components/controllers/round/CRoundController.h"
+#include "Components/controllers/round/CRoundText.h"
+#include "components/gameplay_scripts/FX_Scripts/CAOEDamage.h"
+#include "components/gameplay_scripts/Weapon_Scripts/CImpactEffect.h"
 
 
 namespace Framework
@@ -221,6 +226,10 @@ namespace Framework
     TYPE_ADD_MEMBER(PlayerController, playerNum, false, true, "Player Number");
 
     TYPE_REGISTER(Bullet_Default);
+    TYPE_ADD_MEMBER(Bullet_Default, limitedLife, false, true, "Limited Life");
+    TYPE_ADD_MEMBER(Bullet_Default, ttl, false, true, "Lifespan");
+    TYPE_ADD_MEMBER(Bullet_Default, lightFade, false, true, "Light Fade Time");
+    TYPE_ADD_MEMBER(Bullet_Default, fadeTime, false, true, "Object Despawn Timer");
     TYPE_SET_TWEAK_TYPE(Bullet_Default, AntTweak::TW_TYPE_COMPONENT);
 
     TYPE_REGISTER(ElevatorPlat);
@@ -252,7 +261,9 @@ namespace Framework
 
     TYPE_REGISTER(Explosion);
     TYPE_ADD_MEMBER(Explosion, timer, false, true, "Show Time");
-    TYPE_ADD_MEMBER(Explosion, waitForAnim, false, true, "Wait for anim");
+    TYPE_ADD_MEMBER(Explosion, lightFadeTime, false, true, "Light Fade Time");
+    TYPE_ADD_MEMBER(Explosion, waitForAnim, false, true, "Wait for Anim");
+    
     //TYPE_ADD_MEMBER(Explosion, animDelay, false, true, "Anim Delay");
     TYPE_SET_TWEAK_TYPE(Explosion, AntTweak::TW_TYPE_COMPONENT);
 
@@ -295,6 +306,16 @@ namespace Framework
 
     TYPE_REGISTER(CoinBall);
     TYPE_SET_TWEAK_TYPE(CoinBall, AntTweak::TW_TYPE_COMPONENT);
+    
+    TYPE_REGISTER(ChipController);
+    TYPE_SET_TWEAK_TYPE(ChipController, AntTweak::TW_TYPE_COMPONENT);
+
+    TYPE_REGISTER(RoundController);
+    TYPE_SET_TWEAK_TYPE(RoundController, AntTweak::TW_TYPE_COMPONENT);
+
+    TYPE_REGISTER(RoundText);
+    TYPE_SET_TWEAK_TYPE(RoundText, AntTweak::TW_TYPE_COMPONENT);
+    TYPE_ADD_MEMBER(RoundText, text, false, true, "Left to Right");
 
     TYPE_REGISTER(Laser);
     TYPE_SET_TWEAK_TYPE(Laser, AntTweak::TW_TYPE_COMPONENT);
@@ -398,7 +419,7 @@ namespace Framework
     TYPE_ADD_MEMBER(AniSprite, m_flipX, false, true, "FlipX");
     TYPE_ADD_MEMBER(AniSprite, m_flipY, false, true, "FlipY");
     TYPE_ADD_MEMBER(AniSprite, Color, false, true, "Color");
-    TYPE_ADD_MEMBER(AniSprite, Size, false, true, "Scale");
+    TYPE_ADD_MEMBER(AniSprite, Size, false, true, "Sprite_Scale");
     TYPE_SET_TWEAK_TYPE(AniSprite, AntTweak::TW_TYPE_COMPONENT);
     TYPE_SET_FROM_LUA(AniSprite, Lua::GenericObjectFromLua);
 
@@ -425,34 +446,35 @@ namespace Framework
     TYPE_ADD_MEMBER(ParticleOptionShort<float>, m_startMax, false, true, "Maximum");
 
     TYPE_REGISTER(ParticleOption<float>);
-    TYPE_ADD_MEMBER(ParticleOption<float>, m_startMin, false, true, "Start Min");
-    TYPE_ADD_MEMBER(ParticleOption<float>, m_startMax, false, true, "Start Max");
-    TYPE_ADD_MEMBER(ParticleOption<float>, m_endMin, false, true, "End Min");
-    TYPE_ADD_MEMBER(ParticleOption<float>, m_endMax, false, true, "End Max");
+    TYPE_ADD_MEMBER(ParticleOption<float>, m_startMin, false, true, "Start_Min");
+    TYPE_ADD_MEMBER(ParticleOption<float>, m_startMax, false, true, "Start_Max");
+    TYPE_ADD_MEMBER(ParticleOption<float>, m_endMin, false, true, "End_Min");
+    TYPE_ADD_MEMBER(ParticleOption<float>, m_endMax, false, true, "End_Max");
 
     TYPE_REGISTER(ParticleOption<Vec3>);
-    TYPE_ADD_MEMBER(ParticleOption<Vec3>, m_startMin, false, true, "Start Min");
-    TYPE_ADD_MEMBER(ParticleOption<Vec3>, m_startMax, false, true, "Start Max");
-    TYPE_ADD_MEMBER(ParticleOption<Vec3>, m_endMin, false, true, "End Min");
-    TYPE_ADD_MEMBER(ParticleOption<Vec3>, m_endMax, false, true, "End Max");
+    TYPE_ADD_MEMBER(ParticleOption<Vec3>, m_startMin, false, true, "Start_Min");
+    TYPE_ADD_MEMBER(ParticleOption<Vec3>, m_startMax, false, true, "Start_Max");
+    TYPE_ADD_MEMBER(ParticleOption<Vec3>, m_endMin, false, true, "End_Min");
+    TYPE_ADD_MEMBER(ParticleOption<Vec3>, m_endMax, false, true, "End_Max");
 
     TYPE_REGISTER(ParticleOption<Vec4>);
-    TYPE_ADD_MEMBER(ParticleOption<Vec4>, m_startMin, false, true, "Start Min");
-    TYPE_ADD_MEMBER(ParticleOption<Vec4>, m_startMax, false, true, "Start Max");
-    TYPE_ADD_MEMBER(ParticleOption<Vec4>, m_endMin, false, true, "End Min");
-    TYPE_ADD_MEMBER(ParticleOption<Vec4>, m_endMax, false, true, "End Max");
+    TYPE_ADD_MEMBER(ParticleOption<Vec4>, m_startMin, false, true, "Start_Min");
+    TYPE_ADD_MEMBER(ParticleOption<Vec4>, m_startMax, false, true, "Start_Max");
+    TYPE_ADD_MEMBER(ParticleOption<Vec4>, m_endMin, false, true, "End_Min");
+    TYPE_ADD_MEMBER(ParticleOption<Vec4>, m_endMax, false, true, "End_Max");
 
     TYPE_REGISTER(ParticleCircleEmitter);
-    TYPE_ADD_MEMBER(ParticleCircleEmitter, m_innerRadius, false, true, "Inner Radius");
-    TYPE_ADD_MEMBER(ParticleCircleEmitter, m_outerRadius, false, true, "Outer Radius");
-    TYPE_ADD_MEMBER(ParticleCircleEmitter, m_spawnOffset, false, true, "Spawn Location Offset");
-    TYPE_ADD_MEMBER(ParticleCircleEmitter, m_amount, false, true, "Spawn Amount");
-    TYPE_ADD_MEMBER(ParticleCircleEmitter, m_rate, false, true, "Spawn Delay");
-    TYPE_ADD_MEMBER(ParticleCircleEmitter, spawning, false, true, "Constant Spawning");
-    TYPE_ADD_MEMBER(ParticleCircleEmitter, timedSpawning, false, true, "Timed Spawning");
+    TYPE_ADD_MEMBER(ParticleCircleEmitter, parentToOwner, false, true, "Parent_to_owner");
+    TYPE_ADD_MEMBER(ParticleCircleEmitter, m_innerRadius, false, true, "Inner_Radius");
+    TYPE_ADD_MEMBER(ParticleCircleEmitter, m_outerRadius, false, true, "Outer_Radius");
+    TYPE_ADD_MEMBER(ParticleCircleEmitter, m_spawnOffset, false, true, "Spawn_Offset");
+    TYPE_ADD_MEMBER(ParticleCircleEmitter, m_amount, false, true, "Spawn_Amount");
+    TYPE_ADD_MEMBER(ParticleCircleEmitter, m_rate, false, true, "Spawn_Delay");
+    TYPE_ADD_MEMBER(ParticleCircleEmitter, spawning, false, true, "Constant_Spawning");
+    TYPE_ADD_MEMBER(ParticleCircleEmitter, timedSpawning, false, true, "Timed_Spawning");
     TYPE_ADD_MEMBER(ParticleCircleEmitter, timed, false, true, "Time");
-    TYPE_ADD_MEMBER(ParticleCircleEmitter, outward, false, true, "Spawn Outwards");
-    TYPE_ADD_MEMBER(ParticleCircleEmitter, inward, false, true, "Spawn Inwards");
+    TYPE_ADD_MEMBER(ParticleCircleEmitter, outward, false, true, "Spawn_Outwards");
+    TYPE_ADD_MEMBER(ParticleCircleEmitter, inward, false, true, "Spawn_Inwards");
 
     TYPE_REGISTER(ParticleBoxEmitter);
     TYPE_ADD_MEMBER(ParticleBoxEmitter, m_width, false, true, "Box Width");
@@ -501,13 +523,15 @@ namespace Framework
     TYPE_ADD_MEMBER(BPartSys::BPSSystem, editorActive, false, true, "Editor Preview");
     TYPE_ADD_MEMBER(BPartSys::BPSSystem, spawnInterval, false, true, "Spawning Interval");
     TYPE_ADD_MEMBER(BPartSys::BPSSystem, spawnAmount, false, true, "Spawn Amount (Per Interval)");
-    TYPE_ADD_MEMBER(BPartSys::BPSSystem, spawnPerSecond, false, true, "Spawn Amount (Per Second)*");
-    TYPE_ADD_MEMBER(BPartSys::BPSSystem, shutdownTimer, false, true, "Shutdown Timer");
+    TYPE_ADD_MEMBER(BPartSys::BPSSystem, spawnPerSecond);// , false, true, "Spawn Amount (Per Second)*");
+    TYPE_ADD_MEMBER(BPartSys::BPSSystem, shutdownTimer);//, false, true, "Shutdown Timer");
+    TYPE_ADD_MEMBER(BPartSys::BPSSystem, parentToOwner, false, true, "Parent to Owner");
 
     TYPE_REGISTER(BasicParticleSystem);
     TYPE_SET_TWEAK_TYPE(BasicParticleSystem, AntTweak::TW_TYPE_COMPONENT);
     TYPE_ADD_MEMBER(BasicParticleSystem, m_texture, false, true, "Texture",
       BUILD_FUNCTION(BasicParticleSystem::TweakSetTexture));
+    TYPE_ADD_MEMBER(BasicParticleSystem, m_layer, false, true, "Layer");
     TYPE_ADD_MEMBER(BasicParticleSystem, m_pos, false, true, "Positioning");
     TYPE_ADD_MEMBER(BasicParticleSystem, m_scaling, false, true, "Scaling");
     TYPE_ADD_MEMBER(BasicParticleSystem, m_rot, false, true, "Rotational");
@@ -569,6 +593,17 @@ namespace Framework
 
     TYPE_ADD_MEMBER(SlotMachine, useSpriteColor, false, true, "Use Sprite Color");
     TYPE_ADD_MEMBER(SlotMachine, backingColor, true, true, "BackColor");
+
+    TYPE_REGISTER(AOEDamage);
+    TYPE_ADD_MEMBER(AOEDamage, m_radius, false, true, "Radius");
+    TYPE_ADD_MEMBER(AOEDamage, m_damagePerSecond, false, true, "DPS");
+    TYPE_ADD_MEMBER(AOEDamage, m_shrinks, false, true, "Shrinks");
+    TYPE_ADD_MEMBER(AOEDamage, m_shrinkTime, false, true, "Shrink Time");
+    TYPE_ADD_MEMBER(AOEDamage, m_shrinkDelay, false, true, "Shrink Delay");
+
+
+    TYPE_REGISTER(ImpactEffect);
+    TYPE_ADD_MEMBER(ImpactEffect, m_effect, false, true, "Effect Archetype");
 
 
     TYPE_REGISTER(Tester);

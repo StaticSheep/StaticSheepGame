@@ -48,7 +48,8 @@ namespace Framework
 			//check if the shape is a circle or rectangle
 			//if so, add a body and return the pointer to the component
 		if(m_shape == SheepFizz::Cir || m_shape == SheepFizz::Rec)
-		  m_handle = PHYSICS->AddBodies(space->GetHandles().GetAs<GameObject>(owner), m_shape, *m_material, m_hasCollisionCallback,
+		  m_handle = PHYSICS->AddBodies(space->GetHandles().GetAs<GameObject>(owner),
+      m_shape, *m_material, m_hasCollisionCallback,
       position, m_radius, m_height, rotation);
 
 		 trans->SetPhysicsBody(m_handle);
@@ -227,6 +228,14 @@ namespace Framework
 
     normals_.push_back(normal);
     normals_.push_back(location);
+  }
+
+  void RigidBody::SetBodyRadius(float radius)
+  {
+    m_width = radius;
+
+    if (m_handle != SheepFizz::Handle::null)
+      PHYSICS->ChangePhysBodies(space, m_handle, m_width, m_height);
   }
 
   void RigidBody::UpdateWidth(const void* value)

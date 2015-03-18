@@ -12,6 +12,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "WICTextureLoader.h"
 #include <direct.h>
 #include "CommonStates.h"
+#include "Effects\premult_effect.h"
 
 #pragma comment (lib, "d3d11.lib")
 
@@ -186,6 +187,7 @@ namespace DirectSheep
 
     // Initialize Effects
     m_genericEffect = new GenEffect(m_device);
+    m_preMultFilter = new PreMultFilter(m_device);
 
     //PositionVertex vertices[4] = {
     //    { Vec3(-SCREEN_WIDTH / 2.f, SCREEN_HEIGHT / 2.f, 0.f) }, // top left
@@ -291,6 +293,9 @@ namespace DirectSheep
 
     if (m_genericEffect)
       delete m_genericEffect;
+
+    if (m_preMultFilter)
+      delete m_preMultFilter;
 
     delete m_quad; //eh?
 
@@ -459,11 +464,15 @@ namespace DirectSheep
   
    void RenderContext::SetBlendCol(const float r, const float g, const float b, const float a)
    {
-     m_spriteBlend = Vec4(r, g, b, a);
+     m_spriteBlend = Vec4(r * a, g * a, b * a, a);
    }
 
    void RenderContext::SetAlpha(float a)
    {
+     if (m_spriteBlend.w > 0)
+       m_spriteBlend /= m_spriteBlend.w;
+
+     m_spriteBlend *= a;
      m_spriteBlend.w = a;
    }
 

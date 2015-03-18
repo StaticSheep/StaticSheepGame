@@ -34,6 +34,8 @@ namespace DirectSheep
 
     void RefreshTexture();
 
+    void Load();
+
   private:
     ID3D11Texture2D* m_rawTex;
     ID3D11RenderTargetView* m_renderTarget;

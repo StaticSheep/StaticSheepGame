@@ -478,7 +478,7 @@ GameObject
   }
   Sprite
   {
-    m_spriteName std::string "cd_3.png"
+    m_spriteName std::string "blank.png"
     m_layer unsignedint 1
     m_flipX bool false
     m_flipY bool false
@@ -513,6 +513,12 @@ GameObject
   {
   }
   SoundPlayer
+  {
+  }
+  ChipController
+  {
+  }
+  RoundController
   {
   }
   Level1_Logic
@@ -4568,6 +4574,7 @@ GameObject
   }
   PointLight
   {
+    m_layer unsignedint 1
     m_brightness LightColor
     {
       R float 1.000000

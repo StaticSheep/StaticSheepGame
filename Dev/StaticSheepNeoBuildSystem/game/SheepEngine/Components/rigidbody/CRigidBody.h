@@ -57,7 +57,7 @@ namespace Framework
 
       //collision
       virtual void SetBodyCollisionCallback(bool collisionCallback);
-      virtual void SetBodyCollisionGroup(std::string);
+      virtual void SetBodyCollisionGroup(std::string group);
 
       virtual Vec3D GetCollisionNormals(SheepFizz::ExternalManifold manifold);
       virtual Vec3D GetCollisionPoint(SheepFizz::ExternalManifold manifold);
@@ -72,6 +72,7 @@ namespace Framework
       //settors
       virtual void SetBodyRotation(Vec3D direction);
       virtual void SetBodyRotation(float direction);
+      virtual void SetBodyRadius(float radius);
 
       //gettors
       virtual Vec3D GetCurrentVelocity(void);
@@ -118,7 +119,7 @@ namespace Framework
 			SheepFizz::Shapes m_shape; 
 			
 			// Handle to created physics
-			SheepFizz::Handle m_handle;
+      SheepFizz::Handle m_handle = SheepFizz::Handle::null;
 
 	};
 	

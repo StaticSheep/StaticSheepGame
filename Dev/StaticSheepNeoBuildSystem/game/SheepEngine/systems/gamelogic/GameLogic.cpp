@@ -11,6 +11,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include <iostream>
 
 #include "GameLogic.h"
+#include "engine/factory/Factory.h"
 
 #include "components/lua/CLuaComponent.h"
 #include "components/gamepad/CGamePad.h"
@@ -43,7 +44,11 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/gameplay_scripts/Slot_Machine_Scripts/CSlotController.h"
 #include "components/gameplay_scripts/Weapon_Scripts/CLaser.h"
 #include "components/gameplay_scripts/Slot_Machine_Scripts/CCoinBall.h"
-
+#include "components/gameplay_scripts/FX_Scripts/CAOEDamage.h"
+#include "components/gameplay_scripts/Weapon_Scripts/CImpactEffect.h"
+#include "Components/controllers/chip/CChipController.h"
+#include "Components/controllers/round/CRoundController.h"
+#include "Components/controllers/round/CRoundText.h"
 
 namespace Framework
 {
@@ -93,6 +98,11 @@ namespace Framework
     REGISTER_COMPONENT(BlockLights);
     REGISTER_COMPONENT(Laser);
     REGISTER_COMPONENT(CoinBall);
+    REGISTER_COMPONENT(ImpactEffect);
+    REGISTER_COMPONENT(AOEDamage);
+    REGISTER_COMPONENT(ChipController);
+    REGISTER_COMPONENT(RoundController);
+    REGISTER_COMPONENT(RoundText);
   }
 
   void GameLogic::Initialize()

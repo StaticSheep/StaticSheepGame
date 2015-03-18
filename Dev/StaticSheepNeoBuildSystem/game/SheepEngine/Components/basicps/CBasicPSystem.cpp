@@ -82,6 +82,9 @@ namespace Framework
       space->hooks.Remove("Draw", self);
       break;
     }
+
+    space->hooks.Remove("LogicUpdate", self);
+    space->hooks.Remove("FrameUpdate", self);
   }
 
   void BasicParticleSystem::SetTexture(std::string texname)
@@ -136,9 +139,16 @@ namespace Framework
 
       // Fill with the right-most element
       if (i != m_particles.size() - 1)
-        m_particles[i] = m_particles.back();
+      {
+        Particle pt = m_particles[m_particles.size() - 1];
+        m_particles.pop_back();
+        m_particles[i] = pt;
+      }
+      else
+        m_particles.pop_back();
+        
 
-      m_particles.pop_back();
+      
     }
   }
 
@@ -147,14 +157,19 @@ namespace Framework
     Transform* trans = space->GetGameObject(owner)->
       GetComponent<Transform>(eTransform);
 
-    m_particles.emplace_back();
+    
 
-    Particle& prt = m_particles.back();
+    Particle prt;
 
     prt.life = m_life.lifetime + GetRandom(-m_life.randLifetime, m_life.randLifetime);
     prt.maxLife = prt.life;
     
-    Vec2 center = trans->GetTranslation() + m_pos.offset;
+    Vec2 center;
+    
+    if (m_system.parentToOwner)
+      center = m_pos.offset;
+    else
+      center = trans->GetTranslation() + m_pos.offset;
 
     if (m_pos.square)
     {
@@ -236,19 +251,32 @@ namespace Framework
       prt.fadeStart = m_fade.fadeOutTime +
         GetRandom(-m_fade.randFadeoutTime, m_fade.randFadeoutTime);
     }
+
+    m_particles.push_back(prt);
   }
 
   void BasicParticleSystem::Draw()
   {
-    Draw::SetUVs(Vec2(0, 0), Vec2(1, 1));
+    
 
     DirectSheep::Handle texHandle(DirectSheep::TEXTURE, m_textureID);
 
     GRAPHICS->SetColor(Vec4(1, 1, 1, 1));
+    GRAPHICS->SetUV(Vec2(0, 0), Vec2(1, 1));
 
     Vec2 scaleMult = GRAPHICS->GetTextureDim(texHandle);
     float z = 0;
-    float zStep = 0.5f / m_particles.size();
+    float zStep = 0.2f / m_particles.size();
+
+
+    Vec2 center;
+
+    if (m_system.parentToOwner)
+    {
+      Transform* pTrans = space->GetGameObject(owner)->GetComponent<Transform>(eTransform);
+      if (pTrans)
+        center = pTrans->GetTranslation();
+    }
 
     for (int i = 0; i < m_particles.size(); ++i)
     {
@@ -256,7 +284,7 @@ namespace Framework
 
       GRAPHICS->SetSize(prt.scale.x / scaleMult.x,
         prt.scale.y / scaleMult.x);
-      GRAPHICS->SetPosition(prt.pos.x, prt.pos.y, z += zStep);
+      GRAPHICS->SetPosition(center.x + prt.pos.x, center.y + prt.pos.y, z += zStep);
 
       if (m_fade.fadeOut)
       {

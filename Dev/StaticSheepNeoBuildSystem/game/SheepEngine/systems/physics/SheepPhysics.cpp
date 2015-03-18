@@ -302,6 +302,12 @@ namespace Framework
     m_collisionGroup.insert(std::pair<std::string, CollisionGroup>("Player2", Player2));
     m_collisionGroup.insert(std::pair<std::string, CollisionGroup>("Player3", Player3));
     m_collisionGroup.insert(std::pair<std::string, CollisionGroup>("Player4", Player4));
+    m_collisionGroup.insert(std::pair<std::string, CollisionGroup>("Player1Weapon", Player1Weapon));
+    m_collisionGroup.insert(std::pair<std::string, CollisionGroup>("Player2Weapon", Player2Weapon));
+    m_collisionGroup.insert(std::pair<std::string, CollisionGroup>("Player3Weapon", Player3Weapon));
+    m_collisionGroup.insert(std::pair<std::string, CollisionGroup>("Player4Weapon", Player4Weapon));
+    m_collisionGroup.insert(std::pair<std::string, CollisionGroup>("Item", Item));
+    m_collisionGroup.insert(std::pair<std::string, CollisionGroup>("PlayerHitOnly", PlayerHitOnly));
     m_collisionGroup.insert(std::pair<std::string, CollisionGroup>("Static", CollisionGroup::Static));
 
     m_collisionGroupNames.insert(std::pair<CollisionGroup, std::string>(NonCollide, "NonCollide"));
@@ -311,6 +317,12 @@ namespace Framework
     m_collisionGroupNames.insert(std::pair<CollisionGroup, std::string>(Player2, "Player2"));
     m_collisionGroupNames.insert(std::pair<CollisionGroup, std::string>(Player3, "Player3"));
     m_collisionGroupNames.insert(std::pair<CollisionGroup, std::string>(Player4, "Player4"));
+    m_collisionGroupNames.insert(std::pair<CollisionGroup, std::string>(Player1Weapon, "Player1Weapon"));
+    m_collisionGroupNames.insert(std::pair<CollisionGroup, std::string>(Player2Weapon, "Player2Weapon"));
+    m_collisionGroupNames.insert(std::pair<CollisionGroup, std::string>(Player3Weapon, "Player3Weapon"));
+    m_collisionGroupNames.insert(std::pair<CollisionGroup, std::string>(Player4Weapon, "Player4Weapon"));
+    m_collisionGroupNames.insert(std::pair<CollisionGroup, std::string>(Item, "Item"));
+    m_collisionGroupNames.insert(std::pair<CollisionGroup, std::string>(PlayerHitOnly, "PlayerHitOnly"));
     m_collisionGroupNames.insert(std::pair<CollisionGroup, std::string>(CollisionGroup::Static, "Static"));
 
     ray.collisionGroup = Collide;
@@ -501,7 +513,7 @@ namespace Framework
 
   //raycast
   //********************
-  void SheepPhysics::SetRayConfig(Vec3D& rayOrigin, Vec3D& rayDirection, std::string name)
+  void SheepPhysics::SetRayConfig(Vec3D& rayOrigin, Vec3D& rayDirection, std::string& name)
   {
     if (m_collisionGroup.find(name) != m_collisionGroup.end())
       ray.collisionGroup = m_collisionGroup[name];
@@ -533,25 +545,9 @@ namespace Framework
   {
     if (ray.findFirstCollision)
     {
-      //GameSpace* space = (GameSpace*)(ray.gameSpace);
-      //Handle handleObj = (unsigned)(ray.firstCollisionBody);
-
-      //GameObject* obj = space->GetHandles().GetAs<GameObject>(handleObj);
-      //CollisionGroup group = m_collisionGroup[(((RigidBody*)obj)->GetBodyCollisionGroup())];
-      //if (group == Player1 || group == Player2 || group == Player3 || group == Player4)
-        //((PlayerController*)obj)->health -= 10;
 
       rayComplexDraws.push_back(std::pair<Vec2, Vec2>(ray.rayOrigin, ray.firstCollisionLocation));
-      //raySimpleDraws.push_back(std::pair<Vec2, Vec2>(ray.rayOrigin, ray.rayDirection));
-      //Draw::SetColor(1, 0, 0, 1);
-      //Vec2 collisionLocation = Draw::ToScreen(ray.firstCollisionLocation);
-      //Vec2 origin = Draw::ToScreen(ray.rayOrigin);
-      //Vec2D direction = ray.rayDirection;
-      //direction.y = -direction.y;
-      //Draw::DrawBeam(origin, direction);
-      //Draw::DrawBeam(Vec2(0, 0), Vec2(1, 1));
-      //Draw::DrawLine(origin.x, origin.y, collisionLocation.x, collisionLocation.y);
-      //Draw::DrawLine(origin.x, ray.rayOrigin.y, ray.firstCollisionLocation.x, ray.firstCollisionLocation.y, 1);
+
     }
 
     else
@@ -578,7 +574,7 @@ namespace Framework
 		((SheepFizz::PhysicsSpace*)(space->m_pSpace))->ChangeMaterials(handle, material);
 	}
 
-  void SheepPhysics::ChangeCollisionGroup(GameSpace* space, SheepFizz::Handle handle, std::string name)
+  void SheepPhysics::ChangeCollisionGroup(GameSpace* space, SheepFizz::Handle handle, std::string& name)
   {
     if (m_collisionGroup.find(name) != m_collisionGroup.end())
     {
@@ -593,7 +589,7 @@ namespace Framework
 		((SheepFizz::PhysicsSpace*)(space->m_pSpace))->RemoveBody(handle);
 	}
 
-	SheepFizz::Material* SheepPhysics::GetMaterial(std::string name)
+	SheepFizz::Material* SheepPhysics::GetMaterial(std::string& name)
 	{
 		//find the material and return it
 		SheepFizz::Material* material = &m_materials[name];
