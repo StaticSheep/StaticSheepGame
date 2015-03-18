@@ -30,6 +30,8 @@ namespace Framework
     void ResetRoundStats();
     void RoundOver();
 
+    int GetPlayerChips(int player);
+
     void FFAAwards();
     void JuggAwards();
     void SDAwards();

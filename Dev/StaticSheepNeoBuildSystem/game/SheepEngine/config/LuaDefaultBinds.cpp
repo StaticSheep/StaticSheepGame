@@ -131,6 +131,8 @@ namespace Framework
       BIND_FUNCTION_EX(L, Level1_Logic::GetWinner, GetWinner);
       BIND_FUNCTION_EX(L, Level1_Logic::EndMatch, EndMatch);
 
+      BIND_FUNCTION_EX(L, ChipController::GetPlayerChips, GetPlayerChips);
+
       //BIND_FUNCTION_EX(L, BoxCollider::SetVelocity, SetVelocity);
     }
 
