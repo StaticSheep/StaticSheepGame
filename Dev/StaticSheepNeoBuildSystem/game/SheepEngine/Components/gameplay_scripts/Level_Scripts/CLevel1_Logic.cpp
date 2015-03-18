@@ -290,13 +290,16 @@ namespace Framework
       lc->SetTranslation(Vec3(0, 0, 0));
       shake = true;
     }
+
+    camShakeTime -= dt;
+
     if (camShakeTime <= 0)
     {
       camShake = false;
       lc->SetTranslation(Vec3(0, 0, 0));
     }
 
-    camShakeTime -= dt;
+    
   }
 
   bool Level1_Logic::LevelCountdown(float dt)
