@@ -1,7 +1,7 @@
 GameObject
 {
-  name std::string "round_text"
-  archetype std::string "round_text"
+  name std::string "roundStartsIn_text"
+  archetype std::string "roundStartsIn_text"
   Transform
   {
     Translation Vec3
@@ -20,7 +20,7 @@ GameObject
   }
   Sprite
   {
-    m_spriteName std::string "round_text.png"
+    m_spriteName std::string "roundStartsIn_text.png"
     m_layer unsignedint 2
     m_flipX bool false
     m_flipY bool false
@@ -34,8 +34,8 @@ GameObject
     }
     Size Vec2
     {
-      X float 0.700000
-      Y float 0.700000
+      X float 1.000000
+      Y float 1.000000
     }
     m_origin Vec2
     {
@@ -45,7 +45,7 @@ GameObject
   }
   SpriteLight
   {
-    m_spriteName std::string "round_text.png"
+    m_spriteName std::string "roundStartsIn_text.png"
     m_layer unsignedint 2
     m_flipX bool false
     m_flipY bool false
@@ -66,18 +66,18 @@ GameObject
     }
     Size Vec2
     {
-      X float 0.700000
-      Y float 0.700000
+      X float 1.000000
+      Y float 1.000000
     }
   }
   RoundText
   {
-    timer float 3.000000
+    timer float 5.000000
     text bool true
     number int 1
-    LeftToRight bool false
-    initialSpeed float 80.000000
-    middleSpeed float 2.500000
+    LeftToRight bool true
+    initialSpeed float 50.000000
+    middleSpeed float 1.000000
     killRange float 1000.000000
   }
 }

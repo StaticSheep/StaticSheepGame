@@ -97,6 +97,7 @@ namespace Framework
     void SpawnCoins(Vec3);
     void SpawnCoinsEx(Vec3, int);
     void SpawnLevelEvent();
+    void SpawnModeText();
 
     void GoToGameMode(float dt);
     void FFAMode(float dt);

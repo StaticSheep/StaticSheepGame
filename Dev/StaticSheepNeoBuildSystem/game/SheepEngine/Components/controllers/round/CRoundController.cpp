@@ -177,7 +177,7 @@ namespace Framework
   {
     slotMachineDone = true;
     state_ = ROUNDINPRO;
-    round_state_timer = 10.0f;
+    round_state_timer = 63.0f;
     mode_ = mode;
   }
 

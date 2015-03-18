@@ -187,8 +187,8 @@ namespace Framework
         playTrans->SetTranslation(spawnPos[i]);
         if (mode == SUDDENDEATH)
         {
-          temp->GetComponent<PlayerController>(ePlayerController)->health = 10;
-          temp->GetComponent<PlayerController>(ePlayerController)->shields = 0;
+          temp->GetComponent<PlayerController>(ePlayerController)->health = 100;
+          temp->GetComponent<PlayerController>(ePlayerController)->shields = 200;
         }
       }
       startFlag = false;
@@ -302,28 +302,26 @@ namespace Framework
   {
     Sprite *ls = space->GetGameObject(owner)->GetComponent<Sprite>(eSprite);
     //run countdown
-    if (countDownTimer > 3.0f && !num_spawned[3])
-    {
-      GameObject *round_number = (FACTORY->LoadObjectFromArchetype(space, "round_number"));
-      round_number->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(1000.0f, -64.0f, 0.0f));
-      round_number->GetComponent<RoundText>(eRoundText)->number = 4;
-      round_number->GetComponent<RoundText>(eRoundText)->middleSpeed = 30.0f;
-      num_spawned[3] = true;
-    }
-    else if (countDownTimer <= 3.0f && countDownTimer > 2.0f && !num_spawned[2])
+    if (countDownTimer <= 3.0f && countDownTimer > 2.0f && !num_spawned[2])
     {
       GameObject *round_number = (FACTORY->LoadObjectFromArchetype(space, "round_number"));
       round_number->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(1000.0f, -64.0f, 0.0f));
       round_number->GetComponent<RoundText>(eRoundText)->number = 3;
-      round_number->GetComponent<RoundText>(eRoundText)->middleSpeed = 30.0f;
+      round_number->GetComponent<RoundText>(eRoundText)->middleSpeed = 10.0f;
       num_spawned[2] = true;
+
+      //GameObject *round_start = (FACTORY->LoadObjectFromArchetype(space, "roundStartsIn_text"));
+      //round_start->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(-1000.0f, 64.0f, 0.0f));
+
+      SpawnModeText();
+
     }
     else if (countDownTimer <= 2.0f && countDownTimer > 1.0f && !num_spawned[1])
     {
       GameObject *round_number = (FACTORY->LoadObjectFromArchetype(space, "round_number"));
       round_number->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(1000.0f, -64.0f, 0.0f));
       round_number->GetComponent<RoundText>(eRoundText)->number = 2;
-      round_number->GetComponent<RoundText>(eRoundText)->middleSpeed = 30.0f;
+      round_number->GetComponent<RoundText>(eRoundText)->middleSpeed = 10.0f;
       num_spawned[1] = true;
     }
     else if (countDownTimer <= 1.0f && countDownTimer > 0.0f && !num_spawned[0])
@@ -331,7 +329,7 @@ namespace Framework
       GameObject *round_number = (FACTORY->LoadObjectFromArchetype(space, "round_number"));
       round_number->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(1000.0f, -64.0f, 0.0f));
       round_number->GetComponent<RoundText>(eRoundText)->number = 1;
-      round_number->GetComponent<RoundText>(eRoundText)->middleSpeed = 30.0f;
+      round_number->GetComponent<RoundText>(eRoundText)->middleSpeed = 10.0f;
       num_spawned[0] = true;
     }
 
@@ -544,7 +542,33 @@ namespace Framework
       space->GetHandles().GetAs<SoundEmitter>(levelEmitter)->Play("warning");
     }
   }
-  /*idea for bonus slot machine. have it spin for bonus star awards when the round ends. things like most kills, or most coins*/
+
+  void Level1_Logic::SpawnModeText()
+  {
+    GameObject *round_number;
+    switch (mode)
+    {
+    case FFA:
+      round_number = (FACTORY->LoadObjectFromArchetype(space, "FFA_text"));
+      round_number->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(-1000.0f, 200.0f, 0.0f));
+      break;
+    case JUGGERNAUT:
+      round_number = (FACTORY->LoadObjectFromArchetype(space, "DeathTag_text"));
+      round_number->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(-1000.0f, 200.0f, 0.0f));
+      break;
+    case SUDDENDEATH:
+      round_number = (FACTORY->LoadObjectFromArchetype(space, "SuddenDeath_text"));
+      round_number->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(-1000.0f, 200.0f, 0.0f));
+      break;
+    case SLOTMACHINE:
+      
+      break;
+    case BONUSMODE:
+      
+      break;
+    }
+  }
+  
   void Level1_Logic::GoToGameMode(float dt)
   {
     switch (mode)
@@ -705,8 +729,22 @@ namespace Framework
     else
       roundTimer -= dt;
 
+    spawnTimer -= dt;
+    eventTimer -= dt;
+    SpawnLevelEvent();
+    if (spawnTimer <= 0)
+    {
+      spawnTimer = 3.0f;
+      float ranX = GetRandom(-600, 600);
+      float ranY = GetRandom(-200, 200);
+      float ranZ = GetRandom(150, 200);
+      Vec3 pos(ranX, ranY, ranZ);
+      SpawnItemSet(pos);
+    }
+
     if (LastManStanding(dt))
       space->GetGameObject(owner)->GetComponent<RoundController>(eRoundController)->round_state_timer = 0;
+
     spawnTimer -= dt;
     eventTimer -= dt;
 
