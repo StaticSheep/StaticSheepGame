@@ -21,6 +21,9 @@ namespace Framework
 		void Initialize();
 		void Remove();
 
+    void PrepRemoval();
+
+
     void AnimEnd();
 
     void DestroySelf();
@@ -32,6 +35,10 @@ namespace Framework
     bool removal = false;
 
     float timer = 1.0f;
+
+    float lightDropStep;
+
+    float lightFadeTime = 2.0f;
 
     bool waitForAnim = false;
     //float animDelay = 1.0f;

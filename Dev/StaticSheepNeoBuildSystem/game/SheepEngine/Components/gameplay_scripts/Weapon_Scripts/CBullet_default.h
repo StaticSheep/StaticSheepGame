@@ -22,11 +22,31 @@ namespace Framework
 		void Initialize();
 		void Remove();
 
+    void Impact();
+
 		//member variables
     Handle bTransfrom;
     GameObject *bGameObject;
     int damage;
-    float ttl; //time to live
+
+    
+
+    /* Bullet dies after a period of time */
+    bool limitedLife;
+
+    /* Time until the bullet dies */
+    float ttl;
+
+    /* Time to wait after bullet impact to delete the game object.
+    The object's sprite and collider are removed upon impact. */
+    float fadeTime;
+    float lightFade;
+
+    bool fading;
+
     bool explosive_;
+
+  private:
+    bool m_firstImpact = false;
 	};
 }

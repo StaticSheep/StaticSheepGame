@@ -40,13 +40,16 @@ namespace Framework
     randomNumber = GetRandom(0, 100);
 
     GameObject *bullet = (FACTORY->LoadObjectFromArchetype(player->space, "Bullet"));
+
+    Bullet_Default* bd = bullet->GetComponent<Bullet_Default>(eBullet_Default);
+
     if (explosive_)
     {
-      bullet->GetComponent<Bullet_Default>(eBullet_Default)->damage = damage + 10;
-      bullet->GetComponent<Bullet_Default>(eBullet_Default)->explosive_ = true;
+      bd->damage = damage + 10;
+      bd->explosive_ = true;
     }
     else
-      bullet->GetComponent<Bullet_Default>(eBullet_Default)->damage = damage;
+      bd->damage = damage;
 
     bullet->GetComponent<ParticleCircleEmitter>(eParticleCircleEmitter)->spawning = false;
     bullet->GetComponent<ParticleCircleEmitter>(eParticleCircleEmitter)->timedSpawning = true;

@@ -23,37 +23,21 @@ function PlayerHUD:Register(pnl)
   table.insert(self.panels, pnl)
 end
 
-local function HealthPaint(self)
+local coinFile = "coin_stack.png"
+
+local function CoinsPaint(self)
   local pos = self:DrawPos()
-  local highHP = Color(0, 255, 0)
-  local midHP = Color(250, 200, 0)
-  local lowHP = Color(255, 0, 0)
 
   local logic = self.compOwner:Owner().Level1_Logic
 
-  local HP = logic:GetPlayerHealth(self.player - 1)
-  local numLives = logic:GetPlayerLives(self.player - 1)
+  local coins = logic:GetPlayerCoins(self.player - 1)
 
-  self.lives:SetText("x "..numLives)
-
-  local barColor
-
-  local size = (self:GetSize().x / 10) - (self:GetSize().x / 40)
-  for i=0,9 do
-    if HP > i * 10 then
-      if i < 5 then
-        barColor = color.Lerp(lowHP, midHP, i / 4)
-      else
-        barColor = color.Lerp(midHP, highHP, (i - 5) / 5)
-      end
-      draw.RoundedBox(2, pos.x + i * size + (self:GetSize().x / 40) * (i + 0.5), pos.y, size, 20, barColor)
-    end
-  end
+  local image = self.coinsprite
 
 end
 
-local headFiles = {"ninja_head.png", "ruiser_head.png", "europe_head.png", "america_head.png"}
-local headColors = {Color(0, 255, 0), Color(255, 0, 0), Color(255, 0, 255), Color(0, 120, 255)}
+local headFiles = {"p1_score.png", "p2_score.png", "p3_score.png", "p4_score.png"}
+local headColors = {Color(0, 200, 0), Color(200, 0, 0), Color(200, 0, 200), Color(0, 120, 220)}
 
 function PlayerHUD:Create(i)
   self.base[i] = gui.Create("Frame")
@@ -69,30 +53,37 @@ function PlayerHUD:Create(i)
   local head = gui.Create("Image", self.base[i])
   self:Register(head)
   head:SetTexture(headFiles[i])
-  head:SetSize(80, 80)
+  head:SetSize(90, 190)
   head:SetColor(headColors[i])
 
-  local lives = gui.Create("Label", self.base[i])
-  self:Register(lives)
-  lives:SetSize(ScreenScale(6))
-    
-  lives:SetText("x 3")
-  lives:SetPos(80, 80)
-  lives:SetFontColor(Color(255, 255, 255))
-  lives:SetYAlignment(TEXT_ALIGN_BOTTOM)
+  -- local coinbar = gui.Create("Panel", self.base[i])
+  -- self:Register(coinbar)
+  -- coinbar:SetPos(5, 80 + 5)
+  -- coinbar:SetSize(self.base[i]:GetSize().x - 10, 30)
+  -- coinbar.Paint = CoinsPaint
+  -- coinbar.player = i
+  -- coinbar.compOwner = self
+  -- coinbar.lives = lives
 
-  local healthbar = gui.Create("Panel", self.base[i])
-  self:Register(healthbar)
-  healthbar:SetPos(5, 80 + 5)
-  healthbar:SetSize(self.base[i]:GetSize().x - 10, 30)
-  healthbar.Paint = HealthPaint
-  healthbar.player = i
-  healthbar.compOwner = self
-  healthbar.lives = lives
+  local coinsprite = gui.Create("Image", self.base[i])
+  self:Register(coinsprite)
+  if i == 1 or i == 2 then
+    coinsprite:SetPos(1, 170, 1)
+  else
+    coinsprite:SetPos(1, -162, 1)
+  end
+  coinsprite:SetSize(88, 180)
+  coinsprite:SetTexture(coinFile)
+  coinsprite.coins = 0
+
+  self.coinstack[i] = coinsprite
+
+  --coinbar.coinsprite = coinsprite
 end
 
+
 function PlayerHUD:Make()
-  self.panelPositions = {Vec2(0, 10), Vec2(0, ScrH() - 120), Vec2(ScrW() - 150, 10), Vec2(ScrW() - 150, ScrH() - 120)}
+  self.panelPositions = {Vec2(0, ScrH() - 190), Vec2(ScrW() - 90, ScrH() - 190), Vec2(ScrW() - 90, 0), Vec2(0, 0)}
 
   for i=1,4 do
     self:Create(i)
@@ -102,6 +93,7 @@ end
 function PlayerHUD:Init()
   self.panels = {}
   self.base = {}
+  self.coinstack = {}
 
   self:Make()
 
@@ -123,7 +115,59 @@ function PlayerHUD:Remove()
   hook.Remove("FrameUpdate", self)
 end
 
+local SPAZ_COLORS = {
+  Color(255, 50, 0), Color(255, 50, 255), Color(150, 255, 50), Color(150, 150, 255),
+  Color(255, 255, 255), Color(0, 255, 0), Color(50, 255, 255), Color(255, 150, 20)
+}
+
+local MAX_COINS = 50000
+local BOT_MIN = 170
+local BOT_MAX = 0
+local TOP_MIN = -162
+local TOP_MAX = 0
+
+local DEC_AMOUNT = MAX_COINS / 60
+local INC_AMOUNT = MAX_COINS / 60 / 5
+
 function PlayerHUD:FrameUpdate(deltaTime)
+
+  local logic = self:Owner().Level1_Logic
+  local pcoins
+  local t
+
+  local stack
+
+  for i=1,4 do
+    pcoins = logic:GetPlayerCoins(i - 1)
+    stack = self.coinstack[i]
+
+    if stack.coins < pcoins then
+      stack.coins = math.Approach(stack.coins, pcoins, INC_AMOUNT)
+      stack:SetColor(SPAZ_COLORS[math.random(#SPAZ_COLORS)])
+    elseif stack.coins > pcoins then
+      stack.coins = math.Approach(stack.coins, pcoins, DEC_AMOUNT)
+    else
+      stack:SetColor(Color(255, 255, 255, 255))
+    end
+
+    t = stack.coins / MAX_COINS
+    if t > 1.0 then
+      t = 1.0
+    end
+    if t < 0.0 then
+      t = 0.0
+    end
+
+    if i == 1 or i == 2 then
+      self.coinstack[i]:SetPos(1, math.lerp(BOT_MIN, BOT_MAX, t), 1)
+    else
+      self.coinstack[i]:SetPos(1, math.lerp(TOP_MIN, TOP_MAX, t), 1)
+    end
+
+
+  end
+
+
   if GameSpaces[self._space]._paused or GAME_WON then
     for i=1,4 do
       if not self.base[i] then return end

@@ -1,0 +1,163 @@
+GameObject
+{
+  name std::string "missile_explode"
+  archetype std::string "missile_explosion"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 0.000000
+      y_ float 0.000000
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  PointLight
+  {
+    m_layer unsignedint 1
+    m_brightness LightColor
+    {
+      R float 0.800000
+      G float 1.000000
+      B float 0.200000
+      A float 0.100000
+    }
+    m_attenuation LightVec3
+    {
+      X float 0.000000
+      Y float 0.000000
+      Z float 0.005000
+    }
+  }
+  SpriteLight
+  {
+    m_spriteName std::string "red_circle_light.png"
+    m_layer unsignedint 2
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    m_isOn bool true
+    m_emissive bool false
+    m_brightness LightColor
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+    Size Vec2
+    {
+      X float 4.000000
+      Y float 4.000000
+    }
+  }
+  BasicParticleSystem
+  {
+    m_texture std::string "missileboom.png"
+    m_layer int 2
+    m_pos BasicParticleSystem::BPSPos
+    {
+      square bool false
+      edgeOnly bool false
+      radius float 20.000000
+      angle float 1.000000
+      randAngle float 0.000000
+      offset Vec2
+      {
+        X float 0.000000
+        Y float 0.000000
+      }
+      randOffset Vec2
+      {
+        X float 0.000000
+        Y float 0.000000
+      }
+    }
+    m_scaling BPartSys::BPSScaling
+    {
+      scale Vec2
+      {
+        X float 42.000000
+        Y float 42.000000
+      }
+      randScale Vec2
+      {
+        X float 12.000000
+        Y float 12.000000
+      }
+    }
+    m_rot BPartSys::BPSRotation
+    {
+      rotation float 0.000000
+      randRotation float 5.000000
+    }
+    m_life BPartSys::BPSLife
+    {
+      lifetime float 0.300000
+      randLifetime float 0.200000
+    }
+    m_fade BPartSys::BPSFade
+    {
+      fadeOut bool true
+      fadeOutTime float 0.500000
+      randFadeoutTime float 0.000000
+    }
+    m_vel BPartSys::BPSVelocity
+    {
+      velocity Vec2
+      {
+        X float 0.000000
+        Y float 0.000000
+      }
+      randVelocity Vec2
+      {
+        X float 0.000000
+        Y float 0.000000
+      }
+      speedIn float -10.000000
+      randSpeedIn float 1.000000
+    }
+    m_system BPartSys::BPSSystem
+    {
+      active bool true
+      editorActive bool true
+      spawnInterval float 20.000000
+      spawnAmount float 30.000000
+      spawnPerSecond float 0.000000
+      shutdownTimer float 0.000000
+      parentToOwner bool true
+    }
+  }
+  CircleCollider
+  {
+    m_radius float 75.000000
+    m_materialName std::string "Wood"
+    m_hasCollisionCallback bool true
+    m_CollisionGroup std::string "PlayerHitOnly"
+  }
+  Explosion
+  {
+    timer float 0.500000
+    lightFadeTime float 0.800000
+    waitForAnim bool false
+  }
+  AOEDamage
+  {
+    m_radius float 75.000000
+    m_damagePerSecond float 500.000000
+    m_shrinks bool true
+    m_shrinkTime float 0.500000
+    m_shrinkDelay float 0.400000
+  }
+}

@@ -26,7 +26,7 @@ namespace Framework
 		//member variables
     Handle cbTransfrom;
     Handle cbCollider;
-    int hits;
-    bool beenHit, alive;
+    int hp, lasthp;
+    bool alive;
 	};
 }

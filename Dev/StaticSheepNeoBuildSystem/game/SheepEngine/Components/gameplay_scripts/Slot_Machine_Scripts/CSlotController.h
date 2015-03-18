@@ -28,6 +28,7 @@ namespace Framework
 		void LogicUpdate(float dt);
 		void Initialize();
 		void Remove();
+    void BounceDown(float dt);
 
     void SetSMTextures(int, int*, int*);
     void SetSMResults(int, int*);
@@ -37,6 +38,10 @@ namespace Framework
     GameObject* SpawnChildSM(SlotType type);
 		//member variables
     float levelTimer; //keeps track of overall time in the level for slot machine switches
+    float bounceDownTimer;
+    bool bounceDownDone;
+    bool LeftHandBonus;
+    bool spawnLeftBonus, spawnRightBonus;
     SlotType Stype;
     int StypeInt;
     bool done; 

@@ -59,6 +59,7 @@ namespace Framework
     }
 		//logic setup, you're attached and components are in place
     space->hooks.Add("LogicUpdate", self, BUILD_FUNCTION(PowerupPickup::LogicUpdate));
+    space->hooks.Add("DestroyPickups", self, BUILD_FUNCTION(PowerupPickup::DestroySelf));
     space->GetGameObject(owner)->hooks.Add("OnCollision", self, BUILD_FUNCTION(PowerupPickup::OnCollision));
 
     puTransfrom = space->GetGameObject(owner)->GetComponentHandle(eTransform);
@@ -87,6 +88,7 @@ namespace Framework
 	{
     space->GetGameObject(owner)->hooks.Remove("OnCollision", self);
 		space->hooks.Remove("LogicUpdate", self);
+    space->hooks.Remove("DestroyPickups", self);
 
 	}
 
@@ -110,9 +112,11 @@ namespace Framework
     else
     {
       if (powerUpID == eCoin)
-        space->GetGameObject(owner)->GetComponent<CircleCollider>(eCircleCollider)->SetBodyCollisionGroup("Item");
+        space->GetGameObject(owner)->GetComponent<CircleCollider>(eCircleCollider)
+        ->SetBodyCollisionGroup("Item");
       else
-        space->GetGameObject(owner)->GetComponent<BoxCollider>(eBoxCollider)->SetBodyCollisionGroup("Collide");
+        space->GetGameObject(owner)->GetComponent<BoxCollider>(eBoxCollider)
+        ->SetBodyCollisionGroup("Collide");
     }
 
     if (bt->GetTranslation().x > 1000 || bt->GetTranslation().x < -1000 || bt->GetTranslation().y > 700 || bt->GetTranslation().y < -700)
@@ -122,9 +126,14 @@ namespace Framework
   void PowerupPickup::OnCollision(Handle otherObject, SheepFizz::ExternalManifold manifold)
 	{
     GameObject *OtherObject = space->GetGameObject(otherObject);
-    if (OtherObject->name == "Player")
+
+    PlayerController *playerController = 
+      OtherObject->GetComponent<PlayerController>(ePlayerController);
+
+    
+
+    if (playerController)
     {
-      PlayerController *playerController = OtherObject->GetComponent<PlayerController>(ePlayerController);
       if (playerController->powerUp != nullptr)
         delete playerController->powerUp;
 
@@ -137,55 +146,38 @@ namespace Framework
 
   void PowerupPickup::RespawnBlink(float dt)
   {
-    if (space->GetGameObject(owner)->name == "CoinPickup")
+    Sprite *ps = space->GetHandles().GetAs<AniSprite>(puSprite);
+
+    if (!ps)
+      ps = space->GetHandles().GetAs<Sprite>(puSprite);
+
+    if (!ps)
+      return;
+
+    if (respawnTimer > 0.0f)
     {
-      AniSprite *ps = space->GetHandles().GetAs<AniSprite>(puSprite);
-      if (respawnTimer > 0.0f)
-      {
-        if (!blink)
-          ps->Color.A -= dt * 10.0f;
-        else
-          ps->Color.A += dt * 10.0f;
-
-        respawnTimer -= dt;
-
-        if (ps->Color.A <= 0.0f)
-          blink = true;
-
-        if (ps->Color.A >= 1.0f)
-          blink = false;
-      }
+      if (!blink)
+        ps->Color.A -= dt * 1.0f;
       else
-      {
-        ps->Color.A = 255.0f;
-        respawnTimer = 2.0f;
-      }
+        ps->Color.A += dt * 1.0f;
+
+      respawnTimer -= dt;
+
+      if (ps->Color.A <= 0.7f)
+        blink = true;
+
+      if (ps->Color.A >= 1.0f)
+        blink = false;
     }
     else
     {
-      Sprite *ps = space->GetHandles().GetAs<Sprite>(puSprite);
-      if (respawnTimer > 0.0f)
-      {
-        if (!blink)
-          ps->Color.A -= dt * 10.0f;
-        else
-          ps->Color.A += dt * 10.0f;
-
-        respawnTimer -= dt;
-
-        if (ps->Color.A <= 0.0f)
-          blink = true;
-
-        if (ps->Color.A >= 1.0f)
-          blink = false;
-      }
-      else
-      {
-        ps->Color.A = 255.0f;
-        respawnTimer = 2.0f;
-      }
+      ps->Color.A = 255.0f;
+      respawnTimer = 2.0f;
     }
+  }
 
-    
+  void PowerupPickup::DestroySelf()
+  {
+    space->GetGameObject(owner)->Destroy();
   }
 }

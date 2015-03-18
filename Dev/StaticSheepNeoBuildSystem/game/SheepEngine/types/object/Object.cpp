@@ -276,6 +276,10 @@ namespace Framework
     // Get the component
     GameComponent* comp = GetComponent(type);
 
+    /* No component found! */
+    if (!comp)
+      return;
+
     if (!comp->m_toDelete)
       RemoveComponent(comp);
 
@@ -332,6 +336,7 @@ namespace Framework
 
   /// <summary>
   /// Prepares a component to be detached.
+  /// THIS DOESN'T ACTUALLY DETACH THE COMPONENT THOUGH
   /// </summary>
   /// <param name="comp">The component.</param>
   void GameObject::RemoveComponent(GameComponent* comp)

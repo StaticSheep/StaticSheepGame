@@ -22,6 +22,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/controllers/player/CPlayerController.h"
 #include "components/gameplay_scripts/Level_Scripts/CLevel1_Logic.h"
 #include "components/sound/CSoundPlayer.h"
+#include "Components/controllers/chip/CChipController.h"
 
 namespace Framework
 {
@@ -127,8 +128,11 @@ namespace Framework
       BIND_FUNCTION_EX(L, PlayerController::CurrentHealth, CurrentHealth);
       BIND_FUNCTION_EX(L, Level1_Logic::GetPlayerHealth, GetPlayerHealth);
       BIND_FUNCTION_EX(L, Level1_Logic::GetPlayerLives, GetPlayerLives);
+      BIND_FUNCTION_EX(L, Level1_Logic::GetPlayerCoins, GetPlayerCoins);
       BIND_FUNCTION_EX(L, Level1_Logic::GetWinner, GetWinner);
       BIND_FUNCTION_EX(L, Level1_Logic::EndMatch, EndMatch);
+
+      BIND_FUNCTION_EX(L, ChipController::GetPlayerChips, GetPlayerChips);
 
       //BIND_FUNCTION_EX(L, BoxCollider::SetVelocity, SetVelocity);
     }

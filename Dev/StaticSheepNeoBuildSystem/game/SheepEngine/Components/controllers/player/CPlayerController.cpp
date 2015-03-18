@@ -394,9 +394,12 @@ namespace Framework
 
   void PlayerController::CollisionDamage(GameObject *OtherObject)
   {
-    if (OtherObject->name == "Bullet" && !hasRespawned && !GodMode && !PerfectMachine)
+
+    Bullet_Default* bullet = OtherObject->GetComponent<Bullet_Default>(eBullet_Default);
+
+    if (bullet && !hasRespawned && !GodMode && !PerfectMachine)
     {
-      DealDamage(OtherObject->GetComponent<Bullet_Default>(eBullet_Default)->damage, playerNum);
+      DealDamage(bullet->damage, playerNum);
       float randomX = (float)GetRandom(-25, 25);
       float randomY = (float)GetRandom(-25, 25);
       se->Play("hit1", &SoundInstance(1.0f));
@@ -406,17 +409,22 @@ namespace Framework
       exT->SetTranslation(ps->GetTranslation() + Vec3(randomX, randomY, -1.0f));
 
       //for metrics, need to determine where the bullet came from by checking its collision group
-      if (health <= 0)
+      if (health <= 0 && OtherObject->GetComponent<CircleCollider>(eCircleCollider) != nullptr)
       {
         pn = -1;
 
-        if (OtherObject->GetComponent<CircleCollider>(eCircleCollider)->GetBodyCollisionGroup() == "Player1")
+        CircleCollider* cc = OtherObject->GetComponent<CircleCollider>(eCircleCollider);
+
+        if (!cc)
+          return;
+
+        if (cc->GetBodyCollisionGroup() == "Player1Weapon")
           pn = 0;
-        else if (OtherObject->GetComponent<CircleCollider>(eCircleCollider)->GetBodyCollisionGroup() == "Player2")
+        else if (cc->GetBodyCollisionGroup() == "Player2Weapon")
           pn = 1;
-        else if (OtherObject->GetComponent<CircleCollider>(eCircleCollider)->GetBodyCollisionGroup() == "Player3")
+        else if (cc->GetBodyCollisionGroup() == "Player3Weapon")
           pn = 2;
-        else if (OtherObject->GetComponent<CircleCollider>(eCircleCollider)->GetBodyCollisionGroup() == "Player4")
+        else if (cc->GetBodyCollisionGroup() == "Player4Weapon")
           pn = 3;
 
         MetricInfo metricData(pn, 0, 0, PLAYER_KILL, Buttons::NONE, Weapons::PISTOL);
@@ -531,7 +539,9 @@ namespace Framework
 	{
     if (spawnEffect != Handle::null)
     {
-      space->GetGameObject(spawnEffect)->Destroy();
+      GameObject* obj = space->GetGameObject(spawnEffect);
+      if (obj)
+        obj->Destroy();
       spawnEffect = Handle::null;
     }
 		//opposite of init
@@ -681,7 +691,7 @@ namespace Framework
         space->GetGameObject(spawnEffect)->Destroy();
         spawnEffect = Handle::null;
 
-        pa->Color.A = 255.0f;
+        pa->Color.A = 1.0f;
 
         hasRespawned = false;
       }
@@ -901,6 +911,14 @@ namespace Framework
       space->GetGameObject(owner)->hooks.Call("ButtonPressed", Buttons::RIGHT);
       playerButton.button = Buttons::RIGHT;
     }
+
+    if (SHEEPINPUT->Keyboard.KeyIsPressed('V'))
+    {
+      Handle explosion = (FACTORY->LoadObjectFromArchetype(space, "explosion"))->self;
+      Transform *exT = space->GetGameObject(explosion)->GetComponent<Transform>(eTransform);
+      exT->SetTranslation(ps->GetTranslation());
+      exT->SetRotation((float)GetRandom(0, (int)(2.0f * (float)PI)));
+    }
     
     ENGINE->SystemMessage(MetricsMessage(&playerButton));
   }
@@ -917,14 +935,14 @@ namespace Framework
     return health;
   }
 
-  void PlayerController::DealDamage(int damage, int playerNum_)
+  void PlayerController::DealDamage(float damage, int playerNum_)
   {
     if (playerNum != playerNum_)
       return;
 
     if ((shields - damage) < 0) //if the damage would do more than we have shields
     {
-      int leftOver = damage - shields;
+      float leftOver = damage - shields;
       shields = 0;
       health -= leftOver;
     }
@@ -936,6 +954,9 @@ namespace Framework
   void PlayerController::SpawnEffect()
   {
     Transform *effectTrans;
+    //ParticleSystem* ps;
+
+
     switch (playerNum)
     {
     case 0:

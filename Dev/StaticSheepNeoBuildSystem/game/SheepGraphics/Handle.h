@@ -41,6 +41,7 @@ class Handle
     };
 
     friend class RenderContext;
+    friend class Tex2D;
 };
 
 }

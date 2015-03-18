@@ -618,7 +618,7 @@ static HRESULT CreateTextureFromWIC( _In_ ID3D11Device* d3dDevice,
     }
     else
     {
-        desc.BindFlags = bindFlags;
+        desc.BindFlags = bindFlags | D3D11_BIND_RENDER_TARGET;
         desc.MiscFlags = miscFlags;
     }
 

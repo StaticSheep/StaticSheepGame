@@ -342,12 +342,12 @@ namespace DirectSheep
     bd.RenderTarget[0].BlendEnable = TRUE;
 
     bd.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
-    bd.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
+    bd.RenderTarget[0].SrcBlend = D3D11_BLEND_ONE;
     bd.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
 
     bd.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
     bd.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
-    bd.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
+    bd.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ONE;
 
     bd.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
     bd.AlphaToCoverageEnable = false;
@@ -406,12 +406,56 @@ namespace DirectSheep
     bd.IndependentBlendEnable = false;
 
     DXVerify(m_device->CreateBlendState(&bd, &m_blendStateMap[BLEND_MODE_MULTIPLY]));
+  
+    ZeroMemory(&bd, sizeof(D3D11_BLEND_DESC));
+    bd.RenderTarget[0].BlendEnable = true;
+
+    bd.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
+    bd.RenderTarget[0].SrcBlend = D3D11_BLEND_ZERO;
+    bd.RenderTarget[0].DestBlend = D3D11_BLEND_SRC_COLOR;
+
+    bd.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+    bd.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
+    bd.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
+
+    bd.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+
+    bd.AlphaToCoverageEnable = false;
+    bd.IndependentBlendEnable = false;
+
+    DXVerify(m_device->CreateBlendState(&bd,
+      &m_blendStateMap[BLEND_MODE_PREMULTIPLY]));
+
+
+
+    ZeroMemory(&bd, sizeof(D3D11_BLEND_DESC));
+    bd.RenderTarget[0].BlendEnable = true;
+
+    bd.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
+    bd.RenderTarget[0].SrcBlend = D3D11_BLEND_ZERO;
+    bd.RenderTarget[0].DestBlend = D3D11_BLEND_ONE;
+
+    bd.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+    bd.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ZERO;
+    bd.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ONE;
+
+    bd.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+
+    bd.AlphaToCoverageEnable = false;
+    bd.IndependentBlendEnable = false;
+
+    DXVerify(m_device->CreateBlendState(&bd,
+      &m_blendStateMap[BLEND_MODE_OVERRIDE]));
+
+    
+
+    
   }
 
   void RenderContext::InitializeSamplerState(void)
   {
     D3D11_SAMPLER_DESC sd;
-    sd.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT;// D3D11_FILTER_ANISOTROPIC;
+    sd.Filter = D3D11_FILTER_ANISOTROPIC;// D3D11_FILTER_ANISOTROPIC;
     sd.MaxAnisotropy = 16;
     sd.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
     sd.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;

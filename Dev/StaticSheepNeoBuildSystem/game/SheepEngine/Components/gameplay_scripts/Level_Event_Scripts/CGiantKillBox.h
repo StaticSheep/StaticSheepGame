@@ -22,6 +22,7 @@ namespace Framework
 		void Initialize();
 		void Remove();
     void CallingSM();
+    void DestroySelf();
 
 		//member variables
     Handle Grinders[12]; //12 is the max amount of grinders to hold for this level event

@@ -82,8 +82,8 @@ GameObject
     scaleEase int 3
     scale ParticleOption<float>
     {
-      m_startMin float 82.000000
-      m_startMax float 82.000000
+      m_startMin float 164.000000
+      m_startMax float 164.000000
       m_endMin float 300.000000
       m_endMax float 400.000000
     }
@@ -130,6 +130,7 @@ GameObject
   }
   ParticleCircleEmitter
   {
+    parentToOwner bool true
     m_innerRadius float 0.000000
     m_outerRadius float 0.000000
     m_spawnOffset Vec3
@@ -145,7 +146,7 @@ GameObject
     }
     m_rate ParticleOptionShort<float>
     {
-      m_startMin float 8.000000
+      m_startMin float 5.000000
       m_startMax float 0.000000
     }
     spawning bool true

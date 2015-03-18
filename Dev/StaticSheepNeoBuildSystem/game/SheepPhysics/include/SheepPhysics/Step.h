@@ -24,7 +24,7 @@ namespace SheepFizz
   PHY_API typedef void(*CollisionCB)(void*, void*, void*, ExternalManifold);
  
 
-	#define GRAVITY -100.0f
+	#define GRAVITY 0.0f
   #define MAX_ITERATIONS 10
 
 	class PhysicsSpace

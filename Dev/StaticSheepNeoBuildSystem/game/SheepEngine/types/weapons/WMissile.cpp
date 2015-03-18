@@ -35,13 +35,18 @@ namespace Framework
   {
 
     GameObject *bullet = (FACTORY->LoadObjectFromArchetype(player->space, "Missile"));
+
+    Bullet_Default* bd = bullet->GetComponent<Bullet_Default>(eBullet_Default);
+
     if (explosive_)
     {
-      bullet->GetComponent<Bullet_Default>(eBullet_Default)->damage = damage + 10;
-      bullet->GetComponent<Bullet_Default>(eBullet_Default)->explosive_ = true;
+      bd->damage = damage + 10;
+      bd->explosive_ = true;
     }
     else
-      bullet->GetComponent<Bullet_Default>(eBullet_Default)->damage = damage;
+      bd->damage = damage;
+
+
     bullet->GetComponent<ParticleCircleEmitter>(eParticleCircleEmitter)->spawning = false;
     bullet->GetComponent<ParticleCircleEmitter>(eParticleCircleEmitter)->timedSpawning = true;
     bullet->GetComponent<ParticleCircleEmitter>(eParticleCircleEmitter)->timed = 0.001f;

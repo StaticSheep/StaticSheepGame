@@ -22,6 +22,7 @@ namespace Framework
 		void Initialize();
 		void Remove();
     void RespawnBlink(float dt);
+    void DestroySelf();
 
 		//member variables
     Handle wpTransfrom;
