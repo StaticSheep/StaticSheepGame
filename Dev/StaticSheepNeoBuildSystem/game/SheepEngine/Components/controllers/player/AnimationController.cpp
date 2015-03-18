@@ -202,7 +202,7 @@ namespace Framework
       break;
     case JUMP:
       if(state == -1)
-        spine->SetComplexSequence(std::string("jump"), 12.0f, 4, 12);
+        spine->SetComplexSequence(std::string("jump"), 24.0f, 4, 12);
       else
       {
         switch(state)
