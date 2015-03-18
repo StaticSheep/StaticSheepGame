@@ -588,6 +588,8 @@ namespace Framework
     case BONUSMODE:
       BonusMode(dt);
       break;
+    case GAMEOVER:
+      GameOverMode(dt);
     }
   }
 
@@ -751,6 +753,11 @@ namespace Framework
       Vec3 pos(ranX, ranY, ranZ);
       SpawnItemSet(pos);
     }
+
+  }
+
+  void Level1_Logic::GameOverMode(float dt)
+  {
 
   }
 
