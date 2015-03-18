@@ -59,6 +59,8 @@ namespace Framework
     float rotation, lastRotation;
     float respawnTimer;
 
+    bool keepMoving;
+
     std::string weaponGroup;
 
     std::vector<Vec3> normals;
@@ -67,6 +69,7 @@ namespace Framework
     PowerUp *powerUp;
 		Vec3 aimDir;  //the direction the player is currently aiming
     Vec3 snappedNormal; //the normal of the thing we are currently snapped to
+    Vec3 nextSnappedNormal;
 		Handle playerGamePad; //the players game pad
 		Handle playerCollider; //the players collider (box)
 		Handle playerTransform; //the player's transform
