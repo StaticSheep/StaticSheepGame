@@ -88,6 +88,7 @@ E_NAME(Component)
   E_ENTRY(Explosion)
   E_ENTRY(ImpactEffect)
   E_ENTRY(RoundText)
+  E_ENTRY(RoundResults)
 
   E_ENTRY(div_Gameplay)
   E_ENTRY(PowerupPickup)

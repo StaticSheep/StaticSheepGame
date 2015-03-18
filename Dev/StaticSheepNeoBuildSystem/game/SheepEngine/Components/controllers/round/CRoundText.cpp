@@ -17,7 +17,12 @@ namespace Framework
   RoundText::RoundText()
 	{
     text = true;
-    roundNum = 1;
+    number = 1;
+    timer = 3.0f;
+    LeftToRight = false;
+    initialSpeed = 80.0f;
+    middleSpeed = 2.5f;
+    killRange = 1000.0f;
 	}
 
   RoundText::~RoundText()
@@ -32,7 +37,14 @@ namespace Framework
 
     rTransfrom = space->GetGameObject(owner)->GetComponentHandle(eTransform);
     roundSprite = space->GetGameObject(owner)->GetComponentHandle(eSprite);
-    timer = 3.0f;
+
+    if (!text)
+    {
+      AniSprite *numSprite = space->GetGameObject(owner)->GetComponent<AniSprite>(eAniSprite);
+
+      if (numSprite != nullptr)
+        numSprite->SetRange(Vec2((float)number, (float)number));
+    }
 	}
 
   void RoundText::Remove()
@@ -45,36 +57,31 @@ namespace Framework
   {
     Transform *rt = space->GetHandles().GetAs<Transform>(rTransfrom);
     Vec3 currPos = rt->GetTranslation();
-    if (text)
+    if (!text)
+    {
+      AniSprite *numSprite = space->GetGameObject(owner)->GetComponent<AniSprite>(eAniSprite);
+
+      if (numSprite != nullptr)
+        numSprite->SetRange(Vec2((float)number, (float)number));
+    }
+
+    if (LeftToRight)
     {
       if (currPos.x > -100.0f && currPos.x < 100.0f)
-      {
-        rt->SetTranslation(currPos + Vec3(2.0f, 0.0f, 0.0f));
-      }
+        rt->SetTranslation(currPos + Vec3(middleSpeed, 0.0f, 0.0f));
       else
-      {
-        rt->SetTranslation(currPos + Vec3(50.0f, 0.0f, 0.0f));
-      }
-
+        rt->SetTranslation(currPos + Vec3(initialSpeed, 0.0f, 0.0f));
     }
     else
     {
-      AniSprite *numSprite = space->GetGameObject(owner)->GetComponent<AniSprite>(eAniSprite);
-      if (numSprite != nullptr)
-      {
-        numSprite->SetRange(Vec2((float)roundNum, (float)roundNum));
-      }
       if (currPos.x > -100.0f && currPos.x < 100.0f)
-      {
-        rt->SetTranslation(currPos - Vec3(2.0f, 0.0f, 0.0f));
-      }
+        rt->SetTranslation(currPos + Vec3(-middleSpeed, 0.0f, 0.0f));
       else
-      {
-        rt->SetTranslation(currPos - Vec3(50.0f, 0.0f, 0.0f));
-      }
+        rt->SetTranslation(currPos + Vec3(-initialSpeed, 0.0f, 0.0f));
     }
 
-    if (currPos.x < -1000 || currPos.x > 1000)
+
+    if (currPos.x < -killRange || currPos.x > killRange)
     {
       DestroySelf();
     }

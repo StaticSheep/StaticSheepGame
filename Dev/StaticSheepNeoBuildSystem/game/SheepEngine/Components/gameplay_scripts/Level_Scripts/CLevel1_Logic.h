@@ -66,6 +66,7 @@ namespace Framework
     int playerCoinsThisFrame[4];
     std::deque<std::pair<int, float>> coinStringsAlive[4];
     bool juggernaut[4];
+    bool num_spawned[4];
     float timeAsJugg;
     int deadPlayers;
     int numOfPlayers;
@@ -96,6 +97,7 @@ namespace Framework
     void SpawnCoins(Vec3);
     void SpawnCoinsEx(Vec3, int);
     void SpawnLevelEvent();
+    void SpawnModeText();
 
     void GoToGameMode(float dt);
     void FFAMode(float dt);
@@ -105,7 +107,7 @@ namespace Framework
     void SuddenDeathMode(float dt);
     void SlotMachineMode(float dt);
     void BonusMode(float dt);
-    bool LastManStanding();
+    bool LastManStanding(float dt);
     void RoundOver();
 
     void SlotFinished(GameTypes mode);

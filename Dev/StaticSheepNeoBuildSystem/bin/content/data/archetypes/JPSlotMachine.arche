@@ -20,16 +20,17 @@ GameObject
   }
   SlotMachine
   {
+    m_layer int 1
     m_stopTexture std::string "ggg_reel.png"
     m_spinTexture std::string "ggg_reel_blur.png"
     m_slotBackTexture std::string "slotmachine_slotback.png"
     numSlots int 3
     slotOptions int 3
-    startSpeed float 7.000000
+    startSpeed float 10.000000
     slotSize Vec2
     {
-      X float 1.000000
-      Y float 1.000000
+      X float 0.800000
+      Y float 0.800000
     }
     slotMargin float 10.000000
     slotOffset Vec2

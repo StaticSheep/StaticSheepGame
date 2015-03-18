@@ -30,6 +30,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "../arena/CBlockLights.h"
 #include "../../controllers/round/CRoundController.h"
 #include "../../controllers/chip/CChipController.h"
+#include "../../controllers/round/CRoundText.h"
 
 static const char *playerNames[] = { "Player1", "Player2", "Player3", "Player4" };
 static int juggKills[4] = { 0, 0, 0, 0 };
@@ -100,7 +101,7 @@ namespace Framework
     startFlag = true;
     playing = false;
     countDownDone = false;
-    countDownTimer = 2.5f;
+    countDownTimer = 3.5f;
     timeAsJugg = 0;
 
     for (int i = 0; i < 4; ++i)
@@ -109,6 +110,7 @@ namespace Framework
       juggernaut[i] = false;
       playerCoinsThisFrame[i] = 0;
       playerCoins[i] = 1;
+      num_spawned[i] = false;
     }
 
     mode = SLOTMACHINE;
@@ -120,6 +122,17 @@ namespace Framework
   void Level1_Logic::Remove()
 	{
 		space->hooks.Remove("LogicUpdate", self);
+    space->hooks.Remove("Draw", self);
+    space->hooks.Remove("PlayerDied", self);
+    space->hooks.Remove("CheatWin", self);
+    space->hooks.Remove("SlotFinished", self);
+    space->hooks.Remove("SetMods", self);
+    space->hooks.Remove("SpawnItem", self);
+    space->hooks.Remove("SpawnItemSet", self);
+    space->hooks.Remove("GivePlayerCoins", self);
+    space->hooks.Remove("SpawnCoins", self);
+    space->hooks.Remove("RoundOver", self);
+    space->hooks.Remove("SpawnCoinsEx", self);
 	}
 
   void Level1_Logic::LogicUpdate(float dt)
@@ -137,7 +150,7 @@ namespace Framework
       instance.volume = 0.35f;
       instance.mode = PLAY_LOOP;
 
-      sp->Play("Main Music", &instance);
+      sp->Play("tripg", &instance);
       playing = true;
     } 
 
@@ -174,8 +187,8 @@ namespace Framework
         playTrans->SetTranslation(spawnPos[i]);
         if (mode == SUDDENDEATH)
         {
-          temp->GetComponent<PlayerController>(ePlayerController)->health = 10;
-          temp->GetComponent<PlayerController>(ePlayerController)->shields = 0;
+          temp->GetComponent<PlayerController>(ePlayerController)->health = 100;
+          temp->GetComponent<PlayerController>(ePlayerController)->shields = 200;
         }
       }
       startFlag = false;
@@ -287,30 +300,49 @@ namespace Framework
 
   bool Level1_Logic::LevelCountdown(float dt)
   {
-    Sprite *ls = space->GetHandles().GetAs<Sprite>(levelSprite);
+    Sprite *ls = space->GetGameObject(owner)->GetComponent<Sprite>(eSprite);
     //run countdown
-    if (countDownTimer <= 2.0f && countDownTimer > 1.33f)
+    if (countDownTimer <= 3.0f && countDownTimer > 2.0f && !num_spawned[2])
     {
-      ls->SetTexture("cd_3.png");
-    }
-    else if (countDownTimer <= 1.33f && countDownTimer > 0.66f)
-    {
-      //change sprite
-      ls->SetTexture("cd_2.png");
+      GameObject *round_number = (FACTORY->LoadObjectFromArchetype(space, "round_number"));
+      round_number->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(1000.0f, -64.0f, 0.0f));
+      round_number->GetComponent<RoundText>(eRoundText)->number = 3;
+      round_number->GetComponent<RoundText>(eRoundText)->middleSpeed = 10.0f;
+      num_spawned[2] = true;
+
+      //GameObject *round_start = (FACTORY->LoadObjectFromArchetype(space, "roundStartsIn_text"));
+      //round_start->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(-1000.0f, 64.0f, 0.0f));
+
+      SpawnModeText();
 
     }
-    else if (countDownTimer <= 0.66f && countDownTimer > 0.0f)
+    else if (countDownTimer <= 2.0f && countDownTimer > 1.0f && !num_spawned[1])
     {
-      //change sprite
-      ls->SetTexture("cd_1.png");
-
+      GameObject *round_number = (FACTORY->LoadObjectFromArchetype(space, "round_number"));
+      round_number->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(1000.0f, -64.0f, 0.0f));
+      round_number->GetComponent<RoundText>(eRoundText)->number = 2;
+      round_number->GetComponent<RoundText>(eRoundText)->middleSpeed = 10.0f;
+      num_spawned[1] = true;
     }
+    else if (countDownTimer <= 1.0f && countDownTimer > 0.0f && !num_spawned[0])
+    {
+      GameObject *round_number = (FACTORY->LoadObjectFromArchetype(space, "round_number"));
+      round_number->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(1000.0f, -64.0f, 0.0f));
+      round_number->GetComponent<RoundText>(eRoundText)->number = 1;
+      round_number->GetComponent<RoundText>(eRoundText)->middleSpeed = 10.0f;
+      num_spawned[0] = true;
+    }
+
 
     countDownTimer -= dt;
     if (countDownTimer <= 0)
     {
       countDownDone = true;
       ls->SetTexture("blank.png");
+      for (int i = 0; i < 4; ++i)
+        num_spawned[i] = false;
+      //spawn GO text
+
       return true;
     }
 
@@ -510,7 +542,33 @@ namespace Framework
       space->GetHandles().GetAs<SoundEmitter>(levelEmitter)->Play("warning");
     }
   }
-  /*idea for bonus slot machine. have it spin for bonus star awards when the round ends. things like most kills, or most coins*/
+
+  void Level1_Logic::SpawnModeText()
+  {
+    GameObject *round_number;
+    switch (mode)
+    {
+    case FFA:
+      round_number = (FACTORY->LoadObjectFromArchetype(space, "FFA_text"));
+      round_number->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(-1000.0f, 200.0f, 0.0f));
+      break;
+    case JUGGERNAUT:
+      round_number = (FACTORY->LoadObjectFromArchetype(space, "DeathTag_text"));
+      round_number->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(-1000.0f, 200.0f, 0.0f));
+      break;
+    case SUDDENDEATH:
+      round_number = (FACTORY->LoadObjectFromArchetype(space, "SuddenDeath_text"));
+      round_number->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(-1000.0f, 200.0f, 0.0f));
+      break;
+    case SLOTMACHINE:
+      
+      break;
+    case BONUSMODE:
+      
+      break;
+    }
+  }
+  
   void Level1_Logic::GoToGameMode(float dt)
   {
     switch (mode)
@@ -671,8 +729,22 @@ namespace Framework
     else
       roundTimer -= dt;
 
-    if (LastManStanding())
+    spawnTimer -= dt;
+    eventTimer -= dt;
+    SpawnLevelEvent();
+    if (spawnTimer <= 0)
+    {
+      spawnTimer = 3.0f;
+      float ranX = GetRandom(-600, 600);
+      float ranY = GetRandom(-200, 200);
+      float ranZ = GetRandom(150, 200);
+      Vec3 pos(ranX, ranY, ranZ);
+      SpawnItemSet(pos);
+    }
+
+    if (LastManStanding(dt))
       space->GetGameObject(owner)->GetComponent<RoundController>(eRoundController)->round_state_timer = 0;
+
     spawnTimer -= dt;
     eventTimer -= dt;
 
@@ -684,7 +756,7 @@ namespace Framework
       return;
     else if (!slotFinished)
     {
-      ResetPlayers();
+      //ResetPlayers();
       if (LE)
       {
         delete LE;
@@ -700,7 +772,7 @@ namespace Framework
         space->hooks.Call("LightingEvent", 0xFFFFFFFF, &ed);
       }
       space->hooks.Call("CallingSM");
-      (FACTORY->LoadObjectFromArchetype(space, "LevelSlotMachine"))->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(0.0f, 64.0f, -1.0f));
+      (FACTORY->LoadObjectFromArchetype(space, "LevelSlotMachine"))->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(0.0f, 900.0f, 1.0f));
       slotFinished = true;
     }
   }
@@ -734,7 +806,7 @@ namespace Framework
   {
     mode = mode_;
     countDownDone = false;
-    countDownTimer = 2.0f;
+    countDownTimer = 3.0f;
     roundTimer = 60.0f;
     slotFinished = false;
     startFlag = true;
@@ -765,7 +837,7 @@ namespace Framework
     }
   }
 
-  bool Level1_Logic::LastManStanding()
+  bool Level1_Logic::LastManStanding(float dt)
   {
     int deadPlayers = 0;
     int lms = 0;
@@ -774,7 +846,10 @@ namespace Framework
       if (Players[i] == Handle::null)
         ++deadPlayers;
       else
+      {
         lms = i;
+        space->GetGameObject(owner)->GetComponent<ChipController>(eChipController)->LMSTimeAlive[i] += dt;
+      }
     }
 
     if (deadPlayers == 3)
@@ -810,26 +885,11 @@ namespace Framework
 
   void Level1_Logic::Draw()
   {
-    Vec3 pos;
+    Vec3 pos(0.0f, 0.0f, 0.0f);
     Vec2D scale(50, 50);
     char playerCoinsString[10];
     for (int i = 0; i < 4; ++i)
     {
-      //depending on the player, it draws the totals in the correct place
-      //if (i == 0)
-      //  pos = Vec3(-764, -457.0f, 0.0f);
-      //if (i == 1)
-      //  pos = Vec3(572.0f, -457.0f, 0.0f); 
-      //if (i == 2)
-      //  pos = Vec3(572.0f, 507.0f, 0.0f); 
-      //if (i == 3)
-      //  pos = Vec3(-764.0f, 507.0f, 0.0f);
-
-      //itoa(playerCoins[i], playerCoinsString, 10);
-      //Draw::SetPosition(pos.x, pos.y);
-      //Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
-      //Draw::SetRotation(0);
-      //Draw::DrawString(playerCoinsString, scale, 1);
 
       if (Players[i] == Handle::null)
         continue;
@@ -845,7 +905,9 @@ namespace Framework
         for (int j = 0; j < coinStringsAlive[i].size(); ++j)
         {
           itoa(coinStringsAlive[i][j].first, playerCoinsString, 10);
-          pos = space->GetGameObject(Players[i])->GetComponent<Transform>(eTransform)->GetTranslation();
+          if (Players[i] != Handle::null)
+            pos = space->GetGameObject(Players[i])->GetComponent<Transform>(eTransform)->GetTranslation();
+
           Draw::SetPosition(pos.x, pos.y + (64 - (coinStringsAlive[i][j].second * 64)));
           Draw::SetColor(0.9, 0.9, 0.15f, fontIndex); //yellow-ish color
           Draw::SetRotation(0);
