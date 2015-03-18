@@ -48,6 +48,8 @@ namespace Framework
     float timeOfRound;
     bool spawned_round_start, slotMachineDone, roundUp_spawned, EORAwarded, ResultsSpawned;
     bool num_spawned[5];
+    char round_timer[10];
+    int font_index;
     GameTypes mode_;
   };
 }

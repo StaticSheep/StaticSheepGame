@@ -42,6 +42,9 @@ namespace Framework
     ChipController_ = space->GetGameObject(owner)->GetComponentHandle(eChipController);
     round_state_timer = 2.0f;
     EORAwarded = false;
+
+
+    font_index = Draw::GetFontIndex("BN_Jinx");
   }
 
   void RoundController::LogicUpdate(float dt)
@@ -101,6 +104,10 @@ namespace Framework
       return;
 
     round_state_timer -= dt;
+
+    itoa((int)round_state_timer + 1, round_timer, 10);
+
+
     if (round_state_timer <= 0)
     {
       state_ = ROUNDOVER;
@@ -285,7 +292,25 @@ namespace Framework
       Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
       Draw::SetRotation(0);
       Draw::DrawString(playerString, scale, 1);
+
+      if (round_state_timer > timeOfRound - 3)
+        itoa(timeOfRound - 3, round_timer, 10);
+
+      scale.x = 90;
+      scale.y = 90;
+      Draw::SetPosition(-60.0f, 510.0f);
+
+      if (round_state_timer < 9)
+        Draw::SetPosition(-30.0f, 510.0f);
+
+      else if (round_state_timer < 19)
+        Draw::SetPosition(-50.0f, 510.0f);
+
+      Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
+      Draw::SetRotation(0);
+      Draw::DrawString(round_timer, scale, font_index);
     }
+
   }
 
   void RoundController::Remove()

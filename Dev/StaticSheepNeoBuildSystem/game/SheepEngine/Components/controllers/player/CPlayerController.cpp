@@ -336,6 +336,7 @@ namespace Framework
     }
     else if (gp->LeftStick_X() < -0.2 || (SHEEPINPUT->KeyIsDown(0x41) && gp->GetIndex() == 0))
     {
+
       if (snappedNormal.y > 0)
         bc->AddToVelocity(-(snappedNormal.CalculateNormal() * 450));
       if (snappedNormal.y < 0)
@@ -345,6 +346,7 @@ namespace Framework
     //left stick movement in the Y
     if (gp->LeftStick_Y() > 0.2 || (SHEEPINPUT->KeyIsDown(0x57) && gp->GetIndex() == 0))
     {
+
       if (snappedNormal.x > 0)
         bc->AddToVelocity(-(snappedNormal.CalculateNormal() * 450));
       else if (snappedNormal.x < 0)
@@ -356,7 +358,7 @@ namespace Framework
         bc->AddToVelocity((snappedNormal.CalculateNormal() * 450));
       if (snappedNormal.x < 0)
         bc->AddToVelocity(-(snappedNormal.CalculateNormal() * 450));
-    }
+    }    
 
     //clamp the players velocity
     clampVelocity(450.0f);
@@ -473,71 +475,64 @@ namespace Framework
 
   void PlayerController::DetermineSnap(GameObject *OtherObject, Handle otherObject, SheepFizz::ExternalManifold manifold)
   {
-    //get the transform of the thing we are colliding with
     Transform *OOT = OtherObject->GetComponent<Transform>(eTransform);
-    //if that thing we collided with's transform is missing, get the fuck outta here, i mean what are you even doing?
+
     if (!OOT)
       return;
 
-    if (OtherObject->HasComponent(eBoxCollider) && OtherObject->name != "Player" && OtherObject->name != "WeaponPickup"
-      && OtherObject->archetype != "Grinder" && OtherObject->name != "PowerUpPickup")
+    if (!(OtherObject->HasComponent(eBoxCollider)) || OtherObject->name == "Player" || OtherObject->name == "WeaponPickup"
+      || OtherObject->archetype == "Grinder" || OtherObject->name == "PowerUpPickup")
+      return;
+    
+    BoxCollider *OOBc = OtherObject->GetComponent<BoxCollider>(eBoxCollider);
+    float dotNormals;
+
+    if (snappedNormal.x != OOBc->GetCollisionNormals(manifold).x && snappedNormal.y != OOBc->GetCollisionNormals(manifold).y)
     {
-      float dotNormals;
-      Vec3 nextSnappedNormal;
-      Vec3 oldSnappedNormal = snappedNormal;
-      BoxCollider *OOBc = OtherObject->GetComponent<BoxCollider>(eBoxCollider);
+      nextSnappedNormal = OOBc->GetCollisionNormals(manifold);
+      nextSnappedNormal.Rotate(PI / 2);
+      nextSnappedNormal.Normalize();
 
-      //bc = space->GetHandles().GetAs<BoxCollider>(playerCollider);
-      //ps = space->GetHandles().GetAs<Transform>(playerTransform);
-
-      if (oldSnappedNormal.x != OOBc->GetCollisionNormals(manifold).x && oldSnappedNormal.y != OOBc->GetCollisionNormals(manifold).y &&
-        snappedNormal.x != OOBc->GetCollisionNormals(manifold).x && snappedNormal.y != OOBc->GetCollisionNormals(manifold).y)
-      {
-        nextSnappedNormal = OOBc->GetCollisionNormals(manifold);
-        nextSnappedNormal.Rotate((float)PI / 2);
-        dotNormals = snappedNormal.DotProduct(nextSnappedNormal);
-        if (dotNormals > 0)
-          bc->AddToVelocity((nextSnappedNormal * 10));
-        else
-          bc->AddToVelocity(-(nextSnappedNormal * 10));
-      }
-      snappedNormal = OOBc->GetCollisionNormals(manifold);
-
-      //i have to set up a bool flag here for finding a matching vector
-      bool dublicate = false;
-      for (unsigned i = 0; i < normals.size(); ++i)
-      {
-        if (snappedNormal.x == normals[i].x && snappedNormal.y == normals[i].y)
-          dublicate = true;
-      }
-      if (dublicate == false)
-        normals.push_back(Vec3(snappedNormal));
-
-      if (normals.size() == 0)
-        normals.push_back(Vec3(snappedNormal));
-
-      isSnapped = true;
-      //get the thing we are colliding with
-      snappedTo = otherObject;
-      float avX = 0, avY = 0;
-      for (unsigned i = 0; i < normals.size(); ++i)
-      {
-        avX += normals[i].x;
-        avY += normals[i].y;
-      }
-      if (normals.size() != 0)
-      {
-        avX /= normals.size();
-        avY /= normals.size();
-        Vec3 averaged(avX, avY, 0.0f);
-        snappedNormal = averaged;
-      }
+      dotNormals = snappedNormal.DotProduct(nextSnappedNormal);
+      if (dotNormals > 0)
+        bc->AddToVelocity((nextSnappedNormal * 10));
+      else
+        bc->AddToVelocity(-(nextSnappedNormal * 10));
     }
-    //else if (OtherObject->HasComponent(eCircleCollider) && OtherObject->archetype != "CoinPickup")
-    //{
-    //  CircleCollider *OOCc = OtherObject->GetComponent<CircleCollider>(eCircleCollider);
-    //  snappedNormal = OOCc->GetCollisionNormals(manifold);
-    //}
+
+    //i have to set up a bool flag here for finding a matching vector
+    bool duplicate = false;
+    snappedNormal = OOBc->GetCollisionNormals(manifold);
+    snappedNormal.Normalize();
+
+    for (unsigned i = 0; i < normals.size(); ++i)
+    {
+      if (snappedNormal.x == normals[i].x && snappedNormal.y == normals[i].y)
+        duplicate = true;
+    }
+
+    if (!duplicate)
+      normals.push_back(snappedNormal);
+
+    if (normals.size() == 0)
+      normals.push_back(snappedNormal);
+
+    isSnapped = true;
+    //get the thing we are colliding with
+    snappedTo = otherObject;
+    float avX = 0, avY = 0;
+    for (unsigned i = 0; i < normals.size(); ++i)
+    {
+      avX += normals[i].x;
+      avY += normals[i].y;
+    }
+    if (normals.size() != 0)
+    {
+      avX /= normals.size();
+      avY /= normals.size();
+      Vec3 averaged(avX, avY, 0.0f);
+      snappedNormal = averaged;
+    }
   }
 
 	//************************************
