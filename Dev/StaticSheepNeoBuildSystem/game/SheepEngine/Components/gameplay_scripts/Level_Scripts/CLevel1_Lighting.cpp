@@ -3,6 +3,7 @@
 #include "../../transform/CTransform.h"
 #include "../SheepUtil/include/SheepMath.h"
 #include "CLevel1_Lighting.h"
+#include "../arena/CBlockLights.h"
 
 #define Countdown 5.0f
 namespace Framework
@@ -43,6 +44,13 @@ namespace Framework
 
   void Level1_Lighting::LogicUpdate(float dt)
   {
+
+    if (m_firstUpdate)
+    {
+      //TurnOn();
+
+      m_firstUpdate = false;
+    }
 
     if (m_levelTime < Countdown)
     {
@@ -93,6 +101,35 @@ namespace Framework
     {
       space->GetGameObject(m_lights[i])->GetComponent<PointLight>(ePointLight)->TurnOn();
     }
+
+    {
+      BlockLights::EventData ed;
+
+      ed.overrideDefault = true;
+
+      ed.settings.color = Vec4(0.2f, 0.5f, 1.0f, 0.8f);
+      ed.settings.fx = BlockLights::CUSTOM;
+      ed.settings.customData.duration = 2.0f;
+      ed.settings.customSequence = "jklmnopqrstuvwxyzyxwvutsrqponmlkj";
+
+
+      space->hooks.Call("LightingEvent", (unsigned)0xAAAAAAAA, &ed);
+    }
+
+    {
+      BlockLights::EventData ed;
+
+      ed.overrideDefault = true;
+
+      ed.settings.color = Vec4(1.0f, 0.4f, 0.2f, 0.8f);
+      ed.settings.fx = BlockLights::CUSTOM;
+      ed.settings.customData.duration = 2.0f;
+      ed.settings.customSequence = "jklmnopqrstuvwxyzyxwvutsrqponmlkj";
+
+
+      space->hooks.Call("LightingEvent", (unsigned)0x55555555, &ed);
+    }
+
   }
 
   void Level1_Lighting::TurnOff()
@@ -103,10 +140,40 @@ namespace Framework
     {
       space->GetGameObject(m_lights[i])->GetComponent<PointLight>(ePointLight)->TurnOff();
     }
+
+    {
+      BlockLights::EventData ed;
+
+      ed.overrideDefault = true;
+
+      ed.settings.color = Vec4(0.1f, 0.8f, 0.2f, 0.8f);
+      ed.settings.fx = BlockLights::CUSTOM;
+      ed.settings.customData.duration = 2.5f;
+      ed.settings.customSequence = "jklmnopqrstuvwxyzyxwvutsrqponmlkj";
+
+
+      space->hooks.Call("LightingEvent", (unsigned)0xAAAAAAAA, &ed);
+    }
+
+    {
+      BlockLights::EventData ed;
+
+      ed.overrideDefault = true;
+
+      ed.settings.color = Vec4(0.1f, 0.2f, 0.8f, 0.8f);
+      ed.settings.fx = BlockLights::CUSTOM;
+      ed.settings.customData.duration = 2.5f;
+      ed.settings.customSequence = "jklmnopqrstuvwxyzyxwvutsrqponmlkj";
+
+
+      space->hooks.Call("LightingEvent", (unsigned)0x55555555, &ed);
+    }
+
   }
 
   void Level1_Lighting::Toggle()
   {
+    
     if (m_isOn)
       TurnOff();
     else

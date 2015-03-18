@@ -13,8 +13,8 @@ GameObject
     Rotation float 0.000000
     Scale Vec3
     {
-      x_ float 1.900000
-      y_ float 1.900000
+      x_ float 1.500000
+      y_ float 1.500000
       z_ float 0.000000
     }
   }
@@ -151,8 +151,8 @@ GameObject
   {
     m_amount Vec2
     {
-      X float 0.150000
-      Y float 0.150000
+      X float 0.500000
+      Y float 0.500000
     }
     m_time float 1.000000
   }

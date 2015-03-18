@@ -765,11 +765,11 @@ namespace Framework
       if (mod1 == LIGHTSOUT)
       {
         space->hooks.Call("ToggleLevelLights");
-        BlockLights::EventData ed;
-        ed.overrideDefault = true;
-        ed.settings.color = Vec4(0.2f, 0.8f, 0.2f, 0.8f);
-        ed.settings.fx = BlockLights::NONE;
-        space->hooks.Call("LightingEvent", 0xFFFFFFFF, &ed);
+        //BlockLights::EventData ed;
+        //ed.overrideDefault = true;
+        //ed.settings.color = Vec4(0.2f, 0.8f, 0.2f, 0.8f);
+        //ed.settings.fx = BlockLights::NONE;
+        //space->hooks.Call("LightingEvent", 0xFFFFFFFF, &ed);
       }
       space->hooks.Call("CallingSM");
       (FACTORY->LoadObjectFromArchetype(space, "LevelSlotMachine"))->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(0.0f, 900.0f, 1.0f));
@@ -823,12 +823,12 @@ namespace Framework
     {
       space->hooks.Call("ToggleLevelLights");
 
-      BlockLights::EventData ed;
-      ed.overrideDefault = true;
-      ed.settings.color = Vec4(0.2f, 0.8f, 0.2f, 0.5f);
-      ed.settings.fx = BlockLights::NONE;
-      ed.settings.customData.duration = 60.0f;
-      space->hooks.Call("LightingEvent", 0xFFFFFFFF, &ed);
+      //BlockLights::EventData ed;
+      //ed.overrideDefault = true;
+      //ed.settings.color = Vec4(0.2f, 0.8f, 0.2f, 0.5f);
+      //ed.settings.fx = BlockLights::NONE;
+      //ed.settings.customData.duration = 60.0f;
+      //space->hooks.Call("LightingEvent", 0xFFFFFFFF, &ed);
     }
     if (mod1 == BONUS && mod2 == BONUS)
     {
