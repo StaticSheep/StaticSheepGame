@@ -139,6 +139,7 @@ namespace Framework
         ResultsTV->GetComponent<RoundResults>(eRoundResults)->mode_ = mode_;
         ResultsSpawned = true;
         space->GetGameObject(owner)->GetComponent<Level1_Logic>(eLevel1_Logic)->ResetPlayers();
+        space->hooks.Call("DestroyPickups");
       }
       
       if (!EORAwarded)

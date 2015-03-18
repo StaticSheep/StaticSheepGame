@@ -29,7 +29,8 @@ namespace Framework
 	{
 		//logic setup, you're attached and components are in place
     space->hooks.Add("LogicUpdate", self, BUILD_FUNCTION(Asteroid::LogicUpdate));
-    space->hooks.Add("CallingSM", self, BUILD_FUNCTION(Asteroid::CallingSM));
+    //space->hooks.Add("CallingSM", self, BUILD_FUNCTION(Asteroid::CallingSM));
+    space->hooks.Add("RoundOver", self, BUILD_FUNCTION(Asteroid::DestroySelf));
 
     aTransfrom = space->GetGameObject(owner)->GetComponentHandle(eTransform);
     aCollider = space->GetGameObject(owner)->GetComponentHandle(eCircleCollider);
@@ -40,6 +41,7 @@ namespace Framework
   void Asteroid::Remove()
 	{
 		space->hooks.Remove("LogicUpdate", self);
+    space->hooks.Remove("RoundOver", self);
 	}
 
   void Asteroid::LogicUpdate(float dt)
@@ -86,5 +88,11 @@ namespace Framework
   {
     /*if (owner != Handle::null)
       space->GetGameObject(owner)->Destroy();*/
+  }
+
+  void Asteroid::DestroySelf()
+  {
+    space->GetGameObject(warn_circle_handle)->Destroy();
+    space->GetGameObject(owner)->Destroy();
   }
 }

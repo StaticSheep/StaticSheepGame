@@ -147,7 +147,7 @@ namespace Framework
       SpawnCoinStacks();
       SoundPlayer *sp = space->GetHandles().GetAs<SoundPlayer>(levelSound);
       SoundInstance instance;
-      instance.volume = 0.35f;
+      instance.volume = 0.95f;
       instance.mode = PLAY_LOOP;
 
       sp->Play("tripg", &instance);
@@ -601,6 +601,9 @@ namespace Framework
     else
       roundTimer -= dt;
 
+    if (roundTimer <= 0)
+      return;
+
     spawnTimer -= dt;
     eventTimer -= dt;
     if (spawnTimer <= 0)
@@ -632,6 +635,7 @@ namespace Framework
     {
       for (int i = 0; i < 4; ++i)
         juggernaut[i] = false;
+      return;
     }
 
     SpawnPlayers(dt);
@@ -729,6 +733,12 @@ namespace Framework
     else
       roundTimer -= dt;
 
+    if (LastManStanding(dt))
+    {
+      space->GetGameObject(owner)->GetComponent<RoundController>(eRoundController)->round_state_timer = 0;
+      return;
+    }
+
     spawnTimer -= dt;
     eventTimer -= dt;
     SpawnLevelEvent();
@@ -741,12 +751,6 @@ namespace Framework
       Vec3 pos(ranX, ranY, ranZ);
       SpawnItemSet(pos);
     }
-
-    if (LastManStanding(dt))
-      space->GetGameObject(owner)->GetComponent<RoundController>(eRoundController)->round_state_timer = 0;
-
-    spawnTimer -= dt;
-    eventTimer -= dt;
 
   }
 
@@ -880,6 +884,9 @@ namespace Framework
 
       space->hooks.Call("JuggDied", theJugg, timeAsJugg);
       timeAsJugg = 0;
+
+      if (LE != nullptr)
+        delete LE;
     }
   }
 
