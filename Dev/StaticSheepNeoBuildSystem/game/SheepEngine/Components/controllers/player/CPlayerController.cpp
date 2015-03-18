@@ -92,23 +92,27 @@ namespace Framework
     ps = space->GetHandles().GetAs<Transform>(playerTransform);
     ps->SetScale(Vec3(1.0f, 1.0f, 0.0));
 
-    /*switch(playerNum)
+    switch(playerNum)
     {
-      case 0:
-        ps->SetScale(Vec3(1.5f, 1.5f, 0.0f));
+      case 0: // ninja
+        //ps->SetScale(Vec3(1.5f, 1.5f, 0.0f));
+        playerColor = Vec4(0.5f, 1.0f, 0.5f, 1.0f);
         break;
-      case 1:
-        ps->SetScale(Vec3(1.0f, 1.0f, 0.0f));
+      case 1: // ruiser
+        playerColor = Vec4(0.75f, 0.15f, 0.1f, 1.0f);
+        //ps->SetScale(Vec3(1.0f, 1.0f, 0.0f));
         break;
-      case 2:
-        ps->SetScale(Vec3(1.25f, 1.25f, 0.0f));
+      case 2: // spacewitch
+        playerColor = Vec4(0.6f, 0.25f, 0.6f, 1.0f);
+        //ps->SetScale(Vec3(1.25f, 1.25f, 0.0f));
         break;
-      case 3:
-        ps->SetScale(Vec3(1.0f, 1.0f, 0.0f));
+      case 3: // steve
+        playerColor = Vec4(0.4f, 0.78f, 0.78f, 1.0f);
+        //ps->SetScale(Vec3(1.0f, 1.0f, 0.0f));
         break;
-    }*/
+    }
 
-    playerColor = Vec4(1.0f, 1.0f, 1.0f, 1.0f);
+    //playerColor = Vec4(1.0f, 1.0f, 1.0f, 1.0f);
 
 		gp = space->GetHandles().GetAs<GamePad>(playerGamePad); //actually gets the gamepad
 		gp->SetPad(playerNum); //setting pad number
