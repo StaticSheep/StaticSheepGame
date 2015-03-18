@@ -322,7 +322,7 @@ namespace Framework
         m_framePos = m_startFramePos;
 
         // If we are finitely looping decrement loops
-        if (m_loop > 0)
+        if (m_loop > 1)
           --m_loop;
 
         // If loop is -1 we loop infinitley, else pause and stop
@@ -357,7 +357,7 @@ namespace Framework
   void AniSprite::Draw()
   {
 
-    if (m_hidden || m_loop == 0)
+    if (m_hidden)
       return;
 
     Transform* trans = space->GetHandles().GetAs<Transform>(transform);
