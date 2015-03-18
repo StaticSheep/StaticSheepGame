@@ -818,7 +818,7 @@ namespace Framework
     mode = mode_;
     countDownDone = false;
     countDownTimer = 3.0f;
-    roundTimer = 60.0f;
+    roundTimer = space->GetGameObject(owner)->GetComponent<RoundController>(eRoundController)->timeOfRound;
     slotFinished = false;
     startFlag = true;
     ResetSpawnTimers();

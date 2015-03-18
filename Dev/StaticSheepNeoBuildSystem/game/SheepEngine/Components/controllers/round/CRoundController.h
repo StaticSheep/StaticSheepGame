@@ -45,6 +45,7 @@ namespace Framework
     int current_round, max_rounds;
     RoundState state_;
     float round_state_timer;
+    float timeOfRound;
     bool spawned_round_start, slotMachineDone, roundUp_spawned, EORAwarded, ResultsSpawned;
     bool num_spawned[5];
     GameTypes mode_;
