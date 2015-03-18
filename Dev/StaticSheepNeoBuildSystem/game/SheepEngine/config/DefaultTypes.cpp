@@ -73,6 +73,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "Components/controllers/round/CRoundText.h"
 #include "components/gameplay_scripts/FX_Scripts/CAOEDamage.h"
 #include "components/gameplay_scripts/Weapon_Scripts/CImpactEffect.h"
+#include "Components/controllers/round/CRoundResults.h"
+#include "components/gameplay_scripts/FX_Scripts/CPulser.h"
 
 
 namespace Framework
@@ -315,7 +317,16 @@ namespace Framework
 
     TYPE_REGISTER(RoundText);
     TYPE_SET_TWEAK_TYPE(RoundText, AntTweak::TW_TYPE_COMPONENT);
-    TYPE_ADD_MEMBER(RoundText, text, false, true, "Left to Right");
+    TYPE_ADD_MEMBER(RoundText, timer, false, true, "Timer");
+    TYPE_ADD_MEMBER(RoundText, text, false, true, "Is Text?");
+    TYPE_ADD_MEMBER(RoundText, number, false, true, "Number");
+    TYPE_ADD_MEMBER(RoundText, LeftToRight, false, true, "Left to Right?");
+    TYPE_ADD_MEMBER(RoundText, initialSpeed, false, true, "Initial Speed");
+    TYPE_ADD_MEMBER(RoundText, middleSpeed, false, true, "Middle Speed");
+    TYPE_ADD_MEMBER(RoundText, killRange, false, true, "Kill Range");
+
+    TYPE_REGISTER(RoundResults);
+    TYPE_SET_TWEAK_TYPE(RoundResults, AntTweak::TW_TYPE_COMPONENT);
 
     TYPE_REGISTER(Laser);
     TYPE_SET_TWEAK_TYPE(Laser, AntTweak::TW_TYPE_COMPONENT);
@@ -620,6 +631,10 @@ namespace Framework
     TYPE_REGISTER(BlockLights);
     TYPE_ADD_MEMBER(BlockLights, m_group, false, true, "Trigger Group");
     TYPE_ADD_MEMBER(BlockLights, m_defaultSettings, false, true, "Defaults");
+
+    TYPE_REGISTER(Pulser);
+    TYPE_ADD_MEMBER(Pulser, m_amount, false, true, "Pulse_Amount");
+    TYPE_ADD_MEMBER(Pulser, m_time, false, true, "Pulse Time");
 
     TYPE_REGISTER( AntTweak::TBar );
     TYPE_REGISTER_PTR( AntTweak::TBar* );

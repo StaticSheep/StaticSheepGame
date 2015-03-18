@@ -43,7 +43,7 @@ namespace Framework
 
     bool m_PulseFlip;
 
-
+    bool m_firstUpdate = true;
 
   };
 }

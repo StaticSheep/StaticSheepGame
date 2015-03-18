@@ -19,7 +19,8 @@ namespace Framework
     JUGGERNAUT,
     SUDDENDEATH,
     BONUSMODE,
-    SLOTMACHINE
+    SLOTMACHINE,
+    GAMEOVER
   };
   enum GameMods
   {
@@ -66,6 +67,7 @@ namespace Framework
     int playerCoinsThisFrame[4];
     std::deque<std::pair<int, float>> coinStringsAlive[4];
     bool juggernaut[4];
+    bool num_spawned[4];
     float timeAsJugg;
     int deadPlayers;
     int numOfPlayers;
@@ -82,6 +84,8 @@ namespace Framework
 
     int GetPlayerHealth(int);
     int GetPlayerLives(int);
+    int GetPlayerCoins(int);
+
     int GetWinner();
     void EndMatch();
     void CheatWin();
@@ -96,6 +100,7 @@ namespace Framework
     void SpawnCoins(Vec3);
     void SpawnCoinsEx(Vec3, int);
     void SpawnLevelEvent();
+    void SpawnModeText();
 
     void GoToGameMode(float dt);
     void FFAMode(float dt);
@@ -103,9 +108,10 @@ namespace Framework
     void MakeJuggernaut();
     void ResetJuggernaut();
     void SuddenDeathMode(float dt);
+    void GameOverMode(float dt);
     void SlotMachineMode(float dt);
     void BonusMode(float dt);
-    bool LastManStanding();
+    bool LastManStanding(float dt);
     void RoundOver();
 
     void SlotFinished(GameTypes mode);

@@ -31,7 +31,8 @@ namespace Framework
 	{
 		//logic setup, you're attached and components are in place
     space->hooks.Add("LogicUpdate", self, BUILD_FUNCTION(GiantKillBox::LogicUpdate));
-    space->hooks.Add("CallingSM", self, BUILD_FUNCTION(GiantKillBox::CallingSM));
+    space->hooks.Add("RoundOver", self, BUILD_FUNCTION(GiantKillBox::DestroySelf));
+    //space->hooks.Add("CallingSM", self, BUILD_FUNCTION(GiantKillBox::CallingSM));
 
     kbTransfrom = space->GetGameObject(owner)->GetComponentHandle(eTransform);
     kbCollider = space->GetGameObject(owner)->GetComponentHandle(eBoxCollider);
@@ -41,7 +42,7 @@ namespace Framework
   void GiantKillBox::Remove()
 	{
 		space->hooks.Remove("LogicUpdate", self);
-
+    space->hooks.Remove("RoundOver", self);
 	}
 
   void GiantKillBox::LogicUpdate(float dt)
@@ -101,5 +102,14 @@ namespace Framework
   {
     /*if (owner)
       space->GetGameObject(owner)->Destroy();*/
+  }
+
+  void GiantKillBox::DestroySelf()
+  {
+    for (int i = 0; i < numOfGrinders; ++i)
+      space->GetGameObject(Grinders[i])->Destroy();
+
+    
+    space->GetGameObject(owner)->Destroy();
   }
 }

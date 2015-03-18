@@ -19,7 +19,11 @@ namespace Framework
     void FireEvent(GameObject *LogicController);
     void FireEventSmall(GameObject *LogicController);
 
+    void Warn();
+
     float timer;
+    bool warned = false;
+    bool spawnLeft = false;
     GameObject *LC;
   };
 }

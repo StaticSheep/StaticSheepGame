@@ -23,7 +23,7 @@ namespace Framework
   
   BasicParticleSystem::~BasicParticleSystem()
   {
-
+    m_particles.clear();
   }
 
   void BasicParticleSystem::Initialize()

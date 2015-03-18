@@ -20,18 +20,19 @@ GameObject
   }
   PointLight
   {
+    m_layer unsignedint 1
     m_brightness LightColor
     {
       R float 1.000000
       G float 1.000000
       B float 1.000000
-      A float 50.000000
+      A float 200.000000
     }
     m_attenuation LightVec3
     {
       X float 1.000000
-      Y float -154.000000
-      Z float 1.600000
+      Y float 200.000000
+      Z float 6.000000
     }
   }
 }

@@ -28,6 +28,9 @@ namespace Framework
     void PlayerDied(int ply, int who_killed_them);
     void JuggDied(int jugg, float timeAsJugg);
     void ResetRoundStats();
+    void RoundOver();
+
+    int GetPlayerChips(int player);
 
     void FFAAwards();
     void JuggAwards();
@@ -43,5 +46,6 @@ namespace Framework
     float totalTimeAsJugg[4], roundTimeAsJugg[4];
     int totalPlayerLMS[4];
     int LMSThisRound;
+    float LMSTimeAlive[4];
   };
 }

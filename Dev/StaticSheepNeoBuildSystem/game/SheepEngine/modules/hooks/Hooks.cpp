@@ -61,8 +61,14 @@ namespace Framework
     // Goes through every hook in the list and pulls them
     for (auto i = m_hooks.begin(); i != m_hooks.end(); ++i)
     {
-      i->second.func.Bind(space->GetHandles().Get(i->second.owner));
-      i->second.func();
+      void* data = space->GetHandles().Get(i->second.owner);
+
+      if (data)
+      {
+        i->second.func.Bind(data);
+        i->second.func();
+      }
+      
     }
   }
 
