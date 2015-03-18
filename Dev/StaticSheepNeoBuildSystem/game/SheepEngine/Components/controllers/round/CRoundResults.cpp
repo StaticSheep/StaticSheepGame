@@ -15,6 +15,9 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 namespace Framework
 {
+  static Vec2D wordSize(30.0f, 30.0f);
+  static Vec2D numberSize(40.0f, 40.0f);
+
   RoundResults::RoundResults()
 	{
 
@@ -133,14 +136,12 @@ namespace Framework
 
   void RoundResults::DrawKills()
   {
-    Vec2D scale(40, 40);
     Draw::SetPosition(-300.0f, 310.0f);
     Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
     Draw::SetRotation(0);
-    Draw::DrawString("Kills", scale, 1);
+    Draw::DrawString("Kills", wordSize, 1);
     Vec3 pos;
     char playerString[10];
-    scale = Vec2D(50, 50);
     for (int i = 0; i < 4; ++i)
     {
       //depending on the player, it draws the totals in the correct place
@@ -157,20 +158,18 @@ namespace Framework
       Draw::SetPosition(pos.x, pos.y);
       Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
       Draw::SetRotation(0);
-      Draw::DrawString(playerString, scale, 1);
+      Draw::DrawString(playerString, numberSize, 1);
     }
   }
 
   void RoundResults::DrawDeaths()
   {
-    Vec2D scale(40, 40);
     Draw::SetPosition(0.0f, 310.0f);
     Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
     Draw::SetRotation(0);
-    Draw::DrawString("Deaths", scale, 1);
+    Draw::DrawString("Deaths", wordSize, 1);
     Vec3 pos;
     char playerString[10];
-    scale = Vec2D(50, 50);
     for (int i = 0; i < 4; ++i)
     {
       //depending on the player, it draws the totals in the correct place
@@ -187,20 +186,18 @@ namespace Framework
       Draw::SetPosition(pos.x, pos.y);
       Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
       Draw::SetRotation(0);
-      Draw::DrawString(playerString, scale, 1);
+      Draw::DrawString(playerString, numberSize, 1);
     }
   }
 
   void RoundResults::DrawJuggTime()
   {
-    Vec2D scale(40, 40);
     Draw::SetPosition(-100.0f, 310.0f);
     Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
     Draw::SetRotation(0);
-    Draw::DrawString("Time Being IT", scale, 1);
+    Draw::DrawString("Time Being IT", wordSize, 1);
     Vec3 pos;
     char playerString[10];
-    scale = Vec2D(50, 50);
     for (int i = 0; i < 4; ++i)
     {
       //depending on the player, it draws the totals in the correct place
@@ -217,20 +214,18 @@ namespace Framework
       Draw::SetPosition(pos.x, pos.y);
       Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
       Draw::SetRotation(0);
-      Draw::DrawString(playerString, scale, 1);
+      Draw::DrawString(playerString, numberSize, 1);
     }
   }
 
   void RoundResults::DrawLMSTime()
   {
-    Vec2D scale(40, 40);
     Draw::SetPosition(-100.0f, 310.0f);
     Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
     Draw::SetRotation(0);
-    Draw::DrawString("Time Alive", scale, 1);
+    Draw::DrawString("Time Alive", wordSize, 1);
     Vec3 pos;
     char playerString[10];
-    scale = Vec2D(50, 50);
     for (int i = 0; i < 4; ++i)
     {
       //depending on the player, it draws the totals in the correct place
@@ -247,7 +242,7 @@ namespace Framework
       Draw::SetPosition(pos.x, pos.y);
       Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
       Draw::SetRotation(0);
-      Draw::DrawString(playerString, scale, 1);
+      Draw::DrawString(playerString, numberSize, 1);
     }
   }
 
@@ -258,14 +253,12 @@ namespace Framework
 
   void RoundResults::DrawTotalChips()
   {
-    Vec2D scale(40, 40);
     Draw::SetPosition(300.0f, 310.0f);
     Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
     Draw::SetRotation(0);
-    Draw::DrawString("Total Chips", scale, 1);
+    Draw::DrawString("Total Chips", wordSize, 1);
     Vec3 pos;
     char playerString[10];
-    scale = Vec2D(50, 50);
     for (int i = 0; i < 4; ++i)
     {
       //depending on the player, it draws the totals in the correct place
@@ -282,20 +275,18 @@ namespace Framework
       Draw::SetPosition(pos.x, pos.y);
       Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
       Draw::SetRotation(0);
-      Draw::DrawString(playerString, scale, 1);
+      Draw::DrawString(playerString, numberSize, 1);
     }
   }
 
   void RoundResults::DrawTotalKills()
   {
-    Vec2D scale(40, 40);
     Draw::SetPosition(-425.0f, 310.0f);
     Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
     Draw::SetRotation(0);
-    Draw::DrawString("Total Kills", scale, 1);
+    Draw::DrawString("Total Kills", wordSize, 1);
     Vec3 pos;
     char playerString[10];
-    scale = Vec2D(50, 50);
     for (int i = 0; i < 4; ++i)
     {
       //depending on the player, it draws the totals in the correct place
@@ -312,20 +303,18 @@ namespace Framework
       Draw::SetPosition(pos.x, pos.y);
       Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
       Draw::SetRotation(0);
-      Draw::DrawString(playerString, scale, 1);
+      Draw::DrawString(playerString, numberSize, 1);
     }
   }
 
   void RoundResults::DrawTotalDeaths()
   {
-    Vec2D scale(40, 40);
     Draw::SetPosition(-225.0f, 310.0f);
     Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
     Draw::SetRotation(0);
-    Draw::DrawString("Total Deaths", scale, 1);
+    Draw::DrawString("Total Deaths", wordSize, 1);
     Vec3 pos;
     char playerString[10];
-    scale = Vec2D(50, 50);
     for (int i = 0; i < 4; ++i)
     {
       //depending on the player, it draws the totals in the correct place
@@ -342,20 +331,18 @@ namespace Framework
       Draw::SetPosition(pos.x, pos.y);
       Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
       Draw::SetRotation(0);
-      Draw::DrawString(playerString, scale, 1);
+      Draw::DrawString(playerString, numberSize, 1);
     }
   }
 
   void RoundResults::DraowTotalJuggTime()
   {
-    Vec2D scale(40, 40);
     Draw::SetPosition(25.0f, 310.0f);
     Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
     Draw::SetRotation(0);
-    Draw::DrawString("Tagged Time", scale, 1);
+    Draw::DrawString("Tagged Time", wordSize, 1);
     Vec3 pos;
     char playerString[10];
-    scale = Vec2D(50, 50);
     for (int i = 0; i < 4; ++i)
     {
       //depending on the player, it draws the totals in the correct place
@@ -372,7 +359,7 @@ namespace Framework
       Draw::SetPosition(pos.x, pos.y);
       Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
       Draw::SetRotation(0);
-      Draw::DrawString(playerString, scale, 1);
+      Draw::DrawString(playerString, numberSize, 1);
     }
   }
 
