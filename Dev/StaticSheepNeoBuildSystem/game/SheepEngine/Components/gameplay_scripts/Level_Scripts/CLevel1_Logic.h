@@ -65,7 +65,7 @@ namespace Framework
     Handle playerCoinStack[4];
     Vec3 CoinStackPos[4];
     int playerCoinsThisFrame[4];
-    std::deque<std::pair<int, float>> coinStringsAlive[4];
+    //std::deque<std::pair<int, float>> coinStringsAlive[4]; // apparently deques occasionally break in the destructor
     bool juggernaut[4];
     bool num_spawned[4];
     float timeAsJugg;
