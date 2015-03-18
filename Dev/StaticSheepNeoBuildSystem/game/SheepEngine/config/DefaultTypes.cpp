@@ -428,6 +428,7 @@ namespace Framework
     TYPE_ADD_MEMBER(SpineSprite, entityName, false, true, "Entity");
     TYPE_ADD_MEMBER(SpineSprite, sequenceName, false, true, "Sequence");
     TYPE_ADD_MEMBER(SpineSprite, framerate, false, true, "Framerate");
+    TYPE_ADD_MEMBER(SpineSprite, Color, false, true, "ColoursRainbow");
     TYPE_SET_TWEAK_TYPE(SpineSprite, AntTweak::TW_TYPE_COMPONENT);
     //TYPE_SET_FROM_LUA(SpineSprite, Lua::GenericObjectFromLua);
 
