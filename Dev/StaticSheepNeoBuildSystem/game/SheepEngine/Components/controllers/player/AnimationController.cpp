@@ -202,25 +202,25 @@ namespace Framework
       break;
     case JUMP:
       if(state == -1)
-        spine->SetSequence(std::string("jump"));
+        spine->SetComplexSequence(std::string("jump"), 12.0f, 4, 12);
       else
       {
         switch(state)
         {
           case UP:
-            spine->SetComplexSequence(std::string("jump_shoot_up"), 24.0f, 4, 12);
+            spine->SetComplexSequence(std::string("jump_shoot_up"), 12.0f, 4, 12);
             break;
           case UPRIGHT:
-            spine->SetComplexSequence(std::string("jump_shoot_upright"), 24.0f, 4, 12);
+            spine->SetComplexSequence(std::string("jump_shoot_upright"), 12.0f, 4, 12);
             break;
           case RIGHT:
-            spine->SetComplexSequence(std::string("jump_shoot_right"), 24.0f, 4, 12);
+            spine->SetComplexSequence(std::string("jump_shoot_right"), 12.0f, 4, 12);
             break;
           case DOWNRIGHT:
-            spine->SetComplexSequence(std::string("jump_shoot_downright"), 24.0f, 4, 12);
+            spine->SetComplexSequence(std::string("jump_shoot_downright"), 12.0f, 4, 12);
             break;
           case DOWN:
-            spine->SetComplexSequence(std::string("jump_shoot_down"), 24.0f, 4, 12);
+            spine->SetComplexSequence(std::string("jump_shoot_down"), 12.0f, 4, 12);
             break;
         }
       }
@@ -235,7 +235,7 @@ namespace Framework
         switch(state)
         {
           case UP:
-            spine->SetSequence(std::string("run_shoot_upright"));
+            spine->SetSequence(std::string("run_shoot_up"));
             break;
           case UPRIGHT:
             spine->SetSequence(std::string("run_shoot_upright"));

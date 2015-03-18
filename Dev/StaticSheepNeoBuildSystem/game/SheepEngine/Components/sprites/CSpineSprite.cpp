@@ -10,8 +10,8 @@ namespace Framework
   SpineSprite::SpineSprite() : Color(1.0f, 1.0f, 1.0f, 1.0f)
   {
     sequenceName = std::string("idle"); // note to self, every animation needs idle
-    atlasName = std::string("master");
-    entityName = std::string("ruiser");
+    atlasName = std::string("ninja");
+    entityName = std::string("ninja");
     framerate = 20.0f;
   }
 
@@ -56,6 +56,7 @@ namespace Framework
       {
         atlasHandle = GRAPHICS->GetAtlasHandle(atlasName);
         sheet = (GRAPHICS->RC())->GetAnimationSheet(atlasHandle, entityName);
+        previousEntity = entityName;
       }
 
       LogicUpdate(dt);
@@ -83,7 +84,7 @@ namespace Framework
         else
         {
           ++currentFrame;
-          currentFrame = (currentFrame % (endLoop - startLoop)) + startLoop;
+          currentFrame = currentFrame % temp;
         }
         currentTime = 0.0f;
       }
@@ -120,8 +121,20 @@ namespace Framework
 
     if(sequenceIt)
     {
-      begin = (*sequenceIt).sequence[currentFrame].start_uv;
-      end = (*sequenceIt).sequence[currentFrame].end_uv;
+      if(!complexLoop)
+      {
+        begin = (*sequenceIt).sequence[currentFrame].start_uv;
+        end = (*sequenceIt).sequence[currentFrame].end_uv;
+      }
+      else
+      {
+
+        int temp = endLoop - startLoop;
+
+        begin = (*sequenceIt).sequence[(currentFrame % temp) + startLoop].start_uv;
+        end = (*sequenceIt).sequence[(currentFrame % temp) + startLoop].end_uv;
+      }
+
       frameOffset = (offset - (*sequenceIt).offset) * 0.5f;
 
       if(flipX)

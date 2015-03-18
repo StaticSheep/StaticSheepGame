@@ -20,8 +20,8 @@ GameObject
   }
   SpineSprite
   {
-    atlasName std::string "master"
-    entityName std::string "ruiser"
+    atlasName std::string "steve"
+    entityName std::string "steve"
     sequenceName std::string "idle"
     framerate float 20.000000
   }
