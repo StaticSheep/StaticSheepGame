@@ -71,6 +71,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/gameplay_scripts/FX_Scripts/CAOEDamage.h"
 #include "components/gameplay_scripts/Weapon_Scripts/CImpactEffect.h"
 #include "Components/controllers/round/CRoundResults.h"
+#include "components/gameplay_scripts/FX_Scripts/CPulser.h"
 
 
 namespace Framework
@@ -617,6 +618,10 @@ namespace Framework
     TYPE_REGISTER(BlockLights);
     TYPE_ADD_MEMBER(BlockLights, m_group, false, true, "Trigger Group");
     TYPE_ADD_MEMBER(BlockLights, m_defaultSettings, false, true, "Defaults");
+
+    TYPE_REGISTER(Pulser);
+    TYPE_ADD_MEMBER(Pulser, m_amount, false, true, "Pulse_Amount");
+    TYPE_ADD_MEMBER(Pulser, m_time, false, true, "Pulse Time");
 
     TYPE_REGISTER( AntTweak::TBar );
     TYPE_REGISTER_PTR( AntTweak::TBar* );

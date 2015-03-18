@@ -80,10 +80,10 @@ namespace Framework
       lightTrans->SetTranslation(m_spawnPos[i]);
     }
 
-    light[0]->SetBrightness(Vec4(0.0f, 1.0f, 0.0f, 50.0f));
-    light[1]->SetBrightness(Vec4(1.0f, 0.0f, 0.0f, 50.0f));
-    light[2]->SetBrightness(Vec4(1.0f, 0.0f, 1.0f, 50.0f));
-    light[3]->SetBrightness(Vec4(0.0f, 0.0f, 1.0f, 50.0f));
+    light[0]->SetBrightness(Vec4(0.1f, 1.0f, 0.1f, 200.0f));
+    light[1]->SetBrightness(Vec4(1.0f, 0.1f, 0.1f, 200.0f));
+    light[2]->SetBrightness(Vec4(1.0f, 0.1f, 1.0f, 200.0f));
+    light[3]->SetBrightness(Vec4(0.1f, 0.1f, 1.0f, 200.0f));
   }
   void Level1_Lighting::TurnOn()
   {

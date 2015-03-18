@@ -13,8 +13,8 @@ GameObject
     Rotation float 0.000000
     Scale Vec3
     {
-      x_ float 2.000000
-      y_ float 2.000000
+      x_ float 1.900000
+      y_ float 1.900000
       z_ float 0.000000
     }
   }
@@ -146,5 +146,14 @@ GameObject
       shutdownTimer float 0.000000
       parentToOwner bool false
     }
+  }
+  Pulser
+  {
+    m_amount Vec2
+    {
+      X float 0.150000
+      Y float 0.150000
+    }
+    m_time float 1.000000
   }
 }
