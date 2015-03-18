@@ -51,6 +51,8 @@ namespace Framework
       bool flipX;
       bool flipY;
       bool complexLoop;
+      bool doneLoop;
+      bool finishedComplex;
       int startLoop;
       int endLoop;
 
