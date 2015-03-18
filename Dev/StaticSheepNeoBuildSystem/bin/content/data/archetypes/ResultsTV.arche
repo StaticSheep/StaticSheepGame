@@ -21,7 +21,7 @@ GameObject
   Sprite
   {
     m_spriteName std::string "screen_mockup.png"
-    m_layer unsignedint 1
+    m_layer unsignedint 2
     m_flipX bool false
     m_flipY bool false
     m_uvScale bool false
@@ -43,9 +43,15 @@ GameObject
       Y float 0.000000
     }
   }
-  PointLight
+  SpriteLight
   {
-    m_layer unsignedint 1
+    m_spriteName std::string "white.png"
+    m_layer unsignedint 2
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    m_isOn bool true
+    m_emissive bool false
     m_brightness LightColor
     {
       R float 1.000000
@@ -53,11 +59,15 @@ GameObject
       B float 1.000000
       A float 1.000000
     }
-    m_attenuation LightVec3
+    m_origin Vec2
     {
-      X float 0.010000
-      Y float 0.010000
-      Z float 0.010000
+      X float 0.000000
+      Y float 0.000000
+    }
+    Size Vec2
+    {
+      X float 2500.000000
+      Y float 2000.000000
     }
   }
   RoundResults

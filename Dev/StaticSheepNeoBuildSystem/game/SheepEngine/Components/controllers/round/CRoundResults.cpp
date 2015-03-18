@@ -29,7 +29,7 @@ namespace Framework
 	{
 		//logic setup, you're attached and components are in place
     space->hooks.Add("LogicUpdate", self, BUILD_FUNCTION(RoundResults::LogicUpdate));
-    space->hooks.Add("Draw", self, BUILD_FUNCTION(RoundResults::Draw));
+    space->hooks.Add("PostDraw", self, BUILD_FUNCTION(RoundResults::Draw));
 
     rTransfrom = space->GetGameObject(owner)->GetComponentHandle(eTransform);
     roundSprite = space->GetGameObject(owner)->GetComponentHandle(eSprite);
@@ -42,7 +42,7 @@ namespace Framework
   void RoundResults::Remove()
 	{
 		space->hooks.Remove("LogicUpdate", self);
-    space->hooks.Remove("Draw", self);
+    space->hooks.Remove("PostDraw", self);
 	}
 
   void RoundResults::LogicUpdate(float dt)
