@@ -9,7 +9,7 @@ local META = GetMeta("Label")
 
 function META:Init()
   self.text = ""
-  self.font = "Arial"
+  self.font = "BN_Jinx"
   self.fontID = 0
   self.fontSize = 1
 

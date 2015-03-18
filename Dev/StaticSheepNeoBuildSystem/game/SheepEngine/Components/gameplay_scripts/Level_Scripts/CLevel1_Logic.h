@@ -83,6 +83,8 @@ namespace Framework
 
     int GetPlayerHealth(int);
     int GetPlayerLives(int);
+    int GetPlayerCoins(int);
+
     int GetWinner();
     void EndMatch();
     void CheatWin();

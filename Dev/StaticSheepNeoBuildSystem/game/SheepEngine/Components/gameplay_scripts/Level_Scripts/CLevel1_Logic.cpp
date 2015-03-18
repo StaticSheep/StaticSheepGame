@@ -267,11 +267,11 @@ namespace Framework
 
   void Level1_Logic::SpawnCoinStacks()
   {
-    for (int i = 0; i < 4; ++i)
+    /*for (int i = 0; i < 4; ++i)
     {
       playerCoinStack[i] = (FACTORY->LoadObjectFromArchetype(space, "coin_stack"))->self;
       space->GetGameObject(playerCoinStack[i])->GetComponent<Transform>(eTransform)->SetTranslation(CoinStackPos[i]);
-    }
+    }*/
   }
 
   void Level1_Logic::CameraShake(float dt, float shakeDuration, float magnitude)
@@ -360,6 +360,11 @@ namespace Framework
   }
 
   int Level1_Logic::GetPlayerLives(int ply)
+  {
+    return playerCoins[ply];
+  }
+
+  int Level1_Logic::GetPlayerCoins(int ply)
   {
     return playerCoins[ply];
   }
@@ -895,36 +900,36 @@ namespace Framework
     Vec3 pos(0.0f, 0.0f, 0.0f);
     Vec2D scale(50, 50);
     char playerCoinsString[10];
-    for (int i = 0; i < 4; ++i)
-    {
+  //  for (int i = 0; i < 4; ++i)
+  //  {
 
-      if (Players[i] == Handle::null)
-        continue;
+  //    if (Players[i] == Handle::null)
+  //      continue;
 
-      if (playerCoinsThisFrame[i] != 0)
-      {
-        std::pair<int, float> newCoinString(playerCoinsThisFrame[i], 1.0f);
-        coinStringsAlive[i].push_back(newCoinString);
-        playerCoinsThisFrame[i] = 0;
-      }
-      if (!coinStringsAlive[i].empty())
-      {
-        for (int j = 0; j < coinStringsAlive[i].size(); ++j)
-        {
-          itoa(coinStringsAlive[i][j].first, playerCoinsString, 10);
-          if (Players[i] != Handle::null)
-            pos = space->GetGameObject(Players[i])->GetComponent<Transform>(eTransform)->GetTranslation();
+  //    if (playerCoinsThisFrame[i] != 0)
+  //    {
+  //      std::pair<int, float> newCoinString(playerCoinsThisFrame[i], 1.0f);
+  //      coinStringsAlive[i].push_back(newCoinString);
+  //      playerCoinsThisFrame[i] = 0;
+  //    }
+  //    if (!coinStringsAlive[i].empty())
+  //    {
+  //      for (int j = 0; j < coinStringsAlive[i].size(); ++j)
+  //      {
+  //        itoa(coinStringsAlive[i][j].first, playerCoinsString, 10);
+  //        if (Players[i] != Handle::null)
+  //          pos = space->GetGameObject(Players[i])->GetComponent<Transform>(eTransform)->GetTranslation();
 
-          Draw::SetPosition(pos.x, pos.y + (64 - (coinStringsAlive[i][j].second * 64)));
-          Draw::SetColor(0.9, 0.9, 0.15f, fontIndex); //yellow-ish color
-          Draw::SetRotation(0);
-          Draw::DrawString(playerCoinsString, scale, fontIndex);
-          coinStringsAlive[i][j].second -= deltaTime;
-          if (coinStringsAlive[i][j].second <= 0.0f)
-            coinStringsAlive[i].pop_front();
-        }
-      }
-    }
+  //        Draw::SetPosition(pos.x, pos.y + (64 - (coinStringsAlive[i][j].second * 64)));
+  //        Draw::SetColor(0.9, 0.9, 0.15f, fontIndex); //yellow-ish color
+  //        Draw::SetRotation(0);
+  //        Draw::DrawString(playerCoinsString, scale, fontIndex);
+  //        coinStringsAlive[i][j].second -= deltaTime;
+  //        if (coinStringsAlive[i][j].second <= 0.0f)
+  //          coinStringsAlive[i].pop_front();
+  //      }
+  //    }
+  //  }
   }
   
 }

@@ -6,10 +6,12 @@ Author(s): Zachary Nawar (Primary)
 All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 *****************************************************************]]
 
---[[---------------------------------------------------------
-   Name: Dist( low, high )
-   Desc: Distance between two 2d points
-------------------------------------------------------------]]
+function math.lerp(start, finish, t)
+  return start + t*(finish - start)
+end
+
+
+
 function math.Dist( x1, y1, x2, y2 )
   local xd = x2-x1
   local yd = y2-y1
@@ -19,66 +21,23 @@ end
 math.Distance = math.Dist -- alias
 
 
---[[---------------------------------------------------------
-   Name: BinToInt( bin )
-   Desc: Convert a binary string to an integer number
-------------------------------------------------------------]]
-function math.BinToInt(bin)
-  return tonumber(bin,2)
-end
-
-
---[[---------------------------------------------------------
-   Name: IntToBin( int )
-   Desc: Convert an integer number to a binary string
-------------------------------------------------------------]]
-function math.IntToBin(int)
-
-  local str = string.format("%o",int)
-
-  local a = {
-      ["0"]="000",["1"]="001", ["2"]="010",["3"]="011",
-            ["4"]="100",["5"]="101", ["6"]="110",["7"]="111"
-      }
-  local bin = string.gsub( str, "(.)", function ( d ) return a[ d ] end )
-  return bin
-
-end
-
---[[---------------------------------------------------------
-   Name: Clamp( in, low, high )
-   Desc: Clamp value between 2 values
-------------------------------------------------------------]]
 function math.Clamp( _in, low, high )
   if (_in < low ) then return low end
   if (_in > high ) then return high end
   return _in
 end
 
---[[---------------------------------------------------------
-   Name: Rand( low, high )
-   Desc: Random number between low and high
------------------------------------------------------------]]
+
 function math.Rand( low, high )
   return low + ( high - low ) * math.random()
 end
 
---[[---------------------------------------------------------
-    math.Max, alias for math.max
------------------------------------------------------------]]
+
 math.Max = math.max
 
---[[---------------------------------------------------------
-   math.Min, alias for math.min
------------------------------------------------------------]]
 math.Min = math.min
 
---[[---------------------------------------------------------
-    Name: EaseInOut(fProgress, fEaseIn, fEaseOut)
-    Desc: Provided by garry from the facewound source and converted
-          to Lua by me :p
-   Usage: math.EaseInOut(0.1, 0.5, 0.5) - all parameters shoule be between 0 and 1
------------------------------------------------------------]]
+
 function math.EaseInOut( fProgress, fEaseIn, fEaseOut ) 
 
   if (fEaseIn == nil) then fEaseIn = 0 end
@@ -107,9 +66,7 @@ function math.EaseInOut( fProgress, fEaseIn, fEaseOut )
 end
 
 
---[[------------------------------------
-  KNOT()
---------------------------------------]]
+
 local function KNOT( i, tinc )
 
   return ( i - 3 ) * tinc;
@@ -117,9 +74,6 @@ local function KNOT( i, tinc )
 end
 
 
---[[------------------------------------
-  math.calcBSplineN()
---------------------------------------]]
 function math.calcBSplineN( i, k, t, tinc )
 
   if ( k == 1 ) then
@@ -162,9 +116,6 @@ function math.calcBSplineN( i, k, t, tinc )
 end
 
 
---[[------------------------------------
-  math.BSplinePoint()
---------------------------------------]]
 function math.BSplinePoint( tDiff, tPoints, tMax )
   
   local Q = Vector( 0, 0, 0 );
@@ -185,9 +136,6 @@ end
 
 
 
---[[---------------------------------------------------------
-    Name: Round( round )
------------------------------------------------------------]]
 function math.Round(num, idp)
 
   local mult = 10^(idp or 0)
@@ -195,9 +143,7 @@ function math.Round(num, idp)
   
 end
 
---[[---------------------------------------------------------
-    Name: Approach( cur, target, inc )
------------------------------------------------------------]]
+
 function math.Approach( cur, target, inc )
 
   inc = math.abs( inc )
@@ -233,9 +179,6 @@ function math.AngleDifference( a, b )
 
 end
 
---[[---------------------------------------------------------
-    Name: ApproachAngle( cur, target, inc )
------------------------------------------------------------]]
 function math.ApproachAngle( cur, target, inc )
 
   local diff = math.AngleDifference( target, cur )
@@ -244,16 +187,11 @@ function math.ApproachAngle( cur, target, inc )
   
 end
 
---[[---------------------------------------------------------
-    Name: TimeFraction( Start, End, Current )
------------------------------------------------------------]]
+
 function math.TimeFraction( Start, End, Current )
   return ( Current - Start ) / ( End - Start )
 end
 
---[[---------------------------------------------------------
-    Name: Remap( value, inMin, inMax, outMin, outMax )
------------------------------------------------------------]]
 function math.Remap( value, inMin, inMax, outMin, outMax )
   return outMin + ( ( ( value - inMin ) / ( inMax - inMin ) ) * ( outMax - outMin ) )
 end

@@ -127,6 +127,7 @@ namespace Framework
       BIND_FUNCTION_EX(L, PlayerController::CurrentHealth, CurrentHealth);
       BIND_FUNCTION_EX(L, Level1_Logic::GetPlayerHealth, GetPlayerHealth);
       BIND_FUNCTION_EX(L, Level1_Logic::GetPlayerLives, GetPlayerLives);
+      BIND_FUNCTION_EX(L, Level1_Logic::GetPlayerCoins, GetPlayerCoins);
       BIND_FUNCTION_EX(L, Level1_Logic::GetWinner, GetWinner);
       BIND_FUNCTION_EX(L, Level1_Logic::EndMatch, EndMatch);
 
