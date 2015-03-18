@@ -7,7 +7,7 @@
 
 namespace Framework
 {
-  Saucer::Saucer() : m_crosshairColor(1, 1, 1, 1), m_shotsLeft(10), m_beamColor(1, 0, 0, .5), m_isFiring(false)
+  Saucer::Saucer() : m_crosshairColor(1, 1, 1, 1), m_chargeTime(10), m_beamColor(1, 0, 0, .5), m_isFiring(false)
   {
 
   }
@@ -32,7 +32,7 @@ namespace Framework
      newTrans += (Vec3(gp->LeftStick_X(), gp->LeftStick_Y(), 0) * 20);
     }
 
-    if (gp->RightTrigger() == 0 && m_isFiring)
+    if (gp->RightTrigger() == 0 && m_isFiring || m_chargeTime <= 0)
     {
       m_isFiring = false;
       emitter->spawning = false;
@@ -40,10 +40,10 @@ namespace Framework
       system->DestroyParticles();
     }
 
-    if (gp->RightTrigger() && !m_isFiring)
+    if (gp->RightTrigger() && !m_isFiring && m_chargeTime > 0)
     {
       emitter->spawning = true;
-      aoe->m_damagePerSecond = 300;
+      aoe->m_damagePerSecond = 500;
       m_isFiring = true;
     }
 
@@ -56,6 +56,9 @@ namespace Framework
     newTrans.x = Clamp(newTrans.x, -Draw::ScreenWidth() / 2, Draw::ScreenWidth() / 2);
     newTrans.y = Clamp(newTrans.y, -Draw::ScreenHeight() / 2, Draw::ScreenHeight() / 2);
     trans->SetTranslation(newTrans);
+
+    if (m_isFiring)
+      m_chargeTime -= dt;
   }
 
   void Saucer::Draw()

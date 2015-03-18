@@ -42,7 +42,7 @@ namespace Framework
 
     Vec4                m_crosshairColor;
 
-    int                 m_shotsLeft;
+    float                 m_chargeTime;
 
     Vec4                m_beamColor;
 
