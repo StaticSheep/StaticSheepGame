@@ -4470,7 +4470,7 @@ GameObject
     Translation Vec3
     {
       x_ float 0.000000
-      y_ float 510.567322
+      y_ float 511.857544
       z_ float 0.000000
     }
     Rotation float 0.000000
@@ -4507,5 +4507,13 @@ GameObject
       X float 128.000000
       Y float 128.000000
     }
+  }
+  BoxCollider
+  {
+    m_width float 128.000000
+    m_height float 128.000000
+    m_materialName std::string "Static"
+    m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
   }
 }
