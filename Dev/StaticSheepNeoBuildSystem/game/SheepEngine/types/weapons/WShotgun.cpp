@@ -84,6 +84,7 @@ namespace Framework
       NegAimDir = Mat3D(-(float)PI / 40.0f) * NegAimDir;
       bulletDir = AimDir;
 
+        //create two bullets, one at each angle in opposite directions
       for (int j = 0; j < 2; ++j, bulletDir = NegAimDir)
       {
         //create bullet
