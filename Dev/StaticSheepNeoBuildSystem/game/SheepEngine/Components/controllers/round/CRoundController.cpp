@@ -19,7 +19,7 @@ namespace Framework
   RoundController::RoundController()
   {
     current_round = 1;
-    max_rounds = 6; //default value
+    max_rounds = 2; //default value
     spawned_round_start = false;
     timeOfRound = 93.0f; //default round length, (round length + 3.0f)
   }
@@ -182,12 +182,12 @@ namespace Framework
       GameObject *roundText = (FACTORY->LoadObjectFromArchetype(space, "gameOver_text"));
       roundText->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(-1000.0f, 64.0f, 0.0f));
       spawned_round_start = true;
-      round_state_timer = 13.0f;
+      round_state_timer = 93.0f;
       return;
     }
 
     //spawn tv
-    if (!ResultsSpawned && round_state_timer <= 10.0f)
+    if (!ResultsSpawned && round_state_timer <= 90.0f)
     {
       GameObject *ResultsTV = (FACTORY->LoadObjectFromArchetype(space, "ResultsTV"));
       ResultsTV->GetComponent<RoundResults>(eRoundResults)->ChipCont = space->GetGameObject(owner)->GetComponent<ChipController>(eChipController)->owner;

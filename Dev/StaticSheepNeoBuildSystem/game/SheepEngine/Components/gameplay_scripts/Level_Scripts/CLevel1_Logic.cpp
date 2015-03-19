@@ -806,7 +806,9 @@ namespace Framework
         //space->hooks.Call("LightingEvent", 0xFFFFFFFF, &ed);
       }
       space->hooks.Call("CallingSM");
-      (FACTORY->LoadObjectFromArchetype(space, "LevelSlotMachine"))->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(0.0f, 900.0f, 1.0f));
+      GameObject *SM = (FACTORY->LoadObjectFromArchetype(space, "LevelSlotMachine"));
+      SM->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(0.0f, 900.0f, 1.0f));
+      SM->GetComponent<SlotController>(eSlotController)->roundNum = space->GetGameObject(owner)->GetComponent<RoundController>(eRoundController)->current_round;
       slotFinished = true;
     }
   }

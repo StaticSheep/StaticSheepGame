@@ -47,7 +47,7 @@ namespace Framework
     bool done; 
     GameObject *spawnedSM;
     Handle spawnedSMHandle;
-
+    int roundNum;
     GameTypes mode;
     GameMods mod1, mod2;
 	};
