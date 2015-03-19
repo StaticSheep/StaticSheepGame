@@ -276,14 +276,13 @@ namespace Framework
 	// initialize materials
 	void SheepPhysics::Initialize()
 	{
-		
-		//add materials
-		SheepFizz::Material Wood(3.0f, 2.5f, .8f, .4f);
+		//add materials        //density, restitution, static friction, dynamic frictions
+		SheepFizz::Material Wood(3.0f, 0.0f, .8f, 4.0f);
 		SheepFizz::Material Iron(1.5f, .8f, .6f, .3f);
 		SheepFizz::Material Steel(1.3f, .8f, .3f, .15f);
 		SheepFizz::Material Fluff(.3f, .2f, .4f, .1f);
 		SheepFizz::Material Bounce(.3f, 4.0f, .3f, .15f);
-		SheepFizz::Material Static(.0f,.2f,.5f,.3f);
+		SheepFizz::Material Static(.0f,.2f,.5f,3.0f);
     SheepFizz::Material NoBounce(100.0f, 0.0f, 1.0f, 1.0f);
 
 		//insert materials into the unordered map

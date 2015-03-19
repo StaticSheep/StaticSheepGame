@@ -59,7 +59,6 @@ namespace Framework
     float rotation, lastRotation;
     float respawnTimer;
 
-    bool keepMoving;
 
     std::string weaponGroup;
 

@@ -313,8 +313,8 @@ namespace Framework
     }
     frameSkip = !frameSkip;
 
-    bc->SetVelocity(snappedNormal * 100); //artificial pull or "gravity" to snapped normal
-    bc->SetAngVelocity(0.0);              //if snapped to surface take away all angular velocity
+    //bc->SetVelocity(snappedNormal * 100); //artificial pull or "gravity" to snapped normal
+    //bc->SetAngVelocity(0.0);              //if snapped to surface take away all angular velocity
 
     if (snappedTo != Handle::null) //if the object we're supposed to be snapped to isn't dead
     {
@@ -475,7 +475,38 @@ namespace Framework
 
   void PlayerController::DetermineSnap(GameObject *OtherObject, Handle otherObject, SheepFizz::ExternalManifold manifold)
   {
+
     Transform *OOT = OtherObject->GetComponent<Transform>(eTransform);
+
+    if (!OOT)
+      return;
+
+    if (!(OtherObject->HasComponent(eBoxCollider)) || OtherObject->name == "Player" || OtherObject->name == "WeaponPickup"
+      || OtherObject->archetype == "Grinder" || OtherObject->name == "PowerUpPickup")
+      return;
+
+    BoxCollider* collider = OtherObject->GetComponent<BoxCollider>(eBoxCollider);
+
+    if(!isSnapped)
+    {
+      // reorient to the collider's normal
+      Vec3 normal = collider->GetCollisionNormals(manifold);
+      snappedNormal = normal;
+
+      bc = space->GetHandles().GetAs<BoxCollider>(playerCollider);
+      bc->SetBodyRotation(-normal);
+      bc->SetGravityNormal(normal);
+      bc->SetGravityOn();
+      isSnapped = true;
+    }
+    else
+    {
+      Mat3D rot(ps->GetRotation() - PI / 2.0f);
+      ps = space->GetHandles().GetAs<Transform>(playerTransform);
+      bc->SetGravityNormal(rot * Vec3(1.0f, 0.0f, 0.0f));
+    }
+
+    /*Transform *OOT = OtherObject->GetComponent<Transform>(eTransform);
 
     if (!OOT)
       return;
@@ -532,7 +563,7 @@ namespace Framework
       avY /= normals.size();
       Vec3 averaged(avX, avY, 0.0f);
       snappedNormal = averaged;
-    }
+    }*/
   }
 
 	//************************************
