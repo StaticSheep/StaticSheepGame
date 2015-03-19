@@ -42,5 +42,8 @@ namespace Framework
     float bounceDownTimer, timeToLive;
     bool bounceDownDone, startDrawing;
     GameTypes mode_;
+
+    int wordFontIndex;
+    int numberFontIndex;
 	};
 }
