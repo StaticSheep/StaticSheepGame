@@ -1,7 +1,8 @@
+MainMenu
 GameObject
 {
-  name std::string "BGStars"
-  archetype std::string "IntroStarBG"
+  name std::string "bg"
+  archetype std::string ""
   Transform
   {
     Translation Vec3
@@ -13,15 +14,15 @@ GameObject
     Rotation float 0.000000
     Scale Vec3
     {
-      x_ float 9.000000
-      y_ float 9.000000
+      x_ float 1.000000
+      y_ float 1.000000
       z_ float 0.000000
     }
   }
   Sprite
   {
-    m_spriteName std::string "spacebg.png"
-    m_layer unsignedint 1
+    m_spriteName std::string "background_color.png"
+    m_layer unsignedint 0
     m_flipX bool false
     m_flipY bool false
     m_uvScale bool false
@@ -46,7 +47,7 @@ GameObject
   SpriteLight
   {
     m_spriteName std::string "white.png"
-    m_layer unsignedint 1
+    m_layer unsignedint 0
     m_flipX bool false
     m_flipY bool false
     m_uvScale bool false
@@ -69,5 +70,13 @@ GameObject
       X float 1920.000000
       Y float 1080.000000
     }
+  }
+  SoundPlayer
+  {
+  }
+  LuaComponent
+  {
+    name std::string "MainMenu"
+    loadCommand std::string "return function(self) self.ypos = 578.57142857143 self.menuOffset = 1250 end"
   }
 }

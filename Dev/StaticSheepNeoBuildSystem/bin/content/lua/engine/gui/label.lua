@@ -9,9 +9,9 @@ local META = GetMeta("Label")
 
 function META:Init()
   self.text = ""
-  self.font = "BN_Jinx"
-  self.fontID = 0
   self.fontSize = 1
+
+  self:SetFont("Arial")
 
   self.outlineWidth = 0
   self.outlineColor = Color(0, 0, 0, 255)

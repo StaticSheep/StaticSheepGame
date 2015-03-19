@@ -52,9 +52,12 @@ function uimenu.Delete(realMenu)
 
   Log(DEBUG, "Deleted menu: "..id)
 
-  uimenu.list[id].buttons = {}
+  if uimenu.list[id] then
+    uimenu.list[id].buttons = {}
+    table.remove(uimenu.list, id)
+  end
 
-  table.remove(uimenu.list, id)
+  
 end
 
 function uimenu.UpdateMeta()
