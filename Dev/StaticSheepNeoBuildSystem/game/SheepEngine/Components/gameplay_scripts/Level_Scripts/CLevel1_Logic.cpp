@@ -142,7 +142,7 @@ namespace Framework
       CameraShake(dt, camShakeTime, camShakeMagnitude);
     deltaTime = dt;
     GoToGameMode(dt);
-    UpdateCoinStacks();
+    //UpdateCoinStacks();
     if(!playing)
     {
       SpawnCoinStacks();
@@ -429,35 +429,35 @@ namespace Framework
 
   void Level1_Logic::UpdateCoinStacks()
   {
-    //88.8 tall
-    //65.6 wide
-    Transform *coinStack;
-    Vec3 offSet(0.0f, 0.0f, 0.0f);
+    ////88.8 tall
+    ////65.6 wide
+    //Transform *coinStack;
+    //Vec3 offSet(0.0f, 0.0f, 0.0f);
 
-    for (int i = 0; i < 4; ++i)
-    {
-      if (playerCoinStack[i] == Handle::null || playerCoins[i] >= 50000.0f)
-        continue;
+    //for (int i = 0; i < 4; ++i)
+    //{
+    //  if (playerCoinStack[i] == Handle::null || playerCoins[i] >= 50000.0f)
+    //    continue;
 
-      if (!space->GetGameObject(playerCoinStack[i]))
-      {
-        playerCoinStack[i] = Handle::null;
-        continue;
-      }
+    //  if (!space->GetGameObject(playerCoinStack[i]))
+    //  {
+    //    playerCoinStack[i] = Handle::null;
+    //    continue;
+    //  }
 
-      offSet.y = 0.0f;
-      coinStack = space->GetGameObject(playerCoinStack[i])->GetComponent<Transform>(eTransform);
-      if (i == 0 || i == 1) //player one and two
-      {
-        offSet.y += (250.0f / 50000.0f) * (float)playerCoins[i];
-        coinStack->SetTranslation(CoinStackPos[i] + offSet);
-      }
-      else //player three and four
-      {
-        offSet.y -= (250.0f / 50000.0f) * (float)playerCoins[i];
-        coinStack->SetTranslation(CoinStackPos[i] + offSet);
-      }
-    }
+    //  offSet.y = 0.0f;
+    //  coinStack = space->GetGameObject(playerCoinStack[i])->GetComponent<Transform>(eTransform);
+    //  if (i == 0 || i == 1) //player one and two
+    //  {
+    //    offSet.y += (250.0f / 50000.0f) * (float)playerCoins[i];
+    //    coinStack->SetTranslation(CoinStackPos[i] + offSet);
+    //  }
+    //  else //player three and four
+    //  {
+    //    offSet.y -= (250.0f / 50000.0f) * (float)playerCoins[i];
+    //    coinStack->SetTranslation(CoinStackPos[i] + offSet);
+    //  }
+    //}
   }
 
   void Level1_Logic::SpawnItem(const char *itemName, Vec3 pos)
