@@ -460,8 +460,8 @@ namespace SheepFizz
 		if(circleRecMagnitude1 <= 0 && circleRecMagnitude2 <= 0)
 		{
 			//if the circle center is at corner 1
-			if((circleCenter - rectangleVertex1).SquareLength() > (m.A->shape_->GetRadius() * m.A->shape_->GetRadius()))
-				return;
+			//if((circleCenter - rectangleVertex1).SquareLength() > (m.A->shape_->GetRadius() * m.A->shape_->GetRadius()))
+				//return;
 			m.penetration = m.A->shape_->GetRadius() - (circleCenter - rectangleVertex1).Length();
 		
 			//determine the normal
@@ -477,8 +477,8 @@ namespace SheepFizz
 		else if(circleRecMagnitude1 > 0 && circleRecMagnitude2 > 0)
 		{
 			//if the circle center is at corner 2
-			if((circleCenter - rectangleVertex2).SquareLength() > (m.A->shape_->GetRadius() * m.A->shape_->GetRadius()))
-				return;
+			//if((circleCenter - rectangleVertex2).SquareLength() > (m.A->shape_->GetRadius() * m.A->shape_->GetRadius()))
+				//return;
 			m.penetration = m.A->shape_->GetRadius() - (circleCenter - rectangleVertex2).Length();
 
 			//determine the normal
