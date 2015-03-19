@@ -164,6 +164,9 @@ namespace Framework
   {
     if (msg.MessageId == Message::GUIDraw)
       Lua::CallFunc(ENGINE->Lua(), "gui.Draw");
+    
+    if (msg.MessageId == Message::PostGUIDraw)
+      Lua::CallFunc(ENGINE->Lua(), "hook.Call", "PostDraw");
   }
 
   const void* GameLogic::GetDebugData()

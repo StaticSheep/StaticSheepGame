@@ -337,6 +337,7 @@ namespace Framework
 
       ATWEAK->RemoveAllBars();
 
+
       std::vector<GameSpace*>& gameSpaces = ENGINE->Spaces();
 
       std::string cacheLocation = "cache\\spaces\\";

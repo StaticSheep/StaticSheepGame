@@ -11,7 +11,8 @@ function META:Init()
   self.OnPressed = nil
 
   self.text = ""
-  self.font = "Arial"
+
+  self:SetFont("Arial")
   self.fontSize = 24
 
   self.fontColor = Color(255, 255, 255, 255)
@@ -27,6 +28,21 @@ function META:Init()
   self.hovered = false
   self.clicked = false
   self.clickColor = 0
+end
+
+function META:SetImage(normal, hover, click)
+  if normal then
+    self._normalID = surface.GetTextureID(normal)
+  end
+
+  if hover then
+    self._hoverID = surface.GetTextureID(hover)
+  end
+
+  if click then
+    self._clickID = surface.GetTextureID(click)
+  end
+
 end
 
 function META:SetFontColor(col)
@@ -67,6 +83,7 @@ end
 
 function META:SetFont(font)
   self.font = font
+  self.fontID = surface.GetFontID(font)
 end
 
 function META:GetFont()
@@ -132,6 +149,31 @@ function META:Paint()
   end
 
   --print(self.size.x.."x"..self.size.y)
+  if self.hovered then
+    if self._hoverID then
+      surface.SetColor(fgColor.r, fgColor.g, fgColor.b, fgColor.a)
+      surface.SetTexture(self._hoverID)
+
+      surface.DrawTexturedRectRotated(pos.x, pos.y, self.size.x, self.size.y, 0)
+      return
+    end
+  elseif self.clicked then
+    if self._clickID then
+      surface.SetColor(fgColor.r, fgColor.g, fgColor.b, fgColor.a)
+      surface.SetTexture(self._clickID)
+
+      surface.DrawTexturedRectRotated(pos.x, pos.y, self.size.x, self.size.y, 0)
+      return
+    end
+  else
+    if self._normalID then
+      surface.SetColor(fgColor.r, fgColor.g, fgColor.b, fgColor.a)
+      surface.SetTexture(self._normalID)
+
+      surface.DrawTexturedRectRotated(pos.x, pos.y, self.size.x, self.size.y, 0)
+      return
+    end
+  end
 
   draw.RoundedBox(4, pos.x, pos.y,
     self.size.x, self.size.y, bgColor)
@@ -139,7 +181,7 @@ function META:Paint()
   draw.RoundedBox(4, border + pos.x, border + pos.y,
     self.size.x - border * 2, self.size.y - border * 2, fgColor)
 
-  draw.SimpleText(self.text, self.font, pos.x + self.size.x / 2,
+  draw.SimpleText(self.text, self.fontID, pos.x + self.size.x / 2,
     pos.y + self.size.y / 2, self.fontSize, fntColor,
     TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 end

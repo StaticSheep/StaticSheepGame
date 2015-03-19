@@ -53,6 +53,13 @@ local function FadeIn(self)
   end
 end
 
+local function FadeIn2(self)
+  return function(act, dt)
+    self._alpha2 = lerp(0, 255, (1-(act.tl/act.ttl)))
+    Hold()(act, dt)
+  end
+end
+
 local function FadeOut(self)
   return function(act, dt)
     self._alpha = lerp(0, 255, (act.tl/act.ttl))
@@ -95,6 +102,7 @@ function META:Run()
   self.tex[4] = surface.GetTextureID("GigaGravityTitle.png")
 
   self._alpha = 0
+  self._alpha2 = 0
   self._texID = self.tex[1]
   self._texSize = Vec2(2, 2)
   self._textPos = Vec3(0, 0, 0)
@@ -347,8 +355,24 @@ end
 function META:Update(dt)
   self.List:Update(dt)
 
-  if gamepad.ButtonPressed(nil, GAMEPAD_START) then
-    engine.ChangeLevel("Asteroid")
+  if gamepad.ButtonPressed(nil, GAMEPAD_START) or KeyIsPressed(KEY_ENTER) then
+    self.List:Clear()
+
+    self.List:PushBack(Action(
+    Timed(0.5),
+    FadeIn2(self),
+    nil,
+    true))
+
+    self.List:PushBack(Action(
+    function(act)
+      engine.ChangeLevel("MainMenu")
+    end,
+    FadeIn(self),
+    nil,
+    true))
+
+    
   end
 end
 
@@ -358,6 +382,14 @@ function META:Draw()
   surface.ForceZ(true, self._textPos.z - 1.0)
   surface.DrawTexturedRect(self._textPos.x, self._textPos.z, self._texSize.x, self._texSize.y)
   surface.ForceZ(false, 0)
+
+  if self._alpha2 > 0 then
+    surface.SetTexture(self._texID)
+    surface.SetColor(0, 0, 0, self._alpha2)
+    surface.ForceZ(true, -1.0)
+    surface.DrawRect(0, 0, 1920, 1080)
+    surface.ForceZ(false, 0)
+  end
 end
 
 RegisterComponent(META)

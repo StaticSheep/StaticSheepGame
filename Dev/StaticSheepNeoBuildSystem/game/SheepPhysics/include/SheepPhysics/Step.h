@@ -26,6 +26,7 @@ namespace SheepFizz
 
 	#define GRAVITY 0.0f
   #define MAX_ITERATIONS 10
+  #define SPEEDLIMIT 80
 
 	class PhysicsSpace
 	{

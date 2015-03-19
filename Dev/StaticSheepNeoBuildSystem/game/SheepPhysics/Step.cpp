@@ -29,9 +29,9 @@ namespace SheepFizz
       { NOCOLLIDE, COLLIDE,   RESOLVE,    RESOLVE,    NOCOLLIDE,  RESOLVE,    RESOLVE,    NOCOLLIDE,    NOCOLLIDE,    NOCOLLIDE,    NOCOLLIDE,    NOCOLLIDE,  NOCOLLIDE,    RESOLVE   },    //Player2Weapon
       { NOCOLLIDE, COLLIDE,   RESOLVE,    RESOLVE,    RESOLVE,    NOCOLLIDE,  RESOLVE,    NOCOLLIDE,    NOCOLLIDE,    NOCOLLIDE,    NOCOLLIDE,    NOCOLLIDE,  NOCOLLIDE,    RESOLVE   },    //Player3Weapon
       { NOCOLLIDE, COLLIDE,   RESOLVE,    RESOLVE,    RESOLVE,    RESOLVE,    NOCOLLIDE,  NOCOLLIDE,    NOCOLLIDE,    NOCOLLIDE,    NOCOLLIDE,    NOCOLLIDE,  NOCOLLIDE,    RESOLVE   },    //Player4Weapon
-      { NOCOLLIDE, COLLIDE,   RESOLVE,    RESOLVE,    RESOLVE,    RESOLVE,    NOCOLLIDE,  NOCOLLIDE,    NOCOLLIDE,    NOCOLLIDE,    NOCOLLIDE,    NOCOLLIDE,  NOCOLLIDE,    RESOLVE   },    //Item
+      { NOCOLLIDE, COLLIDE,   RESOLVE,    RESOLVE,    RESOLVE,    RESOLVE,    RESOLVE,    NOCOLLIDE,    NOCOLLIDE,    NOCOLLIDE,    NOCOLLIDE,    NOCOLLIDE,  NOCOLLIDE,    RESOLVE   },    //Item
       { NOCOLLIDE, NOCOLLIDE, NOCOLLIDE,  COLLIDE,    COLLIDE,    COLLIDE,    COLLIDE,    NOCOLLIDE,    NOCOLLIDE,    NOCOLLIDE,    NOCOLLIDE,    NOCOLLIDE,  NOCOLLIDE,    NOCOLLIDE },    //PlayerHitOnly
-      { NOCOLLIDE, NOCOLLIDE, RESOLVE,    RESOLVE,    RESOLVE,    RESOLVE,    RESOLVE,    RESOLVE,      RESOLVE,      RESOLVE,      RESOLVE,      RESOLVE,    NOCOLLIDE,    NOCOLLIDE } };  //Static
+      { NOCOLLIDE, COLLIDE,   RESOLVE,    RESOLVE,    RESOLVE,    RESOLVE,    RESOLVE,    RESOLVE,      RESOLVE,      RESOLVE,      RESOLVE,      RESOLVE,    NOCOLLIDE,    NOCOLLIDE } };  //Static
 
 	PhysicsSpace* PhysicsSpace::Allocate(float dt, float meterScale)
 	{
@@ -386,7 +386,6 @@ namespace SheepFizz
             continue;
           Vec3D position = ((Body*)bodies_[i])->position_ * meterScale_;
           rayIntersect = rayCast_.SimpleRayTest((Body*)bodies_[i]);
-          //(((Body*)(&bodies_))[i]).userData
           if (rayIntersect)
             rayCast_.GetRayConfig()->bodyIntersections_.push_back(position);
         }
@@ -424,12 +423,6 @@ namespace SheepFizz
 		
     handles_.Remove(handle);
     handles_.Remove(shape->self);
-
-
-		//free shape and release handle
-		//Shape* shapeRemoved = (Shape*)shapes_[body->shape_->GetShape()].Free(shape);
-		//if(shapeRemoved)
-		//	handles_.Update(shapeRemoved, shapeRemoved->self);
 		
 		//free body and release handle
 		Body* bodyRemoved = (Body*)bodies_.Free(body);
@@ -499,7 +492,6 @@ namespace SheepFizz
       manifolds_[i].PositionalCorrection();
     }
 
-
 		//apply forces and velocity to all bodies
 		for(unsigned i = 0; i < bodies_.Size(); ++i)
 			SymplecticEuler(*((Body*)bodies_[i]));
@@ -538,7 +530,6 @@ namespace SheepFizz
       body.position_ += body.velocity_ * dt_;
       return;
     }
-			
 
 		//calculate the angular velocity
 		body.angularVelocity_ += (body.torque_ * body.massData_.inverseInertia) * dt_;
@@ -549,6 +540,12 @@ namespace SheepFizz
 		//Velocity can be calculated after adjusting force
 		body.velocity_ += ((body.force_ *= body.massData_.inverseMass) 
 			+ Vec3D(0,modifiedGravity_) * (float)body.gravityScale_ * (float)body.gravityOn_) * dt_;
+
+    if (body.velocity_.SquareLength() > SPEEDLIMIT * SPEEDLIMIT)
+    {
+      body.velocity_.Normalize();
+      body.velocity_ *= SPEEDLIMIT;
+    }
 
 		//Position changed last
 		body.position_ += body.velocity_ * dt_;
