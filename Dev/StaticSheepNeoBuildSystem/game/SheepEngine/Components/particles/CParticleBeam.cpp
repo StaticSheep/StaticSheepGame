@@ -2,7 +2,7 @@
 
 #include "pch/precompiled.h"
 #include "Handle.h"
-#include "CParticleBoxEmitter.h"
+#include "CParticleBeam.h"
 #include "CParticleSystem.h"
 #include "systems/graphics/SheepGraphics.h"
 #include "../SheepUtil/include/SheepMath.h"
@@ -10,7 +10,7 @@
 namespace Framework
 {
 
-  ParticleBoxEmitter::ParticleBoxEmitter()
+  ParticleBeam::ParticleBeam()
   {
     transform = NULL;
     time = 0.0f;
@@ -19,12 +19,12 @@ namespace Framework
     m_spawnOffset = Vec3();
   }
 
-  ParticleBoxEmitter::~ParticleBoxEmitter()
+  ParticleBeam::~ParticleBeam()
   {
   }
 
-  void ParticleBoxEmitter::Initialize()
-  { 
+  void ParticleBeam::Initialize()
+  {
     transform = this->GetOwner()->GetComponentHandle(eTransform);
 
     ParticleSystem* system = (ParticleSystem*)space->GetComponent(eParticleSystem, owner);
@@ -33,78 +33,61 @@ namespace Framework
     if (system)
       system->parentToOwner = parented;
 
-    space->hooks.Add("LogicUpdate", self, BUILD_FUNCTION(ParticleBoxEmitter::UpdateEmitter));
-    space->hooks.Add("FrameUpdate", self, BUILD_FUNCTION(ParticleBoxEmitter::FrameUpdate));
+    space->hooks.Add("LogicUpdate", self, BUILD_FUNCTION(ParticleBeam::UpdateEmitter));
+    space->hooks.Add("FrameUpdate", self, BUILD_FUNCTION(ParticleBeam::FrameUpdate));
   }
 
-  void ParticleBoxEmitter::Remove()
+  void ParticleBeam::Remove()
   {
     space->hooks.Remove("LogicUpdate", self);
     space->hooks.Remove("FrameUpdate", self);
   }
 
   // for seeing the particles in the editor
-  void ParticleBoxEmitter::FrameUpdate(float dt)
+  void ParticleBeam::FrameUpdate(float dt)
   {
-    if(ENGINE->m_editorActive)
+    if (ENGINE->m_editorActive)
       UpdateEmitter(dt);
   }
 
   // 
-  void ParticleBoxEmitter::UpdateEmitter(float dt)
+  void ParticleBeam::UpdateEmitter(float dt)
   {
-    if(space->Paused())
+    if (space->Paused())
       return;
 
     // if we are set to currently spawn
-    if(spawning)
+    if (spawning)
     {
       ParticleSystem* system = (ParticleSystem*)space->GetComponent(eParticleSystem, owner);
 
       // and a particle system is actually on this object
-      if(system)
+      if (system)
         SpawnParticle(dt, system);
-    }
-    else
-    if(timedSpawning && timed >= 0.0f)
-    {
-      ParticleSystem* system = (ParticleSystem*)space->GetComponent(eParticleSystem, owner);
-
-      timed -= dt;
-
-      if(system)
-        SpawnParticle(dt, system);
-
-      if(timed < 0.0f)
-        timedSpawning = false;
     }
   }
 
-  void ParticleBoxEmitter::SetSpawnOffset(Vec3& offset)
+  void ParticleBeam::SetSpawnOffset(Vec3& offset)
   {
     m_spawnOffset = offset;
     return;
   }
 
   // spawns at the specified rate and amount 
-  void ParticleBoxEmitter::SpawnParticle(float dt, ParticleSystem* system)
+  void ParticleBeam::SpawnParticle(float dt, ParticleSystem* system)
   {
     Transform* trans = space->GetHandles().GetAs<Transform>(transform);
-
+    int curDepth = trans->GetTranslation().z;
     time += dt;
 
     // this loop handles how many particles per second
-    while(time > 0.0f)
+    while (time > 0.0f)
     {
 
       // this loop handles how many particles per "burst"
-      for(int i = 0; i < (int)m_amount.m_startMin; ++i)
+      for (int i = 0; i < curDepth; ++i)
       {
-        float randX = GetRandom(-m_width / 2.0f, m_width / 2.0f);
-        float randY = GetRandom(-m_height / 2.0f, m_height / 2.0f);
-        float randZ = GetRandom(-m_depth / 2.0f, m_depth / 2.0f);
-
-        Vec3 spawnLocation = Vec3(randX, randY, randZ);
+        Vec3 spawnLocation = Vec3(0, 0, -i);
 
         Mat3D rot = Mat3D(trans->GetRotation());
 
@@ -127,15 +110,9 @@ namespace Framework
     //system->ResetZ();
   }
 
-  void ParticleBoxEmitter::Toggle(bool state)
+  void ParticleBeam::Toggle(bool state)
   {
     spawning = state;
-  }
-
-  void ParticleBoxEmitter::SetTimedSpawn(float time_)
-  {
-    timedSpawning = true;
-    timed = time_;
   }
 
 }

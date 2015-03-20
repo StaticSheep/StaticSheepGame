@@ -63,6 +63,7 @@ E_NAME(Component)
   E_ENTRY(ParticleSystem)
   E_ENTRY(ParticleCircleEmitter)
   E_ENTRY(ParticleBoxEmitter)
+  E_ENTRY(ParticleBeam)
 
   E_ENTRY(div_Physics)
   E_ENTRY(BoxCollider)

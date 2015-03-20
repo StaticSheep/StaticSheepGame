@@ -10,7 +10,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/base/Component.h"
 #include "types/handle/Handle.h"
 #include "components/gamepad/CGamePad.h"
-#include "components/particles/CParticleCircleEmitter.h"
+#include "components/particles/CParticleBeam.h"
 #include"components/gameplay_scripts/FX_Scripts/CAOEDamage.h"
 #include "components/particles/CParticleSystem.h"
 #include "../../transform/CTransform.h"
@@ -28,6 +28,8 @@ namespace Framework
     void Draw();
     void Initialize();
     void Remove();
+
+    void SetPlayerID(const unsigned& playerID);
 
     //member variables
     Handle m_sTransform;
@@ -50,5 +52,7 @@ namespace Framework
 
   private:
     void UpdateBeamColor();
+
+    unsigned           m_playerID = 0;
   };
 }

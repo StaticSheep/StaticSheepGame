@@ -55,6 +55,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/particles/CParticleSystem.h"
 #include "components/particles/CParticleCircleEmitter.h"
 #include "components/particles/CParticleBoxEmitter.h"
+#include "components/particles/CParticleBeam.h"
 #include "components/particles/Particles.h"
 
 #include "Components/sprites/CSpineSprite.h"
@@ -499,14 +500,18 @@ namespace Framework
     TYPE_ADD_MEMBER(ParticleCircleEmitter, inward, false, true, "Spawn_Inwards");
 
     TYPE_REGISTER(ParticleBoxEmitter);
+    TYPE_ADD_MEMBER(ParticleBoxEmitter, parented, false, true, "Parent?");
     TYPE_ADD_MEMBER(ParticleBoxEmitter, m_width, false, true, "Box Width");
     TYPE_ADD_MEMBER(ParticleBoxEmitter, m_height, false, true, "Box Height");
+    TYPE_ADD_MEMBER(ParticleBoxEmitter, m_depth, false, true, "Box Depth");
     TYPE_ADD_MEMBER(ParticleBoxEmitter, m_spawnOffset, false, true, "Spawn Offset");
-    TYPE_ADD_MEMBER(ParticleBoxEmitter, m_amount, false, true, "Particle Amount");
-    TYPE_ADD_MEMBER(ParticleBoxEmitter, m_rate, false, true, "Spawn Delay!");
+    TYPE_ADD_MEMBER(ParticleBoxEmitter, m_amount, false, true, "Amount");
+    TYPE_ADD_MEMBER(ParticleBoxEmitter, m_rate, false, true, "delay");
     TYPE_ADD_MEMBER(ParticleBoxEmitter, spawning, false, true, "Constant Spawning?");
     TYPE_ADD_MEMBER(ParticleBoxEmitter, timedSpawning, false, true, "Timed Spawning?");
     TYPE_ADD_MEMBER(ParticleBoxEmitter, timed, false, true, "Time!");
+
+    TYPE_REGISTER(ParticleBeam);
 
     TYPE_REGISTER(BasicParticleSystem::BPSPos);
     TYPE_ADD_MEMBER(BasicParticleSystem::BPSPos, square, false, true, "Square Spawner");

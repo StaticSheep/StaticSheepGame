@@ -18,6 +18,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/particles/CParticleSystem.h"
 #include "components/particles/CParticleCircleEmitter.h"
 #include "components/particles/CParticleBoxEmitter.h"
+#include "components/particles/CParticleBeam.h"
 #include "components/lights/CSpriteLight.h"
 #include <iostream>
 #include <boost/filesystem.hpp>
@@ -56,6 +57,7 @@ namespace Framework
     REGISTER_COMPONENT(ParticleSystem);
     REGISTER_COMPONENT(ParticleCircleEmitter);
     REGISTER_COMPONENT(ParticleBoxEmitter);
+    REGISTER_COMPONENT(ParticleBeam);
     REGISTER_COMPONENT(SpineSprite);
   }
 

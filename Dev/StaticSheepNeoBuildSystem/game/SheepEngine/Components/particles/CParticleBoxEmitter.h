@@ -35,10 +35,12 @@ namespace Framework
       /*----- Members -----*/
       float m_width;
       float m_height;
+      float m_depth;
       bool m_oneShot;
       bool spawning;
       bool timedSpawning;
       float timed;
+      bool parented;
 
       Vec3 m_spawnOffset;
 

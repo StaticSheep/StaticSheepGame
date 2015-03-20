@@ -12,6 +12,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "../SheepUtil/include/Matrix3D.h"
 #include "CParticleCircleEmitter.h"
 #include "CParticleBoxEmitter.h"
+#include "CParticleBeam.h"
 #include "Particles.h"
 #include <string>
 #include <vector>
@@ -130,5 +131,6 @@ namespace Framework
 
       friend ParticleCircleEmitter;
       friend ParticleBoxEmitter;
+      friend ParticleBeam;
   };
 }
