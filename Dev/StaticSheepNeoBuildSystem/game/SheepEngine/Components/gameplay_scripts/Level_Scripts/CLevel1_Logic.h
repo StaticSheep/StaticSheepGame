@@ -15,6 +15,8 @@ namespace Framework
 {
   enum GameTypes
   {
+    IDLE_STATE,
+    LOBBY,
     FFA,
     JUGGERNAUT,
     SUDDENDEATH,
@@ -103,6 +105,8 @@ namespace Framework
     void SpawnModeText();
 
     void GoToGameMode(float dt);
+    void Idle(float dt);
+    void Lobby(float dt);
     void FFAMode(float dt);
     void JuggernautMode(float dt);
     void MakeJuggernaut();

@@ -74,6 +74,7 @@ E_NAME(Component)
 
   E_ENTRY(div_SlotMachines)
   E_ENTRY(SlotMachine)
+  E_ENTRY(PersonalSlotController)
 
   E_ENTRY(div_Controllers)
   E_ENTRY(SlotController)

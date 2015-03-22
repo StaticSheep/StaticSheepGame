@@ -571,6 +571,9 @@ namespace Framework
     GameObject *round_number;
     switch (mode)
     {
+    case LOBBY:
+
+      break;
     case FFA:
       round_number = (FACTORY->LoadObjectFromArchetype(space, "FFA_text"));
       round_number->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(-1000.0f, 200.0f, 0.0f));
@@ -596,6 +599,12 @@ namespace Framework
   {
     switch (mode)
     {
+    case IDLE_STATE:
+      Idle(dt);
+      break;
+    case LOBBY:
+      Lobby(dt);
+      break;
     case FFA:
       FFAMode(dt);
       break;
@@ -614,6 +623,16 @@ namespace Framework
     case GAMEOVER:
       GameOverMode(dt);
     }
+  }
+
+  void Level1_Logic::Idle(float dt)
+  {
+
+  }
+
+  void Level1_Logic::Lobby(float dt)
+  {
+
   }
 
   void Level1_Logic::FFAMode(float dt)

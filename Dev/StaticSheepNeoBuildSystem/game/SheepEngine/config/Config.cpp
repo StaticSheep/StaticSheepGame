@@ -54,8 +54,8 @@ namespace Framework
       }
     }
 
-    if (editor)
-      OpenConsole();
+    /* if (editor)
+       OpenConsole();*/
 #endif
 
     Core->AddSystem(new InputManager());
