@@ -76,6 +76,8 @@ namespace Framework
     bool camShake, shake;
     bool countDownDone;
     bool slotFinished, roundStart;
+    bool lobbySpawned;
+    Handle lobbyHandle;
     float shakeTime;
     float countDownTimer;
     LevelEvent *LE;

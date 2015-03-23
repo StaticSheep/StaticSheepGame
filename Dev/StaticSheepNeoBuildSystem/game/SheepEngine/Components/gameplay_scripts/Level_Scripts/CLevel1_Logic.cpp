@@ -32,6 +32,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "../../controllers/round/CRoundController.h"
 #include "../../controllers/chip/CChipController.h"
 #include "../../controllers/round/CRoundText.h"
+#include "../../controllers/lobby/CLobbyController.h"
 
 static const char *playerNames[] = { "Player1", "Player2", "Player3", "Player4" };
 static int juggKills[4] = { 0, 0, 0, 0 };
@@ -60,7 +61,10 @@ namespace Framework
     CoinStackPos[3] = Vec3(-906.4776f, 650.0f, 0.0f);
     deadPlayers = 0;
     for (int i = 0; i < 4; ++i)
+    {
       playerCoins[i] = 1;
+      Players[i] = Handle::null;
+    }
 
     warning = false;
     camShake = false;
@@ -70,6 +74,7 @@ namespace Framework
     countDownDone = false;
     slotFinished = false;
     roundStart = false;
+    lobbySpawned = false;
 	}
 
   Level1_Logic::~Level1_Logic()
@@ -114,7 +119,7 @@ namespace Framework
       num_spawned[i] = false;
     }
 
-    mode = SLOTMACHINE;
+    mode = IDLE_STATE;
 
     fontIndex = Draw::GetFontIndex("BN_Jinx");
 
@@ -184,8 +189,10 @@ namespace Framework
         }
         if (mod1 == EXPLOSIVEROUNDS)
           temp->GetComponent<PlayerController>(ePlayerController)->weapon->explosive_ = true;
+
         playTrans = space->GetGameObject(Players[i])->GetComponent<Transform>(eTransform);
         playTrans->SetTranslation(spawnPos[i]);
+
         if (mode == SUDDENDEATH)
         {
           temp->GetComponent<PlayerController>(ePlayerController)->health = 100;
@@ -632,6 +639,24 @@ namespace Framework
 
   void Level1_Logic::Lobby(float dt)
   {
+    if (!lobbySpawned)
+    {
+      //spawn lobby
+      //lobbyHandle = 
+      lobbySpawned = true;
+    }
+
+    for (int i = 0; i < 4; ++i)
+    {
+      if (space->GetGameObject(lobbyHandle)->GetComponent<LobbyController>(eLobbyController)->playerJoined[i] &&
+        Players[i] != Handle::null)
+      {
+        Players[i] = (FACTORY->LoadObjectFromArchetype(space, playerNames[i]))->self;
+        GameObject *temp = space->GetGameObject(Players[i]);
+        Transform *playTrans = space->GetGameObject(Players[i])->GetComponent<Transform>(eTransform);
+        playTrans->SetTranslation(spawnPos[i]);
+      }
+    }
 
   }
 

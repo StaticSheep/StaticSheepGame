@@ -20,10 +20,12 @@ namespace Framework
   public:
     enum RoundState
     {
+      INTRO,
       ROUNDSTART,
       ROUNDINPRO,
       ROUNDOVER,
-      GAMEOVER
+      GAMEOVER,
+      IDLE_WAIT
     };
     RoundController();
     ~RoundController();
@@ -33,6 +35,7 @@ namespace Framework
     void Draw();
 
     void GoToState(float dt);
+    void IntroSequence(float dt);
     void RoundStart(float dt);
     void RoundInProgress(float dt);
     void RoundOver(float dt);

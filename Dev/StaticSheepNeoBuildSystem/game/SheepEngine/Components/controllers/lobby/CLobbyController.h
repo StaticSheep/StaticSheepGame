@@ -41,7 +41,7 @@ namespace Framework
     bool playerJoined[4];
     Handle playerJoinText[4];
     int numOfPlayers;
-    float spawnTimer;
+    float spawnTimer, timer_;
     bool welcomeSpawned;
   };
 }

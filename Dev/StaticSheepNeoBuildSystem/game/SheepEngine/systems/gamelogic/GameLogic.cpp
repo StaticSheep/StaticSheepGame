@@ -52,6 +52,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "Components/controllers/round/CRoundResults.h"
 #include "components/gameplay_scripts/FX_Scripts/CPulser.h"
 #include "components/gameplay_scripts/Slot_Machine_Scripts/CPersonalSlotController.h"
+#include "Components/controllers/lobby/CLobbyController.h"
 
 namespace Framework
 {
@@ -106,6 +107,7 @@ namespace Framework
     REGISTER_COMPONENT(AOEDamage);
     REGISTER_COMPONENT(ChipController);
     REGISTER_COMPONENT(RoundController);
+    REGISTER_COMPONENT(LobbyController);
     REGISTER_COMPONENT(RoundText);
     REGISTER_COMPONENT(RoundResults);
     REGISTER_COMPONENT(Pulser);

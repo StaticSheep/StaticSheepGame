@@ -81,6 +81,7 @@ E_NAME(Component)
   E_ENTRY(PlayerController)
   E_ENTRY(ChipController)
   E_ENTRY(RoundController)
+  E_ENTRY(LobbyController)
   
   E_ENTRY(div_Effects)
   E_ENTRY(AimingArrow)

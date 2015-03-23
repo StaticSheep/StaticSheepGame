@@ -22,6 +22,7 @@ namespace Framework
     max_rounds = 6; //default value
     spawned_round_start = false;
     timeOfRound = 93.0f; //default round length, (round length + 3.0f)
+    state_ = INTRO;
   }
 
   RoundController::~RoundController()
@@ -40,7 +41,7 @@ namespace Framework
 
     LevelLogic = space->GetGameObject(owner)->GetComponentHandle(eLevel1_Logic);
     ChipController_ = space->GetGameObject(owner)->GetComponentHandle(eChipController);
-    round_state_timer = 2.0f;
+    round_state_timer = 5.0f;
     EORAwarded = false;
 
 
@@ -56,6 +57,9 @@ namespace Framework
   {
     switch (state_)
     {
+    case INTRO:
+      IntroSequence(dt);
+      break;
     case ROUNDSTART:
       RoundStart(dt);
       break;
@@ -68,7 +72,37 @@ namespace Framework
     case GAMEOVER:
       GameOver(dt);
       break;
+    case IDLE_WAIT:
+      break;
     }
+  }
+
+  void RoundController::IntroSequence(float dt)
+  {
+    //light-up sequence
+    //Welcome to the Games!
+    if (!spawned_round_start)
+    {
+      GameObject *welcome = (FACTORY->LoadObjectFromArchetype(space, "welcome_text"));
+      GameObject *toThe = (FACTORY->LoadObjectFromArchetype(space, "ToThe_text"));
+      GameObject *games = (FACTORY->LoadObjectFromArchetype(space, "games_text"));
+      welcome->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(1000.0f, 64.0f, 0.0f));
+      toThe->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(-1000.0f, 0.0f, 0.0f));
+      games->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(1000.0f, -64.0f, 0.0f));
+      spawned_round_start = true;
+    }
+
+    round_state_timer -= dt;
+    if (round_state_timer <= 0)
+    {
+      //change the level logic state to spawn the lobby
+      space->GetGameObject(owner)->GetComponent<Level1_Logic>(eLevel1_Logic)->mode = LOBBY;
+      //set the round controller to wait until lobby is done
+      state_ = IDLE_WAIT;
+      spawned_round_start = false;
+      round_state_timer = 2.0f;
+    }
+
   }
 
   void RoundController::RoundStart(float dt)

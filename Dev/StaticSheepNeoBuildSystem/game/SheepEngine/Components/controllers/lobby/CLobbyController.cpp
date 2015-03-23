@@ -76,7 +76,7 @@ namespace Framework
 
   void LobbyController::GameStart(float dt)
   {
-
+    space->hooks.Call("GameStart");
   }
 
 }

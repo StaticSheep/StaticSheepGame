@@ -78,6 +78,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "Components/controllers/round/CRoundResults.h"
 #include "components/gameplay_scripts/FX_Scripts/CPulser.h"
 #include "components/gameplay_scripts/Slot_Machine_Scripts/CPersonalSlotController.h"
+#include "components/controllers/lobby/CLobbyController.h"
 
 namespace Framework
 {
@@ -332,6 +333,9 @@ namespace Framework
 
     TYPE_REGISTER(RoundResults);
     TYPE_SET_TWEAK_TYPE(RoundResults, AntTweak::TW_TYPE_COMPONENT);
+
+    TYPE_REGISTER(LobbyController);
+    TYPE_SET_TWEAK_TYPE(LobbyController, AntTweak::TW_TYPE_COMPONENT);
 
     TYPE_REGISTER(Laser);
     TYPE_SET_TWEAK_TYPE(Laser, AntTweak::TW_TYPE_COMPONENT);
