@@ -96,6 +96,7 @@ namespace Framework
     space->hooks.Add("SpawnCoins", self, BUILD_FUNCTION(Level1_Logic::SpawnCoins));
     space->hooks.Add("RoundOver", self, BUILD_FUNCTION(Level1_Logic::RoundOver));
     space->hooks.Add("SpawnCoinsEx", self, BUILD_FUNCTION(Level1_Logic::SpawnCoinsEx));
+    space->hooks.Add("GameStart", self, BUILD_FUNCTION(Level1_Logic::GameStart));
 
     levelSound = space->GetGameObject(owner)->GetComponentHandle(eSoundPlayer);
     levelCamera = space->GetGameObject(owner)->GetComponentHandle(eCamera);
@@ -163,6 +164,12 @@ namespace Framework
     if (LE)
       LE->Update(dt);
 	}
+
+  void Level1_Logic::GameStart()
+  {
+    ResetPlayers();
+    mode = SLOTMACHINE;
+  }
 
   void Level1_Logic::SpawnPlayers(float dt)
   {

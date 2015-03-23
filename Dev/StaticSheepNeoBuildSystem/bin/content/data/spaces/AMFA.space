@@ -528,19 +528,13 @@ GameObject
   }
   LuaComponent
   {
-    name std::string "PauseMenu"
-    loadCommand std::string "return function(self) self.ypos = 456 self.opened = true end"
-  }
-
-  LuaComponent
-  {
-    name std::string "WinScreen"
+    name std::string "PlayerHUD"
     loadCommand std::string "return function(self) end"
   }
 
   LuaComponent
   {
-    name std::string "PlayerHUD"
+    name std::string "WinScreen"
     loadCommand std::string "return function(self) end"
   }
 }

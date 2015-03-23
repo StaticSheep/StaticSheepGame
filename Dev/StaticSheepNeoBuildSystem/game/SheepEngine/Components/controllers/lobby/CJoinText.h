@@ -31,5 +31,6 @@ namespace Framework
     float timer;
     int playerNum;
     bool blink;
+    bool activePlayer;
 	};
 }

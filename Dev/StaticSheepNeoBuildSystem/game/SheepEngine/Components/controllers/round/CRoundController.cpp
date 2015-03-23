@@ -23,6 +23,7 @@ namespace Framework
     spawned_round_start = false;
     timeOfRound = 93.0f; //default round length, (round length + 3.0f)
     state_ = INTRO;
+    gameStarted = false;
   }
 
   RoundController::~RoundController()
@@ -35,6 +36,7 @@ namespace Framework
     space->hooks.Add("LogicUpdate", self, BUILD_FUNCTION(RoundController::LogicUpdate));
     space->hooks.Add("Draw", self, BUILD_FUNCTION(RoundController::Draw));
     space->hooks.Add("SlotFinished", self, BUILD_FUNCTION(RoundController::SlotMachineDone));
+    space->hooks.Add("GameStart", self, BUILD_FUNCTION(RoundController::GameStarted));
 
     for (int i = 0; i < 4; ++i)
       num_spawned[i] = false;
@@ -103,6 +105,12 @@ namespace Framework
       round_state_timer = 2.0f;
     }
 
+  }
+
+  void RoundController::GameStarted()
+  {
+    state_ = ROUNDSTART;
+    round_state_timer = 2.0f;
   }
 
   void RoundController::RoundStart(float dt)

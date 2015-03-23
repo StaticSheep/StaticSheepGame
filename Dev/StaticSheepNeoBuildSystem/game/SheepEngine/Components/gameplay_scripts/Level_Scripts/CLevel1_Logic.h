@@ -46,6 +46,7 @@ namespace Framework
     void PlayerDied(int ply, int who_killed_them);
     void CameraShake(float dt, float shakeDuration, float magnitude);
     bool LevelCountdown(float dt);
+    void GameStart();
 		//member variables
     //Handle bTransfrom;
     float eventTimer;

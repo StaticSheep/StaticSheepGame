@@ -45,7 +45,7 @@ namespace Framework
 
   void LobbyController::Remove()
   {
-
+    space->hooks.Remove("LogicUpdate", self);
   }
 
   void LobbyController::LogicUpdate(float dt)
@@ -126,18 +126,20 @@ namespace Framework
     if (startPressed)
     {
       state_ = GAME_START;
-      timer_ = 3.0f;
+      timer_ = 0.5f;
+      space->hooks.Call("GameStart");
     }
   }
 
   void LobbyController::GameStart(float dt)
   {
-
+    //roll up lobby text
+    Transform *rt = space->GetGameObject(owner)->GetComponent<Transform>(eTransform);
+    rt->SetTranslation(rt->GetTranslation() + Vec3(0.0f, 80.0f, 0.0f));
 
     timer_ -= dt;
     if (timer_ <= 0)
     {
-      space->hooks.Call("GameStart");
       space->GetGameObject(owner)->Destroy();
     }
 

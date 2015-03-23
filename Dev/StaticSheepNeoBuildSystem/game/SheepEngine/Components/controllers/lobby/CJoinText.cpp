@@ -22,6 +22,7 @@ namespace Framework
     playerNum = -1;
     Handle lobbyController_ = Handle::null;
     blink = false;
+    activePlayer = false;
 	}
 
   JoinText::~JoinText()
@@ -33,6 +34,7 @@ namespace Framework
 	{
 		//logic setup, you're attached and components are in place
     space->hooks.Add("LogicUpdate", self, BUILD_FUNCTION(JoinText::LogicUpdate));
+    space->hooks.Add("GameStart", self, BUILD_FUNCTION(JoinText::DestroySelf));
 
     transfrom_ = space->GetGameObject(owner)->GetComponentHandle(eTransform);
     sprite_ = space->GetGameObject(owner)->GetComponentHandle(eSprite);
@@ -42,6 +44,7 @@ namespace Framework
   void JoinText::Remove()
 	{
 		space->hooks.Remove("LogicUpdate", self);
+    space->hooks.Remove("GameStart", self);
 	}
 
   void JoinText::LogicUpdate(float dt)
@@ -51,12 +54,20 @@ namespace Framework
     GamePad *playGP = space->GetGameObject(owner)->GetComponent<GamePad>(eGamePad);
     playGP->SetPad(playerNum);
 
-    Blink(dt);
+    if (!activePlayer)
+      Blink(dt);
 
-    if (playGP->ButtonDown(XButtons.A))
+    if (playGP->ButtonPressed(XButtons.A))
     {
       space->GetGameObject(lobbyController_)->GetComponent<LobbyController>(eLobbyController)->playerJoined[playerNum] = true;
-      DestroySelf();
+      //DestroySelf();
+      Sprite *textSprite = space->GetHandles().GetAs<Sprite>(sprite_);
+      textSprite->Color.A = 0.0f;
+      activePlayer = true;
+    }
+    if (playGP->ButtonPressed(XButtons.Start))
+    {
+      space->GetGameObject(lobbyController_)->GetComponent<LobbyController>(eLobbyController)->startPressed = true;
     }
 	}
 
