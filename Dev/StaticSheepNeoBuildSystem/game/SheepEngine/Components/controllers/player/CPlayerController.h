@@ -20,6 +20,18 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 namespace Framework
 {
+
+  struct FrameCollisionData
+  {
+
+    FrameCollisionData(Handle body_, Vec3 normal_ = Vec3(0.0f, 0.0f, 0.0f)) : frames(5), normal(normal_), body(body_){};
+
+    int frames;
+    Vec3 normal;
+    Handle body;
+  };
+
+
 	class PlayerController : public GameComponent
 	{
 	public:
@@ -62,7 +74,8 @@ namespace Framework
 
     std::string weaponGroup;
 
-    std::vector<Vec3> normals;
+    std::vector<FrameCollisionData> normals;
+
     AnimationController animCont;
     Weapon *weapon;
     PowerUp *powerUp;
@@ -81,6 +94,7 @@ namespace Framework
 
     Vec4 playerColor;
     bool animationFlip;
+    int snapFrame;
 
 	};
 }

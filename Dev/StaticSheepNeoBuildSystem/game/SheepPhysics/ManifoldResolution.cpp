@@ -97,7 +97,7 @@ namespace SheepFizz
       //calculate the normalized tangent vector
       //by removing the relative velocity component along the normal, only
       //the tangent remains (non-normalized)
-      Vec3D tangent = normal ^ (relativevelocity - (normal * contactVelocity));
+      Vec3D tangent = (relativevelocity - (normal * contactVelocity));
       tangent.Normalize();
 
       //calculate friction contact velocity - negative to tangentVector
@@ -107,10 +107,10 @@ namespace SheepFizz
       float jFriction = frictionContactVelocity / inverseMassSum;
 
       //friction force cannot exceed normal impulse
-      float accumulatedTanPrev = accumulatedTanImpulse[i];
-      accumulatedTanImpulse[i] = Maximum(jFriction + accumulatedTanImpulse[i], -j * mDynamicFriction);
-      accumulatedTanImpulse[i] = Minimum(accumulatedTanImpulse[i], j * mDynamicFriction);
-      jFriction = accumulatedTanImpulse[i] - accumulatedTanPrev;
+      //float accumulatedTanPrev = accumulatedTanImpulse[i];
+     // accumulatedTanImpulse[i] = Maximum(jFriction + accumulatedTanImpulse[i], -j * mDynamicFriction);
+     // accumulatedTanImpulse[i] = Minimum(accumulatedTanImpulse[i], j * mDynamicFriction);
+     // jFriction = accumulatedTanImpulse[i] - accumulatedTanPrev;
 
       Vec3D frictionImpulse;
       frictionImpulse = jFriction * tangent;
@@ -118,8 +118,8 @@ namespace SheepFizz
       //apply friction impulse
       frictionImpulse.z = 0;
 
-      A->ApplyImpulse(-frictionImpulse, aRepulsionVec);
-      B->ApplyImpulse(frictionImpulse, bRepulsionVec);
+      //A->ApplyImpulse(-frictionImpulse, aRepulsionVec);
+      //B->ApplyImpulse(frictionImpulse, bRepulsionVec);
 
     }
 

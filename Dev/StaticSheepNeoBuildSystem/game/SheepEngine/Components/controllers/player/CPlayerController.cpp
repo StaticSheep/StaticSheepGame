@@ -153,6 +153,9 @@ namespace Framework
 
     powerUp = nullptr;
     pn = -1;
+
+    snapFrame = 0;
+
     //SpawnEffect();
 	}
 
@@ -244,10 +247,8 @@ namespace Framework
     {
       SnappedMovement();
     }
-    else
-    {
-      normals.clear();
-    }
+    //else
+      //normals.clear();
 
 		//dash, formally known as melee
     if (gp->ButtonPressed(XButtons.LShoulder))
@@ -263,7 +264,7 @@ namespace Framework
     if (ps->GetTranslation().x > 1000 || ps->GetTranslation().x < -1000 || ps->GetTranslation().y > 500 || ps->GetTranslation().y < -500)
       PlayerDeath(se, ps);
 
-    isSnapped = false;
+    //isSnapped = false;
     
     //keyboard movement
     if (gp->GetIndex() == 0 && !gp->Connected())
@@ -293,6 +294,21 @@ namespace Framework
       aimDir = Vec3D(aim.x, aim.y, 0.0);
     }
 
+    //if(normals.size() == 0)
+    //{
+    //  if(snapFrame <= 0)
+    //  {
+    //    bc->SetGravityOff();
+    //    isSnapped = false;
+    //  }
+    //}
+
+    normals.clear();
+
+    if(snapFrame > 0)
+      --snapFrame;
+
+
     //MetricInfo metricData;
     //metricData.mt = PLAYER_LOCATION;
     //metricData.playerNum = playerNum;
@@ -305,65 +321,27 @@ namespace Framework
   void PlayerController::SnappedMovement()
   {
     hasDashed = false;
-    if (frameSkip)
-    {
-      bc->SetBodyRotation(-snappedNormal);
-      normals.clear();
-      normals.push_back(snappedNormal);
-    }
-    frameSkip = !frameSkip;
+    Vec3 averageNormal;
+    int size = normals.size();
 
-    //bc->SetVelocity(snappedNormal * 100); //artificial pull or "gravity" to snapped normal
-    //bc->SetAngVelocity(0.0);              //if snapped to surface take away all angular velocity
-
-    if (snappedTo != Handle::null) //if the object we're supposed to be snapped to isn't dead
+    for(unsigned i = 0; i < size; ++i)
     {
-      GameObject *snappedObject = space->GetHandles().GetAs<GameObject>(snappedTo);
-      if ((snappedObject->name == "SmallPlatform" || snappedObject->name == "SmallPlat"))
+      --normals[i].frames;
+
+      averageNormal += normals[i].normal;
+
+      if(normals[i].frames <= 0)
       {
-        Vec3 addedVel = (snappedObject->GetComponent<BoxCollider>(eBoxCollider))->GetCurrentVelocity();
-        bc->AddToVelocity(addedVel);
+        normals[i] = normals[size - 1];
+        --size;
+        averageNormal += normals[i].normal;
       }
     }
 
-    //left stick movement in the X
-    if (gp->LeftStick_X() > 0.2 || (SHEEPINPUT->KeyIsDown(0x44) && gp->GetIndex() == 0))
-    {
-      if (snappedNormal.y > 0)
-        bc->AddToVelocity((snappedNormal.CalculateNormal() * 450));
-      else if (snappedNormal.y < 0)
-        bc->AddToVelocity(-(snappedNormal.CalculateNormal() * 450));
-    }
-    else if (gp->LeftStick_X() < -0.2 || (SHEEPINPUT->KeyIsDown(0x41) && gp->GetIndex() == 0))
-    {
+    averageNormal.Normalize();
 
-      if (snappedNormal.y > 0)
-        bc->AddToVelocity(-(snappedNormal.CalculateNormal() * 450));
-      if (snappedNormal.y < 0)
-        bc->AddToVelocity((snappedNormal.CalculateNormal() * 450));
-    }
+    bc->SetBodyRotation(-averageNormal);
 
-    //left stick movement in the Y
-    if (gp->LeftStick_Y() > 0.2 || (SHEEPINPUT->KeyIsDown(0x57) && gp->GetIndex() == 0))
-    {
-
-      if (snappedNormal.x > 0)
-        bc->AddToVelocity(-(snappedNormal.CalculateNormal() * 450));
-      else if (snappedNormal.x < 0)
-        bc->AddToVelocity((snappedNormal.CalculateNormal() * 450));
-    }
-    else if (gp->LeftStick_Y() < -0.2 || (SHEEPINPUT->KeyIsDown(0x53) && gp->GetIndex() == 0))
-    {
-      if (snappedNormal.x > 0)
-        bc->AddToVelocity((snappedNormal.CalculateNormal() * 450));
-      if (snappedNormal.x < 0)
-        bc->AddToVelocity(-(snappedNormal.CalculateNormal() * 450));
-    }    
-
-    //clamp the players velocity
-    clampVelocity(450.0f);
-
-    //jump
     if (((gp->ButtonDown(XButtons.A) || gp->LeftTrigger()) && isSnapped) || (SHEEPINPUT->KeyIsDown('Q') && gp->GetIndex() == 0))
     {
       jump(); //player jump
@@ -372,6 +350,21 @@ namespace Framework
       else
         se->Play("jump1", &SoundInstance(0.75f));
     }
+
+    if(gp->LStick_InDeadZone())
+      return;
+
+    Vec3 movementDir(gp->LeftStick_X(), gp->LeftStick_Y(), 0.0f);
+
+    TRACELOG->Log(TraceLevel::DBG, "Goddamn fucking X: %f\tY:%f", movementDir.x, movementDir.y);
+
+    Vec3 rotation = Mat3D(bc->GetBodyRotation()) * Vec3(1.0f, 0.0f, 0.0f);
+    movementDir = (movementDir * rotation) * rotation;
+
+    bc->AddToVelocity(movementDir * 400.0f);
+
+    clampVelocity(450.0f);
+    
   }
 
 	//************************************
@@ -394,7 +387,8 @@ namespace Framework
     
     CollisionDamage(OtherObject); //determine if the colliding object does damage to the player
 
-    DetermineSnap(OtherObject, otherObject,manifold); //determine the snapped normal based on collided object
+    if(snapFrame <= 0)
+      DetermineSnap(OtherObject, otherObject,manifold); //determine the snapped normal based on collided object
 	}
 
 
@@ -487,10 +481,23 @@ namespace Framework
 
     BoxCollider* collider = OtherObject->GetComponent<BoxCollider>(eBoxCollider);
 
+    Vec3 normal = collider->GetCollisionNormals(manifold);
+    bool found = false;
+
+    for(auto it = normals.begin(); it != normals.end(); ++it)
+    {
+      if(it->body == otherObject)
+      {
+        it->frames = 5;
+        found = true;
+      }
+    }
+
+    if(!found)
+      normals.push_back(FrameCollisionData(otherObject, normal));
+
     if(!isSnapped)
     {
-      // reorient to the collider's normal
-      Vec3 normal = collider->GetCollisionNormals(manifold);
       snappedNormal = normal;
 
       bc = space->GetHandles().GetAs<BoxCollider>(playerCollider);
@@ -504,6 +511,7 @@ namespace Framework
       Mat3D rot(ps->GetRotation() - PI / 2.0f);
       ps = space->GetHandles().GetAs<Transform>(playerTransform);
       bc->SetGravityNormal(rot * Vec3(1.0f, 0.0f, 0.0f));
+      bc->SetVelocity(bc->GetCurrentVelocity() * 0.5f);
     }
 
     /*Transform *OOT = OtherObject->GetComponent<Transform>(eTransform);
@@ -643,7 +651,7 @@ namespace Framework
     }
     //then I normalize that vector and multiply it by a constant (1.5)
     returnVec.Normalize();
-    returnVec *= 1.5;
+    //returnVec *= 1.5;
 
 		return returnVec;
 	}
@@ -734,11 +742,6 @@ namespace Framework
         hasRespawned = false;
       }
     }
-
-
-
-
-
 
     if (respawnTimer > 0.0f)
     {
@@ -910,9 +913,19 @@ namespace Framework
     playerButton.y = (int)ps->GetTranslation().y;
     playerButton.button = Buttons::NONE;
 
+
+    bc = space->GetHandles().GetAs<BoxCollider>(playerCollider);
+    Transform* trans = space->GetHandles().GetAs<Transform>(playerTransform);
+
     if (gp->ButtonPressed(XButtons.A))
     {
       playerButton.button = Buttons::A;
+      isSnapped = false;
+      bc->SetGravityOff();
+      snapFrame = 5;
+      normals.clear();
+      //trans->SetTranslation(trans->GetTranslation() - snappedNormal * 10.0f);
+
     }
     if (gp->ButtonPressed(XButtons.B))
     {

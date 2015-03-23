@@ -26,7 +26,7 @@ namespace Framework
 
     Transform* trans = space->GetHandles().GetAs<Transform>(gTransfrom);
 
-    trans->SetTranslation(trans->GetTranslation() + Vec3(2.0 * moveFactor, 0, 0));
+    //trans->SetTranslation(trans->GetTranslation() + Vec3(2.0 * moveFactor, 0, 0));
 
     trans->SetRotation(trans->GetRotation() + (dt * 1.0f * -moveFactor));
 

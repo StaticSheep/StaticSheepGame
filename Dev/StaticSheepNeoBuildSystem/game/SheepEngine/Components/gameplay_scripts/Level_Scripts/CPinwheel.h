@@ -17,5 +17,7 @@ namespace Framework
     Handle gCollider;
 
     bool moveLeft;
+
+    float fuck;
   };
 }

@@ -283,7 +283,7 @@ namespace Framework
 		SheepFizz::Material Fluff(.3f, .2f, .4f, .1f);
 		SheepFizz::Material Bounce(.3f, 4.0f, .3f, .15f);
 		SheepFizz::Material Static(.0f,.2f,.5f,3.0f);
-    SheepFizz::Material NoBounce(100.0f, 0.0f, 1.0f, 1.0f);
+    SheepFizz::Material NoBounce(100.0f, -1.0f, 1.0f, 1.0f);
 
 		//insert materials into the unordered map
 		m_materials.insert(std::pair<std::string, SheepFizz::Material>("Wood", Wood));
