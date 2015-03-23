@@ -10,12 +10,18 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "types/space/Space.h"
 #include "../../transform/CTransform.h"
 #include "../../colliders/CBoxCollider.h"
+#include "../../gamepad/CGamePad.h"
+#include "../../sprites/CSprite.h"
+#include "CLobbyController.h"
 
 namespace Framework
 {
   JoinText::JoinText()
 	{
     timer = 3.0f;
+    playerNum = -1;
+    Handle lobbyController_ = Handle::null;
+    blink = false;
 	}
 
   JoinText::~JoinText()
@@ -35,7 +41,6 @@ namespace Framework
 
   void JoinText::Remove()
 	{
-    space->GetGameObject(owner)->hooks.Remove("AnimEnd", self);
 		space->hooks.Remove("LogicUpdate", self);
 	}
 
@@ -43,13 +48,37 @@ namespace Framework
   {
     Transform *rt = space->GetHandles().GetAs<Transform>(transfrom_);
     Vec3 currPos = rt->GetTranslation();
-    
+    GamePad *playGP = space->GetGameObject(owner)->GetComponent<GamePad>(eGamePad);
+    playGP->SetPad(playerNum);
 
+    Blink(dt);
+
+    if (playGP->ButtonDown(XButtons.A))
+    {
+      space->GetGameObject(lobbyController_)->GetComponent<LobbyController>(eLobbyController)->playerJoined[playerNum] = true;
+      DestroySelf();
+    }
 	}
 
   void JoinText::DestroySelf()
   {
     space->GetGameObject(owner)->Destroy();
+  }
+
+  void JoinText::Blink(float dt)
+  {
+    Sprite *textSprite = space->GetHandles().GetAs<Sprite>(sprite_);
+
+    if (!blink)
+      textSprite->Color.A -= dt * 5.0f;
+    else
+      textSprite->Color.A += dt * 5.0f;
+
+
+    if (textSprite->Color.A <= 0.5f)
+      blink = true;
+    else if (textSprite->Color.A >= 1.0f)
+      blink = false;
   }
 
 }

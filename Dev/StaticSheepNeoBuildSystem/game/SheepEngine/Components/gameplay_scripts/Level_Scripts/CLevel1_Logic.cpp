@@ -642,14 +642,16 @@ namespace Framework
     if (!lobbySpawned)
     {
       //spawn lobby
-      //lobbyHandle = 
+      lobbyHandle = (FACTORY->LoadObjectFromArchetype(space, "Lobby"))->self;
+      space->GetGameObject(lobbyHandle)->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(0.0f, 900.0f, 0.0f));
       lobbySpawned = true;
     }
 
+    //for loop that spawns the players and keeps them spawned while they are joining
     for (int i = 0; i < 4; ++i)
     {
       if (space->GetGameObject(lobbyHandle)->GetComponent<LobbyController>(eLobbyController)->playerJoined[i] &&
-        Players[i] != Handle::null)
+        Players[i] == Handle::null)
       {
         Players[i] = (FACTORY->LoadObjectFromArchetype(space, playerNames[i]))->self;
         GameObject *temp = space->GetGameObject(Players[i]);

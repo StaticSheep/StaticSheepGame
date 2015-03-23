@@ -35,6 +35,7 @@ namespace Framework
     void Spawn(float dt);
     void Join(float dt);
     void GameStart(float dt);
+    void BounceDown(float dt);
 
     Handle LevelLogic, ChipController_;
     LobbyState state_;
@@ -42,6 +43,8 @@ namespace Framework
     Handle playerJoinText[4];
     int numOfPlayers;
     float spawnTimer, timer_;
-    bool welcomeSpawned;
+    float bounceDownTimer;
+    bool spawned, bounceDownDone, startPressed;
+    Vec3 spawnPos[4];
   };
 }

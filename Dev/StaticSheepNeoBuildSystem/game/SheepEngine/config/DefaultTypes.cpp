@@ -79,6 +79,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/gameplay_scripts/FX_Scripts/CPulser.h"
 #include "components/gameplay_scripts/Slot_Machine_Scripts/CPersonalSlotController.h"
 #include "components/controllers/lobby/CLobbyController.h"
+#include "components/controllers/lobby/CJoinText.h"
 
 namespace Framework
 {
@@ -336,6 +337,10 @@ namespace Framework
 
     TYPE_REGISTER(LobbyController);
     TYPE_SET_TWEAK_TYPE(LobbyController, AntTweak::TW_TYPE_COMPONENT);
+
+    TYPE_REGISTER(JoinText);
+    TYPE_SET_TWEAK_TYPE(JoinText, AntTweak::TW_TYPE_COMPONENT);
+    TYPE_ADD_MEMBER(JoinText, playerNum, false, true, "Player");
 
     TYPE_REGISTER(Laser);
     TYPE_SET_TWEAK_TYPE(Laser, AntTweak::TW_TYPE_COMPONENT);

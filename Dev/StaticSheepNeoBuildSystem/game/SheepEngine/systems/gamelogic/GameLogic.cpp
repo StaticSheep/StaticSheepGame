@@ -53,6 +53,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/gameplay_scripts/FX_Scripts/CPulser.h"
 #include "components/gameplay_scripts/Slot_Machine_Scripts/CPersonalSlotController.h"
 #include "Components/controllers/lobby/CLobbyController.h"
+#include "Components/controllers/lobby/CJoinText.h"
 
 namespace Framework
 {
@@ -111,6 +112,7 @@ namespace Framework
     REGISTER_COMPONENT(RoundText);
     REGISTER_COMPONENT(RoundResults);
     REGISTER_COMPONENT(Pulser);
+    REGISTER_COMPONENT(JoinText);
   }
 
   void GameLogic::Initialize()

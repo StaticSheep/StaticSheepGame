@@ -86,9 +86,9 @@ namespace Framework
       GameObject *welcome = (FACTORY->LoadObjectFromArchetype(space, "welcome_text"));
       GameObject *toThe = (FACTORY->LoadObjectFromArchetype(space, "ToThe_text"));
       GameObject *games = (FACTORY->LoadObjectFromArchetype(space, "games_text"));
-      welcome->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(1000.0f, 64.0f, 0.0f));
+      welcome->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(1000.0f, 96.0f, 0.0f));
       toThe->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(-1000.0f, 0.0f, 0.0f));
-      games->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(1000.0f, -64.0f, 0.0f));
+      games->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(1000.0f, -96.0f, 0.0f));
       spawned_round_start = true;
     }
 

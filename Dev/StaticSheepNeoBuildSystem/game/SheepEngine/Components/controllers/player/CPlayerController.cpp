@@ -704,10 +704,6 @@ namespace Framework
     }
 
 
-
-
-
-
     if (respawnTimer > 0.0f)
     {
       if (hasRespawned)

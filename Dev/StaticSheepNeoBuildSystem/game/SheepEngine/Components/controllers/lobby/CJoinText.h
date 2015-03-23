@@ -22,9 +22,14 @@ namespace Framework
 		void Remove();
     void DestroySelf();
 
+    void Blink(float dt);
+
 		//member variables
     Handle transfrom_;
     Handle sprite_;
+    Handle lobbyController_;
     float timer;
+    int playerNum;
+    bool blink;
 	};
 }
