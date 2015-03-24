@@ -1,4 +1,4 @@
-AMFA
+playerSlotPrototype
 GameObject
 {
   name std::string "Background"
@@ -528,13 +528,19 @@ GameObject
   }
   LuaComponent
   {
-    name std::string "PlayerHUD"
-    loadCommand std::string "return function(self) end"
+    name std::string "PauseMenu"
+    loadCommand std::string "return function(self) self.ypos = 456 self.opened = true end"
   }
 
   LuaComponent
   {
     name std::string "WinScreen"
+    loadCommand std::string "return function(self) end"
+  }
+
+  LuaComponent
+  {
+    name std::string "PlayerHUD"
     loadCommand std::string "return function(self) end"
   }
 }
@@ -4509,5 +4515,809 @@ GameObject
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
     m_CollisionGroup std::string ""
+  }
+}
+GameObject
+{
+  name std::string ""
+  archetype std::string ""
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -342.580750
+      y_ float -115.328133
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "p1_coinTotal.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 0.400000
+      Y float 0.350000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+}
+GameObject
+{
+  name std::string "coin_rain"
+  archetype std::string "coin_rain"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -263.092377
+      y_ float -33.637344
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  BasicParticleSystem
+  {
+    m_texture std::string "coin.png"
+    m_layer int 1
+    m_pos BasicParticleSystem::BPSPos
+    {
+      square bool true
+      edgeOnly bool false
+      radius float 0.000000
+      angle float 1.000000
+      randAngle float 0.000000
+      offset Vec2
+      {
+        X float 0.000000
+        Y float 0.000000
+      }
+      randOffset Vec2
+      {
+        X float 50.000000
+        Y float 50.000000
+      }
+    }
+    m_scaling BPartSys::BPSScaling
+    {
+      scale Vec2
+      {
+        X float 32.000000
+        Y float 32.000000
+      }
+      randScale Vec2
+      {
+        X float 0.000000
+        Y float 0.000000
+      }
+    }
+    m_rot BPartSys::BPSRotation
+    {
+      rotation float 0.000000
+      randRotation float 0.000000
+    }
+    m_life BPartSys::BPSLife
+    {
+      lifetime float 0.100000
+      randLifetime float 0.000000
+    }
+    m_fade BPartSys::BPSFade
+    {
+      fadeOut bool false
+      fadeOutTime float 0.000000
+      randFadeoutTime float 0.000000
+    }
+    m_vel BPartSys::BPSVelocity
+    {
+      velocity Vec2
+      {
+        X float 0.000000
+        Y float -300.000000
+      }
+      randVelocity Vec2
+      {
+        X float 0.000000
+        Y float 0.000000
+      }
+      speedIn float 0.000000
+      randSpeedIn float 0.000000
+    }
+    m_system BPartSys::BPSSystem
+    {
+      active bool true
+      editorActive bool true
+      spawnInterval float 18.000000
+      spawnAmount float 15.000000
+      spawnPerSecond float 0.000000
+      shutdownTimer float 0.000000
+      parentToOwner bool false
+    }
+  }
+}
+GameObject
+{
+  name std::string "playerSlotMachine"
+  archetype std::string "playerSlotMachine"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -275.000000
+      y_ float -241.468292
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  SlotMachine
+  {
+    m_layer int 1
+    m_stopTexture std::string "ggg_reel.png"
+    m_spinTexture std::string "ggg_reel_blur.png"
+    m_slotBackTexture std::string "slotmachine_slotback.png"
+    numSlots int 3
+    slotOptions int 3
+    startSpeed float 7.000000
+    slotSize Vec2
+    {
+      X float 0.600000
+      Y float 0.600000
+    }
+    slotMargin float 20.000000
+    slotOffset Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+    slotBackSize Vec2
+    {
+      X float 2.400000
+      Y float 1.800000
+    }
+    startTime float 3.000000
+    bonusTime float 0.200000
+    useSpriteColor bool true
+    backingColor Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+  }
+}
+GameObject
+{
+  name std::string "playerSlotMachine"
+  archetype std::string "playerSlotMachine"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -275.000000
+      y_ float 133.348251
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  SlotMachine
+  {
+    m_layer int 1
+    m_stopTexture std::string "ggg_reel.png"
+    m_spinTexture std::string "ggg_reel_blur.png"
+    m_slotBackTexture std::string "slotmachine_slotback.png"
+    numSlots int 3
+    slotOptions int 3
+    startSpeed float 7.000000
+    slotSize Vec2
+    {
+      X float 0.600000
+      Y float 0.600000
+    }
+    slotMargin float 20.000000
+    slotOffset Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+    slotBackSize Vec2
+    {
+      X float 2.400000
+      Y float 1.800000
+    }
+    startTime float 3.000000
+    bonusTime float 0.200000
+    useSpriteColor bool true
+    backingColor Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+  }
+}
+GameObject
+{
+  name std::string ""
+  archetype std::string ""
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -329.966705
+      y_ float 260.689728
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "p4_coinTotal.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 0.400000
+      Y float 0.350000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+}
+GameObject
+{
+  name std::string "playerSlotMachine"
+  archetype std::string "playerSlotMachine"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 275.000000
+      y_ float 133.348251
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  SlotMachine
+  {
+    m_layer int 1
+    m_stopTexture std::string "ggg_reel.png"
+    m_spinTexture std::string "ggg_reel_blur.png"
+    m_slotBackTexture std::string "slotmachine_slotback.png"
+    numSlots int 3
+    slotOptions int 3
+    startSpeed float 7.000000
+    slotSize Vec2
+    {
+      X float 0.600000
+      Y float 0.600000
+    }
+    slotMargin float 20.000000
+    slotOffset Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+    slotBackSize Vec2
+    {
+      X float 2.400000
+      Y float 1.800000
+    }
+    startTime float 3.000000
+    bonusTime float 0.200000
+    useSpriteColor bool true
+    backingColor Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+  }
+}
+GameObject
+{
+  name std::string ""
+  archetype std::string ""
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 227.252686
+      y_ float 260.689728
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "p3_coinTotal.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 0.400000
+      Y float 0.350000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+}
+GameObject
+{
+  name std::string "playerSlotMachine"
+  archetype std::string "playerSlotMachine"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 275.105743
+      y_ float -241.468262
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  SlotMachine
+  {
+    m_layer int 1
+    m_stopTexture std::string "ggg_reel.png"
+    m_spinTexture std::string "ggg_reel_blur.png"
+    m_slotBackTexture std::string "slotmachine_slotback.png"
+    numSlots int 3
+    slotOptions int 3
+    startSpeed float 7.000000
+    slotSize Vec2
+    {
+      X float 0.600000
+      Y float 0.600000
+    }
+    slotMargin float 20.000000
+    slotOffset Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+    slotBackSize Vec2
+    {
+      X float 2.400000
+      Y float 1.800000
+    }
+    startTime float 3.000000
+    bonusTime float 0.200000
+    useSpriteColor bool true
+    backingColor Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+  }
+}
+GameObject
+{
+  name std::string ""
+  archetype std::string ""
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 213.837646
+      y_ float -115.328133
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "p2_coinTotal.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 0.400000
+      Y float 0.350000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+}
+GameObject
+{
+  name std::string "coin_rain"
+  archetype std::string "coin_rain"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -245.072357
+      y_ float 351.991180
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  BasicParticleSystem
+  {
+    m_texture std::string "coin.png"
+    m_layer int 1
+    m_pos BasicParticleSystem::BPSPos
+    {
+      square bool true
+      edgeOnly bool false
+      radius float 0.000000
+      angle float 1.000000
+      randAngle float 0.000000
+      offset Vec2
+      {
+        X float 0.000000
+        Y float 0.000000
+      }
+      randOffset Vec2
+      {
+        X float 50.000000
+        Y float 50.000000
+      }
+    }
+    m_scaling BPartSys::BPSScaling
+    {
+      scale Vec2
+      {
+        X float 32.000000
+        Y float 32.000000
+      }
+      randScale Vec2
+      {
+        X float 0.000000
+        Y float 0.000000
+      }
+    }
+    m_rot BPartSys::BPSRotation
+    {
+      rotation float 0.000000
+      randRotation float 0.000000
+    }
+    m_life BPartSys::BPSLife
+    {
+      lifetime float 0.100000
+      randLifetime float 0.000000
+    }
+    m_fade BPartSys::BPSFade
+    {
+      fadeOut bool false
+      fadeOutTime float 0.000000
+      randFadeoutTime float 0.000000
+    }
+    m_vel BPartSys::BPSVelocity
+    {
+      velocity Vec2
+      {
+        X float 0.000000
+        Y float -300.000000
+      }
+      randVelocity Vec2
+      {
+        X float 0.000000
+        Y float 0.000000
+      }
+      speedIn float 0.000000
+      randSpeedIn float 0.000000
+    }
+    m_system BPartSys::BPSSystem
+    {
+      active bool true
+      editorActive bool true
+      spawnInterval float 18.000000
+      spawnAmount float 15.000000
+      spawnPerSecond float 0.000000
+      shutdownTimer float 0.000000
+      parentToOwner bool false
+    }
+  }
+}
+GameObject
+{
+  name std::string "coin_rain"
+  archetype std::string "coin_rain"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 319.555206
+      y_ float 341.179199
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  BasicParticleSystem
+  {
+    m_texture std::string "coin.png"
+    m_layer int 1
+    m_pos BasicParticleSystem::BPSPos
+    {
+      square bool true
+      edgeOnly bool false
+      radius float 0.000000
+      angle float 1.000000
+      randAngle float 0.000000
+      offset Vec2
+      {
+        X float 0.000000
+        Y float 0.000000
+      }
+      randOffset Vec2
+      {
+        X float 50.000000
+        Y float 50.000000
+      }
+    }
+    m_scaling BPartSys::BPSScaling
+    {
+      scale Vec2
+      {
+        X float 32.000000
+        Y float 32.000000
+      }
+      randScale Vec2
+      {
+        X float 0.000000
+        Y float 0.000000
+      }
+    }
+    m_rot BPartSys::BPSRotation
+    {
+      rotation float 0.000000
+      randRotation float 0.000000
+    }
+    m_life BPartSys::BPSLife
+    {
+      lifetime float 0.100000
+      randLifetime float 0.000000
+    }
+    m_fade BPartSys::BPSFade
+    {
+      fadeOut bool false
+      fadeOutTime float 0.000000
+      randFadeoutTime float 0.000000
+    }
+    m_vel BPartSys::BPSVelocity
+    {
+      velocity Vec2
+      {
+        X float 0.000000
+        Y float -300.000000
+      }
+      randVelocity Vec2
+      {
+        X float 0.000000
+        Y float 0.000000
+      }
+      speedIn float 0.000000
+      randSpeedIn float 0.000000
+    }
+    m_system BPartSys::BPSSystem
+    {
+      active bool true
+      editorActive bool true
+      spawnInterval float 18.000000
+      spawnAmount float 15.000000
+      spawnPerSecond float 0.000000
+      shutdownTimer float 0.000000
+      parentToOwner bool false
+    }
+  }
+}
+GameObject
+{
+  name std::string "coin_rain"
+  archetype std::string "coin_rain"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 291.924561
+      y_ float -37.241398
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  BasicParticleSystem
+  {
+    m_texture std::string "coin.png"
+    m_layer int 1
+    m_pos BasicParticleSystem::BPSPos
+    {
+      square bool true
+      edgeOnly bool false
+      radius float 0.000000
+      angle float 1.000000
+      randAngle float 0.000000
+      offset Vec2
+      {
+        X float 0.000000
+        Y float 0.000000
+      }
+      randOffset Vec2
+      {
+        X float 50.000000
+        Y float 50.000000
+      }
+    }
+    m_scaling BPartSys::BPSScaling
+    {
+      scale Vec2
+      {
+        X float 32.000000
+        Y float 32.000000
+      }
+      randScale Vec2
+      {
+        X float 0.000000
+        Y float 0.000000
+      }
+    }
+    m_rot BPartSys::BPSRotation
+    {
+      rotation float 0.000000
+      randRotation float 0.000000
+    }
+    m_life BPartSys::BPSLife
+    {
+      lifetime float 0.100000
+      randLifetime float 0.000000
+    }
+    m_fade BPartSys::BPSFade
+    {
+      fadeOut bool false
+      fadeOutTime float 0.000000
+      randFadeoutTime float 0.000000
+    }
+    m_vel BPartSys::BPSVelocity
+    {
+      velocity Vec2
+      {
+        X float 0.000000
+        Y float -300.000000
+      }
+      randVelocity Vec2
+      {
+        X float 0.000000
+        Y float 0.000000
+      }
+      speedIn float 0.000000
+      randSpeedIn float 0.000000
+    }
+    m_system BPartSys::BPSSystem
+    {
+      active bool true
+      editorActive bool true
+      spawnInterval float 18.000000
+      spawnAmount float 15.000000
+      spawnPerSecond float 0.000000
+      shutdownTimer float 0.000000
+      parentToOwner bool false
+    }
   }
 }

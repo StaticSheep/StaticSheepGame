@@ -13,7 +13,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #define SHEEPGRAPHICS 1
 #define METRICS 0
 
-#define PRESENTATION 1
+#define PRESENTATION 0
 
 #if METRICS
 asldfkjsalfj

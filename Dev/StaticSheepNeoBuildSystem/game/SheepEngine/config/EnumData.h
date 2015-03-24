@@ -74,12 +74,15 @@ E_NAME(Component)
 
   E_ENTRY(div_SlotMachines)
   E_ENTRY(SlotMachine)
+  E_ENTRY(PersonalSlotController)
 
   E_ENTRY(div_Controllers)
   E_ENTRY(SlotController)
   E_ENTRY(PlayerController)
   E_ENTRY(ChipController)
   E_ENTRY(RoundController)
+  E_ENTRY(LobbyController)
+  E_ENTRY(JoinText)
   
   E_ENTRY(div_Effects)
   E_ENTRY(AimingArrow)

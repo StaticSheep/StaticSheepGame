@@ -628,10 +628,9 @@ namespace Framework
   {
     aimDir = aimingDirection(gp); //get the direction the player is currently aiming;
 
-    if(!arrowSpawn)
-      arrowSpawn = true;
-
-    /*
+    /*if(!arrowSpawn)
+      arrowSpawn = true;*/
+    
     if (!arrowSpawn)
     {
       //draw aiming arrow
@@ -644,7 +643,7 @@ namespace Framework
       AA->GetComponent<Sprite>(eSprite)->Color = playerS->Color; //set the colors equal
       AA->GetComponent<Sprite>(eSprite)->Color.a = 0.7f; //make sure the alpha isn't low (happens during respawn)
       arrowSpawn = true;
-    }*/
+    }
   }
 
   //************************************
@@ -674,7 +673,7 @@ namespace Framework
     GameObject *dash_effect = (FACTORY->LoadObjectFromArchetype(space, "fire_effect1"));
     dash_effect->GetComponent<DashEffect>(eDashEffect)->pTransform = playerTransform;
     dash_effect->GetComponent<Transform>(eTransform)->SetTranslation(ps->GetTranslation());
-    se->Play("dash", &SoundInstance(1.0f));
+    se->Play("dash", &SoundInstance(0.7f));
     hasDashed = true;
   }
 
@@ -703,10 +702,6 @@ namespace Framework
         hasRespawned = false;
       }
     }
-
-
-
-
 
 
     if (respawnTimer > 0.0f)

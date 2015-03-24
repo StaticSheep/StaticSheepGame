@@ -20,6 +20,7 @@ namespace Framework
     levelTimer = 2.5f;
     spawnedSM = nullptr;
     Stype = GOLD;
+    roundNum = 1;
 	}
 
   SlotController::~SlotController()
@@ -38,6 +39,7 @@ namespace Framework
     //when you create a slot machine through an archetype you can set its call backs like this
     sm->SetTextureCB(self, BUILD_FUNCTION(SlotController::SetSMTextures));
     sm->SetFinishedCB(self, BUILD_FUNCTION(SlotController::ReceiveSMResults));
+    //sm->SetSelectionCB(self, BUILD_FUNCTION(SlotController::SetSMResults));
     bounceDownTimer = 0.5f;
     bounceDownDone = false;
     spawnLeftBonus = false;
@@ -183,7 +185,7 @@ namespace Framework
 
   void SlotController::SetSMResults(int slotNum, int *landResult)
   {
-
+    
   }
 
   void SlotController::ReceiveSMResults(std::vector<int>* results)

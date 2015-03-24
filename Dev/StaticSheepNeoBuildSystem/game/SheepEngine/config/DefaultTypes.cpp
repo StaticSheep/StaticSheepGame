@@ -77,6 +77,9 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/gameplay_scripts/Weapon_Scripts/CImpactEffect.h"
 #include "Components/controllers/round/CRoundResults.h"
 #include "components/gameplay_scripts/FX_Scripts/CPulser.h"
+#include "components/gameplay_scripts/Slot_Machine_Scripts/CPersonalSlotController.h"
+#include "components/controllers/lobby/CLobbyController.h"
+#include "components/controllers/lobby/CJoinText.h"
 
 namespace Framework
 {
@@ -307,6 +310,9 @@ namespace Framework
     TYPE_SET_TWEAK_TYPE(SlotController, AntTweak::TW_TYPE_COMPONENT);
     TYPE_ADD_MEMBER(SlotController, StypeInt, false, true, "Type");
 
+    TYPE_REGISTER(PersonalSlotController);
+    TYPE_SET_TWEAK_TYPE(PersonalSlotController, AntTweak::TW_TYPE_COMPONENT);
+
     TYPE_REGISTER(CoinBall);
     TYPE_SET_TWEAK_TYPE(CoinBall, AntTweak::TW_TYPE_COMPONENT);
     
@@ -328,6 +334,13 @@ namespace Framework
 
     TYPE_REGISTER(RoundResults);
     TYPE_SET_TWEAK_TYPE(RoundResults, AntTweak::TW_TYPE_COMPONENT);
+
+    TYPE_REGISTER(LobbyController);
+    TYPE_SET_TWEAK_TYPE(LobbyController, AntTweak::TW_TYPE_COMPONENT);
+
+    TYPE_REGISTER(JoinText);
+    TYPE_SET_TWEAK_TYPE(JoinText, AntTweak::TW_TYPE_COMPONENT);
+    TYPE_ADD_MEMBER(JoinText, playerNum, false, true, "Player");
 
     TYPE_REGISTER(Laser);
     TYPE_SET_TWEAK_TYPE(Laser, AntTweak::TW_TYPE_COMPONENT);

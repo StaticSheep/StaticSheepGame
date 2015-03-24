@@ -32,6 +32,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "../../controllers/round/CRoundController.h"
 #include "../../controllers/chip/CChipController.h"
 #include "../../controllers/round/CRoundText.h"
+#include "../../controllers/lobby/CLobbyController.h"
 
 static const char *playerNames[] = { "Player1", "Player2", "Player3", "Player4" };
 static int juggKills[4] = { 0, 0, 0, 0 };
@@ -60,7 +61,10 @@ namespace Framework
     CoinStackPos[3] = Vec3(-906.4776f, 650.0f, 0.0f);
     deadPlayers = 0;
     for (int i = 0; i < 4; ++i)
+    {
       playerCoins[i] = 1;
+      Players[i] = Handle::null;
+    }
 
     warning = false;
     camShake = false;
@@ -70,6 +74,7 @@ namespace Framework
     countDownDone = false;
     slotFinished = false;
     roundStart = false;
+    lobbySpawned = false;
 	}
 
   Level1_Logic::~Level1_Logic()
@@ -91,6 +96,7 @@ namespace Framework
     space->hooks.Add("SpawnCoins", self, BUILD_FUNCTION(Level1_Logic::SpawnCoins));
     space->hooks.Add("RoundOver", self, BUILD_FUNCTION(Level1_Logic::RoundOver));
     space->hooks.Add("SpawnCoinsEx", self, BUILD_FUNCTION(Level1_Logic::SpawnCoinsEx));
+    space->hooks.Add("GameStart", self, BUILD_FUNCTION(Level1_Logic::GameStart));
 
     levelSound = space->GetGameObject(owner)->GetComponentHandle(eSoundPlayer);
     levelCamera = space->GetGameObject(owner)->GetComponentHandle(eCamera);
@@ -114,7 +120,7 @@ namespace Framework
       num_spawned[i] = false;
     }
 
-    mode = SLOTMACHINE;
+    mode = IDLE_STATE;
 
     fontIndex = Draw::GetFontIndex("BN_Jinx");
 
@@ -159,6 +165,12 @@ namespace Framework
       LE->Update(dt);
 	}
 
+  void Level1_Logic::GameStart()
+  {
+    ResetPlayers();
+    mode = SLOTMACHINE;
+  }
+
   void Level1_Logic::SpawnPlayers(float dt)
   {
     Transform *playTrans;
@@ -184,8 +196,10 @@ namespace Framework
         }
         if (mod1 == EXPLOSIVEROUNDS)
           temp->GetComponent<PlayerController>(ePlayerController)->weapon->explosive_ = true;
+
         playTrans = space->GetGameObject(Players[i])->GetComponent<Transform>(eTransform);
         playTrans->SetTranslation(spawnPos[i]);
+
         if (mode == SUDDENDEATH)
         {
           temp->GetComponent<PlayerController>(ePlayerController)->health = 100;
@@ -571,6 +585,9 @@ namespace Framework
     GameObject *round_number;
     switch (mode)
     {
+    case LOBBY:
+
+      break;
     case FFA:
       round_number = (FACTORY->LoadObjectFromArchetype(space, "FFA_text"));
       round_number->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(-1000.0f, 200.0f, 0.0f));
@@ -596,6 +613,12 @@ namespace Framework
   {
     switch (mode)
     {
+    case IDLE_STATE:
+      Idle(dt);
+      break;
+    case LOBBY:
+      Lobby(dt);
+      break;
     case FFA:
       FFAMode(dt);
       break;
@@ -614,6 +637,36 @@ namespace Framework
     case GAMEOVER:
       GameOverMode(dt);
     }
+  }
+
+  void Level1_Logic::Idle(float dt)
+  {
+
+  }
+
+  void Level1_Logic::Lobby(float dt)
+  {
+    if (!lobbySpawned)
+    {
+      //spawn lobby
+      lobbyHandle = (FACTORY->LoadObjectFromArchetype(space, "Lobby"))->self;
+      space->GetGameObject(lobbyHandle)->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(0.0f, 900.0f, 0.0f));
+      lobbySpawned = true;
+    }
+
+    //for loop that spawns the players and keeps them spawned while they are joining
+    for (int i = 0; i < 4; ++i)
+    {
+      if (space->GetGameObject(lobbyHandle)->GetComponent<LobbyController>(eLobbyController)->playerJoined[i] &&
+        Players[i] == Handle::null)
+      {
+        Players[i] = (FACTORY->LoadObjectFromArchetype(space, playerNames[i]))->self;
+        GameObject *temp = space->GetGameObject(Players[i]);
+        Transform *playTrans = space->GetGameObject(Players[i])->GetComponent<Transform>(eTransform);
+        playTrans->SetTranslation(spawnPos[i]);
+      }
+    }
+
   }
 
   void Level1_Logic::FFAMode(float dt)
@@ -806,7 +859,9 @@ namespace Framework
         //space->hooks.Call("LightingEvent", 0xFFFFFFFF, &ed);
       }
       space->hooks.Call("CallingSM");
-      (FACTORY->LoadObjectFromArchetype(space, "LevelSlotMachine"))->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(0.0f, 900.0f, 1.0f));
+      GameObject *SM = (FACTORY->LoadObjectFromArchetype(space, "LevelSlotMachine"));
+      SM->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(0.0f, 900.0f, 1.0f));
+      SM->GetComponent<SlotController>(eSlotController)->roundNum = space->GetGameObject(owner)->GetComponent<RoundController>(eRoundController)->current_round;
       slotFinished = true;
     }
   }

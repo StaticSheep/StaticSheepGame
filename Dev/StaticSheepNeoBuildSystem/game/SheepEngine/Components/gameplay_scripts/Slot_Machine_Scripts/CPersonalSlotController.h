@@ -13,18 +13,19 @@ All content © 2015 DigiPen (USA) Corporation, all rights reserved.
 
 namespace Framework
 {
-  enum SlotType
+  enum PersonalSlotOwner
   {
-    GOLD,
-    JACKPOT,
-    INDIVIDUAL
+    P1,
+    P2,
+    P3,
+    P4
   };
 
-	class SlotController : public GameComponent
+	class PersonalSlotController : public GameComponent
 	{
 	public:
-    SlotController();
-    ~SlotController();
+    PersonalSlotController(PersonalSlotOwner owner = P1);
+    ~PersonalSlotController();
 		void LogicUpdate(float dt);
 		void Initialize();
 		void Remove();
@@ -35,14 +36,11 @@ namespace Framework
     void ReceiveSMResults(std::vector<int>*);
 
     bool CheckForJP(std::vector<int>);
-    GameObject* SpawnChildSM(SlotType type);
 		//member variables
-    float levelTimer; //keeps track of overall time in the level for slot machine switches
+    float timer;
     float bounceDownTimer;
     bool bounceDownDone;
-    bool LeftHandBonus;
-    bool spawnLeftBonus, spawnRightBonus;
-    SlotType Stype;
+    PersonalSlotOwner owner_;
     int StypeInt;
     bool done; 
     GameObject *spawnedSM;
