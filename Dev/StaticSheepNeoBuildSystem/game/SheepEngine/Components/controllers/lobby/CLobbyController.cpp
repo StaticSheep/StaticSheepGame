@@ -10,15 +10,21 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "types/space/Space.h"
 #include "CJoinText.h"
 #include "../../sprites/CSprite.h"
+#include "../../gameplay_scripts/Level_Scripts/CLevel1_Logic.h"
+
+static const char *playerNames[] = { "Player1", "Player2", "Player3", "Player4" };
 
 namespace Framework
 {
+  bool playerJoined[4] = { false, false, false, false };
+
   LobbyController::LobbyController()
   {
     numOfPlayers = 0;
-    for (int i = 4; i < 4; ++i)
+    for (int i = 0; i < 4; ++i)
     {
-      playerJoined[i] = false;
+      Framework::playerJoined[i] = false;
+      Players[i] = Handle::null;
     }
     state_ = SPAWN;
     spawnTimer = 1.0f;
@@ -40,7 +46,6 @@ namespace Framework
     space->hooks.Add("LogicUpdate", self, BUILD_FUNCTION(LobbyController::LogicUpdate));
     //space->hooks.Add("Draw", self, BUILD_FUNCTION(LobbyController::Draw));
     bounceDownTimer = .5f;
-    LevelLogic = space->GetGameObject(owner)->GetComponentHandle(eLevel1_Logic);
   }
 
   void LobbyController::Remove()
@@ -123,6 +128,18 @@ namespace Framework
 
   void LobbyController::Join(float dt)
   {
+    //for loop that spawns the players and keeps them spawned while they are joining
+    for (int i = 0; i < 4; ++i)
+    {
+      if (Framework::playerJoined[i] && Players[i] == Handle::null)
+      {
+        Players[i] = (FACTORY->LoadObjectFromArchetype(space, playerNames[i]))->self;
+        GameObject *temp = space->GetGameObject(Players[i]);
+        Transform *playTrans = space->GetGameObject(Players[i])->GetComponent<Transform>(eTransform);
+        playTrans->SetTranslation(spawnPos[i]);
+      }
+    }
+
     if (startPressed)
     {
       state_ = GAME_START;
@@ -140,6 +157,7 @@ namespace Framework
     timer_ -= dt;
     if (timer_ <= 0)
     {
+      ENGINE->ChangeLevel("Asteroid");
       space->GetGameObject(owner)->Destroy();
     }
 

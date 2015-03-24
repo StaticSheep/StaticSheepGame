@@ -59,7 +59,7 @@ namespace Framework
 
     if (playGP->ButtonPressed(XButtons.A))
     {
-      space->GetGameObject(lobbyController_)->GetComponent<LobbyController>(eLobbyController)->playerJoined[playerNum] = true;
+      Framework::playerJoined[playerNum] = true;
       //DestroySelf();
       Sprite *textSprite = space->GetHandles().GetAs<Sprite>(sprite_);
       textSprite->Color.A = 0.0f;

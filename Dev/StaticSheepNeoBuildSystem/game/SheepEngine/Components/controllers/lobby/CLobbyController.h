@@ -39,8 +39,8 @@ namespace Framework
 
     Handle LevelLogic, ChipController_;
     LobbyState state_;
-    bool playerJoined[4];
     Handle playerJoinText[4];
+    Handle Players[4];
     int numOfPlayers;
     float spawnTimer, timer_;
     float bounceDownTimer;

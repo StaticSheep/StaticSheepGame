@@ -13,6 +13,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 namespace Framework
 {
+  extern bool playerJoined[4];
+
   enum GameTypes
   {
     IDLE_STATE,

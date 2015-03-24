@@ -45,6 +45,7 @@ static float deltaTime;
 
 namespace Framework
 {
+
   Level1_Logic::Level1_Logic()
 	{
     spawnTimer = 3;
@@ -75,6 +76,7 @@ namespace Framework
     slotFinished = false;
     roundStart = false;
     lobbySpawned = false;
+    playerJoined[0];
 	}
 
   Level1_Logic::~Level1_Logic()
@@ -120,7 +122,7 @@ namespace Framework
       num_spawned[i] = false;
     }
 
-    mode = IDLE_STATE;
+    mode = SLOTMACHINE;
 
     fontIndex = Draw::GetFontIndex("BN_Jinx");
 
@@ -646,26 +648,26 @@ namespace Framework
 
   void Level1_Logic::Lobby(float dt)
   {
-    if (!lobbySpawned)
-    {
-      //spawn lobby
-      lobbyHandle = (FACTORY->LoadObjectFromArchetype(space, "Lobby"))->self;
-      space->GetGameObject(lobbyHandle)->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(0.0f, 900.0f, 0.0f));
-      lobbySpawned = true;
-    }
+    //if (!lobbySpawned)
+    //{
+    //  //spawn lobby
+    //  lobbyHandle = (FACTORY->LoadObjectFromArchetype(space, "Lobby"))->self;
+    //  space->GetGameObject(lobbyHandle)->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(0.0f, 900.0f, 0.0f));
+    //  lobbySpawned = true;
+    //}
 
-    //for loop that spawns the players and keeps them spawned while they are joining
-    for (int i = 0; i < 4; ++i)
-    {
-      if (space->GetGameObject(lobbyHandle)->GetComponent<LobbyController>(eLobbyController)->playerJoined[i] &&
-        Players[i] == Handle::null)
-      {
-        Players[i] = (FACTORY->LoadObjectFromArchetype(space, playerNames[i]))->self;
-        GameObject *temp = space->GetGameObject(Players[i]);
-        Transform *playTrans = space->GetGameObject(Players[i])->GetComponent<Transform>(eTransform);
-        playTrans->SetTranslation(spawnPos[i]);
-      }
-    }
+    ////for loop that spawns the players and keeps them spawned while they are joining
+    //for (int i = 0; i < 4; ++i)
+    //{
+    //  if (space->GetGameObject(lobbyHandle)->GetComponent<LobbyController>(eLobbyController)->playerJoined[i] &&
+    //    Players[i] == Handle::null)
+    //  {
+    //    Players[i] = (FACTORY->LoadObjectFromArchetype(space, playerNames[i]))->self;
+    //    GameObject *temp = space->GetGameObject(Players[i]);
+    //    Transform *playTrans = space->GetGameObject(Players[i])->GetComponent<Transform>(eTransform);
+    //    playTrans->SetTranslation(spawnPos[i]);
+    //  }
+    //}
 
   }
 

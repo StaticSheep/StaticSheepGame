@@ -43,7 +43,8 @@ namespace Framework
 
     LevelLogic = space->GetGameObject(owner)->GetComponentHandle(eLevel1_Logic);
     ChipController_ = space->GetGameObject(owner)->GetComponentHandle(eChipController);
-    round_state_timer = 5.0f;
+    //intro sequence timer
+    round_state_timer = 3.0f;
     EORAwarded = false;
 
 
@@ -97,10 +98,7 @@ namespace Framework
     round_state_timer -= dt;
     if (round_state_timer <= 0)
     {
-      //change the level logic state to spawn the lobby
-      space->GetGameObject(owner)->GetComponent<Level1_Logic>(eLevel1_Logic)->mode = LOBBY;
-      //set the round controller to wait until lobby is done
-      state_ = IDLE_WAIT;
+      state_ = ROUNDSTART;
       spawned_round_start = false;
       round_state_timer = 2.0f;
     }
@@ -128,6 +126,7 @@ namespace Framework
       ResultsSpawned = false;
       space->hooks.Call("RoundStart");
     }
+
     round_state_timer -= dt;
     if (round_state_timer <= 0)
     {
