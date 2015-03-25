@@ -70,6 +70,12 @@ GameObject
       Y float 1.000000
     }
   }
+  SoundEmitter
+  {
+  }
+  SoundPlayer
+  {
+  }
   LobbyController
   {
   }

@@ -11,6 +11,7 @@ All content © 2015 DigiPen (USA) Corporation, all rights reserved.
 #include "../../transform/CTransform.h"
 #include "../../colliders/CBoxCollider.h"
 #include "../../slotmachine/slotmachine.h"
+#include "../../sound/CSoundEmitter.h"
 
 namespace Framework
 {
@@ -91,16 +92,23 @@ namespace Framework
       }
     }
 	}
-
+  static bool soundFlag_ = false;
   void SlotController::BounceDown(float dt)
   {
     Transform *rt = space->GetGameObject(owner)->GetComponent<Transform>(eTransform);
+
     if (Stype == GOLD)
     {
+      SoundEmitter *se = space->GetGameObject(owner)->GetComponent<SoundEmitter>(eSoundEmitter);
       if (bounceDownTimer >= 0.3f)
         rt->SetTranslation(rt->GetTranslation() + Vec3(0.0f, -80.0f, 0.0f));
       else if (bounceDownTimer >= 0.2)
       {
+        if (!soundFlag_)
+        {
+          se->Play("impact1", &SoundInstance(1.0f));
+          soundFlag_ = true;
+        }
         rt->SetTranslation(rt->GetTranslation() + Vec3(0.0f, 40.0f, 0.0f));
         rt->SetRotation(rt->GetRotation() + 0.035f);
       }

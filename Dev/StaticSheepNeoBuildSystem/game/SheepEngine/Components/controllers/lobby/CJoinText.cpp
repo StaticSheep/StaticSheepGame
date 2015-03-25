@@ -57,13 +57,15 @@ namespace Framework
     if (!activePlayer)
       Blink(dt);
 
-    if (playGP->ButtonPressed(XButtons.A))
+    if (playGP->ButtonPressed(XButtons.A) && !activePlayer)
     {
       Framework::playerJoined[playerNum] = true;
       //DestroySelf();
       Sprite *textSprite = space->GetHandles().GetAs<Sprite>(sprite_);
       textSprite->Color.A = 0.0f;
       activePlayer = true;
+      SoundEmitter *se = space->GetGameObject(owner)->GetComponent<SoundEmitter>(eSoundEmitter);
+      se->Play("select", &SoundInstance(1.0f));
     }
     if (playGP->ButtonPressed(XButtons.Start))
     {

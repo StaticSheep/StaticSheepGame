@@ -29,6 +29,7 @@ namespace Framework
     void Initialize();
     void LogicUpdate(float dt);
     void Remove();
+    void PlayerDied(int player, int whoKilledThem);
     //void Draw();
 
     void GoToState(float dt);
@@ -45,6 +46,7 @@ namespace Framework
     float spawnTimer, timer_;
     float bounceDownTimer;
     bool spawned, bounceDownDone, startPressed;
+    bool playing;
     Vec3 spawnPos[4];
   };
 }

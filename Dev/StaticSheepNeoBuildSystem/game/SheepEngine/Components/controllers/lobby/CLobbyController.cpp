@@ -11,6 +11,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "CJoinText.h"
 #include "../../sprites/CSprite.h"
 #include "../../gameplay_scripts/Level_Scripts/CLevel1_Logic.h"
+#include "../../sound/CSoundPlayer.h"
 
 static const char *playerNames[] = { "Player1", "Player2", "Player3", "Player4" };
 
@@ -44,8 +45,10 @@ namespace Framework
   void LobbyController::Initialize()
   {
     space->hooks.Add("LogicUpdate", self, BUILD_FUNCTION(LobbyController::LogicUpdate));
+    space->hooks.Add("PlayerDied", self, BUILD_FUNCTION(LobbyController::PlayerDied));
     //space->hooks.Add("Draw", self, BUILD_FUNCTION(LobbyController::Draw));
     bounceDownTimer = .5f;
+    playing = false;
   }
 
   void LobbyController::Remove()
@@ -56,6 +59,16 @@ namespace Framework
   void LobbyController::LogicUpdate(float dt)
   {
     GoToState(dt);
+    /*if (!playing)
+    {
+      SoundPlayer *sp = space->GetGameObject(owner)->GetComponent<SoundPlayer>(eSoundPlayer);
+      SoundInstance instance;
+      instance.volume = 0.95f;
+      instance.mode = PLAY_LOOP;
+
+      sp->Play("TripGBass", &instance);
+      playing = true;
+    }*/
   }
 
   void LobbyController::GoToState(float dt)
@@ -102,22 +115,29 @@ namespace Framework
       state_ = JOIN;
     }
   }
-
+  static bool soundFlag_ = false;
   void LobbyController::BounceDown(float dt)
   {
     Transform *rt = space->GetGameObject(owner)->GetComponent<Transform>(eTransform);
+    SoundEmitter *se = space->GetGameObject(owner)->GetComponent<SoundEmitter>(eSoundEmitter);
 
     if (bounceDownTimer >= 0.3f)
+    {
       rt->SetTranslation(rt->GetTranslation() + Vec3(0.0f, -80.0f, 0.0f));
+    }
     else if (bounceDownTimer >= 0.2)
     {
+      if (!soundFlag_)
+      {
+        se->Play("impact1", &SoundInstance(1.0f));
+        soundFlag_ = true;
+      }
       rt->SetTranslation(rt->GetTranslation() + Vec3(0.0f, 40.0f, 0.0f));
     }
     else
     {
       rt->SetTranslation(rt->GetTranslation() + Vec3(0.0f, -20.0f, 0.0f));
     }
-
     bounceDownTimer -= dt;
     if (bounceDownTimer <= 0)
     {
@@ -157,10 +177,16 @@ namespace Framework
     timer_ -= dt;
     if (timer_ <= 0)
     {
+      /*SoundPlayer *sp = space->GetGameObject(owner)->GetComponent<SoundPlayer>(eSoundPlayer);
+      sp->Stop("TripGBass", FADE_FAST);*/
       ENGINE->ChangeLevel("Asteroid");
       space->GetGameObject(owner)->Destroy();
     }
 
   }
 
+  void LobbyController::PlayerDied(int player, int whoKilledThem)
+  {
+    Players[player] = Handle::null;
+  }
 }

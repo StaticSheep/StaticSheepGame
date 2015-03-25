@@ -78,4 +78,7 @@ GameObject
   {
     GamepadIndex int 0
   }
+  SoundEmitter
+  {
+  }
 }
