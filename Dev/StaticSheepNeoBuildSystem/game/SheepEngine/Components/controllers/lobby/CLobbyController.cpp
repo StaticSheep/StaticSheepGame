@@ -49,6 +49,7 @@ namespace Framework
     //space->hooks.Add("Draw", self, BUILD_FUNCTION(LobbyController::Draw));
     bounceDownTimer = .5f;
     playing = false;
+    levelSound = space->GetGameObject(owner)->GetComponentHandle(eSoundPlayer);
   }
 
   void LobbyController::Remove()
@@ -59,16 +60,16 @@ namespace Framework
   void LobbyController::LogicUpdate(float dt)
   {
     GoToState(dt);
-    /*if (!playing)
+    if (!playing)
     {
-      SoundPlayer *sp = space->GetGameObject(owner)->GetComponent<SoundPlayer>(eSoundPlayer);
+      SoundPlayer *sp = space->GetHandles().GetAs<SoundPlayer>(levelSound);
       SoundInstance instance;
       instance.volume = 0.95f;
       instance.mode = PLAY_LOOP;
 
       sp->Play("TripGBass", &instance);
       playing = true;
-    }*/
+    }
   }
 
   void LobbyController::GoToState(float dt)
@@ -177,8 +178,7 @@ namespace Framework
     timer_ -= dt;
     if (timer_ <= 0)
     {
-      /*SoundPlayer *sp = space->GetGameObject(owner)->GetComponent<SoundPlayer>(eSoundPlayer);
-      sp->Stop("TripGBass", FADE_FAST);*/
+      
       ENGINE->ChangeLevel("Asteroid");
       space->GetGameObject(owner)->Destroy();
     }
