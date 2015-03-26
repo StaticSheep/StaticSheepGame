@@ -528,6 +528,7 @@ namespace SheepFizz
     if (body.massData_.mass == 0)
     {
       body.position_ += body.velocity_ * dt_;
+      body.orientation_ += body.angularVelocity_ * dt_;
       return;
     }
 

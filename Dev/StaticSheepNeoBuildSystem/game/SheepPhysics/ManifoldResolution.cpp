@@ -92,6 +92,9 @@ namespace SheepFizz
       relativevelocity = B->velocity_ + (Vec3D(0, 0, B->angularVelocity_) ^ bRepulsionVec)
         - A->velocity_ - (Vec3D(0, 0, A->angularVelocity_) ^ aRepulsionVec);
 
+      if (relativevelocity.SquareLength() > 11.0f)
+        return;
+
       contactVelocity = relativevelocity.DotProduct(normal);
 
       //calculate the normalized tangent vector
@@ -118,8 +121,8 @@ namespace SheepFizz
       //apply friction impulse
       frictionImpulse.z = 0;
 
-      //A->ApplyImpulse(-frictionImpulse, aRepulsionVec);
-      //B->ApplyImpulse(frictionImpulse, bRepulsionVec);
+      A->ApplyImpulse(-frictionImpulse, aRepulsionVec);
+      B->ApplyImpulse(frictionImpulse, bRepulsionVec);
 
     }
 

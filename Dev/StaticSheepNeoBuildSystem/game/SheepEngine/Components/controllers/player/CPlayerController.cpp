@@ -243,9 +243,17 @@ namespace Framework
       }
     }
 
+    if (gravFrame == 0)
+    {
+      isSnapped = false;
+      bc->SetGravityOff();
+    }
+      
+
     if (isSnapped)
     {
       SnappedMovement();
+      --gravFrame;
     }
     //else
       //normals.clear();
@@ -359,9 +367,9 @@ namespace Framework
     Vec3 rotation = Mat3D(bc->GetBodyRotation()) * Vec3(1.0f, 0.0f, 0.0f);
     movementDir = (movementDir * rotation) * rotation;
 
-    bc->AddToVelocity(movementDir * 400.0f);
+    bc->AddToVelocity(movementDir * gravValue);
 
-    clampVelocity(450.0f);
+    clampVelocity(gravValue + 100.0f);
     
   }
 
@@ -479,9 +487,17 @@ namespace Framework
 
     //BoxCollider* collider = OtherObject->GetComponent<BoxCollider>(eBoxCollider);
     RigidBody* body = OtherObject->GetComponent<RigidBody>(eBoxCollider);
+    gravValue = 400.0f;
+    gravJump = 500.0f;
+    gravFrame = 5;
 
     if (!body)
+    {
       body = OtherObject->GetComponent<RigidBody>(eCircleCollider);
+      gravValue = 800.0f;
+      gravJump = 900.0f;
+    }
+      
 
     if(!body)
       return;
@@ -898,7 +914,7 @@ namespace Framework
       }
     }
 
-    bc->AddToVelocity(jmpDir * 500);
+    bc->AddToVelocity(jmpDir * gravJump);
     isSnapped = false;
     //normals.clear();
     

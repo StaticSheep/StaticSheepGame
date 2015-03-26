@@ -71,6 +71,10 @@ namespace Framework
     float rotation, lastRotation;
     float respawnTimer;
 
+    float gravValue;
+    float gravJump;
+    int gravFrame;
+
 
     std::string weaponGroup;
 
