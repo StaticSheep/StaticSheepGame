@@ -362,6 +362,13 @@ namespace Framework
     bc->AddToVelocity(movementDir * 400.0f);
 
     clampVelocity(450.0f);
+    --checkSnap;
+
+    if(checkSnap <= 0)
+    {
+      isSnapped = false;
+      bc->SetGravityOff();
+    }
     
   }
 
@@ -469,6 +476,7 @@ namespace Framework
   {
 
     Transform *OOT = OtherObject->GetComponent<Transform>(eTransform);
+    bool circleFound = false;
 
     if (!OOT)
       return;
@@ -481,7 +489,10 @@ namespace Framework
     RigidBody* body = OtherObject->GetComponent<RigidBody>(eBoxCollider);
 
     if (!body)
+    {
       body = OtherObject->GetComponent<RigidBody>(eCircleCollider);
+      circleFound = true;
+    }
 
     if(!body)
       return;
@@ -502,6 +513,7 @@ namespace Framework
       //normals.push_back(FrameCollisionData(otherObject, normal));
 
     snappedNormal += normal;
+    checkSnap = 5;
 
     if(!isSnapped)
     {
@@ -515,8 +527,18 @@ namespace Framework
     }
     else
     {
-      Mat3D rot(ps->GetRotation() - PI / 2.0f);
-      ps = space->GetHandles().GetAs<Transform>(playerTransform);
+      Mat3D rot;
+
+      if(!circleFound)
+        rot = Mat3D(ps->GetRotation() - PI / 2.0f);
+      else
+      {
+        Vec3 orientation = body->GetBodyPosition() - bc->GetBodyPosition();
+        rot = Mat3D(atan2f(orientation.y, orientation.x));
+        bc->SetBodyRotation(-orientation);
+      }
+
+      //ps = space->GetHandles().GetAs<Transform>(playerTransform);
       bc->SetGravityNormal(rot * Vec3(1.0f, 0.0f, 0.0f));
       bc->SetVelocity(bc->GetCurrentVelocity() * 0.5f);
     }
