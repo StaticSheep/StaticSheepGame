@@ -31,10 +31,12 @@ using namespace boost::filesystem;
 
 namespace Framework
 {
+  bool SheepGraphics::m_FullScreen = false;
+  DirectSheep::RenderContext* SheepGraphics::m_renderContext = nullptr;
 	// Global pointer
 	SheepGraphics* GRAPHICS = NULL;
 
-	SheepGraphics::SheepGraphics(void* rc)
+  SheepGraphics::SheepGraphics(void* rc)
 	{
 		// This should load any required materials, set constants
 		// Pre-initialization logic
@@ -160,19 +162,13 @@ namespace Framework
 
       if (msg.MessageId == Message::WindowRestore && m_renderContext)
       {
-        if (!ENGINE->PlayingInEditor())
-        {
-          m_renderContext->SetFullscreen(true);
-        }
+          SetFullScreen(m_FullScreen);
       }
 
       if (msg.MessageId == Message::EngineReady)
       {
-        if (!ENGINE->m_editorActive)
-        {
-          m_renderContext->SetFullscreen(true);
-        }
-        ShowWindow(ENGINE->Window->GetHandle(), 1);
+        ShowWindow(ENGINE->Window->GetHandle(), SW_SHOWNORMAL);
+        SetFullScreen(m_FullScreen);
       }
       
     }
@@ -182,7 +178,7 @@ namespace Framework
     // Draw Hooks
     GameSpace* space;
     Draw::SetCamState(0);
-    
+
     m_renderContext->StartBatch(3, ENGINE->m_editorActive ? !ENGINE->m_editorLights : false);
     // Regular Draw
     for (auto it = ENGINE->Spaces().begin(); it != ENGINE->Spaces().end(); ++it)
@@ -458,6 +454,18 @@ namespace Framework
     int fontIndex)
   {
     return m_renderContext->MeasureString(text, 0.02f * scale, fontIndex);
+  }
+
+  bool SheepGraphics::IsFullScreen()
+  {
+    return m_FullScreen;
+  }
+
+  void SheepGraphics::SetFullScreen(bool isFull)
+  {
+    m_FullScreen = isFull;
+
+    m_renderContext->SetFullscreen(isFull);
   }
 
   DirectSheep::Camera* SheepGraphics::RetrieveCamera(DirectSheep::Handle camHandle)

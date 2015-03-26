@@ -128,28 +128,24 @@ namespace Framework
       break;
 
     case WM_ACTIVATE:
-      if (wParam == WA_INACTIVE && !ENGINE->m_editorActive
-        && !ENGINE->PlayingInEditor())
+      if ((wParam == WA_CLICKACTIVE || wParam == WA_ACTIVE) && 
+        !ENGINE->m_editorActive && !ENGINE->PlayingInEditor())
+      {
+        ENGINE->SystemMessage(Message(Message::WindowRestore));
+
+        ShowCursor(false);
+
+        ShowWindow(hWnd, SW_RESTORE);
+        WINDOW_ACTIVE = true;
+      }
+      else if (wParam == WA_INACTIVE
+        && !ENGINE->m_editorActive && !ENGINE->PlayingInEditor())
       {
         ENGINE->SystemMessage(Message(Message::WindowMinimize));
 
         ShowWindow(hWnd, SW_MINIMIZE);
 
         WINDOW_ACTIVE = false;
-      }
-      else if ((wParam == WA_CLICKACTIVE || wParam == WA_ACTIVE) &&
-        !ENGINE->m_editorActive && !ENGINE->PlayingInEditor())
-      {
-        ENGINE->SystemMessage(Message(Message::WindowRestore));
-
-        if (!ENGINE->PlayingInEditor())
-        {
-          
-          ShowCursor(false);
-        }
-
-        ShowWindow(hWnd, SW_RESTORE);
-        WINDOW_ACTIVE = true;
       }
       break;
 
