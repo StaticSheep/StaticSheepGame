@@ -308,7 +308,6 @@ namespace Framework
     if(snapFrame > 0)
       --snapFrame;
 
-
     //MetricInfo metricData;
     //metricData.mt = PLAYER_LOCATION;
     //metricData.playerNum = playerNum;
@@ -322,7 +321,7 @@ namespace Framework
   {
     hasDashed = false;
     Vec3 averageNormal;
-    int size = normals.size();
+    /*int size = normals.size();
 
     for(unsigned i = 0; i < size; ++i)
     {
@@ -338,9 +337,10 @@ namespace Framework
       }
     }
 
-    averageNormal.Normalize();
+    averageNormal.Normalize();*/
+    snappedNormal.Normalize();
 
-    bc->SetBodyRotation(-averageNormal);
+    bc->SetBodyRotation(-snappedNormal);
 
     if (((gp->ButtonDown(XButtons.A) || gp->LeftTrigger()) && isSnapped) || (SHEEPINPUT->KeyIsDown('Q') && gp->GetIndex() == 0))
     {
@@ -355,8 +355,6 @@ namespace Framework
       return;
 
     Vec3 movementDir(gp->LeftStick_X(), gp->LeftStick_Y(), 0.0f);
-
-    TRACELOG->Log(TraceLevel::DBG, "Goddamn fucking X: %f\tY:%f", movementDir.x, movementDir.y);
 
     Vec3 rotation = Mat3D(bc->GetBodyRotation()) * Vec3(1.0f, 0.0f, 0.0f);
     movementDir = (movementDir * rotation) * rotation;
@@ -475,15 +473,22 @@ namespace Framework
     if (!OOT)
       return;
 
-    if (!(OtherObject->HasComponent(eBoxCollider)) || OtherObject->name == "Player" || OtherObject->name == "WeaponPickup"
-      || OtherObject->archetype == "Grinder" || OtherObject->name == "PowerUpPickup")
+    //if (!(OtherObject->HasComponent(eBoxCollider) ) || OtherObject->name == "Player" || OtherObject->name == "WeaponPickup"
+      //|| OtherObject->archetype == "Grinder" || OtherObject->name == "PowerUpPickup")
+      //return;
+
+    //BoxCollider* collider = OtherObject->GetComponent<BoxCollider>(eBoxCollider);
+    RigidBody* body = OtherObject->GetComponent<RigidBody>(eBoxCollider);
+
+    if (!body)
+      body = OtherObject->GetComponent<RigidBody>(eCircleCollider);
+
+    if(!body)
       return;
 
-    BoxCollider* collider = OtherObject->GetComponent<BoxCollider>(eBoxCollider);
-
-    Vec3 normal = collider->GetCollisionNormals(manifold);
+    Vec3 normal = body->GetCollisionNormals(manifold);
     bool found = false;
-
+    /*
     for(auto it = normals.begin(); it != normals.end(); ++it)
     {
       if(it->body == otherObject)
@@ -492,9 +497,11 @@ namespace Framework
         found = true;
       }
     }
+    */
+    //if(!found)
+      //normals.push_back(FrameCollisionData(otherObject, normal));
 
-    if(!found)
-      normals.push_back(FrameCollisionData(otherObject, normal));
+    snappedNormal += normal;
 
     if(!isSnapped)
     {
@@ -893,7 +900,7 @@ namespace Framework
 
     bc->AddToVelocity(jmpDir * 500);
     isSnapped = false;
-    normals.clear();
+    //normals.clear();
     
   }
 
