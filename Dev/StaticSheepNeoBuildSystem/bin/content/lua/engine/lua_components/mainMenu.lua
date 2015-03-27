@@ -137,7 +137,7 @@ function META:MakeMenu()
 
     self.List:PushBack(Action(
     function(act)
-      engine.ChangeLevel("Asteroid")
+      engine.ChangeLevel("Lobby")
     end,
     FadeIn(self),
     nil,
