@@ -71,6 +71,7 @@ namespace Framework
     float rotation, lastRotation;
     float respawnTimer;
 
+    bool otherObjectSpin;
 
     std::string weaponGroup;
 

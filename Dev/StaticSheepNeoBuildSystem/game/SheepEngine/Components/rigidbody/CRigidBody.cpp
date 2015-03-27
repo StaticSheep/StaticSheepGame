@@ -127,6 +127,11 @@ namespace Framework
     PHYSICS->ChangeCollisionGroup(space, m_handle, group);
   }
 
+  void RigidBody::SetBodyFrictionMod(float frictionMod)
+  {
+    PHYSICS->SetBodyFrictionMod(space, m_handle, frictionMod);
+  }
+
 	void RigidBody::AddToVelocity(Vec3D& velocity)
 	{
     PHYSICS->AddToBodyVelocity(space, m_handle, velocity);
@@ -191,6 +196,11 @@ namespace Framework
   float RigidBody::GetBodyRotation(void)
   {
     return PHYSICS->GetBodyRotation(space, m_handle);
+  }
+
+  float RigidBody::GetBodyAngVelocity(void)
+  {
+    return PHYSICS->GetBodyAngVelocity(space, m_handle);
   }
 
   unsigned int RigidBody::GetBodyVertexNumber(void)

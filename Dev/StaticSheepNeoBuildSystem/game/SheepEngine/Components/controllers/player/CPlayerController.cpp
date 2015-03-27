@@ -92,6 +92,8 @@ namespace Framework
     ps = space->GetHandles().GetAs<Transform>(playerTransform);
     ps->SetScale(Vec3(1.0f, 1.0f, 0.0));
 
+    otherObjectSpin = false;
+
     switch(playerNum)
     {
       case 0: // ninja
@@ -338,8 +340,14 @@ namespace Framework
         se->Play("jump1", &SoundInstance(0.75f));
     }
 
-    if(gp->LStick_InDeadZone())
+    if (gp->LStick_InDeadZone())
+    {
+      if (otherObjectSpin)
+        bc->SetBodyFrictionMod(1.89f);
       return;
+    }
+      
+    bc->SetBodyFrictionMod(0.0f);
 
     Vec3 movementDir(gp->LeftStick_X(), gp->LeftStick_Y(), 0.0f);
 
@@ -479,6 +487,11 @@ namespace Framework
     if(!body)
       return;
 
+    if (body->GetBodyAngVelocity() != 0)
+      otherObjectSpin = true;
+    else
+      otherObjectSpin = false;
+
     Vec3 normal = body->GetCollisionNormals(manifold);
     bool found = false;
 
@@ -515,64 +528,6 @@ namespace Framework
       bc->SetVelocity(bc->GetCurrentVelocity() * 0.5f);
     }
 
-    /*Transform *OOT = OtherObject->GetComponent<Transform>(eTransform);
-
-    if (!OOT)
-      return;
-
-    if (!(OtherObject->HasComponent(eBoxCollider)) || OtherObject->name == "Player" || OtherObject->name == "WeaponPickup"
-      || OtherObject->archetype == "Grinder" || OtherObject->name == "PowerUpPickup")
-      return;
-    
-    BoxCollider *OOBc = OtherObject->GetComponent<BoxCollider>(eBoxCollider);
-    float dotNormals;
-
-    if (snappedNormal.x != OOBc->GetCollisionNormals(manifold).x && snappedNormal.y != OOBc->GetCollisionNormals(manifold).y)
-    {
-      nextSnappedNormal = OOBc->GetCollisionNormals(manifold);
-      nextSnappedNormal.Rotate(PI / 2);
-      nextSnappedNormal.Normalize();
-
-      dotNormals = snappedNormal.DotProduct(nextSnappedNormal);
-      if (dotNormals > 0)
-        bc->AddToVelocity((nextSnappedNormal * 10));
-      else
-        bc->AddToVelocity(-(nextSnappedNormal * 10));
-    }
-
-    //i have to set up a bool flag here for finding a matching vector
-    bool duplicate = false;
-    snappedNormal = OOBc->GetCollisionNormals(manifold);
-    snappedNormal.Normalize();
-
-    for (unsigned i = 0; i < normals.size(); ++i)
-    {
-      if (snappedNormal.x == normals[i].x && snappedNormal.y == normals[i].y)
-        duplicate = true;
-    }
-
-    if (!duplicate)
-      normals.push_back(snappedNormal);
-
-    if (normals.size() == 0)
-      normals.push_back(snappedNormal);
-
-    isSnapped = true;
-    //get the thing we are colliding with
-    snappedTo = otherObject;
-    float avX = 0, avY = 0;
-    for (unsigned i = 0; i < normals.size(); ++i)
-    {
-      avX += normals[i].x;
-      avY += normals[i].y;
-    }
-    if (normals.size() != 0)
-    {
-      avX /= normals.size();
-      avY /= normals.size();
-      Vec3 averaged(avX, avY, 0.0f);
-      snappedNormal = averaged;
-    }*/
   }
 
 	//************************************

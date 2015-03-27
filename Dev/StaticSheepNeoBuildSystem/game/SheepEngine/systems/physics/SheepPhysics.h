@@ -96,6 +96,7 @@ namespace Framework
       void SetBodyRotation(GameSpace* space, SheepFizz::Handle handle, Vec3D direction);
 			void SetBodyAngVelocity(GameSpace* space, SheepFizz::Handle handle, float angveloc);
 			void SetBodyTorques(GameSpace* space, SheepFizz::Handle handle, float torque);
+      void SetBodyFrictionMod(GameSpace* space, SheepFizz::Handle handle, float frictionMod);
 
       //gravity
       void SetBodyGravityOn(GameSpace* space, SheepFizz::Handle handle);
