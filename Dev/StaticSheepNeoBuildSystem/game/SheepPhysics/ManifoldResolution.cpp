@@ -123,9 +123,8 @@ namespace SheepFizz
       //apply friction impulse
       frictionImpulse.z = 0;
 
-      //A->ApplyImpulse(-frictionImpulse, aRepulsionVec);
-      //B->ApplyImpulse(frictionImpulse, bRepulsionVec);
-
+      A->ApplyImpulse(-frictionImpulse, aRepulsionVec);
+      B->ApplyImpulse(frictionImpulse, bRepulsionVec);
     }
 
   }//end of ApplyForces

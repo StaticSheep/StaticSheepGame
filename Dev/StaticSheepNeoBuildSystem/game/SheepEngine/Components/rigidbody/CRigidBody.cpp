@@ -92,6 +92,11 @@ namespace Framework
     PHYSICS->SetBodyGravityNormal(space, m_handle, normal);
   }
 
+  void RigidBody::SetBodyPosition(Vec3D& position)
+  {
+    PHYSICS->SetBodyPosition(space, m_handle, position);
+  }
+
   void RigidBody::SetVelocity(Vec3D& velocity)
 	{
 		PHYSICS->SetBodyVelocity(space, m_handle, velocity);
