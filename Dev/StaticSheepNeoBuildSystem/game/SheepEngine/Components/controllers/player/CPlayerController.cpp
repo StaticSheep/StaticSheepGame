@@ -328,6 +328,17 @@ namespace Framework
 
     snappedNormal.Normalize();
 
+    --checkSnap;
+
+    if(checkSnap <= 0)
+    {
+      isSnapped = false;
+      clampVelocity(50.0f);
+      bc->SetGravityOff();
+      return;
+    }
+
+
     if(!circleFound)
     {
       bc->SetBodyRotation(-snappedNormal);
@@ -367,14 +378,7 @@ namespace Framework
     bc->AddToVelocity(movementDir * 400.0f);
 
     clampVelocity(450.0f);
-    --checkSnap;
-
-    if(checkSnap <= 0)
-    {
-      isSnapped = false;
-      bc->SetGravityOff();
-      clampVelocity(200.0f);
-    }
+    
 
     float length = bc->GetCurrentVelocity().SquareLength();
 
@@ -518,7 +522,7 @@ namespace Framework
     bool found = false;
 
     snappedNormal += normal;
-    checkSnap = 3;
+    checkSnap = 4;
 
     if(!isSnapped)
     {

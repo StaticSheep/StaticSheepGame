@@ -25,7 +25,7 @@ namespace SheepFizz
       if (massData_.mass == 0)
         collisionGroup_ = Static;
 
-      frictionMod_ = 1.0f;
+      frictionMod_ = 0.0f;
 		}
 
 	void Body::ComputeMass(void)
