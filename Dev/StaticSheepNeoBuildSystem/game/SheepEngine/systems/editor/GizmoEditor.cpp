@@ -16,6 +16,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/colliders/CCircleCollider.h"
 #include "components/colliders/CBoxCollider.h"
 #include "../anttweak/AntTweakModule.h"
+#include "Context/Context.h"
 
 namespace Framework
 {
@@ -65,6 +66,9 @@ namespace Framework
   void GizmoEditor::DetectHover(Vec2 screenPos, float theta)
   {
     Vec2 mousePos = SHEEPINPUT->Mouse.GetScreenPosition();
+    mousePos.x -= GRAPHICS->RC()->GetViewport().offsetX;
+    mousePos.y -= GRAPHICS->RC()->GetViewport().offsetY;
+
     Vec2 lineStart;
 
     if ((screenPos - mousePos).SquareLength() < pivotSelectProximity)
@@ -551,6 +555,12 @@ namespace Framework
 
         Transform* trans = obj->GetComponent<Transform>(eTransform);
         Vec2 screenPos = Draw::ToScreen(trans->GetTranslation());
+
+        screenPos.x -= GRAPHICS->RC()->GetViewport().offsetX;
+        screenPos.x -= GRAPHICS->RC()->GetViewport().offsetY;
+        /*screenPos.y *= GRAPHICS->_ScreenHeight / GRAPHICS->RC()->GetViewport().dim.height;
+        screenPos.y += GRAPHICS->RC()->GetViewport().offsetY;*/
+
         float theta = -trans->GetRotation();
 
         DetectHover(screenPos, theta);

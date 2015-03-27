@@ -60,9 +60,19 @@ namespace Framework
     // Create Window
     width = Config::desiredWidth;
     height = Config::desiredHeight;
+
     if (fullScreen)
     {
       GetDesktopResolution(width, height);
+    }
+    else
+    {
+      int screenWidth, screenHeight;
+      GetDesktopResolution(screenWidth, screenHeight);
+      if (width > screenWidth)
+        width = screenWidth - 50;
+      if (height > screenHeight)
+        height = screenHeight - 150;
     }
     
     RECT rc = {0, 0, width, height};                     // Defines rectangle dimensions for window

@@ -95,6 +95,9 @@ namespace Framework
 
     m_renderContext->CreateVertexBuffer(spriteQuad, 120);
 
+    m_renderContext->m_letterbox = ENABLE_LETTERBOXING;
+
+
     ErrorIf(!LoadAssets(std::string("content")), "AssetLoad", "SheepGraphics.cpp");
 
     ErrorIf(!LoadAtlas(std::string("content")), "AtlasLoad", "SheepGraphics.cpp");
@@ -152,6 +155,10 @@ namespace Framework
         _ScreenHeight = (int)rMsg->height;
 
         m_renderContext->Resize((float)_ScreenWidth, (float)_ScreenHeight);
+
+        Lua::CallFunc(ENGINE->Lua(), "WindowResize",
+          RC()->GetViewport().dim.width,
+          RC()->GetViewport().dim.height);
       }
     }
 

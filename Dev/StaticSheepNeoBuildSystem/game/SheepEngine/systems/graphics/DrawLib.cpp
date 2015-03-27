@@ -344,12 +344,12 @@ namespace Framework
 
   int Draw::ScreenHeight(void)
   {
-    return GRAPHICS->_ScreenHeight;
+    return GRAPHICS->RC()->GetViewport().dim.height;
   }
 
   int Draw::ScreenWidth(void)
   {
-    return GRAPHICS->_ScreenWidth;
+    return GRAPHICS->RC()->GetViewport().dim.width;
   }
 
   Vec2 Draw::MeasureString(const char* text, Vec2D scale, int fontIndex)

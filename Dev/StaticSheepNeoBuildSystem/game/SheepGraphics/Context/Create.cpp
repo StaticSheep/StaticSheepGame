@@ -177,8 +177,8 @@ namespace DirectSheep
     D3D11_TEXTURE2D_DESC texd;       // Description structure for depth buffer texture
     ZeroMemory(&texd, sizeof(texd)); // Null all members
 
-    texd.Width = m_viewport.dim.width; // Set screen dimensions
-    texd.Height = m_viewport.dim.height;
+    texd.Width = SCREEN_WIDTH; // Set screen dimensions
+    texd.Height = SCREEN_HEIGHT;
     texd.ArraySize = 1;                      // Only one depth buffer
     texd.MipLevels = 1;                      // Mip Mapping
     texd.SampleDesc.Count = 1;

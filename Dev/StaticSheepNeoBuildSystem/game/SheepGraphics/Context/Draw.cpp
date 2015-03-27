@@ -236,7 +236,7 @@ namespace DirectSheep
       }
 
       /* Switch our view port back to the window size for the rest of the drawing. */
-      SetViewport(m_viewport.offsetX, m_viewport.offsetY, m_viewport.dim);
+      SetViewport(0, 0, m_viewport.dim);
 
       /* Draw the contents of our canvas (diffuse textures) */
       ClearRenderTarget(m_canvasTarget, 0, 0, 0, 0); // Clear canvas
@@ -291,14 +291,16 @@ namespace DirectSheep
       // Set the back buffer as our render target
       m_deviceContext->OMSetRenderTargets(1,
         &m_backBuffer, m_depthBuffer.m_depthBuffer);
-      /* Switch our view port back to the window size for the rest of the drawing. */
+
       SetViewport(m_viewport.offsetX, m_viewport.offsetY, m_viewport.dim);
+
       // Bind generic effect for drawing a window sized texture
       m_genericEffect->bindPosUV(m_deviceContext,
         identity,
         identity,
-        //DirectX::XMMatrixTranslationFromVector(Vec3(1, -1, 0)) *
-        DirectX::XMMatrixScaling(m_viewport.dim.width, m_viewport.dim.height, 0),
+        DirectX::XMMatrixTranslationFromVector(Vec3(0, 0, 0)) *
+        DirectX::XMMatrixScaling(1, 1, 0) *
+        DirectX::XMMatrixTranslationFromVector(Vec3(0, 0, 0)),
         Vec2(), Vec2());
 
       //SetViewport(0, 0, Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));

@@ -43,16 +43,34 @@ namespace DirectSheep
       float viewportHeight = width / TargetAspect;
       float viewportWidth = width;
 
-      if (viewportHeight > height)
+      if (m_letterbox)
       {
-        viewportHeight = height;
-        viewportWidth = height * TargetAspect;
+        if (viewportHeight > height)
+        {
+          viewportHeight = height;
+          viewportWidth = height * TargetAspect;
+        }
+
+        m_viewport.dim = Dimension(viewportWidth, viewportHeight);
+        m_viewport.offsetX = (width - viewportWidth) / 2;
+        m_viewport.offsetY = (height - viewportHeight) / 2;
+        //m_viewport.offsetY = 0;// viewportHeight / 2.0f;
+        //m_viewport.offsetX = 0;
+        //m_viewport.offsetY = 0;
+
+        ViewportScalar.x = viewportWidth / width;
+        ViewportScalar.y = viewportHeight / height;
+
+
+      }
+      else
+      {
+        m_viewport.dim = Dimension(width, height);
+        m_viewport.offsetX = 0;
+        m_viewport.offsetY = 0;
       }
 
-      m_viewport.dim = Dimension(viewportWidth, viewportHeight);
-      m_viewport.offsetX = 0;
-      m_viewport.offsetY = 0;
-      //m_viewport.offsetY = 0;// viewportHeight / 2.0f;
+      
 
       SCREEN_WIDTH = width;
       SCREEN_HEIGHT = height;
@@ -63,7 +81,7 @@ namespace DirectSheep
       m_depthBuffer.m_depthBuffer->Release();
       m_depthBuffer.texture2D->Release();
 
-      DXVerify(m_swapChain->ResizeBuffers(0, 0, 0, DXGI_FORMAT_UNKNOWN, 0));
+      DXVerify(m_swapChain->ResizeBuffers(0, width, height, DXGI_FORMAT_UNKNOWN, 0));
 
       SetViewport(m_viewport.offsetX, m_viewport.offsetY, m_viewport.dim);
 
@@ -78,10 +96,13 @@ namespace DirectSheep
       //  Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
 
       CreateRenderTarget(m_canvasTarget, DXGI_FORMAT_R8G8B8A8_UNORM,
-        Dimension(viewportWidth, viewportHeight));
+        Dimension(m_viewport.dim.width, m_viewport.dim.height));
 
-      ((Camera*)m_orthoScreen.ptr)->SetScale(viewportWidth, viewportHeight);
-      ((Camera*)m_postEffects.ptr)->SetScale(viewportWidth, viewportHeight);
+      ((Camera*)m_orthoScreen.ptr)->SetScale(m_viewport.dim.width,
+        m_viewport.dim.height);
+
+      ((Camera*)m_postEffects.ptr)->SetScale(m_viewport.dim.width,
+        m_viewport.dim.height);
 
 
 
