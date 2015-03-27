@@ -546,7 +546,7 @@ namespace SheepFizz
 
 		//Velocity can be calculated after adjusting force
 		body.velocity_ += ((body.force_ *= body.massData_.inverseMass) 
-			+ body.gravityNormal_ * 400.0f /*(float)body.gravityScale_*/ * (float)body.gravityOn_) * dt_;
+			+ body.gravityNormal_ * 600.0f /*(float)body.gravityScale_*/ * (float)body.gravityOn_) * dt_;
 
     /*if (body.velocity_.SquareLength() > SPEEDLIMIT * SPEEDLIMIT)
     {

@@ -116,6 +116,7 @@ namespace Framework
     float theta = trans->GetRotation();
 
     Mat2D rot(theta);
+    Vec2 posOffset = (rot * Vec2(0.0f, 1.0f)) * 10.0f;
 
     if(previousSequence != sequenceName)
     {
@@ -165,7 +166,7 @@ namespace Framework
       end = Vec2(1.0f, 1.0f);
     }
     
-    GRAPHICS->SetPosition(position.x - frameOffset.x, position.y - frameOffset.y, position.z);
+    GRAPHICS->SetPosition((position.x - frameOffset.x) + posOffset.x, (position.y - frameOffset.y) + posOffset.y, position.z);
     GRAPHICS->SetRotation(theta);
     GRAPHICS->SetSize(scale.x, scale.y);
     GRAPHICS->SetColor(Color);

@@ -100,5 +100,8 @@ namespace Framework
     int checkSnap;
     int checkJump;
 
+    Vec3 otherObjectVelocity;
+    int collisionTotal;
+
 	};
 }

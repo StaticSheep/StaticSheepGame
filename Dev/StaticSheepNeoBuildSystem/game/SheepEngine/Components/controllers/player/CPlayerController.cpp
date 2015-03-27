@@ -312,6 +312,9 @@ namespace Framework
     if(checkJump > 0)
       --checkJump;
 
+    collisionTotal = 0;
+    otherObjectVelocity = Vec3();
+
     //MetricInfo metricData;
     //metricData.mt = PLAYER_LOCATION;
     //metricData.playerNum = playerNum;
@@ -361,13 +364,21 @@ namespace Framework
       }
     }
 
+    if(collisionTotal)
+      bc->AddToVelocity(otherObjectVelocity * 0.5f);
+
     if (gp->LStick_InDeadZone())
     {
       if (otherObjectSpin)
+      {
         bc->SetBodyFrictionMod(1.89f);
+      }
       return;
     }
       
+
+    
+
     bc->SetBodyFrictionMod(0.0f);
 
     Vec3 movementDir(gp->LeftStick_X(), gp->LeftStick_Y(), 0.0f);
@@ -513,7 +524,10 @@ namespace Framework
     if(!body)
       return;
 
-    if (body->GetBodyAngVelocity() != 0)
+    otherObjectVelocity += body->GetCurrentVelocity();
+    ++collisionTotal;
+
+    if (body->GetBodyAngVelocity() != 0 || body->GetCurrentVelocity().SquareLength() > 1.0f)
       otherObjectSpin = true;
     else
       otherObjectSpin = false;
