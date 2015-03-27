@@ -17,6 +17,8 @@ namespace Framework
     Handle gCollider;
 
     bool moveLeft;
+    Vec3D velocity;
+    int moveFactor;
 
     float fuck;
   };

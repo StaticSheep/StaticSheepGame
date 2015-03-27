@@ -113,9 +113,9 @@ namespace SheepFizz
 
       //friction force cannot exceed normal impulse
       //float accumulatedTanPrev = accumulatedTanImpulse[i];
-     // accumulatedTanImpulse[i] = Maximum(jFriction + accumulatedTanImpulse[i], -j * mDynamicFriction);
-     // accumulatedTanImpulse[i] = Minimum(accumulatedTanImpulse[i], j * mDynamicFriction);
-     // jFriction = accumulatedTanImpulse[i] - accumulatedTanPrev;
+      //accumulatedTanImpulse[i] = Maximum(jFriction + accumulatedTanImpulse[i], -j * mDynamicFriction);
+      //accumulatedTanImpulse[i] = Minimum(accumulatedTanImpulse[i], j * mDynamicFriction);
+      //jFriction = accumulatedTanImpulse[i] - accumulatedTanPrev;
 
       Vec3D frictionImpulse;
       frictionImpulse = jFriction * tangent * A->frictionMod_ * B->frictionMod_;
