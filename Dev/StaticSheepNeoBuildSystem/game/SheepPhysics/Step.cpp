@@ -124,6 +124,12 @@ namespace SheepFizz
     body->collisionGroup_ = group;
   }//end of SetBodyCollisionGroup
 
+  void PhysicsSpace::SetBodyFrictionMod(Handle handle, float friction)
+  {
+    Body* body = handles_.GetAs<Body>(handle);
+    body->frictionMod_ = friction;
+  }//end of SetBodyFrictionMod
+
 	//end of settors
 	//*************
 
