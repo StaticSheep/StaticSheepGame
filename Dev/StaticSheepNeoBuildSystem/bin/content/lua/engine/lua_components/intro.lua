@@ -175,7 +175,7 @@ function META:Run()
 
   self.List:PushBack(Action(
     function(act)
-      self:Owner().SoundPlayer:PlayLoop("Main Music")
+      self:Owner().SoundPlayer:PlayLoop("tripg")
     end,
     function(act, dt)
       act:Done()
