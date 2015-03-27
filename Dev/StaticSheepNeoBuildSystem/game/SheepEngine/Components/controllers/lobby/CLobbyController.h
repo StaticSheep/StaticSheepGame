@@ -42,6 +42,7 @@ namespace Framework
     LobbyState state_;
     Handle playerJoinText[4];
     Handle Players[4];
+    Handle levelSound;
     int numOfPlayers;
     float spawnTimer, timer_;
     float bounceDownTimer;
