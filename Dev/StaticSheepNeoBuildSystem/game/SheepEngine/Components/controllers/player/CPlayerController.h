@@ -94,6 +94,7 @@ namespace Framework
 
     Vec4 playerColor;
     bool animationFlip;
+    bool circleFound;
     int snapFrame;
     int checkSnap;
 

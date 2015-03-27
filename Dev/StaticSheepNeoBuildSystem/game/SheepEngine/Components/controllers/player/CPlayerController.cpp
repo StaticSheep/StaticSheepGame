@@ -321,26 +321,13 @@ namespace Framework
   {
     hasDashed = false;
     Vec3 averageNormal;
-    /*int size = normals.size();
 
-    for(unsigned i = 0; i < size; ++i)
-    {
-      --normals[i].frames;
-
-      averageNormal += normals[i].normal;
-
-      if(normals[i].frames <= 0)
-      {
-        normals[i] = normals[size - 1];
-        --size;
-        averageNormal += normals[i].normal;
-      }
-    }
-
-    averageNormal.Normalize();*/
     snappedNormal.Normalize();
 
-    bc->SetBodyRotation(-snappedNormal);
+    if(!circleFound)
+    {
+      bc->SetBodyRotation(-snappedNormal);
+    }
 
     if (((gp->ButtonDown(XButtons.A) || gp->LeftTrigger()) && isSnapped) || (SHEEPINPUT->KeyIsDown('Q') && gp->GetIndex() == 0))
     {
@@ -392,7 +379,7 @@ namespace Framework
     
     CollisionDamage(OtherObject); //determine if the colliding object does damage to the player
 
-    if(snapFrame <= 0)
+    if(snapFrame <= 0 && !OtherObject->GetComponent<PlayerController>(ePlayerController))
       DetermineSnap(OtherObject, otherObject,manifold); //determine the snapped normal based on collided object
 	}
 
@@ -476,16 +463,11 @@ namespace Framework
   {
 
     Transform *OOT = OtherObject->GetComponent<Transform>(eTransform);
-    bool circleFound = false;
+    circleFound = false;
 
     if (!OOT)
       return;
 
-    //if (!(OtherObject->HasComponent(eBoxCollider) ) || OtherObject->name == "Player" || OtherObject->name == "WeaponPickup"
-      //|| OtherObject->archetype == "Grinder" || OtherObject->name == "PowerUpPickup")
-      //return;
-
-    //BoxCollider* collider = OtherObject->GetComponent<BoxCollider>(eBoxCollider);
     RigidBody* body = OtherObject->GetComponent<RigidBody>(eBoxCollider);
 
     if (!body)
@@ -499,18 +481,6 @@ namespace Framework
 
     Vec3 normal = body->GetCollisionNormals(manifold);
     bool found = false;
-    /*
-    for(auto it = normals.begin(); it != normals.end(); ++it)
-    {
-      if(it->body == otherObject)
-      {
-        it->frames = 5;
-        found = true;
-      }
-    }
-    */
-    //if(!found)
-      //normals.push_back(FrameCollisionData(otherObject, normal));
 
     snappedNormal += normal;
     checkSnap = 5;
@@ -530,7 +500,9 @@ namespace Framework
       Mat3D rot;
 
       if(!circleFound)
+      {
         rot = Mat3D(ps->GetRotation() - PI / 2.0f);
+      }
       else
       {
         Vec3 orientation = body->GetBodyPosition() - bc->GetBodyPosition();

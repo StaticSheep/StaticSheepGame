@@ -10,6 +10,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "Manifold.h"
 #include "Vec3D.h"
 
+
 namespace SheepFizz
 {
   //apply forces in the direction of the normals determined in
@@ -70,11 +71,12 @@ namespace SheepFizz
       //from B to A;
       Vec3D impulse = j * normal;
       
+      /*
       if (penetration > .08 && (A->massData_.mass == 0 || B->massData_.mass == 0))
         impulse *= 1 + penetration;
 
       if (penetration > .10 && (A->massData_.mass == 0 || B->massData_.mass == 0))
-        impulse *= 1.5;
+        impulse *= 1.5;*/
 
       impulse.z = 0;
 
@@ -93,6 +95,9 @@ namespace SheepFizz
         - A->velocity_ - (Vec3D(0, 0, A->angularVelocity_) ^ aRepulsionVec);
 
       contactVelocity = relativevelocity.DotProduct(normal);
+
+      //if(relativevelocity.SquareLength() > 36.0f)
+        //return;
 
       //calculate the normalized tangent vector
       //by removing the relative velocity component along the normal, only
@@ -137,7 +142,7 @@ namespace SheepFizz
     if (A->massData_.mass > 0 && B->massData_.mass > 0)
       return;
 
-    Vec3D correction = (Maximum(penetration - POSSLACK, 0.0f) /
+    /*Vec3D correction = (Maximum(penetration - POSSLACK, 0.0f) /
       (A->massData_.inverseMass + B->massData_.inverseMass)) * POSCORRECT
       * normal;
 
@@ -149,10 +154,29 @@ namespace SheepFizz
 
     correction *= 2.0f;
 
-    correction.z = 0;
+    correction.z = 0;*/
 
-    A->position_ -= A->massData_.inverseMass * correction;
-    B->position_ += B->massData_.inverseMass * correction;
+    Vec3D correction = penetration * normal;
+
+    
+    int p = (int)(penetration * 100.0f);
+
+    //float scalar =  PenetrationScaleFunction(p);
+    
+    if(A->massData_.mass != 0)
+    {
+      A->position_ -= correction * 0.9f;// * scalar;//A->massData_.inverseMass * correction;
+
+      if(A->angularVelocity_ < 0.5 && A->angularVelocity_ > -0.5f)
+        A->angularVelocity_ = 0.0f;
+    }
+
+    if(B->massData_.mass != 0)
+    {
+      B->position_ += correction * 0.9f;// * scalar;//B->massData_.inverseMass * correction;
+      if(B->angularVelocity_ < 0.5 && B->angularVelocity_ > -0.5f)
+        B->angularVelocity_ = 0.0f;
+    }
 
   }//end of PositionalCorrection
 
