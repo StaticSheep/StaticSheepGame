@@ -155,6 +155,7 @@ namespace Framework
     pn = -1;
 
     snapFrame = 0;
+    checkJump = 0;
 
     //SpawnEffect();
 	}
@@ -303,10 +304,11 @@ namespace Framework
     //  }
     //}
 
-    normals.clear();
-
     if(snapFrame > 0)
       --snapFrame;
+
+    if(checkJump > 0)
+      --checkJump;
 
     //MetricInfo metricData;
     //metricData.mt = PLAYER_LOCATION;
@@ -331,11 +333,19 @@ namespace Framework
 
     if (((gp->ButtonDown(XButtons.A) || gp->LeftTrigger()) && isSnapped) || (SHEEPINPUT->KeyIsDown('Q') && gp->GetIndex() == 0))
     {
-      jump(); //player jump
-      if (GetRandom(0, 1)) //determine sound for jump
-        se->Play("jump2", &SoundInstance(0.75f));
-      else
-        se->Play("jump1", &SoundInstance(0.75f));
+      if(snapFrame == 0 && checkJump == 0)
+      {
+        jump(); //player jump
+        if (GetRandom(0, 1)) //determine sound for jump
+          se->Play("jump2", &SoundInstance(0.75f));
+        else
+          se->Play("jump1", &SoundInstance(0.75f));
+
+        checkJump = 30;
+        snapFrame = 5;
+
+        return;
+      }
     }
 
     if(gp->LStick_InDeadZone())
@@ -355,7 +365,13 @@ namespace Framework
     {
       isSnapped = false;
       bc->SetGravityOff();
+      clampVelocity(200.0f);
     }
+
+    float length = bc->GetCurrentVelocity().SquareLength();
+
+    if(length > 250001)
+      clampVelocity(500.0f);
     
   }
 
@@ -378,6 +394,12 @@ namespace Framework
     GameObject *OtherObject = space->GetHandles().GetAs<GameObject>(otherObject); //get the game object from the handle
     
     CollisionDamage(OtherObject); //determine if the colliding object does damage to the player
+
+
+    if(OtherObject->name == "WeaponPickup" || OtherObject->archetype == "Grinder" ||
+      OtherObject->name == "PowerUpPickup" || OtherObject->name == "CoinPickup" || OtherObject->name == "CoinBall" || OtherObject->name == "Player"
+      || OtherObject->HasComponent(eBullet_Default))
+      return;
 
     if(snapFrame <= 0 && !OtherObject->GetComponent<PlayerController>(ePlayerController))
       DetermineSnap(OtherObject, otherObject,manifold); //determine the snapped normal based on collided object
@@ -483,7 +505,7 @@ namespace Framework
     bool found = false;
 
     snappedNormal += normal;
-    checkSnap = 5;
+    checkSnap = 3;
 
     if(!isSnapped)
     {
@@ -861,14 +883,19 @@ namespace Framework
   //************************************
   void PlayerController::clampVelocity(float clamp)
   {
-    if (bc->GetCurrentVelocity().x > clamp)
-      bc->SetVelocity(Vec3(clamp, bc->GetCurrentVelocity().y, 0.0f));
-    if (bc->GetCurrentVelocity().x < -clamp)
-      bc->SetVelocity(Vec3(-clamp, bc->GetCurrentVelocity().y, 0.0f));
-    if (bc->GetCurrentVelocity().y > 450)
-      bc->SetVelocity(Vec3(bc->GetCurrentVelocity().x, clamp, 0.0f));
-    if (bc->GetCurrentVelocity().y < -clamp)
-      bc->SetVelocity(Vec3(bc->GetCurrentVelocity().x, -clamp, 0.0f));
+    /*
+    Vec3 vel = bc->GetCurrentVelocity();
+
+    if (vel.x > clamp)
+      bc->SetVelocity(Vec3(clamp, vel.y, 0.0f));
+    if (vel.x < -clamp)
+      bc->SetVelocity(Vec3(-clamp, vel.y, 0.0f));
+    if (vel.y > clamp)
+      bc->SetVelocity(Vec3(vel.x, clamp, 0.0f));
+    if (vel.y < -clamp)
+      bc->SetVelocity(Vec3(vel.x, -clamp, 0.0f));*/
+
+    bc->SetVelocity(bc->GetCurrentVelocity().Normalize() * clamp);
   }
 
   //************************************
@@ -888,11 +915,12 @@ namespace Framework
       jmpDir = aimingDirection(gp, 'L');
       if (-snappedNormal * jmpDir < 0)
       {
-        jmpDir += ((-snappedNormal * jmpDir) * snappedNormal) *2;
+        jmpDir += ((snappedNormal * jmpDir) * -snappedNormal) * 2.0f;
       }
     }
 
     bc->AddToVelocity(jmpDir * 500);
+    bc->SetGravityOff();
     isSnapped = false;
     //normals.clear();
     
@@ -922,9 +950,9 @@ namespace Framework
     {
       playerButton.button = Buttons::A;
       isSnapped = false;
-      bc->SetGravityOff();
+      //bc->SetGravityOff();
       snapFrame = 5;
-      normals.clear();
+      //normals.clear();
       //trans->SetTranslation(trans->GetTranslation() - snappedNormal * 10.0f);
 
     }

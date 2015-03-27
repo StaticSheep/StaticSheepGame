@@ -97,6 +97,7 @@ namespace Framework
     bool circleFound;
     int snapFrame;
     int checkSnap;
+    int checkJump;
 
 	};
 }

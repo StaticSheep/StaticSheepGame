@@ -157,23 +157,24 @@ namespace SheepFizz
     correction.z = 0;*/
 
     Vec3D correction = penetration * normal;
+    correction.z = 0.0f;
 
     
     int p = (int)(penetration * 100.0f);
 
     //float scalar =  PenetrationScaleFunction(p);
     
-    if(A->massData_.mass != 0)
+    if(A->massData_.mass != 0.0f)
     {
-      A->position_ -= correction * 0.9f;// * scalar;//A->massData_.inverseMass * correction;
+      A->position_ -= correction * 0.5f;// * scalar;//A->massData_.inverseMass * correction;
 
       if(A->angularVelocity_ < 0.5 && A->angularVelocity_ > -0.5f)
         A->angularVelocity_ = 0.0f;
     }
 
-    if(B->massData_.mass != 0)
+    if(B->massData_.mass != 0.0f)
     {
-      B->position_ += correction * 0.9f;// * scalar;//B->massData_.inverseMass * correction;
+      B->position_ += correction * 0.5f;// * scalar;//B->massData_.inverseMass * correction;
       if(B->angularVelocity_ < 0.5 && B->angularVelocity_ > -0.5f)
         B->angularVelocity_ = 0.0f;
     }
