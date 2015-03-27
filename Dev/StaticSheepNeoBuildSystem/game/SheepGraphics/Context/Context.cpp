@@ -564,7 +564,7 @@ namespace DirectSheep
   */
     void RenderContext::ClearBackBuffer(void)
     {
-      float clearColor[4] = { 0, 0, 0, 1.0f };
+      float clearColor[4] = { 0, 1.0f, 0, 1.0f };
       m_deviceContext->ClearRenderTargetView(m_backBuffer, clearColor);
     }
 

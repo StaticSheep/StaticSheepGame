@@ -115,6 +115,9 @@ namespace Framework
     ENGINE->PlayInEditor(true);
 #endif
 
+    GameSpace* sp = FACTORY->LoadSpace("AMFA");
+    sp->SetPaused(true);
+
     if (!editor)
     {
       //ShowCursor(false);

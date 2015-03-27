@@ -28,6 +28,7 @@ static void GetDesktopResolution(int& horizontal, int& vertical)
   // The top left corner will have coordinates (0,0)
   // and the bottom right corner will have coordinates
   // (horizontal, vertical)
+
   horizontal = desktop.right;
   vertical = desktop.bottom;
 }
