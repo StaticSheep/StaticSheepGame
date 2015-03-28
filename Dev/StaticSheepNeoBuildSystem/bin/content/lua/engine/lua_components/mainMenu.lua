@@ -386,6 +386,7 @@ function META:Remove()
   hook.Remove("FrameUpdate", self)
   hook.Remove("LogicUpdate", self)
   hook.Remove("PostDraw", self)
+  hook.Remove("ScreenResize", self)
 end
 
 function META:Draw()
@@ -401,6 +402,7 @@ function META:SetupHooks()
   hook.Add("FrameUpdate", self, self.FrameUpdate)
   hook.Add("LogicUpdate", self, self.LogicUpdate, self.CanUpdate)
   hook.Add("PostDraw", self, self.Draw)
+  hook.Add("ScreenResize", self, self.Refresh)
 end
 
 function META:PauseSpace(paused)
