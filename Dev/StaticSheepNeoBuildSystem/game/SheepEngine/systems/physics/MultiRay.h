@@ -19,6 +19,7 @@ namespace Framework
 
   struct MCData
   {
+    MCData() : length(0), obj(Handle::null) {}
     MCData(float length, unsigned obj) : length(length), obj(obj){};
     float length;
     Handle obj;

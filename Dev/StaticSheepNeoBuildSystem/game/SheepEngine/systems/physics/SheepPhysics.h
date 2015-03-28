@@ -86,7 +86,7 @@ namespace Framework
       void SetRayConfig(Vec3D& rayOrigin, Vec3D& rayDirection, std::string name);
       bool SimpleRayCast(SheepFizz::RayConfig* ray);
       bool ComplexRayCast(SheepFizz::RayConfig* ray);
-      void RayDestruction(GameSpace* space);
+      void RayDestruction(GameSpace* space, SheepFizz::RayConfig* ray);
       Vec3D GetFirstCollision();
 
 			//settors

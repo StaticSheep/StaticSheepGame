@@ -17,7 +17,6 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/colliders/CBoxCollider.h"
 #include "components/colliders/CCircleCollider.h"
 
-#pragma once
 #include "components/controllers/player/CPlayerController.h"
 
 namespace Framework
@@ -522,23 +521,31 @@ namespace Framework
     return ray.firstCollisionLocation;
   }
 
-  void SheepPhysics::RayDestruction(GameSpace* space)
+  void SheepPhysics::RayDestruction(GameSpace* space, SheepFizz::RayConfig* ray)
   {
-    if (ray.findFirstCollision)
+    if (ray->findFirstCollision)
     {
-      rayComplexDraws.push_back(std::pair<Vec2, Vec2>(ray.rayOrigin, ray.firstCollisionLocation));
+      Vec2 origin = Draw::ToScreen(ray->rayOrigin);
+      Vec2 end = Draw::ToScreen(ray->firstCollisionLocation);
+
+      Draw::DrawLine(origin.x,
+        origin.y,
+        end.x,
+        end.y);
+
+      rayComplexDraws.push_back(std::pair<Vec2, Vec2>(ray->rayOrigin, ray->firstCollisionLocation));
     }
 
     else
     {
-      if (!ray.bodyIntersections_.empty())
-        for (int i = 0; i < ray.bodyIntersections_.size(); ++i)
-          debugRayBodyCollisions_.push_back(ray.bodyIntersections_[i]);
-      raySimpleDraws.push_back(std::pair<Vec2, Vec2>(ray.rayOrigin, ray.rayDirection));
+      if (!ray->bodyIntersections_.empty())
+        for (int i = 0; i < ray->bodyIntersections_.size(); ++i)
+          debugRayBodyCollisions_.push_back(ray->bodyIntersections_[i]);
+      raySimpleDraws.push_back(std::pair<Vec2, Vec2>(ray->rayOrigin, ray->rayDirection));
     }
 
-    ray.bodyIntersections_.clear();
-    ray.findFirstCollision = false;
+    //ray.bodyIntersections_.clear();
+    //ray.findFirstCollision = false;
   }
 
 	//change bodies

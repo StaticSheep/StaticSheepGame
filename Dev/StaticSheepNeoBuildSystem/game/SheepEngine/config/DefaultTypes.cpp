@@ -346,6 +346,7 @@ namespace Framework
     TYPE_REGISTER(Shotgun);
     TYPE_REGISTER(Automatic);
     TYPE_REGISTER(Missile);
+    TYPE_REGISTER(WLaser);
 
     TYPE_REGISTER(DamageBoost);
     TYPE_REGISTER(Shield);

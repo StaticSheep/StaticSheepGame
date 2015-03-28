@@ -485,10 +485,7 @@ namespace Framework
     return DirectSheep::RenderContext::RetrieveCamera(camHandle);
   }
 
-  DirectSheep::Handle SheepGraphics::GetActiveCamera()
-  {
-    return m_renderContext->GetActiveCamera();
-  }
+
 
   void SheepGraphics::SetActiveCamera(DirectSheep::Handle camHandle)
   {

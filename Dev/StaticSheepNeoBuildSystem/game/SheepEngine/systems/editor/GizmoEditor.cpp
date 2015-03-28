@@ -66,8 +66,8 @@ namespace Framework
   void GizmoEditor::DetectHover(Vec2 screenPos, float theta)
   {
     Vec2 mousePos = SHEEPINPUT->Mouse.GetScreenPosition();
-    mousePos.x -= GRAPHICS->RC()->GetViewport().offsetX;
-    mousePos.y -= GRAPHICS->RC()->GetViewport().offsetY;
+    //mousePos.x -= GRAPHICS->RC()->GetViewport().offsetX;
+    //mousePos.y -= GRAPHICS->RC()->GetViewport().offsetY;
 
     Vec2 lineStart;
 
@@ -548,16 +548,18 @@ namespace Framework
           return;
         }
 
-        auto cam = GRAPHICS->RetrieveCamera(GRAPHICS->GetActiveCamera());
+        auto cam = GRAPHICS->RetrieveCamera(GRAPHICS->RC()->GetActiveCamera());
 
-        m_bronzeRatio = Vec2(GRAPHICS->_ScreenWidth / cam->GetScale().x,
-          GRAPHICS->_ScreenHeight / cam->GetScale().y);
+        m_bronzeRatio = Vec2(GRAPHICS->RC()->GetViewport().dim.width
+          / cam->GetScale().x,
+          GRAPHICS->RC()->GetViewport().dim.height
+          / cam->GetScale().y);
 
         Transform* trans = obj->GetComponent<Transform>(eTransform);
         Vec2 screenPos = Draw::ToScreen(trans->GetTranslation());
 
-        screenPos.x -= GRAPHICS->RC()->GetViewport().offsetX;
-        screenPos.x -= GRAPHICS->RC()->GetViewport().offsetY;
+        //screenPos.x -= GRAPHICS->RC()->GetViewport().offsetX;
+        //screenPos.y -= GRAPHICS->RC()->GetViewport().offsetY;
         /*screenPos.y *= GRAPHICS->_ScreenHeight / GRAPHICS->RC()->GetViewport().dim.height;
         screenPos.y += GRAPHICS->RC()->GetViewport().offsetY;*/
 

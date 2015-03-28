@@ -32,9 +32,9 @@ namespace Framework
 
     m_positionOffsets.push_back(position);
 
-    for (int i = 1; i < resolution - 1; ++i)
+    for (int i = 1; i < resolution; ++i)
     {
-      position -= i * differencePerOffset * offsetDir;
+      position -= differencePerOffset * offsetDir;
       m_positionOffsets.push_back(position);
     }
 
@@ -48,7 +48,7 @@ namespace Framework
       collision = PHYSICS->ComplexRayCast(&m_ray);
       if (collision)
       {
-        PHYSICS->RayDestruction((GameSpace*)m_ray.gameSpace);  //for debugging
+        PHYSICS->RayDestruction((GameSpace*)m_ray.gameSpace, &m_ray);  //for debugging
 
         float length = (m_ray.firstCollisionLocation - m_ray.rayOrigin).Length();
         results.push_back(MCData(length, (unsigned)m_ray.firstCollisionObject));

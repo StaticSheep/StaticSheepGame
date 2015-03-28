@@ -5,6 +5,7 @@
 #include "Components/controllers/player/CPlayerController.h"
 #include "components/gameplay_scripts/Weapon_Scripts/CBullet_default.h"
 #include "Matrix3D.h"
+#include "systems/physics/MultiRay.h"
 
 
 namespace Framework
@@ -33,7 +34,33 @@ namespace Framework
     Transform *playerTrans = player->GetComponent <Transform>(eTransform);
     Vec3 AimDir = player->GetComponent<PlayerController>(ePlayerController)->aimDir;
 
-    MultiRay.
+    Vec3 AimEnd = playerTrans->GetTranslation() + AimDir * 40.0f;
+    Vec2 testStart = Draw::ToScreen(playerTrans->GetTranslation());
+    Vec2 testEnd = Draw::ToScreen(AimEnd);
+
+    Draw::DrawLine(testStart.x, testStart.y, testEnd.x, testEnd.y);
+
+    std::vector<MCData> rayData;
+
+    MultiRayCaster(playerTrans->GetTranslation(), AimDir,
+      player->space, 20.0f, Player1Weapon, rayData, 4);
+
+    if (rayData[0].obj != Handle::null)
+    {
+      GameObject* obj = player->space->GetGameObject(rayData[0].obj);
+
+      if (obj)
+      {
+        PlayerController* pc = obj->GetComponent<PlayerController>
+          (ePlayerController);
+
+        if (pc)
+        {
+          // Kill me
+          pc->DealDamage(500.0f, pc->playerNum);
+        }
+      }
+    }
     
 
 
@@ -63,6 +90,6 @@ namespace Framework
 
   void WLaser::ResetDelay()
   {
-    delay = 1;
+    delay = 0;
   }
 }
