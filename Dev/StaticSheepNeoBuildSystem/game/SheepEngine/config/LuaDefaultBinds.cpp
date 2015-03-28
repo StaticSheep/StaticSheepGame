@@ -63,6 +63,8 @@ namespace Framework
       BIND_FUNCTION_TABLE(L, Draw::ForceZ, ForceZ, surface);
       BIND_FUNCTION_TABLE(L, Draw::LuaMeasureString, MeasureString, surface);
       BIND_FUNCTION_TABLE(L, Draw::GetFontIndex, GetFontID, surface);
+      BIND_FUNCTION_TABLE(L, Draw::SetFullScreen, SetFullScreen, surface);
+      BIND_FUNCTION_TABLE(L, Draw::GetFullScreen, GetFullScreen, surface);
 
       CREATE_TABLE(L, audio);
       BIND_FUNCTION_TABLE(L, SheepAudio::LuaPauseAll, PauseAll, audio);

@@ -64,6 +64,9 @@ namespace Framework
     static int ScreenWidth(void);
     static int ScreenHeight(void);
 
+    static bool GetFullScreen(void);
+    static void SetFullScreen(bool isFullScreen);
+
     static Vec2 MeasureString(const char* text, Vec2D scale, int fontIndex);
     static Vec2 LuaMeasureString(const char* text, float scale, int fontIndex);
   private:

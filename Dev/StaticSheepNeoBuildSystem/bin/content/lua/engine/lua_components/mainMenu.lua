@@ -235,10 +235,7 @@ function META:MakeOptionsMenu()
   pos = btn:GetPos()
   btn:SetPos(pos.x + self.menuOffset, pos.y)
   btn:SetOnPressed(function()
-
-   
-
-    --self:CloseMenu()
+    surface.SetFullScreen(not surface.GetFullScreen())
   end)
 
   -- btn = self:AddButton("Credits", self.optionMenu, self.optionButtons)
