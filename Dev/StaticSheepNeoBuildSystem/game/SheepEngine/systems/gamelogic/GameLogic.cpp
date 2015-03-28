@@ -102,7 +102,7 @@ namespace Framework
     REGISTER_COMPONENT(SlotController);
     REGISTER_COMPONENT(PersonalSlotController);
     REGISTER_COMPONENT(BlockLights);
-    REGISTER_COMPONENT(Laser);
+    //REGISTER_COMPONENT(Laser);
     REGISTER_COMPONENT(CoinBall);
     REGISTER_COMPONENT(ImpactEffect);
     REGISTER_COMPONENT(AOEDamage);

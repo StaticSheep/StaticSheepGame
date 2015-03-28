@@ -164,24 +164,11 @@ namespace Framework
           Draw::DrawCircle(bodyPosition.x, bodyPosition.y, ((CircleCollider*)(*circles)[j])->m_radius);
         }
       
-        float slope1 = 0;
-        float slope2 = 0;
         //go through rays
         for (int i = 0; i < rayComplexDraws.size(); ++i)
-        {
-          if (i > 0)
-            slope1 = (rayComplexDraws[i].second.y - rayComplexDraws[i].first.y) / (rayComplexDraws[i].second.x - rayComplexDraws[i].first.x);
+          Draw::DrawLine(rayComplexDraws[i].first.x, rayComplexDraws[i].first.y, 
+            rayComplexDraws[i].second.x, rayComplexDraws[i].second.y);         
           
-          if (i > 0)
-            slope2 = (rayComplexDraws[i - 1].second.y - rayComplexDraws[i - 1].first.y) / (rayComplexDraws[i - 1].second.x - rayComplexDraws[i - 1].first.x);
-
-          if (slope1 != slope2)
-            continue;
-
-          Draw::DrawLine(rayComplexDraws[i].first.x, rayComplexDraws[i].first.y, rayComplexDraws[i].second.x, rayComplexDraws[i].second.y);             
-        }
-          
-
         for (int i = 0; i < raySimpleDraws.size(); ++i)
           Draw::DrawBeam(raySimpleDraws[i].first, raySimpleDraws[i].second);
 
@@ -309,6 +296,7 @@ namespace Framework
     m_collisionGroup.insert(std::pair<std::string, CollisionGroup>("Item", Item));
     m_collisionGroup.insert(std::pair<std::string, CollisionGroup>("PlayerHitOnly", PlayerHitOnly));
     m_collisionGroup.insert(std::pair<std::string, CollisionGroup>("Static", CollisionGroup::Static));
+    m_collisionGroup.insert(std::pair<std::string, CollisionGroup>("RayCast", RayCast));
 
     m_collisionGroupNames.insert(std::pair<CollisionGroup, std::string>(NonCollide, "NonCollide"));
     m_collisionGroupNames.insert(std::pair<CollisionGroup, std::string>(Collide, "Collide"));
@@ -317,6 +305,7 @@ namespace Framework
     m_collisionGroupNames.insert(std::pair<CollisionGroup, std::string>(Player2, "Player2"));
     m_collisionGroupNames.insert(std::pair<CollisionGroup, std::string>(Player3, "Player3"));
     m_collisionGroupNames.insert(std::pair<CollisionGroup, std::string>(Player4, "Player4"));
+
     m_collisionGroupNames.insert(std::pair<CollisionGroup, std::string>(Player1Weapon, "Player1Weapon"));
     m_collisionGroupNames.insert(std::pair<CollisionGroup, std::string>(Player2Weapon, "Player2Weapon"));
     m_collisionGroupNames.insert(std::pair<CollisionGroup, std::string>(Player3Weapon, "Player3Weapon"));
@@ -324,6 +313,7 @@ namespace Framework
     m_collisionGroupNames.insert(std::pair<CollisionGroup, std::string>(Item, "Item"));
     m_collisionGroupNames.insert(std::pair<CollisionGroup, std::string>(PlayerHitOnly, "PlayerHitOnly"));
     m_collisionGroupNames.insert(std::pair<CollisionGroup, std::string>(CollisionGroup::Static, "Static"));
+
 
     ray.collisionGroup = Collide;
     ray.rayDirection = Vec3D(1, 0, 0);
@@ -513,27 +503,18 @@ namespace Framework
 
   //raycast
   //********************
-  void SheepPhysics::SetRayConfig(Vec3D& rayOrigin, Vec3D& rayDirection, std::string& name)
+//<<<<<<< HEAD
+//  void SheepPhysics::SetRayConfig(Vec3D& rayOrigin,
+//  Vec3D& rayDirection, std::string& name)
+//=======
+  bool SheepPhysics::SimpleRayCast(SheepFizz::RayConfig* ray)
   {
-    if (m_collisionGroup.find(name) != m_collisionGroup.end())
-      ray.collisionGroup = m_collisionGroup[name];
-
-    else
-      ray.collisionGroup = Collide;
-    
-    ray.rayDirection = rayDirection;
-    ray.rayOrigin = rayOrigin;
+    return  ((SheepFizz::PhysicsSpace*)((GameSpace*)(ray->gameSpace))->m_pSpace)->RayCaster(ray);
   }
 
-  bool SheepPhysics::SimpleRayCast(GameSpace* space)
+  bool SheepPhysics::ComplexRayCast(SheepFizz::RayConfig* ray)
   {
-    return  ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->RayCaster(&ray);
-  }
-
-  bool SheepPhysics::ComplexRayCast(GameSpace* space)
-  {
-    ray.findFirstCollision = true;
-    return  ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->RayCaster(&ray);
+    return  ((SheepFizz::PhysicsSpace*)((GameSpace*)(ray->gameSpace))->m_pSpace)->RayCaster(ray);
   }
 
   Vec3D SheepPhysics::GetFirstCollision()
@@ -541,13 +522,11 @@ namespace Framework
     return ray.firstCollisionLocation;
   }
 
-  void SheepPhysics::RayDestruction()
+  void SheepPhysics::RayDestruction(GameSpace* space)
   {
     if (ray.findFirstCollision)
     {
-
       rayComplexDraws.push_back(std::pair<Vec2, Vec2>(ray.rayOrigin, ray.firstCollisionLocation));
-
     }
 
     else
