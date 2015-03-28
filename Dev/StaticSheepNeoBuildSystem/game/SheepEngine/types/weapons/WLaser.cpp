@@ -9,11 +9,15 @@
 
 namespace Framework
 {
+  static float weaponDelay = 0.050f;
+  static float lifeTime = 0.3f;
+
   WLaser::WLaser()
   {
     delay = 0.0f;
     damage = 1;
     knockback = 0;
+    life = 0;
     semi = false;
   }
 
@@ -24,13 +28,12 @@ namespace Framework
 
   void WLaser::Fire(GameObject *player)
   {
+    life = lifeTime;
+
     Transform *playerTrans = player->GetComponent <Transform>(eTransform);
     Vec3 AimDir = player->GetComponent<PlayerController>(ePlayerController)->aimDir;
+
     
-    /*if (AimDir.x < 0.0f)
-      arrowTransform->SetRotation((float)atan(aimDir.y / aimDir.x));
-    else
-      arrowTransform->SetRotation((float)atan(aimDir.y / aimDir.x) + PI);*/
 
 
     Handle playerCollider = player->GetComponentHandle(eBoxCollider);
@@ -44,6 +47,18 @@ namespace Framework
     se->Play("Laser_Shot", &SoundInstance(1.0f));
   }
 
+  void WLaser::Update(float dt)
+  {
+    DelayUpdate(dt);
+
+    if (life < 0)
+    {
+
+    }
+    else
+      life -= dt;
+  }
+
   void WLaser::DelayUpdate(float dt)
   {
     delay -= dt;
@@ -53,6 +68,6 @@ namespace Framework
 
   void WLaser::ResetDelay()
   {
-    delay = 0;
+    delay = 1;
   }
 }

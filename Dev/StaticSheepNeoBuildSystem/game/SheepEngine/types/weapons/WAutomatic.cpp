@@ -80,6 +80,11 @@ namespace Framework
     se->Play("laser1", &SoundInstance(0.25f));
   }
 
+  void Automatic::Update(float dt)
+  {
+    DelayUpdate(dt);
+  }
+
   void Automatic::DelayUpdate(float dt)
   {
     delay -= dt;
