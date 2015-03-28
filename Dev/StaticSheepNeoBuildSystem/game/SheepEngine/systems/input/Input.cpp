@@ -115,5 +115,20 @@ namespace Framework
     return SHEEPINPUT->Keyboard.KeyIsReleased(key);
   }
 
+  bool InputManager::MouseIsDown(unsigned key)
+  {
+    return SHEEPINPUT->Mouse.ButtonDown(key);
+  }
+
+  bool InputManager::MouseIsPressed(unsigned key)
+  {
+    return SHEEPINPUT->Mouse.ButtonPressed(key);
+  }
+
+  bool InputManager::MouseIsReleased(unsigned key)
+  {
+    return SHEEPINPUT->Mouse.ButtonReleased(key);
+  }
+
 
 }// end namespace

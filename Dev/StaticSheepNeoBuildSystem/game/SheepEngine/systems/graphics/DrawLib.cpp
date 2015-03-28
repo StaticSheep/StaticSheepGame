@@ -173,6 +173,9 @@ namespace Framework
 
   void Draw::DrawQuad(float x, float y, float width, float height, float theta)
   {
+    x -= GRAPHICS->RC()->GetViewport().offsetX;
+    y -= GRAPHICS->RC()->GetViewport().offsetY;
+
     Vec3 v1(x, y),
       v2(x, y - height),
       v3(x + width, y - height),
