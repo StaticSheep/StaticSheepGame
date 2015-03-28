@@ -39,7 +39,6 @@ namespace Framework
 		//set defaults
 		playerNum = 0;
 		playerGamePad = Handle::null; //this is how you null a handle right
-		isSnapped = true;
 		hasFired = false;
     health = 100;
     shields = 100;
@@ -91,8 +90,6 @@ namespace Framework
 
     ps = space->GetHandles().GetAs<Transform>(playerTransform);
     ps->SetScale(Vec3(1.0f, 1.0f, 0.0));
-
-    otherObjectSpin = false;
 
     switch(playerNum)
     {
@@ -155,9 +152,6 @@ namespace Framework
 
     powerUp = nullptr;
     pn = -1;
-
-    snapFrame = 0;
-    checkJump = 0;
 
     //SpawnEffect();
 	}
@@ -246,18 +240,22 @@ namespace Framework
       }
     }
 
+
+    moveController.Update(GetOwner());
+
+    /*
     if (isSnapped)
     {
       SnappedMovement();
-    }
+    }*/
     //else
       //normals.clear();
 
 		//dash, formally known as melee
-    if (gp->ButtonPressed(XButtons.LShoulder))
-      Melee(Buttons::LB);
-    else if (gp->ButtonPressed(XButtons.RShoulder))
-      Melee(Buttons::RB);
+    //if (gp->ButtonPressed(XButtons.LShoulder))
+      //Melee(Buttons::LB);
+    //else if (gp->ButtonPressed(XButtons.RShoulder))
+      //Melee(Buttons::RB);
 
     PlayerButtonPress(); //check to see if the player has pressed any of the controller buttons (for cheats or other things)
 
@@ -306,14 +304,14 @@ namespace Framework
     //  }
     //}
 
-    if(snapFrame > 0)
+    /*if(snapFrame > 0)
       --snapFrame;
 
     if(checkJump > 0)
       --checkJump;
 
     collisionTotal = 0;
-    otherObjectVelocity = Vec3();
+    otherObjectVelocity = Vec3();*/
 
     //MetricInfo metricData;
     //metricData.mt = PLAYER_LOCATION;
@@ -324,79 +322,7 @@ namespace Framework
 
 	}
 
-  void PlayerController::SnappedMovement()
-  {
-    hasDashed = false;
-    Vec3 averageNormal;
-
-    snappedNormal.Normalize();
-
-    --checkSnap;
-
-    if(checkSnap <= 0)
-    {
-      isSnapped = false;
-      clampVelocity(50.0f);
-      bc->SetGravityOff();
-      return;
-    }
-
-
-    if(!circleFound)
-    {
-      bc->SetBodyRotation(-snappedNormal);
-    }
-
-    if (((gp->ButtonDown(XButtons.A) || gp->LeftTrigger()) && isSnapped) || (SHEEPINPUT->KeyIsDown('Q') && gp->GetIndex() == 0))
-    {
-      if(snapFrame == 0 && checkJump == 0)
-      {
-        jump(); //player jump
-        if (GetRandom(0, 1)) //determine sound for jump
-          se->Play("jump2", &SoundInstance(0.75f));
-        else
-          se->Play("jump1", &SoundInstance(0.75f));
-
-        checkJump = 30;
-        snapFrame = 5;
-
-        return;
-      }
-    }
-
-    if(collisionTotal)
-      bc->AddToVelocity(otherObjectVelocity * 0.5f);
-
-    if (gp->LStick_InDeadZone())
-    {
-      if (otherObjectSpin)
-      {
-        bc->SetBodyFrictionMod(1.89f);
-      }
-      return;
-    }
-      
-
-    
-
-    bc->SetBodyFrictionMod(0.0f);
-
-    Vec3 movementDir(gp->LeftStick_X(), gp->LeftStick_Y(), 0.0f);
-
-    Vec3 rotation = Mat3D(bc->GetBodyRotation()) * Vec3(1.0f, 0.0f, 0.0f);
-    movementDir = (movementDir * rotation) * rotation;
-
-    bc->AddToVelocity(movementDir * 400.0f);
-
-    clampVelocity(450.0f);
-    
-
-    float length = bc->GetCurrentVelocity().SquareLength();
-
-    if(length > 250001)
-      clampVelocity(500.0f);
-    
-  }
+ 
 
 	//************************************
 	// Method:    OnCollision
@@ -424,10 +350,9 @@ namespace Framework
       || OtherObject->HasComponent(eBullet_Default))
       return;
 
-    if(snapFrame <= 0 && !OtherObject->GetComponent<PlayerController>(ePlayerController))
-      DetermineSnap(OtherObject, otherObject,manifold); //determine the snapped normal based on collided object
+    if(moveController.CanSnap())
+      moveController.DetermineSnap(bc, OtherObject, manifold);
 	}
-
 
   void PlayerController::CollisionDamage(GameObject *OtherObject)
   {
@@ -473,7 +398,6 @@ namespace Framework
     else if ((OtherObject->archetype == "KillBox" || OtherObject->archetype == "KillBoxBig" || OtherObject->name == "GrinderBig")
       && !hasRespawned && !GodMode && !PerfectMachine)
     {
-      isSnapped = false;
       DealDamage(5, playerNum);
     }
     else if (OtherObject->name == "WeaponPickup")
@@ -498,74 +422,7 @@ namespace Framework
     if ((OtherObject->GetComponentHandle(eGrinder) != Handle::null)
       && !hasRespawned && !GodMode && !PerfectMachine)
     {
-      isSnapped = false;
       DealDamage(5, playerNum);
-    }
-
-  }
-
-  void PlayerController::DetermineSnap(GameObject *OtherObject, Handle otherObject, SheepFizz::ExternalManifold manifold)
-  {
-
-    Transform *OOT = OtherObject->GetComponent<Transform>(eTransform);
-    circleFound = false;
-
-    if (!OOT)
-      return;
-
-    RigidBody* body = OtherObject->GetComponent<RigidBody>(eBoxCollider);
-
-    if (!body)
-    {
-      body = OtherObject->GetComponent<RigidBody>(eCircleCollider);
-      circleFound = true;
-    }
-
-    if(!body)
-      return;
-
-    otherObjectVelocity += body->GetCurrentVelocity();
-    ++collisionTotal;
-
-    if (body->GetBodyAngVelocity() != 0 || body->GetCurrentVelocity().SquareLength() > 1.0f)
-      otherObjectSpin = true;
-    else
-      otherObjectSpin = false;
-
-    Vec3 normal = body->GetCollisionNormals(manifold);
-    bool found = false;
-
-    snappedNormal += normal;
-    checkSnap = 4;
-
-    if(!isSnapped)
-    {
-      snappedNormal = normal;
-
-      bc = space->GetHandles().GetAs<BoxCollider>(playerCollider);
-      bc->SetBodyRotation(-normal);
-      bc->SetGravityNormal(normal);
-      bc->SetGravityOn();
-      isSnapped = true;
-    }
-    else
-    {
-      Mat3D rot;
-
-      if(!circleFound)
-      {
-        rot = Mat3D(ps->GetRotation() - PI / 2.0f);
-      }
-      else
-      {
-        Vec3 orientation = body->GetBodyPosition() - bc->GetBodyPosition();
-        rot = Mat3D(atan2f(orientation.y, orientation.x));
-        bc->SetBodyRotation(-orientation);
-      }
-
-      //ps = space->GetHandles().GetAs<Transform>(playerTransform);
-      bc->SetGravityNormal(rot * Vec3(1.0f, 0.0f, 0.0f));
-      bc->SetVelocity(bc->GetCurrentVelocity() * 0.5f);
     }
 
   }
@@ -615,7 +472,7 @@ namespace Framework
 
     weapon->Fire(space->GetHandles().GetAs<GameObject>(owner));
 
-    if (!isSnapped)
+    if (!moveController.IsSnapped())
     {
       BoxCollider *bc = space->GetHandles().GetAs<BoxCollider>(playerCollider);
       bc->AddToVelocity(-aimDir * (float)(weapon->knockback));
@@ -680,37 +537,6 @@ namespace Framework
       AA->GetComponent<Sprite>(eSprite)->Color.a = 0.7f; //make sure the alpha isn't low (happens during respawn)
       arrowSpawn = true;
     }*/
-  }
-
-  //************************************
-  // Method:    Melee
-  // FullName:  Framework::PlayerController::Melee
-  // Access:    public 
-  // Returns:   void
-  // Qualifier:
-  //************************************
-  void PlayerController::Melee(Buttons butt)
-  {
-    if (hasDashed || isSnapped)
-      return;
-
-    //zero out all the velocity the player has
-    bc->SetVelocity(Vec3(0.0f, 0.0f, 0.0f));
-    if (gp->LStick_InDeadZone())
-    {
-      if (butt == Buttons::LB)
-        bc->SetVelocity(Vec3(-1000.0f, 0.0f, 0.0f));
-      else if (butt == Buttons::RB)
-        bc->SetVelocity(Vec3(1000.0f, 0.0f, 0.0f));
-    }
-    else
-      bc->SetVelocity(aimingDirection(gp, 'L') * 1000);
-
-    GameObject *dash_effect = (FACTORY->LoadObjectFromArchetype(space, "fire_effect1"));
-    dash_effect->GetComponent<DashEffect>(eDashEffect)->pTransform = playerTransform;
-    dash_effect->GetComponent<Transform>(eTransform)->SetTranslation(ps->GetTranslation());
-    se->Play("dash", &SoundInstance(1.0f));
-    hasDashed = true;
   }
 
   //************************************
@@ -810,7 +636,7 @@ namespace Framework
     //get animated sprite component
     SpineSprite *pa = space->GetHandles().GetAs<SpineSprite>(playerAnimation);
 
-    if ((isSnapped && !(gp->LStick_InDeadZone())) || (isSnapped && gp->GetIndex() == 0 && (SHEEPINPUT->KeyIsDown('D') || SHEEPINPUT->KeyIsDown('A') || SHEEPINPUT->KeyIsDown('W') || SHEEPINPUT->KeyIsDown('S'))))
+    if ((moveController.IsSnapped() && !(gp->LStick_InDeadZone())) || (moveController.IsSnapped() && gp->GetIndex() == 0 && (SHEEPINPUT->KeyIsDown('D') || SHEEPINPUT->KeyIsDown('A') || SHEEPINPUT->KeyIsDown('W') || SHEEPINPUT->KeyIsDown('S'))))
     {
       //set animated sprite to run
       if (animCont.AnimState != RUN)
@@ -819,7 +645,7 @@ namespace Framework
         animCont.AnimState = RUN;
       }
     }
-    else if (!isSnapped)
+    else if (!moveController.IsSnapped())
     {
       if (animCont.AnimState != JUMP)
       {
@@ -868,35 +694,7 @@ namespace Framework
     if (vel.y < -clamp)
       bc->SetVelocity(Vec3(vel.x, -clamp, 0.0f));*/
 
-    bc->SetVelocity(bc->GetCurrentVelocity().Normalize() * clamp);
-  }
-
-  //************************************
-  // Method:    jump
-  // FullName:  Framework::PlayerController::jump
-  // Access:    public 
-  // Returns:   void
-  // Qualifier:
-  //************************************
-  void PlayerController::jump()
-  {
-    Vec3 jmpDir;
-    if (gp->LStick_InDeadZone())
-      jmpDir = -snappedNormal;
-    else
-    {
-      jmpDir = aimingDirection(gp, 'L');
-      if (-snappedNormal * jmpDir < 0)
-      {
-        jmpDir += ((snappedNormal * jmpDir) * -snappedNormal) * 2.0f;
-      }
-    }
-
-    bc->AddToVelocity(jmpDir * 500);
-    bc->SetGravityOff();
-    isSnapped = false;
-    //normals.clear();
-    
+    //bc->SetVelocity(bc->GetCurrentVelocity().Normalize() * clamp);
   }
 
   //************************************
@@ -922,12 +720,6 @@ namespace Framework
     if (gp->ButtonPressed(XButtons.A))
     {
       playerButton.button = Buttons::A;
-      isSnapped = false;
-      //bc->SetGravityOff();
-      snapFrame = 5;
-      //normals.clear();
-      //trans->SetTranslation(trans->GetTranslation() - snappedNormal * 10.0f);
-
     }
     if (gp->ButtonPressed(XButtons.B))
     {

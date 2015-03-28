@@ -75,6 +75,7 @@ namespace Framework
       virtual void SetBodyRadius(float radius);
       virtual void SetBodyPosition(Vec3D& position);
       virtual void SetBodyFrictionMod(float frictionMod);
+      virtual void SetBodySnapping(bool snap);
 
       //gettors
       virtual Vec3D GetCurrentVelocity(void);
@@ -106,6 +107,7 @@ namespace Framework
 		std::string m_materialName;
 
     bool m_hasCollisionCallback;
+    bool m_snap;
 
     std::string m_CollisionGroup;
 

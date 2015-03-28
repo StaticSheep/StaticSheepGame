@@ -8,7 +8,7 @@ namespace Framework
 {
   Pinwheel::Pinwheel() : moveLeft(false)
   {
-    frameSkip = 10;
+    
   }
 
   Pinwheel::~Pinwheel()
@@ -18,35 +18,18 @@ namespace Framework
 
   void Pinwheel::LogicUpdate(float dt)
   {
-    int moveFactor;
-
-    if (moveLeft)
-      moveFactor = -1;
-    else
-      moveFactor = 1;
 
     BoxCollider* body = space->GetHandles().GetAs<BoxCollider>(gCollider);
     Transform* trans = space->GetHandles().GetAs<Transform>(gTransfrom);
-
-    //trans->SetTranslation(trans->GetTranslation() + Vec3(0.0f, 2.0f * moveFactor, 0.0f));
-
-    body->SetVelocity(Vec3(100.0f * moveFactor, 0.0f, 0.0f));
-    //body->SetBodyFrictionMod(1.0f);
-
-    //trans->SetRotation(trans->GetRotation() + (dt * 1.0f * -moveFactor));
-
-    //body->SetAngVelocity(-moveFactor);
-
-    //destroy when out of bounds
-    if ((trans->GetTranslation().y > 200 || trans->GetTranslation().y < -200) && frameSkip == 0)
+    
+    if (trans->GetTranslation().x > 1008 || trans->GetTranslation().x < -1008)
     {
-      //space->GetGameObject(owner)->Destroy();
-      moveLeft = !moveLeft;
-      frameSkip = 10;
+      
+      moveFactor *= -1;
+      velocity *= moveFactor;
+      body->SetVelocity(velocity);
+      
     }
-
-    if(frameSkip)
-      --frameSkip;
   }
 
   void Pinwheel::Initialize()
@@ -55,6 +38,17 @@ namespace Framework
 
     gTransfrom = space->GetGameObject(owner)->GetComponentHandle(eTransform);
     gCollider = space->GetGameObject(owner)->GetComponentHandle(eBoxCollider);
+
+    if (moveLeft)
+      moveFactor = -1;
+    else
+      moveFactor = 1;
+
+    velocity = Vec3D(50.0f, 0, 0);
+    BoxCollider* body = space->GetHandles().GetAs<BoxCollider>(gCollider);
+    body->SetVelocity(velocity);
+    body->SetAngVelocity(-moveFactor);
+    body->SetBodyFrictionMod(1.0f);
   }
 
   void Pinwheel::Remove()

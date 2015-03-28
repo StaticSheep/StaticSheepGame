@@ -13,6 +13,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "../../transform/CTransform.h"
 #include "types/weapons/WBase.h"
 #include "AnimationController.h"
+#include "MovementController.h"
 #include "../../colliders/CBoxCollider.h"
 #include "../../gameplay_scripts/CCheats.h"
 #include "systems/metrics/MetricInfo.h"
@@ -43,41 +44,42 @@ namespace Framework
 		void Remove();
 		void onFire();
 		Vec3 aimingDirection(GamePad *gp, char stick = 'R');
-    void Melee(Buttons butt);
+    //void Melee(Buttons butt);
     void RespawnBlink(float dt);
     void PlayerDeath(SoundEmitter *se, Transform *pt, int who_killed_me = -1);
     void SetAnimations();
 
     void clampVelocity(float clamp);
     int CurrentHealth();
-    void jump();
+    //void jump();
     void PlayerButtonPress();
     void DealDamage(float damage, int playNum);
     void SpawnEffect();
 
     void CollisionDamage(GameObject *OtherObject);
-    void DetermineSnap(GameObject *OtherObject, Handle otherObject, SheepFizz::ExternalManifold manifold);
+    //void DetermineSnap(GameObject *OtherObject, Handle otherObject, SheepFizz::ExternalManifold manifold);
     void SpawnAimArrow();
-    void SnappedMovement();
+    //void SnappedMovement();
 
 
 		//member variables
 		int playerNum; //the player number, i.e. 1, 2, 3, 4
     float health; //players health
     float shields;
-		bool hasFired, isSnapped, hasRespawned, blink, stoppedFX, firstUpdate; //has fired is a flag to prevent fully auto fire, is snapped is a bool to see if the player is snapped to something
+		bool hasFired, hasRespawned, blink, stoppedFX, firstUpdate; //has fired is a flag to prevent fully auto fire, is snapped is a bool to see if the player is snapped to something
     bool GodMode, GoldenGun, PerfectMachine;  //the cheats 
     bool frameSkip, arrowSpawn, hasDashed;
     float rotation, lastRotation;
     float respawnTimer;
 
-    bool otherObjectSpin;
+    //bool otherObjectSpin;
 
     std::string weaponGroup;
 
     std::vector<FrameCollisionData> normals;
 
     AnimationController animCont;
+    MovementController moveController;
     Weapon *weapon;
     PowerUp *powerUp;
 		Vec3 aimDir;  //the direction the player is currently aiming
@@ -95,13 +97,13 @@ namespace Framework
 
     Vec4 playerColor;
     bool animationFlip;
-    bool circleFound;
-    int snapFrame;
-    int checkSnap;
-    int checkJump;
+    //bool circleFound;
+    //int snapFrame;
+    //int checkSnap;
+    //int checkJump;
 
-    Vec3 otherObjectVelocity;
-    int collisionTotal;
+    //Vec3 otherObjectVelocity;
+    //int collisionTotal;
 
 	};
 }

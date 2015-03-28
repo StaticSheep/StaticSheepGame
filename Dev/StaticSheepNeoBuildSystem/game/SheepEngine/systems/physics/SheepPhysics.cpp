@@ -464,6 +464,11 @@ namespace Framework
     ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->SetBodyFrictionMod(handle, frictionMod);
   }
 
+  void SheepPhysics::SetBodySnapping(GameSpace* space, SheepFizz::Handle handle, bool snap)
+  {
+    ((SheepFizz::PhysicsSpace*)(space->m_pSpace))->SetBodySnapping(handle, snap);
+  }
+
 	void SheepPhysics::SetDT(GameSpace* space, float dt)
 	{
 	if (space->m_pSpace)

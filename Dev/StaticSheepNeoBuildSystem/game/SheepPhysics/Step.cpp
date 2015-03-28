@@ -130,6 +130,12 @@ namespace SheepFizz
     body->frictionMod_ = friction;
   }//end of SetBodyFrictionMod
 
+  void PhysicsSpace::SetBodySnapping(Handle handle, bool snap)
+  {
+    Body* body = handles_.GetAs<Body>(handle);
+    body->snap_ = snap;
+  }//end of SetBodySnapping
+
 	//end of settors
 	//*************
 
