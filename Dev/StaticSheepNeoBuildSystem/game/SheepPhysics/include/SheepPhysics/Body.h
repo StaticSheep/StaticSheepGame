@@ -85,6 +85,9 @@ namespace SheepFizz
       //friction
       float frictionMod_;
 
+      //snapping
+      bool snap_;
+
 		  Handle self;
 
 		  void* userData;

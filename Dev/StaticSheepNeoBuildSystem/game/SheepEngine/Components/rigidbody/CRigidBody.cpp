@@ -55,6 +55,8 @@ namespace Framework
 		 trans->SetPhysicsBody(m_handle);
 
      space->GetGameObject(owner)->hooks.Add("OnCollision", self, BUILD_FUNCTION(RigidBody::OnCollision));
+
+     SetBodySnapping(m_snap);
 	}
 
 	//remove the body from the space
@@ -130,6 +132,11 @@ namespace Framework
   void RigidBody::SetBodyFrictionMod(float frictionMod)
   {
     PHYSICS->SetBodyFrictionMod(space, m_handle, frictionMod);
+  }
+
+  void RigidBody::SetBodySnapping(bool snap)
+  {
+    PHYSICS->SetBodyFrictionMod(space, m_handle, snap);
   }
 
 	void RigidBody::AddToVelocity(Vec3D& velocity)
