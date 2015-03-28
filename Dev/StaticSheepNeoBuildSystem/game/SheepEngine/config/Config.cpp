@@ -115,14 +115,14 @@ namespace Framework
     ENGINE->PlayInEditor(true);
 #endif
 
-    GameSpace* sp = FACTORY->LoadSpace("AMFA");
-    sp->SetPaused(true);
+    /*GameSpace* sp = FACTORY->LoadSpace("AMFA");
+    sp->SetPaused(true);*/
 
     if (!editor)
     {
       //ShowCursor(false);
       //ENGINE->ChangeLevel("Intro");
-      ENGINE->ChangeLevel("Start");
+      ENGINE->ChangeLevel("Intro");
     }
 	  //ENGINE->LoadLevel("content/data/spaces/Level1.space");
 #endif

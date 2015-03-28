@@ -14,8 +14,10 @@ namespace Framework
     Weapon() {};
     virtual ~Weapon() {};
     virtual void Fire(GameObject*) = 0;
+    virtual void Update(float dt) = 0;
     virtual void DelayUpdate(float dt) = 0;
     virtual void ResetDelay() = 0;
+    //virtual void Draw();
 
     float delay;  //delay between shots
     int damage; //damage caused by weapon

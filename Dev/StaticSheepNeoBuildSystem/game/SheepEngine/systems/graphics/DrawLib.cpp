@@ -173,6 +173,9 @@ namespace Framework
 
   void Draw::DrawQuad(float x, float y, float width, float height, float theta)
   {
+    x -= GRAPHICS->RC()->GetViewport().offsetX;
+    y -= GRAPHICS->RC()->GetViewport().offsetY;
+
     Vec3 v1(x, y),
       v2(x, y - height),
       v3(x + width, y - height),
@@ -219,7 +222,11 @@ namespace Framework
   {
     if (!m_useCamera)
     {
-      GRAPHICS->RC()->DrawLine(Vec3(sX, sY, 0), Vec3(eX, eY, 0));
+      
+      GRAPHICS->RC()->DrawLine(Vec3(sX - GRAPHICS->RC()->GetViewport().offsetX,
+        sY - GRAPHICS->RC()->GetViewport().offsetY, 0),
+        Vec3(eX - GRAPHICS->RC()->GetViewport().offsetX,
+        eY - GRAPHICS->RC()->GetViewport().offsetY, 0));
       return;
     }
 
@@ -270,6 +277,12 @@ namespace Framework
   void Draw::DrawTriangle(float x0, float y0, float x1, float y1,
     float x2, float y2)
   {
+    x0 -= GRAPHICS->RC()->GetViewport().offsetX;
+    x1 -= GRAPHICS->RC()->GetViewport().offsetX;
+    x2 -= GRAPHICS->RC()->GetViewport().offsetX;
+    y0 -= GRAPHICS->RC()->GetViewport().offsetY;
+    y1 -= GRAPHICS->RC()->GetViewport().offsetY;
+    y2 -= GRAPHICS->RC()->GetViewport().offsetY;
     GRAPHICS->RC()->DrawTriangle(Vec3(x0, y0, 0), Vec3(x1, y1, 0),
       Vec3(x2, y2, 0));
   }
@@ -277,6 +290,11 @@ namespace Framework
   void DrawLine(float sX, float sY, float eX, float eY,
     Vec4 startColor, Vec4 endColor)
   {
+    sX -= GRAPHICS->RC()->GetViewport().offsetX;
+    eX -= GRAPHICS->RC()->GetViewport().offsetX;
+    sY -= GRAPHICS->RC()->GetViewport().offsetY;
+    eY -= GRAPHICS->RC()->GetViewport().offsetY;
+
     GRAPHICS->RC()->DrawLine(Vec3(sX, sY, 0), Vec3(eX, eY, 0),
       startColor, endColor);
   }
@@ -330,13 +348,13 @@ namespace Framework
 
   Vec3 Draw::ToWorld(Vec2 screenPos)
   {
-    return Vec3((float*)&GRAPHICS->RetrieveCamera(GRAPHICS->GetActiveCamera())
+    return Vec3((float*)&GRAPHICS->RetrieveCamera(GRAPHICS->RC()->GetActiveCamera())
       ->ToWorld(DirectSheep::Vec2((float*)&screenPos)));
   }
 
   Vec2 Draw::ToScreen(Vec3 worldPos)
   {
-    return Vec2((float*)&GRAPHICS->RetrieveCamera(GRAPHICS->GetActiveCamera())
+    return Vec2((float*)&GRAPHICS->RetrieveCamera(GRAPHICS->RC()->GetActiveCamera())
       ->ToScreen(DirectSheep::Vec3((float*)&worldPos)));
   }
 

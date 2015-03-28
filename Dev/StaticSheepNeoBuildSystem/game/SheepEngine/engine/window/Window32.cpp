@@ -80,7 +80,7 @@ namespace Framework
 
     // Creates a window using registered classes params along with RECT size
     Handle = CreateWindow("SheepWindow",         // Name of window class
-      "Sheep Engine 2015",      // Text on top bar
+      "Giga Gravity Games",      // Text on top bar
       WS_OVERLAPPEDWINDOW, // Type of window
       CW_USEDEFAULT, 
       CW_USEDEFAULT, 

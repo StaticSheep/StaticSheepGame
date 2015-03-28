@@ -75,6 +75,10 @@ namespace Framework
       BIND_FUNCTION_EX(L, InputManager::KeyIsPressed, KeyIsPressed);
       BIND_FUNCTION_EX(L, InputManager::KeyIsReleased, KeyIsReleased);
 
+      BIND_FUNCTION_EX(L, InputManager::MouseIsDown, MouseIsDown);
+      BIND_FUNCTION_EX(L, InputManager::MouseIsPressed, MouseIsPressed);
+      BIND_FUNCTION_EX(L, InputManager::MouseIsReleased, MouseIsReleased);
+
       BIND_FUNCTION_EX(L, Draw::ScreenWidth, GetScrW);
       BIND_FUNCTION_EX(L, Draw::ScreenHeight, GetScrH);
 

@@ -127,6 +127,11 @@ namespace Framework
       delay = 0;
   }
 
+  void Shotgun::Update(float dt)
+  {
+    DelayUpdate(dt);
+  }
+
   void Shotgun::ResetDelay()
   {
     delay = weapDelay;
