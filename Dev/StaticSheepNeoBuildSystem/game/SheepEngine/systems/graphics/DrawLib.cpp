@@ -370,6 +370,16 @@ namespace Framework
     return GRAPHICS->RC()->GetViewport().dim.width;
   }
 
+  bool Draw::GetFullScreen(void)
+  {
+    return GRAPHICS->IsFullScreen();
+  }
+
+  void Draw::SetFullScreen(bool isFullScreen)
+  {
+    GRAPHICS->SetFullScreen(isFullScreen);
+  }
+
   Vec2 Draw::MeasureString(const char* text, Vec2D scale, int fontIndex)
   {
     return GRAPHICS->MeasureString(text, scale, fontIndex);
