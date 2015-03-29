@@ -115,10 +115,26 @@ namespace Framework
       m_circleFound = true;
     }
 
-    // if neither collider was found, what the hell, gtfo
-    if(!body)
-      return;
+    if(OtherObject->GetArchetype() == "Grinder")
+    {
+      m_isSnapped = false;
+      Vec3 normal = body->GetBodyPosition() - Collider->GetBodyPosition();
 
+      if(normal.y > 0)
+        normal = Vec3(0.0f, 4.0f, 0.0f);
+      else
+        normal = Vec3(0.0f, -4.0f, 0.0f);
+
+      Collider->SetGravityOn();
+      Collider->SetGravityNormal(normal);
+
+      m_unsnappable = 6;
+      return;
+    }
+
+    // if neither collider was found, what the hell, gtfo
+    if(!body || !body->m_snap)
+      return;
 
     // get the object's velocity for moving platform calculations
     m_otherObjectVelocity += body->GetCurrentVelocity();

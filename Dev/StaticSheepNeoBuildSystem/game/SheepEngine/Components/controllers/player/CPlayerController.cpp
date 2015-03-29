@@ -243,20 +243,6 @@ namespace Framework
 
     moveController.Update(GetOwner());
 
-    /*
-    if (isSnapped)
-    {
-      SnappedMovement();
-    }*/
-    //else
-      //normals.clear();
-
-		//dash, formally known as melee
-    //if (gp->ButtonPressed(XButtons.LShoulder))
-      //Melee(Buttons::LB);
-    //else if (gp->ButtonPressed(XButtons.RShoulder))
-      //Melee(Buttons::RB);
-
     PlayerButtonPress(); //check to see if the player has pressed any of the controller buttons (for cheats or other things)
 
     SetAnimations(); //depending on movement or action, set the players current sprite animation
@@ -345,10 +331,10 @@ namespace Framework
     CollisionDamage(OtherObject); //determine if the colliding object does damage to the player
 
 
-    if(OtherObject->name == "WeaponPickup" || OtherObject->archetype == "Grinder" ||
+    /*if(OtherObject->name == "WeaponPickup" || OtherObject->archetype == "Grinder" ||
       OtherObject->name == "PowerUpPickup" || OtherObject->name == "CoinPickup" || OtherObject->name == "CoinBall" || OtherObject->name == "Player"
       || OtherObject->HasComponent(eBullet_Default))
-      return;
+      return;*/
 
     if(moveController.CanSnap())
       moveController.DetermineSnap(bc, OtherObject, manifold);
@@ -668,33 +654,6 @@ namespace Framework
     
     animCont.Update(pa, playerColor, trans->GetRotation(), aimDir, arrowSpawn);
 
-  }
-
-  //Takes a players box collider and clamps the velocity of that box collider
-  //to be from the value of clamp to the negative value of clamp
-  //************************************
-  // Method:    clampVelocity
-  // FullName:  Framework::PlayerController::clampVelocity
-  // Access:    public 
-  // Returns:   void
-  // Qualifier:
-  // Parameter: float clamp
-  //************************************
-  void PlayerController::clampVelocity(float clamp)
-  {
-    /*
-    Vec3 vel = bc->GetCurrentVelocity();
-
-    if (vel.x > clamp)
-      bc->SetVelocity(Vec3(clamp, vel.y, 0.0f));
-    if (vel.x < -clamp)
-      bc->SetVelocity(Vec3(-clamp, vel.y, 0.0f));
-    if (vel.y > clamp)
-      bc->SetVelocity(Vec3(vel.x, clamp, 0.0f));
-    if (vel.y < -clamp)
-      bc->SetVelocity(Vec3(vel.x, -clamp, 0.0f));*/
-
-    //bc->SetVelocity(bc->GetCurrentVelocity().Normalize() * clamp);
   }
 
   //************************************
