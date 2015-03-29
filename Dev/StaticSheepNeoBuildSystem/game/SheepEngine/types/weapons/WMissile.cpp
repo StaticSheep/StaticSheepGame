@@ -72,6 +72,11 @@ namespace Framework
     se->Play("dash", &SoundInstance(1.0f));
   }
 
+  void Missile::Update(float dt)
+  {
+    DelayUpdate(dt);
+  }
+
   void Missile::DelayUpdate(float dt)
   {
     delay -= dt;

@@ -36,20 +36,21 @@ function PauseMenu:AddButton(text)
   self.menu:Add(btn)
 
   btn:SetText(text)
+  btn:SetFont("aircruiser")
 
-  btn:SetFontSize(ScreenScale(8))
+  btn:SetFontSize(ScreenScale(12))
   btn:SetSize(ScreenScale(80), ScreenScale(16))
 
-  btn:SetFontColor(Color(0.8, 0.8, 0.8, 1))
+  btn:SetFontColor(Color(255, 255, 255, 255))
   btn:SetColor(Color(20, 20, 20, 0))
   btn:SetBGColor(Color(20, 20, 20, 0))
 
   btn:SetHoverColor(Color(100, 100, 100, 0))
   btn:SetHoverBGColor(Color(30, 30, 30, 0))
-  btn:SetHoverFontColor(Color(0.8, 0.8, 0.5, 1))
+  btn:SetHoverFontColor(Color(200, 200, 120, 255))
 
   btn:SetClickColor(Color(100, 100, 100, 0))
-  btn:SetClickBGColor(Color(20, 20, 20, 50))
+  btn:SetClickBGColor(Color(20, 20, 20, 0))
   btn:SetClickFontColor(Color(255, 255, 120, 255))
 
   btn:SetPos(self.base:GetSize().x / 2 - btn:GetSize().x / 2,
@@ -75,14 +76,14 @@ function PauseMenu:MakeMenu()
 
   local title = gui.Create("Label", self.base)
   self:Register(title)
-  title:SetPos(self.base:GetSize().x / 2, ScrH() / 4)
+  title:SetPos(self.base:GetSize().x / 2, ScrH() / 5)
   title:SetText("PAUSE")
-  title:SetFontSize(ScreenScale(20))
-  title:SetFont("Consolas")
+  title:SetFontSize(ScreenScale(24))
+  title:SetFont("aircruiser")
   title:SetXAlignment(TEXT_ALIGN_CENTER)
   title:SetColor(Color(255, 255, 255))
 
-  self.ypos = title:GetPos().y + title:DrawSize().y
+  self.ypos = title:GetPos().y + ScrH() / 4
 
   local btn
   btn = self:AddButton("Resume Game")
@@ -108,8 +109,8 @@ function PauseMenu:MakeMenu()
 
   local rights = gui.Create("Label", self.base)
   self:Register(rights)
-  rights:SetPos(20, ScrH() - 100)
-  rights:SetSize(ScreenScale(3))
+  rights:SetPos(10, ScrH() - 100)
+  rights:SetSize(ScreenScale(3.5))
   rights:SetText("All content (c) 2014 DigiPen (USA) Corporation, all rights reserved.\nFMOD Studio Copyright (c) 2005-2011 Firelight Technologies Pty, Ltd.")
   rights:SetXAlignment(TEXT_ALIGN_LEFT)
 end

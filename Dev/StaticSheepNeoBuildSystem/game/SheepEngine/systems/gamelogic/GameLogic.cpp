@@ -51,6 +51,9 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "Components/controllers/round/CRoundText.h"
 #include "Components/controllers/round/CRoundResults.h"
 #include "components/gameplay_scripts/FX_Scripts/CPulser.h"
+#include "components/gameplay_scripts/Slot_Machine_Scripts/CPersonalSlotController.h"
+#include "Components/controllers/lobby/CLobbyController.h"
+#include "Components/controllers/lobby/CJoinText.h"
 
 namespace Framework
 {
@@ -97,16 +100,20 @@ namespace Framework
     REGISTER_COMPONENT(Asteroid);
     REGISTER_COMPONENT(PowerupPickup);
     REGISTER_COMPONENT(SlotController);
+    REGISTER_COMPONENT(PersonalSlotController);
     REGISTER_COMPONENT(BlockLights);
-    REGISTER_COMPONENT(Laser);
+    //REGISTER_COMPONENT(Laser);
     REGISTER_COMPONENT(CoinBall);
     REGISTER_COMPONENT(ImpactEffect);
     REGISTER_COMPONENT(AOEDamage);
     REGISTER_COMPONENT(ChipController);
     REGISTER_COMPONENT(RoundController);
+    REGISTER_COMPONENT(LobbyController);
     REGISTER_COMPONENT(RoundText);
     REGISTER_COMPONENT(RoundResults);
     REGISTER_COMPONENT(Pulser);
+    REGISTER_COMPONENT(JoinText);
+    REGISTER_COMPONENT(SpineLight);
   }
 
   void GameLogic::Initialize()
@@ -164,6 +171,9 @@ namespace Framework
   {
     if (msg.MessageId == Message::GUIDraw)
       Lua::CallFunc(ENGINE->Lua(), "gui.Draw");
+    
+    if (msg.MessageId == Message::PostGUIDraw)
+      Lua::CallFunc(ENGINE->Lua(), "hook.Call", "PostDraw");
   }
 
   const void* GameLogic::GetDebugData()

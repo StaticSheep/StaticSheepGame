@@ -18,6 +18,7 @@ enum CollisionGroup{
   Item,
   PlayerHitOnly,
   Static,
+  RayCast,
   CollGroupLength
 };
 

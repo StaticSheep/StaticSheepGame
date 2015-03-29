@@ -110,4 +110,7 @@ GameObject
   {
     StypeInt int 0
   }
+  SoundEmitter
+  {
+  }
 }

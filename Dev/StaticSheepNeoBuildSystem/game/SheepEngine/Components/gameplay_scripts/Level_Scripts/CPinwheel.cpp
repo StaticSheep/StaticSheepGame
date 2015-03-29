@@ -25,10 +25,11 @@ namespace Framework
     if (trans->GetTranslation().x > 1008 || trans->GetTranslation().x < -1008)
     {
       
-      moveFactor *= -1;
-      velocity *= moveFactor;
+      //moveFactor *= -1;
+      //velocity *= moveFactor;
       //body->SetVelocity(velocity);
-      
+      space->GetGameObject(owner)->Destroy();
+
     }
   }
 
@@ -46,9 +47,10 @@ namespace Framework
 
     velocity = Vec3D(50.0f, 0, 0);
     BoxCollider* body = space->GetHandles().GetAs<BoxCollider>(gCollider);
-    //body->SetVelocity(velocity);
+    body->SetVelocity(velocity);
     body->SetAngVelocity(-moveFactor);
     body->SetBodyFrictionMod(0.0f);
+    body->m_snap = true;
   }
 
   void Pinwheel::Remove()

@@ -50,6 +50,10 @@ namespace Framework
     static bool KeyIsDown(unsigned key);
     static bool KeyIsReleased(unsigned key);
 
+    static bool MouseIsPressed(unsigned btn);
+    static bool MouseIsDown(unsigned btn);
+    static bool MouseIsReleased(unsigned btn);
+
     /*----- Input Devices -----*/
 
     MouseInput Mouse;

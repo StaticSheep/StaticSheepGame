@@ -74,6 +74,8 @@ namespace Framework
       {
         GameObject *temp = (FACTORY->LoadObjectFromArchetype(space, "miniExplosion"));
         temp->GetComponent<Transform>(eTransform)->SetTranslation(bt->GetTranslation());
+        //std::string collGroup = space->GetGameObject(owner)->GetComponent<CircleCollider>(eCircleCollider)->GetBodyCollisionGroup();
+        //temp->GetComponent<CircleCollider>(eCircleCollider)->SetBodyCollisionGroup(collGroup);
       }
 
       if (fadeTime <= 0)

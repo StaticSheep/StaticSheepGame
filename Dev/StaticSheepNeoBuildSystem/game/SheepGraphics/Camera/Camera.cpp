@@ -197,9 +197,15 @@ namespace DirectSheep
 
       perspectiveZ = screen.z;
       perspectiveW = screen.w;
+
+      Dimension VPDims = RenderContext::Context->GetViewport().dim;
       
-      screen.x = SCREEN_WIDTH * ((screen.x / screen.w) + 1) / 2;
-      screen.y = SCREEN_HEIGHT * ((-screen.y / screen.w) + 1) / 2;
+      screen.x = VPDims.width * ((screen.x / screen.w) + 1) / 2
+        + RenderContext::Context->GetViewport().offsetX;
+
+      screen.y = VPDims.height * ((-screen.y / screen.w) + 1) / 2
+        + RenderContext::Context->GetViewport().offsetY;
+
       /*screen.x = SCREEN_WIDTH * ((screen.x / screen.w) + 1) / 2;
       screen.y = SCREEN_HEIGHT * ((-screen.y / screen.w) + 1) / 2;*/
 

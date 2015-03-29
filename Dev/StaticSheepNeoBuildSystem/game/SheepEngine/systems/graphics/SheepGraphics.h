@@ -123,6 +123,9 @@ namespace Framework
 
     Vec2 MeasureString(const char* text, Vec2D scale, int fontIndex);
 
+    static bool IsFullScreen();
+    static void SetFullScreen(bool isFull);
+
     /* =========== Camera Functions ============ */
 
     // Returns the actual pointer to the camera
@@ -155,7 +158,9 @@ namespace Framework
 
     DebugData::SheepGraphics m_debugData;
 
-    DirectSheep::RenderContext *m_renderContext;
+    static DirectSheep::RenderContext *m_renderContext;
+
+    static bool m_FullScreen;
   public:
 
     Handle currentCamera;

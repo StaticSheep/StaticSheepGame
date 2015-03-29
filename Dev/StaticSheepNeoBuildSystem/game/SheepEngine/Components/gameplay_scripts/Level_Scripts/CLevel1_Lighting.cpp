@@ -52,6 +52,9 @@ namespace Framework
       m_firstUpdate = false;
     }
 
+    if (!space->GetGameObject(m_lights[4]))
+      return;
+
     if (m_levelTime < Countdown)
     {
       space->GetGameObject(m_lights[4])->GetComponent<PointLight>(ePointLight)->m_brightness.a = Ease::Linear(m_levelTime / Countdown, 0.0f, 90.0f);

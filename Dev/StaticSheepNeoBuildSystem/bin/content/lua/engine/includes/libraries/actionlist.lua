@@ -17,6 +17,10 @@ function actionlist.listMeta:Init()
   self.actions = {}
 end
 
+function actionlist.listMeta:Clear()
+  self.actions = {}
+end
+
 function actionlist.listMeta:Update(dt)
 
   for k,action in pairs(self.actions) do

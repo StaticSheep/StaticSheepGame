@@ -9,9 +9,9 @@ local META = GetMeta("Label")
 
 function META:Init()
   self.text = ""
-  self.font = "BN_Jinx"
-  self.fontID = 0
   self.fontSize = 1
+
+  self:SetFont("Arial")
 
   self.outlineWidth = 0
   self.outlineColor = Color(0, 0, 0, 255)
@@ -34,6 +34,11 @@ end
 
 function META:SetSize(x, y)
   self.fontSize = x
+end
+
+function META:SetDSize(x, y)
+  self:SetSize(x, y)
+  self.dynamicSize = true
 end
 
 function META:SetXAlignment(x)
@@ -95,14 +100,31 @@ function META:Paint()
 
   surface.SetRotation(0)
 
-  if self.outlineWidth > 0 then
-    draw.SimpleTextOutlined(self.text, self.fontID, pos.x, pos.y,
-     self.fontSize, self.color, self.alignX, self.alignY,
-     self.outlineWidth, self.outlineColor)
+  if self.dynamicSize then
+
+    if self.outlineWidth > 0 then
+      draw.SimpleTextOutlined(self.text, self.fontID, ScreenScale(pos.x),
+       ScreenScaleY(pos.y), ScreenScale(self.fontSize), self.color,
+        self.alignX, self.alignY,
+       self.outlineWidth, self.outlineColor)
+    else
+      draw.SimpleText(self.text, self.fontID, ScreenScale(pos.x),
+       ScreenScaleY(pos.y),
+       ScreenScale(self.fontSize), self.color, self.alignX, self.alignY)
+    end
   else
-    draw.SimpleText(self.text, self.fontID, pos.x, pos.y,
-     self.fontSize, self.color, self.alignX, self.alignY)
+    if self.outlineWidth > 0 then
+      draw.SimpleTextOutlined(self.text, self.fontID, pos.x, pos.y,
+       self.fontSize, self.color, self.alignX, self.alignY,
+       self.outlineWidth, self.outlineColor)
+    else
+      draw.SimpleText(self.text, self.fontID, pos.x, pos.y,
+       self.fontSize, self.color, self.alignX, self.alignY)
+    end
+
   end
+
+  
 
 end
 

@@ -1,0 +1,5323 @@
+playerSlotPrototype
+GameObject
+{
+  name std::string "Background"
+  archetype std::string ""
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -1.201363
+      y_ float -0.912146
+      z_ float 200.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 2.200000
+      y_ float 2.300000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "background_color.png"
+    m_layer unsignedint 0
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 1.250000
+      Y float 1.250000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+  SpriteLight
+  {
+    m_spriteName std::string "white.png"
+    m_layer unsignedint 0
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    m_isOn bool true
+    m_emissive bool false
+    m_brightness LightColor
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+    Size Vec2
+    {
+      X float 5000.000000
+      Y float 5000.000000
+    }
+  }
+  BackgroundPan
+  {
+    rate float 0.010000
+  }
+}
+GameObject
+{
+  name std::string "Platform"
+  archetype std::string "SmallArenaBlock"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 904.000000
+      y_ float -256.000000
+      z_ float 0.010000
+    }
+    Rotation float 1.570796
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "light_block_on.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+  SpriteLight
+  {
+    m_spriteName std::string "light_block_on_slight.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    m_isOn bool true
+    m_emissive bool true
+    m_brightness LightColor
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 0.700000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+  }
+  BlockLights
+  {
+    m_group int 16384
+    m_defaultSettings BlockLights::LightSettings
+    {
+      fx unsignedint 0
+      ease unsignedint 0
+      isOn bool true
+      useColor bool true
+      color LightColor
+      {
+        R float 1.000000
+        G float 1.000000
+        B float 1.000000
+        A float 1.000000
+      }
+    }
+  }
+}
+GameObject
+{
+  name std::string "PlatformCorner"
+  archetype std::string "PlatCorner"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -830.999939
+      y_ float -416.605225
+      z_ float 1.000000
+    }
+    Rotation float -0.785398
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 1.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "light_block_on.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 4.000000
+      Y float 2.000000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+  SpriteLight
+  {
+    m_spriteName std::string "light_block_on_slight.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    m_isOn bool true
+    m_emissive bool true
+    m_brightness LightColor
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 0.700000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+    Size Vec2
+    {
+      X float 4.000000
+      Y float 2.000000
+    }
+  }
+  BlockLights
+  {
+    m_group int 32
+    m_defaultSettings BlockLights::LightSettings
+    {
+      fx unsignedint 0
+      ease unsignedint 0
+      isOn bool true
+      useColor bool true
+      color LightColor
+      {
+        R float 1.000000
+        G float 1.000000
+        B float 1.000000
+        A float 1.000000
+      }
+    }
+  }
+  BoxCollider
+  {
+    m_width float 256.000000
+    m_height float 128.000000
+    m_materialName std::string "Static"
+    m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
+  }
+}
+GameObject
+{
+  name std::string "Platform"
+  archetype std::string "SmallArenaBlock"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -904.000000
+      y_ float 256.000000
+      z_ float 0.010000
+    }
+    Rotation float 1.570796
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "light_block_on.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+  SpriteLight
+  {
+    m_spriteName std::string "light_block_on_slight.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    m_isOn bool true
+    m_emissive bool true
+    m_brightness LightColor
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 0.700000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+  }
+  BlockLights
+  {
+    m_group int 1
+    m_defaultSettings BlockLights::LightSettings
+    {
+      fx unsignedint 0
+      ease unsignedint 0
+      isOn bool true
+      useColor bool true
+      color LightColor
+      {
+        R float 1.000000
+        G float 1.000000
+        B float 1.000000
+        A float 1.000000
+      }
+    }
+  }
+}
+GameObject
+{
+  name std::string "Platform"
+  archetype std::string "SmallArenaBlock"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -904.000000
+      y_ float 0.000000
+      z_ float 0.000000
+    }
+    Rotation float 1.570796
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "light_block_on.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+  SpriteLight
+  {
+    m_spriteName std::string "light_block_on_slight.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    m_isOn bool true
+    m_emissive bool true
+    m_brightness LightColor
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 0.700000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+  }
+  BlockLights
+  {
+    m_group int 4
+    m_defaultSettings BlockLights::LightSettings
+    {
+      fx unsignedint 0
+      ease unsignedint 0
+      isOn bool true
+      useColor bool true
+      color LightColor
+      {
+        R float 1.000000
+        G float 1.000000
+        B float 1.000000
+        A float 1.000000
+      }
+    }
+  }
+  BoxCollider
+  {
+    m_width float 602.000000
+    m_height float 128.000000
+    m_materialName std::string "Static"
+    m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
+  }
+}
+GameObject
+{
+  name std::string "Level Controller"
+  archetype std::string ""
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 0.000000
+      y_ float 0.000000
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "blank.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 1.000000
+      Y float 1.000000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+  Camera
+  {
+    m_active bool true
+    m_FOV float 2.775371
+  }
+  Level1_Lighting
+  {
+  }
+  SoundEmitter
+  {
+  }
+  SoundPlayer
+  {
+  }
+  ChipController
+  {
+  }
+  RoundController
+  {
+  }
+  Level1_Logic
+  {
+    roundTimer float 0.000000
+    numOfPlayers int 4
+  }
+  LuaComponent
+  {
+    name std::string "PauseMenu"
+    loadCommand std::string "return function(self) self.ypos = 456 self.opened = true end"
+  }
+
+  LuaComponent
+  {
+    name std::string "WinScreen"
+    loadCommand std::string "return function(self) end"
+  }
+
+  LuaComponent
+  {
+    name std::string "PlayerHUD"
+    loadCommand std::string "return function(self) end"
+  }
+}
+GameObject
+{
+  name std::string "Platform"
+  archetype std::string "SmallArenaBlock"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 0.000000
+      y_ float 384.000000
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "light_block_on.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+  SpriteLight
+  {
+    m_spriteName std::string "light_block_on_slight.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    m_isOn bool true
+    m_emissive bool true
+    m_brightness LightColor
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 0.700000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+  }
+  BlockLights
+  {
+    m_group int 8388608
+    m_defaultSettings BlockLights::LightSettings
+    {
+      fx unsignedint 0
+      ease unsignedint 0
+      isOn bool true
+      useColor bool true
+      color LightColor
+      {
+        R float 1.000000
+        G float 1.000000
+        B float 1.000000
+        A float 1.000000
+      }
+    }
+  }
+  BoxCollider
+  {
+    m_width float 384.000000
+    m_height float 128.000000
+    m_materialName std::string "Static"
+    m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
+  }
+}
+GameObject
+{
+  name std::string "LightsOutLight"
+  archetype std::string ""
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 0.000000
+      y_ float 0.000000
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  PointLight
+  {
+    m_layer unsignedint 1
+    m_brightness LightColor
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 4.000000
+    }
+    m_attenuation LightVec3
+    {
+      X float 0.010000
+      Y float 0.010000
+      Z float 1.000000
+    }
+  }
+}
+GameObject
+{
+  name std::string "Platform"
+  archetype std::string "SmallArenaBlock"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 904.000000
+      y_ float 0.000000
+      z_ float 0.000000
+    }
+    Rotation float 1.570796
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "light_block_on.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+  SpriteLight
+  {
+    m_spriteName std::string "light_block_on_slight.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    m_isOn bool true
+    m_emissive bool true
+    m_brightness LightColor
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 0.700000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+  }
+  BlockLights
+  {
+    m_group int 65536
+    m_defaultSettings BlockLights::LightSettings
+    {
+      fx unsignedint 0
+      ease unsignedint 0
+      isOn bool true
+      useColor bool true
+      color LightColor
+      {
+        R float 1.000000
+        G float 1.000000
+        B float 1.000000
+        A float 1.000000
+      }
+    }
+  }
+  BoxCollider
+  {
+    m_width float 608.000000
+    m_height float 128.000000
+    m_materialName std::string "Static"
+    m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
+  }
+}
+GameObject
+{
+  name std::string "Platform"
+  archetype std::string "SmallArenaBlock"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 640.000000
+      y_ float 512.000000
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "light_block_on.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+  SpriteLight
+  {
+    m_spriteName std::string "light_block_on_slight.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    m_isOn bool true
+    m_emissive bool true
+    m_brightness LightColor
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 0.700000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+  }
+  BlockLights
+  {
+    m_group int 1048576
+    m_defaultSettings BlockLights::LightSettings
+    {
+      fx unsignedint 0
+      ease unsignedint 0
+      isOn bool true
+      useColor bool true
+      color LightColor
+      {
+        R float 1.000000
+        G float 1.000000
+        B float 1.000000
+        A float 1.000000
+      }
+    }
+  }
+}
+GameObject
+{
+  name std::string "Platform"
+  archetype std::string "SmallArenaBlock"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -128.000000
+      y_ float 384.000000
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "light_block_on.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+  SpriteLight
+  {
+    m_spriteName std::string "light_block_on_slight.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    m_isOn bool true
+    m_emissive bool true
+    m_brightness LightColor
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 0.700000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+  }
+  BlockLights
+  {
+    m_group int 16777216
+    m_defaultSettings BlockLights::LightSettings
+    {
+      fx unsignedint 0
+      ease unsignedint 0
+      isOn bool true
+      useColor bool true
+      color LightColor
+      {
+        R float 1.000000
+        G float 1.000000
+        B float 1.000000
+        A float 1.000000
+      }
+    }
+  }
+}
+GameObject
+{
+  name std::string "Platform"
+  archetype std::string "SmallArenaBlock"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 128.000000
+      y_ float -384.000000
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "light_block_on.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+  SpriteLight
+  {
+    m_spriteName std::string "light_block_on_slight.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    m_isOn bool true
+    m_emissive bool true
+    m_brightness LightColor
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 0.700000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+  }
+  BlockLights
+  {
+    m_group int 1024
+    m_defaultSettings BlockLights::LightSettings
+    {
+      fx unsignedint 0
+      ease unsignedint 0
+      isOn bool true
+      useColor bool true
+      color LightColor
+      {
+        R float 1.000000
+        G float 1.000000
+        B float 1.000000
+        A float 1.000000
+      }
+    }
+  }
+}
+GameObject
+{
+  name std::string "GrinderBL2"
+  archetype std::string "Grinder"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -320.000000
+      y_ float -515.000000
+      z_ float 1.100000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 2.000000
+      y_ float 2.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "Grinder.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 0.500000
+      Y float 0.500000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+  BoxCollider
+  {
+    m_width float 64.000000
+    m_height float 64.000000
+    m_materialName std::string "Static"
+    m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
+  }
+  Grinder
+  {
+  }
+}
+GameObject
+{
+  name std::string "GrinderBL3"
+  archetype std::string "Grinder"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -240.000000
+      y_ float -515.000000
+      z_ float 1.100000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 2.000000
+      y_ float 2.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "Grinder.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 0.500000
+      Y float 0.500000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+  BoxCollider
+  {
+    m_width float 64.000000
+    m_height float 64.000000
+    m_materialName std::string "Static"
+    m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
+  }
+  Grinder
+  {
+  }
+}
+GameObject
+{
+  name std::string "Platform"
+  archetype std::string "SmallArenaBlock"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -128.000000
+      y_ float -384.000000
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "light_block_on.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+  SpriteLight
+  {
+    m_spriteName std::string "light_block_on_slight.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    m_isOn bool true
+    m_emissive bool true
+    m_brightness LightColor
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 0.700000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+  }
+  BlockLights
+  {
+    m_group int 256
+    m_defaultSettings BlockLights::LightSettings
+    {
+      fx unsignedint 0
+      ease unsignedint 0
+      isOn bool true
+      useColor bool true
+      color LightColor
+      {
+        R float 1.000000
+        G float 1.000000
+        B float 1.000000
+        A float 1.000000
+      }
+    }
+  }
+}
+GameObject
+{
+  name std::string "Platform_BM_Collider"
+  archetype std::string "SmallArenaBlock"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 0.000000
+      y_ float -384.000000
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "light_block_on.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+  SpriteLight
+  {
+    m_spriteName std::string "light_block_on_slight.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    m_isOn bool true
+    m_emissive bool true
+    m_brightness LightColor
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 0.700000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+  }
+  BlockLights
+  {
+    m_group int 512
+    m_defaultSettings BlockLights::LightSettings
+    {
+      fx unsignedint 0
+      ease unsignedint 0
+      isOn bool true
+      useColor bool true
+      color LightColor
+      {
+        R float 1.000000
+        G float 1.000000
+        B float 1.000000
+        A float 1.000000
+      }
+    }
+  }
+  BoxCollider
+  {
+    m_width float 384.000000
+    m_height float 128.000000
+    m_materialName std::string "Static"
+    m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
+  }
+}
+GameObject
+{
+  name std::string "PlatformCorner"
+  archetype std::string "PlatCorner"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 829.846985
+      y_ float -421.915771
+      z_ float 1.000000
+    }
+    Rotation float 0.785398
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 1.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "light_block_on.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 4.000000
+      Y float 2.000000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+  SpriteLight
+  {
+    m_spriteName std::string "light_block_on_slight.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    m_isOn bool true
+    m_emissive bool true
+    m_brightness LightColor
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 0.700000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+    Size Vec2
+    {
+      X float 4.000000
+      Y float 2.000000
+    }
+  }
+  BlockLights
+  {
+    m_group int 8192
+    m_defaultSettings BlockLights::LightSettings
+    {
+      fx unsignedint 0
+      ease unsignedint 0
+      isOn bool true
+      useColor bool true
+      color LightColor
+      {
+        R float 1.000000
+        G float 1.000000
+        B float 1.000000
+        A float 1.000000
+      }
+    }
+  }
+  BoxCollider
+  {
+    m_width float 256.000000
+    m_height float 128.000000
+    m_materialName std::string "Static"
+    m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
+  }
+}
+GameObject
+{
+  name std::string "GrinderBL1"
+  archetype std::string "Grinder"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -400.000000
+      y_ float -515.000000
+      z_ float 1.100000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 2.000000
+      y_ float 2.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "Grinder.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 0.500000
+      Y float 0.500000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+  BoxCollider
+  {
+    m_width float 64.000000
+    m_height float 64.000000
+    m_materialName std::string "Static"
+    m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
+  }
+  Grinder
+  {
+  }
+}
+GameObject
+{
+  name std::string "Platform"
+  archetype std::string "SmallArenaBlock"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 128.000000
+      y_ float 384.000000
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "light_block_on.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+  SpriteLight
+  {
+    m_spriteName std::string "light_block_on_slight.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    m_isOn bool true
+    m_emissive bool true
+    m_brightness LightColor
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 0.700000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+  }
+  BlockLights
+  {
+    m_group int 4194304
+    m_defaultSettings BlockLights::LightSettings
+    {
+      fx unsignedint 0
+      ease unsignedint 0
+      isOn bool true
+      useColor bool true
+      color LightColor
+      {
+        R float 1.000000
+        G float 1.000000
+        B float 1.000000
+        A float 1.000000
+      }
+    }
+  }
+}
+GameObject
+{
+  name std::string "PlatformCorner"
+  archetype std::string "PlatCorner"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 829.856995
+      y_ float 420.320007
+      z_ float 1.000000
+    }
+    Rotation float -0.785398
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 1.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "light_block_on.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 4.000000
+      Y float 2.000000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+  SpriteLight
+  {
+    m_spriteName std::string "light_block_on_slight.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    m_isOn bool true
+    m_emissive bool true
+    m_brightness LightColor
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 0.700000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+    Size Vec2
+    {
+      X float 4.000000
+      Y float 2.000000
+    }
+  }
+  BlockLights
+  {
+    m_group int 524288
+    m_defaultSettings BlockLights::LightSettings
+    {
+      fx unsignedint 0
+      ease unsignedint 0
+      isOn bool true
+      useColor bool true
+      color LightColor
+      {
+        R float 1.000000
+        G float 1.000000
+        B float 1.000000
+        A float 1.000000
+      }
+    }
+  }
+  BoxCollider
+  {
+    m_width float 256.000000
+    m_height float 128.000000
+    m_materialName std::string "Static"
+    m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
+  }
+}
+GameObject
+{
+  name std::string "Platform"
+  archetype std::string "SmallArenaBlock"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 512.000000
+      y_ float 512.000000
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "light_block_on.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+  SpriteLight
+  {
+    m_spriteName std::string "light_block_on_slight.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    m_isOn bool true
+    m_emissive bool true
+    m_brightness LightColor
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 0.700000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+  }
+  BlockLights
+  {
+    m_group int 2097152
+    m_defaultSettings BlockLights::LightSettings
+    {
+      fx unsignedint 0
+      ease unsignedint 0
+      isOn bool true
+      useColor bool true
+      color LightColor
+      {
+        R float 1.000000
+        G float 1.000000
+        B float 1.000000
+        A float 1.000000
+      }
+    }
+  }
+}
+GameObject
+{
+  name std::string "Platform"
+  archetype std::string "SmallArenaBlock"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -904.000000
+      y_ float 128.000000
+      z_ float 0.000000
+    }
+    Rotation float 1.570796
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "light_block_on.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+  SpriteLight
+  {
+    m_spriteName std::string "light_block_on_slight.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    m_isOn bool true
+    m_emissive bool true
+    m_brightness LightColor
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 0.700000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+  }
+  BlockLights
+  {
+    m_group int 2
+    m_defaultSettings BlockLights::LightSettings
+    {
+      fx unsignedint 0
+      ease unsignedint 0
+      isOn bool true
+      useColor bool true
+      color LightColor
+      {
+        R float 1.000000
+        G float 1.000000
+        B float 1.000000
+        A float 1.000000
+      }
+    }
+  }
+}
+GameObject
+{
+  name std::string "Platform"
+  archetype std::string "SmallArenaBlock"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -904.000000
+      y_ float -128.000000
+      z_ float 0.000000
+    }
+    Rotation float 1.570800
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "light_block_on.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+  SpriteLight
+  {
+    m_spriteName std::string "light_block_on_slight.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    m_isOn bool true
+    m_emissive bool true
+    m_brightness LightColor
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 0.700000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+  }
+  BlockLights
+  {
+    m_group int 8
+    m_defaultSettings BlockLights::LightSettings
+    {
+      fx unsignedint 0
+      ease unsignedint 0
+      isOn bool true
+      useColor bool true
+      color LightColor
+      {
+        R float 1.000000
+        G float 1.000000
+        B float 1.000000
+        A float 1.000000
+      }
+    }
+  }
+}
+GameObject
+{
+  name std::string "Platform"
+  archetype std::string "SmallArenaBlock"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -904.000000
+      y_ float -256.000000
+      z_ float 0.010000
+    }
+    Rotation float 1.570796
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "light_block_on.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+  SpriteLight
+  {
+    m_spriteName std::string "light_block_on_slight.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    m_isOn bool true
+    m_emissive bool true
+    m_brightness LightColor
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 0.700000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+  }
+  BlockLights
+  {
+    m_group int 16
+    m_defaultSettings BlockLights::LightSettings
+    {
+      fx unsignedint 0
+      ease unsignedint 0
+      isOn bool true
+      useColor bool true
+      color LightColor
+      {
+        R float 1.000000
+        G float 1.000000
+        B float 1.000000
+        A float 1.000000
+      }
+    }
+  }
+}
+GameObject
+{
+  name std::string "PlatformCorner"
+  archetype std::string "PlatCorner"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -830.998779
+      y_ float 420.317017
+      z_ float 1.000000
+    }
+    Rotation float 0.785398
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 1.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "light_block_on.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 4.000000
+      Y float 2.000000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+  SpriteLight
+  {
+    m_spriteName std::string "light_block_on_slight.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    m_isOn bool true
+    m_emissive bool true
+    m_brightness LightColor
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 0.700000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+    Size Vec2
+    {
+      X float 4.000000
+      Y float 2.000000
+    }
+  }
+  BlockLights
+  {
+    m_group int 134217728
+    m_defaultSettings BlockLights::LightSettings
+    {
+      fx unsignedint 0
+      ease unsignedint 0
+      isOn bool true
+      useColor bool true
+      color LightColor
+      {
+        R float 1.000000
+        G float 1.000000
+        B float 1.000000
+        A float 1.000000
+      }
+    }
+  }
+  BoxCollider
+  {
+    m_width float 256.000000
+    m_height float 128.000000
+    m_materialName std::string "Static"
+    m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
+  }
+}
+GameObject
+{
+  name std::string ""
+  archetype std::string ""
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 920.022339
+      y_ float -523.607483
+      z_ float 1.500000
+    }
+    Rotation float 0.785398
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "generic_block_grey.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 6.000000
+      Y float 6.000000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+}
+GameObject
+{
+  name std::string ""
+  archetype std::string ""
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -928.031555
+      y_ float -523.607483
+      z_ float 1.500000
+    }
+    Rotation float 0.785398
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "generic_block_grey.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 6.000000
+      Y float 6.000000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+}
+GameObject
+{
+  name std::string ""
+  archetype std::string ""
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -928.031555
+      y_ float 507.676208
+      z_ float 1.500000
+    }
+    Rotation float 0.785398
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "generic_block_grey.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 6.000000
+      Y float 6.000000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+}
+GameObject
+{
+  name std::string ""
+  archetype std::string ""
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 918.020203
+      y_ float 507.676208
+      z_ float 1.500000
+    }
+    Rotation float 0.785398
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "generic_block_grey.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 6.000000
+      Y float 6.000000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+}
+GameObject
+{
+  name std::string ""
+  archetype std::string ""
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -321.001251
+      y_ float 543.752075
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "generic_block_grey.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 4.000000
+      Y float 1.000000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+}
+GameObject
+{
+  name std::string ""
+  archetype std::string ""
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 320.712097
+      y_ float 543.752075
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "generic_block_grey.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 4.000000
+      Y float 1.000000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+}
+GameObject
+{
+  name std::string ""
+  archetype std::string ""
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 320.712097
+      y_ float -544.884155
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "generic_block_grey.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 4.000000
+      Y float 1.000000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+}
+GameObject
+{
+  name std::string ""
+  archetype std::string ""
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -320.000000
+      y_ float -544.884155
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "generic_block_grey.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 4.000000
+      Y float 1.000000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+}
+GameObject
+{
+  name std::string "Collider"
+  archetype std::string ""
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -576.000000
+      y_ float 512.000000
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  BoxCollider
+  {
+    m_width float 256.000000
+    m_height float 128.000000
+    m_materialName std::string "Static"
+    m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
+  }
+}
+GameObject
+{
+  name std::string "Collider"
+  archetype std::string ""
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -576.000000
+      y_ float -512.000000
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  BoxCollider
+  {
+    m_width float 256.000000
+    m_height float 128.000000
+    m_materialName std::string "Static"
+    m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
+  }
+}
+GameObject
+{
+  name std::string "Collider"
+  archetype std::string ""
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 576.000000
+      y_ float -512.000000
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  BoxCollider
+  {
+    m_width float 256.000000
+    m_height float 128.000000
+    m_materialName std::string "Static"
+    m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
+  }
+}
+GameObject
+{
+  name std::string "Platform"
+  archetype std::string "SmallArenaBlock"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -640.000000
+      y_ float 512.000000
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "light_block_on.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+  SpriteLight
+  {
+    m_spriteName std::string "light_block_on_slight.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    m_isOn bool true
+    m_emissive bool true
+    m_brightness LightColor
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 0.700000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+  }
+  BlockLights
+  {
+    m_group int 67108864
+    m_defaultSettings BlockLights::LightSettings
+    {
+      fx unsignedint 0
+      ease unsignedint 0
+      isOn bool true
+      useColor bool true
+      color LightColor
+      {
+        R float 1.000000
+        G float 1.000000
+        B float 1.000000
+        A float 1.000000
+      }
+    }
+  }
+}
+GameObject
+{
+  name std::string "Platform"
+  archetype std::string "SmallArenaBlock"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -512.000000
+      y_ float 512.000000
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "light_block_on.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+  SpriteLight
+  {
+    m_spriteName std::string "light_block_on_slight.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    m_isOn bool true
+    m_emissive bool true
+    m_brightness LightColor
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 0.700000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+  }
+  BlockLights
+  {
+    m_group int 33554432
+    m_defaultSettings BlockLights::LightSettings
+    {
+      fx unsignedint 0
+      ease unsignedint 0
+      isOn bool true
+      useColor bool true
+      color LightColor
+      {
+        R float 1.000000
+        G float 1.000000
+        B float 1.000000
+        A float 1.000000
+      }
+    }
+  }
+}
+GameObject
+{
+  name std::string "Platform"
+  archetype std::string "SmallArenaBlock"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -128.000000
+      y_ float 512.000000
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "light_block_on.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+  SpriteLight
+  {
+    m_spriteName std::string "light_block_on_slight.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    m_isOn bool true
+    m_emissive bool true
+    m_brightness LightColor
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 0.700000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+  }
+  BlockLights
+  {
+    m_group int 16777216
+    m_defaultSettings BlockLights::LightSettings
+    {
+      fx unsignedint 0
+      ease unsignedint 0
+      isOn bool true
+      useColor bool true
+      color LightColor
+      {
+        R float 1.000000
+        G float 1.000000
+        B float 1.000000
+        A float 1.000000
+      }
+    }
+  }
+  BoxCollider
+  {
+    m_width float 128.000000
+    m_height float 128.000000
+    m_materialName std::string "Static"
+    m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
+  }
+}
+GameObject
+{
+  name std::string "GrinderTL2"
+  archetype std::string "Grinder"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -320.000000
+      y_ float 515.000000
+      z_ float 1.100000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 2.000000
+      y_ float 2.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "Grinder.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 0.500000
+      Y float 0.500000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+  BoxCollider
+  {
+    m_width float 64.000000
+    m_height float 64.000000
+    m_materialName std::string "Static"
+    m_hasCollisionCallback bool true
+    m_CollisionGroup std::string ""
+  }
+  Grinder
+  {
+  }
+}
+GameObject
+{
+  name std::string "Platform"
+  archetype std::string "SmallArenaBlock"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 128.000000
+      y_ float 512.000000
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "light_block_on.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+  SpriteLight
+  {
+    m_spriteName std::string "light_block_on_slight.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    m_isOn bool true
+    m_emissive bool true
+    m_brightness LightColor
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 0.700000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+  }
+  BlockLights
+  {
+    m_group int 4194304
+    m_defaultSettings BlockLights::LightSettings
+    {
+      fx unsignedint 0
+      ease unsignedint 0
+      isOn bool true
+      useColor bool true
+      color LightColor
+      {
+        R float 1.000000
+        G float 1.000000
+        B float 1.000000
+        A float 1.000000
+      }
+    }
+  }
+  BoxCollider
+  {
+    m_width float 128.000000
+    m_height float 128.000000
+    m_materialName std::string "Static"
+    m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
+  }
+}
+GameObject
+{
+  name std::string "Platform"
+  archetype std::string "SmallArenaBlock"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 640.000000
+      y_ float -512.000000
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "light_block_on.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+  SpriteLight
+  {
+    m_spriteName std::string "light_block_on_slight.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    m_isOn bool true
+    m_emissive bool true
+    m_brightness LightColor
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 0.700000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+  }
+  BlockLights
+  {
+    m_group int 4096
+    m_defaultSettings BlockLights::LightSettings
+    {
+      fx unsignedint 0
+      ease unsignedint 0
+      isOn bool true
+      useColor bool true
+      color LightColor
+      {
+        R float 1.000000
+        G float 1.000000
+        B float 1.000000
+        A float 1.000000
+      }
+    }
+  }
+}
+GameObject
+{
+  name std::string "Platform"
+  archetype std::string "SmallArenaBlock"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 512.000000
+      y_ float -512.000000
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "light_block_on.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+  SpriteLight
+  {
+    m_spriteName std::string "light_block_on_slight.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    m_isOn bool true
+    m_emissive bool true
+    m_brightness LightColor
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 0.700000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+  }
+  BlockLights
+  {
+    m_group int 2048
+    m_defaultSettings BlockLights::LightSettings
+    {
+      fx unsignedint 0
+      ease unsignedint 0
+      isOn bool true
+      useColor bool true
+      color LightColor
+      {
+        R float 1.000000
+        G float 1.000000
+        B float 1.000000
+        A float 1.000000
+      }
+    }
+  }
+}
+GameObject
+{
+  name std::string "Platform"
+  archetype std::string "SmallArenaBlock"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -640.000000
+      y_ float -512.000000
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "light_block_on.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+  SpriteLight
+  {
+    m_spriteName std::string "light_block_on_slight.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    m_isOn bool true
+    m_emissive bool true
+    m_brightness LightColor
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 0.700000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+  }
+  BlockLights
+  {
+    m_group int 64
+    m_defaultSettings BlockLights::LightSettings
+    {
+      fx unsignedint 0
+      ease unsignedint 0
+      isOn bool true
+      useColor bool true
+      color LightColor
+      {
+        R float 1.000000
+        G float 1.000000
+        B float 1.000000
+        A float 1.000000
+      }
+    }
+  }
+}
+GameObject
+{
+  name std::string "Platform"
+  archetype std::string "SmallArenaBlock"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -512.000000
+      y_ float -512.000000
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "light_block_on.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+  SpriteLight
+  {
+    m_spriteName std::string "light_block_on_slight.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    m_isOn bool true
+    m_emissive bool true
+    m_brightness LightColor
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 0.700000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+  }
+  BlockLights
+  {
+    m_group int 128
+    m_defaultSettings BlockLights::LightSettings
+    {
+      fx unsignedint 0
+      ease unsignedint 0
+      isOn bool true
+      useColor bool true
+      color LightColor
+      {
+        R float 1.000000
+        G float 1.000000
+        B float 1.000000
+        A float 1.000000
+      }
+    }
+  }
+}
+GameObject
+{
+  name std::string "Platform"
+  archetype std::string "SmallArenaBlock"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -128.000000
+      y_ float -512.000000
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "light_block_on.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+  SpriteLight
+  {
+    m_spriteName std::string "light_block_on_slight.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    m_isOn bool true
+    m_emissive bool true
+    m_brightness LightColor
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 0.700000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+  }
+  BlockLights
+  {
+    m_group int 256
+    m_defaultSettings BlockLights::LightSettings
+    {
+      fx unsignedint 0
+      ease unsignedint 0
+      isOn bool true
+      useColor bool true
+      color LightColor
+      {
+        R float 1.000000
+        G float 1.000000
+        B float 1.000000
+        A float 1.000000
+      }
+    }
+  }
+}
+GameObject
+{
+  name std::string "Platform"
+  archetype std::string "SmallArenaBlock"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 128.000000
+      y_ float -512.000000
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "light_block_on.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+  SpriteLight
+  {
+    m_spriteName std::string "light_block_on_slight.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    m_isOn bool true
+    m_emissive bool true
+    m_brightness LightColor
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 0.700000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+  }
+  BlockLights
+  {
+    m_group int 1024
+    m_defaultSettings BlockLights::LightSettings
+    {
+      fx unsignedint 0
+      ease unsignedint 0
+      isOn bool true
+      useColor bool true
+      color LightColor
+      {
+        R float 1.000000
+        G float 1.000000
+        B float 1.000000
+        A float 1.000000
+      }
+    }
+  }
+}
+GameObject
+{
+  name std::string "Platform_BM_Collider"
+  archetype std::string "SmallArenaBlock"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 0.000000
+      y_ float -512.000000
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "light_block_on.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+  SpriteLight
+  {
+    m_spriteName std::string "light_block_on_slight.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    m_isOn bool true
+    m_emissive bool true
+    m_brightness LightColor
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 0.700000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+  }
+  BlockLights
+  {
+    m_group int 512
+    m_defaultSettings BlockLights::LightSettings
+    {
+      fx unsignedint 0
+      ease unsignedint 0
+      isOn bool true
+      useColor bool true
+      color LightColor
+      {
+        R float 1.000000
+        G float 1.000000
+        B float 1.000000
+        A float 1.000000
+      }
+    }
+  }
+  BoxCollider
+  {
+    m_width float 384.000000
+    m_height float 128.000000
+    m_materialName std::string "Static"
+    m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
+  }
+}
+GameObject
+{
+  name std::string "Collider"
+  archetype std::string ""
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 576.000000
+      y_ float 512.000000
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  BoxCollider
+  {
+    m_width float 256.000000
+    m_height float 128.000000
+    m_materialName std::string "Static"
+    m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
+  }
+}
+GameObject
+{
+  name std::string "GrinderBR3"
+  archetype std::string "Grinder"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 400.000000
+      y_ float -515.000000
+      z_ float 1.100000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 2.000000
+      y_ float 2.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "Grinder.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 0.500000
+      Y float 0.500000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+  BoxCollider
+  {
+    m_width float 64.000000
+    m_height float 64.000000
+    m_materialName std::string "Static"
+    m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
+  }
+  Grinder
+  {
+  }
+}
+GameObject
+{
+  name std::string "GrinderBR2"
+  archetype std::string "Grinder"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 320.000000
+      y_ float -515.000000
+      z_ float 1.100000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 2.000000
+      y_ float 2.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "Grinder.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 0.500000
+      Y float 0.500000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+  BoxCollider
+  {
+    m_width float 64.000000
+    m_height float 64.000000
+    m_materialName std::string "Static"
+    m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
+  }
+  Grinder
+  {
+  }
+}
+GameObject
+{
+  name std::string "GrinderBR1"
+  archetype std::string "Grinder"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 240.000000
+      y_ float -515.000000
+      z_ float 1.100000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 2.000000
+      y_ float 2.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "Grinder.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 0.500000
+      Y float 0.500000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+  BoxCollider
+  {
+    m_width float 64.000000
+    m_height float 64.000000
+    m_materialName std::string "Static"
+    m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
+  }
+  Grinder
+  {
+  }
+}
+GameObject
+{
+  name std::string "Platform"
+  archetype std::string "SmallArenaBlock"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 904.000000
+      y_ float 128.000000
+      z_ float 0.010000
+    }
+    Rotation float 1.570796
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "light_block_on.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+  SpriteLight
+  {
+    m_spriteName std::string "light_block_on_slight.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    m_isOn bool true
+    m_emissive bool true
+    m_brightness LightColor
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 0.700000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+  }
+  BlockLights
+  {
+    m_group int 131072
+    m_defaultSettings BlockLights::LightSettings
+    {
+      fx unsignedint 0
+      ease unsignedint 0
+      isOn bool true
+      useColor bool true
+      color LightColor
+      {
+        R float 1.000000
+        G float 1.000000
+        B float 1.000000
+        A float 1.000000
+      }
+    }
+  }
+}
+GameObject
+{
+  name std::string "GrinderTR2"
+  archetype std::string "Grinder"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 320.000000
+      y_ float 515.000000
+      z_ float 1.100000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 2.000000
+      y_ float 2.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "Grinder.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 0.500000
+      Y float 0.500000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+  BoxCollider
+  {
+    m_width float 64.000000
+    m_height float 64.000000
+    m_materialName std::string "Static"
+    m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
+  }
+  Grinder
+  {
+  }
+}
+GameObject
+{
+  name std::string "GrinderTR1"
+  archetype std::string "Grinder"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 240.000000
+      y_ float 515.000000
+      z_ float 1.100000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 2.000000
+      y_ float 2.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "Grinder.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 0.500000
+      Y float 0.500000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+  BoxCollider
+  {
+    m_width float 64.000000
+    m_height float 64.000000
+    m_materialName std::string "Static"
+    m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
+  }
+  Grinder
+  {
+  }
+}
+GameObject
+{
+  name std::string "GrinderTR3"
+  archetype std::string "Grinder"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 400.000000
+      y_ float 515.000000
+      z_ float 1.100000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 2.000000
+      y_ float 2.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "Grinder.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 0.500000
+      Y float 0.500000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+  BoxCollider
+  {
+    m_width float 64.000000
+    m_height float 64.000000
+    m_materialName std::string "Static"
+    m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
+  }
+  Grinder
+  {
+  }
+}
+GameObject
+{
+  name std::string "Platform"
+  archetype std::string "SmallArenaBlock"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 904.000000
+      y_ float 256.000000
+      z_ float 0.000000
+    }
+    Rotation float 1.570796
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "light_block_on.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+  SpriteLight
+  {
+    m_spriteName std::string "light_block_on_slight.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    m_isOn bool true
+    m_emissive bool true
+    m_brightness LightColor
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 0.700000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+  }
+  BlockLights
+  {
+    m_group int 262144
+    m_defaultSettings BlockLights::LightSettings
+    {
+      fx unsignedint 0
+      ease unsignedint 0
+      isOn bool true
+      useColor bool true
+      color LightColor
+      {
+        R float 1.000000
+        G float 1.000000
+        B float 1.000000
+        A float 1.000000
+      }
+    }
+  }
+}
+GameObject
+{
+  name std::string "GrinderTL1"
+  archetype std::string "Grinder"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -400.000000
+      y_ float 515.000000
+      z_ float 1.100000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 2.000000
+      y_ float 2.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "Grinder.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 0.500000
+      Y float 0.500000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+  BoxCollider
+  {
+    m_width float 64.000000
+    m_height float 64.000000
+    m_materialName std::string "Static"
+    m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
+  }
+  Grinder
+  {
+  }
+}
+GameObject
+{
+  name std::string "Platform"
+  archetype std::string "SmallArenaBlock"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 904.000000
+      y_ float -128.000000
+      z_ float 0.000000
+    }
+    Rotation float 1.570796
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "light_block_on.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+  SpriteLight
+  {
+    m_spriteName std::string "light_block_on_slight.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    m_isOn bool true
+    m_emissive bool true
+    m_brightness LightColor
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 0.700000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+  }
+  BlockLights
+  {
+    m_group int 32768
+    m_defaultSettings BlockLights::LightSettings
+    {
+      fx unsignedint 0
+      ease unsignedint 0
+      isOn bool true
+      useColor bool true
+      color LightColor
+      {
+        R float 1.000000
+        G float 1.000000
+        B float 1.000000
+        A float 1.000000
+      }
+    }
+  }
+}
+GameObject
+{
+  name std::string "GrinderTL3"
+  archetype std::string "Grinder"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -240.000000
+      y_ float 515.000000
+      z_ float 1.100000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 2.000000
+      y_ float 2.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "Grinder.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 0.500000
+      Y float 0.500000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+  BoxCollider
+  {
+    m_width float 64.000000
+    m_height float 64.000000
+    m_materialName std::string "Static"
+    m_hasCollisionCallback bool true
+    m_CollisionGroup std::string ""
+  }
+  Grinder
+  {
+  }
+}
+GameObject
+{
+  name std::string ""
+  archetype std::string ""
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 0.000000
+      y_ float 511.857544
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  SpriteLight
+  {
+    m_spriteName std::string "white.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    m_isOn bool true
+    m_emissive bool false
+    m_brightness LightColor
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+    Size Vec2
+    {
+      X float 128.000000
+      Y float 128.000000
+    }
+  }
+  BoxCollider
+  {
+    m_width float 128.000000
+    m_height float 128.000000
+    m_materialName std::string "Static"
+    m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
+  }
+}
+GameObject
+{
+  name std::string ""
+  archetype std::string ""
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -342.580750
+      y_ float -115.328133
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "p1_coinTotal.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 0.400000
+      Y float 0.350000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+}
+GameObject
+{
+  name std::string "coin_rain"
+  archetype std::string "coin_rain"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -263.092377
+      y_ float -33.637344
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  BasicParticleSystem
+  {
+    m_texture std::string "coin.png"
+    m_layer int 1
+    m_pos BasicParticleSystem::BPSPos
+    {
+      square bool true
+      edgeOnly bool false
+      radius float 0.000000
+      angle float 1.000000
+      randAngle float 0.000000
+      offset Vec2
+      {
+        X float 0.000000
+        Y float 0.000000
+      }
+      randOffset Vec2
+      {
+        X float 50.000000
+        Y float 50.000000
+      }
+    }
+    m_scaling BPartSys::BPSScaling
+    {
+      scale Vec2
+      {
+        X float 32.000000
+        Y float 32.000000
+      }
+      randScale Vec2
+      {
+        X float 0.000000
+        Y float 0.000000
+      }
+    }
+    m_rot BPartSys::BPSRotation
+    {
+      rotation float 0.000000
+      randRotation float 0.000000
+    }
+    m_life BPartSys::BPSLife
+    {
+      lifetime float 0.100000
+      randLifetime float 0.000000
+    }
+    m_fade BPartSys::BPSFade
+    {
+      fadeOut bool false
+      fadeOutTime float 0.000000
+      randFadeoutTime float 0.000000
+    }
+    m_vel BPartSys::BPSVelocity
+    {
+      velocity Vec2
+      {
+        X float 0.000000
+        Y float -300.000000
+      }
+      randVelocity Vec2
+      {
+        X float 0.000000
+        Y float 0.000000
+      }
+      speedIn float 0.000000
+      randSpeedIn float 0.000000
+    }
+    m_system BPartSys::BPSSystem
+    {
+      active bool true
+      editorActive bool true
+      spawnInterval float 18.000000
+      spawnAmount float 15.000000
+      spawnPerSecond float 0.000000
+      shutdownTimer float 0.000000
+      parentToOwner bool false
+    }
+  }
+}
+GameObject
+{
+  name std::string "playerSlotMachine"
+  archetype std::string "playerSlotMachine"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -275.000000
+      y_ float -241.468292
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  SlotMachine
+  {
+    m_layer int 1
+    m_stopTexture std::string "ggg_reel.png"
+    m_spinTexture std::string "ggg_reel_blur.png"
+    m_slotBackTexture std::string "slotmachine_slotback.png"
+    numSlots int 3
+    slotOptions int 3
+    startSpeed float 7.000000
+    slotSize Vec2
+    {
+      X float 0.600000
+      Y float 0.600000
+    }
+    slotMargin float 20.000000
+    slotOffset Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+    slotBackSize Vec2
+    {
+      X float 2.400000
+      Y float 1.800000
+    }
+    startTime float 3.000000
+    bonusTime float 0.200000
+    useSpriteColor bool true
+    backingColor Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+  }
+}
+GameObject
+{
+  name std::string "playerSlotMachine"
+  archetype std::string "playerSlotMachine"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -275.000000
+      y_ float 133.348251
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  SlotMachine
+  {
+    m_layer int 1
+    m_stopTexture std::string "ggg_reel.png"
+    m_spinTexture std::string "ggg_reel_blur.png"
+    m_slotBackTexture std::string "slotmachine_slotback.png"
+    numSlots int 3
+    slotOptions int 3
+    startSpeed float 7.000000
+    slotSize Vec2
+    {
+      X float 0.600000
+      Y float 0.600000
+    }
+    slotMargin float 20.000000
+    slotOffset Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+    slotBackSize Vec2
+    {
+      X float 2.400000
+      Y float 1.800000
+    }
+    startTime float 3.000000
+    bonusTime float 0.200000
+    useSpriteColor bool true
+    backingColor Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+  }
+}
+GameObject
+{
+  name std::string ""
+  archetype std::string ""
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -329.966705
+      y_ float 260.689728
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "p4_coinTotal.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 0.400000
+      Y float 0.350000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+}
+GameObject
+{
+  name std::string "playerSlotMachine"
+  archetype std::string "playerSlotMachine"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 275.000000
+      y_ float 133.348251
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  SlotMachine
+  {
+    m_layer int 1
+    m_stopTexture std::string "ggg_reel.png"
+    m_spinTexture std::string "ggg_reel_blur.png"
+    m_slotBackTexture std::string "slotmachine_slotback.png"
+    numSlots int 3
+    slotOptions int 3
+    startSpeed float 7.000000
+    slotSize Vec2
+    {
+      X float 0.600000
+      Y float 0.600000
+    }
+    slotMargin float 20.000000
+    slotOffset Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+    slotBackSize Vec2
+    {
+      X float 2.400000
+      Y float 1.800000
+    }
+    startTime float 3.000000
+    bonusTime float 0.200000
+    useSpriteColor bool true
+    backingColor Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+  }
+}
+GameObject
+{
+  name std::string ""
+  archetype std::string ""
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 227.252686
+      y_ float 260.689728
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "p3_coinTotal.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 0.400000
+      Y float 0.350000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+}
+GameObject
+{
+  name std::string "playerSlotMachine"
+  archetype std::string "playerSlotMachine"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 275.105743
+      y_ float -241.468262
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  SlotMachine
+  {
+    m_layer int 1
+    m_stopTexture std::string "ggg_reel.png"
+    m_spinTexture std::string "ggg_reel_blur.png"
+    m_slotBackTexture std::string "slotmachine_slotback.png"
+    numSlots int 3
+    slotOptions int 3
+    startSpeed float 7.000000
+    slotSize Vec2
+    {
+      X float 0.600000
+      Y float 0.600000
+    }
+    slotMargin float 20.000000
+    slotOffset Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+    slotBackSize Vec2
+    {
+      X float 2.400000
+      Y float 1.800000
+    }
+    startTime float 3.000000
+    bonusTime float 0.200000
+    useSpriteColor bool true
+    backingColor Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+  }
+}
+GameObject
+{
+  name std::string ""
+  archetype std::string ""
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 213.837646
+      y_ float -115.328133
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "p2_coinTotal.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 0.400000
+      Y float 0.350000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+}
+GameObject
+{
+  name std::string "coin_rain"
+  archetype std::string "coin_rain"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -245.072357
+      y_ float 351.991180
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  BasicParticleSystem
+  {
+    m_texture std::string "coin.png"
+    m_layer int 1
+    m_pos BasicParticleSystem::BPSPos
+    {
+      square bool true
+      edgeOnly bool false
+      radius float 0.000000
+      angle float 1.000000
+      randAngle float 0.000000
+      offset Vec2
+      {
+        X float 0.000000
+        Y float 0.000000
+      }
+      randOffset Vec2
+      {
+        X float 50.000000
+        Y float 50.000000
+      }
+    }
+    m_scaling BPartSys::BPSScaling
+    {
+      scale Vec2
+      {
+        X float 32.000000
+        Y float 32.000000
+      }
+      randScale Vec2
+      {
+        X float 0.000000
+        Y float 0.000000
+      }
+    }
+    m_rot BPartSys::BPSRotation
+    {
+      rotation float 0.000000
+      randRotation float 0.000000
+    }
+    m_life BPartSys::BPSLife
+    {
+      lifetime float 0.100000
+      randLifetime float 0.000000
+    }
+    m_fade BPartSys::BPSFade
+    {
+      fadeOut bool false
+      fadeOutTime float 0.000000
+      randFadeoutTime float 0.000000
+    }
+    m_vel BPartSys::BPSVelocity
+    {
+      velocity Vec2
+      {
+        X float 0.000000
+        Y float -300.000000
+      }
+      randVelocity Vec2
+      {
+        X float 0.000000
+        Y float 0.000000
+      }
+      speedIn float 0.000000
+      randSpeedIn float 0.000000
+    }
+    m_system BPartSys::BPSSystem
+    {
+      active bool true
+      editorActive bool true
+      spawnInterval float 18.000000
+      spawnAmount float 15.000000
+      spawnPerSecond float 0.000000
+      shutdownTimer float 0.000000
+      parentToOwner bool false
+    }
+  }
+}
+GameObject
+{
+  name std::string "coin_rain"
+  archetype std::string "coin_rain"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 319.555206
+      y_ float 341.179199
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  BasicParticleSystem
+  {
+    m_texture std::string "coin.png"
+    m_layer int 1
+    m_pos BasicParticleSystem::BPSPos
+    {
+      square bool true
+      edgeOnly bool false
+      radius float 0.000000
+      angle float 1.000000
+      randAngle float 0.000000
+      offset Vec2
+      {
+        X float 0.000000
+        Y float 0.000000
+      }
+      randOffset Vec2
+      {
+        X float 50.000000
+        Y float 50.000000
+      }
+    }
+    m_scaling BPartSys::BPSScaling
+    {
+      scale Vec2
+      {
+        X float 32.000000
+        Y float 32.000000
+      }
+      randScale Vec2
+      {
+        X float 0.000000
+        Y float 0.000000
+      }
+    }
+    m_rot BPartSys::BPSRotation
+    {
+      rotation float 0.000000
+      randRotation float 0.000000
+    }
+    m_life BPartSys::BPSLife
+    {
+      lifetime float 0.100000
+      randLifetime float 0.000000
+    }
+    m_fade BPartSys::BPSFade
+    {
+      fadeOut bool false
+      fadeOutTime float 0.000000
+      randFadeoutTime float 0.000000
+    }
+    m_vel BPartSys::BPSVelocity
+    {
+      velocity Vec2
+      {
+        X float 0.000000
+        Y float -300.000000
+      }
+      randVelocity Vec2
+      {
+        X float 0.000000
+        Y float 0.000000
+      }
+      speedIn float 0.000000
+      randSpeedIn float 0.000000
+    }
+    m_system BPartSys::BPSSystem
+    {
+      active bool true
+      editorActive bool true
+      spawnInterval float 18.000000
+      spawnAmount float 15.000000
+      spawnPerSecond float 0.000000
+      shutdownTimer float 0.000000
+      parentToOwner bool false
+    }
+  }
+}
+GameObject
+{
+  name std::string "coin_rain"
+  archetype std::string "coin_rain"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 291.924561
+      y_ float -37.241398
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  BasicParticleSystem
+  {
+    m_texture std::string "coin.png"
+    m_layer int 1
+    m_pos BasicParticleSystem::BPSPos
+    {
+      square bool true
+      edgeOnly bool false
+      radius float 0.000000
+      angle float 1.000000
+      randAngle float 0.000000
+      offset Vec2
+      {
+        X float 0.000000
+        Y float 0.000000
+      }
+      randOffset Vec2
+      {
+        X float 50.000000
+        Y float 50.000000
+      }
+    }
+    m_scaling BPartSys::BPSScaling
+    {
+      scale Vec2
+      {
+        X float 32.000000
+        Y float 32.000000
+      }
+      randScale Vec2
+      {
+        X float 0.000000
+        Y float 0.000000
+      }
+    }
+    m_rot BPartSys::BPSRotation
+    {
+      rotation float 0.000000
+      randRotation float 0.000000
+    }
+    m_life BPartSys::BPSLife
+    {
+      lifetime float 0.100000
+      randLifetime float 0.000000
+    }
+    m_fade BPartSys::BPSFade
+    {
+      fadeOut bool false
+      fadeOutTime float 0.000000
+      randFadeoutTime float 0.000000
+    }
+    m_vel BPartSys::BPSVelocity
+    {
+      velocity Vec2
+      {
+        X float 0.000000
+        Y float -300.000000
+      }
+      randVelocity Vec2
+      {
+        X float 0.000000
+        Y float 0.000000
+      }
+      speedIn float 0.000000
+      randSpeedIn float 0.000000
+    }
+    m_system BPartSys::BPSSystem
+    {
+      active bool true
+      editorActive bool true
+      spawnInterval float 18.000000
+      spawnAmount float 15.000000
+      spawnPerSecond float 0.000000
+      shutdownTimer float 0.000000
+      parentToOwner bool false
+    }
+  }
+}

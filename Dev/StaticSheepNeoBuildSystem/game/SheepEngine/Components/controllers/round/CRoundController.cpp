@@ -22,6 +22,8 @@ namespace Framework
     max_rounds = 6; //default value
     spawned_round_start = false;
     timeOfRound = 93.0f; //default round length, (round length + 3.0f)
+    state_ = INTRO;
+    gameStarted = false;
   }
 
   RoundController::~RoundController()
@@ -34,13 +36,15 @@ namespace Framework
     space->hooks.Add("LogicUpdate", self, BUILD_FUNCTION(RoundController::LogicUpdate));
     space->hooks.Add("Draw", self, BUILD_FUNCTION(RoundController::Draw));
     space->hooks.Add("SlotFinished", self, BUILD_FUNCTION(RoundController::SlotMachineDone));
+    space->hooks.Add("GameStart", self, BUILD_FUNCTION(RoundController::GameStarted));
 
     for (int i = 0; i < 4; ++i)
       num_spawned[i] = false;
 
     LevelLogic = space->GetGameObject(owner)->GetComponentHandle(eLevel1_Logic);
     ChipController_ = space->GetGameObject(owner)->GetComponentHandle(eChipController);
-    round_state_timer = 2.0f;
+    //intro sequence timer
+    round_state_timer = 3.0f;
     EORAwarded = false;
 
 
@@ -56,6 +60,9 @@ namespace Framework
   {
     switch (state_)
     {
+    case INTRO:
+      IntroSequence(dt);
+      break;
     case ROUNDSTART:
       RoundStart(dt);
       break;
@@ -68,7 +75,40 @@ namespace Framework
     case GAMEOVER:
       GameOver(dt);
       break;
+    case IDLE_WAIT:
+      break;
     }
+  }
+
+  void RoundController::IntroSequence(float dt)
+  {
+    //light-up sequence
+    //Welcome to the Games!
+    if (!spawned_round_start)
+    {
+      GameObject *welcome = (FACTORY->LoadObjectFromArchetype(space, "welcome_text"));
+      GameObject *toThe = (FACTORY->LoadObjectFromArchetype(space, "ToThe_text"));
+      GameObject *games = (FACTORY->LoadObjectFromArchetype(space, "games_text"));
+      welcome->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(1000.0f, 96.0f, 0.0f));
+      toThe->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(-1000.0f, 0.0f, 0.0f));
+      games->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(1000.0f, -96.0f, 0.0f));
+      spawned_round_start = true;
+    }
+
+    round_state_timer -= dt;
+    if (round_state_timer <= 0)
+    {
+      state_ = ROUNDSTART;
+      spawned_round_start = false;
+      round_state_timer = 2.0f;
+    }
+
+  }
+
+  void RoundController::GameStarted()
+  {
+    state_ = ROUNDSTART;
+    round_state_timer = 2.0f;
   }
 
   void RoundController::RoundStart(float dt)
@@ -86,6 +126,7 @@ namespace Framework
       ResultsSpawned = false;
       space->hooks.Call("RoundStart");
     }
+
     round_state_timer -= dt;
     if (round_state_timer <= 0)
     {
@@ -182,12 +223,12 @@ namespace Framework
       GameObject *roundText = (FACTORY->LoadObjectFromArchetype(space, "gameOver_text"));
       roundText->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(-1000.0f, 64.0f, 0.0f));
       spawned_round_start = true;
-      round_state_timer = 13.0f;
+      round_state_timer = 23.0f;
       return;
     }
 
     //spawn tv
-    if (!ResultsSpawned && round_state_timer <= 10.0f)
+    if (!ResultsSpawned && round_state_timer <= 90.0f)
     {
       GameObject *ResultsTV = (FACTORY->LoadObjectFromArchetype(space, "ResultsTV"));
       ResultsTV->GetComponent<RoundResults>(eRoundResults)->ChipCont = space->GetGameObject(owner)->GetComponent<ChipController>(eChipController)->owner;

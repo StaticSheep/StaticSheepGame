@@ -6,6 +6,7 @@
 #include "components/transform/CTransform.h"
 #include "Handle.h"
 #include "../SheepGraphics/Atlas/SpineAtlas.h"
+#include "../lights/CSpineLight.h"
 
 
 namespace Framework
@@ -66,6 +67,8 @@ namespace Framework
 
       
       Vec2 offset;
+
+      friend class SpineLight;
       
   };
 }

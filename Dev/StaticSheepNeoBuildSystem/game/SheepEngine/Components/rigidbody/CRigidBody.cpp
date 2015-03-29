@@ -271,24 +271,4 @@ namespace Framework
     m_height = *(float*)value;
     PHYSICS->ChangePhysBodies(space, m_handle, m_width, m_height);
   }
-
-  void RigidBody::SetRayCast(Vec3D& rayOrigin, Vec3D& rayDirection, std::string name)
-  {
-    PHYSICS->SetRayConfig(rayOrigin, rayDirection, name);
-  }
-
-  bool RigidBody::SimpleRayCast()
-  {
-    return PHYSICS->SimpleRayCast(space);
-  }
-
-  bool RigidBody::ComplexRayCast()
-  {
-    return PHYSICS->ComplexRayCast(space);
-  }
-
-  void RigidBody::RayDestruction()
-  {
-    PHYSICS->RayDestruction();
-  }
 }

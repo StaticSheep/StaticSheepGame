@@ -41,6 +41,10 @@ namespace Framework
     editor = true;
     OpenConsole();
 #else
+
+#if PRESENTATION
+    editor = true;
+#endif
     if(argc > 1)
     {
       for(int i = 1; i < argc; ++i)
@@ -50,8 +54,8 @@ namespace Framework
       }
     }
 
-    if (editor)
-      OpenConsole();
+    /* if (editor)
+       OpenConsole();*/
 #endif
 
     Core->AddSystem(new InputManager());
@@ -94,20 +98,31 @@ namespace Framework
 #if USE_EDITOR
 #else
 
+
+
     if (editor)
     {
       //ENGINE->LoadLuaLevel("content/lua/engine/lua_levels/uisandbox.lua");
       ENGINE->OpenEditor();
+
      // ENGINE->ChangeLevel("Asteroid");
     }
 
     ENGINE->SystemMessage(Message(Message::EngineReady));
 
+#if PRESENTATION
+    editor = false;
+    ENGINE->PlayInEditor(true);
+#endif
+
+    /*GameSpace* sp = FACTORY->LoadSpace("AMFA");
+    sp->SetPaused(true);*/
+
     if (!editor)
     {
-      ShowCursor(false);
+      //ShowCursor(false);
       //ENGINE->ChangeLevel("Intro");
-      ENGINE->ChangeLevel("Asteroid");
+      ENGINE->ChangeLevel("Intro");
     }
 	  //ENGINE->LoadLevel("content/data/spaces/Level1.space");
 #endif

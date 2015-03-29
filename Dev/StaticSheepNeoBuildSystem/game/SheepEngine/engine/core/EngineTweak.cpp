@@ -248,10 +248,12 @@ namespace Framework
     // Create the main bar and get a handle to it
     
     ENGINE->m_editorActive = true;
+#if !PRESENTATION
     AntTweak::TBar* mainBar = ATWEAK->CreateBar("Editor");
     EngineBar = mainBar->self;
-
     UpdateEditorWindow();
+
+#endif
   }
 
 }

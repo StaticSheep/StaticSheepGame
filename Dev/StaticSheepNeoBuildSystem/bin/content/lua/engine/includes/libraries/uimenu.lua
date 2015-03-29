@@ -52,9 +52,12 @@ function uimenu.Delete(realMenu)
 
   Log(DEBUG, "Deleted menu: "..id)
 
-  uimenu.list[id].buttons = {}
+  if uimenu.list[id] then
+    uimenu.list[id].buttons = {}
+    table.remove(uimenu.list, id)
+  end
 
-  table.remove(uimenu.list, id)
+  
 end
 
 function uimenu.UpdateMeta()
@@ -151,6 +154,14 @@ function uimenu.meta:ClickCooldown(padnum)
   self.padClickCD[padnum] = CurTime() + self.inputCD
 end
 
+function uimenu.meta:Select(newSelection)
+    -- Tell our old selection to no longer be selected
+    self.buttons[self.selected]:SetHovered(false)
+
+    -- Update our current selection
+    self.selected = newSelection
+    self.buttons[self.selected]:SetHovered(true)
+end
 
 local stickThreshold = 0.5
 

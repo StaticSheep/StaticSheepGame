@@ -66,6 +66,8 @@ class RenderContext
 
     static RenderContext * Allocate(void);
 
+    bool m_letterbox = false;
+
     //Returns true if the RenderContext is Initialized, else false
     bool IsInitialized(void) const;
     //Initializes the RenderContext
@@ -405,6 +407,8 @@ class RenderContext
     unsigned m_curLayer = 1;
     unsigned m_curMaxLayers = 3;
     bool m_fullbright = false;
+
+    Vec2 ViewportScalar;
     
     std::vector<Light>    m_PointLights[MAX_LAYERS];
     std::vector<Light>    m_emissivePointLights[MAX_LAYERS];
@@ -444,6 +448,8 @@ class RenderContext
     ///////////
 
     std::vector<DirectSheep::Handle>         m_handles;
+
+    
 
     friend class Tex2D;
 #endif

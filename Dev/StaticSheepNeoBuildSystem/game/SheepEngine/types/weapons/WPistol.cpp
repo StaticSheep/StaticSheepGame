@@ -71,6 +71,11 @@ namespace Framework
     se->Play("Laser_Shot", &SoundInstance(1.0f));
   }
 
+  void Pistol::Update(float dt)
+  {
+
+  }
+
   void Pistol::DelayUpdate(float dt)
   {
 

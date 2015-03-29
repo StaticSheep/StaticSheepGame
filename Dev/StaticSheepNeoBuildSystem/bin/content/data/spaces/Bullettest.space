@@ -65,6 +65,7 @@ GameObject
   {
     textureName std::string "White.png"
     m_layer int 1
+    m_useZ bool false
     particleLife ParticleOptionShort<float>
     {
       m_startMin float 0.500000
@@ -425,6 +426,7 @@ GameObject
   {
     textureName std::string "White.png"
     m_layer int 1
+    m_useZ bool false
     particleLife ParticleOptionShort<float>
     {
       m_startMin float 0.500000
@@ -699,6 +701,7 @@ GameObject
   {
     textureName std::string "White.png"
     m_layer int 1
+    m_useZ bool false
     particleLife ParticleOptionShort<float>
     {
       m_startMin float 0.500000
@@ -910,101 +913,6 @@ GameObject
 }
 GameObject
 {
-  name std::string "Player"
-  archetype std::string "Player1"
-  Transform
-  {
-    Translation Vec3
-    {
-      x_ float -223.448380
-      y_ float -169.388245
-      z_ float 0.000000
-    }
-    Rotation float 0.000000
-    Scale Vec3
-    {
-      x_ float 0.350000
-      y_ float 0.365000
-      z_ float 0.000000
-    }
-  }
-  AniSprite
-  {
-    m_spriteName std::string "ninja_sprite_sheet.png"
-    m_layer unsignedint 1
-    m_frameUpdate bool false
-    m_frames Vec2
-    {
-      X float 12.000000
-      Y float 4.000000
-    }
-    m_startFrame unsignedint 0
-    m_endFrame unsignedint 0
-    m_frameRate float 20.000000
-    m_loop int -1
-    m_paused bool false
-    m_flipX bool false
-    m_flipY bool false
-    Color Vec4
-    {
-      R float 0.000000
-      G float 1.000000
-      B float 0.000000
-      A float 1.000000
-    }
-    Size Vec2
-    {
-      X float 1.000000
-      Y float 1.000000
-    }
-  }
-  BoxCollider
-  {
-    m_width float 75.000000
-    m_height float 85.000000
-    m_materialName std::string "Wood"
-    m_hasCollisionCallback bool true
-    m_CollisionGroup std::string "Player1"
-  }
-  SoundEmitter
-  {
-  }
-  PlayerController
-  {
-    playerNum int 0
-  }
-  GamePad
-  {
-    GamepadIndex int 0
-  }
-  Cheats
-  {
-    enabled bool true
-  }
-}
-GameObject
-{
-  name std::string ""
-  archetype std::string ""
-  Transform
-  {
-    Translation Vec3
-    {
-      x_ float 0.000000
-      y_ float 0.000000
-      z_ float 0.000000
-    }
-    Rotation float 0.000000
-    Scale Vec3
-    {
-      x_ float 1.000000
-      y_ float 1.000000
-      z_ float 0.000000
-    }
-  }
-}
-GameObject
-{
   name std::string "hit"
   archetype std::string "hit"
   Transform
@@ -1075,5 +983,176 @@ GameObject
     timer float 0.300000
     lightFadeTime float 0.100000
     waitForAnim bool true
+  }
+}
+GameObject
+{
+  name std::string ""
+  archetype std::string ""
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 0.000000
+      y_ float 0.000000
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+}
+GameObject
+{
+  name std::string "Player"
+  archetype std::string "Player1"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -152.489487
+      y_ float -266.696381
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  SpineSprite
+  {
+    atlasName std::string "ninja"
+    entityName std::string "ninja"
+    sequenceName std::string "idle"
+    framerate float 20.000000
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+  }
+  SpineLight
+  {
+    m_layer int 1
+    m_emissive bool true
+    atlasName std::string "ninja_glow"
+    entityName std::string "ninja"
+    m_lightingScale Vec2
+    {
+      X float 1.000000
+      Y float 1.000000
+    }
+    Color LightColor
+    {
+      R float 0.000000
+      G float 1.000000
+      B float 0.900000
+      A float 0.800000
+    }
+  }
+  BoxCollider
+  {
+    m_width float 90.000000
+    m_height float 128.000000
+    m_materialName std::string "Wood"
+    m_hasCollisionCallback bool true
+    m_CollisionGroup std::string "Player1"
+  }
+  SoundEmitter
+  {
+  }
+  PlayerController
+  {
+    playerNum int 0
+  }
+  GamePad
+  {
+    GamepadIndex int 0
+  }
+  Cheats
+  {
+    enabled bool true
+  }
+}
+GameObject
+{
+  name std::string "LaserTest"
+  archetype std::string ""
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 602.269348
+      y_ float 0.000000
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 0.641199
+      y_ float 7.150837
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "pink_laser.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 1.000000
+      Y float 1.000000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+  SpriteLight
+  {
+    m_spriteName std::string "white.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    m_isOn bool true
+    m_emissive bool false
+    m_brightness LightColor
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+    Size Vec2
+    {
+      X float 64.000000
+      Y float 128.000000
+    }
   }
 }

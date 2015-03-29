@@ -77,6 +77,9 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/gameplay_scripts/Weapon_Scripts/CImpactEffect.h"
 #include "Components/controllers/round/CRoundResults.h"
 #include "components/gameplay_scripts/FX_Scripts/CPulser.h"
+#include "components/gameplay_scripts/Slot_Machine_Scripts/CPersonalSlotController.h"
+#include "components/controllers/lobby/CLobbyController.h"
+#include "components/controllers/lobby/CJoinText.h"
 
 namespace Framework
 {
@@ -307,6 +310,9 @@ namespace Framework
     TYPE_SET_TWEAK_TYPE(SlotController, AntTweak::TW_TYPE_COMPONENT);
     TYPE_ADD_MEMBER(SlotController, StypeInt, false, true, "Type");
 
+    TYPE_REGISTER(PersonalSlotController);
+    TYPE_SET_TWEAK_TYPE(PersonalSlotController, AntTweak::TW_TYPE_COMPONENT);
+
     TYPE_REGISTER(CoinBall);
     TYPE_SET_TWEAK_TYPE(CoinBall, AntTweak::TW_TYPE_COMPONENT);
     
@@ -329,27 +335,18 @@ namespace Framework
     TYPE_REGISTER(RoundResults);
     TYPE_SET_TWEAK_TYPE(RoundResults, AntTweak::TW_TYPE_COMPONENT);
 
-    TYPE_REGISTER(Laser);
-    TYPE_SET_TWEAK_TYPE(Laser, AntTweak::TW_TYPE_COMPONENT);
-    TYPE_ADD_MEMBER(Laser, type, false, true, "Type");
-    TYPE_ADD_MEMBER(Laser, startDelay, false, true, "Delay");
-    TYPE_ADD_MEMBER(Laser, duration, false, true, "Duration");
-    TYPE_ADD_MEMBER(Laser, damage, false, true, "Damage");
-    TYPE_ADD_MEMBER(Laser, width, false, true, "Width");
-    TYPE_ADD_MEMBER(Laser, arcRotation, false, true, "Arc");
-    TYPE_ADD_MEMBER(Laser, arcDelay, false, true, "ArcDelay");
-    TYPE_ADD_MEMBER(Laser, m_bodyTexName, false, true, "Body Texture",
-      BUILD_FUNCTION(Laser::TweakSetBodyTexture));
-    TYPE_ADD_MEMBER(Laser, m_beamTexName, false, true, "Beam Texture",
-      BUILD_FUNCTION(Laser::TweakSetBeamTexture));
-    TYPE_ADD_MEMBER(Laser, m_bodyColor, false, true, "Body Color");
-    TYPE_ADD_MEMBER(Laser, m_beamColor, false, true, "Beam Color");
+    TYPE_REGISTER(LobbyController);
+    TYPE_SET_TWEAK_TYPE(LobbyController, AntTweak::TW_TYPE_COMPONENT);
+
+    TYPE_REGISTER(JoinText);
+    TYPE_SET_TWEAK_TYPE(JoinText, AntTweak::TW_TYPE_COMPONENT);
+    TYPE_ADD_MEMBER(JoinText, playerNum, false, true, "Player");
 
     TYPE_REGISTER(Pistol);
     TYPE_REGISTER(Shotgun);
     TYPE_REGISTER(Automatic);
-    TYPE_REGISTER(WLaser);
     TYPE_REGISTER(Missile);
+    TYPE_REGISTER(WLaser);
 
     TYPE_REGISTER(DamageBoost);
     TYPE_REGISTER(Shield);
@@ -445,6 +442,16 @@ namespace Framework
     TYPE_ADD_MEMBER(SpineSprite, Color, false, true, "ColoursRainbow");
     TYPE_SET_TWEAK_TYPE(SpineSprite, AntTweak::TW_TYPE_COMPONENT);
     //TYPE_SET_FROM_LUA(SpineSprite, Lua::GenericObjectFromLua);
+
+    TYPE_REGISTER(SpineLight);
+    TYPE_ADD_MEMBER(SpineLight, m_layer, false, true, "Layer");
+    TYPE_ADD_MEMBER(SpineLight, m_emissive, false, true, "Emissive");
+    TYPE_ADD_MEMBER(SpineLight, atlasName, false, true, "Atlas");
+    TYPE_ADD_MEMBER(SpineLight, entityName, false, true, "Entity");
+    TYPE_ADD_MEMBER(SpineLight, m_lightingScale, false, true, "LightScale");
+    TYPE_ADD_MEMBER(SpineLight, Color, false, true, "LightColor");
+    //TYPE_ADD_MEMBER(SpineLight, sequenceName, false, true, "Sequence");
+    TYPE_SET_TWEAK_TYPE(SpineLight, AntTweak::TW_TYPE_COMPONENT);
 
     TYPE_REGISTER(ParticleSystem);
     TYPE_ADD_MEMBER(ParticleSystem, textureName, false, true, "ParticleTexture",

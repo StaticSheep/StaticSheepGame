@@ -13,8 +13,12 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 namespace Framework
 {
+  extern bool playerJoined[4];
+
   enum GameTypes
   {
+    IDLE_STATE,
+    LOBBY,
     FFA,
     JUGGERNAUT,
     SUDDENDEATH,
@@ -44,6 +48,7 @@ namespace Framework
     void PlayerDied(int ply, int who_killed_them);
     void CameraShake(float dt, float shakeDuration, float magnitude);
     bool LevelCountdown(float dt);
+    void GameStart();
 		//member variables
     //Handle bTransfrom;
     float eventTimer;
@@ -74,6 +79,8 @@ namespace Framework
     bool camShake, shake;
     bool countDownDone;
     bool slotFinished, roundStart;
+    bool lobbySpawned;
+    Handle lobbyHandle;
     float shakeTime;
     float countDownTimer;
     LevelEvent *LE;
@@ -103,6 +110,8 @@ namespace Framework
     void SpawnModeText();
 
     void GoToGameMode(float dt);
+    void Idle(float dt);
+    void Lobby(float dt);
     void FFAMode(float dt);
     void JuggernautMode(float dt);
     void MakeJuggernaut();

@@ -177,8 +177,8 @@ namespace DirectSheep
     D3D11_TEXTURE2D_DESC texd;       // Description structure for depth buffer texture
     ZeroMemory(&texd, sizeof(texd)); // Null all members
 
-    texd.Width = m_viewport.dim.width; // Set screen dimensions
-    texd.Height = m_viewport.dim.height;
+    texd.Width = SCREEN_WIDTH; // Set screen dimensions
+    texd.Height = SCREEN_HEIGHT;
     texd.ArraySize = 1;                      // Only one depth buffer
     texd.MipLevels = 1;                      // Mip Mapping
     texd.SampleDesc.Count = 1;
@@ -273,30 +273,32 @@ namespace DirectSheep
     {
       driverType = driverTypes[driverTypeIndex]; // Grabs driver type
 
-      hr = CreateDXGIFactory(__uuidof(IDXGIFactory2), (void**)(&m_factory));
-
+      hr = CreateDXGIFactory(__uuidof(IDXGIFactory2), (void**)(&m_factory)); 
       
-
       hr = D3D11CreateDevice(nullptr, driverType, NULL, deviceFlags,
         featureLevels, 1, D3D11_SDK_VERSION, &m_device,
         &featureLevel, &m_deviceContext);
-
       
-      
-
       // Attempts to init
       hr = m_factory->CreateSwapChain(m_device, &swapDesc, &m_swapChain);
 
       if (SUCCEEDED(hr)) // If succeeded then break otherwise try lower driver settings
         break;
-      else
-      {
-        
-      }
       
     }
     DXVerify(hr); // Check for any DirectX specific error messages
 
+    // Make a temporary factory to get parent
+    IDXGIFactory2 *FactoryTemp = nullptr;
+
+    // retrieve parent of swapchain
+    m_swapChain->GetParent(__uuidof(IDXGIFactory2), (void**)&FactoryTemp);
+
+    // disable alt+enter fullscreen
+    FactoryTemp->MakeWindowAssociation(m_hwnd, DXGI_MWA_NO_ALT_ENTER);
+
+    // release temp factory
+    FactoryTemp->Release();
   }
 
   void RenderContext::InitializeRasterizerState(void)

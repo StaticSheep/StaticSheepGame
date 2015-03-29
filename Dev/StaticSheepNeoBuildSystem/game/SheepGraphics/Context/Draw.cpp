@@ -236,7 +236,7 @@ namespace DirectSheep
       }
 
       /* Switch our view port back to the window size for the rest of the drawing. */
-      SetViewport(0, 0, Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
+      SetViewport(0, 0, m_viewport.dim);
 
       /* Draw the contents of our canvas (diffuse textures) */
       ClearRenderTarget(m_canvasTarget, 0, 0, 0, 0); // Clear canvas
@@ -260,7 +260,7 @@ namespace DirectSheep
         ((Camera*)m_Ortho.ptr)->GetProj(),
         ((Camera*)m_Ortho.ptr)->GetView(),
         DirectX::XMMatrixTranslationFromVector(Vec3(1, -1, 0)) *
-        DirectX::XMMatrixScaling(1920 / 2, 1080 / 2, 0),
+        DirectX::XMMatrixScaling(1920.0f / 2.0f, 1080.0f / 2.0f, 0),
         Vec2(), Vec2());
       // No blend colors
       m_genericEffect->bindAmbient(m_deviceContext, Vec4(1, 1, 1, 1), 1);
@@ -292,14 +292,18 @@ namespace DirectSheep
       m_deviceContext->OMSetRenderTargets(1,
         &m_backBuffer, m_depthBuffer.m_depthBuffer);
 
+      SetViewport(m_viewport.offsetX, m_viewport.offsetY, m_viewport.dim);
+
       // Bind generic effect for drawing a window sized texture
       m_genericEffect->bindPosUV(m_deviceContext,
         identity,
         identity,
-        //DirectX::XMMatrixTranslationFromVector(Vec3(1, -1, 0)) *
-        DirectX::XMMatrixScaling(1, 1, 0),
+        DirectX::XMMatrixTranslationFromVector(Vec3(0, 0, 0)) *
+        DirectX::XMMatrixScaling(1, 1, 0) *
+        DirectX::XMMatrixTranslationFromVector(Vec3(0, 0, 0)),
         Vec2(), Vec2());
 
+      //SetViewport(0, 0, Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
       // Draw canvas onto back buffer
       SetBlendMode(BLEND_MODE_ALPHA);
       m_deviceContext->PSSetShaderResources(0, 1, &(rt->shaderResourceView));

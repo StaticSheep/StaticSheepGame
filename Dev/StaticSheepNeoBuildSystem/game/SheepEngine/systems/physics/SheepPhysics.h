@@ -12,6 +12,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "SheepPhysics/api.h"
 #include "SheepPhysics/Step.h"
 #include "systems/System.h"
+#include "SheepPhysics/RayConfig.h"
 
 namespace Framework
 {
@@ -82,10 +83,10 @@ namespace Framework
       std::string GetCollisionGroup(GameSpace* space, SheepFizz::Handle handle);
 
       //raycast
-      void SetRayConfig(Vec3D& rayOrigin, Vec3D& rayDirection, std::string& name);
-      bool SimpleRayCast(GameSpace* space);
-      bool ComplexRayCast(GameSpace* space);
-      void RayDestruction();
+      void SetRayConfig(Vec3D& rayOrigin, Vec3D& rayDirection, std::string name);
+      bool SimpleRayCast(SheepFizz::RayConfig* ray);
+      bool ComplexRayCast(SheepFizz::RayConfig* ray);
+      void RayDestruction(GameSpace* space, SheepFizz::RayConfig* ray);
       Vec3D GetFirstCollision();
 
 			//settors

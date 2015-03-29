@@ -53,7 +53,7 @@ function PlayerHUD:Create(i)
   local head = gui.Create("Image", self.base[i])
   self:Register(head)
   head:SetTexture(headFiles[i])
-  head:SetSize(90, 190)
+  head:SetSize(ScreenScale(38), ScreenScale(70))
   head:SetColor(headColors[i])
 
   -- local coinbar = gui.Create("Panel", self.base[i])
@@ -72,7 +72,7 @@ function PlayerHUD:Create(i)
   else
     coinsprite:SetPos(1, -162, 1)
   end
-  coinsprite:SetSize(88, 180)
+  coinsprite:SetSize(ScreenScale(36), ScreenScale(70))
   coinsprite:SetTexture(coinFile)
   coinsprite.coins = 0
   coinsprite.border = head
@@ -84,7 +84,12 @@ end
 
 
 function PlayerHUD:Make()
-  self.panelPositions = {Vec2(0, ScrH() - 190), Vec2(ScrW() - 90, ScrH() - 190), Vec2(ScrW() - 90, 0), Vec2(0, 0)}
+  self.panelPositions = {
+  Vec2(0, ScrH() - ScreenScale(70)),
+  Vec2(ScrW() - ScreenScale(38), ScrH() - ScreenScale(70)),
+  Vec2(ScrW() - ScreenScale(38), 0),
+  Vec2(0, 0)
+  }
 
   for i=1,4 do
     self:Create(i)
@@ -104,17 +109,19 @@ end
 
 function PlayerHUD:SetupHooks()
   hook.Add("FrameUpdate", self, self.FrameUpdate)
+  hook.Add("ScreenResize", self, self.Refresh)
 end
 
 function PlayerHUD:Refresh()
-  --self:CleanUp()
-  --self:Make()
+  self:CleanUp()
+  self:Make()
 end
 
 function PlayerHUD:Remove()
   self:CleanUp()
-  print("REMOVE")
+
   hook.Remove("FrameUpdate", self)
+  hook.Remove("ScreenResize", self)
 end
 
 local SPAZ_COLORS = {
