@@ -36,6 +36,11 @@ function META:SetSize(x, y)
   self.fontSize = x
 end
 
+function META:SetDSize(x, y)
+  self:SetSize(x, y)
+  self.dynamicSize = true
+end
+
 function META:SetXAlignment(x)
   self.alignX = x
 end
@@ -95,14 +100,31 @@ function META:Paint()
 
   surface.SetRotation(0)
 
-  if self.outlineWidth > 0 then
-    draw.SimpleTextOutlined(self.text, self.fontID, pos.x, pos.y,
-     self.fontSize, self.color, self.alignX, self.alignY,
-     self.outlineWidth, self.outlineColor)
+  if self.dynamicSize then
+
+    if self.outlineWidth > 0 then
+      draw.SimpleTextOutlined(self.text, self.fontID, ScreenScale(pos.x),
+       ScreenScaleY(pos.y), ScreenScale(self.fontSize), self.color,
+        self.alignX, self.alignY,
+       self.outlineWidth, self.outlineColor)
+    else
+      draw.SimpleText(self.text, self.fontID, ScreenScale(pos.x),
+       ScreenScaleY(pos.y),
+       ScreenScale(self.fontSize), self.color, self.alignX, self.alignY)
+    end
   else
-    draw.SimpleText(self.text, self.fontID, pos.x, pos.y,
-     self.fontSize, self.color, self.alignX, self.alignY)
+    if self.outlineWidth > 0 then
+      draw.SimpleTextOutlined(self.text, self.fontID, pos.x, pos.y,
+       self.fontSize, self.color, self.alignX, self.alignY,
+       self.outlineWidth, self.outlineColor)
+    else
+      draw.SimpleText(self.text, self.fontID, pos.x, pos.y,
+       self.fontSize, self.color, self.alignX, self.alignY)
+    end
+
   end
+
+  
 
 end
 

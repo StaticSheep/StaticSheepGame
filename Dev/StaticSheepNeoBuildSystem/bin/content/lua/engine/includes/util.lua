@@ -30,9 +30,7 @@ function Log(level, message)
   end
 end
 
-function ScreenScale(size)
-  return size * (ScrW() / 640.0)
-end
+
 
 function PrintTable(tbl)
   printed = {}

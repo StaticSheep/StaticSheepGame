@@ -27,3 +27,14 @@ function CheckDimensions()
   SCREEN_WIDTH = GetScrW()
   SCREEN_HEIGHT = GetScrH()
 end
+
+VWW = 640.0
+VWH = 640.0
+
+function ScreenScale(size)
+  return size * (ScrW() / VWW)
+end
+
+function ScreenScaleY(size)
+  return size * (ScrH() / VWH)
+end

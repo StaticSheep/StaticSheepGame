@@ -154,6 +154,14 @@ function uimenu.meta:ClickCooldown(padnum)
   self.padClickCD[padnum] = CurTime() + self.inputCD
 end
 
+function uimenu.meta:Select(newSelection)
+    -- Tell our old selection to no longer be selected
+    self.buttons[self.selected]:SetHovered(false)
+
+    -- Update our current selection
+    self.selected = newSelection
+    self.buttons[self.selected]:SetHovered(true)
+end
 
 local stickThreshold = 0.5
 
