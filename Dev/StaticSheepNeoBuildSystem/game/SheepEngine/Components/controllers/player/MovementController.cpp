@@ -167,6 +167,24 @@ namespace Framework
         // need to recalculate the gravity direction, which will be
         // the local down vector
         rot = Mat3D(Collider->GetBodyRotation() - PI / 2.0f);
+
+
+/******************************************************************************
+
+Calculating angular velocites for rotating box collider platforms... -HelpJon
+
+******************************************************************************/
+        Vec3 normalX = m_snappedNormal.CalculateNormal();
+
+        float mod = 1;
+        float direction = normalX * (Collider->GetBodyPosition() - body->GetBodyPosition());
+        if(direction < 0)
+          mod = -1;
+        m_angularVelocity = mod * body->GetBodyAngVelocity() * 1.5f;
+        m_otherObjectAngularVelocity = m_snappedNormal * m_angularVelocity;
+
+/*****************************************************************************/
+
       }
       else // for circle colliders
       {
@@ -176,6 +194,9 @@ namespace Framework
 
         // and reset our rotation
         Collider->SetBodyRotation(-orientation);
+
+        m_otherObjectAngularVelocity = Vec3();
+
       }
 
       // set our gravity to our local down vector
@@ -240,7 +261,12 @@ namespace Framework
     // if there were collisions... add the platform's velocities to the
     // player to offset platform movement
     if(m_collisionTotal)
+    {
       m_collider->AddToVelocity(m_otherObjectVelocity * 0.5f);
+
+      // Adding angular velocity. -HelpJon
+      m_collider->AddToVelocity(m_otherObjectAngularVelocity);
+    }
 
 
     if (m_pad->LStick_InDeadZone())

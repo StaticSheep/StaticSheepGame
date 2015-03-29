@@ -36,6 +36,7 @@ namespace Framework
       Vec3 m_moveDirection;
       Vec3 m_otherObjectVelocity;
       Vec3 m_currentPosition;
+      Vec3 m_otherObjectAngularVelocity;
 
       Vec3 m_snappedNormal;
 
@@ -57,6 +58,7 @@ namespace Framework
       int m_unsnappable;    // frames where snapping is not possible (after jumping)
 
       float m_maxVelocity;
+      float m_angularVelocity;
 
 
   };

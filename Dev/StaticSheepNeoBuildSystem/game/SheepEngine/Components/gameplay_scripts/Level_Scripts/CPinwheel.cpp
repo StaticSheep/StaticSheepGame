@@ -27,7 +27,7 @@ namespace Framework
       
       moveFactor *= -1;
       velocity *= moveFactor;
-      body->SetVelocity(velocity);
+      //body->SetVelocity(velocity);
       
     }
   }
@@ -46,9 +46,9 @@ namespace Framework
 
     velocity = Vec3D(50.0f, 0, 0);
     BoxCollider* body = space->GetHandles().GetAs<BoxCollider>(gCollider);
-    body->SetVelocity(velocity);
+    //body->SetVelocity(velocity);
     body->SetAngVelocity(-moveFactor);
-    body->SetBodyFrictionMod(1.0f);
+    body->SetBodyFrictionMod(0.0f);
   }
 
   void Pinwheel::Remove()
