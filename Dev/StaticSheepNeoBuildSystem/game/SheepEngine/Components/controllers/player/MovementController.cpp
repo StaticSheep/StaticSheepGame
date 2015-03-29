@@ -174,14 +174,32 @@ namespace Framework
 Calculating angular velocites for rotating box collider platforms... -HelpJon
 
 ******************************************************************************/
-        Vec3 normalX = m_snappedNormal.CalculateNormal();
+        
+        
+        Vec3 resistDirection = m_snappedNormal.CalculateNormal();
+        resistDirection *= 70.0f * body->GetBodyAngVelocity();
+        Vec3D velocity = Collider->GetCurrentVelocity();
+        //Collider->AddToVelocity(resistDirection);
+        velocity = Collider->GetCurrentVelocity();
 
-        float mod = 1;
-        float direction = normalX * (Collider->GetBodyPosition() - body->GetBodyPosition());
-        if(direction < 0)
-          mod = -1;
-        m_angularVelocity = mod * body->GetBodyAngVelocity() * 1.5f;
-        m_otherObjectAngularVelocity = m_snappedNormal * m_angularVelocity;
+        if (body->GetBodyAngVelocity() != 0 && m_pad->LStick_InDeadZone())
+        {
+          Collider->SetBodyFrictionMod(1.89f);
+          body->SetBodyFrictionMod(1.0f);
+        }
+        else
+        {
+          Collider->SetBodyFrictionMod(0.0f);
+          body->SetBodyFrictionMod(0.0f);
+        }
+
+        //if (Collider->GetBodyAngVelocity() > 2.0 || Collider->GetBodyAngVelocity() < -2.0)
+          
+        //float direction = normalX * (Collider->GetBodyPosition() - body->GetBodyPosition());
+        //if(direction < 0)
+          //mod = -1;
+       // m_angularVelocity = mod * body->GetBodyAngVelocity() * 1.5f;
+        //m_otherObjectAngularVelocity = m_snappedNormal * m_angularVelocity;
 
 /*****************************************************************************/
 

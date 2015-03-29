@@ -96,9 +96,6 @@ namespace SheepFizz
 
       contactVelocity = relativevelocity.DotProduct(normal);
 
-      //if(relativevelocity.SquareLength() > 36.0f)
-        //return;
-
       //calculate the normalized tangent vector
       //by removing the relative velocity component along the normal, only
       //the tangent remains (non-normalized)
@@ -113,9 +110,9 @@ namespace SheepFizz
 
       //friction force cannot exceed normal impulse
       //float accumulatedTanPrev = accumulatedTanImpulse[i];
-      //accumulatedTanImpulse[i] = Maximum(jFriction + accumulatedTanImpulse[i], -j * mDynamicFriction);
+      //accumulatedTanImpulse[i] = Maximum(jFriction + accumulatedTanImpulse[i], 0);
       //accumulatedTanImpulse[i] = Minimum(accumulatedTanImpulse[i], j * mDynamicFriction);
-      //jFriction = accumulatedTanImpulse[i] - accumulatedTanPrev;
+      //jFriction = accumulatedTanImpulse[i] - accumulatedTanPrev;   
 
       Vec3D frictionImpulse;
       frictionImpulse = jFriction * tangent * A->frictionMod_ * B->frictionMod_;
