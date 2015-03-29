@@ -13,6 +13,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "systems/input/Input.h"
 #include "systems/graphics/SheepGraphics.h"
 #include "systems/anttweak/TweakHelper.h"
+#include "../sound/CSoundEmitter.h"
+#include "../sound/CSoundPlayer.h"
 
 namespace Framework
 {
@@ -143,6 +145,14 @@ namespace Framework
 
       m_results.emplace_back();
     }
+
+    //start spin noise here
+    SoundPlayer *sp = space->GetGameObject(owner)->GetComponent<SoundPlayer>(eSoundPlayer);
+    SoundInstance instance;
+    instance.volume = 1.0f;
+    instance.mode = PLAY_LOOP;
+    sp->Play("slot_digital_spin2", &instance);
+    sp->Play("slot_digital_spin2", &instance);
   }
 
   void SlotMachine::SetTextureCB(Handle obj, Function cb)
@@ -173,9 +183,10 @@ namespace Framework
         return;
       }
     }
+
   }
 
-  void SlotMachine::SlotsFinished()
+  void SlotMachine::SlotsFinished() //all slots are finished
   {
     if (finishCB)
     {
@@ -185,6 +196,16 @@ namespace Framework
       finishCB.ForceBind(context);
       finishCB(&m_results);
     }
+    //play sound
+    SoundEmitter *se = space->GetGameObject(owner)->GetComponent<SoundEmitter>(eSoundEmitter);
+    SoundInstance instance;
+    instance.volume = 1.0f;
+    instance.mode = PLAY_ONCE;
+    se->Play("slot_digital_win", &instance);
+
+    //stop spin noise here
+    SoundPlayer *sp = space->GetGameObject(owner)->GetComponent<SoundPlayer>(eSoundPlayer);
+    sp->Stop("slot_digital_spin2", INSTANT);
   }
 
   void SlotMachine::Update(float dt)
@@ -248,6 +269,14 @@ namespace Framework
             m_results[i] = slot->land;
             slot->spinning = false;
             --m_numSpinning;
+            //reel finished
+            SoundEmitter *se = space->GetGameObject(owner)->GetComponent<SoundEmitter>(eSoundEmitter);
+            SoundInstance instance;
+            instance.volume = 1.0f;
+            instance.mode = PLAY_ONCE;
+
+            se->Play("slot_digital_reelStop", &instance);
+            se->Play("slot_digital_reelStop", &instance);
           }
         }
 

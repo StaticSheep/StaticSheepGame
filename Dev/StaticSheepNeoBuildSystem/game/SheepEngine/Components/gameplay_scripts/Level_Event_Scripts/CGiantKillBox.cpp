@@ -10,6 +10,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "types/space/Space.h"
 #include "../../transform/CTransform.h"
 #include "../../colliders/CBoxCollider.h"
+#include "../../sound/CSoundPlayer.h"
 
 namespace Framework
 {
@@ -37,6 +38,7 @@ namespace Framework
     kbTransfrom = space->GetGameObject(owner)->GetComponentHandle(eTransform);
     kbCollider = space->GetGameObject(owner)->GetComponentHandle(eBoxCollider);
     GrindSpawn = false;
+    playing = false;
 	}
 
   void GiantKillBox::Remove()
@@ -49,7 +51,15 @@ namespace Framework
 	{
     Transform *pt = space->GetHandles().GetAs<Transform>(kbTransfrom);
     BoxCollider *pc = space->GetHandles().GetAs <BoxCollider>(kbCollider);
-
+    if (!playing)
+    {
+      SoundPlayer *sp = space->GetGameObject(owner)->GetComponent<SoundPlayer>(eSoundPlayer);
+      SoundInstance instance;
+      instance.volume = 0.6f;
+      instance.mode = PLAY_LOOP;
+      sp->Play("saw", &instance);
+      playing = true;
+    }
     //spawn grinders
     if (!GrindSpawn)
     {
@@ -108,8 +118,8 @@ namespace Framework
   {
     for (int i = 0; i < numOfGrinders; ++i)
       space->GetGameObject(Grinders[i])->Destroy();
-
-    
+    SoundPlayer *sp = space->GetGameObject(owner)->GetComponent<SoundPlayer>(eSoundPlayer);
+    sp->Stop("saw", INSTANT);
     space->GetGameObject(owner)->Destroy();
   }
 }

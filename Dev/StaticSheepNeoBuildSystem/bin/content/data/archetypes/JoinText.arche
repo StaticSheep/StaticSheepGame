@@ -43,6 +43,23 @@ GameObject
       Y float 0.000000
     }
   }
+  PointLight
+  {
+    m_layer unsignedint 1
+    m_brightness LightColor
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 2.500000
+    }
+    m_attenuation LightVec3
+    {
+      X float 0.010000
+      Y float 0.010000
+      Z float 0.050000
+    }
+  }
   SpriteLight
   {
     m_spriteName std::string "pressAtoJoin_text.png"
@@ -70,6 +87,9 @@ GameObject
       Y float 1.000000
     }
   }
+  SoundEmitter
+  {
+  }
   JoinText
   {
     playerNum int -1
@@ -77,8 +97,5 @@ GameObject
   GamePad
   {
     GamepadIndex int 0
-  }
-  SoundEmitter
-  {
   }
 }

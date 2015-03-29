@@ -37,6 +37,7 @@ namespace Framework
     void Join(float dt);
     void GameStart(float dt);
     void BounceDown(float dt);
+    void PlayPowerDown();
 
     Handle LevelLogic, ChipController_;
     LobbyState state_;
@@ -48,6 +49,7 @@ namespace Framework
     float bounceDownTimer;
     bool spawned, bounceDownDone, startPressed;
     bool playing;
+    bool powerDownSound = false;
     Vec3 spawnPos[4];
   };
 }
