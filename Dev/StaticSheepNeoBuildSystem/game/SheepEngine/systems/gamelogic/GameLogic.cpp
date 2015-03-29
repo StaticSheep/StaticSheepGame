@@ -113,6 +113,7 @@ namespace Framework
     REGISTER_COMPONENT(RoundResults);
     REGISTER_COMPONENT(Pulser);
     REGISTER_COMPONENT(JoinText);
+    REGISTER_COMPONENT(SpineLight);
   }
 
   void GameLogic::Initialize()

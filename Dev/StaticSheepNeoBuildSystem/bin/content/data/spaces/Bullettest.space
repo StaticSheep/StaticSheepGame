@@ -1040,6 +1040,25 @@ GameObject
       A float 1.000000
     }
   }
+  SpineLight
+  {
+    m_layer int 1
+    m_emissive bool true
+    atlasName std::string "ninja_glow"
+    entityName std::string "ninja"
+    m_lightingScale Vec2
+    {
+      X float 1.000000
+      Y float 1.000000
+    }
+    Color LightColor
+    {
+      R float 0.000000
+      G float 1.000000
+      B float 0.900000
+      A float 0.800000
+    }
+  }
   BoxCollider
   {
     m_width float 90.000000

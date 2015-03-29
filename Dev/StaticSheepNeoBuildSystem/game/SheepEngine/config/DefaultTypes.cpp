@@ -441,6 +441,16 @@ namespace Framework
     TYPE_SET_TWEAK_TYPE(SpineSprite, AntTweak::TW_TYPE_COMPONENT);
     //TYPE_SET_FROM_LUA(SpineSprite, Lua::GenericObjectFromLua);
 
+    TYPE_REGISTER(SpineLight);
+    TYPE_ADD_MEMBER(SpineLight, m_layer, false, true, "Layer");
+    TYPE_ADD_MEMBER(SpineLight, m_emissive, false, true, "Emissive");
+    TYPE_ADD_MEMBER(SpineLight, atlasName, false, true, "Atlas");
+    TYPE_ADD_MEMBER(SpineLight, entityName, false, true, "Entity");
+    TYPE_ADD_MEMBER(SpineLight, m_lightingScale, false, true, "LightScale");
+    TYPE_ADD_MEMBER(SpineLight, Color, false, true, "LightColor");
+    //TYPE_ADD_MEMBER(SpineLight, sequenceName, false, true, "Sequence");
+    TYPE_SET_TWEAK_TYPE(SpineLight, AntTweak::TW_TYPE_COMPONENT);
+
     TYPE_REGISTER(ParticleSystem);
     TYPE_ADD_MEMBER(ParticleSystem, textureName, false, true, "ParticleTexture",
       BUILD_FUNCTION(ParticleSystem::TweakSetTexture));
