@@ -754,7 +754,23 @@ namespace Framework
   //************************************
   void PlayerController::PlayerDeath(SoundEmitter *se, Transform *ps, int who_killed_me)
   {
-    se->Play("death_explosion", &SoundInstance(1.0f));
+    if (!GetRandom(0, 3))
+    {
+      if (who_killed_me != -1)
+      {
+        if (GetRandom(0, 1))
+          se->Play("crowd_approve00", &SoundInstance(1.0f));
+        else
+          se->Play("crowd_approve02", &SoundInstance(1.0f));
+      }
+      else
+      {
+        if (GetRandom(0, 1))
+          se->Play("crowd_disapprove00", &SoundInstance(1.0f));
+        else
+          se->Play("crowd_disapprove01", &SoundInstance(1.0f));
+      }
+    }
     Handle explosion = (FACTORY->LoadObjectFromArchetype(space, "explosion"))->self;
     Transform *exT = space->GetGameObject(explosion)->GetComponent<Transform>(eTransform);
     exT->SetTranslation(ps->GetTranslation());

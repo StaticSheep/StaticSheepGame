@@ -12,6 +12,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "../../sprites/CSprite.h"
 #include "../chip/CChipController.h"
 #include "CRoundResults.h"
+#include "SheepMath.h"
 
 namespace Framework
 {
@@ -19,9 +20,9 @@ namespace Framework
   RoundController::RoundController()
   {
     current_round = 1;
-    max_rounds = 6; //default value
+    max_rounds = 3; //default value
     spawned_round_start = false;
-    timeOfRound = 93.0f; //default round length, (round length + 3.0f)
+    timeOfRound = 23.0f; //default round length, (round length + 3.0f)
     state_ = INTRO;
     gameStarted = false;
   }
@@ -89,6 +90,10 @@ namespace Framework
       GameObject *welcome = (FACTORY->LoadObjectFromArchetype(space, "welcome_text"));
       GameObject *toThe = (FACTORY->LoadObjectFromArchetype(space, "ToThe_text"));
       GameObject *games = (FACTORY->LoadObjectFromArchetype(space, "games_text"));
+      SoundEmitter *se = space->GetGameObject(owner)->GetComponent<SoundEmitter>(eSoundEmitter);
+      se->Play("crowd_cheer00", &SoundInstance(1.0f));
+      se->Play("crowd_cheer01", &SoundInstance(1.0f));
+      se->Play("switch_on", &SoundInstance(1.0f));
       welcome->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(1000.0f, 96.0f, 0.0f));
       toThe->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(-1000.0f, 0.0f, 0.0f));
       games->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(1000.0f, -96.0f, 0.0f));
@@ -168,6 +173,9 @@ namespace Framework
   {
     if (round_state_timer >= 8.0f && !roundUp_spawned)
     {
+      SoundEmitter *se = space->GetGameObject(owner)->GetComponent<SoundEmitter>(eSoundEmitter);
+      se->Play("slot_digital_bell2", &SoundInstance(1.0f));
+      se->Play("slot_digital_bell2", &SoundInstance(1.0f));
       //display "round over"
       GameObject *round_number = (FACTORY->LoadObjectFromArchetype(space, "roundUp_text"));
       round_number->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(-1000.0f, 64.0f, 0.0f));
@@ -189,6 +197,11 @@ namespace Framework
         ResultsSpawned = true;
         space->GetGameObject(owner)->GetComponent<Level1_Logic>(eLevel1_Logic)->ResetPlayers();
         space->hooks.Call("DestroyPickups");
+        SoundEmitter *se = space->GetGameObject(owner)->GetComponent<SoundEmitter>(eSoundEmitter);
+        if (GetRandom(0, 1))
+          se->Play("crowd_cheer00", &SoundInstance(1.0f));
+        else
+          se->Play("crowd_cheer01", &SoundInstance(1.0f));
       }
       
       if (!EORAwarded)
@@ -228,20 +241,24 @@ namespace Framework
     }
 
     //spawn tv
-    if (!ResultsSpawned && round_state_timer <= 90.0f)
+    if (!ResultsSpawned && round_state_timer <= 20.0f)
     {
       GameObject *ResultsTV = (FACTORY->LoadObjectFromArchetype(space, "ResultsTV"));
       ResultsTV->GetComponent<RoundResults>(eRoundResults)->ChipCont = space->GetGameObject(owner)->GetComponent<ChipController>(eChipController)->owner;
       ResultsTV->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(0.0f, 950.0f, -1.0f));
       ResultsTV->GetComponent<RoundResults>(eRoundResults)->mode_ = GameTypes::GAMEOVER;
       ResultsSpawned = true;
+      ResultsTV->GetComponent<RoundResults>(eRoundResults)->timeToLive = 15.0f;
+      SoundEmitter *se = space->GetGameObject(owner)->GetComponent<SoundEmitter>(eSoundEmitter);
+      se->Play("crowd_cheer00", &SoundInstance(1.0f));
+      se->Play("crowd_cheer01", &SoundInstance(1.0f));
     }
     
     round_state_timer -= dt;
 
     if (round_state_timer <= 0)
     {
-      ENGINE->ChangeLevel("Asteroid");
+      ENGINE->ChangeLevel("Lobby");
     }
   }
 
@@ -256,9 +273,12 @@ namespace Framework
   void RoundController::RoundCountDown()
   {
     Sprite *ls = space->GetGameObject(owner)->GetComponent<Sprite>(eSprite);
+    SoundEmitter *se = space->GetGameObject(owner)->GetComponent<SoundEmitter>(eSoundEmitter);
     //run countdown
     if (round_state_timer <= 5.0f && round_state_timer > 4.0f && !num_spawned[4])
     {
+      se->Play("three_quick_beeps", &SoundInstance(1.0f));
+      se->Play("three_quick_beeps", &SoundInstance(1.0f));
       GameObject *round_number = (FACTORY->LoadObjectFromArchetype(space, "round_number"));
       round_number->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(1000.0f, -64.0f, 0.0f));
       round_number->GetComponent<RoundText>(eRoundText)->number = 5;
@@ -267,6 +287,8 @@ namespace Framework
     }
     else if (round_state_timer <= 4.0f && round_state_timer > 3.0f && !num_spawned[3])
     {
+      se->Play("three_quick_beeps", &SoundInstance(1.0f));
+      se->Play("three_quick_beeps", &SoundInstance(1.0f));
       GameObject *round_number = (FACTORY->LoadObjectFromArchetype(space, "round_number"));
       round_number->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(1000.0f, -64.0f, 0.0f));
       round_number->GetComponent<RoundText>(eRoundText)->number = 4;
@@ -275,6 +297,8 @@ namespace Framework
     }
     else if (round_state_timer <= 3.0f && round_state_timer > 2.0f && !num_spawned[2])
     {
+      se->Play("three_quick_beeps", &SoundInstance(1.0f));
+      se->Play("three_quick_beeps", &SoundInstance(1.0f));
       GameObject *round_number = (FACTORY->LoadObjectFromArchetype(space, "round_number"));
       round_number->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(1000.0f, -64.0f, 0.0f));
       round_number->GetComponent<RoundText>(eRoundText)->number = 3;
@@ -283,6 +307,8 @@ namespace Framework
     }
     else if (round_state_timer <= 2.0f && round_state_timer > 1.0f && !num_spawned[1])
     {
+      se->Play("three_quick_beeps", &SoundInstance(1.0f));
+      se->Play("three_quick_beeps", &SoundInstance(1.0f));
       GameObject *round_number = (FACTORY->LoadObjectFromArchetype(space, "round_number"));
       round_number->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(1000.0f, -64.0f, 0.0f));
       round_number->GetComponent<RoundText>(eRoundText)->number = 2;
@@ -291,6 +317,8 @@ namespace Framework
     }
     else if (round_state_timer <= 1.0f && round_state_timer > 0.0f && !num_spawned[0])
     {
+      se->Play("three_quick_beeps", &SoundInstance(1.0f));
+      se->Play("three_quick_beeps", &SoundInstance(1.0f));
       GameObject *round_number = (FACTORY->LoadObjectFromArchetype(space, "round_number"));
       round_number->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(1000.0f, -64.0f, 0.0f));
       round_number->GetComponent<RoundText>(eRoundText)->number = 1;

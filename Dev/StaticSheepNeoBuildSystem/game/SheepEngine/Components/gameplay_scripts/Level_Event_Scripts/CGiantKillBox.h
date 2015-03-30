@@ -30,6 +30,7 @@ namespace Framework
     Handle kbTransfrom;
     Handle kbCollider;
     bool direction, GrindSpawn;
+    bool playing = false;
     int numOfGrinders;
     float sizeOfGrinder;
     float itemDropTimer;

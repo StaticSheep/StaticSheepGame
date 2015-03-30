@@ -139,6 +139,9 @@ GameObject
       parentToOwner bool false
     }
   }
+  SoundEmitter
+  {
+  }
   Explosion
   {
     timer float 0.300000

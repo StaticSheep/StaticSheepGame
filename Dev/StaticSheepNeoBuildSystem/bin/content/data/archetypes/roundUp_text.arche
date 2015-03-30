@@ -70,6 +70,9 @@ GameObject
       Y float 0.800000
     }
   }
+  SoundEmitter
+  {
+  }
   RoundText
   {
     timer float 3.000000

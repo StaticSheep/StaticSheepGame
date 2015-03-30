@@ -11,6 +11,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "../../transform/CTransform.h"
 #include "../../colliders/CBoxCollider.h"
 #include "../../sprites/CAniSprite.h"
+#include "../../sound/CSoundEmitter.h"
 
 namespace Framework
 {
@@ -45,6 +46,9 @@ namespace Framework
       if (numSprite != nullptr)
         numSprite->SetRange(Vec2((float)number, (float)number));
     }
+
+    swooshedIn = false;
+    swooshedOut = true;
 	}
 
   void RoundText::Remove()
@@ -57,6 +61,10 @@ namespace Framework
   {
     Transform *rt = space->GetHandles().GetAs<Transform>(rTransfrom);
     Vec3 currPos = rt->GetTranslation();
+    
+    //play swoosh in
+    if (!swooshedIn)
+      PlaySwooshIn();
     if (!text)
     {
       AniSprite *numSprite = space->GetGameObject(owner)->GetComponent<AniSprite>(eAniSprite);
@@ -68,16 +76,32 @@ namespace Framework
     if (LeftToRight)
     {
       if (currPos.x > -100.0f && currPos.x < 100.0f)
+      {
         rt->SetTranslation(currPos + Vec3(middleSpeed, 0.0f, 0.0f));
+        swooshedOut = false;
+      }
       else
+      {
+        //play swoosh out
+        if (!swooshedOut)
+          PlaySwooshOut();
         rt->SetTranslation(currPos + Vec3(initialSpeed, 0.0f, 0.0f));
+      }
     }
     else
     {
       if (currPos.x > -100.0f && currPos.x < 100.0f)
+      {
         rt->SetTranslation(currPos + Vec3(-middleSpeed, 0.0f, 0.0f));
+        swooshedOut = false;
+      }
       else
+      {
+        //play swoosh out
+        if (!swooshedOut)
+          PlaySwooshOut();
         rt->SetTranslation(currPos + Vec3(-initialSpeed, 0.0f, 0.0f));
+      }
     }
 
 
@@ -93,4 +117,29 @@ namespace Framework
     space->GetGameObject(owner)->Destroy();
   }
 
+  void RoundText::PlaySwooshIn()
+  {
+    SoundEmitter *se = space->GetGameObject(owner)->GetComponent<SoundEmitter>(eSoundEmitter);
+    if (text)
+      se->Play("swoosh_low", &SoundInstance(1.0f));
+    else
+    {
+      //se->Play("swooesh_med_high", &SoundInstance(1.0f));
+    }
+
+    swooshedIn = true;
+  }
+
+  void RoundText::PlaySwooshOut()
+  {
+    SoundEmitter *se = space->GetGameObject(owner)->GetComponent<SoundEmitter>(eSoundEmitter);
+    if (text)
+      se->Play("swoosh_medium", &SoundInstance(1.0f));
+    else
+    {
+      //se->Play("swoosh_high", &SoundInstance(1.0f));
+    }
+
+    swooshedOut = true;
+  }
 }

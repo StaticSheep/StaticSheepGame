@@ -14,6 +14,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "../../particles/CParticleCircleEmitter.h"
 #include "../../basicps/CBasicPSystem.h"
 #include "../../lights/CPointLight.h"
+#include "../../sound/CSoundEmitter.h"
 
 namespace Framework
 {
@@ -36,7 +37,6 @@ namespace Framework
 
     eTransfrom = space->GetGameObject(owner)->GetComponentHandle(eTransform);
     eAnSprite = space->GetGameObject(owner)->GetComponentHandle(eAniSprite);
-
 	}
 
   void Explosion::Remove()
@@ -79,6 +79,8 @@ namespace Framework
 
   void Explosion::LogicUpdate(float dt)
 	{
+    if (!soundPlayed)
+      PlayExplosionSound();
     if (waitForAnim)
       return;
 
@@ -120,5 +122,25 @@ namespace Framework
   void Explosion::DestroySelf()
   {
     space->GetGameObject(owner)->Destroy();
+  }
+
+  void Explosion::PlayExplosionSound()
+  {
+    SoundEmitter *se = space->GetGameObject(owner)->GetComponent<SoundEmitter>(eSoundEmitter);
+    if (!se)
+      return;
+    int exp_ = GetRandom(0, 4);
+    if (exp_ == 0)
+      se->Play("explosion_00", &SoundInstance(0.7f));
+    else if (exp_ == 1)
+      se->Play("explosion_01", &SoundInstance(0.7f));
+    else if (exp_ == 2)
+      se->Play("explosion_02", &SoundInstance(0.7f));
+    else if (exp_ == 3)
+      se->Play("explosion_03", &SoundInstance(0.7f));
+    else if (exp_ == 4)
+      se->Play("death_explosion", &SoundInstance(0.7f));
+
+    soundPlayed = true;
   }
 }
