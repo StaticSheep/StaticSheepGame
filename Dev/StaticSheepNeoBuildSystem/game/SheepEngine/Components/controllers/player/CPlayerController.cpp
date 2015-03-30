@@ -145,8 +145,8 @@ namespace Framework
     bc = space->GetHandles().GetAs<BoxCollider>(playerCollider);
     bc->SetGravityOff();
 
-    //weapon = (Pistol*)GET_TYPE(Pistol)->New();
-    weapon = (WLaser*)GET_TYPE(WLaser)->New();
+    weapon = (Pistol*)GET_TYPE(Pistol)->New();
+    //weapon = (WLaser*)GET_TYPE(WLaser)->New();
     se = space->GetHandles().GetAs<SoundEmitter>(playerSound);
     se->Play("robot_startup", &SoundInstance(0.50f));
     animCont = AnimationController(playerNum);
