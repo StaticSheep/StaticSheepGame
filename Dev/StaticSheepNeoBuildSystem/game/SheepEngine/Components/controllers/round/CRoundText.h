@@ -21,6 +21,8 @@ namespace Framework
 		void Initialize();
 		void Remove();
     void DestroySelf();
+    void PlaySwooshIn();
+    void PlaySwooshOut();
 
 		//member variables
     Handle rTransfrom;
@@ -31,5 +33,7 @@ namespace Framework
     bool LeftToRight; //if true goes left to right, otherwise it will go right to left
     //intitialSpeed is when it comes in and out. middle speed is when it passes through center
     float initialSpeed, middleSpeed, killRange; 
+    bool swooshedIn = false;
+    bool swooshedOut = false;
 	};
 }

@@ -257,13 +257,14 @@ namespace DirectSheep
     // Set arguments for swapchain creation
     swapDesc.BufferCount = 1;                                   // single back buffer
     swapDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;    // 32-bit color
-    swapDesc.BufferDesc.Width = m_viewport.dim.width;           // back buffer width
-    swapDesc.BufferDesc.Height = m_viewport.dim.height;         // back buffer height
+    swapDesc.BufferDesc.Width = SCREEN_WIDTH;           // back buffer width
+    swapDesc.BufferDesc.Height = SCREEN_HEIGHT;         // back buffer height
     swapDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;     // use buffer as render target
     swapDesc.OutputWindow = m_hwnd;                             // attach to window
     swapDesc.SampleDesc.Count = 1;                              // # of multisamples
     swapDesc.SampleDesc.Quality = 0;
-    swapDesc.Windowed = TRUE;                          // windowed/full-screen mode
+    swapDesc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
+    swapDesc.Windowed = true;                          // windowed/full-screen mode
     //swapDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;    // allow full-screen switching
 
     // create DirectX device, it's context, and swapchain using swapDesc
@@ -273,26 +274,32 @@ namespace DirectSheep
     {
       driverType = driverTypes[driverTypeIndex]; // Grabs driver type
 
-      hr = CreateDXGIFactory(__uuidof(IDXGIFactory2), (void**)(&m_factory)); 
-      
-      hr = D3D11CreateDevice(nullptr, driverType, NULL, deviceFlags,
-        featureLevels, 1, D3D11_SDK_VERSION, &m_device,
-        &featureLevel, &m_deviceContext);
-      
       // Attempts to init
-      hr = m_factory->CreateSwapChain(m_device, &swapDesc, &m_swapChain);
+      hr = D3D11CreateDeviceAndSwapChain(NULL,      // No adapter
+        driverType,       // Current driver setting attempt
+        NULL,             // Don't want to use software
+        deviceFlags,      // Special flags(debug)
+        featureLevels,    // Pointer to feature levels
+        numFeatureLevels, // Size of feature level array
+        D3D11_SDK_VERSION,// Use DirectX 11 SDK
+        &swapDesc,        // Struct with all params for device creatiosn
+        &m_swapChain,     // Set swapchain pointer
+        &m_device,        // Set device pointer
+        &featureLevel,    // Give array of fearure levels DX will use best option
+        &m_deviceContext);// Set devic context pointer
 
       if (SUCCEEDED(hr)) // If succeeded then break otherwise try lower driver settings
         break;
-      
     }
     DXVerify(hr); // Check for any DirectX specific error messages
 
+  
+
     // Make a temporary factory to get parent
-    IDXGIFactory2 *FactoryTemp = nullptr;
+    IDXGIFactory1 *FactoryTemp = nullptr;
 
     // retrieve parent of swapchain
-    m_swapChain->GetParent(__uuidof(IDXGIFactory2), (void**)&FactoryTemp);
+    m_swapChain->GetParent(__uuidof(IDXGIFactory1), (void**)&FactoryTemp);
 
     // disable alt+enter fullscreen
     FactoryTemp->MakeWindowAssociation(m_hwnd, DXGI_MWA_NO_ALT_ENTER);
