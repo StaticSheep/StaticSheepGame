@@ -12,6 +12,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #define SHEEP_DEBUG 1
 #define SHEEPGRAPHICS 1
 #define METRICS 0
+#define ENABLE_LETTERBOXING 1
 
 #define PRESENTATION 0
 
@@ -27,7 +28,7 @@ namespace Framework
 {
   namespace Config
   {
-    static int desiredWidth = 1600;
+    static int desiredWidth = 1500;
     static int desiredHeight = 900;
   }
 

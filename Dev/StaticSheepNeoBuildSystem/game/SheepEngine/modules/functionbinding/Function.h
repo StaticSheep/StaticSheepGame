@@ -638,6 +638,7 @@ namespace Framework
   {
     ErrorIf(m_sig.ArgCount() != 2, "Bound Function calling", "Wrong Overload!");
     ErrorIf(m_sig.GetArg(0) != GET_TYPE(A1), "Bound Function calling", "Argument type error!");
+    ErrorIf(m_sig.GetArg(1) != GET_TYPE(A2), "Bound Function calling", "Argument type error!");
 
     Variable argStack[2];
 

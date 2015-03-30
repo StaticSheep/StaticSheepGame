@@ -22,6 +22,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "../../gameplay_scripts/Player_Scripts/CAimingArrow.h"
 #include "../../gameplay_scripts/Player_Scripts/CDashEffect.h"
 #include "../../particles/CParticleSystem.h"
+#include "types/weapons/WLaser.h"
 
 
 
@@ -145,6 +146,7 @@ namespace Framework
     bc->SetGravityOff();
 
     weapon = (Pistol*)GET_TYPE(Pistol)->New();
+    //weapon = (WLaser*)GET_TYPE(WLaser)->New();
     se = space->GetHandles().GetAs<SoundEmitter>(playerSound);
     se->Play("robot_startup", &SoundInstance(0.50f));
     animCont = AnimationController(playerNum);

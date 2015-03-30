@@ -63,6 +63,8 @@ namespace Framework
       BIND_FUNCTION_TABLE(L, Draw::ForceZ, ForceZ, surface);
       BIND_FUNCTION_TABLE(L, Draw::LuaMeasureString, MeasureString, surface);
       BIND_FUNCTION_TABLE(L, Draw::GetFontIndex, GetFontID, surface);
+      BIND_FUNCTION_TABLE(L, Draw::SetFullScreen, SetFullScreen, surface);
+      BIND_FUNCTION_TABLE(L, Draw::GetFullScreen, GetFullScreen, surface);
 
       CREATE_TABLE(L, audio);
       BIND_FUNCTION_TABLE(L, SheepAudio::LuaPauseAll, PauseAll, audio);
@@ -73,8 +75,12 @@ namespace Framework
       BIND_FUNCTION_EX(L, InputManager::KeyIsPressed, KeyIsPressed);
       BIND_FUNCTION_EX(L, InputManager::KeyIsReleased, KeyIsReleased);
 
-      BIND_FUNCTION_EX(L, Draw::ScreenWidth, ScrW);
-      BIND_FUNCTION_EX(L, Draw::ScreenHeight, ScrH);
+      BIND_FUNCTION_EX(L, InputManager::MouseIsDown, MouseIsDown);
+      BIND_FUNCTION_EX(L, InputManager::MouseIsPressed, MouseIsPressed);
+      BIND_FUNCTION_EX(L, InputManager::MouseIsReleased, MouseIsReleased);
+
+      BIND_FUNCTION_EX(L, Draw::ScreenWidth, GetScrW);
+      BIND_FUNCTION_EX(L, Draw::ScreenHeight, GetScrH);
 
       BIND_FUNCTION_EX(L, Engine::CurrentTime, CurTime);
 

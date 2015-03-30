@@ -100,11 +100,12 @@ function META:Run()
   self.tex[2] = surface.GetTextureID("ThereIsOnly.png")
   self.tex[3] = surface.GetTextureID("Entertainment.png")
   self.tex[4] = surface.GetTextureID("GigaGravityTitle.png")
+  self.tex[5] = surface.GetTextureID("dp_whitelogo.png")
 
   self._alpha = 0
   self._alpha2 = 0
-  self._texID = self.tex[1]
-  self._texSize = Vec2(2, 2)
+  self._texID = self.tex[5]
+  self._texSize = Vec2(1, 1)
   self._textPos = Vec3(0, 0, 0)
   self._slotMachine = {}
   self._logo = nil
@@ -119,6 +120,27 @@ function META:Run()
     end,
     nil,
     false))
+
+  self.List:PushBack(Action(
+    Timed(2.5),
+    FadeIn(self),
+    nil,
+    true))
+
+  self.List:PushBack(Action(
+    Timed(3),
+    Hold(),
+    nil,
+    true))
+
+  self.List:PushBack(Action(
+    Timed(1.5),
+    FadeOut(self),
+    function(act)
+      ChangeTexture(self, 1)(act)
+      ChangeDimensions(self, Vec2(2, 2))(act)
+    end,
+    true))
 
   self.List:PushBack(Action(
     Timed(0.25),
@@ -175,7 +197,7 @@ function META:Run()
 
   self.List:PushBack(Action(
     function(act)
-      self:Owner().SoundPlayer:PlayLoop("Main Music")
+      self:Owner().SoundPlayer:PlayLoop("tripg")
     end,
     function(act, dt)
       act:Done()
@@ -355,7 +377,11 @@ end
 function META:Update(dt)
   self.List:Update(dt)
 
-  if gamepad.ButtonPressed(nil, GAMEPAD_START) or KeyIsPressed(KEY_ENTER) then
+  if gamepad.ButtonPressed(nil, GAMEPAD_START) or KeyIsPressed(KEY_ENTER)
+  or KeyIsPressed(KEY_SPACE) or KeyIsPressed(KEY_ESCAPE) or
+  gamepad.ButtonPressed(nil, GAMEPAD_A) or
+  MouseIsDown(MOUSE_LEFT) or MouseIsDown(MOUSE_RIGHT)
+  then
     self.List:Clear()
 
     self.List:PushBack(Action(

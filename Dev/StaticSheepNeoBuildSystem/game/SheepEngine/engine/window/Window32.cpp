@@ -28,6 +28,7 @@ static void GetDesktopResolution(int& horizontal, int& vertical)
   // The top left corner will have coordinates (0,0)
   // and the bottom right corner will have coordinates
   // (horizontal, vertical)
+
   horizontal = desktop.right;
   vertical = desktop.bottom;
 }
@@ -59,9 +60,19 @@ namespace Framework
     // Create Window
     width = Config::desiredWidth;
     height = Config::desiredHeight;
+
     if (fullScreen)
     {
       GetDesktopResolution(width, height);
+    }
+    else
+    {
+      int screenWidth, screenHeight;
+      GetDesktopResolution(screenWidth, screenHeight);
+      if (width > screenWidth)
+        width = screenWidth - 50;
+      if (height > screenHeight)
+        height = screenHeight - 150;
     }
     
     RECT rc = {0, 0, width, height};                     // Defines rectangle dimensions for window
@@ -69,7 +80,7 @@ namespace Framework
 
     // Creates a window using registered classes params along with RECT size
     Handle = CreateWindow("SheepWindow",         // Name of window class
-      "Sheep Engine 2015",      // Text on top bar
+      "Giga Gravity Games",      // Text on top bar
       WS_OVERLAPPEDWINDOW, // Type of window
       CW_USEDEFAULT, 
       CW_USEDEFAULT, 
@@ -128,28 +139,24 @@ namespace Framework
       break;
 
     case WM_ACTIVATE:
-      if (wParam == WA_INACTIVE && !ENGINE->m_editorActive
-        && !ENGINE->PlayingInEditor())
+      if ((wParam == WA_CLICKACTIVE || wParam == WA_ACTIVE) && 
+        !ENGINE->m_editorActive && !ENGINE->PlayingInEditor())
+      {
+        ENGINE->SystemMessage(Message(Message::WindowRestore));
+
+        ShowCursor(false);
+
+        ShowWindow(hWnd, SW_RESTORE);
+        WINDOW_ACTIVE = true;
+      }
+      else if (wParam == WA_INACTIVE
+        && !ENGINE->m_editorActive && !ENGINE->PlayingInEditor())
       {
         ENGINE->SystemMessage(Message(Message::WindowMinimize));
 
         ShowWindow(hWnd, SW_MINIMIZE);
 
         WINDOW_ACTIVE = false;
-      }
-      else if ((wParam == WA_CLICKACTIVE || wParam == WA_ACTIVE) &&
-        !ENGINE->m_editorActive && !ENGINE->PlayingInEditor())
-      {
-        ENGINE->SystemMessage(Message(Message::WindowRestore));
-
-        if (!ENGINE->PlayingInEditor())
-        {
-          
-          ShowCursor(false);
-        }
-
-        ShowWindow(hWnd, SW_RESTORE);
-        WINDOW_ACTIVE = true;
       }
       break;
 
