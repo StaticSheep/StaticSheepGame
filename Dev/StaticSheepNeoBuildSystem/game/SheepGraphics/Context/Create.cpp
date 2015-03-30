@@ -264,8 +264,8 @@ namespace DirectSheep
     swapDesc.SampleDesc.Count = 1;                              // # of multisamples
     swapDesc.SampleDesc.Quality = 0;
     swapDesc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
-    swapDesc.Windowed = !m_fullscreen;                          // windowed/full-screen mode
-    swapDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;    // allow full-screen switching
+    swapDesc.Windowed = true;                          // windowed/full-screen mode
+    //swapDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;    // allow full-screen switching
 
     // create DirectX device, it's context, and swapchain using swapDesc
 
@@ -296,10 +296,10 @@ namespace DirectSheep
   
 
     // Make a temporary factory to get parent
-    IDXGIFactory2 *FactoryTemp = nullptr;
+    IDXGIFactory1 *FactoryTemp = nullptr;
 
     // retrieve parent of swapchain
-    m_swapChain->GetParent(__uuidof(IDXGIFactory2), (void**)&FactoryTemp);
+    m_swapChain->GetParent(__uuidof(IDXGIFactory1), (void**)&FactoryTemp);
 
     // disable alt+enter fullscreen
     FactoryTemp->MakeWindowAssociation(m_hwnd, DXGI_MWA_NO_ALT_ENTER);
