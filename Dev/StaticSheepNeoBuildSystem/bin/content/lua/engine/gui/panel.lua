@@ -68,6 +68,10 @@ function META:SetDSize(w, h)
   self.dynamicSize = true
 end
 
+function META:SetDynamicSizing(status)
+  self.dynamicSize = status
+end
+
 function META:GetSize()
   return self.size
 end
