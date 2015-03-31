@@ -16,7 +16,7 @@ namespace Framework
 {
   BackgroundPan::BackgroundPan()
 	{
-
+    inLobby = true;
 	}
 
   BackgroundPan::~BackgroundPan()
@@ -28,6 +28,7 @@ namespace Framework
 	{
 		//logic setup, you're attached and components are in place
     space->hooks.Add("LogicUpdate", self, BUILD_FUNCTION(BackgroundPan::LogicUpdate));
+    space->hooks.Add("TogglePan", self, BUILD_FUNCTION(BackgroundPan::TogglePan));
 
     bTransfrom = space->GetGameObject(owner)->GetComponentHandle(eTransform);
 	}
@@ -39,6 +40,9 @@ namespace Framework
 
   void BackgroundPan::LogicUpdate(float dt)
 	{
+    if (inLobby)
+      return;
+
     Transform *pt = space->GetHandles().GetAs<Transform>(bTransfrom);
 
     /*pt->SetRotation(pt->GetRotation() + (dt / 20));
@@ -56,4 +60,8 @@ namespace Framework
 
 	}
 
+  void BackgroundPan::TogglePan()
+  {
+    inLobby = !inLobby;
+  }
 }

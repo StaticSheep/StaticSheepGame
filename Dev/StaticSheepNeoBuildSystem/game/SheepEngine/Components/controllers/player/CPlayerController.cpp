@@ -155,6 +155,7 @@ namespace Framework
 
     powerUp = nullptr;
     pn = -1;
+    jumpTriggerUp = true;
     //SpawnEffect();
 	}
 
@@ -252,9 +253,9 @@ namespace Framework
     }
 
 		//dash, formally known as melee
-    if (gp->ButtonPressed(XButtons.LShoulder))
+    if (gp->ButtonPressed(XButtons.A))
       Melee(Buttons::LB);
-    else if (gp->ButtonPressed(XButtons.RShoulder))
+    else if (gp->LeftTrigger() && jumpTriggerUp)
       Melee(Buttons::RB);
 
     PlayerButtonPress(); //check to see if the player has pressed any of the controller buttons (for cheats or other things)
@@ -366,13 +367,17 @@ namespace Framework
     clampVelocity(450.0f);
 
     //jump
-    if (((gp->ButtonDown(XButtons.A) || gp->LeftTrigger()) && isSnapped) || (SHEEPINPUT->KeyIsDown('Q') && gp->GetIndex() == 0))
+    if (((gp->ButtonPressed(XButtons.A) || gp->LeftTrigger())) || (SHEEPINPUT->KeyIsDown('Q') && gp->GetIndex() == 0))
     {
+      if (!(isSnapped || jumpTriggerUp))
+        return;
       jump(); //player jump
+      jumpTriggerUp = false;
+
       if (GetRandom(0, 1)) //determine sound for jump
-        se->Play("jump2", &SoundInstance(0.75f));
+        se->Play("jump2", &SoundInstance(0.85f));
       else
-        se->Play("jump1", &SoundInstance(0.75f));
+        se->Play("jump1", &SoundInstance(0.85f));
     }
   }
 
@@ -675,7 +680,7 @@ namespace Framework
     GameObject *dash_effect = (FACTORY->LoadObjectFromArchetype(space, "fire_effect1"));
     dash_effect->GetComponent<DashEffect>(eDashEffect)->pTransform = playerTransform;
     dash_effect->GetComponent<Transform>(eTransform)->SetTranslation(ps->GetTranslation());
-    se->Play("dash", &SoundInstance(0.7f));
+    se->Play("dash", &SoundInstance(0.5f));
     hasDashed = true;
   }
 
@@ -891,6 +896,9 @@ namespace Framework
     playerButton.x = (int)ps->GetTranslation().x;
     playerButton.y = (int)ps->GetTranslation().y;
     playerButton.button = Buttons::NONE;
+
+    if (!gp->LeftTrigger())
+      jumpTriggerUp = true;
 
     if (gp->ButtonPressed(XButtons.A))
     {

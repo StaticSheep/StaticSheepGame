@@ -13,6 +13,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "../chip/CChipController.h"
 #include "CRoundResults.h"
 #include "SheepMath.h"
+#include "../../gameplay_scripts/arena/CBlockLights.h"
 
 namespace Framework
 {
@@ -45,7 +46,7 @@ namespace Framework
     LevelLogic = space->GetGameObject(owner)->GetComponentHandle(eLevel1_Logic);
     ChipController_ = space->GetGameObject(owner)->GetComponentHandle(eChipController);
     //intro sequence timer
-    round_state_timer = 3.0f;
+    round_state_timer = 6.0f;
     EORAwarded = false;
 
 
@@ -83,6 +84,10 @@ namespace Framework
 
   void RoundController::IntroSequence(float dt)
   {
+    round_state_timer -= dt;
+
+    if (round_state_timer >= 3.0f)
+      return;
     //light-up sequence
     //Welcome to the Games!
     if (!spawned_round_start)
@@ -94,13 +99,14 @@ namespace Framework
       se->Play("crowd_cheer00", &SoundInstance(1.0f));
       se->Play("crowd_cheer01", &SoundInstance(1.0f));
       se->Play("switch_on", &SoundInstance(1.0f));
+      space->GetGameObject(owner)->GetComponent<Level1_Logic>(eLevel1_Logic)->playing = false;
+      space->hooks.Call("TogglePan");
       welcome->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(1000.0f, 96.0f, 0.0f));
       toThe->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(-1000.0f, 0.0f, 0.0f));
       games->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(1000.0f, -96.0f, 0.0f));
       spawned_round_start = true;
     }
 
-    round_state_timer -= dt;
     if (round_state_timer <= 0)
     {
       state_ = ROUNDSTART;

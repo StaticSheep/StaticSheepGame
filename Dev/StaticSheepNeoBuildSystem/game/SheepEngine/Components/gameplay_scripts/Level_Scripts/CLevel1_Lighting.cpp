@@ -4,6 +4,7 @@
 #include "../SheepUtil/include/SheepMath.h"
 #include "CLevel1_Lighting.h"
 #include "../arena/CBlockLights.h"
+#include "../../sound/CSoundEmitter.h"
 
 #define Countdown 5.0f
 namespace Framework
@@ -29,12 +30,16 @@ namespace Framework
     space->hooks.Add("ToggleLevelLights", self, BUILD_FUNCTION(Level1_Lighting::Toggle));
     //space->hooks.Add("PlayerDied", self, BUILD_FUNCTION(Level1_Lighting::PlayerDied)); // might want this
 
-    if (!ENGINE->m_editorActive)
-      CreateSpawnLights();
+    //if (!ENGINE->m_editorActive)
+      //CreateSpawnLights();
+    for (int i = 0; i < 4; ++i)
+      sfxTriggered[i] = false;
 
     m_levelTime = 0;
     m_PulseT = 1;
     m_PulseFlip = false;
+    m_firstUpdate = true;
+    spawnTimer_ = 3.0f;
   }
 
   void Level1_Lighting::Remove()
@@ -47,9 +52,8 @@ namespace Framework
 
     if (m_firstUpdate)
     {
-      //TurnOn();
-
-      m_firstUpdate = false;
+      CreateSpawnLights(dt);
+      return;
     }
 
     if (!space->GetGameObject(m_lights[4]))
@@ -77,24 +81,80 @@ namespace Framework
     m_levelTime += dt;
   }
 
-  void Level1_Lighting::CreateSpawnLights()
+  void Level1_Lighting::CreateSpawnLights(float dt)
   {
-    Transform* lightTrans;
-    PointLight* light[6];
-    for (int i = 0; i < 6; ++i)
+    //I'm hijacking this -Greg
+    if (!spawned_)
     {
-      m_lights[i] = (FACTORY->LoadObjectFromArchetype(space, "SpawnLight"))->self;
+      Transform* lightTrans;
+      //PointLight* light[6];
+      for (int i = 0; i < 6; ++i)
+      {
+        m_lights[i] = (FACTORY->LoadObjectFromArchetype(space, "SpawnLight"))->self;
 
-      lightTrans = space->GetGameObject(m_lights[i])->GetComponent<Transform>(eTransform);
-      light[i] = space->GetGameObject(m_lights[i])->GetComponent<PointLight>(ePointLight);
+        lightTrans = space->GetGameObject(m_lights[i])->GetComponent<Transform>(eTransform);
+        light[i] = space->GetGameObject(m_lights[i])->GetComponent<PointLight>(ePointLight);
 
-      lightTrans->SetTranslation(m_spawnPos[i]);
+        lightTrans->SetTranslation(m_spawnPos[i]);
+      }
+      light[0]->SetBrightness(Vec4(0.1f, 1.0f, 0.1f, 0.0f));
+      light[1]->SetBrightness(Vec4(1.0f, 0.1f, 0.1f, 0.0f));
+      light[2]->SetBrightness(Vec4(1.0f, 0.1f, 1.0f, 0.0f));
+      light[3]->SetBrightness(Vec4(0.1f, 0.1f, 1.0f, 0.0f));
+      light[4]->SetBrightness(Vec4(1.0f, 1.0f, 1.0f, 0.0f));
+      light[5]->SetBrightness(Vec4(1.0f, 1.0f, 1.0f, 0.0f));
+      spawned_ = true;
+
+      BlockLights::EventData ed;
+
+      ed.duration = 3.0f;
+      ed.settings.color = Vec4(0.1f, 0.1f, 0.1f, 0.1f);
+      ed.settings.fx = BlockLights::NONE;
+      ed.settings.customData.duration = 3.0f;
+
+      space->hooks.Call("LightingEvent", (unsigned)0xFFFFFFFF, &ed);
     }
 
-    light[0]->SetBrightness(Vec4(0.1f, 1.0f, 0.1f, 200.0f));
-    light[1]->SetBrightness(Vec4(1.0f, 0.1f, 0.1f, 200.0f));
-    light[2]->SetBrightness(Vec4(1.0f, 0.1f, 1.0f, 200.0f));
-    light[3]->SetBrightness(Vec4(0.1f, 0.1f, 1.0f, 200.0f));
+    spawnTimer_ -= dt;
+    if (spawnTimer_ >= 2.0f)
+    {
+      if (!sfxTriggered[0])
+      {
+        SoundEmitter *se = space->GetGameObject(owner)->GetComponent<SoundEmitter>(eSoundEmitter);
+        se->Play("switch_on", &SoundInstance(1.0f));
+        sfxTriggered[0] = true;
+      }
+      light[0]->SetBrightness(Vec4(0.1f, 1.0f, 0.1f, 200.0f));
+      light[2]->SetBrightness(Vec4(1.0f, 0.1f, 0.1f, 200.0f));
+    }
+    else if (spawnTimer_ >= 1.0f)
+    {
+      if (!sfxTriggered[1])
+      {
+        SoundEmitter *se = space->GetGameObject(owner)->GetComponent<SoundEmitter>(eSoundEmitter);
+        se->Play("switch_on", &SoundInstance(1.0f));
+        sfxTriggered[1] = true;
+      }
+      light[1]->SetBrightness(Vec4(1.0f, 0.1f, 1.0f, 200.0f));
+      light[3]->SetBrightness(Vec4(0.1f, 0.1f, 1.0f, 200.0f));
+    }
+    else if (spawnTimer_ <= 0.0f)
+    {
+      if (!sfxTriggered[2])
+      {
+        SoundEmitter *se = space->GetGameObject(owner)->GetComponent<SoundEmitter>(eSoundEmitter);
+        se->Play("switch_on", &SoundInstance(1.0f));
+        sfxTriggered[2] = true;
+      }
+      light[4]->SetBrightness(Vec4(1.0f, 1.0f, 1.0f, 200.0f));
+      light[5]->SetBrightness(Vec4(1.0f, 1.0f, 1.0f, 200.0f));
+    }
+
+    if (spawnTimer_ <= 0.0f)
+    {
+      m_firstUpdate = false;
+    }
+
   }
   void Level1_Lighting::TurnOn()
   {

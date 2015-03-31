@@ -29,7 +29,11 @@ namespace Framework
 
     void LogicUpdate(float dt);
 
-    void CreateSpawnLights();
+    void CreateSpawnLights(float dt);
+    bool spawned_ = false;
+    bool sfxTriggered[4];
+    float spawnTimer_;
+    PointLight* light[6];
 
     Handle m_lights[6];
 

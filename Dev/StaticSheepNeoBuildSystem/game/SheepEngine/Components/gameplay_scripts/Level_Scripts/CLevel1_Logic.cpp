@@ -108,7 +108,7 @@ namespace Framework
 
     eventTimer = 6;
     startFlag = true;
-    playing = false;
+    playing = true;
     countDownDone = false;
     countDownTimer = 3.5f;
     timeAsJugg = 0;
@@ -161,6 +161,7 @@ namespace Framework
 
       sp->Play("tripg", &instance);
       playing = true;
+     
     } 
 
     if (LE)

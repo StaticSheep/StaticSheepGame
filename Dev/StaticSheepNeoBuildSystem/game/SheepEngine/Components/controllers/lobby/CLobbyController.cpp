@@ -12,6 +12,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "../../sprites/CSprite.h"
 #include "../../gameplay_scripts/Level_Scripts/CLevel1_Logic.h"
 #include "../../sound/CSoundPlayer.h"
+#include "../../gameplay_scripts/arena/CBlockLights.h"
 
 static const char *playerNames[] = { "Player1", "Player2", "Player3", "Player4" };
 
@@ -35,6 +36,7 @@ namespace Framework
     spawnPos[1] = Vec3(600.0f, -300.0f, 0.0f);
     spawnPos[2] = Vec3(600.0f, 300.0f, 0.0f);
     spawnPos[3] = Vec3(-600.0f, 300.0f, 0.0f);
+    blockLights = false;
   }
 
   LobbyController::~LobbyController()
@@ -176,6 +178,14 @@ namespace Framework
           space->GetGameObject(Players[i])->Destroy();
         }
       }
+      BlockLights::EventData ed;
+
+      ed.duration = 2.0f;
+      ed.settings.color = Vec4(0.3f, 0.3f, 0.3f, 0.3f);
+      ed.settings.fx = BlockLights::FLICKER;
+      ed.settings.customData.duration = 2.0f;
+
+      space->hooks.Call("LightingEvent", (unsigned)0xFFFFFFFF, &ed);
     }
   }
 
@@ -194,7 +204,19 @@ namespace Framework
       ENGINE->ChangeLevel("Asteroid");
       space->GetGameObject(owner)->Destroy();
     }
+    else if (timer_ <= 1.75f && !blockLights)
+    {
+      BlockLights::EventData ed;
 
+      ed.duration = 2.75f;
+      ed.settings.color = Vec4(0.1f, 0.1f, 0.1f, 0.1f);
+      ed.settings.fx = BlockLights::NONE;
+      ed.settings.customData.duration = 2.75f;
+
+      space->hooks.Call("LightingEvent", (unsigned)0xFFFFFFFF, &ed);
+      blockLights = true;
+    }
+    
   }
 
   void LobbyController::PlayerDied(int player, int whoKilledThem)
