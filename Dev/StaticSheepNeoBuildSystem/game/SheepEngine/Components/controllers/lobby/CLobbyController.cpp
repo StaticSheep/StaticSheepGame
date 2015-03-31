@@ -50,6 +50,7 @@ namespace Framework
     bounceDownTimer = .5f;
     playing = false;
     levelSound = space->GetGameObject(owner)->GetComponentHandle(eSoundPlayer);
+    powerDownSound = false;
   }
 
   void LobbyController::Remove()
@@ -164,8 +165,17 @@ namespace Framework
     if (startPressed)
     {
       state_ = GAME_START;
-      timer_ = 0.5f;
+      timer_ = 3.5f;
       space->hooks.Call("GameStart");
+      SoundPlayer *sp = space->GetHandles().GetAs<SoundPlayer>(levelSound);
+      sp->Stop("TripGBass", INSTANT);
+      for (int i = 0; i < 4; ++i)
+      {
+        if (Players[i] != Handle::null)
+        {
+          space->GetGameObject(Players[i])->Destroy();
+        }
+      }
     }
   }
 
@@ -174,7 +184,9 @@ namespace Framework
     //roll up lobby text
     Transform *rt = space->GetGameObject(owner)->GetComponent<Transform>(eTransform);
     rt->SetTranslation(rt->GetTranslation() + Vec3(0.0f, 80.0f, 0.0f));
-
+    //power-down sounds
+    if (!powerDownSound)
+      PlayPowerDown();
     timer_ -= dt;
     if (timer_ <= 0)
     {
@@ -188,5 +200,13 @@ namespace Framework
   void LobbyController::PlayerDied(int player, int whoKilledThem)
   {
     Players[player] = Handle::null;
+  }
+
+  void LobbyController::PlayPowerDown()
+  {
+    SoundEmitter *se = space->GetGameObject(owner)->GetComponent<SoundEmitter>(eSoundEmitter);
+    se->Play("switch_off", &SoundInstance(1.0f));
+    se->Play("power_shutdown", &SoundInstance(1.0f));
+    powerDownSound = true;
   }
 }

@@ -21,7 +21,14 @@ function META:Paint()
 
   surface.SetRotation(0)
   surface.SetColor(col.r, col.g, col.b, col.a)
-  surface.DrawRect(pos.x, pos.y, self.size.x, self.size.y)
+
+  if self.dynamicSize then
+    surface.DrawRect(ScreenScale(pos.x), ScreenScaleY(pos.y),
+     ScreenScale(self.size.x), ScreenScaleY(self.size.y))
+  else
+    surface.DrawRect(pos.x, pos.y, self.size.x, self.size.y)
+  end
+  
 end
 
 gui.Register( "FlatPane", META, "Panel" )

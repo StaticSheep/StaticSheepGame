@@ -37,9 +37,12 @@ function PauseMenu:AddButton(text)
 
   btn:SetText(text)
   btn:SetFont("aircruiser")
+  btn:SetDynamicSizing(true)
 
-  btn:SetFontSize(ScreenScale(12))
-  btn:SetSize(ScreenScale(80), ScreenScale(16))
+  btn:SetFontSize(12)
+  btn:SetSize(80, 16)
+
+  btn:SetYAlignment(TEXT_ALIGN_TOP)
 
   btn:SetFontColor(Color(255, 255, 255, 255))
   btn:SetColor(Color(20, 20, 20, 0))
@@ -56,7 +59,7 @@ function PauseMenu:AddButton(text)
   btn:SetPos(self.base:GetSize().x / 2 - btn:GetSize().x / 2,
     self.ypos)
 
-  self.ypos = self.ypos + ScreenScale(18)
+  self.ypos = self.ypos + 48
 
   return btn
 end
@@ -70,20 +73,21 @@ function PauseMenu:MakeMenu()
   self.base = gui.Create("FlatPane")
   self:Register(self.base)
   self.base:SetColor(Color(0, 0, 0, 220))
-  self.base:SetSize(ScrW() / 4, ScrH())
+  self.base:SetDSize(640 / 4, 640)
   self.base:SetPos(-self.base.size.x, 0, -1)
   self.base:SetCamMode(2)
 
   local title = gui.Create("Label", self.base)
   self:Register(title)
-  title:SetPos(self.base:GetSize().x / 2, ScrH() / 5)
+  title:SetPos(self.base:GetSize().x / 2, 640 / 5)
   title:SetText("PAUSE")
-  title:SetFontSize(ScreenScale(24))
+  title:SetDynamicSizing(true)
+  title:SetFontSize(22)
   title:SetFont("aircruiser")
   title:SetXAlignment(TEXT_ALIGN_CENTER)
   title:SetColor(Color(255, 255, 255))
 
-  self.ypos = title:GetPos().y + ScrH() / 4
+  self.ypos = title:GetPos().y + 100
 
   local btn
   btn = self:AddButton("Resume Game")
@@ -96,23 +100,28 @@ function PauseMenu:MakeMenu()
     self:MakeHelpMenu()
   end)
 
+  local btnb = self:AddButton("Back to Menu")
+  btnb.firstPress = true
+  btnb:SetOnPressed(function()
+    if btnb.firstPress then
+      btnb.firstPress = false
+      btnb:SetText("Confirm Return")
+    else
+      engine.ChangeLevel("MainMenu")
+    end
+  end)
+
   btn = self:AddButton("Quit Game")
   btn.firstPress = true
   btn:SetOnPressed(function()
     if btn.firstPress then
       btn.firstPress = false
-      btn:SetText("Quit Game [CONFIRM]")
+      btn:SetText("Confirm Quit")
     else
       engine.Quit()
     end
   end)
 
-  local rights = gui.Create("Label", self.base)
-  self:Register(rights)
-  rights:SetPos(10, ScrH() - 100)
-  rights:SetSize(ScreenScale(3.5))
-  rights:SetText("All content (c) 2014 DigiPen (USA) Corporation, all rights reserved.\nFMOD Studio Copyright (c) 2005-2011 Firelight Technologies Pty, Ltd.")
-  rights:SetXAlignment(TEXT_ALIGN_LEFT)
 end
 
 function PauseMenu:MakeHelpMenu()
@@ -190,7 +199,7 @@ function PauseMenu:Refresh()
   
   self:CleanUp()
   self:MakeMenu()
-  self:MakeHelpMenu()
+  --self:MakeHelpMenu()
 
   --self:PauseSpace(true)
   --self:MakeMenu()
@@ -231,6 +240,9 @@ function PauseMenu:FrameUpdate(deltaTime)
   if self._opened then
     if self.base.pos.x < 0 then
       self.base.pos.x = self.base.pos.x + 20
+      if (self.base.pos.x > 0) then
+        self.base.pos.x = 0
+      end
     else
       if KeyIsPressed(KEY_ESCAPE) or
         gamepad.ButtonPressed(nil, GAMEPAD_START) then

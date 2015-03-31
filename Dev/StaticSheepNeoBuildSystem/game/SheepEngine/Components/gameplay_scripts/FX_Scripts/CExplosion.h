@@ -22,7 +22,7 @@ namespace Framework
 		void Remove();
 
     void PrepRemoval();
-
+    void PlayExplosionSound();
 
     void AnimEnd();
 
@@ -41,6 +41,7 @@ namespace Framework
     float lightFadeTime = 2.0f;
 
     bool waitForAnim = false;
+    bool soundPlayed = false;
     //float animDelay = 1.0f;
 	};
 }

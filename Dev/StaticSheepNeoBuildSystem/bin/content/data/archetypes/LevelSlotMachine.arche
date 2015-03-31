@@ -70,6 +70,12 @@ GameObject
       Y float 700.000000
     }
   }
+  SoundEmitter
+  {
+  }
+  SoundPlayer
+  {
+  }
   SlotMachine
   {
     m_layer int 2
@@ -109,8 +115,5 @@ GameObject
   SlotController
   {
     StypeInt int 0
-  }
-  SoundEmitter
-  {
   }
 }

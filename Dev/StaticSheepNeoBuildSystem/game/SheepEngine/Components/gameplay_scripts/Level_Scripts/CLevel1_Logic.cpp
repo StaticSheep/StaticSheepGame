@@ -156,7 +156,7 @@ namespace Framework
       SpawnCoinStacks();
       SoundPlayer *sp = space->GetHandles().GetAs<SoundPlayer>(levelSound);
       SoundInstance instance;
-      instance.volume = 0.95f;
+      instance.volume = 0.50f;
       instance.mode = PLAY_LOOP;
 
       sp->Play("tripg", &instance);
@@ -321,9 +321,12 @@ namespace Framework
   bool Level1_Logic::LevelCountdown(float dt)
   {
     Sprite *ls = space->GetGameObject(owner)->GetComponent<Sprite>(eSprite);
+    SoundEmitter *se = space->GetGameObject(owner)->GetComponent<SoundEmitter>(eSoundEmitter);
     //run countdown
     if (countDownTimer <= 3.0f && countDownTimer > 2.0f && !num_spawned[2])
     {
+      se->Play("digital_thud", &SoundInstance(1.0f));
+      se->Play("digital_thud2", &SoundInstance(1.0f));
       GameObject *round_number = (FACTORY->LoadObjectFromArchetype(space, "round_number"));
       round_number->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(1000.0f, -64.0f, 0.0f));
       round_number->GetComponent<RoundText>(eRoundText)->number = 3;
@@ -338,6 +341,8 @@ namespace Framework
     }
     else if (countDownTimer <= 2.0f && countDownTimer > 1.0f && !num_spawned[1])
     {
+      se->Play("digital_thud", &SoundInstance(1.0f));
+      se->Play("digital_thud2", &SoundInstance(1.0f));
       GameObject *round_number = (FACTORY->LoadObjectFromArchetype(space, "round_number"));
       round_number->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(1000.0f, -64.0f, 0.0f));
       round_number->GetComponent<RoundText>(eRoundText)->number = 2;
@@ -346,6 +351,8 @@ namespace Framework
     }
     else if (countDownTimer <= 1.0f && countDownTimer > 0.0f && !num_spawned[0])
     {
+      se->Play("digital_thud", &SoundInstance(1.0f));
+      se->Play("digital_thud2", &SoundInstance(1.0f));
       GameObject *round_number = (FACTORY->LoadObjectFromArchetype(space, "round_number"));
       round_number->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(1000.0f, -64.0f, 0.0f));
       round_number->GetComponent<RoundText>(eRoundText)->number = 1;

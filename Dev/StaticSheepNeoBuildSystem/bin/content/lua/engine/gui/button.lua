@@ -28,6 +28,9 @@ function META:Init()
   self.hovered = false
   self.clicked = false
   self.clickColor = 0
+
+  self.alignX = TEXT_ALIGN_CENTER
+  self.alignY = TEXT_ALIGN_CENTER
 end
 
 function META:SetImage(normal, hover, click)
@@ -120,6 +123,16 @@ function META:Think()
 
 end
 
+function META:SetXAlignment(x)
+  self.alignX = x
+end
+META.SetXAlign = META.SetXAlignment
+
+function META:SetYAlignment(y)
+  self.alignY = y
+end
+META.SetYAlign = META.SetYAlignment
+
 function META:Press()
   if self.OnPressed then
     self:OnPressed()
@@ -191,7 +204,7 @@ function META:Paint()
 
     draw.SimpleText(self.text, self.fontID, ScreenScale(pos.x + self.size.x / 2),
       ScreenScaleY(pos.y + self.size.y / 2), ScreenScale(self.fontSize), fntColor,
-      TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+      self.alignX, self.alignY)
 
   else
     draw.RoundedBox(4, pos.x, pos.y,
@@ -202,7 +215,7 @@ function META:Paint()
 
     draw.SimpleText(self.text, self.fontID, pos.x + self.size.x / 2,
       pos.y + self.size.y / 2, self.fontSize, fntColor,
-      TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+      self.alignX, self.alignY)
   end
 
   
