@@ -12,6 +12,7 @@ All content © 2015 DigiPen (USA) Corporation, all rights reserved.
 #include "../../colliders/CBoxCollider.h"
 #include "../../slotmachine/slotmachine.h"
 #include "../../sound/CSoundEmitter.h"
+#include "../../basicps/CBasicPSystem.h"
 
 namespace Framework
 {
@@ -41,6 +42,7 @@ namespace Framework
 
     bounceDownTimer = 0.5f;
     bounceDownDone = false;
+    space->GetGameObject(owner)->GetComponent<SoundEmitter>(eSoundEmitter)->Play("slot_digital_coin", &SoundInstance(1.0f));
 	}
 
   void PersonalSlotController::Remove()
@@ -127,6 +129,7 @@ namespace Framework
 
   void PersonalSlotController::ReceiveSMResults(std::vector<int>* results)
   {
+    space->GetGameObject(owner)->GetComponent<BasicParticleSystem>(eBasicParticleSystem)->Toggle(false);
     if ((*results)[0] == 0)
     {
       //chip
