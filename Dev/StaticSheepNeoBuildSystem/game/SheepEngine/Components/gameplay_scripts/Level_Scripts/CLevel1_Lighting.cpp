@@ -125,7 +125,7 @@ namespace Framework
         sfxTriggered[0] = true;
       }
       light[0]->SetBrightness(Vec4(0.1f, 1.0f, 0.1f, 200.0f));
-      light[2]->SetBrightness(Vec4(1.0f, 0.1f, 0.1f, 200.0f));
+      light[2]->SetBrightness(Vec4(1.0f, 0.1f, 1.0f, 200.0f));
     }
     else if (spawnTimer_ >= 1.0f)
     {
@@ -135,7 +135,7 @@ namespace Framework
         se->Play("switch_on", &SoundInstance(1.0f));
         sfxTriggered[1] = true;
       }
-      light[1]->SetBrightness(Vec4(1.0f, 0.1f, 1.0f, 200.0f));
+      light[1]->SetBrightness(Vec4(1.0f, 0.1f, 0.1f, 200.0f));
       light[3]->SetBrightness(Vec4(0.1f, 0.1f, 1.0f, 200.0f));
     }
     else if (spawnTimer_ <= 0.0f)
