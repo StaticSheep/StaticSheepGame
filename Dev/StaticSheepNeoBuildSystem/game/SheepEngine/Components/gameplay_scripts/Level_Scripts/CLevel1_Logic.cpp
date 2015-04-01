@@ -162,7 +162,7 @@ namespace Framework
       playing = true;
     } 
 
-    if (LE)
+    if (LE != nullptr)
       LE->Update(dt);
 	}
 
@@ -819,6 +819,9 @@ namespace Framework
     else
       roundTimer -= dt;
 
+    if (roundTimer <= 0)
+      return;
+
     if (LastManStanding(dt))
     {
       space->GetGameObject(owner)->GetComponent<RoundController>(eRoundController)->round_state_timer = 0;
@@ -883,6 +886,9 @@ namespace Framework
     }
     else
       roundTimer -= dt;
+
+    if (roundTimer <= 0)
+      return;
 
     if (spawnTimer <= 0)
     {
@@ -978,8 +984,12 @@ namespace Framework
       space->hooks.Call("JuggDied", theJugg, timeAsJugg);
       timeAsJugg = 0;
 
-      if (LE != nullptr)
-        delete LE;
+    }
+
+    if (LE != nullptr)
+    {
+      delete LE;
+      LE = nullptr;
     }
   }
 

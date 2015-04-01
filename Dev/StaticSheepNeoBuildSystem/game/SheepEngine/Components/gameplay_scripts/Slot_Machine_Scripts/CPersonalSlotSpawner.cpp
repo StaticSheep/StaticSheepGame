@@ -79,15 +79,12 @@ namespace Framework
     {
       if (!ll)
         break;
-      if ((ll->playerCoins[0] <= 0 && ll->playerCoins[1] <= 0 && ll->playerCoins[2] <= 0 && ll->playerCoins[3] <= 0) || done_)
+      if ((ll->playerCoins[0] <= 0 && ll->playerCoins[1] <= 0 && ll->playerCoins[2] <= 0 && ll->playerCoins[3] <= 0 && done_))
       {
         space->GetGameObject(owner)->GetComponent<SoundPlayer>(eSoundPlayer)->Stop("slot_coin_jackpot", INSTANT);
-        if (done_)
-        {
-          space->hooks.Call("PersonalSlotDone");
-          timer = 5.0f;
-          space->GetGameObject(spawnedCoins)->GetComponent<BasicParticleSystem>(eBasicParticleSystem)->Toggle(false);
-        }
+        space->hooks.Call("PersonalSlotDone");
+        timer = 5.0f;
+        space->GetGameObject(spawnedCoins)->GetComponent<BasicParticleSystem>(eBasicParticleSystem)->Toggle(false);
         done_ = false;
         break;
       }
@@ -101,7 +98,7 @@ namespace Framework
         --(ll->playerCoins[playerNum]);
       }
 
-      if (ll->playerCoins[playerNum] <= 0 && playing)
+      if ((ll->playerCoins[playerNum] <= 0 || playerCoinTotal >= 10000) && playing)
       {
         space->GetGameObject(spawnedCoins)->GetComponent<BasicParticleSystem>(eBasicParticleSystem)->Toggle(false);
         playing = false;
