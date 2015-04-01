@@ -49,6 +49,9 @@ namespace Framework
     else
       return;
 
+    if (!m_triggerReset)
+      m_triggerReset = m_pad->LeftTrigger() == 0.0f;
+
     // if we are snapped, handle movement. Otherwise let physics
     // handle moving through space.
     if(m_isSnapped)
@@ -69,7 +72,11 @@ namespace Framework
       m_hasDashed = false;
     }
     else
-    if(m_pad && (m_pad->ButtonPressed(XButtons.LShoulder) || m_pad->ButtonPressed(XButtons.RShoulder)))
+    if (m_pad && (m_pad->ButtonPressed(XButtons.LShoulder)
+      || m_pad->ButtonPressed(XButtons.RShoulder)
+      || m_pad->ButtonPressed(XButtons.A)
+      || (m_pad->LeftTrigger() && m_triggerReset))
+      )
     {
       m_collider = Owner->GetComponent<BoxCollider>(eBoxCollider);
 
@@ -115,7 +122,7 @@ namespace Framework
       m_circleFound = true;
     }
 
-    if(OtherObject->GetArchetype() == "Grinder")
+    /*if(OtherObject->GetArchetype() == "Grinder")
     {
       m_isSnapped = false;
       Vec3 normal = body->GetBodyPosition() - Collider->GetBodyPosition();
@@ -130,7 +137,7 @@ namespace Framework
 
       m_unsnappable = 6;
       return;
-    }
+    }*/
 
     // if neither collider was found, what the hell, gtfo
     if(!body || !body->m_snap)
@@ -255,7 +262,9 @@ Calculating angular velocites for rotating box collider platforms... -HelpJon
       m_collider->SetBodyRotation(-m_snappedNormal);
     }
 
-    if (((m_pad->ButtonDown(XButtons.A) || m_pad->LeftTrigger()) && m_isSnapped) || (SHEEPINPUT->KeyIsDown('Q') && m_pad->GetIndex() == 0))
+    if (
+      ((m_pad->ButtonDown(XButtons.A) || m_pad->LeftTrigger()) && m_isSnapped) 
+      || (SHEEPINPUT->KeyIsDown('Q') && m_pad->GetIndex() == 0))
     {
       // if enough time has passed to jump...
       if(m_jumpFrame == 0)
@@ -269,6 +278,7 @@ Calculating angular velocites for rotating box collider platforms... -HelpJon
         m_jumpFrame = 30;
         m_unsnappable = 4;
         m_isSnapped = false;
+        m_triggerReset = false;
 
         return;
       }

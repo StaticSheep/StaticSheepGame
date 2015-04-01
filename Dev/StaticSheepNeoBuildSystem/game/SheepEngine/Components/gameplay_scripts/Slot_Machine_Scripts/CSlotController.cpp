@@ -92,6 +92,7 @@ namespace Framework
       }
     }
 	}
+
   static bool soundFlag_ = false;
   void SlotController::BounceDown(float dt)
   {
@@ -221,7 +222,7 @@ namespace Framework
           spawnedSM->GetComponent<SlotController>(eSlotController)->LeftHandBonus = false;
         }
         if (spawnRightBonus || spawnLeftBonus)
-          levelTimer += 2.5f;
+          levelTimer += 3.5f;
 
       }
       if ((*results)[0] == 0)

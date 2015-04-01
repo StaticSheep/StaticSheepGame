@@ -49,6 +49,7 @@ namespace Framework
 
       bool m_isSnapped;     // if we are snapped right now
       bool m_hasDashed;
+      bool m_triggerReset;
       bool m_circleFound;   // if snapped to a circle
       bool m_otherObjectSpin; 
 

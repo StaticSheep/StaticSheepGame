@@ -152,7 +152,7 @@ namespace Framework
 
     powerUp = nullptr;
     pn = -1;
-
+    jumpTriggerUp = true;
     //SpawnEffect();
 	}
 
@@ -242,6 +242,13 @@ namespace Framework
 
 
     moveController.Update(GetOwner());
+//=======
+//		//dash, formally known as melee
+//    if (gp->ButtonPressed(XButtons.A))
+//      Melee(Buttons::LB);
+//    else if (gp->LeftTrigger() && jumpTriggerUp)
+//      Melee(Buttons::RB);
+//>>>>>>> origin/GregsGamplay2
 
     PlayerButtonPress(); //check to see if the player has pressed any of the controller buttons (for cheats or other things)
 
@@ -307,8 +314,6 @@ namespace Framework
     //ENGINE->SystemMessage(MetricsMessage(&metricData));
 
 	}
-
- 
 
 	//************************************
 	// Method:    OnCollision
@@ -522,8 +527,10 @@ namespace Framework
       AA->GetComponent<Sprite>(eSprite)->Color = playerS->Color; //set the colors equal
       AA->GetComponent<Sprite>(eSprite)->Color.a = 0.7f; //make sure the alpha isn't low (happens during respawn)
       arrowSpawn = true;
+<<<<<<< HEAD
     }*/
   }
+
 
   //************************************
   // Method:    RespawnBlink

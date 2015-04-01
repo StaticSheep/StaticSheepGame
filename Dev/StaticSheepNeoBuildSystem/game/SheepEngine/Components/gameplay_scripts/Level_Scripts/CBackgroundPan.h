@@ -20,9 +20,10 @@ namespace Framework
 		void LogicUpdate(float dt);
 		void Initialize();
 		void Remove();
+    void TogglePan();
 
     float rate = 0.01f;
-
+    bool inLobby;
 		//member variables
     Handle bTransfrom;
 	};

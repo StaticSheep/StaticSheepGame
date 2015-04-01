@@ -50,6 +50,7 @@ namespace Framework
     bool spawned, bounceDownDone, startPressed;
     bool playing;
     bool powerDownSound = false;
+    bool blockLights;
     Vec3 spawnPos[4];
   };
 }

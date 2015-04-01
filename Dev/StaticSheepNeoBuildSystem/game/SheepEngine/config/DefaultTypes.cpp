@@ -80,6 +80,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/gameplay_scripts/Slot_Machine_Scripts/CPersonalSlotController.h"
 #include "components/controllers/lobby/CLobbyController.h"
 #include "components/controllers/lobby/CJoinText.h"
+#include "components/gameplay_scripts/Slot_Machine_Scripts/CPersonalSlotSpawner.h"
+#include "components/controllers/light patterns/CLightPatternController.h"
 
 namespace Framework
 {
@@ -341,6 +343,12 @@ namespace Framework
     TYPE_REGISTER(JoinText);
     TYPE_SET_TWEAK_TYPE(JoinText, AntTweak::TW_TYPE_COMPONENT);
     TYPE_ADD_MEMBER(JoinText, playerNum, false, true, "Player");
+
+    TYPE_REGISTER(LightPatternController);
+    TYPE_SET_TWEAK_TYPE(LightPatternController, AntTweak::TW_TYPE_COMPONENT);
+
+    TYPE_REGISTER(PersonalSlotSpawner);
+    TYPE_SET_TWEAK_TYPE(PersonalSlotSpawner, AntTweak::TW_TYPE_COMPONENT);
 
     TYPE_REGISTER(Pistol);
     TYPE_REGISTER(Shotgun);

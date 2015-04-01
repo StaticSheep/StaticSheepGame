@@ -393,3 +393,16 @@ namespace Framework
 
 
 }
+
+/*
+sample call: Low white light flickering for 2 seconds to ALL lights
+
+BlockLights::EventData ed;
+
+ed.duration = 2.0f;
+ed.settings.color = Vec4(0.3f, 0.3f, 0.3f, 0.3f);
+ed.settings.fx = BlockLights::FLICKER;
+ed.settings.customData.duration = 2.0f;
+
+space->hooks.Call("LightingEvent", (unsigned)0xFFFFFFFF, &ed);
+*/

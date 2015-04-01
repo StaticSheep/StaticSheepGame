@@ -50,7 +50,7 @@ GameObject
       Y float 1.800000
     }
     startTime float 1.500000
-    bonusTime float 0.500000
+    bonusTime float 0.800000
     useSpriteColor bool true
     backingColor Vec4
     {

@@ -63,7 +63,7 @@ namespace Framework
     deadPlayers = 0;
     for (int i = 0; i < 4; ++i)
     {
-      playerCoins[i] = 1;
+      playerCoins[i] = 0;
       Players[i] = Handle::null;
     }
 
@@ -108,7 +108,7 @@ namespace Framework
 
     eventTimer = 6;
     startFlag = true;
-    playing = false;
+    playing = true;
     countDownDone = false;
     countDownTimer = 3.5f;
     timeAsJugg = 0;
@@ -118,7 +118,6 @@ namespace Framework
       spawnTimers[i] = 2.0f;
       juggernaut[i] = false;
       playerCoinsThisFrame[i] = 0;
-      playerCoins[i] = 1;
       num_spawned[i] = false;
     }
 
@@ -163,7 +162,7 @@ namespace Framework
       playing = true;
     } 
 
-    if (LE)
+    if (LE != nullptr)
       LE->Update(dt);
 	}
 
@@ -820,6 +819,9 @@ namespace Framework
     else
       roundTimer -= dt;
 
+    if (roundTimer <= 0)
+      return;
+
     if (LastManStanding(dt))
     {
       space->GetGameObject(owner)->GetComponent<RoundController>(eRoundController)->round_state_timer = 0;
@@ -884,6 +886,9 @@ namespace Framework
     }
     else
       roundTimer -= dt;
+
+    if (roundTimer <= 0)
+      return;
 
     if (spawnTimer <= 0)
     {
@@ -979,8 +984,12 @@ namespace Framework
       space->hooks.Call("JuggDied", theJugg, timeAsJugg);
       timeAsJugg = 0;
 
-      if (LE != nullptr)
-        delete LE;
+    }
+
+    if (LE != nullptr)
+    {
+      delete LE;
+      LE = nullptr;
     }
   }
 

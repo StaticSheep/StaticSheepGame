@@ -69,7 +69,7 @@ namespace Framework
     bulletC->AddToVelocity(AimDir * 1000);
 
     SoundEmitter *se = player->GetComponent<SoundEmitter>(eSoundEmitter);
-    se->Play("dash", &SoundInstance(1.0f));
+    se->Play("weapon_rocket", &SoundInstance(1.0f));
   }
 
   void Missile::Update(float dt)

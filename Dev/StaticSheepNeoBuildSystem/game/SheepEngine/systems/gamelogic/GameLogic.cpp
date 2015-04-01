@@ -54,6 +54,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/gameplay_scripts/Slot_Machine_Scripts/CPersonalSlotController.h"
 #include "Components/controllers/lobby/CLobbyController.h"
 #include "Components/controllers/lobby/CJoinText.h"
+#include "components/gameplay_scripts/Slot_Machine_Scripts/CPersonalSlotSpawner.h"
+#include "components/controllers/light patterns/CLightPatternController.h"
 
 namespace Framework
 {
@@ -114,6 +116,8 @@ namespace Framework
     REGISTER_COMPONENT(Pulser);
     REGISTER_COMPONENT(JoinText);
     REGISTER_COMPONENT(SpineLight);
+    REGISTER_COMPONENT(LightPatternController);
+    REGISTER_COMPONENT(PersonalSlotSpawner);
   }
 
   void GameLogic::Initialize()

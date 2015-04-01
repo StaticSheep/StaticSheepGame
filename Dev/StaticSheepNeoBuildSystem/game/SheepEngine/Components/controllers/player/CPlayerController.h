@@ -68,7 +68,7 @@ namespace Framework
     float shields;
 		bool hasFired, hasRespawned, blink, stoppedFX, firstUpdate; //has fired is a flag to prevent fully auto fire, is snapped is a bool to see if the player is snapped to something
     bool GodMode, GoldenGun, PerfectMachine;  //the cheats 
-    bool frameSkip, arrowSpawn, hasDashed;
+    bool frameSkip, arrowSpawn, hasDashed, jumpTriggerUp;
     float rotation, lastRotation;
     float respawnTimer;
 
