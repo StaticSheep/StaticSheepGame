@@ -102,6 +102,12 @@ namespace SheepFizz
 		  float angularVelocity_;
 		  float torque_;
 
+      //friction
+      float frictionMod_;
+
+      //snapping
+      bool snap_;
+
 		  Handle self;
 
 		  void* userData;

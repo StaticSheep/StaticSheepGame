@@ -256,16 +256,15 @@ namespace SheepFizz
 	    incidentBody = m.B;
 	    incidentBodySupport = supportA;
 	  }
-
 	  else
 	  {
-	  referenceBody = m.B;
-	  referenceBodyVertex = vertexB;
+	    referenceBody = m.B;
+	    referenceBodyVertex = vertexB;
 
-	  incidentBody = m.A;
-	  incidentBodySupport = supportB;
+	    incidentBody = m.A;
+	    incidentBodySupport = supportB;
 
-	  flip = true;
+	    flip = true;
 	  }
 	  //end of setting ref and inc bodies***********
 
@@ -328,13 +327,13 @@ namespace SheepFizz
 	  m.normal = ((Rectangle*)referenceBody->shape_)->GetNormal(referenceBodyVertex);
 
     if (m.normal.x < EPSILON && m.normal.x > -EPSILON)
-      m.normal.x = 0;
+      m.normal.x = 0.0f;
 
     if (m.normal.y < EPSILON && m.normal.y > -EPSILON)
-      m.normal.y = 0;
+      m.normal.y = 0.0f;
 
     if (m.normal.z < EPSILON && m.normal.z > -EPSILON)
-      m.normal.z = 0;
+      m.normal.z = 0.0f;
 
 	  //get the rotation matrix for the orientation
 	  Matrix2D refRotation(referenceBody->orientation_);
@@ -349,7 +348,7 @@ namespace SheepFizz
 
 	  if(incidentFaceVertices[1].DotProduct(m.normal) - (refVertex1.DotProduct(m.normal)) < 0)
 	  {
-	  m.penetration -= (incidentFaceVertices[1].DotProduct(m.normal) - (refVertex1.DotProduct(m.normal)));
+	  m.penetration = -(incidentFaceVertices[1].DotProduct(m.normal) - (refVertex1.DotProduct(m.normal)));
 	  m.contacts[m.contactCount++] = referenceBody->position_ + refRotation * incidentFaceVertices[1];
 	  }
 	  //end of clipping***********

@@ -68,8 +68,8 @@ function META:AddButton(text, menu, tbl, img_norm, img_hover, img_click)
   btn:SetImage(img_norm, img_hover, img_click)
   btn:SetFont("aircruiser")
 
-  btn:SetFontSize(ScreenScale(12))
-  btn:SetSize(ScreenScale(80), ScreenScale(16))
+  btn:SetFontSize(14)
+  btn:SetDSize(80, 16)
 
   btn:SetFontColor(Color(255, 255, 255, 255))
   btn:SetColor(Color(20, 20, 20, 0))
@@ -103,7 +103,7 @@ function META:MakeMenu()
   self.base = gui.Create("FlatPane")
   self:Register(self.base)
   self.base:SetColor(Color(0, 0, 0, 0))
-  self.base:SetSize(ScrW(), ScrH())
+  self.base:SetDSize(640, 640)
   self.base:SetPos(0, 0, -1)
   self.base:SetCamMode(2)
 
@@ -111,14 +111,13 @@ function META:MakeMenu()
   self:Register(title)
   
   title:SetTexture("GigaGravityTitle.png")
-  local sc = 50
-  title:SetSize(Vec2(ScreenScale(sc * 9.91), ScreenScale(100)))
+  title:SetDSize(Vec2(600, 150))
   title:SetPos(self.base:GetSize().x / 2 - title:GetSize().x / 2, 50)
   title:SetColor(Color(255, 255, 255))
 
   self.title = title
 
-  self.ypos = title:GetSize().y + ScrH() / 7
+  self.ypos = title:GetSize().y + VWH / 7
 
   self.menuOffset = ScreenScale(500)
   print(self.menuOffset)
@@ -210,17 +209,18 @@ function META:MakeMenu()
 
   local rights = gui.Create("Label", self.base)
   self:Register(rights)
-  rights:SetPos(ScrW() / 2, ScrH() - 100)
-  rights:SetSize(ScreenScale(5.5))
+  rights:SetPos(640 / 2, 620)
+  rights:SetDSize(5.5)
   rights:SetText("All content (c) 2014 DigiPen (USA) Corporation, all rights reserved.\nFMOD Studio Copyright (c) 2005-2011 Firelight Technologies Pty, Ltd.")
   rights:SetXAlignment(TEXT_ALIGN_CENTER)
+  rights:SetYAlignment(TEXT_ALIGN_BOTTOM)
 end
 
 function META:MakeOptionsMenu()
   self.optionMenu = CreateMenu(1, 0, {0, 1, 2, 3})
   self.optionMenu:SetActive(false)
 
-  self.ypos = self.title:GetSize().y + ScrH() / 7
+  self.ypos = self.title:GetSize().y + VWH / 7
 
   local btn
   btn = self:AddButton("Music: On", self.optionMenu, self.optionButtons)
@@ -236,6 +236,8 @@ function META:MakeOptionsMenu()
   btn:SetPos(pos.x + self.menuOffset, pos.y)
   btn:SetOnPressed(function()
     surface.SetFullScreen(not surface.GetFullScreen())
+    --self:MakeOptionsMenu()
+    --self.optionMenu:Select(2)
   end)
 
   -- btn = self:AddButton("Credits", self.optionMenu, self.optionButtons)
@@ -383,6 +385,7 @@ function META:Remove()
   hook.Remove("FrameUpdate", self)
   hook.Remove("LogicUpdate", self)
   hook.Remove("PostDraw", self)
+  --hook.Remove("ScreenResize", self)
 end
 
 function META:Draw()
@@ -398,6 +401,7 @@ function META:SetupHooks()
   hook.Add("FrameUpdate", self, self.FrameUpdate)
   hook.Add("LogicUpdate", self, self.LogicUpdate, self.CanUpdate)
   hook.Add("PostDraw", self, self.Draw)
+  --hook.Add("ScreenResize", self, self.Refresh)
 end
 
 function META:PauseSpace(paused)

@@ -154,6 +154,14 @@ function uimenu.meta:ClickCooldown(padnum)
   self.padClickCD[padnum] = CurTime() + self.inputCD
 end
 
+function uimenu.meta:Select(newSelection)
+    -- Tell our old selection to no longer be selected
+    self.buttons[self.selected]:SetHovered(false)
+
+    -- Update our current selection
+    self.selected = newSelection
+    self.buttons[self.selected]:SetHovered(true)
+end
 
 local stickThreshold = 0.5
 
@@ -195,7 +203,27 @@ function uimenu.meta:Update()
             self:MoveCooldown(pad + 1)
             break
           end
+        elseif
+          not gamePad:InDeadzone(true) then
+          stick = gamePad:RightStick()
 
+          if stick.y > stickThreshold then
+            vMove = -1
+          elseif stick.y < -stickThreshold then
+            vMove = 1
+          end
+
+          if stick.x > stickThreshold then
+            hMove = -1
+          elseif stick.x < -stickThreshold then
+            hMove = 1
+          end
+
+          if (hMove ~= 0 and self.horizontalStep ~= 0) or
+            (vMove ~= 0 and self.verticalStep ~= 0) then
+            self:MoveCooldown(pad + 1)
+            break
+          end
         end
 
         if gamePad:ButtonDown(GAMEPAD_DPAD_LEFT) or KeyIsPressed(KEY_A) then
@@ -249,7 +277,7 @@ function uimenu.meta:Update()
     if cTime > self.padClickCD[pad + 1] then
       gamePad = GamePad(pad)
 
-      if gamePad:ButtonDown(GAMEPAD_A) and gamePad:Connected() then
+      if gamePad:ButtonPressed(GAMEPAD_A) and gamePad:Connected() then
         clicked = true
         self:ClickCooldown(pad + 1)
       end

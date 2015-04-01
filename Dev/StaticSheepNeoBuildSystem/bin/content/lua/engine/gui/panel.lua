@@ -16,6 +16,7 @@ function META:Init()
   self.valid = true
   self.camMode = 2
   self.priority = 0
+  self.dynamicSize = false
   self.children = {}
 end
 
@@ -60,6 +61,15 @@ function META:SetSize(w, h)
   else
     self.size = Vec2(w, h)
   end
+end
+
+function META:SetDSize(w, h)
+  self:SetSize(w, h)
+  self.dynamicSize = true
+end
+
+function META:SetDynamicSizing(status)
+  self.dynamicSize = status
 end
 
 function META:GetSize()

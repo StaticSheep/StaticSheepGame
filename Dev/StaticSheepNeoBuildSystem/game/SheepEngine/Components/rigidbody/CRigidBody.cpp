@@ -55,6 +55,8 @@ namespace Framework
 		 trans->SetPhysicsBody(m_handle);
 
      space->GetGameObject(owner)->hooks.Add("OnCollision", self, BUILD_FUNCTION(RigidBody::OnCollision));
+
+     SetBodySnapping(m_snap);
 	}
 
 	//remove the body from the space
@@ -92,6 +94,11 @@ namespace Framework
     PHYSICS->SetBodyGravityNormal(space, m_handle, normal);
   }
 
+  void RigidBody::SetBodyPosition(Vec3D& position)
+  {
+    PHYSICS->SetBodyPosition(space, m_handle, position);
+  }
+
   void RigidBody::SetVelocity(Vec3D& velocity)
 	{
 		PHYSICS->SetBodyVelocity(space, m_handle, velocity);
@@ -120,6 +127,16 @@ namespace Framework
   void RigidBody::SetBodyCollisionGroup(std::string group)
   {
     PHYSICS->ChangeCollisionGroup(space, m_handle, group);
+  }
+
+  void RigidBody::SetBodyFrictionMod(float frictionMod)
+  {
+    PHYSICS->SetBodyFrictionMod(space, m_handle, frictionMod);
+  }
+
+  void RigidBody::SetBodySnapping(bool snap)
+  {
+    PHYSICS->SetBodyFrictionMod(space, m_handle, snap);
   }
 
 	void RigidBody::AddToVelocity(Vec3D& velocity)
@@ -186,6 +203,11 @@ namespace Framework
   float RigidBody::GetBodyRotation(void)
   {
     return PHYSICS->GetBodyRotation(space, m_handle);
+  }
+
+  float RigidBody::GetBodyAngVelocity(void)
+  {
+    return PHYSICS->GetBodyAngVelocity(space, m_handle);
   }
 
   unsigned int RigidBody::GetBodyVertexNumber(void)

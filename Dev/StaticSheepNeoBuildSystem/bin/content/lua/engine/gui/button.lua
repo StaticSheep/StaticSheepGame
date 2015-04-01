@@ -28,6 +28,9 @@ function META:Init()
   self.hovered = false
   self.clicked = false
   self.clickColor = 0
+
+  self.alignX = TEXT_ALIGN_CENTER
+  self.alignY = TEXT_ALIGN_CENTER
 end
 
 function META:SetImage(normal, hover, click)
@@ -94,6 +97,11 @@ function META:SetFontSize(fsize)
   self.fontSize = fsize
 end
 
+function META:SetDFontSize(fsize)
+  self:SetFontSize(fsize)
+  self.dynamicSize = true
+end
+
 function META:GetFontSize()
   return self.fontSize
 end
@@ -114,6 +122,16 @@ function META:Think()
   end
 
 end
+
+function META:SetXAlignment(x)
+  self.alignX = x
+end
+META.SetXAlign = META.SetXAlignment
+
+function META:SetYAlignment(y)
+  self.alignY = y
+end
+META.SetYAlign = META.SetYAlignment
 
 function META:Press()
   if self.OnPressed then
@@ -175,15 +193,32 @@ function META:Paint()
     end
   end
 
-  draw.RoundedBox(4, pos.x, pos.y,
-    self.size.x, self.size.y, bgColor)
+  if (self.dynamicSize) then
+    draw.RoundedBox(4, ScreenScale(pos.x), ScreenScaleY(pos.y),
+      ScreenScale(self.size.x), ScreenScaleY(self.size.y), bgColor)
 
-  draw.RoundedBox(4, border + pos.x, border + pos.y,
-    self.size.x - border * 2, self.size.y - border * 2, fgColor)
+    draw.RoundedBox(4, ScreenScale(border + pos.x),
+     ScreenScaleY(border + pos.y),
+      ScreenScale(self.size.x - border * 2),
+       ScreenScaleY(self.size.y - border * 2), fgColor)
 
-  draw.SimpleText(self.text, self.fontID, pos.x + self.size.x / 2,
-    pos.y + self.size.y / 2, self.fontSize, fntColor,
-    TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+    draw.SimpleText(self.text, self.fontID, ScreenScale(pos.x + self.size.x / 2),
+      ScreenScaleY(pos.y + self.size.y / 2), ScreenScale(self.fontSize), fntColor,
+      self.alignX, self.alignY)
+
+  else
+    draw.RoundedBox(4, pos.x, pos.y,
+      self.size.x, self.size.y, bgColor)
+
+    draw.RoundedBox(4, border + pos.x, border + pos.y,
+      self.size.x - border * 2, self.size.y - border * 2, fgColor)
+
+    draw.SimpleText(self.text, self.fontID, pos.x + self.size.x / 2,
+      pos.y + self.size.y / 2, self.fontSize, fntColor,
+      self.alignX, self.alignY)
+  end
+
+  
 end
 
 gui.Register( "Button", META, "Panel" )

@@ -6,17 +6,16 @@
 #include "components/transform/CTransform.h"
 #include "Handle.h"
 #include "../SheepGraphics/Atlas/SpineAtlas.h"
-#include "../lights/CSpineLight.h"
 
 
 namespace Framework
 {
-  class SpineSprite : public GameComponent
+  class SpineLight : public GameComponent
   {
     public:
 
-      SpineSprite();
-      ~SpineSprite();
+      SpineLight();
+      ~SpineLight();
 
       virtual void Initialize();
 
@@ -38,11 +37,17 @@ namespace Framework
       std::string sequenceName;
 
       float framerate;
-      Vec4 Color;
+      LightColor Color;
+      
+      Vec2 m_lightingScale = Vec2(1, 1);
+      bool m_emissive = false;
+      int m_layer = 1;
 
     private:
 
       Handle transform;
+      Handle spineSprite;
+
       const DirectSheep::AnimationSheet* sheet;
       float currentTime;
       int currentFrame;
@@ -67,8 +72,6 @@ namespace Framework
 
       
       Vec2 offset;
-
-      friend class SpineLight;
       
   };
 }

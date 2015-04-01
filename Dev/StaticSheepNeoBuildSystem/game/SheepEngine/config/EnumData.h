@@ -55,6 +55,7 @@ E_NAME(Component)
   E_ENTRY(div_Lighting)
   E_ENTRY(PointLight)
   E_ENTRY(SpriteLight)
+  E_ENTRY(SpineLight)
   E_ENTRY(BlockLights)
   E_ENTRY(Level1_Lighting)
   

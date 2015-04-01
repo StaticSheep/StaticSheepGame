@@ -44,6 +44,8 @@ namespace SheepFizz
 		PHY_API void SetBodyAngVeloc(Handle handle, float angveloc);
 		PHY_API void SetBodyTorque(Handle handle, float torque);
     PHY_API void SetBodyCollisionGroup(Handle handle, CollisionGroup group);
+    PHY_API void SetBodyFrictionMod(Handle handle, float friction);
+    PHY_API void SetBodySnapping(Handle handle, bool snap);
 
     //gravity
     PHY_API void SetBodyGravityOn(Handle handle);

@@ -172,6 +172,7 @@ function gui.Draw()
       --print("EPAINT")
     end
   end
+  hook.Call("GUIDRAW")
 end
 
 local function RefreshMeta(panel)
