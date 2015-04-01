@@ -67,6 +67,9 @@ namespace Framework
       virtual void SetBodyRotation(Vec3D direction);
       virtual void SetBodyRotation(float direction);
       virtual void SetBodyRadius(float radius);
+      virtual void SetBodyPosition(Vec3D& position);
+      virtual void SetBodyFrictionMod(float frictionMod);
+      virtual void SetBodySnapping(bool snap);
 
       //gettors
       virtual Vec3D GetCurrentVelocity(void);
@@ -75,7 +78,8 @@ namespace Framework
       virtual Vec3D GetBodyUpNormal(void);
       virtual Vec3D GetBodyRotationAsVector(void);
       virtual float GetBodyRotation(void);
-      
+      virtual float GetBodyAngVelocity(void);
+
       //debug
       virtual unsigned int GetBodyVertexNumber(void);
       virtual Vec3D GetBodyVertex(unsigned int vertex);
@@ -97,6 +101,7 @@ namespace Framework
 		std::string m_materialName;
 
     bool m_hasCollisionCallback;
+    bool m_snap;
 
     std::string m_CollisionGroup;
 

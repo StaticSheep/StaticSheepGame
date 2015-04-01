@@ -774,14 +774,14 @@ namespace Framework
       {
         i = GetRandom(0, 3);
         juggernaut_ = space->GetGameObject(Players[i]);
-      } while (juggernaut_ == NULL);
+      } while (juggernaut_ == nullptr);
       
       juggernaut[i] = true;
     }
     else
       juggernaut_ = space->GetGameObject(Players[i]);
 
-    if (juggernaut_ != NULL)
+    if (juggernaut_ != nullptr)
     {
       PlayerController *playerController = juggernaut_->GetComponent<PlayerController>(ePlayerController);
       if (playerController->powerUp != nullptr)

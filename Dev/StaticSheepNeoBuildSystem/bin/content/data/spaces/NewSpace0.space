@@ -1,200 +1,7 @@
 NewSpace0
 GameObject
 {
-  name std::string "Bullet"
-  archetype std::string "Bullet"
-  Transform
-  {
-    Translation Vec3
-    {
-      x_ float 55.261482
-      y_ float -4.805305
-      z_ float 0.000000
-    }
-    Rotation float 0.000000
-    Scale Vec3
-    {
-      x_ float 0.500000
-      y_ float 0.500000
-      z_ float 0.000000
-    }
-  }
-  Sprite
-  {
-    m_spriteName std::string "energy_ball.png"
-    m_layer unsignedint 1
-    m_flipX bool false
-    m_flipY bool false
-    m_uvScale bool false
-    Color Vec4
-    {
-      R float 1.000000
-      G float 1.000000
-      B float 1.000000
-      A float 1.000000
-    }
-    Size Vec2
-    {
-      X float 1.000000
-      Y float 1.000000
-    }
-    m_origin Vec2
-    {
-      X float 0.000000
-      Y float 0.000000
-    }
-  }
-  PointLight
-  {
-    m_layer unsignedint 1
-    m_brightness LightColor
-    {
-      R float 0.500000
-      G float 1.000000
-      B float 1.000000
-      A float 0.020000
-    }
-    m_attenuation LightVec3
-    {
-      X float 0.000000
-      Y float -0.800000
-      Z float 0.010000
-    }
-  }
-  ParticleSystem
-  {
-    textureName std::string "White.png"
-    m_layer int 1
-    particleLife ParticleOptionShort<float>
-    {
-      m_startMin float 0.500000
-      m_startMax float 1.000000
-    }
-    directionEase int 2
-    direction ParticleOption<Vec3>
-    {
-      m_startMin Vec3
-      {
-        x_ float -0.242536
-        y_ float 0.970143
-        z_ float 0.000000
-      }
-      m_startMax Vec3
-      {
-        x_ float 0.240000
-        y_ float 0.970000
-        z_ float 0.000000
-      }
-      m_endMin Vec3
-      {
-        x_ float -1.000000
-        y_ float 0.000000
-        z_ float 0.000000
-      }
-      m_endMax Vec3
-      {
-        x_ float 1.000000
-        y_ float 0.000000
-        z_ float 0.000000
-      }
-    }
-    angularVelocity ParticleOption<float>
-    {
-      m_startMin float 0.000000
-      m_startMax float 0.000000
-      m_endMin float 0.000000
-      m_endMax float 0.000000
-    }
-    scaleEase int 3
-    scale ParticleOption<float>
-    {
-      m_startMin float 8.000000
-      m_startMax float 10.000000
-      m_endMin float 1.000000
-      m_endMax float 3.000000
-    }
-    colorEase int 1
-    color ParticleOption<Vec4>
-    {
-      m_startMin Vec4
-      {
-        R float 0.000000
-        G float 0.501961
-        B float 0.784314
-        A float 0.784314
-      }
-      m_startMax Vec4
-      {
-        R float 0.000000
-        G float 0.784314
-        B float 1.000000
-        A float 1.000000
-      }
-      m_endMin Vec4
-      {
-        R float 0.000000
-        G float 0.501961
-        B float 0.501961
-        A float 0.098039
-      }
-      m_endMax Vec4
-      {
-        R float 0.000000
-        G float 0.784314
-        B float 0.784314
-        A float 1.000000
-      }
-    }
-    speedEase int 3
-    speed ParticleOption<float>
-    {
-      m_startMin float 800.000000
-      m_startMax float 900.000000
-      m_endMin float 0.000000
-      m_endMax float 0.000000
-    }
-  }
-  ParticleCircleEmitter
-  {
-    parentToOwner bool false
-    m_innerRadius float 0.000000
-    m_outerRadius float 0.000000
-    m_spawnOffset Vec3
-    {
-      x_ float 0.000000
-      y_ float 0.000000
-      z_ float 0.000000
-    }
-    m_amount ParticleOptionShort<float>
-    {
-      m_startMin float 8.000000
-      m_startMax float 0.000000
-    }
-    m_rate ParticleOptionShort<float>
-    {
-      m_startMin float 1.000000
-      m_startMax float 0.000000
-    }
-    spawning bool true
-    timedSpawning bool false
-    timed float -0.016700
-    outward bool false
-    inward bool false
-  }
-  CircleCollider
-  {
-    m_radius float 8.000000
-    m_materialName std::string "Steel"
-    m_hasCollisionCallback bool true
-    m_CollisionGroup std::string ""
-  }
-  Bullet_Default
-  {
-  }
-}
-GameObject
-{
-  name std::string "bg"
+  name std::string ""
   archetype std::string ""
   Transform
   {
@@ -202,7 +9,7 @@ GameObject
     {
       x_ float 0.000000
       y_ float 0.000000
-      z_ float 1.000000
+      z_ float 0.000000
     }
     Rotation float 0.000000
     Scale Vec3
@@ -214,7 +21,7 @@ GameObject
   }
   Sprite
   {
-    m_spriteName std::string "white.png"
+    m_spriteName std::string "Default.png"
     m_layer unsignedint 1
     m_flipX bool false
     m_flipY bool false
@@ -228,8 +35,8 @@ GameObject
     }
     Size Vec2
     {
-      X float 1920.000000
-      Y float 1080.000000
+      X float 4.000000
+      Y float 2.000000
     }
     m_origin Vec2
     {
@@ -237,34 +44,41 @@ GameObject
       Y float 0.000000
     }
   }
+  BoxCollider
+  {
+    m_width float 128.000000
+    m_height float 64.000000
+    m_materialName std::string "Static"
+    m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
+  }
 }
 GameObject
 {
-  name std::string "Bullet_shotgun"
-  archetype std::string "Bullet_shot"
+  name std::string "Player"
+  archetype std::string "Player1"
   Transform
   {
     Translation Vec3
     {
-      x_ float -251.078995
-      y_ float -14.416027
+      x_ float 0.000000
+      y_ float 92.502800
       z_ float 0.000000
     }
     Rotation float 0.000000
     Scale Vec3
     {
-      x_ float 0.750000
-      y_ float 0.750000
+      x_ float 1.000000
+      y_ float 1.000000
       z_ float 0.000000
     }
   }
-  Sprite
+  SpineSprite
   {
-    m_spriteName std::string "energy_ball_red.png"
-    m_layer unsignedint 1
-    m_flipX bool false
-    m_flipY bool false
-    m_uvScale bool false
+    atlasName std::string "ninja"
+    entityName std::string "ninja"
+    sequenceName std::string "idle"
+    framerate float 20.000000
     Color Vec4
     {
       R float 1.000000
@@ -272,162 +86,28 @@ GameObject
       B float 1.000000
       A float 1.000000
     }
-    Size Vec2
-    {
-      X float 1.000000
-      Y float 1.000000
-    }
-    m_origin Vec2
-    {
-      X float 0.000000
-      Y float 0.000000
-    }
   }
-  PointLight
+  BoxCollider
   {
-    m_layer unsignedint 1
-    m_brightness LightColor
-    {
-      R float 1.000000
-      G float 0.200000
-      B float 0.200000
-      A float 0.025000
-    }
-    m_attenuation LightVec3
-    {
-      X float 0.000000
-      Y float -0.700000
-      Z float 0.010000
-    }
-  }
-  ParticleSystem
-  {
-    textureName std::string "White.png"
-    m_layer int 1
-    particleLife ParticleOptionShort<float>
-    {
-      m_startMin float 0.500000
-      m_startMax float 1.000000
-    }
-    directionEase int 0
-    direction ParticleOption<Vec3>
-    {
-      m_startMin Vec3
-      {
-        x_ float -0.468605
-        y_ float 0.883408
-        z_ float 0.000000
-      }
-      m_startMax Vec3
-      {
-        x_ float 0.470000
-        y_ float 0.880000
-        z_ float 0.000000
-      }
-      m_endMin Vec3
-      {
-        x_ float 0.000000
-        y_ float 0.000000
-        z_ float 0.000000
-      }
-      m_endMax Vec3
-      {
-        x_ float 0.000000
-        y_ float 0.000000
-        z_ float 0.000000
-      }
-    }
-    angularVelocity ParticleOption<float>
-    {
-      m_startMin float 0.000000
-      m_startMax float 0.000000
-      m_endMin float 0.000000
-      m_endMax float 0.000000
-    }
-    scaleEase int 3
-    scale ParticleOption<float>
-    {
-      m_startMin float 12.000000
-      m_startMax float 15.000000
-      m_endMin float 1.000000
-      m_endMax float 3.000000
-    }
-    colorEase int 2
-    color ParticleOption<Vec4>
-    {
-      m_startMin Vec4
-      {
-        R float 1.000000
-        G float 0.000000
-        B float 0.000000
-        A float 0.501961
-      }
-      m_startMax Vec4
-      {
-        R float 1.000000
-        G float 1.000000
-        B float 0.000000
-        A float 0.784314
-      }
-      m_endMin Vec4
-      {
-        R float 1.000000
-        G float 1.000000
-        B float 0.000000
-        A float 0.501961
-      }
-      m_endMax Vec4
-      {
-        R float 1.000000
-        G float 1.000000
-        B float 0.392157
-        A float 1.000000
-      }
-    }
-    speedEase int 3
-    speed ParticleOption<float>
-    {
-      m_startMin float 1800.000000
-      m_startMax float 2200.000000
-      m_endMin float 0.000000
-      m_endMax float 0.000000
-    }
-  }
-  ParticleCircleEmitter
-  {
-    parentToOwner bool false
-    m_innerRadius float 0.000000
-    m_outerRadius float 0.000000
-    m_spawnOffset Vec3
-    {
-      x_ float 0.000000
-      y_ float 0.000000
-      z_ float 0.000000
-    }
-    m_amount ParticleOptionShort<float>
-    {
-      m_startMin float 12.000000
-      m_startMax float 0.000000
-    }
-    m_rate ParticleOptionShort<float>
-    {
-      m_startMin float 1.000000
-      m_startMax float 0.000000
-    }
-    spawning bool true
-    timedSpawning bool false
-    timed float -0.002001
-    outward bool false
-    inward bool false
-  }
-  CircleCollider
-  {
-    m_radius float 12.000000
-    m_materialName std::string "Steel"
+    m_width float 90.000000
+    m_height float 128.000000
+    m_materialName std::string "Wood"
     m_hasCollisionCallback bool true
-    m_CollisionGroup std::string ""
+    m_CollisionGroup std::string "Player1"
   }
-  Bullet_Default
+  SoundEmitter
   {
+  }
+  PlayerController
+  {
+    playerNum int 0
+  }
+  GamePad
+  {
+    GamepadIndex int 0
+  }
+  Cheats
+  {
+    enabled bool true
   }
 }

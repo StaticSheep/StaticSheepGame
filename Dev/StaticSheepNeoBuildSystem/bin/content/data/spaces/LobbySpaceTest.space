@@ -264,6 +264,7 @@ GameObject
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
     m_CollisionGroup std::string ""
+    m_snap bool true
   }
 }
 GameObject
@@ -454,6 +455,7 @@ GameObject
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
     m_CollisionGroup std::string ""
+    m_snap bool true
   }
 }
 GameObject
@@ -510,6 +512,7 @@ GameObject
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
     m_CollisionGroup std::string ""
+    m_snap bool false
   }
 }
 GameObject
@@ -609,6 +612,7 @@ GameObject
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
     m_CollisionGroup std::string ""
+    m_snap bool true
   }
 }
 GameObject
@@ -790,6 +794,7 @@ GameObject
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
     m_CollisionGroup std::string ""
+    m_snap bool true
   }
 }
 GameObject
@@ -1117,6 +1122,7 @@ GameObject
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
     m_CollisionGroup std::string ""
+    m_snap bool false
   }
   Grinder
   {
@@ -1174,6 +1180,7 @@ GameObject
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
     m_CollisionGroup std::string ""
+    m_snap bool false
   }
   Grinder
   {
@@ -1367,6 +1374,7 @@ GameObject
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
     m_CollisionGroup std::string ""
+    m_snap bool true
   }
 }
 GameObject
@@ -1466,6 +1474,7 @@ GameObject
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
     m_CollisionGroup std::string ""
+    m_snap bool true
   }
 }
 GameObject
@@ -1520,6 +1529,7 @@ GameObject
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
     m_CollisionGroup std::string ""
+    m_snap bool false
   }
   Grinder
   {
@@ -1713,6 +1723,7 @@ GameObject
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
     m_CollisionGroup std::string ""
+    m_snap bool true
   }
 }
 GameObject
@@ -2176,6 +2187,7 @@ GameObject
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
     m_CollisionGroup std::string ""
+    m_snap bool true
   }
 }
 GameObject
@@ -2573,6 +2585,7 @@ GameObject
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
     m_CollisionGroup std::string ""
+    m_snap bool true
   }
 }
 GameObject
@@ -2602,6 +2615,7 @@ GameObject
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
     m_CollisionGroup std::string ""
+    m_snap bool true
   }
 }
 GameObject
@@ -2631,6 +2645,7 @@ GameObject
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
     m_CollisionGroup std::string ""
+    m_snap bool true
   }
 }
 GameObject
@@ -2912,6 +2927,7 @@ GameObject
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
     m_CollisionGroup std::string ""
+    m_snap bool true
   }
 }
 GameObject
@@ -2966,6 +2982,7 @@ GameObject
     m_materialName std::string "Static"
     m_hasCollisionCallback bool true
     m_CollisionGroup std::string ""
+    m_snap bool false
   }
   Grinder
   {
@@ -3068,6 +3085,7 @@ GameObject
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
     m_CollisionGroup std::string ""
+    m_snap bool true
   }
 }
 GameObject
@@ -3713,6 +3731,7 @@ GameObject
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
     m_CollisionGroup std::string ""
+    m_snap bool true
   }
 }
 GameObject
@@ -3742,6 +3761,7 @@ GameObject
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
     m_CollisionGroup std::string ""
+    m_snap bool true
   }
 }
 GameObject
@@ -3796,6 +3816,7 @@ GameObject
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
     m_CollisionGroup std::string ""
+    m_snap bool false
   }
   Grinder
   {
@@ -3853,6 +3874,7 @@ GameObject
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
     m_CollisionGroup std::string ""
+    m_snap bool false
   }
   Grinder
   {
@@ -3910,6 +3932,7 @@ GameObject
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
     m_CollisionGroup std::string ""
+    m_snap bool false
   }
   Grinder
   {
@@ -4058,6 +4081,7 @@ GameObject
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
     m_CollisionGroup std::string ""
+    m_snap bool false
   }
   Grinder
   {
@@ -4115,6 +4139,7 @@ GameObject
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
     m_CollisionGroup std::string ""
+    m_snap bool false
   }
   Grinder
   {
@@ -4172,6 +4197,7 @@ GameObject
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
     m_CollisionGroup std::string ""
+    m_snap bool false
   }
   Grinder
   {
@@ -4320,6 +4346,7 @@ GameObject
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
     m_CollisionGroup std::string ""
+    m_snap bool false
   }
   Grinder
   {
@@ -4468,6 +4495,7 @@ GameObject
     m_materialName std::string "Static"
     m_hasCollisionCallback bool true
     m_CollisionGroup std::string ""
+    m_snap bool false
   }
   Grinder
   {

@@ -8,7 +8,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #pragma once
 
 #include "components/base/Component.h"
-#include "../../sound/CSoundEmitter.h"
+//#include "../../sound/CSoundEmitter.h"
 #include "../../transform/CTransform.h"
 #include "types/weapons/WBase.h"
 #include "components/sprites/CSpineSprite.h"

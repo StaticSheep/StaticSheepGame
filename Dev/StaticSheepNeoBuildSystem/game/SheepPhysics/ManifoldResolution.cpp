@@ -10,6 +10,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "Manifold.h"
 #include "Vec3D.h"
 
+
 namespace SheepFizz
 {
   //apply forces in the direction of the normals determined in
@@ -70,11 +71,12 @@ namespace SheepFizz
       //from B to A;
       Vec3D impulse = j * normal;
       
+      /*
       if (penetration > .08 && (A->massData_.mass == 0 || B->massData_.mass == 0))
         impulse *= 1 + penetration;
 
       if (penetration > .10 && (A->massData_.mass == 0 || B->massData_.mass == 0))
-        impulse *= 1.5;
+        impulse *= 1.5;*/
 
       impulse.z = 0;
 
@@ -94,10 +96,13 @@ namespace SheepFizz
 
       contactVelocity = relativevelocity.DotProduct(normal);
 
+      //if(relativevelocity.SquareLength() > 36.0f)
+        //return;
+
       //calculate the normalized tangent vector
       //by removing the relative velocity component along the normal, only
       //the tangent remains (non-normalized)
-      Vec3D tangent = normal ^ (relativevelocity - (normal * contactVelocity));
+      Vec3D tangent = (relativevelocity - (normal * contactVelocity));
       tangent.Normalize();
 
       //calculate friction contact velocity - negative to tangentVector
@@ -107,20 +112,19 @@ namespace SheepFizz
       float jFriction = frictionContactVelocity / inverseMassSum;
 
       //friction force cannot exceed normal impulse
-      float accumulatedTanPrev = accumulatedTanImpulse[i];
-      accumulatedTanImpulse[i] = Maximum(jFriction + accumulatedTanImpulse[i], -j * mStaticFriction);
-      accumulatedTanImpulse[i] = Minimum(accumulatedTanImpulse[i], j * mStaticFriction);
-      jFriction = accumulatedTanImpulse[i] - accumulatedTanPrev;
+      //float accumulatedTanPrev = accumulatedTanImpulse[i];
+      //accumulatedTanImpulse[i] = Maximum(jFriction + accumulatedTanImpulse[i], -j * mDynamicFriction);
+      //accumulatedTanImpulse[i] = Minimum(accumulatedTanImpulse[i], j * mDynamicFriction);
+      //jFriction = accumulatedTanImpulse[i] - accumulatedTanPrev;
 
       Vec3D frictionImpulse;
-      frictionImpulse = jFriction * tangent;
+      frictionImpulse = jFriction * tangent * A->frictionMod_ * B->frictionMod_;
 
       //apply friction impulse
       frictionImpulse.z = 0;
 
       A->ApplyImpulse(-frictionImpulse, aRepulsionVec);
       B->ApplyImpulse(frictionImpulse, bRepulsionVec);
-
     }
 
   }//end of ApplyForces
@@ -137,7 +141,7 @@ namespace SheepFizz
     if (A->massData_.mass > 0 && B->massData_.mass > 0)
       return;
 
-    Vec3D correction = (Maximum(penetration - POSSLACK, 0.0f) /
+    /*Vec3D correction = (Maximum(penetration - POSSLACK, 0.0f) /
       (A->massData_.inverseMass + B->massData_.inverseMass)) * POSCORRECT
       * normal;
 
@@ -149,10 +153,30 @@ namespace SheepFizz
 
     correction *= 2.0f;
 
-    correction.z = 0;
+    correction.z = 0;*/
 
-    A->position_ -= A->massData_.inverseMass * correction;
-    B->position_ += B->massData_.inverseMass * correction;
+    Vec3D correction = penetration * normal;
+    correction.z = 0.0f;
+
+    
+    int p = (int)(penetration * 100.0f);
+
+    //float scalar =  PenetrationScaleFunction(p);
+    
+    if(A->massData_.mass != 0.0f)
+    {
+      A->position_ -= correction * 0.5f;// * scalar;//A->massData_.inverseMass * correction;
+
+      if(A->angularVelocity_ < 0.5 && A->angularVelocity_ > -0.5f)
+        A->angularVelocity_ = 0.0f;
+    }
+
+    if(B->massData_.mass != 0.0f)
+    {
+      B->position_ += correction * 0.5f;// * scalar;//B->massData_.inverseMass * correction;
+      if(B->angularVelocity_ < 0.5 && B->angularVelocity_ > -0.5f)
+        B->angularVelocity_ = 0.0f;
+    }
 
   }//end of PositionalCorrection
 

@@ -124,6 +124,18 @@ namespace SheepFizz
     body->collisionGroup_ = group;
   }//end of SetBodyCollisionGroup
 
+  void PhysicsSpace::SetBodyFrictionMod(Handle handle, float friction)
+  {
+    Body* body = handles_.GetAs<Body>(handle);
+    body->frictionMod_ = friction;
+  }//end of SetBodyFrictionMod
+
+  void PhysicsSpace::SetBodySnapping(Handle handle, bool snap)
+  {
+    Body* body = handles_.GetAs<Body>(handle);
+    body->snap_ = snap;
+  }//end of SetBodySnapping
+
 	//end of settors
 	//*************
 
@@ -528,6 +540,7 @@ namespace SheepFizz
     if (body.massData_.mass == 0)
     {
       body.position_ += body.velocity_ * dt_;
+      body.orientation_ += body.angularVelocity_ * dt_;
       return;
     }
 
@@ -539,13 +552,13 @@ namespace SheepFizz
 
 		//Velocity can be calculated after adjusting force
 		body.velocity_ += ((body.force_ *= body.massData_.inverseMass) 
-			+ Vec3D(0,modifiedGravity_) * (float)body.gravityScale_ * (float)body.gravityOn_) * dt_;
+			+ body.gravityNormal_ * 600.0f /*(float)body.gravityScale_*/ * (float)body.gravityOn_) * dt_;
 
-    if (body.velocity_.SquareLength() > SPEEDLIMIT * SPEEDLIMIT)
+    /*if (body.velocity_.SquareLength() > SPEEDLIMIT * SPEEDLIMIT)
     {
       body.velocity_.Normalize();
       body.velocity_ *= SPEEDLIMIT;
-    }
+    }*/
 
 		//Position changed last
 		body.position_ += body.velocity_ * dt_;

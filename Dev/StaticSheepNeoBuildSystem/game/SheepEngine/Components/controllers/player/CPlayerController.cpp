@@ -22,7 +22,6 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "../../gameplay_scripts/Player_Scripts/CAimingArrow.h"
 #include "../../gameplay_scripts/Player_Scripts/CDashEffect.h"
 #include "../../particles/CParticleSystem.h"
-#include "types/weapons/WLaser.h"
 
 
 
@@ -40,7 +39,6 @@ namespace Framework
 		//set defaults
 		playerNum = 0;
 		playerGamePad = Handle::null; //this is how you null a handle right
-		isSnapped = true;
 		hasFired = false;
     health = 100;
     shields = 100;
@@ -146,7 +144,6 @@ namespace Framework
     bc->SetGravityOff();
 
     weapon = (Pistol*)GET_TYPE(Pistol)->New();
-    //weapon = (WLaser*)GET_TYPE(WLaser)->New();
     se = space->GetHandles().GetAs<SoundEmitter>(playerSound);
     se->Play("robot_startup", &SoundInstance(0.50f));
     animCont = AnimationController(playerNum);
@@ -155,6 +152,7 @@ namespace Framework
 
     powerUp = nullptr;
     pn = -1;
+
     //SpawnEffect();
 	}
 
@@ -242,20 +240,8 @@ namespace Framework
       }
     }
 
-    if (isSnapped)
-    {
-      SnappedMovement();
-    }
-    else
-    {
-      normals.clear();
-    }
 
-		//dash, formally known as melee
-    if (gp->ButtonPressed(XButtons.LShoulder))
-      Melee(Buttons::LB);
-    else if (gp->ButtonPressed(XButtons.RShoulder))
-      Melee(Buttons::RB);
+    moveController.Update(GetOwner());
 
     PlayerButtonPress(); //check to see if the player has pressed any of the controller buttons (for cheats or other things)
 
@@ -265,7 +251,7 @@ namespace Framework
     if (ps->GetTranslation().x > 1000 || ps->GetTranslation().x < -1000 || ps->GetTranslation().y > 500 || ps->GetTranslation().y < -500)
       PlayerDeath(se, ps);
 
-    isSnapped = false;
+    //isSnapped = false;
     
     //keyboard movement
     if (gp->GetIndex() == 0 && !gp->Connected())
@@ -295,6 +281,24 @@ namespace Framework
       aimDir = Vec3D(aim.x, aim.y, 0.0);
     }
 
+    //if(normals.size() == 0)
+    //{
+    //  if(snapFrame <= 0)
+    //  {
+    //    bc->SetGravityOff();
+    //    isSnapped = false;
+    //  }
+    //}
+
+    /*if(snapFrame > 0)
+      --snapFrame;
+
+    if(checkJump > 0)
+      --checkJump;
+
+    collisionTotal = 0;
+    otherObjectVelocity = Vec3();*/
+
     //MetricInfo metricData;
     //metricData.mt = PLAYER_LOCATION;
     //metricData.playerNum = playerNum;
@@ -304,77 +308,7 @@ namespace Framework
 
 	}
 
-  void PlayerController::SnappedMovement()
-  {
-    hasDashed = false;
-    if (frameSkip)
-    {
-      bc->SetBodyRotation(-snappedNormal);
-      normals.clear();
-      normals.push_back(snappedNormal);
-    }
-    frameSkip = !frameSkip;
-
-    bc->SetVelocity(snappedNormal * 100); //artificial pull or "gravity" to snapped normal
-    bc->SetAngVelocity(0.0);              //if snapped to surface take away all angular velocity
-
-    if (snappedTo != Handle::null) //if the object we're supposed to be snapped to isn't dead
-    {
-      GameObject *snappedObject = space->GetHandles().GetAs<GameObject>(snappedTo);
-      if ((snappedObject->name == "SmallPlatform" || snappedObject->name == "SmallPlat"))
-      {
-        Vec3 addedVel = (snappedObject->GetComponent<BoxCollider>(eBoxCollider))->GetCurrentVelocity();
-        bc->AddToVelocity(addedVel);
-      }
-    }
-
-    //left stick movement in the X
-    if (gp->LeftStick_X() > 0.2 || (SHEEPINPUT->KeyIsDown(0x44) && gp->GetIndex() == 0))
-    {
-      if (snappedNormal.y > 0)
-        bc->AddToVelocity((snappedNormal.CalculateNormal() * 450));
-      else if (snappedNormal.y < 0)
-        bc->AddToVelocity(-(snappedNormal.CalculateNormal() * 450));
-    }
-    else if (gp->LeftStick_X() < -0.2 || (SHEEPINPUT->KeyIsDown(0x41) && gp->GetIndex() == 0))
-    {
-
-      if (snappedNormal.y > 0)
-        bc->AddToVelocity(-(snappedNormal.CalculateNormal() * 450));
-      if (snappedNormal.y < 0)
-        bc->AddToVelocity((snappedNormal.CalculateNormal() * 450));
-    }
-
-    //left stick movement in the Y
-    if (gp->LeftStick_Y() > 0.2 || (SHEEPINPUT->KeyIsDown(0x57) && gp->GetIndex() == 0))
-    {
-
-      if (snappedNormal.x > 0)
-        bc->AddToVelocity(-(snappedNormal.CalculateNormal() * 450));
-      else if (snappedNormal.x < 0)
-        bc->AddToVelocity((snappedNormal.CalculateNormal() * 450));
-    }
-    else if (gp->LeftStick_Y() < -0.2 || (SHEEPINPUT->KeyIsDown(0x53) && gp->GetIndex() == 0))
-    {
-      if (snappedNormal.x > 0)
-        bc->AddToVelocity((snappedNormal.CalculateNormal() * 450));
-      if (snappedNormal.x < 0)
-        bc->AddToVelocity(-(snappedNormal.CalculateNormal() * 450));
-    }    
-
-    //clamp the players velocity
-    clampVelocity(450.0f);
-
-    //jump
-    if (((gp->ButtonDown(XButtons.A) || gp->LeftTrigger()) && isSnapped) || (SHEEPINPUT->KeyIsDown('Q') && gp->GetIndex() == 0))
-    {
-      jump(); //player jump
-      if (GetRandom(0, 1)) //determine sound for jump
-        se->Play("jump2", &SoundInstance(0.75f));
-      else
-        se->Play("jump1", &SoundInstance(0.75f));
-    }
-  }
+ 
 
 	//************************************
 	// Method:    OnCollision
@@ -396,9 +330,15 @@ namespace Framework
     
     CollisionDamage(OtherObject); //determine if the colliding object does damage to the player
 
-    DetermineSnap(OtherObject, otherObject,manifold); //determine the snapped normal based on collided object
-	}
 
+    /*if(OtherObject->name == "WeaponPickup" || OtherObject->archetype == "Grinder" ||
+      OtherObject->name == "PowerUpPickup" || OtherObject->name == "CoinPickup" || OtherObject->name == "CoinBall" || OtherObject->name == "Player"
+      || OtherObject->HasComponent(eBullet_Default))
+      return;*/
+
+    if(moveController.CanSnap())
+      moveController.DetermineSnap(bc, OtherObject, manifold);
+	}
 
   void PlayerController::CollisionDamage(GameObject *OtherObject)
   {
@@ -444,7 +384,6 @@ namespace Framework
     else if ((OtherObject->archetype == "KillBox" || OtherObject->archetype == "KillBoxBig" || OtherObject->name == "GrinderBig")
       && !hasRespawned && !GodMode && !PerfectMachine)
     {
-      isSnapped = false;
       DealDamage(5, playerNum);
     }
     else if (OtherObject->name == "WeaponPickup")
@@ -469,72 +408,9 @@ namespace Framework
     if ((OtherObject->GetComponentHandle(eGrinder) != Handle::null)
       && !hasRespawned && !GodMode && !PerfectMachine)
     {
-      isSnapped = false;
       DealDamage(5, playerNum);
     }
 
-  }
-
-  void PlayerController::DetermineSnap(GameObject *OtherObject, Handle otherObject, SheepFizz::ExternalManifold manifold)
-  {
-    Transform *OOT = OtherObject->GetComponent<Transform>(eTransform);
-
-    if (!OOT)
-      return;
-
-    if (!(OtherObject->HasComponent(eBoxCollider)) || OtherObject->name == "Player" || OtherObject->name == "WeaponPickup"
-      || OtherObject->archetype == "Grinder" || OtherObject->name == "PowerUpPickup")
-      return;
-    
-    BoxCollider *OOBc = OtherObject->GetComponent<BoxCollider>(eBoxCollider);
-    float dotNormals;
-
-    if (snappedNormal.x != OOBc->GetCollisionNormals(manifold).x && snappedNormal.y != OOBc->GetCollisionNormals(manifold).y)
-    {
-      nextSnappedNormal = OOBc->GetCollisionNormals(manifold);
-      nextSnappedNormal.Rotate(PI / 2);
-      nextSnappedNormal.Normalize();
-
-      dotNormals = snappedNormal.DotProduct(nextSnappedNormal);
-      if (dotNormals > 0)
-        bc->AddToVelocity((nextSnappedNormal * 10));
-      else
-        bc->AddToVelocity(-(nextSnappedNormal * 10));
-    }
-
-    //i have to set up a bool flag here for finding a matching vector
-    bool duplicate = false;
-    snappedNormal = OOBc->GetCollisionNormals(manifold);
-    snappedNormal.Normalize();
-
-    for (unsigned i = 0; i < normals.size(); ++i)
-    {
-      if (snappedNormal.x == normals[i].x && snappedNormal.y == normals[i].y)
-        duplicate = true;
-    }
-
-    if (!duplicate)
-      normals.push_back(snappedNormal);
-
-    if (normals.size() == 0)
-      normals.push_back(snappedNormal);
-
-    isSnapped = true;
-    //get the thing we are colliding with
-    snappedTo = otherObject;
-    float avX = 0, avY = 0;
-    for (unsigned i = 0; i < normals.size(); ++i)
-    {
-      avX += normals[i].x;
-      avY += normals[i].y;
-    }
-    if (normals.size() != 0)
-    {
-      avX /= normals.size();
-      avY /= normals.size();
-      Vec3 averaged(avX, avY, 0.0f);
-      snappedNormal = averaged;
-    }
   }
 
 	//************************************
@@ -582,7 +458,7 @@ namespace Framework
 
     weapon->Fire(space->GetHandles().GetAs<GameObject>(owner));
 
-    if (!isSnapped)
+    if (!moveController.IsSnapped())
     {
       BoxCollider *bc = space->GetHandles().GetAs<BoxCollider>(playerCollider);
       bc->AddToVelocity(-aimDir * (float)(weapon->knockback));
@@ -614,7 +490,7 @@ namespace Framework
     }
     //then I normalize that vector and multiply it by a constant (1.5)
     returnVec.Normalize();
-    returnVec *= 1.5;
+    //returnVec *= 1.5;
 
 		return returnVec;
 	}
@@ -630,9 +506,10 @@ namespace Framework
   {
     aimDir = aimingDirection(gp); //get the direction the player is currently aiming;
 
-    /*if(!arrowSpawn)
-      arrowSpawn = true;*/
-    
+    if(!arrowSpawn)
+      arrowSpawn = true;
+
+    /*
     if (!arrowSpawn)
     {
       //draw aiming arrow
@@ -645,38 +522,7 @@ namespace Framework
       AA->GetComponent<Sprite>(eSprite)->Color = playerS->Color; //set the colors equal
       AA->GetComponent<Sprite>(eSprite)->Color.a = 0.7f; //make sure the alpha isn't low (happens during respawn)
       arrowSpawn = true;
-    }
-  }
-
-  //************************************
-  // Method:    Melee
-  // FullName:  Framework::PlayerController::Melee
-  // Access:    public 
-  // Returns:   void
-  // Qualifier:
-  //************************************
-  void PlayerController::Melee(Buttons butt)
-  {
-    if (hasDashed || isSnapped)
-      return;
-
-    //zero out all the velocity the player has
-    bc->SetVelocity(Vec3(0.0f, 0.0f, 0.0f));
-    if (gp->LStick_InDeadZone())
-    {
-      if (butt == Buttons::LB)
-        bc->SetVelocity(Vec3(-1000.0f, 0.0f, 0.0f));
-      else if (butt == Buttons::RB)
-        bc->SetVelocity(Vec3(1000.0f, 0.0f, 0.0f));
-    }
-    else
-      bc->SetVelocity(aimingDirection(gp, 'L') * 1000);
-
-    GameObject *dash_effect = (FACTORY->LoadObjectFromArchetype(space, "fire_effect1"));
-    dash_effect->GetComponent<DashEffect>(eDashEffect)->pTransform = playerTransform;
-    dash_effect->GetComponent<Transform>(eTransform)->SetTranslation(ps->GetTranslation());
-    se->Play("dash", &SoundInstance(0.7f));
-    hasDashed = true;
+    }*/
   }
 
   //************************************
@@ -704,7 +550,6 @@ namespace Framework
         hasRespawned = false;
       }
     }
-
 
     if (respawnTimer > 0.0f)
     {
@@ -793,7 +638,7 @@ namespace Framework
     //get animated sprite component
     SpineSprite *pa = space->GetHandles().GetAs<SpineSprite>(playerAnimation);
 
-    if ((isSnapped && !(gp->LStick_InDeadZone())) || (isSnapped && gp->GetIndex() == 0 && (SHEEPINPUT->KeyIsDown('D') || SHEEPINPUT->KeyIsDown('A') || SHEEPINPUT->KeyIsDown('W') || SHEEPINPUT->KeyIsDown('S'))))
+    if ((moveController.IsSnapped() && !(gp->LStick_InDeadZone())) || (moveController.IsSnapped() && gp->GetIndex() == 0 && (SHEEPINPUT->KeyIsDown('D') || SHEEPINPUT->KeyIsDown('A') || SHEEPINPUT->KeyIsDown('W') || SHEEPINPUT->KeyIsDown('S'))))
     {
       //set animated sprite to run
       if (animCont.AnimState != RUN)
@@ -802,7 +647,7 @@ namespace Framework
         animCont.AnimState = RUN;
       }
     }
-    else if (!isSnapped)
+    else if (!moveController.IsSnapped())
     {
       if (animCont.AnimState != JUMP)
       {
@@ -827,55 +672,6 @@ namespace Framework
 
   }
 
-  //Takes a players box collider and clamps the velocity of that box collider
-  //to be from the value of clamp to the negative value of clamp
-  //************************************
-  // Method:    clampVelocity
-  // FullName:  Framework::PlayerController::clampVelocity
-  // Access:    public 
-  // Returns:   void
-  // Qualifier:
-  // Parameter: float clamp
-  //************************************
-  void PlayerController::clampVelocity(float clamp)
-  {
-    if (bc->GetCurrentVelocity().x > clamp)
-      bc->SetVelocity(Vec3(clamp, bc->GetCurrentVelocity().y, 0.0f));
-    if (bc->GetCurrentVelocity().x < -clamp)
-      bc->SetVelocity(Vec3(-clamp, bc->GetCurrentVelocity().y, 0.0f));
-    if (bc->GetCurrentVelocity().y > 450)
-      bc->SetVelocity(Vec3(bc->GetCurrentVelocity().x, clamp, 0.0f));
-    if (bc->GetCurrentVelocity().y < -clamp)
-      bc->SetVelocity(Vec3(bc->GetCurrentVelocity().x, -clamp, 0.0f));
-  }
-
-  //************************************
-  // Method:    jump
-  // FullName:  Framework::PlayerController::jump
-  // Access:    public 
-  // Returns:   void
-  // Qualifier:
-  //************************************
-  void PlayerController::jump()
-  {
-    Vec3 jmpDir;
-    if (gp->LStick_InDeadZone())
-      jmpDir = -snappedNormal;
-    else
-    {
-      jmpDir = aimingDirection(gp, 'L');
-      if (-snappedNormal * jmpDir < 0)
-      {
-        jmpDir += ((-snappedNormal * jmpDir) * snappedNormal) *2;
-      }
-    }
-
-    bc->AddToVelocity(jmpDir * 500);
-    isSnapped = false;
-    normals.clear();
-    
-  }
-
   //************************************
   // Method:    PlayerButtonPress
   // FullName:  Framework::PlayerController::PlayerButtonPress
@@ -891,6 +687,10 @@ namespace Framework
     playerButton.x = (int)ps->GetTranslation().x;
     playerButton.y = (int)ps->GetTranslation().y;
     playerButton.button = Buttons::NONE;
+
+
+    bc = space->GetHandles().GetAs<BoxCollider>(playerCollider);
+    Transform* trans = space->GetHandles().GetAs<Transform>(playerTransform);
 
     if (gp->ButtonPressed(XButtons.A))
     {
