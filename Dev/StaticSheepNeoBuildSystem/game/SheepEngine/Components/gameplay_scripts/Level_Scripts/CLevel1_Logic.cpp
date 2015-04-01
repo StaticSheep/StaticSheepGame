@@ -63,7 +63,7 @@ namespace Framework
     deadPlayers = 0;
     for (int i = 0; i < 4; ++i)
     {
-      playerCoins[i] = 1;
+      playerCoins[i] = 0;
       Players[i] = Handle::null;
     }
 
@@ -118,7 +118,6 @@ namespace Framework
       spawnTimers[i] = 2.0f;
       juggernaut[i] = false;
       playerCoinsThisFrame[i] = 0;
-      playerCoins[i] = 1;
       num_spawned[i] = false;
     }
 
@@ -161,7 +160,6 @@ namespace Framework
 
       sp->Play("tripg", &instance);
       playing = true;
-     
     } 
 
     if (LE)

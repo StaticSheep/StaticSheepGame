@@ -14,10 +14,13 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "CRoundResults.h"
 #include "SheepMath.h"
 #include "../../gameplay_scripts/arena/CBlockLights.h"
+#include "../../gameplay_scripts/Slot_Machine_Scripts/CPersonalSlotSpawner.h"
 
 namespace Framework
 {
-
+  static float psmX_ = 450.0f;
+  static float psmYTop_ = 752.5f;
+  static float psmYBot_ = 353.5f;
   RoundController::RoundController()
   {
     current_round = 1;
@@ -26,6 +29,11 @@ namespace Framework
     timeOfRound = 93.0f; //default round length, (round length + 3.0f)
     state_ = INTRO;
     gameStarted = false;
+    
+    psmPos[0] = Vec3(-psmX_, psmYBot_, 0.0f);
+    psmPos[1] = Vec3(psmX_, psmYBot_, 0.0f);
+    psmPos[2] = Vec3(psmX_, psmYTop_, 0.0f);
+    psmPos[3] = Vec3(-psmX_, psmYTop_, 0.0f);
   }
 
   RoundController::~RoundController()
@@ -39,6 +47,7 @@ namespace Framework
     space->hooks.Add("Draw", self, BUILD_FUNCTION(RoundController::Draw));
     space->hooks.Add("SlotFinished", self, BUILD_FUNCTION(RoundController::SlotMachineDone));
     space->hooks.Add("GameStart", self, BUILD_FUNCTION(RoundController::GameStarted));
+    space->hooks.Add("PersonalSlotDone", self, BUILD_FUNCTION(RoundController::PersonalSlotDone));
 
     for (int i = 0; i < 4; ++i)
       num_spawned[i] = false;
@@ -49,7 +58,7 @@ namespace Framework
     round_state_timer = 6.0f;
     EORAwarded = false;
 
-
+    spawnedPSM = false;
     font_index = Draw::GetFontIndex("BN_Jinx");
   }
 
@@ -135,6 +144,7 @@ namespace Framework
       round_number->GetComponent<RoundText>(eRoundText)->number = current_round;
       spawned_round_start = true;
       ResultsSpawned = false;
+      spawnedPSM = false;
       space->hooks.Call("RoundStart");
     }
 
@@ -163,7 +173,7 @@ namespace Framework
     if (round_state_timer <= 0)
     {
       state_ = ROUNDOVER;
-      round_state_timer = 10.0f;
+      round_state_timer = 20.0f;
       space->GetGameObject(owner)->GetComponent<Level1_Logic>(eLevel1_Logic)->roundStart = false;
       space->GetGameObject(owner)->GetComponent<Level1_Logic>(eLevel1_Logic)->mode = SLOTMACHINE;
       spawned_round_start = false;
@@ -177,7 +187,7 @@ namespace Framework
 
   void RoundController::RoundOver(float dt)
   {
-    if (round_state_timer >= 8.0f && !roundUp_spawned)
+    if (round_state_timer >= 18.0f && !roundUp_spawned)
     {
       SoundEmitter *se = space->GetGameObject(owner)->GetComponent<SoundEmitter>(eSoundEmitter);
       se->Play("slot_digital_bell2", &SoundInstance(1.0f));
@@ -190,7 +200,7 @@ namespace Framework
       roundUp_spawned = true;
       space->hooks.Call("RoundOver");
     }
-    else if (round_state_timer >= 6.0f && round_state_timer <= 6.8f)
+    else if (round_state_timer >= 13.5f)
     {
       //display results
       if (!ResultsSpawned)
@@ -212,6 +222,12 @@ namespace Framework
       
       if (!EORAwarded)
         AwardEndOfRoundChips();
+    }
+    else if (round_state_timer >= 0.1f)
+    {
+      //spawn personal slot machines and let them do their thing
+      if (!spawnedPSM)
+        SpawnPersonalSM();
     }
 
     round_state_timer -= dt;
@@ -386,6 +402,35 @@ namespace Framework
       Draw::DrawString(round_timer, scale, font_index);
     }
 
+  }
+
+  void RoundController::SpawnPersonalSM()
+  {
+    Handle psm_[4];
+    Transform *psmT_;
+    for (int i = 0; i < 4; ++i)
+    {
+      if (i == 0)
+        psm_[i] = (FACTORY->LoadObjectFromArchetype(space, "p1_coinTotal"))->self;
+      else if (i == 1)
+        psm_[i] = (FACTORY->LoadObjectFromArchetype(space, "p2_coinTotal"))->self;
+      else if (i == 2)
+        psm_[i] = (FACTORY->LoadObjectFromArchetype(space, "p3_coinTotal"))->self;
+      else if (i == 3)
+        psm_[i] = (FACTORY->LoadObjectFromArchetype(space, "p4_coinTotal"))->self;
+
+      space->GetGameObject(psm_[i])->GetComponent<PersonalSlotSpawner>(ePersonalSlotSpawner)->playerNum = i;
+      space->GetGameObject(psm_[i])->GetComponent<PersonalSlotSpawner>(ePersonalSlotSpawner)->level_logic = owner;
+      psmT_ = space->GetGameObject(psm_[i])->GetComponent<Transform>(eTransform);
+      psmT_->SetTranslation(psmPos[i]);
+    }
+
+    spawnedPSM = true;
+  }
+
+  void RoundController::PersonalSlotDone()
+  {
+    round_state_timer = 5.0f;
   }
 
   void RoundController::Remove()

@@ -44,15 +44,19 @@ namespace Framework
     void RoundCountDown();
     void AwardEndOfRoundChips();
     void GameStarted();
+    void SpawnPersonalSM();
+    void PersonalSlotDone();
 
     Handle LevelLogic, ChipController_;
     int current_round, max_rounds;
     RoundState state_;
     float round_state_timer;
     float timeOfRound;
-    bool spawned_round_start, slotMachineDone, roundUp_spawned, EORAwarded, ResultsSpawned, gameStarted;
+    bool spawned_round_start, slotMachineDone, roundUp_spawned,
+      EORAwarded, ResultsSpawned, gameStarted, spawnedPSM;
     bool num_spawned[5];
     char round_timer[10];
+    Vec3 psmPos[4];
     int font_index;
     GameTypes mode_;
   };

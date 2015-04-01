@@ -18,13 +18,36 @@ GameObject
       z_ float 0.000000
     }
   }
+  PointLight
+  {
+    m_layer unsignedint 1
+    m_brightness LightColor
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    m_attenuation LightVec3
+    {
+      X float 0.010000
+      Y float 0.010000
+      Z float 0.050000
+    }
+  }
+  SoundEmitter
+  {
+  }
+  SoundPlayer
+  {
+  }
   SlotMachine
   {
     m_layer int 1
     m_stopTexture std::string "ggg_reel.png"
     m_spinTexture std::string "ggg_reel_blur.png"
     m_slotBackTexture std::string "slotmachine_slotback.png"
-    numSlots int 3
+    numSlots int 1
     slotOptions int 3
     startSpeed float 7.000000
     slotSize Vec2
@@ -43,7 +66,7 @@ GameObject
       X float 2.400000
       Y float 1.800000
     }
-    startTime float 3.000000
+    startTime float 2.000000
     bonusTime float 0.200000
     useSpriteColor bool true
     backingColor Vec4
@@ -53,5 +76,8 @@ GameObject
       B float 1.000000
       A float 1.000000
     }
+  }
+  PersonalSlotController
+  {
   }
 }

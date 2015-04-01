@@ -14,26 +14,30 @@ All content © 2015 DigiPen (USA) Corporation, all rights reserved.
 namespace Framework
 {
 
-	class PersonalSlotController : public GameComponent
+	class PersonalSlotSpawner : public GameComponent
 	{
 	public:
-    PersonalSlotController();
-    ~PersonalSlotController();
+    PersonalSlotSpawner();
+    ~PersonalSlotSpawner();
 		void LogicUpdate(float dt);
 		void Initialize();
 		void Remove();
     void BounceDown(float dt);
+    void SpawnPersonalSM(int num);
+    void Draw();
 
-    void SetSMTextures(int, int*, int*);
-    void SetSMResults(int, int*);
-    void ReceiveSMResults(std::vector<int>*);
-
-    bool CheckForJP(std::vector<int>);
 		//member variables
-    int playerNum, psmNum;
     float timer;
     float bounceDownTimer;
     bool bounceDownDone;
-    bool done; 
+    bool coinsSpawned;
+    bool playing, done_;
+
+    int playerNum;
+    int playerCoinTotal;
+    int totalPSM;
+    Handle spawnedPSM[3];
+    Handle level_logic;
+    Handle spawnedCoins;
 	};
 }
