@@ -56,6 +56,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "Components/controllers/lobby/CJoinText.h"
 #include "components/gameplay_scripts/Slot_Machine_Scripts/CPersonalSlotSpawner.h"
 #include "components/controllers/light patterns/CLightPatternController.h"
+#include "Components/controllers/lobby/CTutorialText.h"
 
 namespace Framework
 {
@@ -115,6 +116,7 @@ namespace Framework
     REGISTER_COMPONENT(RoundResults);
     REGISTER_COMPONENT(Pulser);
     REGISTER_COMPONENT(JoinText);
+    REGISTER_COMPONENT(TutorialText);
     REGISTER_COMPONENT(LightPatternController);
     REGISTER_COMPONENT(PersonalSlotSpawner);
   }

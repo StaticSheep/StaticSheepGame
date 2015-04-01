@@ -85,6 +85,7 @@ E_NAME(Component)
   E_ENTRY(LobbyController)
   E_ENTRY(LightPatternController)
   E_ENTRY(JoinText)
+  E_ENTRY(TutorialText)
   
   E_ENTRY(div_Effects)
   E_ENTRY(AimingArrow)

@@ -82,7 +82,7 @@ namespace Framework
       if ((ll->playerCoins[0] <= 0 && ll->playerCoins[1] <= 0 && ll->playerCoins[2] <= 0 && ll->playerCoins[3] <= 0 && done_) || playerCoinTotal >= 10000)
       {
         space->GetGameObject(owner)->GetComponent<SoundPlayer>(eSoundPlayer)->Stop("slot_coin_jackpot", INSTANT);
-        space->hooks.Call("PersonalSlotDone");
+        //space->hooks.Call("PersonalSlotDone");
         timer = 5.0f;
         space->GetGameObject(spawnedCoins)->GetComponent<BasicParticleSystem>(eBasicParticleSystem)->Toggle(false);
         done_ = false;
