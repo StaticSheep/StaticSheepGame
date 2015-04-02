@@ -121,7 +121,7 @@ namespace Framework
     if (round_state_timer <= 3.0f && !mostChipsText)
     {
       GameObject *welcome = (FACTORY->LoadObjectFromArchetype(space, "mostChips_text"));
-      welcome->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(1000.0f, 96.0f, 0.0f));
+      welcome->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(1000.0f, 32.0f, 0.0f));
       mostChipsText = true;
     }
 

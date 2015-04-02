@@ -106,6 +106,8 @@ namespace Framework
     levelEmitter = space->GetGameObject(owner)->GetComponentHandle(eSoundEmitter);
     levelSprite = space->GetGameObject(owner)->GetComponentHandle(eSprite);
 
+    lastMode = IDLE_STATE;
+
     eventTimer = 6;
     startFlag = true;
     playing = true;
@@ -171,6 +173,7 @@ namespace Framework
     ResetPlayers();
     mode = SLOTMACHINE;
   }
+
 
   void Level1_Logic::SpawnPlayers(float dt)
   {
@@ -873,6 +876,7 @@ namespace Framework
       GameObject *SM = (FACTORY->LoadObjectFromArchetype(space, "LevelSlotMachine"));
       SM->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(0.0f, 900.0f, 1.0f));
       SM->GetComponent<SlotController>(eSlotController)->roundNum = space->GetGameObject(owner)->GetComponent<RoundController>(eRoundController)->current_round;
+      SM->GetComponent<SlotController>(eSlotController)->lastMode = lastMode;
       slotFinished = true;
     }
   }
@@ -907,6 +911,7 @@ namespace Framework
 
   void Level1_Logic::SlotFinished(GameTypes mode_)
   {
+    lastMode = mode_;
     mode = mode_;
     countDownDone = false;
     countDownTimer = 3.0f;
@@ -914,8 +919,7 @@ namespace Framework
     slotFinished = false;
     startFlag = true;
     ResetSpawnTimers();
-    if (mode_ == JUGGERNAUT)
-      ResetJuggernaut();
+    ResetJuggernaut();
   }
 
   void Level1_Logic::SetMods(GameMods mod1_, GameMods mod2_)

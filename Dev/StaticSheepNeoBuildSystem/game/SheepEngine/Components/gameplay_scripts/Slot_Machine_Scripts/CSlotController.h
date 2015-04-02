@@ -36,6 +36,8 @@ namespace Framework
 
     bool CheckForJP(std::vector<int>);
     GameObject* SpawnChildSM(SlotType type);
+    void SetNextWeights(int reel);
+
 		//member variables
     float levelTimer; //keeps track of overall time in the level for slot machine switches
     float bounceDownTimer;
@@ -44,11 +46,12 @@ namespace Framework
     bool spawnLeftBonus, spawnRightBonus;
     SlotType Stype;
     int StypeInt;
+    int slotWeights[3];
     bool done; 
     GameObject *spawnedSM;
     Handle spawnedSMHandle;
     int roundNum;
-    GameTypes mode;
+    GameTypes mode, lastMode;
     GameMods mod1, mod2;
 	};
 }
