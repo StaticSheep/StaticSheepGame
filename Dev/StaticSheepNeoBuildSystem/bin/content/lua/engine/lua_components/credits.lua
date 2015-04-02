@@ -195,13 +195,13 @@ function META:Run()
   self:CreditTitle("Jon Sourbeer", "Physics Pinata", 2.5)
   self:CreditTitle("Scott Nelson", "Graphics Programmer", 2.5)
   self:CreditTitle("Zakary Wilson", "Technical Artist", 2.5)
-  self:CreditTitle("evan AldErEtE", "Composer", 2.5)
+  self:CreditTitle("evan Alderete", "Composer", 2.5)
 
   self:CreditEx("Special Thanks To", 2.5, nil, 0, 26)
 
   local thanks = {"Cameron Craig", "Jake Ganz",
 "Juli Gregg", "Rachel Rutherford", "Sarah McGinley",
-"Nathan Carlson", "Jordan Ellis", "Randy Gaul", "Corbin Hart",
+"Nathan Carlson", "Jordan ellis", "Randy Gaul", "Corbin Hart",
 "Robert Di Battista", "Joseph Nawar", "Tresillion Dorne",
 "Garry Newman", "Starbucks", "Texas Instruments"
 }
@@ -214,7 +214,7 @@ function META:Run()
 "Tai Der Hui", "Mickey Tyler", "Daya Singh",
 "Scott Smith", "Nathan Mueller", "Chris Hendricks",
 "John Lim", "Patrick Michael \"Overhira\" Casey",
-"Izzy Abdus-Sabur", "Ilan Keshet", "Eduardo Gorinstein",
+"Izzy Abdus-Sabur", "Ilan Keshet", "eduardo Gorinstein",
 "Esteban Maldonado"}
 
   self:CreditEx("Playtesters", 2.5, nil, 0, 26)
