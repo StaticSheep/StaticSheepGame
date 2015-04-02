@@ -40,7 +40,7 @@ namespace Framework
     //when you create a slot machine through an archetype you can set its call backs like this
     sm->SetTextureCB(self, BUILD_FUNCTION(SlotController::SetSMTextures));
     sm->SetFinishedCB(self, BUILD_FUNCTION(SlotController::ReceiveSMResults));
-    //sm->SetSelectionCB(self, BUILD_FUNCTION(SlotController::SetSMResults));
+    sm->SetSelectionCB(self, BUILD_FUNCTION(SlotController::SetSMResults));
     bounceDownTimer = 0.5f;
     bounceDownDone = false;
     spawnLeftBonus = false;
