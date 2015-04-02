@@ -297,7 +297,7 @@ namespace Framework
     {
       float distanceX = (float)GetRandom((int)-magnitude, (int)magnitude);
       float distanceY = (float)GetRandom((int)-magnitude, (int)magnitude);
-      lc->SetTranslation(Vec3(distanceX, distanceY, 0.0));
+      lc->SetTranslation(lc->GetTranslation() + Vec3(distanceX, distanceY, 0.0));
       shake = false;
     }
     else
