@@ -24,6 +24,7 @@ namespace Framework
     knockback = 60;
     semi = true;
     explosive_ = false;
+    fireSound = "Laser_Shot";
   }
 
   Pistol::~Pistol()
@@ -33,44 +34,7 @@ namespace Framework
 
   void Pistol::Fire(GameObject *player)
   {
-
-    GameObject *bullet = (FACTORY->LoadObjectFromArchetype(player->space, "Bullet"));
-    Bullet_Default* bd = bullet->GetComponent<Bullet_Default>(eBullet_Default);
-
-    PlayerController* pc = player->GetComponent<PlayerController>(ePlayerController);
-    bd->playerOwner = pc->playerNum;
-
-    if (explosive_)
-    {
-      bd->damage = damage + 20;
-      bd->explosive_ = true;
-    }
-    else
-      bd->damage = damage;
-
-    bullet->GetComponent<ParticleCircleEmitter>(eParticleCircleEmitter)->spawning = false;
-    bullet->GetComponent<ParticleCircleEmitter>(eParticleCircleEmitter)->timedSpawning = true;
-    bullet->GetComponent<ParticleCircleEmitter>(eParticleCircleEmitter)->timed = 0.001f;
-    Transform *BT = bullet->GetComponent<Transform>(eTransform);
-    CircleCollider *bulletC = bullet->GetComponent <CircleCollider>(eCircleCollider);
-    Transform *playerTrans = player->GetComponent <Transform>(eTransform);
-    Vec3 AimDir = player->GetComponent<PlayerController>(ePlayerController)->aimDir;
-
-    float theta = atan2f(AimDir.y, AimDir.x) - (PI / 2.0f);
-
-    Mat3D rotation(theta);
-
-    ParticleSystem* part = bullet->GetComponent<ParticleSystem>(eParticleSystem);
-    part->direction.m_startMin = rotation * part->direction.m_startMin;
-    part->direction.m_startMax = rotation * part->direction.m_startMax;
-
-    bulletC->SetBodyCollisionGroup(player->GetComponent<PlayerController>(ePlayerController)->weaponGroup);
-
-    BT->SetTranslation(playerTrans->GetTranslation() + AimDir * 25);
-    bulletC->AddToVelocity(AimDir * 1000);
-
-    SoundEmitter *se = player->GetComponent<SoundEmitter>(eSoundEmitter);
-    se->Play("Laser_Shot", &SoundInstance(1.0f));
+    GameObject *bullet = CreateBullet(player, "Bullet");
   }
 
   void Pistol::Update(float dt)

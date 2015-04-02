@@ -30,7 +30,8 @@ namespace Framework
     void Collision(GameObject* obj, GameObject* OtherObject);
 
     /* Called when taking damage from a source */
-    void TakeDamage(float damage, int attacker, bool penetrates = false);
+    void TakeDamage(float damage, int attacker, bool explosive = false,
+      bool penetrates = false);
 
     /* Call to kill */
     void Kill(int attacker);
@@ -71,9 +72,13 @@ namespace Framework
     std::string m_rechargedSound;
 
     /* Color of shields when they are full */
-    LightColor m_fullShieldColor = LightColor(0.1f, 0.7f, 1.0f, 0.8f);
+    static LightColor FullShieldColor;
+    static LightColor FullShieldFadeColor;
+
     /* Color of shields when they are just above empty */
-    LightColor m_lowShieldColor = LightColor(0.0f, 0.8f, 1.0f, 0.1f);
+    static LightColor LowShieldColor;
+    static LightColor MedShieldColor;
+
     /* Color of shield when it is gone */
     LightColor m_dangerColor = LightColor(1.0f, 0.1f, 0.0f, 1.0f);
 

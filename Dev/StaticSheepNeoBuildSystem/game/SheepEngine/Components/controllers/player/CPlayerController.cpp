@@ -203,38 +203,54 @@ namespace Framework
       arrowSpawn = false;
     
     //update the weapons delay
-    weapon->DelayUpdate(dt);
+    weapon->Update(dt);
+
+
 
 		//fire on trigger pull
-		if ((gp->RightTrigger() && hasFired == false) || (SHEEPINPUT->KeyIsDown(VK_SPACE) && hasFired == false && gp->GetIndex() == 0))
+		if (
+      (gp->RightTrigger() && !hasFired)
+      || 
+      (SHEEPINPUT->KeyIsDown(VK_SPACE)
+      && !hasFired && gp->GetIndex() == 0)
+      )
 		{
-			hasFired = true;
+      if (weapon->semi)
+        hasFired = true;
+
 			onFire();
 		}
-
-    //check to see if the weapon is semi-auto
-    if (weapon->semi == false)
+    else
     {
-      if (weapon->delay <= 0)
+      if (!gp->RightTrigger())
       {
         hasFired = false;
-        weapon->ResetDelay();
       }
     }
+
+  //  //check to see if the weapon is semi-auto
+  //  if (weapon->semi == false)
+  //  {
+  //    if (weapon->delay <= 0)
+  //    {
+  //      hasFired = false;
+  //      weapon->ResetDelay();
+  //    }
+  //  }
 
     // keyboard input for first player
     if(SHEEPINPUT->KeyIsDown(VK_SPACE))
         SHEEPINPUT->Pads[0].State.Gamepad.bRightTrigger = (BYTE)255;
 
-		//if the trigger is released, reset the bool
-		if (!gp->RightTrigger() && weapon->semi)
-    {
-      if (weapon->delay <= 0)
-      {
-        hasFired = false;
-        weapon->ResetDelay();
-      }
-    }
+		////if the trigger is released, reset the bool
+		//if (!gp->RightTrigger() && weapon->semi)
+  //  {
+  //    if (weapon->delay <= 0)
+  //    {
+  //      hasFired = false;
+  //      
+  //    }
+  //  }
 
 
     moveController.Update(GetOwner());
@@ -382,7 +398,11 @@ namespace Framework
     /*if (GodMode == true || GoldenGun == true)
       weapon->damage = 100;*/
 
+    if (weapon->delay > 0.0f)
+      return;
+
     weapon->Fire(space->GetHandles().GetAs<GameObject>(owner));
+    weapon->ResetDelay();
 
     if (!moveController.IsSnapped())
     {

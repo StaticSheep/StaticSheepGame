@@ -16,10 +16,25 @@ All content © 2015 DigiPen (USA) Corporation, all rights reserved.
 #define SHIELD_FADETIME 3.0f
 #define SHIELD_HOLDTIME 3.0f
 #define SHIELD_DANGERFLICKER 0.1f
-#define SHIELD_FLASHTIME 0.2f
+#define SHIELD_FLASHTIME 0.3f
+
+
 
 namespace Framework
 {
+  LightColor CombatController::FullShieldFadeColor
+    = LightColor(0.1f, 0.9f, 1.0f, 0.1f);
+
+  LightColor CombatController::FullShieldColor
+    = LightColor(0.0f, 0.9f, 1.0f, 1.0f);
+
+  /* Color of shields when they are just above empty */
+  LightColor CombatController::LowShieldColor
+    = LightColor(1.0f, 0.1f, 0.0f, 0.95f);
+    
+  LightColor CombatController::MedShieldColor
+    = LightColor(1.0f, 1.0f, 0.1f, 0.95f);
+
   CombatController::CombatController()
   {
 
@@ -48,7 +63,7 @@ namespace Framework
     SetHealth(m_maxHealth);
     SetShields(m_maxShields);
 
-    TakeDamage(50.0f, -1);
+    TakeDamage(101.0f, -1);
   }
 
   void CombatController::Collision(GameObject* obj, GameObject* OtherObject)
@@ -163,14 +178,15 @@ namespace Framework
     UpdateShieldLight(obj, dt);
   }
 
-  void CombatController::TakeDamage(float damage, int attacker, bool penetrate)
+  void CombatController::TakeDamage(float damage,
+    int attacker, bool explosive, bool penetrate)
   {
     /* God cannot be injured */
     if (m_godMode || m_respawnGod)
       return;
     
     /* Thou shall not injure thouself */
-    if (attacker == m_playerNum)
+    if (attacker == m_playerNum && !explosive)
       return;
 
     /* Thou can not be healed by damage */
@@ -296,15 +312,16 @@ namespace Framework
           sl->SetColor(m_dangerColor);
           sl->Toggle(!sl->GetStatus());
           m_nextDangerSwitch = SHIELD_DANGERFLICKER;
+          m_shieldFlash = 0.0f;
         }
       }
       else
       {
-        if (m_shieldFlash < 0.0f)
+        if (m_shieldFlash <= 0.0f)
         {
           /* Shields are recharging or holding still */
-          LightColor curColor = Ease::Linear(m_shield / m_maxShields,
-            m_lowShieldColor, m_fullShieldColor);
+          LightColor curColor = Ease::TwoStepLinear(m_shield / m_maxShields,
+            LowShieldColor, MedShieldColor, FullShieldColor);
 
           sl->Toggle(true);
           sl->SetColor(curColor);
@@ -314,7 +331,7 @@ namespace Framework
           /* Shields were just hit, flash a color */
           m_shieldFlash -= dt;
 
-          LightColor curColor = LightColor(0.0f, 0.8f, 1.0f, 0.9f);
+          LightColor curColor = LightColor(0.6f, 0.9f, 1.0f, 0.9f);
 
           sl->Toggle(true);
           sl->SetColor(curColor);
@@ -334,12 +351,15 @@ namespace Framework
         if (m_fadeTime < SHIELD_FADETIME)
         {
           LightColor curColor = Ease::Linear(m_fadeTime / SHIELD_FADETIME,
-            m_lowShieldColor, m_fullShieldColor);
+            FullShieldFadeColor, FullShieldColor);
 
           sl->SetColor(curColor);
 
-          if (m_fadeTime < 0.0f)
+          if (m_fadeTime <= 0.0f)
+          {
+            //sl->SetColor(LightColor(1.0f, 1.0f, 1.0f, 0.0f));
             sl->Toggle(false);
+          } 
         }
       }
       

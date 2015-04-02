@@ -23,9 +23,11 @@ namespace Framework
     virtual void ResetDelay() = 0;
 
     virtual GameObject* CreateBullet(GameObject* ply,
-      const char* archetype, std::string& sound, float speed = 1000.0f);
+      const char* archetype, float speed = 1000.0f);
 
     //virtual void Draw();
+
+    std::string fireSound;
 
     float delay;  //delay between shots
     int damage; //damage caused by weapon

@@ -127,8 +127,7 @@ namespace Framework
     if (!pc)
       return;
 
-    /* Kill me */
-    pc->Combat()->TakeDamage(m_damagePerSecond * 0.0167f, m_playerOwner);
+    pc->Combat()->TakeDamage(m_damagePerSecond * 0.0167f, m_playerOwner, true);
   }
 
   void AOEDamage::Remove()

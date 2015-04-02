@@ -18,13 +18,16 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 namespace Framework
 {
   static float weapDelay = 1.0f;
+
   Shotgun::Shotgun()
   {
-    delay = 1.0f;
+    delay = 0.0f;
     damage = 20;
     knockback = 600;
     semi = true;
     explosive_ = false;
+
+    fireSound = "";
   }
 
   Shotgun::~Shotgun()
@@ -59,27 +62,7 @@ namespace Framework
     }
 
     //middle shot - first shot
-    bullet = (FACTORY->LoadObjectFromArchetype(player->space, "Bullet_shot"));
-
-    bullet->GetComponent<ParticleCircleEmitter>(eParticleCircleEmitter)->spawning = false;
-    bullet->GetComponent<ParticleCircleEmitter>(eParticleCircleEmitter)->timedSpawning = false;
-
-    //bullet damage and explosive
-    bullet->GetComponent<Bullet_Default>(eBullet_Default)->damage = dealDamage;
-    bullet->GetComponent<Bullet_Default>(eBullet_Default)->explosive_ = setExplosive;
-    bd = bullet->GetComponent<Bullet_Default>(eBullet_Default);
-
-    //bullet fire velocity and collision group
-    bulletC = bullet->GetComponent <CircleCollider>(eCircleCollider);
-    bulletC->SetBodyCollisionGroup(player->GetComponent<PlayerController>(ePlayerController)->weaponGroup);
-    bulletC->AddToVelocity(bulletDir * 1000);
-
-    PlayerController* pc = player->GetComponent<PlayerController>(ePlayerController);
-    bd->playerOwner = pc->playerNum;
-
-    //bullet offset
-    BT = bullet->GetComponent<Transform>(eTransform);
-    BT->SetTranslation(playerTrans->GetTranslation() + PlayerAimDir * 25);
+    bullet = CreateBullet(player, "Bullet_shot");
 
       //subsequent shots
     for (int i = 0; i < 4; ++i)
@@ -93,12 +76,7 @@ namespace Framework
       for (int j = 0; j < 2; ++j, bulletDir = NegAimDir)
       {
         //create bullet
-        bullet = (FACTORY->LoadObjectFromArchetype(player->space, "Bullet_shot"));
-
-        //particles
-        bullet->GetComponent<ParticleCircleEmitter>(eParticleCircleEmitter)->spawning = false;
-        bullet->GetComponent<ParticleCircleEmitter>(eParticleCircleEmitter)->timedSpawning = true;
-        bullet->GetComponent<ParticleCircleEmitter>(eParticleCircleEmitter)->timed = 0.001f;
+        bullet = CreateBullet(player, "Bullet_shot");
 
         float theta = atan2f(bulletDir.y, bulletDir.x) - (PI / 2.0f);
         Mat3D rotation(theta);
@@ -106,22 +84,9 @@ namespace Framework
         part->direction.m_startMin = rotation * part->direction.m_startMin;
         part->direction.m_startMax = rotation * part->direction.m_startMax;
 
-        //bullet damage and explosive
-        bullet->GetComponent<Bullet_Default>(eBullet_Default)->damage = dealDamage;
-        bullet->GetComponent<Bullet_Default>(eBullet_Default)->explosive_ = setExplosive;
-        bd = bullet->GetComponent<Bullet_Default>(eBullet_Default);
-
-        PlayerController* pc = player->GetComponent<PlayerController>(ePlayerController);
-        bd->playerOwner = pc->playerNum;
-
         //bullet fire velocity and collision group
         bulletC = bullet->GetComponent <CircleCollider>(eCircleCollider);
-        bulletC->SetBodyCollisionGroup(player->GetComponent<PlayerController>(ePlayerController)->weaponGroup);
-        bulletC->AddToVelocity(bulletDir * 1000);
-
-        //bullet offset
-        BT = bullet->GetComponent<Transform>(eTransform);
-        BT->SetTranslation(playerTrans->GetTranslation() + PlayerAimDir * 25);
+        bulletC->SetVelocity(bulletDir * 1000);
       }   
     }
 

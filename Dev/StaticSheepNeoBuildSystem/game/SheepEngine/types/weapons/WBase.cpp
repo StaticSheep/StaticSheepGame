@@ -17,8 +17,8 @@ All content © 2015 DigiPen (USA) Corporation, all rights reserved.
 namespace Framework
 {
 
-  GameObject* Weapon::CreateBullet(GameObject* ply, const char* archetype,
-    std::string& sound, float speed)
+  GameObject* Weapon::CreateBullet(GameObject* ply,
+    const char* archetype, float speed)
   {
     GameObject* obj = FACTORY->LoadObjectFromArchetype(ply->space, archetype);
 
@@ -52,7 +52,7 @@ namespace Framework
 
     btrans->SetTranslation(ptrans->GetTranslation() + AimDir * 25);
 
-    pse->Play(sound, &SoundInstance(1.0f));
+    pse->Play(fireSound, &SoundInstance(1.0f));
 
     return obj;
   }
