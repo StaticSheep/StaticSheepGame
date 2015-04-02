@@ -26,7 +26,7 @@ namespace Framework
     current_round = 1;
     max_rounds = 6; //default value
     spawned_round_start = false;
-    timeOfRound = 23.0f; //default round length, (round length + 3.0f)
+    timeOfRound = 93.0f; //default round length, (round length + 3.0f)
     state_ = INTRO;
     gameStarted = false;
     
@@ -55,11 +55,13 @@ namespace Framework
     LevelLogic = space->GetGameObject(owner)->GetComponentHandle(eLevel1_Logic);
     ChipController_ = space->GetGameObject(owner)->GetComponentHandle(eChipController);
     //intro sequence timer
-    round_state_timer = 6.0f;
+    round_state_timer = 9.0f;
     EORAwarded = false;
 
     spawnedPSM = false;
     font_index = Draw::GetFontIndex("BN_Jinx");
+    psm_done = false;
+    mostChipsText = false;
   }
 
   void RoundController::LogicUpdate(float dt)
@@ -95,7 +97,7 @@ namespace Framework
   {
     round_state_timer -= dt;
 
-    if (round_state_timer >= 3.0f)
+    if (round_state_timer >= 6.0f)
       return;
     //light-up sequence
     //Welcome to the Games!
@@ -116,11 +118,19 @@ namespace Framework
       spawned_round_start = true;
     }
 
+    if (round_state_timer <= 3.0f && !mostChipsText)
+    {
+      GameObject *welcome = (FACTORY->LoadObjectFromArchetype(space, "mostChips_text"));
+      welcome->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(1000.0f, 96.0f, 0.0f));
+      mostChipsText = true;
+    }
+
     if (round_state_timer <= 0)
     {
       state_ = ROUNDSTART;
       spawned_round_start = false;
       round_state_timer = 2.0f;
+      mostChipsText = false;
     }
 
   }
@@ -145,6 +155,7 @@ namespace Framework
       spawned_round_start = true;
       ResultsSpawned = false;
       spawnedPSM = false;
+      psm_done = false;
       space->hooks.Call("RoundStart");
     }
 
@@ -187,6 +198,7 @@ namespace Framework
 
   void RoundController::RoundOver(float dt)
   {
+    //spawn round up and play sound effects
     if (round_state_timer >= 18.0f && !roundUp_spawned)
     {
       SoundEmitter *se = space->GetGameObject(owner)->GetComponent<SoundEmitter>(eSoundEmitter);
@@ -200,6 +212,7 @@ namespace Framework
       roundUp_spawned = true;
       space->hooks.Call("RoundOver");
     }
+    //display tv results screen
     else if (round_state_timer >= 13.5f)
     {
       //display results
@@ -223,11 +236,25 @@ namespace Framework
       if (!EORAwarded)
         AwardEndOfRoundChips();
     }
+    //spawn personal slot machines
     else if (round_state_timer >= 0.1f)
     {
       //spawn personal slot machines and let them do their thing
       if (!spawnedPSM)
         SpawnPersonalSM();
+
+      int i;
+      for (i = 0; i < 4; ++i)
+      {
+        PersonalSlotSpawner *temp = space->GetGameObject(psm_[i])->GetComponent<PersonalSlotSpawner>(ePersonalSlotSpawner);
+        if (!temp->done_)
+          break;
+      }
+      if (i == 4 && !psm_done)
+      {
+        space->hooks.Call("PersonalSlotDone");
+        psm_done = true;
+      }
     }
 
     round_state_timer -= dt;
@@ -406,7 +433,6 @@ namespace Framework
 
   void RoundController::SpawnPersonalSM()
   {
-    Handle psm_[4];
     Transform *psmT_;
     for (int i = 0; i < 4; ++i)
     {

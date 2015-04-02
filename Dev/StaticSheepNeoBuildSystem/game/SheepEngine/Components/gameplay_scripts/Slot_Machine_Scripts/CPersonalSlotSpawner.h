@@ -25,13 +25,14 @@ namespace Framework
     void BounceDown(float dt);
     void SpawnPersonalSM(int num);
     void Draw();
+    void AllSlotsDone();
 
 		//member variables
     float timer;
     float bounceDownTimer;
     bool bounceDownDone;
     bool coinsSpawned;
-    bool playing, done_;
+    bool stopEffects, done_, playing, stop_;
 
     int playerNum;
     int playerCoinTotal;
