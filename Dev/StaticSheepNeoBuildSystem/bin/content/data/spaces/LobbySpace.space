@@ -4501,3 +4501,267 @@ GameObject
   {
   }
 }
+GameObject
+{
+  name std::string "tutorial_move"
+  archetype std::string ""
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 0.000001
+      y_ float 497.989380
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 0.900000
+      y_ float 0.800000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "tutorial_move.png"
+    m_layer unsignedint 2
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 1.000000
+      Y float 1.000000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+  PointLight
+  {
+    m_layer unsignedint 2
+    m_brightness LightColor
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    m_attenuation LightVec3
+    {
+      X float 0.010000
+      Y float 0.010000
+      Z float 0.010000
+    }
+  }
+  TutorialText
+  {
+  }
+}
+GameObject
+{
+  name std::string "tutorial_aim"
+  archetype std::string ""
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 0.000001
+      y_ float 387.096954
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 0.900000
+      y_ float 0.800000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "tutorial_aim.png"
+    m_layer unsignedint 2
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 1.000000
+      Y float 1.000000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+  PointLight
+  {
+    m_layer unsignedint 2
+    m_brightness LightColor
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    m_attenuation LightVec3
+    {
+      X float 0.010000
+      Y float 0.010000
+      Z float 0.010000
+    }
+  }
+  TutorialText
+  {
+  }
+}
+GameObject
+{
+  name std::string "tutorial_jump"
+  archetype std::string ""
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 0.000001
+      y_ float -386.070068
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 0.900000
+      y_ float 0.800000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "tutorial_jump.png"
+    m_layer unsignedint 2
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 1.000000
+      Y float 1.000000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+  PointLight
+  {
+    m_layer unsignedint 2
+    m_brightness LightColor
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    m_attenuation LightVec3
+    {
+      X float 0.010000
+      Y float 0.010000
+      Z float 0.010000
+    }
+  }
+  TutorialText
+  {
+  }
+}
+GameObject
+{
+  name std::string "tutorial_shoot"
+  archetype std::string ""
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 0.000001
+      y_ float -497.989288
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 0.900000
+      y_ float 0.800000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "tutorial_shoot.png"
+    m_layer unsignedint 2
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 1.000000
+      Y float 1.000000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+  PointLight
+  {
+    m_layer unsignedint 2
+    m_brightness LightColor
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    m_attenuation LightVec3
+    {
+      X float 0.010000
+      Y float 0.010000
+      Z float 0.010000
+    }
+  }
+  TutorialText
+  {
+  }
+}

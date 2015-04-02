@@ -12,6 +12,7 @@ All content © 2015 DigiPen (USA) Corporation, all rights reserved.
 #include "../../colliders/CBoxCollider.h"
 #include "../../slotmachine/slotmachine.h"
 #include "../../sound/CSoundEmitter.h"
+#include "../../basicps/CBasicPSystem.h"
 
 namespace Framework
 {
@@ -37,10 +38,11 @@ namespace Framework
     //when you create a slot machine through an archetype you can set its call backs like this
     sm->SetTextureCB(self, BUILD_FUNCTION(PersonalSlotController::SetSMTextures));
     sm->SetFinishedCB(self, BUILD_FUNCTION(PersonalSlotController::ReceiveSMResults));
-    //sm->SetSelectionCB(self, BUILD_FUNCTION(SlotController::SetSMResults));
+    sm->SetSelectionCB(self, BUILD_FUNCTION(PersonalSlotController::SetSMResults));
 
     bounceDownTimer = 0.5f;
     bounceDownDone = false;
+    space->GetGameObject(owner)->GetComponent<SoundEmitter>(eSoundEmitter)->Play("slot_digital_coin", &SoundInstance(1.0f));
 	}
 
   void PersonalSlotController::Remove()
@@ -122,11 +124,27 @@ namespace Framework
 
   void PersonalSlotController::SetSMResults(int slotNum, int *landResult)
   {
-    
+    int ranChance = GetRandom(0, 99);
+    if (ranChance <= 4)
+    {
+      //chip
+      *landResult = 0;
+    }
+    else if (ranChance > 4 && ranChance <= 49)
+    {
+      //coin
+      *landResult = 1;
+    }
+    else //60 - 99
+    {
+      //powerup
+      *landResult = 2;
+    }
   }
 
   void PersonalSlotController::ReceiveSMResults(std::vector<int>* results)
   {
+    space->GetGameObject(owner)->GetComponent<BasicParticleSystem>(eBasicParticleSystem)->Toggle(false);
     if ((*results)[0] == 0)
     {
       //chip

@@ -109,6 +109,7 @@ namespace Framework
       roundTimeAsJugg[i] = 0;
       LMSTimeAlive[i] = 0;
     }
+    LMSThisRound = -1;
   }
 
   void ChipController::RoundOver()
@@ -165,7 +166,7 @@ namespace Framework
     if (LMSThisRound != -1)
     {
       GivePlayerChip(LMSThisRound, 1);
-      LMSThisRound = -1;
+      //LMSThisRound = -1;
     }
   }
 

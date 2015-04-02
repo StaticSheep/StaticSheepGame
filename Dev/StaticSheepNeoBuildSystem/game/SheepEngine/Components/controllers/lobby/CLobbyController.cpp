@@ -197,6 +197,7 @@ namespace Framework
     //power-down sounds
     if (!powerDownSound)
       PlayPowerDown();
+
     timer_ -= dt;
     if (timer_ <= 0)
     {
