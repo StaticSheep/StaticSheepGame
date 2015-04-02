@@ -47,6 +47,7 @@ struct SoundInstance
 
   // If the sound is currently active
   bool active;
+  bool isMusic;
   
   // Not implemented. Do not use.
   void SetParameters(int size, ...);
@@ -62,10 +63,10 @@ struct SoundInstance
   
   SoundInstance()
   {
-    type = 0; mode = PLAY_ONCE; volume = 1.0f; pitch = 1.0f; active = false; eventInstance = nullptr; soundInstance = nullptr;
+    type = 0; mode = PLAY_ONCE; volume = 1.0f; pitch = 1.0f; active = false; isMusic = false; eventInstance = nullptr; soundInstance = nullptr;
   };
   SoundInstance(float _volume)
-  {type = 0; mode = PLAY_ONCE; volume = _volume; pitch = 1.0f;active = false;};
+  {type = 0; mode = PLAY_ONCE; volume = _volume; pitch = 1.0f;active = false; isMusic = false;};
   
 };
 
@@ -74,11 +75,16 @@ class Sound
 {
 public:
   
-  Sound(){};
+  Sound() : isMusic(false) {};
   
   virtual bool Play(SoundInstance* instance) = 0;
   virtual std::string GetName(void) = 0;
+  virtual void UpdateVolume(float volume, bool isMusic){};
   
+  bool isMusic;
+  static float musicVolume;
+  static float sfxVolume;
+
 private:
   
   // say no to copy and assignment constructors
@@ -101,6 +107,8 @@ public:
   // virtual function for playing the event
   bool Play(SoundInstance* instance);
 
+  void UpdateVolume(float volume, bool isMusic);
+
   // getter for getting the name of the event
   std::string GetName(){return name;};
   
@@ -112,6 +120,8 @@ private:
 
   bool _PlayOnce(SoundInstance*);
   bool _PlayLoop(SoundInstance*);
+
+  
   
   // description of the event from the bank files
   SOUND::EventDescription* description;
@@ -121,6 +131,7 @@ private:
 
   // the name of the event
   std::string name;
+  
 
 };
 
@@ -129,11 +140,13 @@ class SoundFile : public Sound
 {
 public:
   
-  SoundFile(FMOD::System* system, const std::string& name, bool stream);
+  SoundFile(FMOD::System* system, const std::string& name, FMOD::ChannelGroup* musicChannel, FMOD::ChannelGroup* sfxChannel, bool stream);
 
   // Plays the sound with the low level API
   bool Play(SoundInstance* instance);
   std::string GetName(){return name;};
+
+  void UpdateVolume(float volume, bool isMusic);
   
   FMOD::Channel* GetChannel(void){return channel;};
 
@@ -147,10 +160,13 @@ private:
 
   FMOD::Sound* sound;
   std::string name;
-  FMOD::Channel* channel;
   
+  FMOD::Channel* channel;
+
   // The pointer to the low level FMOD system
   static FMOD::System* _system;
+  static FMOD::ChannelGroup* musicChannelGroup;
+  static FMOD::ChannelGroup* sfxChannelGroup;
   
 };
 
