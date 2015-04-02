@@ -47,6 +47,7 @@ namespace Framework
     GameObject *bullet;
     Transform *BT;
     CircleCollider *bulletC;
+    Bullet_Default* bd;
 
     int dealDamage = damage;
     bool setExplosive = false;
@@ -66,11 +67,15 @@ namespace Framework
     //bullet damage and explosive
     bullet->GetComponent<Bullet_Default>(eBullet_Default)->damage = dealDamage;
     bullet->GetComponent<Bullet_Default>(eBullet_Default)->explosive_ = setExplosive;
+    bd = bullet->GetComponent<Bullet_Default>(eBullet_Default);
 
     //bullet fire velocity and collision group
     bulletC = bullet->GetComponent <CircleCollider>(eCircleCollider);
     bulletC->SetBodyCollisionGroup(player->GetComponent<PlayerController>(ePlayerController)->weaponGroup);
     bulletC->AddToVelocity(bulletDir * 1000);
+
+    PlayerController* pc = player->GetComponent<PlayerController>(ePlayerController);
+    bd->playerOwner = pc->playerNum;
 
     //bullet offset
     BT = bullet->GetComponent<Transform>(eTransform);
@@ -104,6 +109,10 @@ namespace Framework
         //bullet damage and explosive
         bullet->GetComponent<Bullet_Default>(eBullet_Default)->damage = dealDamage;
         bullet->GetComponent<Bullet_Default>(eBullet_Default)->explosive_ = setExplosive;
+        bd = bullet->GetComponent<Bullet_Default>(eBullet_Default);
+
+        PlayerController* pc = player->GetComponent<PlayerController>(ePlayerController);
+        bd->playerOwner = pc->playerNum;
 
         //bullet fire velocity and collision group
         bulletC = bullet->GetComponent <CircleCollider>(eCircleCollider);

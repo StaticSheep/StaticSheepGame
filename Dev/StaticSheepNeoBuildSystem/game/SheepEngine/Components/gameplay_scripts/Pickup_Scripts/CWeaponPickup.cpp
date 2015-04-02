@@ -117,6 +117,9 @@ namespace Framework
       playerController->weapon = (Weapon *)weaponType->New();
       space->GetGameObject(owner)->Destroy();
 
+      OtherObject->GetComponent<SoundEmitter>(eSoundEmitter)
+        ->Play("weapon_pickup", &SoundInstance(0.75f));
+
       //metric shit
       MetricInfo metricData;
       metricData.mt = WEAP_PICKUP;

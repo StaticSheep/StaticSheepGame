@@ -57,7 +57,10 @@ namespace Framework
     Transform *BT = bullet->GetComponent<Transform>(eTransform);
     CircleCollider *bulletC = bullet->GetComponent <CircleCollider>(eCircleCollider);
     Transform *playerTrans = player->GetComponent <Transform>(eTransform);
-    Vec3 AimDir = player->GetComponent<PlayerController>(ePlayerController)->aimDir;
+    PlayerController* pc = player->GetComponent<PlayerController>(ePlayerController);
+    bd->playerOwner = pc->playerNum;
+    
+    Vec3 AimDir = pc->aimDir;
 
     float theta = atan2f(AimDir.y, AimDir.x) - (PI / 2.0f);
     Mat3D rotation(theta);
@@ -75,6 +78,7 @@ namespace Framework
     AimDir = Mat3D((FireAngle * (float)PI) / 180) * AimDir;
 
     bulletC->AddToVelocity(AimDir * 1000);
+    
 
     SoundEmitter *se = player->GetComponent<SoundEmitter>(eSoundEmitter);
     se->Play("laser1", &SoundInstance(0.25f));

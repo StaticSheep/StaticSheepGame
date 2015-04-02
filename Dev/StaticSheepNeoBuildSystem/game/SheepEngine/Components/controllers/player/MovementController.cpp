@@ -1,3 +1,10 @@
+/*****************************************************************
+Filename: MovementController.cpp
+Project:
+Author(s): Zakary Wilson (Primary), Greg Walls
+
+All content © 2015 DigiPen (USA) Corporation, all rights reserved.
+*****************************************************************/
 
 #include "pch/precompiled.h"
 #include "MovementController.h"

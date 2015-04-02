@@ -9,6 +9,10 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 namespace Framework
 {
+
+  class GameObject;
+  class GameSpace;
+
   struct Weapon
   {
     Weapon() {};
@@ -17,6 +21,10 @@ namespace Framework
     virtual void Update(float dt) = 0;
     virtual void DelayUpdate(float dt) = 0;
     virtual void ResetDelay() = 0;
+
+    virtual GameObject* CreateBullet(GameObject* ply,
+      const char* archetype, std::string& sound, float speed = 1000.0f);
+
     //virtual void Draw();
 
     float delay;  //delay between shots

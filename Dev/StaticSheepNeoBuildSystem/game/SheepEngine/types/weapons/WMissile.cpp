@@ -45,7 +45,8 @@ namespace Framework
     }
     else
       bd->damage = damage;
-
+    PlayerController* pc = player->GetComponent<PlayerController>(ePlayerController);
+    bd->playerOwner = pc->playerNum;
 
     bullet->GetComponent<ParticleCircleEmitter>(eParticleCircleEmitter)->spawning = false;
     bullet->GetComponent<ParticleCircleEmitter>(eParticleCircleEmitter)->timedSpawning = true;

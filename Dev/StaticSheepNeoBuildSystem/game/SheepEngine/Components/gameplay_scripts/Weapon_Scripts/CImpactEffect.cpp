@@ -29,12 +29,14 @@ namespace Framework
       self, BUILD_FUNCTION(ImpactEffect::OnImpact));
   }
 
-  void ImpactEffect::OnImpact()
+  void ImpactEffect::OnImpact(int playerOwner)
   {
     if (m_effect.length())
     {
       GameObject* obj = 
         FACTORY->LoadObjectFromArchetype(space, m_effect.c_str());
+
+      obj->hooks.Call("SetPlayerOwner", playerOwner);
 
       Transform* sTrans = obj->GetComponent<Transform>(eTransform);
       Transform* ourTrans = space->GetGameObject(owner)->GetComponent<Transform>(eTransform);

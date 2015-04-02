@@ -29,7 +29,7 @@ namespace Framework
     GameObject *bGameObject;
     int damage;
 
-    
+    int playerOwner = -1;
 
     /* Bullet dies after a period of time */
     bool limitedLife;

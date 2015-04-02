@@ -37,6 +37,8 @@ namespace Framework
     GameObject *bullet = (FACTORY->LoadObjectFromArchetype(player->space, "Bullet"));
     Bullet_Default* bd = bullet->GetComponent<Bullet_Default>(eBullet_Default);
 
+    PlayerController* pc = player->GetComponent<PlayerController>(ePlayerController);
+    bd->playerOwner = pc->playerNum;
 
     if (explosive_)
     {

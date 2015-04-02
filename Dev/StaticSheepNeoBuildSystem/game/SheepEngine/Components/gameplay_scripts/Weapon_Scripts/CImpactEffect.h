@@ -20,7 +20,7 @@ namespace Framework
     ~ImpactEffect();
 
     void Initialize();
-    void OnImpact();
+    void OnImpact(int playerOwner);
     void LogicUpdate(float dt);
     void Remove();
 

@@ -74,17 +74,17 @@ namespace Framework
     //here I'm checking if the individual cheat sequences have been activated or not,
     //and activated the corresponding cheat bool in the player controller
     if (GM.activated)
-      pc->GodMode = true;
+      pc->Combat()->SetGodMode(true);
     else
-      pc->GodMode = false;
+      pc->Combat()->SetGodMode(false);
     if (GG.activated)
       pc->GoldenGun = true;
     else
       pc->GoldenGun = false;
-    if (PM.activated)
-      pc->PerfectMachine = true;
-    else
-      pc->PerfectMachine = false;
+    //if (PM.activated)
+    //  pc->PerfectMachine = true;
+    //else
+    //  pc->PerfectMachine = false;
     if (IW.activated)
       space->hooks.Call("CheatWin");
   }

@@ -24,10 +24,32 @@ GameObject
     entityName std::string "ruiser"
     sequenceName std::string "idle"
     framerate float 20.000000
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
   }
-  GamePad
+  SpineLight
   {
-    GamepadIndex int 1
+    m_layer int 1
+    m_emissive bool true
+    atlasName std::string "ninja_glow"
+    entityName std::string "ninja"
+    m_lightingScale Vec2
+    {
+      X float 1.000000
+      Y float 1.000000
+    }
+    Color LightColor
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
   }
   BoxCollider
   {
@@ -36,6 +58,7 @@ GameObject
     m_materialName std::string "Wood"
     m_hasCollisionCallback bool true
     m_CollisionGroup std::string "Player2"
+    m_snap bool false
   }
   SoundEmitter
   {
@@ -43,6 +66,10 @@ GameObject
   PlayerController
   {
     playerNum int 1
+  }
+  GamePad
+  {
+    GamepadIndex int 1
   }
   Cheats
   {
