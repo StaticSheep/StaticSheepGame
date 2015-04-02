@@ -18,18 +18,20 @@ namespace Framework
 
   void Pinwheel::LogicUpdate(float dt)
   {
-
     BoxCollider* body = space->GetHandles().GetAs<BoxCollider>(gCollider);
     Transform* trans = space->GetHandles().GetAs<Transform>(gTransfrom);
     
+    if (moveLeft)
+      moveFactor = -1;
+    else
+      moveFactor = 1;
+
+    body->SetVelocity(velocity * moveFactor);
+    body->SetAngVelocity(-moveFactor);
+
     if (trans->GetTranslation().x > 1008 || trans->GetTranslation().x < -1008)
     {
-      
-      //moveFactor *= -1;
-      //velocity *= moveFactor;
-      //body->SetVelocity(velocity);
       space->GetGameObject(owner)->Destroy();
-
     }
   }
 
@@ -40,15 +42,8 @@ namespace Framework
     gTransfrom = space->GetGameObject(owner)->GetComponentHandle(eTransform);
     gCollider = space->GetGameObject(owner)->GetComponentHandle(eBoxCollider);
 
-    if (moveLeft)
-      moveFactor = -1;
-    else
-      moveFactor = 1;
-
-    velocity = Vec3D(50.0f, 0, 0);
+    velocity = Vec3D(120.0f, 0, 0);
     BoxCollider* body = space->GetHandles().GetAs<BoxCollider>(gCollider);
-    body->SetVelocity(velocity);
-    body->SetAngVelocity(-moveFactor);
     body->SetBodyFrictionMod(0.0f);
     body->m_snap = true;
   }

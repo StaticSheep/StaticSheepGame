@@ -186,7 +186,7 @@ function META:MakeMenu()
 
   btn = self:AddButton("Credits", self.menu, self.menuButtons)
   btn:SetOnPressed(function()
-
+    engine.ChangeLevel("Credits")
 
     --self:CloseMenu()
   end)

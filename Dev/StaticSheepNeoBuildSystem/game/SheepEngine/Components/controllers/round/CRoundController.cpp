@@ -402,14 +402,7 @@ namespace Framework
     if (state_ == ROUNDINPRO)
     {
       Vec2D scale(60, 60);
-      Vec3 pos(-100.0f, 600.0f, 0.0f);
-      char playerString[10];
-
-      sprintf(playerString, "%5.2f", round_state_timer);
-      Draw::SetPosition(pos.x, pos.y);
-      Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
-      Draw::SetRotation(0);
-      Draw::DrawString(playerString, scale, 1);
+      Vec3 pos(-100.0f, 400.0f, 0.0f);
 
       if (round_state_timer > timeOfRound - 3)
         itoa(timeOfRound - 3, round_timer, 10);
