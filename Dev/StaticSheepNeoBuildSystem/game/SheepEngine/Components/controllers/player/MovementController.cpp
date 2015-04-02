@@ -343,7 +343,7 @@ Calculating angular velocites for rotating box collider platforms... -HelpJon
       }
     }
 
-    m_collider->AddToVelocity(jumpDir * 500);
+    m_collider->AddToVelocity(jumpDir * 1000);
     m_collider->SetGravityOff();
     m_isSnapped = false;
 

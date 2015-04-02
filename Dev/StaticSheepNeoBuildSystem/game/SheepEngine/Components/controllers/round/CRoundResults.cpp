@@ -40,9 +40,13 @@ namespace Framework
     timeToLive = 6.0f;
     bounceDownDone = false;
     startDrawing = false;
+    chipAwarded = false;
+    winner_chip = Handle::null;
+    winnerY = 0.0f;
 
     wordFontIndex = Draw::GetFontIndex("aircruiser");
     numberFontIndex = Draw::GetFontIndex("BN_Jinx");
+
 	}
 
   void RoundResults::Remove()
@@ -61,6 +65,11 @@ namespace Framework
     else
       startDrawing = true;
 
+    if (startDrawing && !chipAwarded)
+    {
+      AwardChip(dt);
+    }
+
     timeToLive -= dt;
     if (timeToLive <= 0)
     {
@@ -69,7 +78,7 @@ namespace Framework
       if (thisTrans->GetTranslation().y >= 950.0f)
         DestroySelf();
     }
-
+    
 	}
 
   void RoundResults::DestroySelf()
@@ -108,6 +117,21 @@ namespace Framework
       rt->SetRotation(0.0f);
       bounceDownDone = true;
     }
+  }
+
+  void RoundResults::AwardChip(float dt)
+  {
+    if (winner_chip == Handle::null)
+    {
+      winner_chip = (FACTORY->LoadObjectFromArchetype(space, "winner_chip"))->self;
+      space->GetGameObject(winner_chip)->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(900.0f, winnerY, 0.0f));
+    }
+
+    Transform *ct = space->GetGameObject(winner_chip)->GetComponent<Transform>(eTransform);
+    if (ct->GetTranslation().x > -600.0f)
+     ct->SetTranslation(ct->GetTranslation() + Vec3(-10.0f, 0.0f, 0.0f));
+    
+
   }
 
   void RoundResults::Draw()

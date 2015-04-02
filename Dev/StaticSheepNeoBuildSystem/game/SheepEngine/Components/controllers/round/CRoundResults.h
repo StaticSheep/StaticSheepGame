@@ -23,6 +23,7 @@ namespace Framework
 		void Remove();
     void DestroySelf();
     void BounceDown(float dt);
+    void AwardChip(float dt);
 
     void Draw();
     void DrawKills();
@@ -39,9 +40,12 @@ namespace Framework
     Handle rTransfrom;
     Handle roundSprite;
     Handle ChipCont;
+    Handle winner_chip;
     float bounceDownTimer, timeToLive;
+    float winnerY;
     bool bounceDownDone, startDrawing;
     GameTypes mode_;
+    bool chipAwarded;
 
     int wordFontIndex;
     int numberFontIndex;

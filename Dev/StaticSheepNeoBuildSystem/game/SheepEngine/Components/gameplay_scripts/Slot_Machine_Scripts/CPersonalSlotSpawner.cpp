@@ -43,11 +43,14 @@ namespace Framework
 		//logic setup, you're attached and components are in place
     space->hooks.Add("LogicUpdate", self, BUILD_FUNCTION(PersonalSlotSpawner::LogicUpdate));
     space->hooks.Add("Draw", self, BUILD_FUNCTION(PersonalSlotSpawner::Draw));
+    space->hooks.Add("PersonalSlotDone", self, BUILD_FUNCTION(PersonalSlotSpawner::AllSlotsDone));
 
     bounceDownTimer = 0.5f;
     bounceDownDone = false;
     playing = true;
     done_ = false;
+    stopEffects = false;
+    stop_ = false;
 	}
 
   void PersonalSlotSpawner::Remove()
@@ -73,37 +76,33 @@ namespace Framework
       coinsSpawned = true;
     }
     
-
+    //grab level logic so i can get a hold of the players coin counts
     Level1_Logic *ll = space->GetGameObject(level_logic)->GetComponent<Level1_Logic>(eLevel1_Logic);
-    for (int i = 0; i < 25; ++i)
+    if (!done_)//as long as we are not done
     {
-      if (!ll)
-        break;
-      if ((ll->playerCoins[0] <= 0 && ll->playerCoins[1] <= 0 && ll->playerCoins[2] <= 0 && ll->playerCoins[3] <= 0 && done_) || playerCoinTotal >= 10000)
+      for (int i = 0; i < 25; ++i) //25 is the number of coins per frame I'm deducting from their total
       {
-        space->GetGameObject(owner)->GetComponent<SoundPlayer>(eSoundPlayer)->Stop("slot_coin_jackpot", INSTANT);
-        //space->hooks.Call("PersonalSlotDone");
-        timer = 5.0f;
-        space->GetGameObject(spawnedCoins)->GetComponent<BasicParticleSystem>(eBasicParticleSystem)->Toggle(false);
-        done_ = false;
-        break;
+        if (!ll) //if for some reason this is null
+          break;
+
+        if (ll->playerCoins[playerNum] != 0 && totalPSM < 3) //As long as they have coins and I haven't spawned three slots
+        {
+          ++playerCoinTotal;
+          --(ll->playerCoins[playerNum]);
+        }
+        else
+          break;
       }
+    }
 
-      if (ll->playerCoins[playerNum] <= 0 && !playing)
-        break;
-
-      if (ll->playerCoins[playerNum] != 0 && totalPSM < 3)
+    if (playerCoinTotal >= 10000 || ll->playerCoins[playerNum] <= 0)
+    {
+      //if we have spawned all our slots OR we don't have any coins left
+      done_ = true; //than we are done
+      if (!stopEffects)//if we haven't stopped our effects
       {
-        ++playerCoinTotal;
-        --(ll->playerCoins[playerNum]);
-      }
-
-      if ((ll->playerCoins[playerNum] <= 0 || playerCoinTotal >= 10000) && playing)
-      {
-        space->GetGameObject(spawnedCoins)->GetComponent<BasicParticleSystem>(eBasicParticleSystem)->Toggle(false);
-        playing = false;
-        done_ = true;
-        break;
+        space->GetGameObject(spawnedCoins)->GetComponent<BasicParticleSystem>(eBasicParticleSystem)->Toggle(false); //stop coins
+        stopEffects = true;
       }
     }
 
@@ -204,6 +203,14 @@ namespace Framework
     psm_->GetComponent<PersonalSlotController>(ePersonalSlotController)->playerNum = playerNum;
     psm_->GetComponent<PersonalSlotController>(ePersonalSlotController)->psmNum = (num - 1);
 
+  }
+
+  void PersonalSlotSpawner::AllSlotsDone()
+  {
+    if (!stop_)
+      timer = 5.0f;
+    space->GetGameObject(owner)->GetComponent<SoundPlayer>(eSoundPlayer)->Stop("slot_coin_jackpot", INSTANT);
+    stop_ = true;
   }
 
   void PersonalSlotSpawner::Draw()
