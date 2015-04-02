@@ -24,6 +24,7 @@ namespace Framework
     void DestroySelf();
     void BounceDown(float dt);
     void AwardChip(float dt);
+    void DetermineWinner();
 
     void Draw();
     void DrawKills();
@@ -42,7 +43,7 @@ namespace Framework
     Handle ChipCont;
     Handle winner_chip;
     float bounceDownTimer, timeToLive;
-    float winnerY;
+    int winner;
     bool bounceDownDone, startDrawing;
     GameTypes mode_;
     bool chipAwarded;

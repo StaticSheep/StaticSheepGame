@@ -13,15 +13,15 @@ GameObject
     Rotation float 0.000000
     Scale Vec3
     {
-      x_ float 0.500000
-      y_ float 0.500000
+      x_ float 0.750000
+      y_ float 0.750000
       z_ float 0.000000
     }
   }
   Sprite
   {
     m_spriteName std::string "temp_ggg_winner_chip.png"
-    m_layer unsignedint 1
+    m_layer unsignedint 2
     m_flipX bool false
     m_flipY bool false
     m_uvScale bool false
@@ -43,10 +43,27 @@ GameObject
       Y float 0.000000
     }
   }
+  PointLight
+  {
+    m_layer unsignedint 2
+    m_brightness LightColor
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    m_attenuation LightVec3
+    {
+      X float 0.010000
+      Y float 0.010000
+      Z float 0.050000
+    }
+  }
   BasicParticleSystem
   {
     m_texture std::string "orb.png"
-    m_layer int 1
+    m_layer int 2
     m_pos BasicParticleSystem::BPSPos
     {
       square bool true
@@ -57,11 +74,11 @@ GameObject
       offset Vec2
       {
         X float 0.000000
-        Y float 40.000000
+        Y float 60.000000
       }
       randOffset Vec2
       {
-        X float 50.000000
+        X float 60.000000
         Y float 10.000000
       }
     }

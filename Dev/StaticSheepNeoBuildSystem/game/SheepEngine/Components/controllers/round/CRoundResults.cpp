@@ -17,6 +17,7 @@ namespace Framework
 {
   static Vec2D wordSize(21.0f, 21.0f);
   static Vec2D numberSize(50.0f, 50.0f);
+  static float playerHeadY_[4] {252.0f, 116.0f, -42.0f, -182.0f};
 
   RoundResults::RoundResults()
 	{
@@ -42,7 +43,7 @@ namespace Framework
     startDrawing = false;
     chipAwarded = false;
     winner_chip = Handle::null;
-    winnerY = 0.0f;
+    winner = -1;
 
     wordFontIndex = Draw::GetFontIndex("aircruiser");
     numberFontIndex = Draw::GetFontIndex("BN_Jinx");
@@ -65,8 +66,9 @@ namespace Framework
     else
       startDrawing = true;
 
-    if (startDrawing && !chipAwarded)
+    if (startDrawing)
     {
+      DetermineWinner();
       AwardChip(dt);
     }
 
@@ -74,9 +76,13 @@ namespace Framework
     if (timeToLive <= 0)
     {
       Transform *thisTrans = space->GetGameObject(owner)->GetComponent<Transform>(eTransform);
-      thisTrans->SetTranslation(thisTrans->GetTranslation() + Vec3(0.0f, 80.0f, 0.0f));
+      thisTrans->SetTranslation(thisTrans->GetTranslation() + Vec3(0.0f, 70.0f, 0.0f));
       if (thisTrans->GetTranslation().y >= 950.0f)
+      {
+        if (winner_chip != Handle::null)
+          space->GetGameObject(winner_chip)->Destroy();
         DestroySelf();
+      }
     }
     
 	}
@@ -121,17 +127,83 @@ namespace Framework
 
   void RoundResults::AwardChip(float dt)
   {
-    if (winner_chip == Handle::null)
+    if (winner == -1)
+      return;
+    else if (winner_chip == Handle::null)
     {
       winner_chip = (FACTORY->LoadObjectFromArchetype(space, "winner_chip"))->self;
-      space->GetGameObject(winner_chip)->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(900.0f, winnerY, 0.0f));
+      space->GetGameObject(winner_chip)->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(-1000.0f, playerHeadY_[winner], 0.0f));
     }
 
     Transform *ct = space->GetGameObject(winner_chip)->GetComponent<Transform>(eTransform);
-    if (ct->GetTranslation().x > -600.0f)
-     ct->SetTranslation(ct->GetTranslation() + Vec3(-10.0f, 0.0f, 0.0f));
-    
+    if (ct->GetTranslation().x < -700.0f)
+      ct->SetTranslation(ct->GetTranslation() + Vec3(50.0f, 0.0f, 0.0f));
 
+    if (timeToLive <= 0.75f)
+    {
+      ct->SetTranslation(ct->GetTranslation() + Vec3(-120.0f, 0.0f, 0.0f));
+    }
+    
+  }
+
+  void RoundResults::DetermineWinner()
+  {
+    int mostKills;
+    int mostChips;
+    int currWinner;
+    float mostTime;
+
+    switch (mode_)
+    {
+    case FFA:
+      mostKills = 0;
+      currWinner = -1;
+      for (int i = 0; i < 4; ++i)
+      {
+        int playKills = space->GetGameObject(ChipCont)->GetComponent<ChipController>(eChipController)->roundPlayerKills[i];
+        if (playKills > 0 && playKills > mostKills)
+        {
+          mostKills = playKills;
+          currWinner = i;
+        }
+      }
+      if (currWinner != -1)
+        winner = currWinner;
+      break;
+    case JUGGERNAUT:
+      mostTime = 0.0f;
+      currWinner = -1;
+      for (int i = 0; i < 4; ++i)
+      {
+        float playTime = space->GetGameObject(ChipCont)->GetComponent<ChipController>(eChipController)->roundTimeAsJugg[i];
+        if (playTime > 0 && playTime > mostTime)
+        {
+          mostTime = playTime;
+          currWinner = i;
+        }
+      }
+      if (currWinner != -1)
+        winner = currWinner;
+      break;
+    case SUDDENDEATH:
+      winner = space->GetGameObject(ChipCont)->GetComponent<ChipController>(eChipController)->LMSThisRound;
+      break;
+    case GAMEOVER:
+      mostChips = 0;
+      currWinner = -1;
+      for (int i = 0; i < 4; ++i)
+      {
+        float playChips = space->GetGameObject(ChipCont)->GetComponent<ChipController>(eChipController)->playerChips[i];
+        if (playChips > 0 && playChips > mostChips)
+        {
+          mostChips = playChips;
+          currWinner = i;
+        }
+      }
+      if (currWinner != -1)
+        winner = currWinner;
+      break;
+    }
   }
 
   void RoundResults::Draw()
