@@ -63,7 +63,7 @@ namespace Framework
     SetHealth(m_maxHealth);
     SetShields(m_maxShields);
 
-    TakeDamage(101.0f, -1);
+    //TakeDamage(1.0f, -1);
   }
 
   void CombatController::Collision(GameObject* obj, GameObject* OtherObject)
