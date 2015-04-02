@@ -161,21 +161,15 @@ function META:Run()
   self.tex[1] = surface.GetTextureID("GigaGravityTitle.png")
   self.CreditList = {}
 
-  self._alpha = 0
+  self._alpha = 255
   self._texID = self.tex[1]
-  self._texSize = Vec2(1, 1)
-  self._textPos = Vec3(0, 0, 0)
+  self._texSize = Vec2(600, 150)
+  self._textPos = Vec3(20, 50, 0)
   self._slotMachine = {}
   self._logo = nil
   self._startBtn = nil
 
   self.List = actionlist.Create()
-
-  self.List:PushBack(Action(
-    Timed(0.5),
-    FadeIn(self),
-    nil,
-    true))
 
   self.List:PushBack(Action(
     Timed(1),
@@ -229,6 +223,11 @@ function META:Run()
     self:CreditEx(v, 0.75)
   end
 
+  self:CreditEx("All content (c) 2014 DigiPen (USA) Corporation, all rights reserved.", 2.5, nil, 0, 10)
+  self:CreditEx("FMOD Studio Copyright (c) 2005-2011 Firelight Technologies Pty, Ltd.", 0.5, nil, 0, 10)
+  self:CreditEx("AntTweakBar Copyright (c) 2005-2013 Philippe Decaudin.", 0.5, nil, 0, 10)
+  self:CreditEx("DirectX 11 TK Copyright (c) 2015 Microsoft Corp", 0.5, nil, 0, 10)
+
 end
 
 function META:Init()
@@ -257,7 +256,12 @@ end
 function META:Update(dt)
   self.List:Update(dt)
 
-  if gamepad.ButtonPressed(nil, GAMEPAD_START) then
+  if gamepad.ButtonPressed(nil, GAMEPAD_START) or
+  gamepad.ButtonPressed(nil, GAMEPAD_A) or
+  gamepad.ButtonPressed(nil, GAMEPAD_B) or
+  KeyIsPressed(KEY_ESCAPE) or
+  KeyIsPressed(KEY_SPACE) or
+  KeyIsPressed(KEY_ENTER) then
     engine.ChangeLevel("MainMenu")
   end
 end
@@ -272,14 +276,17 @@ function META:GuiDraw()
        TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
   end
-end
 
-function META:Draw()
   surface.SetTexture(self._texID)
   surface.SetColor(255, 255, 255, self._alpha)
   surface.ForceZ(true, self._textPos.z - 1.0)
-  surface.DrawTexturedRect(self._textPos.x, self._textPos.z, self._texSize.x, self._texSize.y)
+  surface.DrawTexturedRect(ScreenScale(self._textPos.x), ScreenScaleY(self._textPos.y),
+   ScreenScale(self._texSize.x), ScreenScaleY(self._texSize.y))
   surface.ForceZ(false, 0)
+end
+
+function META:Draw()
+ 
 
   
 end
