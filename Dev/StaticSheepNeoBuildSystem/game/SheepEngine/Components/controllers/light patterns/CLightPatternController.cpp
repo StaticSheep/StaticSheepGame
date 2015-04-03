@@ -11,6 +11,7 @@ All content © 2015 DigiPen (USA) Corporation, all rights reserved.
 #include "../round/CRoundController.h"
 #include "../../gameplay_scripts/arena/CBlockLights.h"
 #include "../chip/CChipController.h"
+#include "SheepMath.h"
 
 namespace Framework
 {
@@ -114,7 +115,48 @@ namespace Framework
 
   void LightPatternController::PlayerSlot(float dt)
   {
+    timer_ -= dt;
+    if (timer_ <= 0)
+      return;
 
+    delay_ -= dt;
+    if (delay_ <= 0)
+    {
+      if (swapFlag)
+      {
+        BlockLights::EventData ed;
+        ed.duration = 0.15f;
+        ed.settings.color = Vec4(1.0f, 1.0f, 1.0f, 1.0f);
+        ed.settings.fx = BlockLights::NONE;
+        ed.settings.useColor = true;
+        ed.overrideDefault = true;
+        ed.settings.customData.duration = 0.15f;
+        space->hooks.Call("LightingEvent", (unsigned)0xAAAAAAAA, &ed);
+
+        ed.settings.color = blockColor[GetRandom(0, 3)];
+        space->hooks.Call("LightingEvent", (unsigned)0x55555555, &ed);
+
+        swapFlag = false;
+      }
+      else
+      {
+        BlockLights::EventData ed;
+        ed.duration = 0.15f;
+        ed.settings.color = Vec4(1.0f, 1.0f, 1.0f, 1.0f);
+        ed.settings.fx = BlockLights::NONE;
+        ed.settings.useColor = true;
+        ed.overrideDefault = true;
+        ed.settings.customData.duration = 0.15f;
+        space->hooks.Call("LightingEvent", (unsigned)0x55555555, &ed);
+
+        ed.settings.color = blockColor[GetRandom(0, 3)];
+        space->hooks.Call("LightingEvent", (unsigned)0xAAAAAAAA, &ed);
+
+        swapFlag = true;
+      }
+
+      delay_ = 0.15f;
+    }
   }
 
   void LightPatternController::RoundInProgress(float dt)

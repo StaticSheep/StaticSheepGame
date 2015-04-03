@@ -247,7 +247,10 @@ namespace Framework
     {
       //spawn personal slot machines and let them do their thing
       if (!spawnedPSM)
+      {
         SpawnPersonalSM();
+        space->hooks.Call("SetLightPattern", LightPatternController::PLAYERSLOT);
+      }
 
       int i;
       for (i = 0; i < 4; ++i)
