@@ -135,7 +135,7 @@ META.SetYAlign = META.SetYAlignment
 
 function META:Press()
   if self.OnPressed then
-    self:OnPressed()
+    self:OnPressed(self)
   end
 
   self.clicked = true

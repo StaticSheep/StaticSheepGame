@@ -272,6 +272,7 @@ function META:Init()
   self.CreditList = {}
 
   self:Run()
+  self.pausewait = true
 end
 
 function META:Refresh()
@@ -292,6 +293,11 @@ end
 
 function META:Update(dt)
   self.List:Update(dt)
+
+  if self.pausewait then
+    self.pausewait = false
+    return
+  end
 
   if gamepad.ButtonPressed(nil, GAMEPAD_START) or
   gamepad.ButtonPressed(nil, GAMEPAD_A) or

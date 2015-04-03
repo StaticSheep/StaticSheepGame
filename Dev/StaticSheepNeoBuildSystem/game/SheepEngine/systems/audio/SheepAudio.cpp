@@ -268,42 +268,42 @@ namespace Framework
   // Setters
   void SheepAudio::SetMasterVolume(float volume)
   {
-    masterVolume = Clamp(volume, 0.0f, 1.0f);
-    masterGroup->setVolume(masterVolume);
+    AUDIO->masterVolume = Clamp(volume, 0.0f, 1.0f);
+    masterGroup->setVolume(AUDIO->masterVolume);
   }
 
   void SheepAudio::SetMasterPitch(float pitch)
   {
-    masterPitch = Clamp(pitch, 0.0f, 2.0f);
-    masterGroup->setPitch(masterPitch);
+    AUDIO->masterPitch = Clamp(pitch, 0.0f, 2.0f);
+    masterGroup->setPitch(AUDIO->masterPitch);
   }
 
   void SheepAudio::SetMusicVolume(float volume)
   {
-    musicVolume = Clamp(volume, 0.0f, 1.0f);
-    musicChannel->setVolume(musicVolume);
+    AUDIO->musicVolume = Clamp(volume, 0.0f, 1.0f);
+    AUDIO->musicChannel->setVolume(AUDIO->musicVolume);
   }
 
   void SheepAudio::SetSFXVolume(float volume)
   {
-    sfxVolume = Clamp(volume, 0.0f, 1.0f);
-    sfxChannel->setVolume(sfxVolume);
+    AUDIO->sfxVolume = Clamp(volume, 0.0f, 1.0f);
+    AUDIO->sfxChannel->setVolume(AUDIO->sfxVolume);
   }
     
   // Getters
   float SheepAudio::GetMasterVolume()
   {
-    return masterVolume;
+    return AUDIO->masterVolume;
   }
 
   float SheepAudio::GetMusicVolume()
   {
-    return musicVolume;
+    return AUDIO->musicVolume;
   }
 
   float SheepAudio::GetSFXVolume()
   {
-    return sfxVolume;
+    return AUDIO->sfxVolume;
   }
 
   float SheepAudio::GetMasterPitch()
