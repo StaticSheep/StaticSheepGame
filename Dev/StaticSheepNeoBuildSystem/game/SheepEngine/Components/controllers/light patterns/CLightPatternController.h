@@ -46,5 +46,6 @@ namespace Framework
     float timer_, delay_;
     bool patternSet, swapFlag;
     float currWeights[4];
+    int currWinner;
   };
 }
