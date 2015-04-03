@@ -18,6 +18,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "../../gameplay_scripts/CCheats.h"
 #include "systems/metrics/MetricInfo.h"
 #include "types/powerUps/PBase.h"
+#include "CombatController.h"
 
 namespace Framework
 {
@@ -46,14 +47,17 @@ namespace Framework
 		Vec3 aimingDirection(GamePad *gp, char stick = 'R');
     //void Melee(Buttons butt);
     void RespawnBlink(float dt);
-    void PlayerDeath(SoundEmitter *se, Transform *pt, int who_killed_me = -1);
     void SetAnimations();
+
+    CombatController* Combat() { return &m_combatController; }
 
     void clampVelocity(float clamp);
     int CurrentHealth();
     //void jump();
     void PlayerButtonPress();
-    void DealDamage(float damage, int playNum);
+    //void DealDamage(float damage, int attacker);
+
+
     void SpawnEffect();
 
     void CollisionDamage(GameObject *OtherObject);
@@ -64,13 +68,13 @@ namespace Framework
 
 		//member variables
 		int playerNum; //the player number, i.e. 1, 2, 3, 4
-    float health; //players health
-    float shields;
+
+
 		bool hasFired, hasRespawned, blink, stoppedFX, firstUpdate; //has fired is a flag to prevent fully auto fire, is snapped is a bool to see if the player is snapped to something
-    bool GodMode, GoldenGun, PerfectMachine;  //the cheats 
-    bool frameSkip, arrowSpawn, hasDashed, jumpTriggerUp;
-    float rotation, lastRotation;
+    bool GoldenGun;  //the cheats 
+    bool frameSkip, arrowSpawn;
     float respawnTimer;
+    float rotation, lastRotation;
 
     //bool otherObjectSpin;
 
@@ -80,6 +84,8 @@ namespace Framework
 
     AnimationController animCont;
     MovementController moveController;
+    CombatController m_combatController;
+
     Weapon *weapon;
     PowerUp *powerUp;
 		Vec3 aimDir;  //the direction the player is currently aiming
@@ -104,6 +110,12 @@ namespace Framework
 
     //Vec3 otherObjectVelocity;
     //int collisionTotal;
+
+    
+
+  private:
+    void TakeGlobalDamage(float damage, int target);
+    void PlayerKilled(int attacker);
 
 	};
 }

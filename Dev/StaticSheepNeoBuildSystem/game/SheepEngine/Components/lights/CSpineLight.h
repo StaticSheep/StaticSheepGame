@@ -49,6 +49,11 @@ namespace Framework
       bool m_emissive = false;
       int m_layer = 1;
 
+      bool active = true;
+
+      void Toggle(bool status) { active = status; }
+      bool GetStatus() { return active; }
+
     private:
 
       Handle transform;

@@ -106,6 +106,8 @@ namespace Framework
     levelEmitter = space->GetGameObject(owner)->GetComponentHandle(eSoundEmitter);
     levelSprite = space->GetGameObject(owner)->GetComponentHandle(eSprite);
 
+    lastMode = IDLE_STATE;
+
     eventTimer = 6;
     startFlag = true;
     playing = true;
@@ -172,6 +174,7 @@ namespace Framework
     mode = SLOTMACHINE;
   }
 
+
   void Level1_Logic::SpawnPlayers(float dt)
   {
     Transform *playTrans;
@@ -203,8 +206,12 @@ namespace Framework
 
         if (mode == SUDDENDEATH)
         {
-          temp->GetComponent<PlayerController>(ePlayerController)->health = 100;
-          temp->GetComponent<PlayerController>(ePlayerController)->shields = 200;
+          PlayerController* pc = temp->GetComponent
+            <PlayerController>(ePlayerController);
+
+          /* @TODO: Redo player spawning */
+          //temp->GetComponent<PlayerController>(ePlayerController)->
+          //temp->GetComponent<PlayerController>(ePlayerController)->shields = 200;
         }
       }
       startFlag = false;
@@ -254,6 +261,27 @@ namespace Framework
     if (ply < 0 || ply > numOfPlayers)
       return;
     RoundController *RC = space->GetGameObject(owner)->GetComponent<RoundController>(eRoundController);
+
+
+    if (!GetRandom(0, 3))
+    {
+      SoundEmitter* se = GetOwner()->GetComponent<SoundEmitter>(eSoundEmitter);
+
+      if (who_killed_him != -1)
+      {
+        if (GetRandom(0, 1))
+          se->Play("crowd_approve00", &SoundInstance(1.0f));
+        else
+          se->Play("crowd_approve02", &SoundInstance(1.0f));
+      }
+      else
+      {
+        if (GetRandom(0, 1))
+          se->Play("crowd_disapprove00", &SoundInstance(1.0f));
+        else
+          se->Play("crowd_disapprove01", &SoundInstance(1.0f));
+      }
+    }
 
     Players[ply] = Handle::null;
     if (who_killed_him != -1 && RC->state_ == RoundController::RoundState::ROUNDINPRO)
@@ -432,7 +460,8 @@ namespace Framework
     {
       if (Players[i] != Handle::null)
       {
-        space->GetGameObject(Players[i])->GetComponent<PlayerController>(ePlayerController)->health = 0;
+        space->GetGameObject(Players[i])->
+          GetComponent<PlayerController>(ePlayerController)->Combat()->Kill(-1);
       }
     }
   }
@@ -787,8 +816,9 @@ namespace Framework
         delete playerController->powerUp;
       playerController->powerUp = new DamageBoost();
       playerController->powerUp->Use(juggernaut_);
-      playerController->health = 200;
-      playerController->shields = 100;
+      playerController->Combat()->SetHealth(200.0f);
+      playerController->Combat()->SetShields(100.0f);
+
       GameObject *effect = (FACTORY->LoadObjectFromArchetype(space, "jugg_effect"));
       effect->GetComponent<JuggernautEffect>(eJuggernautEffect)->pTransform = (space->GetGameObject(Players[i]))->GetComponentHandle(eTransform);
       effect->GetComponent<Transform>(eTransform)->SetTranslation(
@@ -873,6 +903,7 @@ namespace Framework
       GameObject *SM = (FACTORY->LoadObjectFromArchetype(space, "LevelSlotMachine"));
       SM->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(0.0f, 900.0f, 1.0f));
       SM->GetComponent<SlotController>(eSlotController)->roundNum = space->GetGameObject(owner)->GetComponent<RoundController>(eRoundController)->current_round;
+      SM->GetComponent<SlotController>(eSlotController)->lastMode = lastMode;
       slotFinished = true;
     }
   }
@@ -907,6 +938,7 @@ namespace Framework
 
   void Level1_Logic::SlotFinished(GameTypes mode_)
   {
+    lastMode = mode_;
     mode = mode_;
     countDownDone = false;
     countDownTimer = 3.0f;
@@ -914,8 +946,7 @@ namespace Framework
     slotFinished = false;
     startFlag = true;
     ResetSpawnTimers();
-    if (mode_ == JUGGERNAUT)
-      ResetJuggernaut();
+    ResetJuggernaut();
   }
 
   void Level1_Logic::SetMods(GameMods mod1_, GameMods mod2_)

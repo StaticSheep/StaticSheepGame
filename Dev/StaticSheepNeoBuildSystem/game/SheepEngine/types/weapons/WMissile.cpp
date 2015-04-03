@@ -17,13 +17,17 @@ All content © 2015 DigiPen (USA) Corporation, all rights reserved.
 
 namespace Framework
 {
+  static const float fireDelay = 1.0f;
+
   Missile::Missile()
   {
-    delay = 1.0f;
+    delay = 0.0f;
     damage = 90;
     knockback = 600;
     semi = true;
     explosive_ = false;
+
+    fireSound = "weapon_rocket";
   }
 
   Missile::~Missile()
@@ -34,42 +38,7 @@ namespace Framework
   void Missile::Fire(GameObject *player)
   {
 
-    GameObject *bullet = (FACTORY->LoadObjectFromArchetype(player->space, "Missile"));
-
-    Bullet_Default* bd = bullet->GetComponent<Bullet_Default>(eBullet_Default);
-
-    if (explosive_)
-    {
-      bd->damage = damage + 10;
-      bd->explosive_ = true;
-    }
-    else
-      bd->damage = damage;
-
-
-    bullet->GetComponent<ParticleCircleEmitter>(eParticleCircleEmitter)->spawning = false;
-    bullet->GetComponent<ParticleCircleEmitter>(eParticleCircleEmitter)->timedSpawning = true;
-    bullet->GetComponent<ParticleCircleEmitter>(eParticleCircleEmitter)->timed = 0.001f;
-    Transform *BT = bullet->GetComponent<Transform>(eTransform);
-    CircleCollider *bulletC = bullet->GetComponent <CircleCollider>(eCircleCollider);
-    Transform *playerTrans = player->GetComponent <Transform>(eTransform);
-    Vec3 AimDir = player->GetComponent<PlayerController>(ePlayerController)->aimDir;
-
-    float theta = atan2f(AimDir.y, AimDir.x) - (PI / 2.0f);
-
-    Mat3D rotation(theta);
-
-    ParticleSystem* part = bullet->GetComponent<ParticleSystem>(eParticleSystem);
-    part->direction.m_startMin = rotation * part->direction.m_startMin;
-    part->direction.m_startMax = rotation * part->direction.m_startMax;
-
-    bulletC->SetBodyCollisionGroup(player->GetComponent<PlayerController>(ePlayerController)->weaponGroup);
-
-    BT->SetTranslation(playerTrans->GetTranslation() + AimDir * 25);
-    bulletC->AddToVelocity(AimDir * 1000);
-
-    SoundEmitter *se = player->GetComponent<SoundEmitter>(eSoundEmitter);
-    se->Play("weapon_rocket", &SoundInstance(1.0f));
+    GameObject *bullet = CreateBullet(player, "Missile", 800.0f);
   }
 
   void Missile::Update(float dt)
@@ -80,12 +49,12 @@ namespace Framework
   void Missile::DelayUpdate(float dt)
   {
     delay -= dt;
-    if (delay < -100)
+    if (delay < 0)
       delay = 0;
   }
 
   void Missile::ResetDelay()
   {
-    delay = 1.0f;
+    delay = fireDelay;
   }
 }

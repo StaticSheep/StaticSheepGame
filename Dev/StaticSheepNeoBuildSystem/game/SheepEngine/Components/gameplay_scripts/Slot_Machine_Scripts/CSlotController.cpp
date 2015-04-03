@@ -40,7 +40,7 @@ namespace Framework
     //when you create a slot machine through an archetype you can set its call backs like this
     sm->SetTextureCB(self, BUILD_FUNCTION(SlotController::SetSMTextures));
     sm->SetFinishedCB(self, BUILD_FUNCTION(SlotController::ReceiveSMResults));
-    //sm->SetSelectionCB(self, BUILD_FUNCTION(SlotController::SetSMResults));
+    sm->SetSelectionCB(self, BUILD_FUNCTION(SlotController::SetSMResults));
     bounceDownTimer = 0.5f;
     bounceDownDone = false;
     spawnLeftBonus = false;
@@ -194,7 +194,17 @@ namespace Framework
 
   void SlotController::SetSMResults(int slotNum, int *landResult)
   {
-    
+    SetNextWeights(slotNum);
+    int ranChance = GetRandom(1, 100);
+
+    if (ranChance < slotWeights[0])
+      *landResult = 0;
+    else if (ranChance >= slotWeights[0] && ranChance < slotWeights[0] + slotWeights[1])
+      *landResult = 1;
+    else if (ranChance >= 100 - slotWeights[2])
+      *landResult = 2;
+    else
+      *landResult = 1;
   }
 
   void SlotController::ReceiveSMResults(std::vector<int>* results)
@@ -320,5 +330,75 @@ namespace Framework
       return (FACTORY->LoadObjectFromArchetype(space, "JPSlotMachine"));
     }
 
+  }
+
+  void SlotController::SetNextWeights(int reel)
+  {
+    if (reel == 0) //game mode
+    {
+      switch (roundNum)
+      {
+      case 1:
+      case 2:
+      case 3:
+        slotWeights[0] = 50;
+        slotWeights[1] = 50;
+        slotWeights[2] = 0;
+        break;
+      default:
+        slotWeights[0] = 40;
+        slotWeights[1] = 40;
+        slotWeights[2] = 20;
+      }
+
+      int div = 0;
+      switch (lastMode)
+      {
+      case FFA:
+        div = slotWeights[0] / 2;
+        slotWeights[0] = 0;
+        slotWeights[1] += div;
+        slotWeights[2] += div;
+        break;
+      case JUGGERNAUT:
+        div = slotWeights[1] / 2;
+        slotWeights[0] += div;
+        slotWeights[1] = 0;
+        slotWeights[2] += div;
+        break;
+      case SUDDENDEATH:
+        if (roundNum < 3)
+          break;
+        div = slotWeights[2] / 2;
+        slotWeights[0] += div;
+        slotWeights[1] += div;
+        slotWeights[2] = 0;
+        break;
+      default:
+        break;
+      }
+    }
+    else if (reel == 1) //mod 1
+    {
+      switch (roundNum)
+      {
+      case 1:
+      case 2:
+        slotWeights[0] = 0;
+        slotWeights[1] = 80;
+        slotWeights[2] = 20;
+        break;
+      default:
+        slotWeights[0] = 30;
+        slotWeights[1] = 60;
+        slotWeights[2] = 10;
+      }
+    }
+    else if (reel == 2) //mod 2
+    {
+      slotWeights[0] = 50;
+      slotWeights[1] = 45;
+      slotWeights[2] = 5;
+    }
   }
 }

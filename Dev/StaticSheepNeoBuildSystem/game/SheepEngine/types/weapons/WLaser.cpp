@@ -39,7 +39,8 @@ namespace Framework
     life = lifeTime;
 
     Transform *playerTrans = player->GetComponent <Transform>(eTransform);
-    Vec3 AimDir = player->GetComponent<PlayerController>(ePlayerController)->aimDir;
+    PlayerController* fpc = player->GetComponent<PlayerController>(ePlayerController);
+    Vec3 AimDir = fpc->aimDir;
 
     Vec3 AimEnd = playerTrans->GetTranslation() + AimDir * 40.0f;
     Vec2 testStart = Draw::ToScreen(playerTrans->GetTranslation());
@@ -64,7 +65,7 @@ namespace Framework
         if (pc)
         {
           // Kill me
-          pc->DealDamage(500.0f, pc->playerNum);
+          pc->Combat()->TakeDamage(500.0f, fpc->playerNum);
         }
       }
     }

@@ -40,23 +40,18 @@ namespace Framework
 		playerNum = 0;
 		playerGamePad = Handle::null; //this is how you null a handle right
 		hasFired = false;
-    health = 100;
-    shields = 100;
     snappedTo = Handle::null;
-    respawnTimer = 3.0f;
     hasRespawned = true;
     stoppedFX = false;
     blink = false;
     weapon = nullptr;
-    GodMode = false;
     GoldenGun = false;
-    PerfectMachine = false;
     normals.clear();
     lastRotation = 0.0f;
     frameSkip = false;
     arrowSpawn = false;
-    hasDashed = false;
-    firstUpdate = true;
+    respawnTimer = 3.0f;
+    
 	}
 
 	PlayerController::~PlayerController() //4
@@ -64,20 +59,29 @@ namespace Framework
 
 	}
 
+  void PlayerController::TakeGlobalDamage(float damage, int target)
+  {
+    if (playerNum == target)
+      m_combatController.TakeDamage(damage, -1);
+  }
 
-	//************************************
-	// Method:    Initialize
-	// FullName:  Framework::PlayerController::Initialize
-	// Access:    public 
-	// Returns:   void
-	// Qualifier: //2
-	//************************************
+
 	void PlayerController::Initialize() //2
 	{
+    m_combatController.Initialize(GetOwner(), playerNum);
+
 		//logic setup, you're attached and components are in place
-		space->hooks.Add("LogicUpdate", self, BUILD_FUNCTION(PlayerController::LogicUpdate));
-    space->hooks.Add("DealDamageToPlayer", self, BUILD_FUNCTION(PlayerController::DealDamage));
-		space->GetGameObject(owner)->hooks.Add("OnCollision", self, BUILD_FUNCTION(PlayerController::OnCollision));
+		space->hooks.Add("LogicUpdate", self,
+      BUILD_FUNCTION(PlayerController::LogicUpdate));
+
+    space->hooks.Add("DealDamageToPlayer", self,
+      BUILD_FUNCTION(PlayerController::TakeGlobalDamage));
+		
+    GetOwner()->hooks.Add("PlayerKilled", self,
+      BUILD_FUNCTION(PlayerController::PlayerKilled));
+
+    
+    space->GetGameObject(owner)->hooks.Add("OnCollision", self, BUILD_FUNCTION(PlayerController::OnCollision));
 
     //Generic* gobj = space->GetHandles().GetAs<Generic>(owner);
 
@@ -152,7 +156,6 @@ namespace Framework
 
     powerUp = nullptr;
     pn = -1;
-    jumpTriggerUp = true;
     //SpawnEffect();
 	}
 
@@ -187,13 +190,6 @@ namespace Framework
         powerUp = nullptr;
       }
     }
-    //if the player is out of health run the player death function
-    if (health <= 0)
-    {
-      MetricInfo metricData(playerNum, (int)ps->GetTranslation().x, (int)ps->GetTranslation().y, PLAYER_DEATH, Buttons::NONE, Weapons::PISTOL);
-      ENGINE->SystemMessage(MetricsMessage(&metricData));
-      PlayerDeath(se, ps, pn);
-    }
 
     //if the player has just respawned, run the blink function
     if (hasRespawned)
@@ -207,56 +203,69 @@ namespace Framework
       arrowSpawn = false;
     
     //update the weapons delay
-    weapon->DelayUpdate(dt);
+    weapon->Update(dt);
+
+
 
 		//fire on trigger pull
-		if ((gp->RightTrigger() && hasFired == false) || (SHEEPINPUT->KeyIsDown(VK_SPACE) && hasFired == false && gp->GetIndex() == 0))
+		if (
+      (gp->RightTrigger() && !hasFired)
+      || 
+      (SHEEPINPUT->KeyIsDown(VK_SPACE)
+      && !hasFired && gp->GetIndex() == 0)
+      )
 		{
-			hasFired = true;
+      if (weapon->semi)
+        hasFired = true;
+
 			onFire();
 		}
-
-    //check to see if the weapon is semi-auto
-    if (weapon->semi == false)
+    else
     {
-      if (weapon->delay <= 0)
+      if (!gp->RightTrigger())
       {
         hasFired = false;
-        weapon->ResetDelay();
       }
     }
+
+  //  //check to see if the weapon is semi-auto
+  //  if (weapon->semi == false)
+  //  {
+  //    if (weapon->delay <= 0)
+  //    {
+  //      hasFired = false;
+  //      weapon->ResetDelay();
+  //    }
+  //  }
 
     // keyboard input for first player
     if(SHEEPINPUT->KeyIsDown(VK_SPACE))
         SHEEPINPUT->Pads[0].State.Gamepad.bRightTrigger = (BYTE)255;
 
-		//if the trigger is released, reset the bool
-		if (!gp->RightTrigger() && weapon->semi)
-    {
-      if (weapon->delay <= 0)
-      {
-        hasFired = false;
-        weapon->ResetDelay();
-      }
-    }
+		////if the trigger is released, reset the bool
+		//if (!gp->RightTrigger() && weapon->semi)
+  //  {
+  //    if (weapon->delay <= 0)
+  //    {
+  //      hasFired = false;
+  //      
+  //    }
+  //  }
 
 
     moveController.Update(GetOwner());
-//=======
-//		//dash, formally known as melee
-//    if (gp->ButtonPressed(XButtons.A))
-//      Melee(Buttons::LB);
-//    else if (gp->LeftTrigger() && jumpTriggerUp)
-//      Melee(Buttons::RB);
-//>>>>>>> origin/GregsGamplay2
+    m_combatController.Update(GetOwner(), dt);
 
     PlayerButtonPress(); //check to see if the player has pressed any of the controller buttons (for cheats or other things)
 
     SetAnimations(); //depending on movement or action, set the players current sprite animation
 
     //this check makes sure the player hasn't gone "OUTSIDE" the level, if they have it kills them
-    if (ps->GetTranslation().x > 1000 || ps->GetTranslation().x < -1000 || ps->GetTranslation().y > 500 || ps->GetTranslation().y < -500)
-      PlayerDeath(se, ps);
+    if (ps->GetTranslation().x > 1000
+      || ps->GetTranslation().x < -1000
+      || ps->GetTranslation().y > 500
+      || ps->GetTranslation().y < -500)
+      Combat()->Kill(-1);
 
     //isSnapped = false;
     
@@ -327,14 +336,14 @@ namespace Framework
 	void PlayerController::OnCollision(Handle otherObject, SheepFizz::ExternalManifold manifold)
 	{
     //update all the players pointers
-    gp = space->GetHandles().GetAs<GamePad>(playerGamePad);
+    //gp = space->GetHandles().GetAs<GamePad>(playerGamePad);
     bc = space->GetHandles().GetAs<BoxCollider>(playerCollider);
-    se = space->GetHandles().GetAs<SoundEmitter>(playerSound);
-    ps = space->GetHandles().GetAs<Transform>(playerTransform);
+    //se = space->GetHandles().GetAs<SoundEmitter>(playerSound);
+    //ps = space->GetHandles().GetAs<Transform>(playerTransform);
+
     GameObject *OtherObject = space->GetHandles().GetAs<GameObject>(otherObject); //get the game object from the handle
     
-    CollisionDamage(OtherObject); //determine if the colliding object does damage to the player
-
+    m_combatController.Collision(GetOwner(), OtherObject);
 
     /*if(OtherObject->name == "WeaponPickup" || OtherObject->archetype == "Grinder" ||
       OtherObject->name == "PowerUpPickup" || OtherObject->name == "CoinPickup" || OtherObject->name == "CoinBall" || OtherObject->name == "Player"
@@ -345,78 +354,6 @@ namespace Framework
       moveController.DetermineSnap(bc, OtherObject, manifold);
 	}
 
-  void PlayerController::CollisionDamage(GameObject *OtherObject)
-  {
-
-    Bullet_Default* bullet = OtherObject->GetComponent<Bullet_Default>(eBullet_Default);
-
-    if (bullet && !hasRespawned && !GodMode && !PerfectMachine)
-    {
-      DealDamage(bullet->damage, playerNum);
-      float randomX = (float)GetRandom(-25, 25);
-      float randomY = (float)GetRandom(-25, 25);
-      se->Play("hit1", &SoundInstance(1.0f));
-      ps = space->GetHandles().GetAs<Transform>(playerTransform);
-      Handle hit = (FACTORY->LoadObjectFromArchetype(space, "hit"))->self;
-      Transform *exT = space->GetGameObject(hit)->GetComponent<Transform>(eTransform);
-      exT->SetTranslation(ps->GetTranslation() + Vec3(randomX, randomY, -1.0f));
-
-      //for metrics, need to determine where the bullet came from by checking its collision group
-      if (health <= 0 && OtherObject->GetComponent<CircleCollider>(eCircleCollider) != nullptr)
-      {
-        pn = -1;
-
-        CircleCollider* cc = OtherObject->GetComponent<CircleCollider>(eCircleCollider);
-
-        if (!cc)
-          return;
-
-        if (cc->GetBodyCollisionGroup() == "Player1Weapon")
-          pn = 0;
-        else if (cc->GetBodyCollisionGroup() == "Player2Weapon")
-          pn = 1;
-        else if (cc->GetBodyCollisionGroup() == "Player3Weapon")
-          pn = 2;
-        else if (cc->GetBodyCollisionGroup() == "Player4Weapon")
-          pn = 3;
-
-        MetricInfo metricData(pn, 0, 0, PLAYER_KILL, Buttons::NONE, Weapons::PISTOL);
-        ENGINE->SystemMessage(MetricsMessage(&metricData));
-      }
-      return;
-    }
-
-    else if ((OtherObject->archetype == "KillBox" || OtherObject->archetype == "KillBoxBig" || OtherObject->name == "GrinderBig")
-      && !hasRespawned && !GodMode && !PerfectMachine)
-    {
-      DealDamage(5, playerNum);
-    }
-    else if (OtherObject->name == "WeaponPickup")
-      se->Play("weapon_pickup", &SoundInstance(0.75f));
-
-    else if (OtherObject->name == "Asteroid")
-    {
-      DealDamage(50, playerNum);
-      float ranY = (float)GetRandom(-500, 500);
-      float ranX = (float)GetRandom(-500, 500);
-      bc->AddToVelocity(Vec3(ranX, ranY, 0.0f));
-    }
-
-    else if (OtherObject->name == "SaucerMissile")
-    {
-      DealDamage(50, playerNum);
-      float ranY = (float)GetRandom(-500, 500);
-      float ranX = (float)GetRandom(-500, 500);
-      bc->AddToVelocity(Vec3(ranX, ranY, 0.0f));
-    }
-
-    if ((OtherObject->GetComponentHandle(eGrinder) != Handle::null)
-      && !hasRespawned && !GodMode && !PerfectMachine)
-    {
-      DealDamage(5, playerNum);
-    }
-
-  }
 
 	//************************************
 	// Method:    Remove
@@ -458,10 +395,14 @@ namespace Framework
 	//************************************
 	void PlayerController::onFire()
 	{
-    if (GodMode == true || GoldenGun == true)
-      weapon->damage = 100;
+    /*if (GodMode == true || GoldenGun == true)
+      weapon->damage = 100;*/
+
+    if (weapon->delay > 0.0f)
+      return;
 
     weapon->Fire(space->GetHandles().GetAs<GameObject>(owner));
+    weapon->ResetDelay();
 
     if (!moveController.IsSnapped())
     {
@@ -595,40 +536,18 @@ namespace Framework
 
   }
 
-  //************************************
-  // Method:    PlayerDeath
-  // FullName:  Framework::PlayerController::PlayerDeath
-  // Access:    public 
-  // Returns:   void
-  // Qualifier:
-  // Parameter: SoundEmitter * se
-  // Parameter: Transform * ps
-  //************************************
-  void PlayerController::PlayerDeath(SoundEmitter *se, Transform *ps, int who_killed_me)
+
+
+
+  void PlayerController::PlayerKilled(int attacker)
   {
-    if (!GetRandom(0, 3))
-    {
-      if (who_killed_me != -1)
-      {
-        if (GetRandom(0, 1))
-          se->Play("crowd_approve00", &SoundInstance(1.0f));
-        else
-          se->Play("crowd_approve02", &SoundInstance(1.0f));
-      }
-      else
-      {
-        if (GetRandom(0, 1))
-          se->Play("crowd_disapprove00", &SoundInstance(1.0f));
-        else
-          se->Play("crowd_disapprove01", &SoundInstance(1.0f));
-      }
-    }
     Handle explosion = (FACTORY->LoadObjectFromArchetype(space, "explosion"))->self;
     Transform *exT = space->GetGameObject(explosion)->GetComponent<Transform>(eTransform);
     exT->SetTranslation(ps->GetTranslation());
     exT->SetRotation((float)GetRandom(0, (int)(2.0f * (float)PI)));
+
     space->hooks.Call("SpawnCoins", ps->GetTranslation());
-    space->hooks.Call("PlayerDied", playerNum, who_killed_me); //calling an event called player died
+
     space->GetGameObject(owner)->Destroy();
   }
 
@@ -759,24 +678,24 @@ namespace Framework
   //************************************
   int PlayerController::CurrentHealth()
   {
-    return health;
+    return m_combatController.GetHealth();
   }
 
-  void PlayerController::DealDamage(float damage, int playerNum_)
-  {
-    if (playerNum != playerNum_)
-      return;
+  //void PlayerController::DealDamage(float damage, int playerNum_)
+  //{
+  //  if (playerNum != playerNum_)
+  //    return;
 
-    if ((shields - damage) < 0) //if the damage would do more than we have shields
-    {
-      float leftOver = damage - shields;
-      shields = 0;
-      health -= leftOver;
-    }
-    else
-      shields -= damage;
+  //  if ((shields - damage) < 0) //if the damage would do more than we have shields
+  //  {
+  //    float leftOver = damage - shields;
+  //    shields = 0;
+  //    health -= leftOver;
+  //  }
+  //  else
+  //    shields -= damage;
 
-  }
+  //}
 
   void PlayerController::SpawnEffect()
   {
