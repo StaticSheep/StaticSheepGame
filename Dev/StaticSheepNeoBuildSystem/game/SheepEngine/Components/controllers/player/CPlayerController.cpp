@@ -156,7 +156,9 @@ namespace Framework
 
     powerUp = nullptr;
     pn = -1;
-    SpawnEffect();
+    //SpawnEffect();
+
+    firstUpdate = true;
 	}
 
 	//************************************

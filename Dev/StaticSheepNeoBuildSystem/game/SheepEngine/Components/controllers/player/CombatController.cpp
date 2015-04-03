@@ -63,6 +63,10 @@ namespace Framework
     SetHealth(m_maxHealth);
     SetShields(m_maxShields);
 
+    m_rechargingShields = false;
+
+    m_fadeTime = SHIELD_FADETIME - 0.1f;
+
     //TakeDamage(1.0f, -1);
   }
 
@@ -234,7 +238,7 @@ namespace Framework
         m_health -= damage;
     }
 
-    TRACELOG->Log(TraceLevel::DBG,
+    TRACELOG->Log(TraceLevel::INFO,
       "Player %d took %.2f damage from player %d. [HP: %.2f/%.2f | SH: %.2f/%.2f]",
       m_playerNum, realDamage, attacker, m_health,
       m_maxHealth, m_shield, m_maxShields);

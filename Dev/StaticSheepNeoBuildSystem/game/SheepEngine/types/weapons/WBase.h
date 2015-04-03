@@ -28,6 +28,7 @@ namespace Framework
     //virtual void Draw();
 
     std::string fireSound;
+    float fireVolume = 1.0f;
 
     float delay;  //delay between shots
     int damage; //damage caused by weapon
