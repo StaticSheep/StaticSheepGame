@@ -15,6 +15,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "SheepMath.h"
 #include "../../gameplay_scripts/arena/CBlockLights.h"
 #include "../../gameplay_scripts/Slot_Machine_Scripts/CPersonalSlotSpawner.h"
+#include "../light patterns/CLightPatternController.h"
 
 namespace Framework
 {
@@ -170,7 +171,7 @@ namespace Framework
         num_spawned[i] = false;
     }
   }
-
+  static bool lightCall = false;
   void RoundController::RoundInProgress(float dt)
   {
     if (!slotMachineDone)
@@ -179,7 +180,11 @@ namespace Framework
     round_state_timer -= dt;
 
     itoa((int)round_state_timer + 1, round_timer, 10);
-
+    if (!lightCall)
+    {
+      space->hooks.Call("SetLightPattern", LightPatternController::ROUNDINPRO);
+      lightCall = true;
+    }
 
     if (round_state_timer <= 0)
     {
@@ -189,6 +194,7 @@ namespace Framework
       space->GetGameObject(owner)->GetComponent<Level1_Logic>(eLevel1_Logic)->mode = SLOTMACHINE;
       spawned_round_start = false;
       roundUp_spawned = false;
+      lightCall = false;
     }
     else if (round_state_timer <= 6.0f)
     {

@@ -33,6 +33,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "../../controllers/chip/CChipController.h"
 #include "../../controllers/round/CRoundText.h"
 #include "../../controllers/lobby/CLobbyController.h"
+#include "../../controllers/light patterns/CLightPatternController.h"
 
 static const char *playerNames[] = { "Player1", "Player2", "Player3", "Player4" };
 static int juggKills[4] = { 0, 0, 0, 0 };
@@ -285,7 +286,7 @@ namespace Framework
 
     Players[ply] = Handle::null;
     if (who_killed_him != -1 && RC->state_ == RoundController::RoundState::ROUNDINPRO)
-      playerCoins[who_killed_him] += 500;
+      playerCoins[who_killed_him] += 200;
     if (juggernaut[ply] == true)
     {
       juggernaut[ply] = false;
@@ -774,6 +775,7 @@ namespace Framework
     spawnTimer -= dt;
     eventTimer -= dt;
     timeAsJugg += dt;
+    space->GetGameObject(owner)->GetComponent<ChipController>(eChipController)->roundTimeAsJugg[i] += dt;
     if (spawnTimer <= 0)
     {
       spawnTimer = 3.0f;
@@ -908,6 +910,7 @@ namespace Framework
       }
       space->hooks.Call("CallingSM");
       GameObject *SM = (FACTORY->LoadObjectFromArchetype(space, "LevelSlotMachine"));
+      space->hooks.Call("SetLightPattern", LightPatternController::SLOTSPIN);
       SM->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(0.0f, 900.0f, 1.0f));
       SM->GetComponent<SlotController>(eSlotController)->roundNum = space->GetGameObject(owner)->GetComponent<RoundController>(eRoundController)->current_round;
       SM->GetComponent<SlotController>(eSlotController)->lastMode = lastMode;
