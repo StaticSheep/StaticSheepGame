@@ -33,6 +33,7 @@ namespace Framework
     void Initialize();
     void Remove();
 
+    void BonusSlotStart();
     void BonusSlotResults();
 
 
@@ -40,6 +41,17 @@ namespace Framework
     void RoundStart();
     void RoundOver();
     void GivePlayerCoins(int player, int coins);
+
+
+    private:
+      struct PlayerBonusStats
+      {
+        int coins;
+        int deaths;
+        int kills;
+      };
+
+      PlayerBonusStats stats[4];
 
   };
 
