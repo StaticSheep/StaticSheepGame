@@ -5,6 +5,7 @@
 #include "../Level_Scripts/CLevel1_Logic.h"
 #include "../../slotmachine/slotmachine.h"
 #include "components/controllers/chip/CChipController.h"
+#include "types/space/Space.h"
 
 namespace Framework
 {
@@ -13,6 +14,7 @@ namespace Framework
   {
     COINS,
     KILLS,
+    DEATHS,
     TYPES
   };
 
@@ -23,10 +25,10 @@ namespace Framework
     MODIFIERS
   };
 
-  class BonusSlotManager
+  class CBonusSlotManager: public GameComponent
   {
-    BonusSlotManager();
-    ~BonusSlotManager();
+    CBonusSlotManager();
+    ~CBonusSlotManager();
 
     void Initialize();
     void Remove();
@@ -34,6 +36,10 @@ namespace Framework
     void BonusSlotResults();
 
 
+      //messaged functions
+    void RoundStart();
+    void RoundOver();
+    void GivePlayerCoins(int player, int coins);
 
   };
 
