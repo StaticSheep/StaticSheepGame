@@ -17,7 +17,7 @@ namespace Framework
 {
   static Vec2D wordSize(21.0f, 21.0f);
   static Vec2D numberSize(50.0f, 50.0f);
-  static float playerHeadY_[4] {252.0f, 116.0f, -42.0f, -182.0f};
+  static float playerHeadY_[4] {252.0f, 116.0f, -42.0f, -210.0f};
 
   RoundResults::RoundResults()
 	{

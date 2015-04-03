@@ -15,6 +15,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "SheepMath.h"
 #include "../../gameplay_scripts/arena/CBlockLights.h"
 #include "../../gameplay_scripts/Slot_Machine_Scripts/CPersonalSlotSpawner.h"
+#include "../light patterns/CLightPatternController.h"
 
 namespace Framework
 {
@@ -29,7 +30,7 @@ namespace Framework
     timeOfRound = 93.0f; //default round length, (round length + 3.0f)
     state_ = INTRO;
     gameStarted = false;
-    
+
     psmPos[0] = Vec3(-psmX_, psmYBot_, 0.0f);
     psmPos[1] = Vec3(psmX_, psmYBot_, 0.0f);
     psmPos[2] = Vec3(psmX_, psmYTop_, 0.0f);
@@ -170,7 +171,7 @@ namespace Framework
         num_spawned[i] = false;
     }
   }
-
+  static bool lightCall = false;
   void RoundController::RoundInProgress(float dt)
   {
     if (!slotMachineDone)
@@ -179,7 +180,11 @@ namespace Framework
     round_state_timer -= dt;
 
     itoa((int)round_state_timer + 1, round_timer, 10);
-
+    if (!lightCall)
+    {
+      space->hooks.Call("SetLightPattern", LightPatternController::ROUNDINPRO);
+      lightCall = true;
+    }
 
     if (round_state_timer <= 0)
     {
@@ -189,6 +194,7 @@ namespace Framework
       space->GetGameObject(owner)->GetComponent<Level1_Logic>(eLevel1_Logic)->mode = SLOTMACHINE;
       spawned_round_start = false;
       roundUp_spawned = false;
+      lightCall = false;
     }
     else if (round_state_timer <= 6.0f)
     {
@@ -213,7 +219,7 @@ namespace Framework
       space->hooks.Call("RoundOver");
     }
     //display tv results screen
-    else if (round_state_timer >= 13.5f)
+    else if (round_state_timer >= 12.5f && round_state_timer < 18.0f)
     {
       //display results
       if (!ResultsSpawned)
@@ -232,16 +238,19 @@ namespace Framework
         else
           se->Play("crowd_cheer01", &SoundInstance(1.0f));
       }
-      
+
       if (!EORAwarded)
         AwardEndOfRoundChips();
     }
     //spawn personal slot machines
-    else if (round_state_timer >= 0.1f)
+    else if (round_state_timer >= 0.1f && round_state_timer < 11.0f)
     {
       //spawn personal slot machines and let them do their thing
       if (!spawnedPSM)
+      {
         SpawnPersonalSM();
+        space->hooks.Call("SetLightPattern", LightPatternController::PLAYERSLOT);
+      }
 
       int i;
       for (i = 0; i < 4; ++i)
@@ -302,7 +311,7 @@ namespace Framework
       se->Play("crowd_cheer00", &SoundInstance(1.0f));
       se->Play("crowd_cheer01", &SoundInstance(1.0f));
     }
-    
+
     round_state_timer -= dt;
 
     if (round_state_timer <= 0)
