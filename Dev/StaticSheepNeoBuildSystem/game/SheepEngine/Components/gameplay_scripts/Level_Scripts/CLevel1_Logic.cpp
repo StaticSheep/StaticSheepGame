@@ -160,6 +160,7 @@ namespace Framework
       SoundInstance instance;
       instance.volume = 0.50f;
       instance.mode = PLAY_LOOP;
+      instance.isMusic = true;
 
       sp->Play("tripg", &instance);
       playing = true;

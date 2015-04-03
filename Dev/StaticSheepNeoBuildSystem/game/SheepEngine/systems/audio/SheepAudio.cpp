@@ -13,6 +13,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 #include "components/sound/CSoundEmitter.h"
 #include "components/sound/CSoundPlayer.h"
+#include "../input/Input.h"
 
 #include <boost/filesystem.hpp>
 
@@ -28,7 +29,7 @@ typedef std::vector<SOUND::Bank*> BankVector;
 // static prototypes
 static void ParseBanks(SOUND::System *system, std::ifstream &file, BankVector &bank);
 static void ParseEvents(SOUND::System *system, std::ifstream &file, SoundMap &eventMap);
-static void ParseFiles(FMOD::System* lowLevelSystem, SoundMap &eventMap);
+static void ParseFiles(FMOD::System* lowLevelSystem, SoundMap &eventMap, FMOD::ChannelGroup* musicChannel, FMOD::ChannelGroup* sfxChannel);
 static void LoadBank(SOUND::System *system, std::string &name, BankVector &bank);
 static void LoadEvent(SOUND::System *system, std::string &name, SoundMap &events);
 
@@ -51,6 +52,9 @@ namespace Framework
 		AUDIO = this;
 
     masterVolume = 1.0f;
+    musicVolume = 1.0f;
+    sfxVolume = 1.0f;
+
     masterPitch = 1.0f;
 	}
 
@@ -100,20 +104,28 @@ namespace Framework
     if(!infile.is_open())
      throw std::invalid_argument("Invalid File"); // replace with event handling system
 
-    // parse through the GUID file and load the banks and events
-    ParseBanks(system, infile, banks);
-    ParseEvents(system, infile, soundMap);
-
-    // parse through the content directory and load sound files
-    ParseFiles(lowLevelSystem, soundMap);;
-
-    // grab the master channel group for pausing, stopping, and altering volume
     ErrorCheck(lowLevelSystem->getMasterChannelGroup(&masterGroup));
 
     // create a dsp, and add it to the masterGroup for debug information right now
     ErrorCheck(lowLevelSystem->createDSPByType(FMOD_DSP_TYPE_FFT, &dsp));
     ErrorCheck(masterGroup->addDSP(0, dsp));
     ErrorCheck(masterGroup->setVolume(1.0f));
+
+    ErrorCheck(lowLevelSystem->createChannelGroup("Music", &musicChannel));
+    ErrorCheck(lowLevelSystem->createChannelGroup("SFX", &sfxChannel));
+
+    ErrorCheck(masterGroup->addGroup(musicChannel));
+    ErrorCheck(masterGroup->addGroup(sfxChannel));
+
+    // parse through the GUID file and load the banks and events
+    ParseBanks(system, infile, banks);
+    ParseEvents(system, infile, soundMap);
+
+    // parse through the content directory and load sound files
+    ParseFiles(lowLevelSystem, soundMap, musicChannel, sfxChannel);
+
+    // grab the master channel group for pausing, stopping, and altering volume
+    
 
     debug = new DebugAudio;
 	}
@@ -144,6 +156,33 @@ namespace Framework
 
     // update all of the sounds
     ErrorCheck(system->update());
+
+
+    if(SHEEPINPUT->KeyIsPressed('N'))
+    {
+      SetMusicVolume(GetMusicVolume() - 0.1f);
+      TRACELOG->Log(TraceLevel::DBG, "Music Volume %f", GetMusicVolume());
+    }
+
+    if(SHEEPINPUT->KeyIsPressed('M'))
+    {
+      SetMusicVolume(GetMusicVolume() + 0.1f);
+      TRACELOG->Log(TraceLevel::DBG, "Music Volume %f", GetMusicVolume());
+    }
+
+    if(SHEEPINPUT->KeyIsPressed('J'))
+    {
+      SetSFXVolume(0.0f);
+      TRACELOG->Log(TraceLevel::DBG, "SFX Volume %f", GetSFXVolume());
+    }
+
+    if(SHEEPINPUT->KeyIsPressed('K'))
+    {
+      SetSFXVolume(1.0f);
+      TRACELOG->Log(TraceLevel::DBG, "SFX Volume %f", GetSFXVolume());
+    }
+
+
     return;
 	}
 
@@ -155,7 +194,18 @@ namespace Framework
     
     // tell this event to play
     if(it != soundMap.end())
+    {
+      if(instance->mode == PLAY_ONCE)
+      {
+        instance->volume *= masterVolume * sfxVolume;
+      }
+      else
+      {
+        instance->volume *= masterVolume * musicVolume;
+      }
+
       return soundMap[event_name]->Play(instance);
+    }
     return false;
   }
 
@@ -228,10 +278,32 @@ namespace Framework
     masterGroup->setPitch(masterPitch);
   }
 
+  void SheepAudio::SetMusicVolume(float volume)
+  {
+    musicVolume = Clamp(volume, 0.0f, 1.0f);
+    musicChannel->setVolume(musicVolume);
+  }
+
+  void SheepAudio::SetSFXVolume(float volume)
+  {
+    sfxVolume = Clamp(volume, 0.0f, 1.0f);
+    sfxChannel->setVolume(sfxVolume);
+  }
+    
   // Getters
   float SheepAudio::GetMasterVolume()
   {
     return masterVolume;
+  }
+
+  float SheepAudio::GetMusicVolume()
+  {
+    return musicVolume;
+  }
+
+  float SheepAudio::GetSFXVolume()
+  {
+    return sfxVolume;
   }
 
   float SheepAudio::GetMasterPitch()
@@ -339,7 +411,7 @@ void ParseEvents(SOUND::System *system, std::ifstream &file, SoundMap &soundMap)
 }
 
 // Searches through content directory and loads appropriate sound files
-void ParseFiles(FMOD::System* system, SoundMap& soundMap)
+void ParseFiles(FMOD::System* system, SoundMap& soundMap, FMOD::ChannelGroup* musicChannel, FMOD::ChannelGroup* sfxChannel)
 {
   path p("content\\Audio\\");
 
@@ -373,7 +445,7 @@ void ParseFiles(FMOD::System* system, SoundMap& soundMap)
           std::size_t end = name.find_last_of(".") - start;
 
           // cut out the directories and the extension for putting into the map
-          soundMap[name.substr(start + 1,end - 1)] = new SoundFile(system, it->path().generic_string(), flag);
+          soundMap[name.substr(start + 1,end - 1)] = new SoundFile(system, it->path().generic_string(), musicChannel, sfxChannel, flag);
         }
       }
     }

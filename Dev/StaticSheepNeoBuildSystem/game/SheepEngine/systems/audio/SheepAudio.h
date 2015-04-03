@@ -56,9 +56,15 @@ namespace Framework
     void PauseAll(bool paused);
 
     void SetMasterVolume(float volume);
-    float GetMasterVolume();
-
     void SetMasterPitch(float pitch);
+    void SetMusicVolume(float volume);
+    void SetSFXVolume(float volume);
+
+    float GetMasterVolume();
+    float GetMusicVolume();
+    float GetSFXVolume();
+
+    
     float GetMasterPitch();
 
     bool GetLoadState() const;
@@ -77,7 +83,14 @@ namespace Framework
     SOUND::System* system;
     FMOD::System* lowLevelSystem;
 
+    FMOD::ChannelGroup* musicChannel;
+    FMOD::ChannelGroup* sfxChannel;
+
     float masterVolume;
+
+    float musicVolume;
+    float sfxVolume;
+
     float masterPitch;
     
   };
