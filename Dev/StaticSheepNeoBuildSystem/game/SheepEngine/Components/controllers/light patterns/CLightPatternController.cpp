@@ -201,12 +201,104 @@ namespace Framework
 
   void LightPatternController::RoundWinner(float dt)
   {
+    timer_ -= dt;
+    if (timer_ <= 0)
+      return;
 
+    delay_ -= dt;
+    if (delay_ <= 0)
+    {
+      if (swapFlag)
+      {
+        BlockLights::EventData ed;
+        ed.duration = 0.5f;
+        Vec4 temp = blockColor[currWinner];
+        temp.a -= 0.5f;
+        ed.settings.color = temp;
+        ed.settings.fx = BlockLights::NONE;
+        ed.settings.useColor = true;
+        ed.overrideDefault = true;
+        ed.settings.customData.duration = 0.5f;
+        space->hooks.Call("LightingEvent", (unsigned)0xAAAAAAAA, &ed);
+
+        ed.settings.color = blockColor[currWinner];
+        space->hooks.Call("LightingEvent", (unsigned)0x55555555, &ed);
+
+        swapFlag = false;
+      }
+      else
+      {
+        BlockLights::EventData ed;
+        ed.duration = 0.5f;
+        Vec4 temp = blockColor[currWinner];
+        temp.a -= 0.5f;
+        ed.settings.color = temp;
+        ed.settings.color = temp;
+        ed.settings.fx = BlockLights::NONE;
+        ed.settings.useColor = true;
+        ed.overrideDefault = true;
+        ed.settings.customData.duration = 0.5f;
+        space->hooks.Call("LightingEvent", (unsigned)0x55555555, &ed);
+
+        ed.settings.color = blockColor[currWinner];
+        space->hooks.Call("LightingEvent", (unsigned)0xAAAAAAAA, &ed);
+
+        swapFlag = true;
+      }
+
+      delay_ = 0.5f;
+    }
   }
 
   void LightPatternController::GameWinner(float dt)
   {
+    timer_ -= dt;
+    if (timer_ <= 0)
+      return;
 
+    delay_ -= dt;
+    if (delay_ <= 0)
+    {
+      if (swapFlag)
+      {
+        BlockLights::EventData ed;
+        ed.duration = 0.5f;
+        Vec4 temp = blockColor[currWinner];
+        temp.a -= 1.0f / (float)GetRandom(1, 5);
+        ed.settings.color = temp;
+        ed.settings.fx = BlockLights::NONE;
+        ed.settings.useColor = true;
+        ed.overrideDefault = true;
+        ed.settings.customData.duration = 0.5f;
+        space->hooks.Call("LightingEvent", (unsigned)0xAAAAAAAA, &ed);
+
+        ed.settings.color = blockColor[currWinner];
+        space->hooks.Call("LightingEvent", (unsigned)0x55555555, &ed);
+
+        swapFlag = false;
+      }
+      else
+      {
+        BlockLights::EventData ed;
+        ed.duration = 0.5f;
+        Vec4 temp = blockColor[currWinner];
+        temp.a -= 1.0f / (float)GetRandom(1, 5);
+        ed.settings.color = temp;
+        ed.settings.color = temp;
+        ed.settings.fx = BlockLights::NONE;
+        ed.settings.useColor = true;
+        ed.overrideDefault = true;
+        ed.settings.customData.duration = 0.5f;
+        space->hooks.Call("LightingEvent", (unsigned)0x55555555, &ed);
+
+        ed.settings.color = blockColor[currWinner];
+        space->hooks.Call("LightingEvent", (unsigned)0xAAAAAAAA, &ed);
+
+        swapFlag = true;
+      }
+
+      delay_ = 0.5f;
+    }
   }
 
   void LightPatternController::SetPatternType(PatternType pt)
@@ -231,6 +323,25 @@ namespace Framework
       delay_ = 1.0f;
       swapFlag = false;
     }
+    else if (pt == ROUNDWIN)
+    {
+      timer_ = 10.0f;
+      delay_ = 1.0f;
+      swapFlag = false;
+    }
+    else if (pt == GAMEWIN)
+    {
+      timer_ = 90.0f;
+      delay_ = 1.0f;
+      swapFlag = false;
+      int temp = 0;
+      for (int i = 0; i < 4; ++i)
+      {
+        if (space->GetGameObject(owner)->GetComponent<ChipController>(eChipController)->playerChips[i] > space->GetGameObject(owner)->GetComponent<ChipController>(eChipController)->playerChips[temp])
+          temp = i;
+      }
+      currWinner = temp;
+    }
   }
 
   void LightPatternController::GetWeights()
@@ -246,9 +357,12 @@ namespace Framework
 
       if (totalKills != 0)
       {
+        currWinner = 0;
         for (int i = 0; i < 4; ++i)
         {
           currWeights[i] = (float)(space->GetGameObject(owner)->GetComponent<ChipController>(eChipController)->roundPlayerKills[i]) / (float)totalKills;
+          if ((space->GetGameObject(owner)->GetComponent<ChipController>(eChipController)->roundPlayerKills[i]) > (space->GetGameObject(owner)->GetComponent<ChipController>(eChipController)->roundPlayerKills[currWinner]))
+            currWinner = i;
         }
       }
       break;
@@ -259,9 +373,12 @@ namespace Framework
 
       if (totalTime != 0)
       {
+        currWinner = 0;
         for (int i = 0; i < 4; ++i)
         {
           currWeights[i] = space->GetGameObject(owner)->GetComponent<ChipController>(eChipController)->roundTimeAsJugg[i] / totalTime;
+          if ((space->GetGameObject(owner)->GetComponent<ChipController>(eChipController)->roundTimeAsJugg[i]) >(space->GetGameObject(owner)->GetComponent<ChipController>(eChipController)->roundTimeAsJugg[currWinner]))
+            currWinner = i;
         }
       }
       break;
@@ -272,7 +389,10 @@ namespace Framework
 
       for (int i = 0; i < 4; ++i)
       {
+        currWinner = 0;
         currWeights[i] = space->GetGameObject(owner)->GetComponent<ChipController>(eChipController)->LMSTimeAlive[i] / totalTime;
+        if ((space->GetGameObject(owner)->GetComponent<ChipController>(eChipController)->LMSTimeAlive[i]) >(space->GetGameObject(owner)->GetComponent<ChipController>(eChipController)->LMSTimeAlive[currWinner]))
+          currWinner = i;
       }
       break;
     }

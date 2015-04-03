@@ -232,6 +232,7 @@ namespace Framework
         ResultsSpawned = true;
         space->GetGameObject(owner)->GetComponent<Level1_Logic>(eLevel1_Logic)->ResetPlayers();
         space->hooks.Call("DestroyPickups");
+        space->hooks.Call("SetLightPattern", LightPatternController::ROUNDWIN);
         SoundEmitter *se = space->GetGameObject(owner)->GetComponent<SoundEmitter>(eSoundEmitter);
         if (GetRandom(0, 1))
           se->Play("crowd_cheer00", &SoundInstance(1.0f));
@@ -307,6 +308,7 @@ namespace Framework
       ResultsTV->GetComponent<RoundResults>(eRoundResults)->mode_ = GameTypes::GAMEOVER;
       ResultsSpawned = true;
       ResultsTV->GetComponent<RoundResults>(eRoundResults)->timeToLive = 15.0f;
+      space->hooks.Call("SetLightPattern", LightPatternController::GAMEWIN);
       SoundEmitter *se = space->GetGameObject(owner)->GetComponent<SoundEmitter>(eSoundEmitter);
       se->Play("crowd_cheer00", &SoundInstance(1.0f));
       se->Play("crowd_cheer01", &SoundInstance(1.0f));
