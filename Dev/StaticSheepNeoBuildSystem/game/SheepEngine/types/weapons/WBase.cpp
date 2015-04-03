@@ -52,7 +52,10 @@ namespace Framework
 
     btrans->SetTranslation(ptrans->GetTranslation() + AimDir * 25);
 
-    pse->Play(fireSound, &SoundInstance(1.0f));
+    float volume = 1.0f;
+    if (fireSound == "laser1")
+      volume = 0.5f;
+    pse->Play(fireSound, &SoundInstance(volume));
 
     return obj;
   }

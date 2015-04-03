@@ -29,7 +29,7 @@ namespace Framework
     timeOfRound = 93.0f; //default round length, (round length + 3.0f)
     state_ = INTRO;
     gameStarted = false;
-    
+
     psmPos[0] = Vec3(-psmX_, psmYBot_, 0.0f);
     psmPos[1] = Vec3(psmX_, psmYBot_, 0.0f);
     psmPos[2] = Vec3(psmX_, psmYTop_, 0.0f);
@@ -213,7 +213,7 @@ namespace Framework
       space->hooks.Call("RoundOver");
     }
     //display tv results screen
-    else if (round_state_timer >= 13.5f)
+    else if (round_state_timer >= 12.5f && round_state_timer < 18.0f)
     {
       //display results
       if (!ResultsSpawned)
@@ -232,12 +232,12 @@ namespace Framework
         else
           se->Play("crowd_cheer01", &SoundInstance(1.0f));
       }
-      
+
       if (!EORAwarded)
         AwardEndOfRoundChips();
     }
     //spawn personal slot machines
-    else if (round_state_timer >= 0.1f)
+    else if (round_state_timer >= 0.1f && round_state_timer < 11.0f)
     {
       //spawn personal slot machines and let them do their thing
       if (!spawnedPSM)
@@ -302,7 +302,7 @@ namespace Framework
       se->Play("crowd_cheer00", &SoundInstance(1.0f));
       se->Play("crowd_cheer01", &SoundInstance(1.0f));
     }
-    
+
     round_state_timer -= dt;
 
     if (round_state_timer <= 0)
