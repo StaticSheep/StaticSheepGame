@@ -180,6 +180,9 @@ namespace Framework
         *stopTexID = Draw::GetTextureID("game_mode_reel.png");
       }
       break;
+
+      //Jon - change this
+      //textures and images for slot
     case JACKPOT:
         *spinTexID = Draw::GetTextureID("slot_coin_blur.png");
         *stopTexID = Draw::GetTextureID("slot_coin.png");
@@ -203,6 +206,9 @@ namespace Framework
     {
       if (CheckForJP(*results))
       {
+        //Jon
+        //fix this, make one call with translation
+        //slot creation
         if (spawnLeftBonus)
         {
           spawnedSM = SpawnChildSM(JACKPOT);
@@ -246,6 +252,9 @@ namespace Framework
       else if ((*results)[2] == 2)
         mod2 = ROCKETS;
     }
+
+    //Jon
+    //results of slot
     else if (Stype == JACKPOT)
     {
       int coinBallSpawns = 0;
@@ -296,6 +305,9 @@ namespace Framework
       
       return retValue;
     }
+
+    //Jon
+    //results of slot machine?
     else if (Stype == JACKPOT)
     {
       if (results[0] == 2 && results[1] == 2 && results[2] == 2)
@@ -311,6 +323,8 @@ namespace Framework
     {
       return (FACTORY->LoadObjectFromArchetype(space, "BigSlotMachine"));
     }
+
+    //Jon - create child 
     else if (type == JACKPOT)
     {
       return (FACTORY->LoadObjectFromArchetype(space, "JPSlotMachine"));

@@ -3,6 +3,8 @@
 #include "components/base/Component.h"
 #include "types/handle/Handle.h"
 #include "../Level_Scripts/CLevel1_Logic.h"
+#include "../../slotmachine/slotmachine.h"
+#include "components/controllers/chip/CChipController.h"
 
 namespace Framework
 {
@@ -23,6 +25,13 @@ namespace Framework
 
   class BonusSlotManager
   {
+    BonusSlotManager();
+    ~BonusSlotManager();
+
+    void Initialize();
+    void Remove();
+
+    void BonusSlotResults();
 
 
 
