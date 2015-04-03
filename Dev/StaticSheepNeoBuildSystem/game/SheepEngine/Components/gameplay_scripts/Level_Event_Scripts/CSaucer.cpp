@@ -1,3 +1,10 @@
+/******************************************************************************
+Filename: CSaucer.cpp
+Project:  GAM 250
+Author(s): Scott Nelson (primary)
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+******************************************************************************/
 #include "pch/precompiled.h"
 #include "CSaucer.h"
 #include "types/space/Space.h"

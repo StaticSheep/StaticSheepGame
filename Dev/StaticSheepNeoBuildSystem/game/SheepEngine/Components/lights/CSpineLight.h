@@ -1,4 +1,10 @@
+/******************************************************************************
+Filename: CSpineLight.h
+Project:  GAM 250
+Author(s): Scott Nelson (primary)
 
+All content © 2015 DigiPen (USA) Corporation, all rights reserved.
+******************************************************************************/
 #pragma once
 
 #include "types/vectors/Vec2.h"

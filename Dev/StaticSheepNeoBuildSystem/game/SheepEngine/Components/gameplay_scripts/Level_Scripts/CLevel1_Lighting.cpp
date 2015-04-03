@@ -1,3 +1,10 @@
+/*****************************************************************
+Filename: CLevel1_Lighting.cpp
+Project:  Gam250
+Author(s): Scott Nelson (Primary)
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+*****************************************************************/
 #include "pch/precompiled.h"
 
 #include "../../transform/CTransform.h"

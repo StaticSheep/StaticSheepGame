@@ -1,6 +1,6 @@
 /******************************************************************************
 Filename: CSpriteLight.cpp
-Project:
+Project: GAM 250
 Author(s): Scott Nelson (primary)
 
 All content © 2014 DigiPen (USA) Corporation, all rights reserved.

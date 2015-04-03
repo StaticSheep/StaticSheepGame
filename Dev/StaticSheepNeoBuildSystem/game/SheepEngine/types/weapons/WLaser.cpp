@@ -1,3 +1,10 @@
+/******************************************************************************
+Filename: WLaser.cpp
+Project:  GAM 250
+Author(s): Zachary Nawar (primary)
+
+All content © 2015 DigiPen (USA) Corporation, all rights reserved.
+******************************************************************************/
 #include "pch/precompiled.h"
 #include "WLaser.h"
 #include "Components/transform/CTransform.h"
