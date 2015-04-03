@@ -84,10 +84,11 @@ namespace Framework
     float shakeTime;
     float countDownTimer;
     LevelEvent *LE;
-    GameTypes mode;
+    GameTypes mode, lastMode;
     GameMods mod1, mod2;
 
     int fontIndex;
+    int event;
 
     int GetPlayerHealth(int);
     int GetPlayerLives(int);

@@ -29,7 +29,7 @@ namespace Framework
   void Shield::Use(GameObject *player)
   {
     PlayerController *playerController = player->GetComponent<PlayerController>(ePlayerController);
-    playerController->health += 100;
+    playerController->Combat()->AddShields(200.0f);
 
     SoundEmitter *se = player->GetComponent<SoundEmitter>(eSoundEmitter);
     se->Play("Pickup_Shield", &SoundInstance(1.0f));

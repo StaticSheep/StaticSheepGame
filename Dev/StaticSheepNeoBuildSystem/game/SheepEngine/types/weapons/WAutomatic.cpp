@@ -18,14 +18,17 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 namespace Framework
 {
-  static float weapDelay = 0.050f;
+  static float weapDelay = 0.07f;
   Automatic::Automatic()
   {
-    delay = 0.075f;
+    delay = 0.0f;
+    fireVolume = 0.2f;
     damage = 10;
     knockback = 50;
     semi = false;
     explosive_ = false;
+
+    fireSound = "laser1";
   }
 
   Automatic::~Automatic()
@@ -39,45 +42,18 @@ namespace Framework
 
     randomNumber = GetRandom(0, 100);
 
-    GameObject *bullet = (FACTORY->LoadObjectFromArchetype(player->space, "Bullet"));
+    GameObject *bullet = CreateBullet(player, "Bullet");
 
-    Bullet_Default* bd = bullet->GetComponent<Bullet_Default>(eBullet_Default);
-
-    if (explosive_)
-    {
-      bd->damage = damage + 10;
-      bd->explosive_ = true;
-    }
-    else
-      bd->damage = damage;
-
-    bullet->GetComponent<ParticleCircleEmitter>(eParticleCircleEmitter)->spawning = false;
-    bullet->GetComponent<ParticleCircleEmitter>(eParticleCircleEmitter)->timedSpawning = true;
-    bullet->GetComponent<ParticleCircleEmitter>(eParticleCircleEmitter)->timed = 0.001f;
-    Transform *BT = bullet->GetComponent<Transform>(eTransform);
     CircleCollider *bulletC = bullet->GetComponent <CircleCollider>(eCircleCollider);
-    Transform *playerTrans = player->GetComponent <Transform>(eTransform);
-    Vec3 AimDir = player->GetComponent<PlayerController>(ePlayerController)->aimDir;
-
-    float theta = atan2f(AimDir.y, AimDir.x) - (PI / 2.0f);
-    Mat3D rotation(theta);
-
-    ParticleSystem* part = bullet->GetComponent<ParticleSystem>(eParticleSystem);
-    part->direction.m_startMin = rotation * part->direction.m_startMin;
-    part->direction.m_startMax = rotation * part->direction.m_startMax;
-
-    bulletC->SetBodyCollisionGroup(player->GetComponent<PlayerController>(ePlayerController)->weaponGroup);
-
-    BT->SetTranslation(playerTrans->GetTranslation() + AimDir * 25);
+    PlayerController* pc = player->GetComponent<PlayerController>(ePlayerController);
+    
+    Vec3 AimDir = pc->aimDir;
     
     //set the cone of 5 degrees for firing.
     float FireAngle = -5.0f + (randomNumber/100.0f) * 10.0f;
     AimDir = Mat3D((FireAngle * (float)PI) / 180) * AimDir;
 
-    bulletC->AddToVelocity(AimDir * 1000);
-
-    SoundEmitter *se = player->GetComponent<SoundEmitter>(eSoundEmitter);
-    se->Play("laser1", &SoundInstance(0.25f));
+    bulletC->SetVelocity(AimDir * 1000);
   }
 
   void Automatic::Update(float dt)

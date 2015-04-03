@@ -116,8 +116,8 @@ namespace Framework
     REGISTER_COMPONENT(RoundResults);
     REGISTER_COMPONENT(Pulser);
     REGISTER_COMPONENT(JoinText);
-    REGISTER_COMPONENT(SpineLight);
     REGISTER_COMPONENT(TutorialText);
+    REGISTER_COMPONENT(SpineLight);
     REGISTER_COMPONENT(LightPatternController);
     REGISTER_COMPONENT(PersonalSlotSpawner);
   }

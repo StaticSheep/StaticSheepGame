@@ -18,12 +18,21 @@ GameObject
       z_ float 0.000000
     }
   }
+  SoundEmitter
+  {
+  }
+  SoundPlayer
+  {
+  }
   SlotMachine
   {
+    m_layer int 1
     m_stopTexture std::string "ggg_reel.png"
     m_spinTexture std::string "ggg_reel_blur.png"
     m_slotBackTexture std::string "slotmachine_slotback.png"
     numSlots int 3
+    slotOptions int 3
+    startSpeed float 7.000000
     slotSize Vec2
     {
       X float 0.550000

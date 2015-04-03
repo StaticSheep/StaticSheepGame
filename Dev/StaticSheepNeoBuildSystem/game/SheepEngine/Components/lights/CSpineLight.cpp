@@ -122,6 +122,9 @@ namespace Framework
       return;
     }
 
+    if (!active)
+      return;
+
     Transform* trans = space->GetHandles().GetAs<Transform>(transform);
     SpineSprite* sp = space->GetHandles().GetAs<SpineSprite>(spineSprite);
 
@@ -184,7 +187,10 @@ namespace Framework
       end = Vec2(1.0f, 1.0f);
     }
     
-    GRAPHICS->SetPosition(position.x - frameOffset.x, position.y - frameOffset.y, position.z);
+    Vec2 posOffset = (rot * Vec2(0.0f, 1.0f)) * 10.0f;
+
+    GRAPHICS->SetPosition((position.x - frameOffset.x) + posOffset.x,
+      (position.y - frameOffset.y) + posOffset.y, position.z);
     GRAPHICS->SetRotation(theta);
     GRAPHICS->SetSize(scale.x, scale.y);
     GRAPHICS->SetColor(Color);

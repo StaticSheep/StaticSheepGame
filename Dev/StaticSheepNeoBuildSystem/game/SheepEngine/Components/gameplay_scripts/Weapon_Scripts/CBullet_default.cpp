@@ -68,7 +68,7 @@ namespace Framework
 
     if (m_firstImpact)
     {
-      bGameObject->hooks.Call("BulletImpact");
+      bGameObject->hooks.Call("BulletImpact", playerOwner);
 
       if (explosive_)
       {

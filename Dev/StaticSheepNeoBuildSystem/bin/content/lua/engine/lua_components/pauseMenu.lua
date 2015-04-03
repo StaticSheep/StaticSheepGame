@@ -107,6 +107,7 @@ function PauseMenu:MakeMenu()
       btnb.firstPress = false
       btnb:SetText("Confirm Return")
     else
+      audio.PauseAll(false)
       engine.ChangeLevel("MainMenu")
     end
   end)

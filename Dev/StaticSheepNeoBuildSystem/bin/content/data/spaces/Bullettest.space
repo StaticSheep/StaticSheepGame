@@ -188,6 +188,7 @@ GameObject
     m_materialName std::string "Steel"
     m_hasCollisionCallback bool true
     m_CollisionGroup std::string ""
+    m_snap bool false
   }
   Bullet_Default
   {
@@ -206,7 +207,7 @@ GameObject
     Translation Vec3
     {
       x_ float 324.360474
-      y_ float -327.964447
+      y_ float 209.032425
       z_ float 0.000000
     }
     Rotation float 0.000000
@@ -303,7 +304,7 @@ GameObject
     }
     m_life BPartSys::BPSLife
     {
-      lifetime float 0.300000
+      lifetime float 0.200000
       randLifetime float 0.200000
     }
     m_fade BPartSys::BPSFade
@@ -340,10 +341,11 @@ GameObject
   }
   CircleCollider
   {
-    m_radius float 75.000000
+    m_radius float 65.000000
     m_materialName std::string "Wood"
     m_hasCollisionCallback bool true
     m_CollisionGroup std::string "PlayerHitOnly"
+    m_snap bool false
   }
   Explosion
   {
@@ -353,8 +355,8 @@ GameObject
   }
   AOEDamage
   {
-    m_radius float 75.000000
-    m_damagePerSecond float 500.000000
+    m_radius float 65.000000
+    m_damagePerSecond float 100.000000
     m_shrinks bool true
     m_shrinkTime float 0.500000
     m_shrinkDelay float 0.400000
@@ -549,6 +551,7 @@ GameObject
     m_materialName std::string "Steel"
     m_hasCollisionCallback bool true
     m_CollisionGroup std::string ""
+    m_snap bool false
   }
   Bullet_Default
   {
@@ -567,7 +570,7 @@ GameObject
     Translation Vec3
     {
       x_ float -307.541687
-      y_ float -169.388245
+      y_ float -79.388245
       z_ float 0.000000
     }
     Rotation float 0.000000
@@ -824,6 +827,7 @@ GameObject
     m_materialName std::string "Steel"
     m_hasCollisionCallback bool true
     m_CollisionGroup std::string ""
+    m_snap bool false
   }
   ImpactEffect
   {
@@ -909,6 +913,7 @@ GameObject
     m_materialName std::string "Metal"
     m_hasCollisionCallback bool false
     m_CollisionGroup std::string ""
+    m_snap bool false
   }
 }
 GameObject
@@ -1008,14 +1013,578 @@ GameObject
 }
 GameObject
 {
+  name std::string "MiniExplosion"
+  archetype std::string "miniExplosion"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 362.643005
+      y_ float -121.334816
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  PointLight
+  {
+    m_layer unsignedint 1
+    m_brightness LightColor
+    {
+      R float 1.000000
+      G float 0.600000
+      B float 0.100000
+      A float 0.015000
+    }
+    m_attenuation LightVec3
+    {
+      X float 0.000000
+      Y float 0.000000
+      Z float 0.001000
+    }
+  }
+  SpriteLight
+  {
+    m_spriteName std::string "red_circle_light.png"
+    m_layer unsignedint 2
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    m_isOn bool true
+    m_emissive bool false
+    m_brightness LightColor
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+    Size Vec2
+    {
+      X float 3.000000
+      Y float 3.000000
+    }
+  }
+  BasicParticleSystem
+  {
+    m_texture std::string "explosion_pfx2.png"
+    m_layer int 2
+    m_pos BasicParticleSystem::BPSPos
+    {
+      square bool false
+      edgeOnly bool true
+      radius float 30.000000
+      angle float 1.000000
+      randAngle float 0.000000
+      offset Vec2
+      {
+        X float 0.000000
+        Y float 0.000000
+      }
+      randOffset Vec2
+      {
+        X float 0.000000
+        Y float 0.000000
+      }
+    }
+    m_scaling BPartSys::BPSScaling
+    {
+      scale Vec2
+      {
+        X float 32.000000
+        Y float 32.000000
+      }
+      randScale Vec2
+      {
+        X float 5.000000
+        Y float 5.000000
+      }
+    }
+    m_rot BPartSys::BPSRotation
+    {
+      rotation float 0.000000
+      randRotation float 5.000000
+    }
+    m_life BPartSys::BPSLife
+    {
+      lifetime float 0.250000
+      randLifetime float 0.000000
+    }
+    m_fade BPartSys::BPSFade
+    {
+      fadeOut bool true
+      fadeOutTime float 1.000000
+      randFadeoutTime float 0.000000
+    }
+    m_vel BPartSys::BPSVelocity
+    {
+      velocity Vec2
+      {
+        X float 0.000000
+        Y float 0.000000
+      }
+      randVelocity Vec2
+      {
+        X float 0.000000
+        Y float 0.000000
+      }
+      speedIn float -3.000000
+      randSpeedIn float 1.000000
+    }
+    m_system BPartSys::BPSSystem
+    {
+      active bool true
+      editorActive bool true
+      spawnInterval float 10.000000
+      spawnAmount float 20.000000
+      spawnPerSecond float 0.000000
+      shutdownTimer float 0.000000
+      parentToOwner bool false
+    }
+  }
+  CircleCollider
+  {
+    m_radius float 30.000000
+    m_materialName std::string "Wood"
+    m_hasCollisionCallback bool true
+    m_CollisionGroup std::string "PlayerHitOnly"
+    m_snap bool false
+  }
+  Explosion
+  {
+    timer float 0.300000
+    lightFadeTime float 0.400000
+    waitForAnim bool false
+  }
+  AOEDamage
+  {
+    m_radius float 30.000000
+    m_damagePerSecond float 50.000000
+    m_shrinks bool true
+    m_shrinkTime float 0.150000
+    m_shrinkDelay float 0.150000
+  }
+}
+GameObject
+{
+  name std::string "Platform"
+  archetype std::string "someblock"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 633.163513
+      y_ float -100.912201
+      z_ float 0.000000
+    }
+    Rotation float -1.570796
+    Scale Vec3
+    {
+      x_ float 12.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "light_block_on.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+  SpriteLight
+  {
+    m_spriteName std::string "light_block_on_slight.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    m_isOn bool true
+    m_emissive bool true
+    m_brightness LightColor
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 0.700000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+  }
+  BlockLights
+  {
+    m_group int 16384
+    m_defaultSettings BlockLights::LightSettings
+    {
+      fx unsignedint 0
+      ease unsignedint 0
+      isOn bool true
+      useColor bool true
+      color LightColor
+      {
+        R float 1.000000
+        G float 1.000000
+        B float 1.000000
+        A float 1.000000
+      }
+    }
+  }
+  BoxCollider
+  {
+    m_width float 1500.000000
+    m_height float 130.000000
+    m_materialName std::string "Static"
+    m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
+    m_snap bool true
+  }
+}
+GameObject
+{
+  name std::string "Platform"
+  archetype std::string "someblock"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -176.836487
+      y_ float -473.326080
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 12.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "light_block_on.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+  SpriteLight
+  {
+    m_spriteName std::string "light_block_on_slight.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    m_isOn bool true
+    m_emissive bool true
+    m_brightness LightColor
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 0.700000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+  }
+  BlockLights
+  {
+    m_group int 16384
+    m_defaultSettings BlockLights::LightSettings
+    {
+      fx unsignedint 0
+      ease unsignedint 0
+      isOn bool true
+      useColor bool true
+      color LightColor
+      {
+        R float 1.000000
+        G float 1.000000
+        B float 1.000000
+        A float 1.000000
+      }
+    }
+  }
+  BoxCollider
+  {
+    m_width float 1500.000000
+    m_height float 130.000000
+    m_materialName std::string "Static"
+    m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
+    m_snap bool true
+  }
+}
+GameObject
+{
+  name std::string "Platform"
+  archetype std::string "someblock"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -176.836487
+      y_ float 460.111359
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 12.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "light_block_on.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+  SpriteLight
+  {
+    m_spriteName std::string "light_block_on_slight.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    m_isOn bool true
+    m_emissive bool true
+    m_brightness LightColor
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 0.700000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+  }
+  BlockLights
+  {
+    m_group int 16384
+    m_defaultSettings BlockLights::LightSettings
+    {
+      fx unsignedint 0
+      ease unsignedint 0
+      isOn bool true
+      useColor bool true
+      color LightColor
+      {
+        R float 1.000000
+        G float 1.000000
+        B float 1.000000
+        A float 1.000000
+      }
+    }
+  }
+  BoxCollider
+  {
+    m_width float 1500.000000
+    m_height float 130.000000
+    m_materialName std::string "Static"
+    m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
+    m_snap bool true
+  }
+}
+GameObject
+{
+  name std::string "Platform"
+  archetype std::string "someblock"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -896.836487
+      y_ float -100.912201
+      z_ float 0.000000
+    }
+    Rotation float -1.570796
+    Scale Vec3
+    {
+      x_ float 12.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "light_block_on.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+  SpriteLight
+  {
+    m_spriteName std::string "light_block_on_slight.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    m_isOn bool true
+    m_emissive bool true
+    m_brightness LightColor
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 0.700000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+    Size Vec2
+    {
+      X float 2.000000
+      Y float 2.000000
+    }
+  }
+  BlockLights
+  {
+    m_group int 16384
+    m_defaultSettings BlockLights::LightSettings
+    {
+      fx unsignedint 0
+      ease unsignedint 0
+      isOn bool true
+      useColor bool true
+      color LightColor
+      {
+        R float 1.000000
+        G float 1.000000
+        B float 1.000000
+        A float 1.000000
+      }
+    }
+  }
+  BoxCollider
+  {
+    m_width float 1500.000000
+    m_height float 130.000000
+    m_materialName std::string "Static"
+    m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
+    m_snap bool true
+  }
+}
+GameObject
+{
   name std::string "Player"
   archetype std::string "Player1"
   Transform
   {
     Translation Vec3
     {
-      x_ float -152.489487
-      y_ float -266.696381
+      x_ float 27.510513
+      y_ float -359.199219
       z_ float 0.000000
     }
     Rotation float 0.000000
@@ -1066,6 +1635,7 @@ GameObject
     m_materialName std::string "Wood"
     m_hasCollisionCallback bool true
     m_CollisionGroup std::string "Player1"
+    m_snap bool false
   }
   SoundEmitter
   {
@@ -1085,27 +1655,27 @@ GameObject
 }
 GameObject
 {
-  name std::string "LaserTest"
-  archetype std::string ""
+  name std::string "WeaponPickup"
+  archetype std::string "ShotgunPickup"
   Transform
   {
     Translation Vec3
     {
-      x_ float 602.269348
-      y_ float 0.000000
+      x_ float -130.705246
+      y_ float -329.165802
       z_ float 0.000000
     }
     Rotation float 0.000000
     Scale Vec3
     {
-      x_ float 0.641199
-      y_ float 7.150837
+      x_ float 1.000000
+      y_ float 1.000000
       z_ float 0.000000
     }
   }
   Sprite
   {
-    m_spriteName std::string "pink_laser.png"
+    m_spriteName std::string "WeapPickupShot.png"
     m_layer unsignedint 1
     m_flipX bool false
     m_flipY bool false
@@ -1130,7 +1700,7 @@ GameObject
   }
   SpriteLight
   {
-    m_spriteName std::string "white.png"
+    m_spriteName std::string "PowerUpLight.png"
     m_layer unsignedint 1
     m_flipX bool false
     m_flipY bool false
@@ -1142,7 +1712,7 @@ GameObject
       R float 1.000000
       G float 1.000000
       B float 1.000000
-      A float 1.000000
+      A float 0.500000
     }
     m_origin Vec2
     {
@@ -1151,8 +1721,360 @@ GameObject
     }
     Size Vec2
     {
-      X float 64.000000
-      Y float 128.000000
+      X float 1.000000
+      Y float 1.000000
     }
+  }
+  BoxCollider
+  {
+    m_width float 85.000000
+    m_height float 85.000000
+    m_materialName std::string "Static"
+    m_hasCollisionCallback bool true
+    m_CollisionGroup std::string ""
+    m_snap bool false
+  }
+  WeaponPickup
+  {
+    weaponID EWeapons "Shotgun"
+    weaponNum int 1
+  }
+}
+GameObject
+{
+  name std::string "WeaponPickup"
+  archetype std::string "AutoPickup"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 190.932281
+      y_ float -329.165741
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "WeapPickupAuto.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 1.000000
+      Y float 1.000000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+  SpriteLight
+  {
+    m_spriteName std::string "PowerUpLight.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    m_isOn bool true
+    m_emissive bool false
+    m_brightness LightColor
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 0.500000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+    Size Vec2
+    {
+      X float 1.000000
+      Y float 1.000000
+    }
+  }
+  BoxCollider
+  {
+    m_width float 85.000000
+    m_height float 85.000000
+    m_materialName std::string "Static"
+    m_hasCollisionCallback bool true
+    m_CollisionGroup std::string "NonCollide"
+    m_snap bool false
+  }
+  WeaponPickup
+  {
+    weaponID EWeapons "Automatic"
+    weaponNum int 2
+  }
+}
+GameObject
+{
+  name std::string "WeaponPickup"
+  archetype std::string "MissilePickup"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -349.828766
+      y_ float -332.769806
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "missile.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 1.000000
+      Y float 1.000000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+  SpriteLight
+  {
+    m_spriteName std::string "PowerUpLight.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    m_isOn bool true
+    m_emissive bool false
+    m_brightness LightColor
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 0.500000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+    Size Vec2
+    {
+      X float 1.000000
+      Y float 1.000000
+    }
+  }
+  BoxCollider
+  {
+    m_width float 85.000000
+    m_height float 85.000000
+    m_materialName std::string "Static"
+    m_hasCollisionCallback bool true
+    m_CollisionGroup std::string "NonCollide"
+    m_snap bool false
+  }
+  WeaponPickup
+  {
+    weaponID EWeapons "Missile"
+    weaponNum int 4
+  }
+}
+GameObject
+{
+  name std::string "PowerUpPickup"
+  archetype std::string "PowerUpPickup_Explosive"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 25.628429
+      y_ float -188.609650
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  Sprite
+  {
+    m_spriteName std::string "ExplosivePickup.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+    Size Vec2
+    {
+      X float 1.000000
+      Y float 1.000000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+  SpriteLight
+  {
+    m_spriteName std::string "PowerUpLight.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    m_isOn bool true
+    m_emissive bool false
+    m_brightness LightColor
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 0.500000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+    Size Vec2
+    {
+      X float 1.000000
+      Y float 1.000000
+    }
+  }
+  BoxCollider
+  {
+    m_width float 85.000000
+    m_height float 85.000000
+    m_materialName std::string "Static"
+    m_hasCollisionCallback bool true
+    m_CollisionGroup std::string "NonCollide"
+    m_snap bool false
+  }
+  PowerupPickup
+  {
+    powerNum int 3
+  }
+}
+GameObject
+{
+  name std::string "Player"
+  archetype std::string "Player2"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float -521.539612
+      y_ float -392.836548
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  SpineSprite
+  {
+    atlasName std::string "ruiser"
+    entityName std::string "ruiser"
+    sequenceName std::string "idle"
+    framerate float 20.000000
+    Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+  }
+  SpineLight
+  {
+    m_layer int 1
+    m_emissive bool true
+    atlasName std::string "ruiser_glow"
+    entityName std::string "ruiser"
+    m_lightingScale Vec2
+    {
+      X float 1.000000
+      Y float 1.000000
+    }
+    Color LightColor
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+  }
+  BoxCollider
+  {
+    m_width float 102.000000
+    m_height float 102.000000
+    m_materialName std::string "Wood"
+    m_hasCollisionCallback bool true
+    m_CollisionGroup std::string "Player2"
+    m_snap bool false
+  }
+  SoundEmitter
+  {
+  }
+  PlayerController
+  {
+    playerNum int 1
+  }
+  GamePad
+  {
+    GamepadIndex int 1
+  }
+  Cheats
+  {
+    enabled bool true
   }
 }

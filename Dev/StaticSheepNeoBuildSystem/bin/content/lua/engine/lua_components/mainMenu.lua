@@ -86,7 +86,7 @@ function META:AddButton(text, menu, tbl, img_norm, img_hover, img_click)
   btn:SetPos(self.base:GetSize().x / 2 - btn:GetSize().x / 2,
     self.ypos)
 
-  self.ypos = self.ypos + ScreenScale(25)
+  self.ypos = self.ypos + 50
 
   if tbl then
     table.insert(tbl, btn)
@@ -186,7 +186,7 @@ function META:MakeMenu()
 
   btn = self:AddButton("Credits", self.menu, self.menuButtons)
   btn:SetOnPressed(function()
-
+    engine.ChangeLevel("Credits")
 
     --self:CloseMenu()
   end)

@@ -45,8 +45,7 @@ namespace Framework
 
   void Transform::SetTranslation(Vec3 newTr)
   {
-    if (m_useDirtyHook)
-      this->GetOwner()->hooks.Call("TransformDirty");
+
     if (m_hasPhysics)
     {
       reinterpret_cast<SheepFizz::PhysicsSpace*>(space->m_pSpace)->SetBodyPos(m_pBody, newTr);
@@ -55,6 +54,8 @@ namespace Framework
     {
       m_translation = newTr;
     }
+    if (m_useDirtyHook)
+      this->GetOwner()->hooks.Call("TransformDirty");
   }
 
   void Transform::SetScale(Vec3 newSc)
@@ -69,8 +70,7 @@ namespace Framework
 
   void Transform::SetRotation(float rot)
   {
-    if (m_useDirtyHook)
-      this->GetOwner()->hooks.Call("TransformDirty");
+
 
     if (m_hasPhysics)
     {
@@ -78,6 +78,9 @@ namespace Framework
     }
     else
       m_rotation = rot;
+
+    if (m_useDirtyHook)
+      this->GetOwner()->hooks.Call("TransformDirty");
   }
 
   void Transform::SetPhysicsBody(unsigned body)

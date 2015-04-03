@@ -95,8 +95,8 @@ namespace Framework
 
     /*if (RC->state_ == RoundController::RoundState::ROUNDINPRO)
     {*/
-      totalTimeAsJugg[jugg] += timeAsJugg;
-      roundTimeAsJugg[jugg] += timeAsJugg;
+      //totalTimeAsJugg[jugg] += timeAsJugg;
+      //roundTimeAsJugg[jugg] += timeAsJugg;
    // }
   }
 
@@ -109,6 +109,7 @@ namespace Framework
       roundTimeAsJugg[i] = 0;
       LMSTimeAlive[i] = 0;
     }
+    LMSThisRound = -1;
   }
 
   void ChipController::RoundOver()
@@ -118,8 +119,8 @@ namespace Framework
     {
       if (LL->juggernaut[i])
       {
-        roundTimeAsJugg[i] += LL->timeAsJugg;
-        totalTimeAsJugg[i] += LL->timeAsJugg;
+        //roundTimeAsJugg[i] += LL->timeAsJugg;
+        totalTimeAsJugg[i] += roundTimeAsJugg[i];
         LL->timeAsJugg = 0;
         break;
       }
@@ -165,7 +166,7 @@ namespace Framework
     if (LMSThisRound != -1)
     {
       GivePlayerChip(LMSThisRound, 1);
-      LMSThisRound = -1;
+      //LMSThisRound = -1;
     }
   }
 

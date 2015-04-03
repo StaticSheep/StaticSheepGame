@@ -15,6 +15,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "SheepMath.h"
 #include "../../gameplay_scripts/arena/CBlockLights.h"
 #include "../../gameplay_scripts/Slot_Machine_Scripts/CPersonalSlotSpawner.h"
+#include "../light patterns/CLightPatternController.h"
 
 namespace Framework
 {
@@ -26,10 +27,10 @@ namespace Framework
     current_round = 1;
     max_rounds = 6; //default value
     spawned_round_start = false;
-    timeOfRound = 23.0f; //default round length, (round length + 3.0f)
+    timeOfRound = 93.0f; //default round length, (round length + 3.0f)
     state_ = INTRO;
     gameStarted = false;
-    
+
     psmPos[0] = Vec3(-psmX_, psmYBot_, 0.0f);
     psmPos[1] = Vec3(psmX_, psmYBot_, 0.0f);
     psmPos[2] = Vec3(psmX_, psmYTop_, 0.0f);
@@ -55,11 +56,13 @@ namespace Framework
     LevelLogic = space->GetGameObject(owner)->GetComponentHandle(eLevel1_Logic);
     ChipController_ = space->GetGameObject(owner)->GetComponentHandle(eChipController);
     //intro sequence timer
-    round_state_timer = 6.0f;
+    round_state_timer = 9.0f;
     EORAwarded = false;
 
     spawnedPSM = false;
     font_index = Draw::GetFontIndex("BN_Jinx");
+    psm_done = false;
+    mostChipsText = false;
   }
 
   void RoundController::LogicUpdate(float dt)
@@ -95,7 +98,7 @@ namespace Framework
   {
     round_state_timer -= dt;
 
-    if (round_state_timer >= 3.0f)
+    if (round_state_timer >= 6.0f)
       return;
     //light-up sequence
     //Welcome to the Games!
@@ -116,11 +119,19 @@ namespace Framework
       spawned_round_start = true;
     }
 
+    if (round_state_timer <= 3.0f && !mostChipsText)
+    {
+      GameObject *welcome = (FACTORY->LoadObjectFromArchetype(space, "mostChips_text"));
+      welcome->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(1000.0f, 32.0f, 0.0f));
+      mostChipsText = true;
+    }
+
     if (round_state_timer <= 0)
     {
       state_ = ROUNDSTART;
       spawned_round_start = false;
       round_state_timer = 2.0f;
+      mostChipsText = false;
     }
 
   }
@@ -145,6 +156,7 @@ namespace Framework
       spawned_round_start = true;
       ResultsSpawned = false;
       spawnedPSM = false;
+      psm_done = false;
       space->hooks.Call("RoundStart");
     }
 
@@ -159,7 +171,7 @@ namespace Framework
         num_spawned[i] = false;
     }
   }
-
+  static bool lightCall = false;
   void RoundController::RoundInProgress(float dt)
   {
     if (!slotMachineDone)
@@ -168,7 +180,11 @@ namespace Framework
     round_state_timer -= dt;
 
     itoa((int)round_state_timer + 1, round_timer, 10);
-
+    if (!lightCall)
+    {
+      space->hooks.Call("SetLightPattern", LightPatternController::ROUNDINPRO);
+      lightCall = true;
+    }
 
     if (round_state_timer <= 0)
     {
@@ -178,6 +194,7 @@ namespace Framework
       space->GetGameObject(owner)->GetComponent<Level1_Logic>(eLevel1_Logic)->mode = SLOTMACHINE;
       spawned_round_start = false;
       roundUp_spawned = false;
+      lightCall = false;
     }
     else if (round_state_timer <= 6.0f)
     {
@@ -187,6 +204,7 @@ namespace Framework
 
   void RoundController::RoundOver(float dt)
   {
+    //spawn round up and play sound effects
     if (round_state_timer >= 18.0f && !roundUp_spawned)
     {
       SoundEmitter *se = space->GetGameObject(owner)->GetComponent<SoundEmitter>(eSoundEmitter);
@@ -200,7 +218,8 @@ namespace Framework
       roundUp_spawned = true;
       space->hooks.Call("RoundOver");
     }
-    else if (round_state_timer >= 13.5f)
+    //display tv results screen
+    else if (round_state_timer >= 12.5f && round_state_timer < 18.0f)
     {
       //display results
       if (!ResultsSpawned)
@@ -219,15 +238,32 @@ namespace Framework
         else
           se->Play("crowd_cheer01", &SoundInstance(1.0f));
       }
-      
+
       if (!EORAwarded)
         AwardEndOfRoundChips();
     }
-    else if (round_state_timer >= 0.1f)
+    //spawn personal slot machines
+    else if (round_state_timer >= 0.1f && round_state_timer < 11.0f)
     {
       //spawn personal slot machines and let them do their thing
       if (!spawnedPSM)
+      {
         SpawnPersonalSM();
+        space->hooks.Call("SetLightPattern", LightPatternController::PLAYERSLOT);
+      }
+
+      int i;
+      for (i = 0; i < 4; ++i)
+      {
+        PersonalSlotSpawner *temp = space->GetGameObject(psm_[i])->GetComponent<PersonalSlotSpawner>(ePersonalSlotSpawner);
+        if (!temp->done_)
+          break;
+      }
+      if (i == 4 && !psm_done)
+      {
+        space->hooks.Call("PersonalSlotDone");
+        psm_done = true;
+      }
     }
 
     round_state_timer -= dt;
@@ -275,7 +311,7 @@ namespace Framework
       se->Play("crowd_cheer00", &SoundInstance(1.0f));
       se->Play("crowd_cheer01", &SoundInstance(1.0f));
     }
-    
+
     round_state_timer -= dt;
 
     if (round_state_timer <= 0)
@@ -375,14 +411,7 @@ namespace Framework
     if (state_ == ROUNDINPRO)
     {
       Vec2D scale(60, 60);
-      Vec3 pos(-100.0f, 600.0f, 0.0f);
-      char playerString[10];
-
-      sprintf(playerString, "%5.2f", round_state_timer);
-      Draw::SetPosition(pos.x, pos.y);
-      Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
-      Draw::SetRotation(0);
-      Draw::DrawString(playerString, scale, 1);
+      Vec3 pos(-100.0f, 400.0f, 0.0f);
 
       if (round_state_timer > timeOfRound - 3)
         itoa(timeOfRound - 3, round_timer, 10);
@@ -406,7 +435,6 @@ namespace Framework
 
   void RoundController::SpawnPersonalSM()
   {
-    Handle psm_[4];
     Transform *psmT_;
     for (int i = 0; i < 4; ++i)
     {

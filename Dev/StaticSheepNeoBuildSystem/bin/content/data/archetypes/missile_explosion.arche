@@ -104,7 +104,7 @@ GameObject
     }
     m_life BPartSys::BPSLife
     {
-      lifetime float 0.300000
+      lifetime float 0.200000
       randLifetime float 0.200000
     }
     m_fade BPartSys::BPSFade
@@ -136,15 +136,16 @@ GameObject
       spawnAmount float 30.000000
       spawnPerSecond float 0.000000
       shutdownTimer float 0.000000
-      parentToOwner bool true
+      parentToOwner bool false
     }
   }
   CircleCollider
   {
-    m_radius float 75.000000
+    m_radius float 65.000000
     m_materialName std::string "Wood"
     m_hasCollisionCallback bool true
     m_CollisionGroup std::string "PlayerHitOnly"
+    m_snap bool false
   }
   Explosion
   {
@@ -154,8 +155,8 @@ GameObject
   }
   AOEDamage
   {
-    m_radius float 75.000000
-    m_damagePerSecond float 500.000000
+    m_radius float 65.000000
+    m_damagePerSecond float 100.000000
     m_shrinks bool true
     m_shrinkTime float 0.500000
     m_shrinkDelay float 0.400000

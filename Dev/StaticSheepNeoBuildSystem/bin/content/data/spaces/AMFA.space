@@ -523,6 +523,9 @@ GameObject
   RoundController
   {
   }
+  LightPatternController
+  {
+  }
   Level1_Logic
   {
     roundTimer float 0.000000

@@ -28,9 +28,17 @@ namespace Framework
   {
     space->hooks.Add("LogicUpdate", self,
       BUILD_FUNCTION(AOEDamage::LogicUpdate));
+
+    GetOwner()->hooks.Add("SetPlayerOwner", self,
+      BUILD_FUNCTION(AOEDamage::PlayerOwnerBroadcast));
     
     space->GetGameObject(owner)->hooks.Add(
       "OnCollision", self, BUILD_FUNCTION(AOEDamage::OnCollision));
+  }
+
+  void AOEDamage::PlayerOwnerBroadcast(int playerOwner)
+  {
+    m_playerOwner = playerOwner;
   }
 
   void AOEDamage::LogicUpdate(float dt)
@@ -119,8 +127,7 @@ namespace Framework
     if (!pc)
       return;
 
-    /* Kill me */
-    pc->DealDamage(m_damagePerSecond * 0.0167f, pc->playerNum);
+    pc->Combat()->TakeDamage(m_damagePerSecond * 0.0167f, m_playerOwner, true);
   }
 
   void AOEDamage::Remove()

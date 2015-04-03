@@ -21,6 +21,8 @@ namespace Framework
 
     void Initialize();
 
+    void PlayerOwnerBroadcast(int playerOwner);
+
     void LogicUpdate(float dt);
 
     void OnCollision(Handle otherObject,
@@ -35,6 +37,8 @@ namespace Framework
     bool m_shrinks = true;
     float m_shrinkTime = 0.2f;
     float m_shrinkDelay = 0.0f;
+
+    int m_playerOwner = -1;
 
   private:
     bool m_firstRun = true;

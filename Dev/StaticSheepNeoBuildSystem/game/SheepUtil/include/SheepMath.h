@@ -46,6 +46,23 @@ namespace Framework
     }
 
     template<typename T>
+    static T TwoStepLinear(float t, T start, T mid, T end)
+    {
+      if (t <= 0.5f)
+      {
+        t *= 2;
+        return start * (1.0f - t) + (mid * t);
+      }
+      else
+      {
+        t -= 0.5f;
+        t *= 2;
+        return mid * (1.0f - t) + (end * t);
+      }
+        
+    }
+
+    template<typename T>
     static T QuadraticIn(float t, T start, T end)
     {
       return start * (1.0f - t * t) + end * t * t;

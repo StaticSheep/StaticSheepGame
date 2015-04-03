@@ -48,12 +48,13 @@ namespace Framework
     void PersonalSlotDone();
 
     Handle LevelLogic, ChipController_;
+    Handle psm_[4];
     int current_round, max_rounds;
     RoundState state_;
     float round_state_timer;
     float timeOfRound;
     bool spawned_round_start, slotMachineDone, roundUp_spawned,
-      EORAwarded, ResultsSpawned, gameStarted, spawnedPSM;
+      EORAwarded, ResultsSpawned, gameStarted, spawnedPSM, psm_done, mostChipsText;
     bool num_spawned[5];
     char round_timer[10];
     Vec3 psmPos[4];

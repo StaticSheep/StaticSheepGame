@@ -64,35 +64,36 @@ GameObject
   {
     textureName std::string "White.png"
     m_layer int 1
+    m_useZ bool false
     particleLife ParticleOptionShort<float>
     {
       m_startMin float 0.500000
       m_startMax float 1.000000
     }
-    directionEase int 0
+    directionEase int 2
     direction ParticleOption<Vec3>
     {
       m_startMin Vec3
       {
-        x_ float -0.468605
-        y_ float 0.883408
+        x_ float -0.241347
+        y_ float 0.970439
         z_ float 0.000000
       }
       m_startMax Vec3
       {
-        x_ float 0.470000
-        y_ float 0.880000
+        x_ float 0.240000
+        y_ float 0.970000
         z_ float 0.000000
       }
       m_endMin Vec3
       {
-        x_ float 0.000000
+        x_ float -1.000000
         y_ float 0.000000
         z_ float 0.000000
       }
       m_endMax Vec3
       {
-        x_ float 0.000000
+        x_ float 1.000000
         y_ float 0.000000
         z_ float 0.000000
       }
@@ -167,7 +168,7 @@ GameObject
     m_amount ParticleOptionShort<float>
     {
       m_startMin float 12.000000
-      m_startMax float 0.000000
+      m_startMax float 12.000000
     }
     m_rate ParticleOptionShort<float>
     {
@@ -176,7 +177,7 @@ GameObject
     }
     spawning bool true
     timedSpawning bool false
-    timed float -0.002001
+    timed float -0.016700
     outward bool false
     inward bool false
   }
@@ -186,11 +187,13 @@ GameObject
     m_materialName std::string "Steel"
     m_hasCollisionCallback bool true
     m_CollisionGroup std::string ""
+    m_snap bool false
   }
   Bullet_Default
   {
     limitedLife bool true
     ttl float 0.375000
+    lightFade float 0.000000
     fadeTime float 0.000000
   }
 }

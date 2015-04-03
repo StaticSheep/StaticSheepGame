@@ -13,6 +13,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "../../gameplay_scripts/Level_Scripts/CLevel1_Logic.h"
 #include "../../sound/CSoundPlayer.h"
 #include "../../gameplay_scripts/arena/CBlockLights.h"
+#include "../systems/input/Input.h"
 
 static const char *playerNames[] = { "Player1", "Player2", "Player3", "Player4" };
 
@@ -73,6 +74,9 @@ namespace Framework
       sp->Play("TripGBass", &instance);
       playing = true;
     }
+
+    if(SHEEPINPUT->KeyIsPressed(VK_RETURN))
+      startPressed = true;
   }
 
   void LobbyController::GoToState(float dt)

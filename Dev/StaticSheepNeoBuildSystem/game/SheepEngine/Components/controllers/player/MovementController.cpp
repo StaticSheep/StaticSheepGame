@@ -1,3 +1,10 @@
+/*****************************************************************
+Filename: MovementController.cpp
+Project:
+Author(s): Zakary Wilson (Primary), Greg Walls
+
+All content © 2015 DigiPen (USA) Corporation, all rights reserved.
+*****************************************************************/
 
 #include "pch/precompiled.h"
 #include "MovementController.h"
@@ -343,7 +350,7 @@ Calculating angular velocites for rotating box collider platforms... -HelpJon
       }
     }
 
-    m_collider->AddToVelocity(jumpDir * 500);
+    m_collider->AddToVelocity(jumpDir * 1000);
     m_collider->SetGravityOff();
     m_isSnapped = false;
 
