@@ -216,7 +216,7 @@ namespace Framework
         BlockLights::EventData ed;
         ed.duration = 0.5f;
         Vec4 temp = blockColor[currWinner];
-        temp.a -= 0.5f;
+        temp.a -= 0.3f;
         ed.settings.color = temp;
         ed.settings.fx = BlockLights::NONE;
         ed.settings.useColor = true;
@@ -234,7 +234,7 @@ namespace Framework
         BlockLights::EventData ed;
         ed.duration = 0.5f;
         Vec4 temp = blockColor[currWinner];
-        temp.a -= 0.5f;
+        temp.a -= 0.3f;
         ed.settings.color = temp;
         ed.settings.color = temp;
         ed.settings.fx = BlockLights::NONE;

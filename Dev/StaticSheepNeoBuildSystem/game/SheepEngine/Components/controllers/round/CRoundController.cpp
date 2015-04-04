@@ -16,6 +16,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "../../gameplay_scripts/arena/CBlockLights.h"
 #include "../../gameplay_scripts/Slot_Machine_Scripts/CPersonalSlotSpawner.h"
 #include "../light patterns/CLightPatternController.h"
+#include "../../gamepad/CGamePad.h"
 
 namespace Framework
 {
@@ -189,7 +190,7 @@ namespace Framework
     if (round_state_timer <= 0)
     {
       state_ = ROUNDOVER;
-      round_state_timer = 20.0f;
+      round_state_timer = 23.0f;
       space->GetGameObject(owner)->GetComponent<Level1_Logic>(eLevel1_Logic)->roundStart = false;
       space->GetGameObject(owner)->GetComponent<Level1_Logic>(eLevel1_Logic)->mode = SLOTMACHINE;
       spawned_round_start = false;
@@ -202,10 +203,11 @@ namespace Framework
     }
   }
 
+  static bool coinBonusSpawned = false;
   void RoundController::RoundOver(float dt)
   {
     //spawn round up and play sound effects
-    if (round_state_timer >= 18.0f && !roundUp_spawned)
+    if (round_state_timer >= 21.0f && !roundUp_spawned)
     {
       SoundEmitter *se = space->GetGameObject(owner)->GetComponent<SoundEmitter>(eSoundEmitter);
       se->Play("slot_digital_bell2", &SoundInstance(1.0f));
@@ -219,7 +221,7 @@ namespace Framework
       space->hooks.Call("RoundOver");
     }
     //display tv results screen
-    else if (round_state_timer >= 12.5f && round_state_timer < 18.0f)
+    else if (round_state_timer >= 15.5f && round_state_timer < 21.0f)
     {
       //display results
       if (!ResultsSpawned)
@@ -242,6 +244,20 @@ namespace Framework
 
       if (!EORAwarded)
         AwardEndOfRoundChips();
+    }
+    else if (round_state_timer >= 11.0f && round_state_timer < 15.0f)
+    {
+      if (!coinBonusSpawned)
+      {
+        GameObject *coinText;
+        if (current_round + 1 <= max_rounds)
+          coinText = (FACTORY->LoadObjectFromArchetype(space, "coinBonus_text"));
+        else
+          coinText = (FACTORY->LoadObjectFromArchetype(space, "chipBonus_text"));
+
+        coinText->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(-1000.0f, 100.0f, 0.0f));
+        coinBonusSpawned = true;
+      }
     }
     //spawn personal slot machines
     else if (round_state_timer >= 0.1f && round_state_timer < 11.0f)
@@ -283,6 +299,7 @@ namespace Framework
 
       round_state_timer = 2.0f;
       ResultsSpawned = false;
+      coinBonusSpawned = false;
     }
 
   }
@@ -314,9 +331,18 @@ namespace Framework
       se->Play("crowd_cheer01", &SoundInstance(1.0f));
     }
 
-    round_state_timer -= dt;
+    if (round_state_timer > 0)
+      round_state_timer -= dt;
 
-    if (round_state_timer <= 0)
+    bool backPressed = false;
+    for (int i = 0; i < 4; ++i)
+    {
+      GamePad *gp = space->GetGameObject(owner)->GetComponent<GamePad>(eGamePad);
+      gp->GamepadIndex = i;
+      if (gp->ButtonPressed(XButtons.Back))
+        backPressed = true;
+    }
+    if (backPressed)
     {
       ENGINE->ChangeLevel("Lobby");
     }
@@ -453,6 +479,10 @@ namespace Framework
       space->GetGameObject(psm_[i])->GetComponent<PersonalSlotSpawner>(ePersonalSlotSpawner)->level_logic = owner;
       psmT_ = space->GetGameObject(psm_[i])->GetComponent<Transform>(eTransform);
       psmT_->SetTranslation(psmPos[i]);
+      if (current_round + 1 > max_rounds)
+      {
+        space->GetGameObject(psm_[i])->GetComponent<PersonalSlotSpawner>(ePersonalSlotSpawner)->endOfGame_ = true;
+      }
     }
 
     spawnedPSM = true;
