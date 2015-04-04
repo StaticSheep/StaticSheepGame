@@ -4,6 +4,16 @@
 namespace Framework
 {
 
+  CBonusSlotManager::CBonusSlotManager()
+  {
+
+  }
+
+  CBonusSlotManager::CBonusSlotManager()
+  {
+
+  }
+
   void CBonusSlotManager::Initialize()
   {
     space->hooks.Add("RoundStart", self, BUILD_FUNCTION(CBonusSlotManager::RoundStart));
@@ -13,8 +23,7 @@ namespace Framework
     
       //initialize important starting values
     m_currentLead = BONUSMAX;
-    m_currentLeader = NOLEADER;    //no current leader, no value awarded
-
+    m_currentLeader = BONUSNOLEADER;    //no current leader, no value awarded
   }
 
   void CBonusSlotManager::Remove()
@@ -23,7 +32,6 @@ namespace Framework
     space->hooks.Remove("RoundOver", self);
     space->hooks.Remove("GivePlayerCoins", self);
     space->hooks.Remove("PlayerDied", self);
-
   }
 
   void CBonusSlotManager::BonusSlotStart()

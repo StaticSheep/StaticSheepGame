@@ -9,11 +9,11 @@
 
 namespace Framework
 {
-  #define BONUSMAX	2147483647
-  #define NOLEADER 4
-
   class CBonusSlotManager: public GameComponent
   {
+    #define BONUSMAX	2147483647  //max int size
+    #define BONUSNOLEADER 4       //one past highest player number
+
     enum BONUSTYPES
     {
       COINS,
@@ -22,8 +22,8 @@ namespace Framework
       TYPES
     };
 
-    //MOST is set as negative one to make one 'if' check work for determining winner
-    //MOST will result in a more negative number, which means it will work against BONUSMAX
+      //MOST is set as negative one to make one 'if' check work for determining winner
+      //MOST will result in a more negative number, which means it will work against BONUSMAX
     enum BONUSMODIFIERS
     {
       MOST = -1,
@@ -42,7 +42,7 @@ namespace Framework
     {
       SMALL = 1,
       MED = 2,
-      LARGE = 5,
+      LARGE = 5
     };
 
     CBonusSlotManager();
@@ -64,6 +64,7 @@ namespace Framework
 
     private:
 
+        //used for tracking player scores during round
       struct bonusStats
       {
         int coins;
@@ -71,6 +72,7 @@ namespace Framework
         int kills;
       };
 
+        //ease of access and comparison
       struct PlayerBonusStats
       {
         union
@@ -78,26 +80,22 @@ namespace Framework
           int cdk[3];
           bonusStats stats;
         };
-        
       };
 
+        //critical values for round
       PlayerBonusStats m_stats[4];
       BONUSTYPES m_type;
       BONUSMODIFIERS  m_mod;
       BONUSPRIZE m_prize;
       BONUSPRIZEMOD m_prizeSize;
 
-      bool m_tie;                 //ties are not allowed - this tells whether a tie is occurring
-      int m_currentLeader;          //current leader of the bonus
-      int m_currentLead;            //current lead value
-
         //used to make determing winner simpler
-      int m_coinDeathKill;          //tracks which part of array to use
+      bool  m_tie;                   //ties are not allowed - this tells whether a tie is occurring
+      int   m_currentLeader;          //current leader of the bonus
+      int   m_currentLead;            //current lead value
+      int   m_coinDeathKill;          //tracks which part of array to use - coins, deaths, or kills
 
-      
-
+        //initialization values
+      bool m_left;
   };
-
-
-
 }
