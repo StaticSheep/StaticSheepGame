@@ -130,6 +130,17 @@ namespace Framework
       {
         ENGINE->SystemMessage(ResizeMessage(width, height));
       }
+
+      if (wParam == SIZE_MINIMIZED)
+      {
+        WINDOW_ACTIVE = false;
+        ENGINE->SystemMessage(Message(Message::WindowMinimize));
+      }
+      else if (wParam == SIZE_RESTORED)
+      {
+        WINDOW_ACTIVE = true;
+        ENGINE->SystemMessage(Message(Message::WindowRestore));
+      }
       
       break;
 
