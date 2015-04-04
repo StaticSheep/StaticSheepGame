@@ -18,13 +18,13 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 namespace Framework
 {
-  static float weapDelay = 0.07f;
+  static float weapDelay = 0.09f;
   Automatic::Automatic()
   {
     delay = 0.0f;
-    fireVolume = 0.2f;
-    damage = 10;
-    knockback = 50;
+    fireVolume = 0.15f;
+    damage = 13;
+    knockback = 60;
     semi = false;
     explosive_ = false;
 
@@ -50,10 +50,10 @@ namespace Framework
     Vec3 AimDir = pc->aimDir;
     
     //set the cone of 5 degrees for firing.
-    float FireAngle = -5.0f + (randomNumber/100.0f) * 10.0f;
+    float FireAngle = -7.0f + (randomNumber/100.0f) * 10.0f;
     AimDir = Mat3D((FireAngle * (float)PI) / 180) * AimDir;
 
-    bulletC->SetVelocity(AimDir * 1000);
+    bulletC->SetVelocity(AimDir * 900);
   }
 
   void Automatic::Update(float dt)
@@ -64,7 +64,7 @@ namespace Framework
   void Automatic::DelayUpdate(float dt)
   {
     delay -= dt;
-    if (delay < -100)
+    if (delay < 0)
       delay = 0;
   }
 

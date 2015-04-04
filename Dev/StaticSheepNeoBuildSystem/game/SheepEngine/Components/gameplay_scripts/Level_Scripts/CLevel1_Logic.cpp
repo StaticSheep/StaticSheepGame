@@ -294,6 +294,7 @@ namespace Framework
       if (who_killed_him != -1)
       {
         juggernaut[who_killed_him] = true;
+        GivePlayerCoins(who_killed_him, 750);
         MakeJuggernaut();
       }
       space->hooks.Call("JuggDied", ply, timeAsJugg);
@@ -789,8 +790,8 @@ namespace Framework
     juggernautTimer -= dt;
     if (juggernautTimer <= 0)
     {
-      juggernautTimer = 0.5f;
-      GivePlayerCoins(i, (25 + (25 * juggKills[i])));
+      juggernautTimer = 1.0f;
+      GivePlayerCoins(i, (25 + (10 * juggKills[i])));
     }
     SpawnLevelEvent();
   }
@@ -826,8 +827,8 @@ namespace Framework
         delete playerController->powerUp;
       playerController->powerUp = new DamageBoost();
       playerController->powerUp->Use(juggernaut_);
-      playerController->Combat()->SetHealth(200.0f);
-      playerController->Combat()->SetShields(100.0f);
+      playerController->Combat()->AddHealth(50.0f);
+      playerController->Combat()->AddShields(50.0f);
 
       GameObject *effect = (FACTORY->LoadObjectFromArchetype(space, "jugg_effect"));
       effect->GetComponent<JuggernautEffect>(eJuggernautEffect)->pTransform = (space->GetGameObject(Players[i]))->GetComponentHandle(eTransform);

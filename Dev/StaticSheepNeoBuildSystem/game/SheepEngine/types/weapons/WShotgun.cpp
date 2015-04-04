@@ -17,12 +17,12 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 namespace Framework
 {
-  static float weapDelay = 1.0f;
+  static float weapDelay = 0.85f;
 
   Shotgun::Shotgun()
   {
     delay = 0.0f;
-    damage = 20;
+    damage = 18;
     knockback = 600;
     semi = true;
     explosive_ = false;
