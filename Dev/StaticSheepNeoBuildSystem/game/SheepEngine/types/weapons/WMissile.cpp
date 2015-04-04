@@ -17,13 +17,13 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 namespace Framework
 {
-  static const float fireDelay = 1.0f;
+  static const float fireDelay = 0.8f;
 
   Missile::Missile()
   {
     delay = 0.0f;
-    damage = 90;
-    knockback = 600;
+    damage = 150;
+    knockback = 800;
     semi = true;
     explosive_ = false;
 
@@ -38,7 +38,7 @@ namespace Framework
   void Missile::Fire(GameObject *player)
   {
 
-    GameObject *bullet = CreateBullet(player, "Missile", 800.0f);
+    GameObject *bullet = CreateBullet(player, "Missile", 850.0f);
   }
 
   void Missile::Update(float dt)
