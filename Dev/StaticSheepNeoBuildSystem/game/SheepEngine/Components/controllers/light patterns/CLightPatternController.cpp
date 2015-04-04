@@ -183,14 +183,17 @@ namespace Framework
           else
             currBlock *= 2;
         }
-        BlockLights::EventData ed;
-        ed.duration = 1.0f;
-        ed.settings.color = blockColor[i];
-        ed.settings.fx = BlockLights::NONE;
-        ed.settings.useColor = true;
-        ed.overrideDefault = true;
-        ed.settings.customData.duration = 0.25f;
-        space->hooks.Call("LightingEvent", blocks, &ed);
+        if (currWeight != 0)
+        {
+          BlockLights::EventData ed;
+          ed.duration = 1.0f;
+          ed.settings.color = blockColor[i];
+          ed.settings.fx = BlockLights::NONE;
+          ed.settings.useColor = true;
+          ed.overrideDefault = true;
+          ed.settings.customData.duration = 0.25f;
+          space->hooks.Call("LightingEvent", blocks, &ed);
+        }
 
         blocks = 0x00000000;
       }
@@ -213,7 +216,7 @@ namespace Framework
         BlockLights::EventData ed;
         ed.duration = 0.5f;
         Vec4 temp = blockColor[currWinner];
-        temp.a -= 0.5f;
+        temp.a -= 0.3f;
         ed.settings.color = temp;
         ed.settings.fx = BlockLights::NONE;
         ed.settings.useColor = true;
@@ -231,7 +234,7 @@ namespace Framework
         BlockLights::EventData ed;
         ed.duration = 0.5f;
         Vec4 temp = blockColor[currWinner];
-        temp.a -= 0.5f;
+        temp.a -= 0.3f;
         ed.settings.color = temp;
         ed.settings.color = temp;
         ed.settings.fx = BlockLights::NONE;
@@ -305,6 +308,13 @@ namespace Framework
   {
     currPat_ = pt;
     patternSet = false;
+    //reset lights
+    BlockLights::EventData ed;
+    ed.settings.color = Vec4(1.0f, 1.0f, 1.0f, 0.8f);
+    ed.settings.fx = BlockLights::NONE;
+    ed.overrideDefault = true;
+    space->hooks.Call("LightingEvent", (unsigned)0xFFFFFFFF, &ed);
+
     if (pt == SLOTSPIN)
     {
       timer_ = 7.0f;
@@ -348,6 +358,9 @@ namespace Framework
   {
     int totalKills;
     float totalTime;
+    for (int i = 0; i < 4; ++i)
+      currWeights[i] = 0;
+
     switch (space->GetGameObject(owner)->GetComponent<RoundController>(eRoundController)->mode_)
     {
     case GameTypes::FFA:
