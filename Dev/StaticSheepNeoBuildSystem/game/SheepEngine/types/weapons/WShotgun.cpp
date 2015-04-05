@@ -17,12 +17,12 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 namespace Framework
 {
-  static float weapDelay = 1.0f;
+  static float weapDelay = 0.85f;
 
   Shotgun::Shotgun()
   {
     delay = 0.0f;
-    damage = 20;
+    damage = 18;
     knockback = 600;
     semi = true;
     explosive_ = false;
@@ -64,6 +64,8 @@ namespace Framework
     //middle shot - first shot
     bullet = CreateBullet(player, "Bullet_shot");
 
+    float centerTheta = atan2f(AimDir.y, AimDir.x) - (PI / 2.0f);
+
       //subsequent shots
     for (int i = 0; i < 4; ++i)
     {
@@ -79,7 +81,7 @@ namespace Framework
         bullet = CreateBullet(player, "Bullet_shot");
 
         float theta = atan2f(bulletDir.y, bulletDir.x) - (PI / 2.0f);
-        Mat3D rotation(theta);
+        Mat3D rotation(centerTheta - theta);
         ParticleSystem* part = bullet->GetComponent<ParticleSystem>(eParticleSystem);
         part->direction.m_startMin = rotation * part->direction.m_startMin;
         part->direction.m_startMax = rotation * part->direction.m_startMax;
@@ -91,7 +93,7 @@ namespace Framework
     }
 
     SoundEmitter *se = player->GetComponent<SoundEmitter>(eSoundEmitter);
-    se->Play("Shotgun_Shot", &SoundInstance(1.0f));
+    se->Play("Shotgun_Shot", &SoundInstance(0.8f));
   }
 
   void Shotgun::DelayUpdate(float dt)

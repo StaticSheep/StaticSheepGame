@@ -34,12 +34,12 @@ namespace Framework
   static SoundEmitter *se;      //players sound emitter
   static Transform *ps;         //players transform
 
-	PlayerController::PlayerController() //1
-	{
-		//set defaults
-		playerNum = 0;
-		playerGamePad = Handle::null; //this is how you null a handle right
-		hasFired = false;
+  PlayerController::PlayerController() //1
+  {
+    //set defaults
+    playerNum = 0;
+    playerGamePad = Handle::null; //this is how you null a handle right
+    hasFired = false;
     snappedTo = Handle::null;
     hasRespawned = true;
     stoppedFX = false;
@@ -51,13 +51,13 @@ namespace Framework
     frameSkip = false;
     arrowSpawn = false;
     respawnTimer = 3.0f;
-    
-	}
 
-	PlayerController::~PlayerController() //4
-	{
+  }
 
-	}
+  PlayerController::~PlayerController() //4
+  {
+
+  }
 
   void PlayerController::TakeGlobalDamage(float damage, int target)
   {
@@ -66,28 +66,28 @@ namespace Framework
   }
 
 
-	void PlayerController::Initialize() //2
-	{
+  void PlayerController::Initialize() //2
+  {
     m_combatController.Initialize(GetOwner(), playerNum);
 
-		//logic setup, you're attached and components are in place
-		space->hooks.Add("LogicUpdate", self,
+    //logic setup, you're attached and components are in place
+    space->hooks.Add("LogicUpdate", self,
       BUILD_FUNCTION(PlayerController::LogicUpdate));
 
     space->hooks.Add("DealDamageToPlayer", self,
       BUILD_FUNCTION(PlayerController::TakeGlobalDamage));
-		
+
     GetOwner()->hooks.Add("PlayerKilled", self,
       BUILD_FUNCTION(PlayerController::PlayerKilled));
 
-    
+
     space->GetGameObject(owner)->hooks.Add("OnCollision", self, BUILD_FUNCTION(PlayerController::OnCollision));
 
     //Generic* gobj = space->GetHandles().GetAs<Generic>(owner);
 
-		playerGamePad = space->GetGameObject(owner)->GetComponentHandle(eGamePad); //gets the handle to the gamepad
-		playerCollider = space->GetGameObject(owner)->GetComponentHandle(eBoxCollider);
-		playerTransform = space->GetGameObject(owner)->GetComponentHandle(eTransform);
+    playerGamePad = space->GetGameObject(owner)->GetComponentHandle(eGamePad); //gets the handle to the gamepad
+    playerCollider = space->GetGameObject(owner)->GetComponentHandle(eBoxCollider);
+    playerTransform = space->GetGameObject(owner)->GetComponentHandle(eTransform);
     playerSound = space->GetGameObject(owner)->GetComponentHandle(eSoundEmitter);
     playerSprite = space->GetGameObject(owner)->GetComponentHandle(eSprite);
     playerAnimation = space->GetGameObject(owner)->GetComponentHandle(eSpineSprite);
@@ -95,54 +95,54 @@ namespace Framework
     ps = space->GetHandles().GetAs<Transform>(playerTransform);
     ps->SetScale(Vec3(1.0f, 1.0f, 0.0));
 
-    switch(playerNum)
+    switch (playerNum)
     {
-      case 0: // ninja
-        //ps->SetScale(Vec3(1.5f, 1.5f, 0.0f));
-        playerColor = Vec4(0.5f, 1.0f, 0.5f, 1.0f);
-        break;
-      case 1: // ruiser
-        playerColor = Vec4(0.75f, 0.15f, 0.1f, 1.0f);
-        //ps->SetScale(Vec3(1.0f, 1.0f, 0.0f));
-        break;
-      case 2: // spacewitch
-        playerColor = Vec4(0.6f, 0.25f, 0.6f, 1.0f);
-        //ps->SetScale(Vec3(1.25f, 1.25f, 0.0f));
-        break;
-      case 3: // steve
-        playerColor = Vec4(0.4f, 0.78f, 0.78f, 1.0f);
-        //ps->SetScale(Vec3(1.0f, 1.0f, 0.0f));
-        break;
+    case 0: // ninja
+      //ps->SetScale(Vec3(1.5f, 1.5f, 0.0f));
+      playerColor = Vec4(0.5f, 1.0f, 0.5f, 1.0f);
+      break;
+    case 1: // ruiser
+      playerColor = Vec4(0.75f, 0.15f, 0.1f, 1.0f);
+      //ps->SetScale(Vec3(1.0f, 1.0f, 0.0f));
+      break;
+    case 2: // spacewitch
+      playerColor = Vec4(0.6f, 0.25f, 0.6f, 1.0f);
+      //ps->SetScale(Vec3(1.25f, 1.25f, 0.0f));
+      break;
+    case 3: // steve
+      playerColor = Vec4(0.4f, 0.78f, 0.78f, 1.0f);
+      //ps->SetScale(Vec3(1.0f, 1.0f, 0.0f));
+      break;
     }
 
     //playerColor = Vec4(1.0f, 1.0f, 1.0f, 1.0f);
 
-		gp = space->GetHandles().GetAs<GamePad>(playerGamePad); //actually gets the gamepad
-		gp->SetPad(playerNum); //setting pad number
+    gp = space->GetHandles().GetAs<GamePad>(playerGamePad); //actually gets the gamepad
+    gp->SetPad(playerNum); //setting pad number
 
     //intialize the playerWeaponGroup - used for Collisions in physics
     switch (playerNum)
     {
-      case 0:
-        weaponGroup = "Player1Weapon";
-        break;
+    case 0:
+      weaponGroup = "Player1Weapon";
+      break;
 
-      case 1:
-        weaponGroup = "Player2Weapon";
-        break;
+    case 1:
+      weaponGroup = "Player2Weapon";
+      break;
 
-      case 2:
-        weaponGroup = "Player3Weapon";
-        break;
+    case 2:
+      weaponGroup = "Player3Weapon";
+      break;
 
-      case 3:
-        weaponGroup = "Player4Weapon";
-        break;
+    case 3:
+      weaponGroup = "Player4Weapon";
+      break;
     }
 
 
-		aimDir.x = 1;
-		aimDir.y = 0;
+    aimDir.x = 1;
+    aimDir.y = 0;
 
     bc = space->GetHandles().GetAs<BoxCollider>(playerCollider);
     bc->SetGravityOff();
@@ -157,18 +157,20 @@ namespace Framework
     powerUp = nullptr;
     pn = -1;
     //SpawnEffect();
+
+    firstUpdate = true;
 	}
 
-	//************************************
-	// Method:    LogicUpdate
-	// FullName:  Framework::PlayerController::LogicUpdate
-	// Access:    public 
-	// Returns:   void
-	// Qualifier:
-	// Parameter: float dt
-	//************************************
-	void PlayerController::LogicUpdate(float dt)
-	{
+  //************************************
+  // Method:    LogicUpdate
+  // FullName:  Framework::PlayerController::LogicUpdate
+  // Access:    public 
+  // Returns:   void
+  // Qualifier:
+  // Parameter: float dt
+  //************************************
+  void PlayerController::LogicUpdate(float dt)
+  {
     //update all the players pointers
     gp = space->GetHandles().GetAs<GamePad>(playerGamePad);
     bc = space->GetHandles().GetAs<BoxCollider>(playerCollider);
@@ -201,25 +203,25 @@ namespace Framework
     }
     else
       arrowSpawn = false;
-    
+
     //update the weapons delay
     weapon->Update(dt);
 
 
 
-		//fire on trigger pull
-		if (
+    //fire on trigger pull
+    if (
       (gp->RightTrigger() && !hasFired)
-      || 
+      ||
       (SHEEPINPUT->KeyIsDown(VK_SPACE)
       && !hasFired && gp->GetIndex() == 0)
       )
-		{
+    {
       if (weapon->semi)
         hasFired = true;
 
-			onFire();
-		}
+      onFire();
+    }
     else
     {
       if (!gp->RightTrigger())
@@ -228,29 +230,29 @@ namespace Framework
       }
     }
 
-  //  //check to see if the weapon is semi-auto
-  //  if (weapon->semi == false)
-  //  {
-  //    if (weapon->delay <= 0)
-  //    {
-  //      hasFired = false;
-  //      weapon->ResetDelay();
-  //    }
-  //  }
+    //  //check to see if the weapon is semi-auto
+    //  if (weapon->semi == false)
+    //  {
+    //    if (weapon->delay <= 0)
+    //    {
+    //      hasFired = false;
+    //      weapon->ResetDelay();
+    //    }
+    //  }
 
     // keyboard input for first player
-    if(SHEEPINPUT->KeyIsDown(VK_SPACE))
-        SHEEPINPUT->Pads[0].State.Gamepad.bRightTrigger = (BYTE)255;
+    if (SHEEPINPUT->KeyIsDown(VK_SPACE))
+      SHEEPINPUT->Pads[0].State.Gamepad.bRightTrigger = (BYTE)255;
 
-		////if the trigger is released, reset the bool
-		//if (!gp->RightTrigger() && weapon->semi)
-  //  {
-  //    if (weapon->delay <= 0)
-  //    {
-  //      hasFired = false;
-  //      
-  //    }
-  //  }
+    ////if the trigger is released, reset the bool
+    //if (!gp->RightTrigger() && weapon->semi)
+    //  {
+    //    if (weapon->delay <= 0)
+    //    {
+    //      hasFired = false;
+    //      
+    //    }
+    //  }
 
 
     moveController.Update(GetOwner());
@@ -268,7 +270,7 @@ namespace Framework
       Combat()->Kill(-1);
 
     //isSnapped = false;
-    
+
     //keyboard movement
     if (gp->GetIndex() == 0 && !gp->Connected())
     {
@@ -307,10 +309,10 @@ namespace Framework
     //}
 
     /*if(snapFrame > 0)
-      --snapFrame;
+    --snapFrame;
 
     if(checkJump > 0)
-      --checkJump;
+    --checkJump;
 
     collisionTotal = 0;
     otherObjectVelocity = Vec3();*/
@@ -322,19 +324,19 @@ namespace Framework
     //metricData.y = (int)ps->GetTranslation().y;
     //ENGINE->SystemMessage(MetricsMessage(&metricData));
 
-	}
+  }
 
-	//************************************
-	// Method:    OnCollision
-	// FullName:  Framework::PlayerController::OnCollision
-	// Access:    public 
-	// Returns:   void
-	// Qualifier:
-	// Parameter: Handle otherObject
-	// Parameter: SheepFizz::ExternalManifold manifold
-	//************************************
-	void PlayerController::OnCollision(Handle otherObject, SheepFizz::ExternalManifold manifold)
-	{
+  //************************************
+  // Method:    OnCollision
+  // FullName:  Framework::PlayerController::OnCollision
+  // Access:    public 
+  // Returns:   void
+  // Qualifier:
+  // Parameter: Handle otherObject
+  // Parameter: SheepFizz::ExternalManifold manifold
+  //************************************
+  void PlayerController::OnCollision(Handle otherObject, SheepFizz::ExternalManifold manifold)
+  {
     //update all the players pointers
     //gp = space->GetHandles().GetAs<GamePad>(playerGamePad);
     bc = space->GetHandles().GetAs<BoxCollider>(playerCollider);
@@ -342,28 +344,28 @@ namespace Framework
     //ps = space->GetHandles().GetAs<Transform>(playerTransform);
 
     GameObject *OtherObject = space->GetHandles().GetAs<GameObject>(otherObject); //get the game object from the handle
-    
+
     m_combatController.Collision(GetOwner(), OtherObject);
 
     /*if(OtherObject->name == "WeaponPickup" || OtherObject->archetype == "Grinder" ||
-      OtherObject->name == "PowerUpPickup" || OtherObject->name == "CoinPickup" || OtherObject->name == "CoinBall" || OtherObject->name == "Player"
-      || OtherObject->HasComponent(eBullet_Default))
-      return;*/
+    OtherObject->name == "PowerUpPickup" || OtherObject->name == "CoinPickup" || OtherObject->name == "CoinBall" || OtherObject->name == "Player"
+    || OtherObject->HasComponent(eBullet_Default))
+    return;*/
 
-    if(moveController.CanSnap())
+    if (moveController.CanSnap())
       moveController.DetermineSnap(bc, OtherObject, manifold);
-	}
+  }
 
 
-	//************************************
-	// Method:    Remove
-	// FullName:  Framework::PlayerController::Remove
-	// Access:    public 
-	// Returns:   void
-	// Qualifier: //3
-	//************************************
-	void PlayerController::Remove() //3
-	{
+  //************************************
+  // Method:    Remove
+  // FullName:  Framework::PlayerController::Remove
+  // Access:    public 
+  // Returns:   void
+  // Qualifier: //3
+  //************************************
+  void PlayerController::Remove() //3
+  {
     if (spawnEffect != Handle::null)
     {
       GameObject* obj = space->GetGameObject(spawnEffect);
@@ -371,8 +373,8 @@ namespace Framework
         obj->Destroy();
       spawnEffect = Handle::null;
     }
-		//opposite of init
-		space->hooks.Remove("LogicUpdate", self);
+    //opposite of init
+    space->hooks.Remove("LogicUpdate", self);
 
     if (weapon != nullptr)
     {
@@ -384,19 +386,19 @@ namespace Framework
       delete powerUp; //release dynamic memory
       powerUp = nullptr;
     }
-	}
+  }
 
-	//************************************
-	// Method:    onFire
-	// FullName:  Framework::PlayerController::onFire
-	// Access:    public 
-	// Returns:   void
-	// Qualifier:
-	//************************************
-	void PlayerController::onFire()
-	{
+  //************************************
+  // Method:    onFire
+  // FullName:  Framework::PlayerController::onFire
+  // Access:    public 
+  // Returns:   void
+  // Qualifier:
+  //************************************
+  void PlayerController::onFire()
+  {
     /*if (GodMode == true || GoldenGun == true)
-      weapon->damage = 100;*/
+    weapon->damage = 100;*/
 
     if (weapon->delay > 0.0f)
       return;
@@ -409,19 +411,19 @@ namespace Framework
       BoxCollider *bc = space->GetHandles().GetAs<BoxCollider>(playerCollider);
       bc->AddToVelocity(-aimDir * (float)(weapon->knockback));
     }
-	}
+  }
 
-	//************************************
-	// Method:    aimingDirection
-	// FullName:  Framework::PlayerController::aimingDirection
-	// Access:    public 
-	// Returns:   Framework::Vec3
-	// Qualifier:
-	// Parameter: GamePad * gp
-	//************************************
-	Vec3 PlayerController::aimingDirection(GamePad *gp, char stick)
-	{
-		Vec3 returnVec;
+  //************************************
+  // Method:    aimingDirection
+  // FullName:  Framework::PlayerController::aimingDirection
+  // Access:    public 
+  // Returns:   Framework::Vec3
+  // Qualifier:
+  // Parameter: GamePad * gp
+  //************************************
+  Vec3 PlayerController::aimingDirection(GamePad *gp, char stick)
+  {
+    Vec3 returnVec;
 
     if (stick == 'L')
     {
@@ -438,8 +440,8 @@ namespace Framework
     returnVec.Normalize();
     //returnVec *= 1.5;
 
-		return returnVec;
-	}
+    return returnVec;
+  }
 
   //************************************
   // Method:    SpawnAimArrow
@@ -452,23 +454,23 @@ namespace Framework
   {
     aimDir = aimingDirection(gp); //get the direction the player is currently aiming;
 
-    if(!arrowSpawn)
+    if (!arrowSpawn)
       arrowSpawn = true;
 
     /*
     if (!arrowSpawn)
     {
-      //draw aiming arrow
-      GameObject *AA = (FACTORY->LoadObjectFromArchetype(space, "AimingArrow"));
-      AA->GetComponent<AimingArrow>(eAimingArrow)->playerGamePad = playerGamePad;
-      AA->GetComponent<AimingArrow>(eAimingArrow)->playerTransform = playerTransform;
-      AA->GetComponent<Transform>(eTransform)->SetTranslation(ps->GetTranslation());
+    //draw aiming arrow
+    GameObject *AA = (FACTORY->LoadObjectFromArchetype(space, "AimingArrow"));
+    AA->GetComponent<AimingArrow>(eAimingArrow)->playerGamePad = playerGamePad;
+    AA->GetComponent<AimingArrow>(eAimingArrow)->playerTransform = playerTransform;
+    AA->GetComponent<Transform>(eTransform)->SetTranslation(ps->GetTranslation());
 
-      AniSprite *playerS = space->GetHandles().GetAs<AniSprite>(playerAnimation); //get the player's ani-sprite
-      AA->GetComponent<Sprite>(eSprite)->Color = playerS->Color; //set the colors equal
-      AA->GetComponent<Sprite>(eSprite)->Color.a = 0.7f; //make sure the alpha isn't low (happens during respawn)
-      arrowSpawn = true;
-<<<<<<< HEAD
+    AniSprite *playerS = space->GetHandles().GetAs<AniSprite>(playerAnimation); //get the player's ani-sprite
+    AA->GetComponent<Sprite>(eSprite)->Color = playerS->Color; //set the colors equal
+    AA->GetComponent<Sprite>(eSprite)->Color.a = 0.7f; //make sure the alpha isn't low (happens during respawn)
+    arrowSpawn = true;
+    <<<<<<< HEAD
     }*/
   }
 
@@ -517,7 +519,7 @@ namespace Framework
         if (pa->Color.A >= 1.0f)
           blink = false;
       }
-      
+
       if (spawnEffect != Handle::null)
       {
         effectTrans = space->GetGameObject(spawnEffect)->GetComponent<Transform>(eTransform);
@@ -593,7 +595,7 @@ namespace Framework
     }
 
     Transform* trans = space->GetHandles().GetAs<Transform>(playerTransform);
-    
+
     animCont.Update(pa, playerColor, trans->GetRotation(), aimDir, arrowSpawn);
 
   }
@@ -665,7 +667,7 @@ namespace Framework
       exT->SetTranslation(ps->GetTranslation());
       exT->SetRotation((float)GetRandom(0, (int)(2.0f * (float)PI)));
     }
-    
+
     ENGINE->SystemMessage(MetricsMessage(&playerButton));
   }
 
@@ -721,7 +723,7 @@ namespace Framework
 
     effectTrans = space->GetGameObject(spawnEffect)->GetComponent<Transform>(eTransform);
     effectTrans->SetTranslation(ps->GetTranslation());
-    
+
     stoppedFX = false;
   }
 }

@@ -90,11 +90,11 @@ namespace Framework
 
     void TrueDeath();
 
-    float m_maxShields = 100.0f;
+    float m_maxShields = 150.0f;
     float m_shield = m_maxShields;
     float m_nextRegen = 0.0f; /* Time until we can regenerate */
-    float m_regenCD = 1.5f; /* Regeneration Cool down */
-    float m_regenRate = 20.0f; /* Regeneration per second */
+    float m_regenCD = 1.0f; /* Regeneration Cool down */
+    float m_regenRate = 30.0f; /* Regeneration per second */
     float m_fadeTime = 5.0f;
     bool  m_rechargingShields = false;
     float m_nextDangerSwitch = 0.0f;
@@ -107,8 +107,8 @@ namespace Framework
     int m_killer = -1;
 
     bool m_godMode = false;
-    bool m_respawnGod = false;
-    float m_respawnGodTime = 0.0f;
+    bool m_respawnGod = true;
+    float m_respawnGodTime = 3.0f;
 
     int m_playerNum = -1;
 

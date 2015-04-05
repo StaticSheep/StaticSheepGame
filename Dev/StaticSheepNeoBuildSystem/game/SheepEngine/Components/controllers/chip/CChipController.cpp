@@ -95,8 +95,8 @@ namespace Framework
 
     /*if (RC->state_ == RoundController::RoundState::ROUNDINPRO)
     {*/
-      totalTimeAsJugg[jugg] += timeAsJugg;
-      roundTimeAsJugg[jugg] += timeAsJugg;
+      //totalTimeAsJugg[jugg] += timeAsJugg;
+      //roundTimeAsJugg[jugg] += timeAsJugg;
    // }
   }
 
@@ -119,8 +119,8 @@ namespace Framework
     {
       if (LL->juggernaut[i])
       {
-        roundTimeAsJugg[i] += LL->timeAsJugg;
-        totalTimeAsJugg[i] += LL->timeAsJugg;
+        //roundTimeAsJugg[i] += LL->timeAsJugg;
+        totalTimeAsJugg[i] += roundTimeAsJugg[i];
         LL->timeAsJugg = 0;
         break;
       }

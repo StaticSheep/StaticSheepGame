@@ -38,7 +38,7 @@ namespace Framework
     //space->hooks.Add("PlayerDied", self, BUILD_FUNCTION(Level1_Lighting::PlayerDied)); // might want this
 
     //if (!ENGINE->m_editorActive)
-      //CreateSpawnLights();
+    //CreateSpawnLights();
     for (int i = 0; i < 4; ++i)
       sfxTriggered[i] = false;
 
@@ -128,7 +128,8 @@ namespace Framework
       if (!sfxTriggered[0])
       {
         SoundEmitter *se = space->GetGameObject(owner)->GetComponent<SoundEmitter>(eSoundEmitter);
-        se->Play("switch_on", &SoundInstance(1.0f));
+        se->Play("switch_0", &SoundInstance(1.0f));
+        se->Play("switch_1", &SoundInstance(1.0f));
         sfxTriggered[0] = true;
       }
       light[0]->SetBrightness(Vec4(0.1f, 1.0f, 0.1f, 200.0f));
@@ -139,18 +140,20 @@ namespace Framework
       if (!sfxTriggered[1])
       {
         SoundEmitter *se = space->GetGameObject(owner)->GetComponent<SoundEmitter>(eSoundEmitter);
-        se->Play("switch_on", &SoundInstance(1.0f));
+        se->Play("switch_2", &SoundInstance(1.0f));
+        se->Play("switch_3", &SoundInstance(1.0f));
         sfxTriggered[1] = true;
       }
       light[1]->SetBrightness(Vec4(1.0f, 0.1f, 0.1f, 200.0f));
       light[3]->SetBrightness(Vec4(0.1f, 0.1f, 1.0f, 200.0f));
     }
-    else if (spawnTimer_ <= 0.0f)
+    else if (spawnTimer_ >= 0.0f)
     {
       if (!sfxTriggered[2])
       {
         SoundEmitter *se = space->GetGameObject(owner)->GetComponent<SoundEmitter>(eSoundEmitter);
         se->Play("switch_on", &SoundInstance(1.0f));
+        se->Play("switch_4", &SoundInstance(1.0f));
         sfxTriggered[2] = true;
       }
       light[4]->SetBrightness(Vec4(1.0f, 1.0f, 1.0f, 200.0f));
@@ -243,7 +246,7 @@ namespace Framework
 
   void Level1_Lighting::Toggle()
   {
-    
+
     if (m_isOn)
       TurnOff();
     else

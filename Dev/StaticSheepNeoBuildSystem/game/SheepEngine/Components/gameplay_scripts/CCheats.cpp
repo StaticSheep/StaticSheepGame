@@ -46,7 +46,7 @@ namespace Framework
     //logic setup, you're attached and components are in place
     space->hooks.Add("LogicUpdate", self, BUILD_FUNCTION(Cheats::LogicUpdate));
     space->GetGameObject(owner)->hooks.Add("ButtonPressed", self, BUILD_FUNCTION(Cheats::RecordButtonPress));
-    
+
     playerController = space->GetGameObject(owner)->GetComponentHandle(ePlayerController);
 
   }

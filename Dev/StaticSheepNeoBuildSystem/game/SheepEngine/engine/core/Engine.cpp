@@ -169,7 +169,9 @@ namespace Framework
     if(Framerate.FramerateCheck())
     {
       Step();
-      //Framerate.EndMainLoop();
+
+      if (!WINDOW_ACTIVE)
+        Framerate.EndMainLoop();
     }
   }
 

@@ -21,7 +21,7 @@ namespace Framework
   {
     delay = 0;
     damage = 10;
-    knockback = 60;
+    knockback = 90;
     semi = true;
     explosive_ = false;
     fireSound = "Laser_Shot";

@@ -34,6 +34,7 @@ namespace Framework
     float timer;
     float bounceDownTimer;
     bool bounceDownDone;
-    bool done; 
+    bool done;
+    bool gold_;
 	};
 }

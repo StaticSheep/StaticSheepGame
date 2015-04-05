@@ -159,12 +159,13 @@ end
 function META:Run()
   self.tex = {}
   self.tex[1] = surface.GetTextureID("GigaGravityTitle.png")
+  self.tex[2] = surface.GetTextureID("logohead.png")
   self.CreditList = {}
 
   self._alpha = 255
   self._texID = self.tex[1]
   self._texSize = Vec2(600, 150)
-  self._textPos = Vec3(20, 50, 0)
+  self._textPos = Vec3(20, 50 + 75, 0)
   self._slotMachine = {}
   self._logo = nil
   self._startBtn = nil
@@ -181,15 +182,19 @@ function META:Run()
     Timed(1.5),
     FadeOut(self),
     nil,
-    true))
+    false))
 
-  self:CreditTitle("Claude Comair", "DigiPen President", 0)
-  self:CreditEx("GAM Instructors", 2.5, nil, 1.5, 26)
+  self:CreditEx("All content (c) 2014 DigiPen (USA) Corporation, all rights reserved.", 0.0, nil, 0.0, 10)
+  self:CreditEx("FMOD Studio Copyright (c) 2005-2011 Firelight Technologies Pty, Ltd.", 1.0, nil, 0.0, 10)
+
+  self:CreditTitle("Claude Comair", "President", 3.0)
+  self:CreditEx("Game Instructors", 2.5, nil, 1.5, 26)
   self:CreditEx("Rachel Rutherford", 2.0)
   self:CreditEx("ellen Beeman", 0.5)
   self:CreditEx("Benjamin ellinger", 0.5)
+  self:CreditEx("Chris Peters", 0.5)
 
-
+  self:CreditEx("Team Static Sheep", 2.5, nil, 1.5, 26)
   self:CreditTitle("Greg Walls", "Producer", 3.0)
   self:CreditTitle("Zachary Nawar", "Technical Director", 2.5)
   self:CreditTitle("Jon Sourbeer", "Physics Pinata", 2.5)
@@ -203,7 +208,7 @@ function META:Run()
 "Juli Gregg", "Rachel Rutherford", "Sarah McGinley",
 "Nathan Carlson", "Jordan ellis", "Randy Gaul", "Corbin Hart",
 "Robert Di Battista", "Joseph Nawar", "Tresillion Dorne",
-"Garry Newman", "Starbucks", "Texas Instruments"
+"Garry Newman"
 }
   for k,v in pairs(thanks) do
     self:CreditEx(v, 0.75)
@@ -215,7 +220,7 @@ function META:Run()
 "Scott Smith", "Nathan Mueller", "Chris Hendricks",
 "John Lim", "Patrick Michael \"Overhira\" Casey",
 "Izzy Abdus-Sabur", "Ilan Keshet", "eduardo Gorinstein",
-"Esteban Maldonado"}
+"Esteban Maldonado", "And many others"}
 
   self:CreditEx("Playtesters", 2.5, nil, 0, 26)
 
@@ -223,10 +228,42 @@ function META:Run()
     self:CreditEx(v, 0.75)
   end
 
-  self:CreditEx("All content (c) 2014 DigiPen (USA) Corporation, all rights reserved.", 2.5, nil, 0, 10)
-  self:CreditEx("FMOD Studio Copyright (c) 2005-2011 Firelight Technologies Pty, Ltd.", 0.5, nil, 0, 10)
-  self:CreditEx("AntTweakBar Copyright (c) 2005-2013 Philippe Decaudin.", 0.5, nil, 0, 10)
-  self:CreditEx("DirectX 11 TK Copyright (c) 2015 Microsoft Corp", 0.5, nil, 0, 10)
+local sizeX = 256
+local sizeY = sizeX * 16/9
+  self.List:PushBack(Action(
+    function(act)
+      Timed(4)(act)
+      ChangeTexture(self, 2)(act)
+      self._textPos.y = 700
+      self._alpha = 255
+      self._texSize = Vec2(sizeX, sizeY)
+
+    end,
+    function(act, dt)
+      -- if act.tl < act.startHold then
+      --   if act.tl < act.endHold then
+      --     -- Going away
+      --     local t = act.tl / act.endHold
+      --     TranslateVector(self._textPos, Vec2(320 - sizeX / 2, 320),
+      --       Vec2(320 - sizeX / 2, -300), t)(act, dt)
+      --   else
+      --     -- Holding
+      --   end
+      -- else
+      --   -- Coming up
+      --   local t = (act.tl - act.startHold) / (act.ttl - act.startHold)
+      --   TranslateVector(self._textPos, Vec2(320 - sizeX / 2, 640 + 300),
+      --     Vec2(320 - sizeX / 2, 320), t)(act, dt)
+
+      -- end
+      local t = act.tl / act.ttl
+      TranslateVector(self._textPos, Vec2(320 - sizeX / 2, 640 + 300),
+          Vec2(320 - sizeX / 2, 320), t)(act, dt)
+      Hold()(act, dt)
+    end,
+    nil,
+    true))
+
 
 end
 
@@ -235,6 +272,7 @@ function META:Init()
   self.CreditList = {}
 
   self:Run()
+  self.pausewait = true
 end
 
 function META:Refresh()
@@ -255,6 +293,11 @@ end
 
 function META:Update(dt)
   self.List:Update(dt)
+
+  if self.pausewait then
+    self.pausewait = false
+    return
+  end
 
   if gamepad.ButtonPressed(nil, GAMEPAD_START) or
   gamepad.ButtonPressed(nil, GAMEPAD_A) or
@@ -280,7 +323,7 @@ function META:GuiDraw()
   surface.SetTexture(self._texID)
   surface.SetColor(255, 255, 255, self._alpha)
   surface.ForceZ(true, self._textPos.z - 1.0)
-  surface.DrawTexturedRect(ScreenScale(self._textPos.x), ScreenScaleY(self._textPos.y),
+  surface.DrawTexturedRect(ScreenScale(self._textPos.x), ScreenScaleY(self._textPos.y) -  ScreenScaleY(self._texSize.y)/2,
    ScreenScale(self._texSize.x), ScreenScaleY(self._texSize.y))
   surface.ForceZ(false, 0)
 end

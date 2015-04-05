@@ -52,7 +52,7 @@ namespace Framework
 
     btrans->SetTranslation(ptrans->GetTranslation() + AimDir * 25);
 
-    pse->Play(fireSound, &SoundInstance(1.0f));
+    pse->Play(fireSound, &SoundInstance(fireVolume));
 
     return obj;
   }

@@ -83,6 +83,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/gameplay_scripts/Slot_Machine_Scripts/CPersonalSlotSpawner.h"
 #include "components/controllers/light patterns/CLightPatternController.h"
 #include "components/controllers/lobby/CTutorialText.h"
+#include "systems/audio/SheepAudio.h"
 
 namespace Framework
 {
@@ -650,6 +651,8 @@ namespace Framework
 
 
     TYPE_REGISTER(Tester);
+
+    //TYPE_REGISTER_PTR(SheepAudio);
 
     TYPE_REGISTER(BlockLights::LightSettings);
     TYPE_ADD_MEMBER(BlockLights::LightSettings, fx, false, true, "Effect");

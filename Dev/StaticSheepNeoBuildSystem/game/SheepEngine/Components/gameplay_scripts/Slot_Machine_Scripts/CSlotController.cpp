@@ -396,9 +396,9 @@ namespace Framework
     }
     else if (reel == 2) //mod 2
     {
-      slotWeights[0] = 50;
-      slotWeights[1] = 45;
-      slotWeights[2] = 5;
+      slotWeights[0] = 40;
+      slotWeights[1] = 35;
+      slotWeights[2] = 25;
     }
   }
 }

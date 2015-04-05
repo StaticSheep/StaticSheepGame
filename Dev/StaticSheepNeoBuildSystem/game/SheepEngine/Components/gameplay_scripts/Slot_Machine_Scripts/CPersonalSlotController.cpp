@@ -43,6 +43,7 @@ namespace Framework
     bounceDownTimer = 0.5f;
     bounceDownDone = false;
     space->GetGameObject(owner)->GetComponent<SoundEmitter>(eSoundEmitter)->Play("slot_digital_coin", &SoundInstance(1.0f));
+    gold_ = false;
 	}
 
   void PersonalSlotController::Remove()
@@ -92,85 +93,123 @@ namespace Framework
 
   void PersonalSlotController::SetSMTextures(int slotNum, int *spinTexID, int *stopTexID)
   {
-    std::string texID;
-    if (playerNum == 0)
-      texID = "p1_";
-    else if (playerNum == 1)
-      texID = "p2_";
-    else if (playerNum == 2)
-      texID = "p3_";
-    else if (playerNum == 3)
-      texID = "p4_";
-    
-    if (psmNum == 1)
+    if (gold_)
     {
-      texID.append("reel1.png");
-      *spinTexID = Draw::GetTextureID(texID.c_str());
-      *stopTexID = Draw::GetTextureID(texID.c_str());
-    }
-    else if (psmNum == 2)
-    {
-      texID.append("reel2.png");
-      *spinTexID = Draw::GetTextureID(texID.c_str());
-      *stopTexID = Draw::GetTextureID(texID.c_str());
+      *spinTexID = Draw::GetTextureID("gold_reel.png");
+      *stopTexID = Draw::GetTextureID("gold_reel.png");
     }
     else
     {
-      texID.append("reel3.png");
-      *spinTexID = Draw::GetTextureID(texID.c_str());
-      *stopTexID = Draw::GetTextureID(texID.c_str());
+      std::string texID;
+      if (playerNum == 0)
+        texID = "p1_";
+      else if (playerNum == 1)
+        texID = "p2_";
+      else if (playerNum == 2)
+        texID = "p3_";
+      else if (playerNum == 3)
+        texID = "p4_";
+
+      if (psmNum == 1)
+      {
+        texID.append("reel1.png");
+        *spinTexID = Draw::GetTextureID(texID.c_str());
+        *stopTexID = Draw::GetTextureID(texID.c_str());
+      }
+      else if (psmNum == 2)
+      {
+        texID.append("reel2.png");
+        *spinTexID = Draw::GetTextureID(texID.c_str());
+        *stopTexID = Draw::GetTextureID(texID.c_str());
+      }
+      else
+      {
+        texID.append("reel3.png");
+        *spinTexID = Draw::GetTextureID(texID.c_str());
+        *stopTexID = Draw::GetTextureID(texID.c_str());
+      }
     }
   }
 
   void PersonalSlotController::SetSMResults(int slotNum, int *landResult)
   {
     int ranChance = GetRandom(0, 99);
-    if (ranChance <= 4)
+    if (gold_)
     {
-      //chip
-      *landResult = 0;
+      if (ranChance <= 69)
+        *landResult = 0; //one chip
+      else if (ranChance > 69 && ranChance <= 94)
+        *landResult = 1; //two chips
+      else //95 - 99
+        *landResult = 2; //three chips
     }
-    else if (ranChance > 4 && ranChance <= 49)
+    else
     {
-      //coin
-      *landResult = 1;
-    }
-    else //60 - 99
-    {
-      //powerup
-      *landResult = 2;
+      if (ranChance <= 4)
+      {
+        //chip
+        *landResult = 0;
+      }
+      else if (ranChance > 4 && ranChance <= 49)
+      {
+        //coin
+        *landResult = 1;
+      }
+      else //60 - 99
+      {
+        //powerup
+        *landResult = 2;
+      }
     }
   }
 
   void PersonalSlotController::ReceiveSMResults(std::vector<int>* results)
   {
     space->GetGameObject(owner)->GetComponent<BasicParticleSystem>(eBasicParticleSystem)->Toggle(false);
-    if ((*results)[0] == 0)
+    if (gold_)
     {
-      //chip
-      space->hooks.Call("GivePlayerChip", playerNum, 1);
+      if ((*results)[0] == 0)
+      {
+        space->hooks.Call("GivePlayerChip", playerNum, 1);
+      }
+      if ((*results)[0] == 1)
+      {
+        space->hooks.Call("GivePlayerChip", playerNum, 2);
+      }
+      if ((*results)[0] == 2)
+      {
+        space->hooks.Call("GivePlayerChip", playerNum, 3);
+      }
     }
-    if ((*results)[0] == 1)
+    else
     {
-      //coin
-      space->hooks.Call("GivePlayerCoins", playerNum, 2500);
-    }
-    if ((*results)[0] == 2)
-    {
-      //special
-      if (psmNum == 0)
+      if ((*results)[0] == 0)
       {
+        //chip
+        space->hooks.Call("GivePlayerChip", playerNum, 1);
+      }
+      if ((*results)[0] == 1)
+      {
+        //coin
+        space->hooks.Call("GivePlayerCoins", playerNum, 2500);
+      }
+      if ((*results)[0] == 2)
+      {
+        //special
+        if (psmNum == 0)
+        {
+
+        }
+        else if (psmNum == 1)
+        {
+
+        }
+        else if (psmNum == 2)
+        {
+
+        }
 
       }
-      else if (psmNum == 1)
-      {
-
-      }
-      else if (psmNum == 2)
-      {
-
-      }
-
     }
   }
 

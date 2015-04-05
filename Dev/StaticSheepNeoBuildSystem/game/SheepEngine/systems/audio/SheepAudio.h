@@ -25,6 +25,10 @@ namespace Framework
     unsigned int block;
   };
 
+  class SheepAudio;
+
+  extern SheepAudio* AUDIO;
+
   class SheepAudio : public ISystem
   {
   public:
@@ -55,10 +59,21 @@ namespace Framework
     // Pause everything. Pass true for pause, false for unpause
     void PauseAll(bool paused);
 
-    void SetMasterVolume(float volume);
-    float GetMasterVolume();
-
+    static void SetMasterVolume(float volume);
     void SetMasterPitch(float pitch);
+    static void SetMusicVolume(float volume);
+    static void SetSFXVolume(float volume);
+
+    static float GetMasterVolume();
+    static float GetMusicVolume();
+    static float GetSFXVolume();
+
+    static SheepAudio* GetAudioSystem()
+    {
+      return AUDIO;
+    }
+
+    
     float GetMasterPitch();
 
     bool GetLoadState() const;
@@ -77,10 +92,17 @@ namespace Framework
     SOUND::System* system;
     FMOD::System* lowLevelSystem;
 
+    FMOD::ChannelGroup* musicChannel;
+    FMOD::ChannelGroup* sfxChannel;
+
     float masterVolume;
+
+    float musicVolume;
+    float sfxVolume;
+
     float masterPitch;
     
   };
 
-	extern SheepAudio* AUDIO;
+	
 }
