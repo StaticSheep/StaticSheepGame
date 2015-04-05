@@ -50,7 +50,7 @@ namespace Framework
     bcol->SetBodyCollisionGroup(pc->weaponGroup);
     bcol->AddToVelocity(AimDir * speed);
 
-    btrans->SetTranslation(ptrans->GetTranslation() + AimDir * 25);
+    btrans->SetTranslation(ptrans->GetTranslation() + (AimDir * 25) + (ply->GetComponent<BoxCollider>(eBoxCollider)->GetBodyUpNormal() * 20));
 
     pse->Play(fireSound, &SoundInstance(fireVolume));
 

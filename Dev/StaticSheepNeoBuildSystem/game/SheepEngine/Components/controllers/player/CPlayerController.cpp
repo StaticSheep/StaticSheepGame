@@ -444,25 +444,28 @@ namespace Framework
   void PlayerController::SpawnAimArrow()
   {
     aimDir = aimingDirection(gp); //get the direction the player is currently aiming;
-
-    if (!arrowSpawn)
-      arrowSpawn = true;
-
-    /*
     if (!arrowSpawn)
     {
     //draw aiming arrow
     GameObject *AA = (FACTORY->LoadObjectFromArchetype(space, "AimingArrow"));
     AA->GetComponent<AimingArrow>(eAimingArrow)->playerGamePad = playerGamePad;
     AA->GetComponent<AimingArrow>(eAimingArrow)->playerTransform = playerTransform;
+    AA->GetComponent<AimingArrow>(eAimingArrow)->playerController = owner;
     AA->GetComponent<Transform>(eTransform)->SetTranslation(ps->GetTranslation());
 
-    AniSprite *playerS = space->GetHandles().GetAs<AniSprite>(playerAnimation); //get the player's ani-sprite
-    AA->GetComponent<Sprite>(eSprite)->Color = playerS->Color; //set the colors equal
-    AA->GetComponent<Sprite>(eSprite)->Color.a = 0.7f; //make sure the alpha isn't low (happens during respawn)
+    Vec4 color_;
+    if (playerNum == 0)
+      color_ = Vec4(0.2f, 1.0f, 0.2f, 0.7f);
+    else if (playerNum == 1)
+      color_ = Vec4(1.0f, 0.2f, 0.2f, 0.7f);
+    else if (playerNum == 2)
+      color_ = Vec4(1.0f, 0.2f, 1.0f, 0.7f);
+    else if (playerNum == 3)
+      color_ = Vec4(0.2f, 0.2f, 1.0f, 0.7f);
+
+    AA->GetComponent<Sprite>(eSprite)->Color = color_;
     arrowSpawn = true;
-    <<<<<<< HEAD
-    }*/
+    }
   }
 
 

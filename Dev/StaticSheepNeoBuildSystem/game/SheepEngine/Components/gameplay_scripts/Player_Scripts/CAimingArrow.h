@@ -28,6 +28,7 @@ namespace Framework
     Handle arrowSprite;
     Handle playerGamePad;
     Handle playerTransform;
+    Handle playerController;
     Vec4 arrowColor;
 
 	};
