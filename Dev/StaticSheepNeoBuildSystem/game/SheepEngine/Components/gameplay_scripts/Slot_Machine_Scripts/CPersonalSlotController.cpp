@@ -241,12 +241,12 @@ namespace Framework
         else if (psmNum == 1)
         {
           //double damage
-
+          space->hooks.Call("GivePlayerLoadoutItem", playerNum, DoubleDamage);
         }
         else if (psmNum == 2)
         {
           //explosive damage
-
+          space->hooks.Call("GivePlayerLoadoutItem", playerNum, ExplosiveRounds);
         }
 
       }
