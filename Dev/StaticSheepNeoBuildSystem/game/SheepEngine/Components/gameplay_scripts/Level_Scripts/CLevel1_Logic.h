@@ -10,6 +10,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/base/Component.h"
 #include "types/handle/Handle.h"
 #include "../types/levelEvents/LEBase.h"
+#include "../../controllers/player/CPlayerController.h"
 
 namespace Framework
 {

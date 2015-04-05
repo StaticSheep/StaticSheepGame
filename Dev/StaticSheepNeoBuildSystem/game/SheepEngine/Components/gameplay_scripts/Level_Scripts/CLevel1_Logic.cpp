@@ -34,6 +34,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "../../controllers/round/CRoundText.h"
 #include "../../controllers/lobby/CLobbyController.h"
 #include "../../controllers/light patterns/CLightPatternController.h"
+#include "../../controllers/player/CombatController.h"
 
 static const char *playerNames[] = { "Player1", "Player2", "Player3", "Player4" };
 static int juggKills[4] = { 0, 0, 0, 0 };
@@ -216,7 +217,7 @@ namespace Framework
 
     if (playerLoadouts[pc->playerNum] & BonusShield)
     {
-      pc->Combat()->SetMaxShields(pc->Combat->GetMaxShields() + BONUS_SHIELD);
+      pc->Combat()->SetMaxShields(pc->Combat()->GetMaxShields() + BONUS_SHIELD);
       pc->Combat()->SetShields(pc->Combat()->GetMaxShields());
 
       TRACELOG->Log(TraceLevel::DBG,

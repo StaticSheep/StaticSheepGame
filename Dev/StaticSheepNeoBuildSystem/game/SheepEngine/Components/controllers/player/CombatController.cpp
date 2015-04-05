@@ -38,7 +38,7 @@ namespace Framework
 
   CombatController::CombatController()
   {
-
+    m_weapon = nullptr;
   }
 
   CombatController::~CombatController()
@@ -67,7 +67,7 @@ namespace Framework
     m_rechargingShields = false;
 
     m_fadeTime = SHIELD_FADETIME - 0.1f;
-
+    m_weapon = nullptr;
     SetWeapon((Pistol*)GET_TYPE(Pistol)->New());
 
     //TakeDamage(1.0f, -1);
@@ -183,7 +183,9 @@ namespace Framework
     }
 
     UpdateShieldLight(obj, dt);
-    m_weapon->Update(dt);
+
+    if (m_weapon)
+      m_weapon->Update(dt);
   }
 
   void CombatController::TakeDamage(float damage,

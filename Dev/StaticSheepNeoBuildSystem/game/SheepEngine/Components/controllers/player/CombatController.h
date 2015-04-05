@@ -94,6 +94,8 @@ namespace Framework
     {
       if (m_weapon)
         delete m_weapon;
+
+      m_weapon = nullptr;
     }
 
     void GiveDoubleDamage();
