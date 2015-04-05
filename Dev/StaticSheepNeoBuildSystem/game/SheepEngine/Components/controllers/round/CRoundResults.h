@@ -41,10 +41,12 @@ namespace Framework
     Handle rTransfrom;
     Handle roundSprite;
     Handle ChipCont;
-    Handle winner_chip;
+    Handle winner_chip[4];
     float bounceDownTimer, timeToLive;
     int winner;
-    bool bounceDownDone, startDrawing;
+    bool winners_[4];
+    bool chip_spawned[4];
+    bool bounceDownDone, startDrawing, tie;
     GameTypes mode_;
     bool chipAwarded;
 

@@ -26,9 +26,9 @@ namespace Framework
   RoundController::RoundController()
   {
     current_round = 1;
-    max_rounds = 6; //default value
+    max_rounds = 1; //default value
     spawned_round_start = false;
-    timeOfRound = 93.0f; //default round length, (round length + 3.0f)
+    timeOfRound = 23.0f; //default round length, (round length + 3.0f)
     state_ = INTRO;
     gameStarted = false;
 
