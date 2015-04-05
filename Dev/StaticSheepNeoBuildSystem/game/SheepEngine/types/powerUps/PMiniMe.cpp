@@ -28,8 +28,8 @@ namespace Framework
 
   void MiniMe::Use(GameObject *player)
   {
-    PlayerController *playerController = player->GetComponent<PlayerController>(ePlayerController);
-    playerController->weapon->damage *= 2;
+    //PlayerController *playerController = player->GetComponent<PlayerController>(ePlayerController);
+    //playerController->weapon->damage *= 2;
 
     //SoundEmitter *se = player->GetComponent<SoundEmitter>(eSoundEmitter);
     //se->Play("Laser_Shot", &SoundInstance(1.0f));

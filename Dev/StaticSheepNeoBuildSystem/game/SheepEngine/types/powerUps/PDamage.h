@@ -17,6 +17,7 @@ namespace Framework
 
     virtual void Use(GameObject *player);
     virtual void Update(float dt);
+    void Remove(GameObject *player);
 
     float timer; //timer for how long the powerup is in effect. -1 if infinite time
     float uses;  //how many uses until the powerup is gone. -1 for infinite uses

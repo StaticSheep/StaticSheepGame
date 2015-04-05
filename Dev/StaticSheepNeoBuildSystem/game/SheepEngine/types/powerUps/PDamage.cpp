@@ -28,11 +28,16 @@ namespace Framework
 
   void DamageBoost::Use(GameObject *player)
   {
-    PlayerController *playerController = player->GetComponent<PlayerController>(ePlayerController);
-    playerController->weapon->damage *= 2;
+    PlayerController *pc = player->GetComponent<PlayerController>(ePlayerController);
+    pc->Combat()->GiveDoubleDamage();
 
     SoundEmitter *se = player->GetComponent<SoundEmitter>(eSoundEmitter);
     se->Play("Pickup_Damage", &SoundInstance(1.0f));
+  }
+
+  void DamageBoost::Remove(GameObject *player)
+  {
+
   }
 
   void DamageBoost::Update(float dt)

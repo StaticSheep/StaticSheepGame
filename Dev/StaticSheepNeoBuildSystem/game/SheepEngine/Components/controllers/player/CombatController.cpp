@@ -12,6 +12,7 @@ All content © 2015 DigiPen (USA) Corporation, all rights reserved.
 #include "../../gameplay_scripts/Weapon_Scripts/CBullet_default.h"
 #include "../../gameplay_scripts/Level_Scripts/CGrinder.h"
 #include "../../gameplay_scripts/Level_Event_Scripts/CAsteroid.h"
+#include "types/weapons/WPistol.h"
 
 #define SHIELD_FADETIME 3.0f
 #define SHIELD_HOLDTIME 3.0f
@@ -66,6 +67,8 @@ namespace Framework
     m_rechargingShields = false;
 
     m_fadeTime = SHIELD_FADETIME - 0.1f;
+
+    SetWeapon((Pistol*)GET_TYPE(Pistol)->New());
 
     //TakeDamage(1.0f, -1);
   }
@@ -180,6 +183,7 @@ namespace Framework
     }
 
     UpdateShieldLight(obj, dt);
+    m_weapon->Update(dt);
   }
 
   void CombatController::TakeDamage(float damage,
@@ -372,6 +376,24 @@ namespace Framework
 
 
 
+  }
+
+  void CombatController::GiveDoubleDamage()
+  {
+    if (m_doubleDamage)
+      return;
+
+    m_doubleDamage = true;
+    m_weapon->damage *= 2;
+  }
+
+  void CombatController::GiveExplosiveBullets()
+  {
+    if (m_explosiveBullets)
+      return;
+
+    m_explosiveBullets = true;
+    m_weapon->explosive_ = true;
   }
 
 

@@ -35,6 +35,13 @@ namespace Framework
     ROCKETS
   };
 
+  enum PlayerLoadout
+  {
+    BonusShield = 1,
+    ExplosiveRounds = 2,
+    DoubleDamage = 4,
+  };
+
 
 	class Level1_Logic : public GameComponent
 	{
@@ -87,6 +94,8 @@ namespace Framework
     GameTypes mode, lastMode;
     GameMods mod1, mod2;
 
+    int playerLoadouts[4];
+
     int fontIndex;
     int event;
 
@@ -128,5 +137,9 @@ namespace Framework
     void SetMods(GameMods mod1, GameMods mod2);
 
     void Draw();
+
+
+    void GivePlayerLoadoutItem(int playerNum, PlayerLoadout item);
+    void SetupPlayer(PlayerController* pc);
 	};
 }
