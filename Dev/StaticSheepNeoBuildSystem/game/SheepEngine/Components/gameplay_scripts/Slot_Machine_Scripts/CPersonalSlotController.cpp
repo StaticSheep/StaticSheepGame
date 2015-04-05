@@ -95,6 +95,7 @@ namespace Framework
   {
     if (gold_)
     {
+      space->GetGameObject(owner)->GetComponent<SlotMachine>(eSlotMachine)->slotOptions = 3;
       *spinTexID = Draw::GetTextureID("gold_reel.png");
       *stopTexID = Draw::GetTextureID("gold_reel.png");
     }
@@ -110,19 +111,19 @@ namespace Framework
       else if (playerNum == 3)
         texID = "p4_";
 
-      if (psmNum == 1)
+      if (psmNum == 0)
       {
         texID.append("reel1.png");
         *spinTexID = Draw::GetTextureID(texID.c_str());
         *stopTexID = Draw::GetTextureID(texID.c_str());
       }
-      else if (psmNum == 2)
+      else if (psmNum == 1)
       {
         texID.append("reel2.png");
         *spinTexID = Draw::GetTextureID(texID.c_str());
         *stopTexID = Draw::GetTextureID(texID.c_str());
       }
-      else
+      else if (psmNum == 2)
       {
         texID.append("reel3.png");
         *spinTexID = Draw::GetTextureID(texID.c_str());
@@ -142,25 +143,61 @@ namespace Framework
         *landResult = 1; //two chips
       else //95 - 99
         *landResult = 2; //three chips
+      return;
     }
-    else
+
+    int weights_[5] = {0,0,0,0,0};
+    if (psmNum == 0)
     {
-      if (ranChance <= 4)
-      {
-        //chip
-        *landResult = 0;
-      }
-      else if (ranChance > 4 && ranChance <= 49)
-      {
-        //coin
-        *landResult = 1;
-      }
-      else //60 - 99
-      {
-        //powerup
-        *landResult = 2;
-      }
+      weights_[0] = 5;  //chip
+      weights_[1] = 40; //2,500
+      weights_[2] = 35; //powerup
+      weights_[3] = 18; //7,500
+      weights_[4] = 2;  //15,000
     }
+    else if (psmNum == 1)
+    {
+      weights_[0] = 5;
+      weights_[1] = 30;
+      weights_[2] = 35;
+      weights_[3] = 25;
+      weights_[4] = 5;
+    }
+    else if (psmNum == 2)
+    {
+      weights_[0] = 5;
+      weights_[1] = 20;
+      weights_[2] = 30;
+      weights_[3] = 32;
+      weights_[4] = 13;
+    }
+
+    if (ranChance <= weights_[0])
+    {
+      //chip
+      *landResult = 0;
+    }
+    else if (ranChance > weights_[0] && ranChance <= weights_[0] + weights_[1])
+    {
+      //2,500
+      *landResult = 1;
+    }
+    else if (ranChance > weights_[0] + weights_[1] && ranChance <= weights_[0] + weights_[1] + weights_[2])
+    {
+      //powerup
+      *landResult = 2;
+    }
+    else if (ranChance > weights_[0] + weights_[1] + weights_[2] && ranChance <= weights_[0] + weights_[1] + weights_[2] + weights_[3])
+    {
+      //7,500
+      *landResult = 3;
+    }
+    else if (ranChance > weights_[0] + weights_[1] + weights_[2] && ranChance <= weights_[0] + weights_[1] + weights_[2] + weights_[3] + weights_[4])
+    {
+      //15,000
+      *landResult = 4;
+    }
+
   }
 
   void PersonalSlotController::ReceiveSMResults(std::vector<int>* results)
@@ -190,7 +227,7 @@ namespace Framework
       }
       if ((*results)[0] == 1)
       {
-        //coin
+        //2500
         space->hooks.Call("GivePlayerCoins", playerNum, 2500);
       }
       if ((*results)[0] == 2)
@@ -198,17 +235,30 @@ namespace Framework
         //special
         if (psmNum == 0)
         {
-
+          //shield
+          space->hooks.Call("GivePlayerLoadoutItem", playerNum, BonusShield);
         }
         else if (psmNum == 1)
         {
+          //double damage
 
         }
         else if (psmNum == 2)
         {
+          //explosive damage
 
         }
 
+      }
+      if ((*results)[0] == 3)
+      {
+        //7500
+        space->hooks.Call("GivePlayerCoins", playerNum, 7500);
+      }
+      if ((*results)[0] == 4)
+      {
+        //15000
+        space->hooks.Call("GivePlayerCoins", playerNum, 15000);
       }
     }
   }
