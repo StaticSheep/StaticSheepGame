@@ -23,7 +23,7 @@ namespace Framework
 {
   static float psmX_ = 450.0f;
   static float psmYTop_ = 752.5f;
-  static float psmYBot_ = 353.5f;
+  static float psmYBot_ = 363.5f;
   RoundController::RoundController()
   {
     current_round = 1;

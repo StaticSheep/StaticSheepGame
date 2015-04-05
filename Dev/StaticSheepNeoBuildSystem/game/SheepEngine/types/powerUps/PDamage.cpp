@@ -11,6 +11,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "Components/colliders/CCircleCollider.h"
 #include "Components/controllers/player/CPlayerController.h"
 #include "../SheepUtil/include/Matrix3D.h"
+#include "Components/gameplay_scripts/FX_Scripts/CFollowTarget.h"
 
 namespace Framework
 {
@@ -33,6 +34,9 @@ namespace Framework
 
     SoundEmitter *se = player->GetComponent<SoundEmitter>(eSoundEmitter);
     se->Play("Pickup_Damage", &SoundInstance(1.0f));
+
+    (FACTORY->LoadObjectFromArchetype(player->space, "powerFX_DD"))->GetComponent<FollowTarget>(eFollowTarget)->pTransform =
+      player->GetComponentHandle(eTransform);
   }
 
   void DamageBoost::Remove(GameObject *player)

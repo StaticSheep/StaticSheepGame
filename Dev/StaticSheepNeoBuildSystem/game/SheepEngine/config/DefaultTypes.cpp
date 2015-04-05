@@ -74,6 +74,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "Components/controllers/round/CRoundController.h"
 #include "Components/controllers/round/CRoundText.h"
 #include "components/gameplay_scripts/FX_Scripts/CAOEDamage.h"
+#include "components/gameplay_scripts/FX_Scripts/CFollowTarget.h"
 #include "components/gameplay_scripts/Weapon_Scripts/CImpactEffect.h"
 #include "Components/controllers/round/CRoundResults.h"
 #include "components/gameplay_scripts/FX_Scripts/CPulser.h"
@@ -359,6 +360,9 @@ namespace Framework
 
     TYPE_REGISTER(PersonalSlotSpawner);
     TYPE_SET_TWEAK_TYPE(PersonalSlotSpawner, AntTweak::TW_TYPE_COMPONENT);
+
+    TYPE_REGISTER(FollowTarget);
+    TYPE_SET_TWEAK_TYPE(FollowTarget, AntTweak::TW_TYPE_COMPONENT);
 
     TYPE_REGISTER(Pistol);
     TYPE_REGISTER(Shotgun);

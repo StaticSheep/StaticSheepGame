@@ -1,0 +1,101 @@
+GameObject
+{
+  name std::string "powerFX_explosive"
+  archetype std::string "powerFX_explosive"
+  Transform
+  {
+    Translation Vec3
+    {
+      x_ float 0.000000
+      y_ float 0.000000
+      z_ float 0.000000
+    }
+    Rotation float 0.000000
+    Scale Vec3
+    {
+      x_ float 1.000000
+      y_ float 1.000000
+      z_ float 0.000000
+    }
+  }
+  BasicParticleSystem
+  {
+    m_texture std::string "orb.png"
+    m_layer int 1
+    m_pos BasicParticleSystem::BPSPos
+    {
+      square bool false
+      edgeOnly bool false
+      radius float 32.000000
+      angle float 1.000000
+      randAngle float 0.000000
+      offset Vec2
+      {
+        X float 0.000000
+        Y float 0.000000
+      }
+      randOffset Vec2
+      {
+        X float 0.000000
+        Y float 0.000000
+      }
+    }
+    m_scaling BPartSys::BPSScaling
+    {
+      scale Vec2
+      {
+        X float 10.000000
+        Y float 10.000000
+      }
+      randScale Vec2
+      {
+        X float 0.000000
+        Y float 0.000000
+      }
+    }
+    m_rot BPartSys::BPSRotation
+    {
+      rotation float 0.000000
+      randRotation float 0.000000
+    }
+    m_life BPartSys::BPSLife
+    {
+      lifetime float 0.300000
+      randLifetime float 0.000000
+    }
+    m_fade BPartSys::BPSFade
+    {
+      fadeOut bool false
+      fadeOutTime float 0.100000
+      randFadeoutTime float 0.000000
+    }
+    m_vel BPartSys::BPSVelocity
+    {
+      velocity Vec2
+      {
+        X float 0.000000
+        Y float 0.000000
+      }
+      randVelocity Vec2
+      {
+        X float 100.000000
+        Y float 100.000000
+      }
+      speedIn float 0.000000
+      randSpeedIn float 0.000000
+    }
+    m_system BPartSys::BPSSystem
+    {
+      active bool true
+      editorActive bool true
+      spawnInterval float 10.000000
+      spawnAmount float 10.000000
+      spawnPerSecond float 0.000000
+      shutdownTimer float 0.000000
+      parentToOwner bool false
+    }
+  }
+  FollowTarget
+  {
+  }
+}

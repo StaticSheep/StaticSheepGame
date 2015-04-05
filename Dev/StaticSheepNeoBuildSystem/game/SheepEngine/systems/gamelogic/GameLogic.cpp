@@ -45,6 +45,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/gameplay_scripts/Weapon_Scripts/CLaser.h"
 #include "components/gameplay_scripts/Slot_Machine_Scripts/CCoinBall.h"
 #include "components/gameplay_scripts/FX_Scripts/CAOEDamage.h"
+#include "components/gameplay_scripts/FX_Scripts/CFollowTarget.h"
 #include "components/gameplay_scripts/Weapon_Scripts/CImpactEffect.h"
 #include "Components/controllers/chip/CChipController.h"
 #include "Components/controllers/round/CRoundController.h"
@@ -120,6 +121,7 @@ namespace Framework
     REGISTER_COMPONENT(SpineLight);
     REGISTER_COMPONENT(LightPatternController);
     REGISTER_COMPONENT(PersonalSlotSpawner);
+    REGISTER_COMPONENT(FollowTarget);
   }
 
   void GameLogic::Initialize()
