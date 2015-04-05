@@ -28,8 +28,8 @@ namespace Framework
 
   void Explosive::Use(GameObject *player)
   {
-    PlayerController *playerController = player->GetComponent<PlayerController>(ePlayerController);
-    playerController->weapon->explosive_ = true;
+    PlayerController *pc = player->GetComponent<PlayerController>(ePlayerController);
+    pc->Combat()->GiveExplosiveBullets();
     uses -= 1;
 
     SoundEmitter *se = player->GetComponent<SoundEmitter>(eSoundEmitter);

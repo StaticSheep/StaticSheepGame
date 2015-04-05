@@ -216,6 +216,37 @@ function META:MakeMenu()
   rights:SetYAlignment(TEXT_ALIGN_BOTTOM)
 end
 
+function round(v, p)
+local mult = math.pow(10, p or 0) -- round to 0 places when p not supplied
+    return math.floor(v * mult + 0.5) / mult
+end
+
+local function UpdateMusicButton(btn, vol)
+
+  if vol then
+    engine.SetMusicVolume(vol)
+  end
+
+  local level = round(engine.GetMusicVolume(), 1)
+  btn.level = level
+  level = level * 100
+
+  btn:SetText("Music: "..level.."%")
+end
+
+local function UpdateSFXButton(btn, vol)
+
+  if vol then
+    engine.SetSFXVolume(vol)
+  end
+
+  local level = round(engine.GetSFXVolume(), 1)
+  btn.level = level
+  level = level * 100
+
+  btn:SetText("SFX: "..level.."%")
+end
+
 function META:MakeOptionsMenu()
   self.optionMenu = CreateMenu(1, 0, {0, 1, 2, 3})
   self.optionMenu:SetActive(false)
@@ -224,11 +255,30 @@ function META:MakeOptionsMenu()
 
   local btn
   btn = self:AddButton("Music: On", self.optionMenu, self.optionButtons)
+  UpdateMusicButton(btn)
 
   local pos = btn:GetPos()
   btn:SetPos(pos.x + self.menuOffset, pos.y)
-  btn:SetOnPressed(function()
-    --self:CloseMenu()
+  btn:SetOnPressed(function(bself)
+    bself.level = bself.level + 0.1
+    if bself.level > 1.0 then
+      bself.level = 0.0
+    end
+    UpdateMusicButton(bself, bself.level)
+  end)
+
+  local btn
+  btn = self:AddButton("SFX: On", self.optionMenu, self.optionButtons)
+  UpdateSFXButton(btn)
+
+  local pos = btn:GetPos()
+  btn:SetPos(pos.x + self.menuOffset, pos.y)
+  btn:SetOnPressed(function(bself)
+    bself.level = bself.level + 0.1
+    if bself.level > 1.0 then
+      bself.level = 0.0
+    end
+    UpdateSFXButton(bself, bself.level)
   end)
 
   btn = self:AddButton("Fullscreen", self.optionMenu, self.optionButtons)

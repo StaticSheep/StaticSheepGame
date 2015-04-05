@@ -129,7 +129,7 @@ local SPAZ_COLORS = {
   Color(255, 255, 255), Color(0, 255, 0), Color(50, 255, 255), Color(255, 150, 20)
 }
 
-local MAX_COINS = 35000
+local MAX_COINS = 50000
 local BOT_MIN = 170
 local BOT_MAX = 0
 local TOP_MIN = -162
@@ -138,8 +138,8 @@ local TOP_MAX = 0
 local MIN_ALPHA = 50
 local ALPHA_DEC_AMOUNT = 205 / 60 / 2
 
-local DEC_AMOUNT = MAX_COINS / 60
-local INC_AMOUNT = MAX_COINS / 60 / 5
+local DEC_AMOUNT = MAX_COINS / 60 / 10
+local INC_AMOUNT = MAX_COINS / 60 / 10
 
 function PlayerHUD:FrameUpdate(deltaTime)
 

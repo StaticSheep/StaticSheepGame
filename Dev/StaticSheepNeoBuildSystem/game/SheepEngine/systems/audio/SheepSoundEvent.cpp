@@ -16,6 +16,13 @@ FMOD::System* SoundFile::_system = 0;
 
 static int lastErr;
 
+// static member initialization
+float Sound::sfxVolume = 1.0f;
+float Sound::musicVolume = 1.0f;
+
+FMOD::ChannelGroup* SoundFile::musicChannelGroup = nullptr;
+FMOD::ChannelGroup* SoundFile::sfxChannelGroup = nullptr;
+
 // If the result of an FMOD function was not OK, TraceLog it
 bool ErrorCheck(FMOD_RESULT result)
 {
@@ -119,6 +126,8 @@ bool SoundEvent::_PlayLoop(SoundInstance* instance)
   int check = 0;
   int paramSize;
 
+  isMusic = true;
+
   // create the sound event
   check +=    ErrorCheck( description->createInstance(&instance->eventInstance) );
   check +=    ErrorCheck( instance->eventInstance->setPitch(instance->pitch));
@@ -146,8 +155,25 @@ bool SoundEvent::_PlayLoop(SoundInstance* instance)
   return true;
 }
 
+void SoundEvent::UpdateVolume(float volume, bool isMusic)
+{
+  if(!isMusic)
+    sfxVolume = volume;
+  else
+  {
+    musicVolume = volume;
+
+    SOUND::EventInstance** musicInstance;
+    int instances = 0;
+
+    description->getInstanceList(musicInstance, 1, &instances);
+
+    musicInstance[0]->setVolume(musicVolume);
+  }
+}
+
 // Creates a sound object from a sound file.
-SoundFile::SoundFile(FMOD::System* system, const std::string& name, bool stream)
+SoundFile::SoundFile(FMOD::System* system, const std::string& name, FMOD::ChannelGroup* musicChannel, FMOD::ChannelGroup* sfxChannel, bool stream)
 {
   // if the file is too big, load it as streaming
   if(stream)
@@ -157,6 +183,12 @@ SoundFile::SoundFile(FMOD::System* system, const std::string& name, bool stream)
 
   if(_system == NULL)
     _system = system;
+
+  if(musicChannelGroup == NULL)
+    musicChannelGroup = musicChannel;
+
+  if(sfxChannelGroup == NULL)
+    sfxChannelGroup =sfxChannel;
 }
   
 // Plays the sound object with the low level API
@@ -179,19 +211,22 @@ bool SoundFile::Play(SoundInstance* instance)
 // Plays the sound once, and sets a callback for clean up
 bool SoundFile::_PlayOnce(SoundInstance* instance)
 {
+  FMOD::Channel* localChannel;
+
   // play once and set all of the settings
-  ErrorCheck(_system->playSound(sound, nullptr, true, &channel));
-  ErrorCheck(channel->setVolume(instance->volume));
-  ErrorCheck(channel->setPitch(instance->pitch));
+  ErrorCheck(_system->playSound(sound, nullptr, true, &localChannel));
+  ErrorCheck(localChannel->setChannelGroup(sfxChannelGroup));
+  ErrorCheck(localChannel->setVolume(instance->volume));
+  ErrorCheck(localChannel->setPitch(instance->pitch));
 
   // actually start up the sound
-  ErrorCheck(channel->setPaused(false));
+  ErrorCheck(localChannel->setPaused(false));
 
   // grab the channel index
-  channel->getIndex(&instance->channel);
+  localChannel->getIndex(&instance->channel);
 
   // and give that channel a callback for when it stops
-  ErrorCheck(channel->setCallback(mycallback));
+  ErrorCheck(localChannel->setCallback(mycallback));
 
   return true;
 }
@@ -199,18 +234,40 @@ bool SoundFile::_PlayOnce(SoundInstance* instance)
 // Plays the sound in looping mode. Will not stop unless explicitely told to.
 bool SoundFile::_PlayLoop(SoundInstance* instance)
 {
-  ErrorCheck(_system->playSound(sound, 0, true, &channel));
-  ErrorCheck(channel->setVolume(instance->volume));
-  ErrorCheck(channel->setPitch(instance->pitch));
-  ErrorCheck(channel->setPaused(false));
-  ErrorCheck(channel->setMode(FMOD_LOOP_NORMAL));
-  ErrorCheck(channel->setUserData(instance));
+  FMOD::Channel* localChannel;
 
-  channel->getIndex(&instance->channel);
+  ErrorCheck(_system->playSound(sound, 0, true, &localChannel));
 
-  ErrorCheck(channel->setCallback(mycallback));
+  if(instance->isMusic)
+    ErrorCheck(localChannel->setChannelGroup(musicChannelGroup));
+  else
+    ErrorCheck(localChannel->setChannelGroup(sfxChannelGroup));
+
+  ErrorCheck(localChannel->setVolume(instance->volume));
+  ErrorCheck(localChannel->setPitch(instance->pitch));
+  ErrorCheck(localChannel->setPaused(false));
+  ErrorCheck(localChannel->setMode(FMOD_LOOP_NORMAL));
+  ErrorCheck(localChannel->setUserData(instance));
+
+  localChannel->getIndex(&instance->channel);
+
+  ErrorCheck(localChannel->setCallback(mycallback));
+
+  isMusic = true;
 
   return true;
+}
+
+void SoundFile::UpdateVolume(float volume, bool isMusic)
+{
+  if(!isMusic)
+    sfxVolume = volume;
+  else
+  {
+    musicVolume = volume;
+
+    channel->setVolume(musicVolume);
+  }
 }
   
 // Callback function specifically for sound objects. Low level api.

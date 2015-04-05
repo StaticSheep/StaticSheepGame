@@ -112,9 +112,8 @@ namespace Framework
     if (OtherObject->name == "Player")
     {
       PlayerController *playerController = OtherObject->GetComponent<PlayerController>(ePlayerController);
-      if (playerController->weapon != nullptr)
-        free(playerController->weapon);
-      playerController->weapon = (Weapon *)weaponType->New();
+      playerController->Combat()->DeleteWeapon();
+      playerController->Combat()->SetWeapon((Weapon *)weaponType->New());
       space->GetGameObject(owner)->Destroy();
 
       OtherObject->GetComponent<SoundEmitter>(eSoundEmitter)
@@ -166,7 +165,7 @@ namespace Framework
 
       respawnTimer -= dt;
 
-      if (ps->Color.A <= 0.0f)
+      if (ps->Color.A <= 0.2f)
         blink = true;
 
       if (ps->Color.A >= 1.0f)
@@ -174,7 +173,7 @@ namespace Framework
     }
     else
     {
-      ps->Color.A = 255.0f;
+      ps->Color.A = 1.0f;
       respawnTimer = 2.0f;
     }
   }

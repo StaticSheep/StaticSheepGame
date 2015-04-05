@@ -9,6 +9,7 @@ All content © 2015 DigiPen (USA) Corporation, all rights reserved.
 #pragma once
 
 #include "types\space\Space.h"
+#include "types\weapons\WBase.h"
 
 namespace Framework
 {
@@ -37,8 +38,21 @@ namespace Framework
     void Kill(int attacker);
 
     /* Used for setting the max amount of shields / health */
-    void SetMaxHealth(float maxHealth);
-    void SetMaxShields(float maxShield);
+    void SetMaxHealth(float maxHealth)
+    { m_maxHealth = maxHealth; }
+
+    void SetMaxShields(float maxShield)
+    {
+      m_maxShields = maxShield;
+      if (maxShield > m_shield)
+        m_rechargingShields = true;
+    }
+
+    /* Used for getting max sheilds or health*/
+    float GetMaxShields()
+    { return m_maxShields; }
+    float GetMaxHealth()
+    { return m_maxHealth; }
 
     /* Adds (or subtracts if negative) to shields / HP */
     void AddHealth(float amount) { m_health += amount; }
@@ -67,6 +81,27 @@ namespace Framework
     void SetRespawnGodMode(float time)
     { m_respawnGodTime = time; m_respawnGod = true; }
 
+    Weapon* GetWeapon() { return m_weapon; }
+    void SetWeapon(Weapon* weap) 
+    {
+      DeleteWeapon();
+      m_weapon = weap;
+      m_weapon->explosive_ = m_explosiveBullets;
+      m_weapon->damage *= 2;
+    }
+
+    void DeleteWeapon()
+    {
+      if (m_weapon)
+        delete m_weapon;
+
+      m_weapon = nullptr;
+    }
+
+    void GiveDoubleDamage();
+    void GiveExplosiveBullets();
+    
+
   public:
     std::string m_rechargingSound;
     std::string m_rechargedSound;
@@ -90,11 +125,12 @@ namespace Framework
 
     void TrueDeath();
 
-    float m_maxShields = 100.0f;
+    /* ==== Health and Shields ==== */
+    float m_maxShields = 150.0f;
     float m_shield = m_maxShields;
     float m_nextRegen = 0.0f; /* Time until we can regenerate */
-    float m_regenCD = 1.5f; /* Regeneration Cool down */
-    float m_regenRate = 20.0f; /* Regeneration per second */
+    float m_regenCD = 1.0f; /* Regeneration Cool down */
+    float m_regenRate = 30.0f; /* Regeneration per second */
     float m_fadeTime = 5.0f;
     bool  m_rechargingShields = false;
     float m_nextDangerSwitch = 0.0f;
@@ -107,8 +143,8 @@ namespace Framework
     int m_killer = -1;
 
     bool m_godMode = false;
-    bool m_respawnGod = false;
-    float m_respawnGodTime = 0.0f;
+    bool m_respawnGod = true;
+    float m_respawnGodTime = 1.5f;
 
     int m_playerNum = -1;
 
@@ -116,6 +152,10 @@ namespace Framework
     Handle m_owner = Handle::null;
     Handle m_spineLight = Handle::null;
     Handle m_soundEmitter = Handle::null;
+
+    Weapon* m_weapon = nullptr;
+    bool m_doubleDamage = false;
+    bool m_explosiveBullets = false;
 
   };
 }

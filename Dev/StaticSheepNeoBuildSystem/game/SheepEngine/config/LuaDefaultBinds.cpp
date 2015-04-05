@@ -45,6 +45,13 @@ namespace Framework
       BIND_FUNCTION_TABLE(L, Engine::LuaGetComponentList, SendComponentList, engine);
       BIND_FUNCTION_TABLE(L, Engine::DateTime, DateTime, engine);
       BIND_FUNCTION_TABLE(L, Engine::LuaChangeLevel, ChangeLevel, engine);
+      BIND_FUNCTION_TABLE(L, SheepAudio::GetMasterVolume, GetMasterVolume, engine);
+      BIND_FUNCTION_TABLE(L, SheepAudio::GetMusicVolume, GetMusicVolume, engine);
+      BIND_FUNCTION_TABLE(L, SheepAudio::GetSFXVolume, GetSFXVolume, engine);
+
+      BIND_FUNCTION_TABLE(L, SheepAudio::SetMasterVolume, SetMasterVolume, engine);
+      BIND_FUNCTION_TABLE(L, SheepAudio::SetMusicVolume, SetMusicVolume, engine);
+      BIND_FUNCTION_TABLE(L, SheepAudio::SetSFXVolume, SetSFXVolume, engine);
 
       CREATE_TABLE(L, surface);
       BIND_FUNCTION_TABLE(L, Draw::SetColor, SetColorEx, surface);
@@ -91,6 +98,9 @@ namespace Framework
 
     void BindDefaultFunctions(lua_State* L)
     {
+
+      
+
 
       //BIND_FUNCTION_EX(ENGINE->Lua(), Engine::LuaError, LuaError);
 

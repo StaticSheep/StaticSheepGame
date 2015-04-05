@@ -24,9 +24,12 @@ namespace Framework
 		void Remove();
     void BounceDown(float dt);
     void SpawnPersonalSM(int num);
+    void SpawnBonusChip(int num);
     void Draw();
     void AllSlotsDone();
-
+    void EndOfRound(float dt);
+    void EndOfGame(float dt);
+    bool endOfGame_;
 		//member variables
     float timer;
     float bounceDownTimer;

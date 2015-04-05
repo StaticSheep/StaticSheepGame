@@ -12,6 +12,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "../../colliders/CBoxCollider.h"
 #include "../../sprites/CAniSprite.h"
 #include "../chip/CChipController.h"
+#include "../../lights/CSpriteLight.h"
 
 namespace Framework
 {
@@ -62,7 +63,11 @@ namespace Framework
     //Vec3 currPos = rt->GetTranslation();
 
     if (!bounceDownDone)
+    {
       BounceDown(dt);
+      if (mode_ == GAMEOVER)
+        space->GetGameObject(owner)->GetComponent<Sprite>(eSprite)->SetTexture("screen_end.png");
+    }
     else
       startDrawing = true;
 
@@ -72,8 +77,10 @@ namespace Framework
       AwardChip(dt);
     }
 
-    timeToLive -= dt;
-    if (timeToLive <= 0)
+    if (mode_ == GAMEOVER)
+      return;
+
+    else if (timeToLive <= 0)
     {
       Transform *thisTrans = space->GetGameObject(owner)->GetComponent<Transform>(eTransform);
       thisTrans->SetTranslation(thisTrans->GetTranslation() + Vec3(0.0f, 70.0f, 0.0f));
@@ -84,7 +91,7 @@ namespace Framework
         DestroySelf();
       }
     }
-    
+    timeToLive -= dt;
 	}
 
   void RoundResults::DestroySelf()

@@ -10,6 +10,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/base/Component.h"
 #include "types/handle/Handle.h"
 #include "../types/levelEvents/LEBase.h"
+#include "../../controllers/player/CPlayerController.h"
 
 namespace Framework
 {
@@ -33,6 +34,13 @@ namespace Framework
     EXPLOSIVEROUNDS,
     SHOTGUNS,
     ROCKETS
+  };
+
+  enum PlayerLoadout
+  {
+    BonusShield = 1,
+    ExplosiveRounds = 2,
+    DoubleDamage = 4,
   };
 
 
@@ -87,6 +95,8 @@ namespace Framework
     GameTypes mode, lastMode;
     GameMods mod1, mod2;
 
+    int playerLoadouts[4];
+
     int fontIndex;
     int event;
 
@@ -128,5 +138,9 @@ namespace Framework
     void SetMods(GameMods mod1, GameMods mod2);
 
     void Draw();
+
+
+    void GivePlayerLoadoutItem(int playerNum, PlayerLoadout item);
+    void SetupPlayer(PlayerController* pc);
 	};
 }
