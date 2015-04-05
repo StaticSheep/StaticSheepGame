@@ -34,16 +34,17 @@ namespace Framework
 
       enum BONUSPRIZE
       {
+        BONECHIP,
+        BTWOCHIP,
         BCOINS,
-        BCHIP,
         BONUSPRIZESIZE
       };
 
-      enum BONUSPRIZEMOD
+      enum RESULT_TYPE
       {
-        SMALL = 1,
-        MED = 2,
-        LARGE = 5
+        BonusType, // Coins, Deaths, Kills
+        BonusMod, // Least, Most
+        BonusPrize, // OneChip, TwoChip, Coins
       };
 
       BonusSlotManager();
