@@ -117,6 +117,7 @@ namespace Framework
     resData.mod = (*results)[0] == 0 ? BonusSlotManager::MOST : BonusSlotManager::LEAST;
     resData.type = (BonusSlotManager::BONUSTYPES)(*results)[1];
     resData.prize = (BonusSlotManager::BONUSPRIZE)(*results)[2];
+    resData.left = leftHand;
 
     space->hooks.Call("BonusResult", resData);
 

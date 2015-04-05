@@ -52,6 +52,7 @@ namespace Framework
         BONUSMODIFIERS mod;
         BONUSTYPES type;
         BONUSPRIZE prize;
+        bool left;
       };
 
       BonusSlotManager();
@@ -63,7 +64,7 @@ namespace Framework
       void BonusSlotPrize(int number);
 
         //messaged functions
-      void BonusResult(bool left, RESULT_TYPE type, int Result);
+      void BonusResult(BResultData result);
       void RoundOver();
       void GivePlayerCoins(int player, int coins);
       void PlayerDied(int playerNum, int killer);
@@ -93,7 +94,6 @@ namespace Framework
 
       struct BonusInfo
       {    
-        BONUSTYPES m_type;
         BONUSMODIFIERS  m_mod;
         BONUSPRIZE m_prize;
 
