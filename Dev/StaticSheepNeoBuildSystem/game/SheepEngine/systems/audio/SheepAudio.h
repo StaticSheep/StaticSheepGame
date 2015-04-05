@@ -83,14 +83,19 @@ namespace Framework
 
 
     DebugAudio* debug;
+    std::string busID;
   
   private:
 
     const std::string GUID;
+    
+
     std::unordered_map<std::string, Sound *> soundMap;
     std::vector<SOUND::Bank *> banks;
     SOUND::System* system;
     FMOD::System* lowLevelSystem;
+
+    SOUND::Bus* musicBus;
 
     FMOD::ChannelGroup* musicChannel;
     FMOD::ChannelGroup* sfxChannel;
