@@ -22,13 +22,13 @@ namespace Framework
     space->hooks.Add("PlayerDied", self, BUILD_FUNCTION(BonusSlotManager::PlayerDied));
     
       //initialize important starting values
-    m_currentLead   = BONUSMAX;
-    m_currentLeader = BONUSNOLEADER;    //no current leader, no value awarded
+    m_bonusInfo.m_currentLead = BONUSMAX;
+    m_bonusInfo.m_currentLeader = BONUSNOLEADER;    //no current leader, no value awarded
 
-    m_coinDeathKill = COINS;
-    m_mod = MOST;
-    m_prize = BCHIP;
-    m_prizeSize = SMALL;
+    m_bonusInfo.m_coinDeathKill = COINS;
+    m_bonusInfo.m_mod = MOST;
+    m_bonusInfo.m_prize = BCHIP;
+    m_bonusInfo.m_prizeSize = SMALL;
 
     //iterate through all players
     for (int i = 0; i < 4; ++i)
@@ -60,17 +60,17 @@ namespace Framework
   void BonusSlotManager::BonusSlotPrize()
   {
     //tie resulted - dispatch message for tie and no winner, or perhaps there should be a winner?
-    if (m_tie)
+    if (m_bonusInfo.m_tie)
       return;
 
-    switch (m_prize)
+    switch (m_bonusInfo.m_prize)
     {
       case BCOINS:
-        space->hooks.Call("GivePlayerCoins", m_currentLeader, m_prizeSize * 1000);
+        space->hooks.Call("GivePlayerCoins", m_bonusInfo.m_currentLeader, m_bonusInfo.m_prizeSize * 1000);
         break;
 
       case BCHIP:
-        space->hooks.Call("GivePlayerChip", m_currentLeader, (int)m_prizeSize);
+        space->hooks.Call("GivePlayerChip", m_bonusInfo.m_currentLeader, (int)m_bonusInfo.m_prizeSize);
         break;
     }
   }
@@ -85,15 +85,15 @@ namespace Framework
       //determine winner
     for (int i = 0; i < 4; ++i)
     {
-      if ((m_stats[i].cdk[m_coinDeathKill] * m_mod) < m_currentLead)
+      if ((m_stats[i].cdk[m_bonusInfo.m_coinDeathKill] * m_bonusInfo.m_mod) < m_bonusInfo.m_currentLead)
       {
-        m_currentLead = m_stats[i].cdk[m_coinDeathKill] * m_mod;
-        m_currentLeader = i;
-        m_tie = false;
+        m_bonusInfo.m_currentLead = m_stats[i].cdk[m_bonusInfo.m_coinDeathKill] * m_bonusInfo.m_mod;
+        m_bonusInfo.m_currentLeader = i;
+        m_bonusInfo.m_tie = false;
       }
-      else if (m_stats[i].cdk[m_coinDeathKill] == m_currentLead)
+      else if (m_stats[i].cdk[m_bonusInfo.m_coinDeathKill] == m_bonusInfo.m_currentLead)
       {
-        m_tie = true;
+        m_bonusInfo.m_tie = true;
       }
     }
 

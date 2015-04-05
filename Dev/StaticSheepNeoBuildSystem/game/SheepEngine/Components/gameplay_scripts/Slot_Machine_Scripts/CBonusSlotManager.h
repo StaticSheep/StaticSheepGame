@@ -85,7 +85,7 @@ namespace Framework
         //critical values for round
       PlayerBonusStats m_stats[4];
 
-      struct bonusInfo
+      struct BonusInfo
       {
         BONUSTYPES m_type;
         BONUSMODIFIERS  m_mod;
@@ -100,6 +100,10 @@ namespace Framework
 
         //initialization values
         bool m_left;
-      }
+      };
+
+      BonusInfo m_bonusInfo;
+
+
   };
 }
