@@ -34,6 +34,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "../../controllers/round/CRoundText.h"
 #include "../../controllers/lobby/CLobbyController.h"
 #include "../../controllers/light patterns/CLightPatternController.h"
+#include "../../controllers/player/CombatController.h"
 
 static const char *playerNames[] = { "Player1", "Player2", "Player3", "Player4" };
 static int juggKills[4] = { 0, 0, 0, 0 };
@@ -43,6 +44,8 @@ static float camShakeMagnitude;
 static bool playing;
 static float deltaTime;
 
+#define BONUS_SHIELD 50.0f
+
 
 namespace Framework
 {
@@ -51,6 +54,10 @@ namespace Framework
   {
     spawnTimer = 3;
     numOfPlayers = 1;
+    playerLoadouts[0] = 0;
+    playerLoadouts[1] = 0;
+    playerLoadouts[2] = 0;
+    playerLoadouts[3] = 0;
     spawnPos[0] = Vec3(-610.0f, -440.0f, 0.0f);
     spawnPos[1] = Vec3(610.0f, -440.0f, 0.0f);
     spawnPos[2] = Vec3(610.0f, 435.0f, 0.0f);
@@ -101,6 +108,9 @@ namespace Framework
     space->hooks.Add("SpawnCoinsEx", self, BUILD_FUNCTION(Level1_Logic::SpawnCoinsEx));
     space->hooks.Add("GameStart", self, BUILD_FUNCTION(Level1_Logic::GameStart));
 
+    space->hooks.Add("GivePlayerItem", self,
+      BUILD_FUNCTION(Level1_Logic::GivePlayerLoadoutItem));
+
     levelSound = space->GetGameObject(owner)->GetComponentHandle(eSoundPlayer);
     levelCamera = space->GetGameObject(owner)->GetComponentHandle(eCamera);
     levelTransform = space->GetGameObject(owner)->GetComponentHandle(eTransform);
@@ -124,6 +134,11 @@ namespace Framework
       num_spawned[i] = false;
     }
 
+    for (int i = 0; i < 4; ++i)
+    {
+      playerLoadouts[i] = 0;
+    }
+
     mode = SLOTMACHINE;
 
     fontIndex = Draw::GetFontIndex("BN_Jinx");
@@ -144,6 +159,7 @@ namespace Framework
     space->hooks.Remove("SpawnCoins", self);
     space->hooks.Remove("RoundOver", self);
     space->hooks.Remove("SpawnCoinsEx", self);
+    space->hooks.Remove("GivePlayerItem", self);
   }
 
   void Level1_Logic::LogicUpdate(float dt)
@@ -176,6 +192,54 @@ namespace Framework
     mode = SLOTMACHINE;
   }
 
+  void Level1_Logic::GivePlayerLoadoutItem(int playerNum, PlayerLoadout item)
+  {
+    playerLoadouts[playerNum] = playerLoadouts[playerNum] | item;
+
+    TRACELOG->Log(TraceLevel::DBG,
+      "Player %d won loadout item %d.", playerNum, item);
+  }
+
+  void Level1_Logic::SetupPlayer(PlayerController* pc)
+  {
+    if (mod2 == SHOTGUNS)
+    {
+      pc->Combat()->SetWeapon(new Shotgun());
+    }
+    else if (mod2 == ROCKETS)
+    {
+      pc->Combat()->SetWeapon(new Missile());
+    }
+    if (mod1 == EXPLOSIVEROUNDS)
+    {
+      pc->Combat()->GiveExplosiveBullets();
+    }
+
+    if (playerLoadouts[pc->playerNum] & BonusShield)
+    {
+      pc->Combat()->SetMaxShields(pc->Combat()->GetMaxShields() + BONUS_SHIELD);
+      pc->Combat()->SetShields(pc->Combat()->GetMaxShields());
+
+      TRACELOG->Log(TraceLevel::DBG,
+        "Gave player %d bonus shields!", pc->playerNum);
+    }
+
+    if (playerLoadouts[pc->playerNum] & ExplosiveRounds)
+    {
+      pc->Combat()->GiveExplosiveBullets();
+
+      TRACELOG->Log(TraceLevel::DBG,
+        "Gave player %d explosive bullets!", pc->playerNum);
+    }
+
+    if (playerLoadouts[pc->playerNum] & DoubleDamage)
+    {
+      pc->Combat()->GiveDoubleDamage();
+
+      TRACELOG->Log(TraceLevel::DBG,
+        "Gave player %d double damage!", pc->playerNum);
+    }
+  }
 
   void Level1_Logic::SpawnPlayers(float dt)
   {
@@ -186,22 +250,8 @@ namespace Framework
       {
         Players[i] = (FACTORY->LoadObjectFromArchetype(space, playerNames[i]))->self;
         GameObject *temp = space->GetGameObject(Players[i]);
-        if (mod2 == SHOTGUNS)
-        {
-          if (temp->GetComponent<PlayerController>(ePlayerController)->weapon != nullptr)
-            delete temp->GetComponent<PlayerController>(ePlayerController)->weapon;
 
-          temp->GetComponent<PlayerController>(ePlayerController)->weapon = new Shotgun();
-        }
-        else if (mod2 == ROCKETS)
-        {
-          if (temp->GetComponent<PlayerController>(ePlayerController)->weapon != nullptr)
-            delete temp->GetComponent<PlayerController>(ePlayerController)->weapon;
-
-          temp->GetComponent<PlayerController>(ePlayerController)->weapon = new Missile();
-        }
-        if (mod1 == EXPLOSIVEROUNDS)
-          temp->GetComponent<PlayerController>(ePlayerController)->weapon->explosive_ = true;
+        SetupPlayer(temp->GetComponent<PlayerController>(ePlayerController));
 
         playTrans = space->GetGameObject(Players[i])->GetComponent<Transform>(eTransform);
         playTrans->SetTranslation(spawnPos[i]);
@@ -231,25 +281,11 @@ namespace Framework
           playTrans = space->GetGameObject(Players[i])->GetComponent<Transform>(eTransform);
           playTrans->SetTranslation(spawnPos[ranStart]);
 
-          if (mod2 == SHOTGUNS)
-          {
-            if (temp->GetComponent<PlayerController>(ePlayerController)->weapon != nullptr)
-              delete temp->GetComponent<PlayerController>(ePlayerController)->weapon;
-
-            temp->GetComponent<PlayerController>(ePlayerController)->weapon = new Shotgun();
-          }
-          else if (mod2 == ROCKETS)
-          {
-            if (temp->GetComponent<PlayerController>(ePlayerController)->weapon != nullptr)
-              delete temp->GetComponent<PlayerController>(ePlayerController)->weapon;
-
-            temp->GetComponent<PlayerController>(ePlayerController)->weapon = new Missile();
-          }
-          if (mod1 == EXPLOSIVEROUNDS)
-            temp->GetComponent<PlayerController>(ePlayerController)->weapon->explosive_ = true;
+          SetupPlayer(temp->GetComponent<PlayerController>(ePlayerController));
 
           spawnTimers[i] = 2.0f;
-          space->GetGameObject(Players[i])->GetComponent<PlayerController>(ePlayerController)->hasRespawned = true;
+          space->GetGameObject(Players[i])->
+            GetComponent<PlayerController>(ePlayerController)->hasRespawned = true;
         }
         else if (Players[i] == Handle::null && spawnTimers[i] > 0)
           spawnTimers[i] -= dt;
@@ -1034,6 +1070,14 @@ namespace Framework
       delete LE;
       LE = nullptr;
     }
+
+
+    /* Reset Player load out*/
+    for (int i = 0; i < 4; ++i)
+    {
+      playerLoadouts[i] = 0;
+    }
+
   }
 
   void Level1_Logic::Draw()

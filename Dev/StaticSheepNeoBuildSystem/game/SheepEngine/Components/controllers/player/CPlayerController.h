@@ -86,7 +86,6 @@ namespace Framework
     MovementController moveController;
     CombatController m_combatController;
 
-    Weapon *weapon;
     PowerUp *powerUp;
 		Vec3 aimDir;  //the direction the player is currently aiming
     Vec3 snappedNormal; //the normal of the thing we are currently snapped to

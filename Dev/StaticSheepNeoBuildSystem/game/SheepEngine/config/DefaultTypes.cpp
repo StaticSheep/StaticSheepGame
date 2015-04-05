@@ -231,9 +231,14 @@ namespace Framework
     TYPE_SET_DESERIALIZER(Transform, Transform::Deserialize);
     TYPE_SET_TWEAK(Transform, Transform::ToTweak);
 
+    TYPE_REGISTER(CombatController);
+
     TYPE_REGISTER(PlayerController);
     TYPE_SET_TWEAK_TYPE(PlayerController, AntTweak::TW_TYPE_COMPONENT);
     TYPE_ADD_MEMBER(PlayerController, playerNum, false, true, "Player Number");
+    
+    
+
 
     TYPE_REGISTER(Bullet_Default);
     TYPE_ADD_MEMBER(Bullet_Default, limitedLife, false, true, "Limited Life");

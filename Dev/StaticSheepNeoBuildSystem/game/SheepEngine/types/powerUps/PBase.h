@@ -16,6 +16,7 @@ namespace Framework
     virtual ~PowerUp() {};
     virtual void Use(GameObject *player) = 0;
     virtual void Update(float dt) = 0;
+    virtual void Remove(GameObject *player) {};
 
     bool inUse;  //has the powerup been activated or used? if false the player will delete the powerup
     float timer; //timer for how long the powerup is in effect. -1 if infinite time

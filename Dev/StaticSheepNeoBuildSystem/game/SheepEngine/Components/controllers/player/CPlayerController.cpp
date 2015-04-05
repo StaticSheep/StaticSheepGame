@@ -44,7 +44,6 @@ namespace Framework
     hasRespawned = true;
     stoppedFX = false;
     blink = false;
-    weapon = nullptr;
     GoldenGun = false;
     normals.clear();
     lastRotation = 0.0f;
@@ -146,8 +145,6 @@ namespace Framework
 
     bc = space->GetHandles().GetAs<BoxCollider>(playerCollider);
     bc->SetGravityOff();
-
-    weapon = (Pistol*)GET_TYPE(Pistol)->New();
     se = space->GetHandles().GetAs<SoundEmitter>(playerSound);
     se->Play("robot_startup", &SoundInstance(0.50f));
     animCont = AnimationController(playerNum);
@@ -204,11 +201,6 @@ namespace Framework
     else
       arrowSpawn = false;
 
-    //update the weapons delay
-    weapon->Update(dt);
-
-
-
     //fire on trigger pull
     if (
       (gp->RightTrigger() && !hasFired)
@@ -217,7 +209,7 @@ namespace Framework
       && !hasFired && gp->GetIndex() == 0)
       )
     {
-      if (weapon->semi)
+      if (Combat()->GetWeapon()->semi)
         hasFired = true;
 
       onFire();
@@ -376,11 +368,8 @@ namespace Framework
     //opposite of init
     space->hooks.Remove("LogicUpdate", self);
 
-    if (weapon != nullptr)
-    {
-      delete weapon; //release dynamic memory
-      weapon = nullptr;
-    }
+    Combat()->DeleteWeapon();
+
     if (powerUp != nullptr)
     {
       delete powerUp; //release dynamic memory
@@ -400,16 +389,18 @@ namespace Framework
     /*if (GodMode == true || GoldenGun == true)
     weapon->damage = 100;*/
 
-    if (weapon->delay > 0.0f)
+    if (m_combatController.GetWeapon()->delay > 0.0f)
       return;
 
-    weapon->Fire(space->GetHandles().GetAs<GameObject>(owner));
-    weapon->ResetDelay();
+    m_combatController.GetWeapon()
+      ->Fire(space->GetHandles().GetAs<GameObject>(owner));
+
+    m_combatController.GetWeapon()->ResetDelay();
 
     if (!moveController.IsSnapped())
     {
       BoxCollider *bc = space->GetHandles().GetAs<BoxCollider>(playerCollider);
-      bc->AddToVelocity(-aimDir * (float)(weapon->knockback));
+      bc->AddToVelocity(-aimDir * (float)(Combat()->GetWeapon()->knockback));
     }
   }
 
