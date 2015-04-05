@@ -345,7 +345,6 @@ class RenderContext
     // DirectX //
     /////////////
     IDXGISwapChain              *m_swapChain;
-    IDXGIFactory2                *m_factory;
     ID3D11Device                *m_device;
     ID3D11DeviceContext         *m_deviceContext;
     //std::unordered_map<std::string, std::unique_ptr<DirectX::SpriteFont>> m_font;
