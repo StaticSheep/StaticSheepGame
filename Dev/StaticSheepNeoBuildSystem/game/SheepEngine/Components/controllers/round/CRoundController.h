@@ -47,7 +47,7 @@ namespace Framework
     void SpawnPersonalSM();
     void PersonalSlotDone();
 
-    Handle LevelLogic, ChipController_;
+    Handle LevelLogic, ChipController_, roundNumber_;
     Handle psm_[4];
     int current_round, max_rounds;
     RoundState state_;

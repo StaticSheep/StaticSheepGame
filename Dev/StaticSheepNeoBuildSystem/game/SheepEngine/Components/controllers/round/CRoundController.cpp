@@ -17,6 +17,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "../../gameplay_scripts/Slot_Machine_Scripts/CPersonalSlotSpawner.h"
 #include "../light patterns/CLightPatternController.h"
 #include "../../gamepad/CGamePad.h"
+#include "../../sprites/CAniSprite.h"
 
 namespace Framework
 {
@@ -26,7 +27,7 @@ namespace Framework
   RoundController::RoundController()
   {
     current_round = 1;
-    max_rounds = 1; //default value
+    max_rounds = 6; //default value
     spawned_round_start = false;
     timeOfRound = 23.0f; //default round length, (round length + 3.0f)
     state_ = INTRO;
@@ -64,6 +65,7 @@ namespace Framework
     font_index = Draw::GetFontIndex("BN_Jinx");
     psm_done = false;
     mostChipsText = false;
+
   }
 
   void RoundController::LogicUpdate(float dt)
@@ -133,6 +135,8 @@ namespace Framework
       spawned_round_start = false;
       round_state_timer = 2.0f;
       mostChipsText = false;
+      roundNumber_ = (FACTORY->LoadObjectFromArchetype(space, "round_number_bottom")->self);
+      space->GetGameObject(roundNumber_)->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(0.0f, -490.0f, 0.0f));
     }
 
   }
@@ -159,6 +163,10 @@ namespace Framework
       spawnedPSM = false;
       psm_done = false;
       space->hooks.Call("RoundStart");
+      AniSprite *numSprite = space->GetGameObject(roundNumber_)->GetComponent<AniSprite>(eAniSprite);
+
+      if (numSprite != nullptr)
+        numSprite->SetRange(current_round, current_round);
     }
 
     round_state_timer -= dt;
