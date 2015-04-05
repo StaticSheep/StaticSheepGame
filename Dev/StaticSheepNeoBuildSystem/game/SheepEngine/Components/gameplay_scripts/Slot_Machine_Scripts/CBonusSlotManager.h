@@ -34,16 +34,17 @@ namespace Framework
 
       enum BONUSPRIZE
       {
+        BONECHIP,
+        BTWOCHIP,
         BCOINS,
-        BCHIP,
         BONUSPRIZESIZE
       };
 
-      enum BONUSPRIZEMOD
+      enum RESULT_TYPE
       {
-        SMALL = 1,
-        MED = 2,
-        LARGE = 5
+        BonusType, // Coins, Deaths, Kills
+        BonusMod, // Least, Most
+        BonusPrize, // OneChip, TwoChip, Coins
       };
 
       BonusSlotManager();
@@ -90,7 +91,6 @@ namespace Framework
         BONUSTYPES m_type;
         BONUSMODIFIERS  m_mod;
         BONUSPRIZE m_prize;
-        BONUSPRIZEMOD m_prizeSize;
 
         //used to make determing winner simpler
         bool  m_tie;                   //ties are not allowed - this tells whether a tie is occurring

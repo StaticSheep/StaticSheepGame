@@ -27,8 +27,7 @@ namespace Framework
 
     m_bonusInfo.m_coinDeathKill = COINS;
     m_bonusInfo.m_mod = MOST;
-    m_bonusInfo.m_prize = BCHIP;
-    m_bonusInfo.m_prizeSize = SMALL;
+    m_bonusInfo.m_prize = BCOINS;
 
     //iterate through all players
     for (int i = 0; i < 4; ++i)
@@ -66,12 +65,12 @@ namespace Framework
     switch (m_bonusInfo.m_prize)
     {
       case BCOINS:
-        space->hooks.Call("GivePlayerCoins", m_bonusInfo.m_currentLeader, m_bonusInfo.m_prizeSize * 1000);
+        //space->hooks.Call("GivePlayerCoins", m_bonusInfo.m_currentLeader, m_bonusInfo.m_prizeSize * 1000);
         break;
 
-      case BCHIP:
-        space->hooks.Call("GivePlayerChip", m_bonusInfo.m_currentLeader, (int)m_bonusInfo.m_prizeSize);
-        break;
+      //case BCHIP:
+      //  //space->hooks.Call("GivePlayerChip", m_bonusInfo.m_currentLeader, (int)m_bonusInfo.m_prizeSize);
+      //  break;
     }
   }
 
