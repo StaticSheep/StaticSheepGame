@@ -47,6 +47,13 @@ namespace Framework
         BonusPrize, // OneChip, TwoChip, Coins
       };
 
+      struct BResultData
+      {
+        BONUSMODIFIERS mod;
+        BONUSTYPES type;
+        BONUSPRIZE prize;
+      };
+
       BonusSlotManager();
       ~BonusSlotManager();
 

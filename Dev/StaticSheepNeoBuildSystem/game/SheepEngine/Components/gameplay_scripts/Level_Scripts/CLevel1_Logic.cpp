@@ -789,7 +789,7 @@ namespace Framework
     if (juggernautTimer <= 0)
     {
       juggernautTimer = 0.5f;
-      GivePlayerCoins(i, (25 + (25 * juggKills[i])));
+      space->hooks.Call("GivePlayerCoins", i, (25 + (25 * juggKills[i])));
     }
     SpawnLevelEvent();
   }

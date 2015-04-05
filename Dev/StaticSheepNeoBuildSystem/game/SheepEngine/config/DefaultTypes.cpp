@@ -83,6 +83,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/gameplay_scripts/Slot_Machine_Scripts/CPersonalSlotSpawner.h"
 #include "components/controllers/light patterns/CLightPatternController.h"
 #include "components/controllers/lobby/CTutorialText.h"
+#include "engine/core/Macros.h"
+#include "components/gameplay_scripts/Slot_Machine_Scripts/CBonusSlotController.h"
 
 namespace Framework
 {
@@ -669,6 +671,8 @@ namespace Framework
     TYPE_REGISTER(Pulser);
     TYPE_ADD_MEMBER(Pulser, m_amount, false, true, "Pulse_Amount");
     TYPE_ADD_MEMBER(Pulser, m_time, false, true, "Pulse Time");
+
+    TYPE_REGISTER(BonusSlotController);
 
     TYPE_REGISTER( AntTweak::TBar );
     TYPE_REGISTER_PTR( AntTweak::TBar* );

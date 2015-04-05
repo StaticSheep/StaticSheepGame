@@ -10,6 +10,9 @@ All content © 2015 DigiPen (USA) Corporation, all rights reserved.
 #include "types/space/Space.h"
 #include "../round/CRoundController.h"
 
+
+#define CHIPS_PER_ROUND 2
+
 namespace Framework
 {
 
@@ -141,7 +144,7 @@ namespace Framework
     for (int i = 0; i < 4; ++i)
     {
       if (roundPlayerKills[i] >= mostKills && roundPlayerKills[i] != 0)
-        GivePlayerChip(i, 1);
+        GivePlayerChip(i, CHIPS_PER_ROUND);
     }
   }
 
@@ -157,7 +160,7 @@ namespace Framework
     for (int i = 0; i < 4; ++i)
     {
       if (roundTimeAsJugg[i] >= mostTime && roundTimeAsJugg[i] > 0.0f)
-        GivePlayerChip(i, 1);
+        GivePlayerChip(i, CHIPS_PER_ROUND);
     }
   }
 
@@ -165,7 +168,7 @@ namespace Framework
   {
     if (LMSThisRound != -1)
     {
-      GivePlayerChip(LMSThisRound, 1);
+      GivePlayerChip(LMSThisRound, CHIPS_PER_ROUND);
       //LMSThisRound = -1;
     }
   }

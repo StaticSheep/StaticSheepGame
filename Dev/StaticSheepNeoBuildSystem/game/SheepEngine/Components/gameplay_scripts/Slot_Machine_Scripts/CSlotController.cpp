@@ -12,6 +12,7 @@ All content © 2015 DigiPen (USA) Corporation, all rights reserved.
 #include "../../colliders/CBoxCollider.h"
 #include "../../slotmachine/slotmachine.h"
 #include "../../sound/CSoundEmitter.h"
+#include "CBonusSlotController.h"
 
 namespace Framework
 {
@@ -225,8 +226,8 @@ namespace Framework
           Transform *origin = space->GetGameObject(owner)->GetComponent<Transform>(eTransform);
           Transform *spawnedTransform = spawnedSM->GetComponent<Transform>(eTransform);
           spawnedTransform->SetTranslation(origin->GetTranslation() + Vec3(0.0f, 0.0f, 0.0f));
-          spawnedSM->GetComponent<SlotController>(eSlotController)->Stype = JACKPOT;
-          spawnedSM->GetComponent<SlotController>(eSlotController)->LeftHandBonus = true;
+          spawnedSM->GetComponent<BonusSlotController>
+            (eBonusSlotController)->leftHand = true;
         }
         if (spawnRightBonus)
         {
@@ -234,8 +235,7 @@ namespace Framework
           Transform *origin = space->GetGameObject(owner)->GetComponent<Transform>(eTransform);
           Transform *spawnedTransform = spawnedSM->GetComponent<Transform>(eTransform);
           spawnedTransform->SetTranslation(origin->GetTranslation() + Vec3(0.0f, 0.0f, 0.0f));
-          spawnedSM->GetComponent<SlotController>(eSlotController)->Stype = JACKPOT;
-          spawnedSM->GetComponent<SlotController>(eSlotController)->LeftHandBonus = false;
+          
         }
         if (spawnRightBonus || spawnLeftBonus)
           levelTimer += 3.5f;
@@ -338,7 +338,6 @@ namespace Framework
     //Jon - create child 
     else if (type == JACKPOT)
     {
-      FACTORY->LoadObjectFromArchetype(space, "BonusSlot");
       return (FACTORY->LoadObjectFromArchetype(space, "JPSlotMachine"));
     }
     else //individual

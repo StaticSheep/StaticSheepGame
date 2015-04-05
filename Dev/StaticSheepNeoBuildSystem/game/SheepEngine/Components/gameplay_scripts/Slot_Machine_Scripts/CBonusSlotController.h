@@ -13,7 +13,6 @@ namespace Framework
 {
 
 
-
   /* SPACE::BonusResult(bool left, ResultType type,
   int Result)
   */
@@ -23,6 +22,22 @@ namespace Framework
   public:
     BonusSlotController() {};
     ~BonusSlotController() {};
+
+    void Initialize();
+    void LogicUpdate(float dt);
+    void BounceDown(float dt);
+    void Remove();
+
+    void SetSMTextures(int, int*, int*);
+    void SetSMResults(int, int*);
+    void ReceiveSMResults(std::vector<int>*);
+
+    bool leftHand = false;
+
+  private:
+    float bounceDownTimer = 0.0f;
+    bool done = false;
+    
   };
 
 

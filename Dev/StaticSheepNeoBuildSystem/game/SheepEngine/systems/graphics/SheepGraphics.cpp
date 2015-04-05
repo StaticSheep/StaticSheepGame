@@ -186,11 +186,6 @@ namespace Framework
     GameSpace* space;
     Draw::SetCamState(0);
 
-    if (SHEEPINPUT->KeyIsPressed('F'))
-    {
-      m_FullScreen = !m_FullScreen;
-      SetFullScreen(m_FullScreen);
-    }
     m_renderContext->StartBatch(3, ENGINE->m_editorActive ? !ENGINE->m_editorLights : false);
     // Regular Draw
     for (auto it = ENGINE->Spaces().begin(); it != ENGINE->Spaces().end(); ++it)
