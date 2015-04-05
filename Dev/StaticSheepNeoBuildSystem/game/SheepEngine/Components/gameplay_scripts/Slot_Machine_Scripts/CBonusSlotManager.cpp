@@ -71,28 +71,17 @@ namespace Framework
   }
 
 
-  void BonusSlotManager::BonusResult(bool left, RESULT_TYPE type, int result)
+  void BonusSlotManager::BonusResult(BResultData result)
   {
     //determine which number of array to fill
     int number = 0;
-    if (left)
+    if (result.left)
       number = 1;
 
-    switch (type)
-    {
-    case BonusType:
-      m_bonusInfo[number].m_coinDeathKill = result;
-      break;
-
-    case BonusMod:
-      m_bonusInfo[number].m_mod = (BONUSMODIFIERS)result;
-      break;
-
-    case BonusPrize:
-      m_bonusInfo[number].m_prize = (BONUSPRIZE)result;
-      m_bonusInfo[number].m_active = true;
-      break;
-    }
+    m_bonusInfo[number].m_coinDeathKill = result.type;
+    m_bonusInfo[number].m_mod = (BONUSMODIFIERS)result.mod;
+    m_bonusInfo[number].m_prize = (BONUSPRIZE)result.prize;
+    m_bonusInfo[number].m_active = true;
   }
 
   void BonusSlotManager::RoundOver()
