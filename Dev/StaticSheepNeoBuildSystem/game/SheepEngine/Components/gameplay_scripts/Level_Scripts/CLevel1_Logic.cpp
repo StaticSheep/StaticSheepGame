@@ -330,7 +330,8 @@ namespace Framework
       if (who_killed_him != -1)
       {
         juggernaut[who_killed_him] = true;
-        GivePlayerCoins(who_killed_him, 750);
+        space->hooks.Call("GivePlayerCoins", who_killed_him, 750);
+        //GivePlayerCoins(who_killed_him, 750);
         MakeJuggernaut();
       }
       space->hooks.Call("JuggDied", ply, timeAsJugg);
