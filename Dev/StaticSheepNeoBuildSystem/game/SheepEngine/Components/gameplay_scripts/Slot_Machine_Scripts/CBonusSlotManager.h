@@ -53,12 +53,10 @@ namespace Framework
       void Initialize();
       void Remove();
 
-      void BonusSlotStart();
-      void BonusSlotResults();
-      void BonusSlotPrize();
+      void BonusSlotPrize(int number);
 
         //messaged functions
-      void RoundStart();
+      void BonusResult(bool left, RESULT_TYPE type, int Result);
       void RoundOver();
       void GivePlayerCoins(int player, int coins);
       void PlayerDied(int playerNum, int killer);
@@ -98,10 +96,10 @@ namespace Framework
         int   m_currentLead;            //current lead value
         int   m_coinDeathKill;          //tracks which part of array to use - coins, deaths, or kills
 
-        bool active;
+        bool  m_active;
       };
 
-      BonusInfo m_bonusInfo;
+      BonusInfo m_bonusInfo[2];
 
   };
 }
