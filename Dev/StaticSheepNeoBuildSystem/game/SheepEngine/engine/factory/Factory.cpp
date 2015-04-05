@@ -645,7 +645,7 @@ namespace Framework
     {
       GameSpace* sp = ENGINE->Spaces()[i];
       file.Write("%s\n", sp->GetName().c_str());
-      SaveSpaceToFile(sp, sp->GetName().c_str(), nullptr, true);
+      SaveSpaceToFile(sp, sp->GetName().c_str(), true);
     }
 
     file.Close();
