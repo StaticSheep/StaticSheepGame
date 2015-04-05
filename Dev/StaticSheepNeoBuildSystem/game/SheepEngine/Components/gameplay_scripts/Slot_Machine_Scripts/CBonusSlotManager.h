@@ -86,24 +86,21 @@ namespace Framework
       PlayerBonusStats m_stats[4];
 
       struct BonusInfo
-      {
+      {    
         BONUSTYPES m_type;
         BONUSMODIFIERS  m_mod;
         BONUSPRIZE m_prize;
-        BONUSPRIZEMOD m_prizeSize;
 
         //used to make determing winner simpler
-        bool  m_tie;                   //ties are not allowed - this tells whether a tie is occurring
+        bool  m_tie;                    //ties are not allowed - this tells whether a tie is occurring
         int   m_currentLeader;          //current leader of the bonus
         int   m_currentLead;            //current lead value
         int   m_coinDeathKill;          //tracks which part of array to use - coins, deaths, or kills
 
-        //initialization values
-        bool m_left;
+        bool active;
       };
 
       BonusInfo m_bonusInfo;
-
 
   };
 }

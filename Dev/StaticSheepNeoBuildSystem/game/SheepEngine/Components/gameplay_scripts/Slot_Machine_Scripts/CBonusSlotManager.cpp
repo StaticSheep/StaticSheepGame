@@ -100,7 +100,7 @@ namespace Framework
       //dispatch prize
     BonusSlotPrize();
 
-    space->GetGameObject(owner)->Destroy();
+    //space->GetGameObject(owner)->Destroy();
   }
 
   void BonusSlotManager::GivePlayerCoins(int playerNum, int coins)
