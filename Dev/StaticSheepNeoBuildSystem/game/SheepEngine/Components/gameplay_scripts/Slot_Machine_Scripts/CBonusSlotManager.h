@@ -9,58 +9,58 @@
 
 namespace Framework
 {
-  class CBonusSlotManager: public GameComponent
+  class BonusSlotManager: public GameComponent
   {
-    #define BONUSMAX	2147483647  //max int size
-    #define BONUSNOLEADER 4       //one past highest player number
+    public:
+      #define BONUSMAX	2147483647  //max int size
+      #define BONUSNOLEADER 4       //one past highest player number
 
-    enum BONUSTYPES
-    {
-      COINS,
-      DEATHS,
-      KILLS,
-      TYPES
-    };
+      enum BONUSTYPES
+      {
+        COINS,
+        DEATHS,
+        KILLS,
+        TYPES
+      };
 
-      //MOST is set as negative one to make one 'if' check work for determining winner
-      //MOST will result in a more negative number, which means it will work against BONUSMAX
-    enum BONUSMODIFIERS
-    {
-      MOST = -1,
-      LEAST = 1,
-      MODIFIERS
-    };
+        //MOST is set as negative one to make one 'if' check work for determining winner
+        //MOST will result in a more negative number, which means it will work against BONUSMAX
+      enum BONUSMODIFIERS
+      {
+        MOST = -1,
+        LEAST = 1,
+        MODIFIERS
+      };
 
-    enum BONUSPRIZE
-    {
-      COINS,
-      CHIP,
-      BONUSPRIZESIZE
-    };
+      enum BONUSPRIZE
+      {
+        BCOINS,
+        BCHIP,
+        BONUSPRIZESIZE
+      };
 
-    enum BONUSPRIZEMOD
-    {
-      SMALL = 1,
-      MED = 2,
-      LARGE = 5
-    };
+      enum BONUSPRIZEMOD
+      {
+        SMALL = 1,
+        MED = 2,
+        LARGE = 5
+      };
 
-    CBonusSlotManager();
-    ~CBonusSlotManager();
+      BonusSlotManager();
+      ~BonusSlotManager();
 
-    void Initialize();
-    void Remove();
+      void Initialize();
+      void Remove();
 
-    void BonusSlotStart();
-    void BonusSlotResults();
-    void BonusSlotPrize();
+      void BonusSlotStart();
+      void BonusSlotResults();
+      void BonusSlotPrize();
 
-      //messaged functions
-    void RoundStart();
-    void RoundOver();
-    void GivePlayerCoins(int player, int coins);
-    void PlayerDied(int playerNum, int killer);
-
+        //messaged functions
+      void RoundStart();
+      void RoundOver();
+      void GivePlayerCoins(int player, int coins);
+      void PlayerDied(int playerNum, int killer);
 
     private:
 
@@ -84,18 +84,22 @@ namespace Framework
 
         //critical values for round
       PlayerBonusStats m_stats[4];
-      BONUSTYPES m_type;
-      BONUSMODIFIERS  m_mod;
-      BONUSPRIZE m_prize;
-      BONUSPRIZEMOD m_prizeSize;
+
+      struct bonusInfo
+      {
+        BONUSTYPES m_type;
+        BONUSMODIFIERS  m_mod;
+        BONUSPRIZE m_prize;
+        BONUSPRIZEMOD m_prizeSize;
 
         //used to make determing winner simpler
-      bool  m_tie;                   //ties are not allowed - this tells whether a tie is occurring
-      int   m_currentLeader;          //current leader of the bonus
-      int   m_currentLead;            //current lead value
-      int   m_coinDeathKill;          //tracks which part of array to use - coins, deaths, or kills
+        bool  m_tie;                   //ties are not allowed - this tells whether a tie is occurring
+        int   m_currentLeader;          //current leader of the bonus
+        int   m_currentLead;            //current lead value
+        int   m_coinDeathKill;          //tracks which part of array to use - coins, deaths, or kills
 
         //initialization values
-      bool m_left;
+        bool m_left;
+      }
   };
 }

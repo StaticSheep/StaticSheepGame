@@ -31,7 +31,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/gameplay_scripts/Level_Scripts/CBackgroundPan.h"
 #include "components/gameplay_scripts/CCheats.h"
 #include "components/slotmachine/slotmachine.h"
-
+#include "components/gameplay_scripts/Slot_Machine_Scripts/CBonusSlotManager.h"
 #include "components/gameplay_scripts/arena/CBlockLights.h"
 #include "components/tester/CTester.h"
 
@@ -103,6 +103,7 @@ namespace Framework
     REGISTER_COMPONENT(Asteroid);
     REGISTER_COMPONENT(PowerupPickup);
     REGISTER_COMPONENT(SlotController);
+    REGISTER_COMPONENT(BonusSlotManager);
     REGISTER_COMPONENT(PersonalSlotController);
     REGISTER_COMPONENT(BlockLights);
     //REGISTER_COMPONENT(Laser);

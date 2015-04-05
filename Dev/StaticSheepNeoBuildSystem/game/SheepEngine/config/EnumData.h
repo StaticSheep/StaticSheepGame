@@ -80,6 +80,7 @@ E_NAME(Component)
 
   E_ENTRY(div_Controllers)
   E_ENTRY(SlotController)
+  E_ENTRY(BonusSlotManager)
   E_ENTRY(PlayerController)
   E_ENTRY(ChipController)
   E_ENTRY(RoundController)

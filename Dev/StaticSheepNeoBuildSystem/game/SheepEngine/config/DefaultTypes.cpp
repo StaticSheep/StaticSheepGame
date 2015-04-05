@@ -56,7 +56,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "components/particles/CParticleCircleEmitter.h"
 #include "components/particles/CParticleBoxEmitter.h"
 #include "components/particles/Particles.h"
-
+#include "Components/gameplay_scripts/Slot_Machine_Scripts/CBonusSlotManager.h"
 #include "Components/sprites/CSpineSprite.h"
 
 
@@ -312,6 +312,9 @@ namespace Framework
     TYPE_REGISTER(SlotController);
     TYPE_SET_TWEAK_TYPE(SlotController, AntTweak::TW_TYPE_COMPONENT);
     TYPE_ADD_MEMBER(SlotController, StypeInt, false, true, "Type");
+
+    TYPE_REGISTER(BonusSlotManager);
+    TYPE_SET_TWEAK_TYPE(BonusSlotManager, AntTweak::TW_TYPE_COMPONENT);
 
     TYPE_REGISTER(PersonalSlotController);
     TYPE_SET_TWEAK_TYPE(PersonalSlotController, AntTweak::TW_TYPE_COMPONENT);

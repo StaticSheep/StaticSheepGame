@@ -267,7 +267,8 @@ namespace Framework
     //results of slot
     else if (Stype == JACKPOT)
     {
-      int coinBallSpawns = 0;
+
+      /*int coinBallSpawns = 0;
       if (CheckForJP(*results))
       {
         coinBallSpawns += 5;
@@ -291,7 +292,7 @@ namespace Framework
         float ranY = GetRandom(-300, 300);
         Vec3 pos(ranX, ranY, 0.0f);
         space->hooks.Call("SpawnItem", "CoinBall", pos);
-      }
+      }*/
     }
     
     done = true;
@@ -337,6 +338,7 @@ namespace Framework
     //Jon - create child 
     else if (type == JACKPOT)
     {
+      FACTORY->LoadObjectFromArchetype(space, "BonusSlot");
       return (FACTORY->LoadObjectFromArchetype(space, "JPSlotMachine"));
     }
     else //individual
