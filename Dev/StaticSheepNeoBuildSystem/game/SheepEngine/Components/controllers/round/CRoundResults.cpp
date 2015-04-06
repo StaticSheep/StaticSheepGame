@@ -43,12 +43,17 @@ namespace Framework
     bounceDownDone = false;
     startDrawing = false;
     chipAwarded = false;
-    winner_chip = Handle::null;
+    tie = false;
+    for (int i = 0; i < 4; ++i)
+    {
+      winner_chip[i] = Handle::null;
+      winners_[i] = false;
+    }
+   
     winner = -1;
 
     wordFontIndex = Draw::GetFontIndex("aircruiser");
     numberFontIndex = Draw::GetFontIndex("BN_Jinx");
-
 	}
 
   void RoundResults::Remove()
@@ -86,8 +91,11 @@ namespace Framework
       thisTrans->SetTranslation(thisTrans->GetTranslation() + Vec3(0.0f, 70.0f, 0.0f));
       if (thisTrans->GetTranslation().y >= 950.0f)
       {
-        if (winner_chip != Handle::null)
-          space->GetGameObject(winner_chip)->Destroy();
+        for (int i = 0; i < 4; ++i)
+        {
+          if (winner_chip[i] != Handle::null)
+            space->GetGameObject(winner_chip[i])->Destroy();
+        }
         DestroySelf();
       }
     }
@@ -134,22 +142,30 @@ namespace Framework
 
   void RoundResults::AwardChip(float dt)
   {
-    if (winner == -1)
-      return;
-    else if (winner_chip == Handle::null)
+    for (int i = 0; i < 4; ++i)
     {
-      winner_chip = (FACTORY->LoadObjectFromArchetype(space, "winner_chip"))->self;
-      space->GetGameObject(winner_chip)->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(-1000.0f, playerHeadY_[winner], 0.0f));
+      if (winner_chip[i] == Handle::null && !chip_spawned[i] && winners_[i])
+      {
+        winner_chip[i] = (FACTORY->LoadObjectFromArchetype(space, "winner_chip"))->self;
+        space->GetGameObject(winner_chip[i])->GetComponent<Transform>(eTransform)->SetTranslation(Vec3(-1000.0f, playerHeadY_[i], 0.0f));
+        chip_spawned[i] = true;
+        break;
+      }
+
+      if (winner_chip[i] != Handle::null)
+      {
+        Transform *ct = space->GetGameObject(winner_chip[i])->GetComponent<Transform>(eTransform);
+        if (ct->GetTranslation().x < -700.0f)
+          ct->SetTranslation(ct->GetTranslation() + Vec3(50.0f, 0.0f, 0.0f));
+
+        if (timeToLive <= 0.75f)
+        {
+          ct->SetTranslation(ct->GetTranslation() + Vec3(-120.0f, 0.0f, 0.0f));
+        }
+      }
     }
 
-    Transform *ct = space->GetGameObject(winner_chip)->GetComponent<Transform>(eTransform);
-    if (ct->GetTranslation().x < -700.0f)
-      ct->SetTranslation(ct->GetTranslation() + Vec3(50.0f, 0.0f, 0.0f));
-
-    if (timeToLive <= 0.75f)
-    {
-      ct->SetTranslation(ct->GetTranslation() + Vec3(-120.0f, 0.0f, 0.0f));
-    }
+    
     
   }
 
@@ -159,7 +175,7 @@ namespace Framework
     int mostChips;
     int currWinner;
     float mostTime;
-
+    tie = false;
     switch (mode_)
     {
     case FFA:
@@ -175,6 +191,17 @@ namespace Framework
         }
       }
       if (currWinner != -1)
+      {
+        for (int i = 0; i < 4; ++i)
+        {
+          if (space->GetGameObject(ChipCont)->GetComponent<ChipController>(eChipController)->roundPlayerKills[i] == mostKills)
+          {
+            tie = true;
+            winners_[i] = true;
+          }
+        }
+      }
+      if (currWinner != -1 && !tie)
         winner = currWinner;
       break;
     case JUGGERNAUT:
@@ -190,6 +217,17 @@ namespace Framework
         }
       }
       if (currWinner != -1)
+      {
+        for (int i = 0; i < 4; ++i)
+        {
+          if (space->GetGameObject(ChipCont)->GetComponent<ChipController>(eChipController)->roundTimeAsJugg[i] == mostTime)
+          {
+            tie = true;
+            winners_[i] = true;
+          }
+        }
+      }
+      if (currWinner != -1 && !tie)
         winner = currWinner;
       break;
     case SUDDENDEATH:
@@ -208,6 +246,17 @@ namespace Framework
         }
       }
       if (currWinner != -1)
+      {
+        for (int i = 0; i < 4; ++i)
+        {
+          if (space->GetGameObject(ChipCont)->GetComponent<ChipController>(eChipController)->playerChips[i] == mostChips)
+          {
+            tie = true;
+            winners_[i] = true;
+          }
+        }
+      }
+      if (currWinner != -1 && !tie)
         winner = currWinner;
       break;
     }

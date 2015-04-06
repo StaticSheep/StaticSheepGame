@@ -18,11 +18,11 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 namespace Framework
 {
-  static float weapDelay = 0.09f;
+  static float weapDelay = 0.05f;
   Automatic::Automatic()
   {
     delay = 0.0f;
-    fireVolume = 0.15f;
+    fireVolume = 0.35f;
     damage = 13;
     knockback = 60;
     semi = false;

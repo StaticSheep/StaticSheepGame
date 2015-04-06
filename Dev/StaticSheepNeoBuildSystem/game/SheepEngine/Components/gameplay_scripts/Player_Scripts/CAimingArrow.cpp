@@ -11,6 +11,7 @@ All content © 2015 DigiPen (USA) Corporation, all rights reserved.
 #include "../../transform/CTransform.h"
 #include "../../colliders/CBoxCollider.h"
 #include "../../sprites/CAniSprite.h"
+#include "../../controllers/player/CPlayerController.h"
 
 
 namespace Framework
@@ -60,7 +61,8 @@ namespace Framework
       else
         arrowTransform->SetRotation((float)atan(aimDir.y / aimDir.x) + PI);
 
-      Vec3 arrowOffset = pt->GetTranslation() + aimDir * 50;
+      Vec3 arrowOffset = ((pt->GetTranslation()) + (aimDir * 50));
+      arrowOffset += (space->GetGameObject(playerController)->GetComponent<BoxCollider>(eBoxCollider)->GetBodyUpNormal() * 25);
       arrowTransform->SetTranslation(arrowOffset);
       
     }

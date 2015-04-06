@@ -3533,6 +3533,15 @@ GameObject
       }
     }
   }
+  BoxCollider
+  {
+    m_width float 128.000000
+    m_height float 128.000000
+    m_materialName std::string "Static"
+    m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
+    m_snap bool true
+  }
 }
 GameObject
 {
@@ -3624,17 +3633,26 @@ GameObject
       }
     }
   }
+  BoxCollider
+  {
+    m_width float 128.000000
+    m_height float 128.000000
+    m_materialName std::string "Static"
+    m_hasCollisionCallback bool false
+    m_CollisionGroup std::string ""
+    m_snap bool true
+  }
 }
 GameObject
 {
-  name std::string "Platform_BM_Collider"
-  archetype std::string "SmallArenaBlock"
+  name std::string ""
+  archetype std::string ""
   Transform
   {
     Translation Vec3
     {
       x_ float 0.000000
-      y_ float -512.000000
+      y_ float 511.857544
       z_ float 0.000000
     }
     Rotation float 0.000000
@@ -3645,47 +3663,22 @@ GameObject
       z_ float 0.000000
     }
   }
-  Sprite
+  SpriteLight
   {
-    m_spriteName std::string "light_block_on.png"
+    m_spriteName std::string "white.png"
     m_layer unsignedint 1
     m_flipX bool false
     m_flipY bool false
     m_uvScale bool false
-    Color Vec4
+    m_isOn bool true
+    m_emissive bool false
+    m_brightness LightColor
     {
       R float 1.000000
       G float 1.000000
       B float 1.000000
       A float 1.000000
     }
-    Size Vec2
-    {
-      X float 2.000000
-      Y float 2.000000
-    }
-    m_origin Vec2
-    {
-      X float 0.000000
-      Y float 0.000000
-    }
-  }
-  SpriteLight
-  {
-    m_spriteName std::string "light_block_on_slight.png"
-    m_layer unsignedint 1
-    m_flipX bool false
-    m_flipY bool false
-    m_uvScale bool false
-    m_isOn bool true
-    m_emissive bool true
-    m_brightness LightColor
-    {
-      R float 1.000000
-      G float 1.000000
-      B float 1.000000
-      A float 0.700000
-    }
     m_origin Vec2
     {
       X float 0.000000
@@ -3693,36 +3686,18 @@ GameObject
     }
     Size Vec2
     {
-      X float 2.000000
-      Y float 2.000000
-    }
-  }
-  BlockLights
-  {
-    m_group int 512
-    m_defaultSettings BlockLights::LightSettings
-    {
-      fx unsignedint 0
-      ease unsignedint 0
-      isOn bool true
-      useColor bool true
-      color LightColor
-      {
-        R float 1.000000
-        G float 1.000000
-        B float 1.000000
-        A float 1.000000
-      }
+      X float 128.000000
+      Y float 128.000000
     }
   }
   BoxCollider
   {
-    m_width float 384.000000
+    m_width float 128.000000
     m_height float 128.000000
     m_materialName std::string "Static"
     m_hasCollisionCallback bool false
     m_CollisionGroup std::string ""
-    m_snap bool true
+    m_snap bool false
   }
 }
 GameObject
@@ -4490,62 +4465,5 @@ GameObject
   }
   Grinder
   {
-  }
-}
-GameObject
-{
-  name std::string ""
-  archetype std::string ""
-  Transform
-  {
-    Translation Vec3
-    {
-      x_ float 0.000000
-      y_ float 511.857544
-      z_ float 0.000000
-    }
-    Rotation float 0.000000
-    Scale Vec3
-    {
-      x_ float 1.000000
-      y_ float 1.000000
-      z_ float 0.000000
-    }
-  }
-  SpriteLight
-  {
-    m_spriteName std::string "white.png"
-    m_layer unsignedint 1
-    m_flipX bool false
-    m_flipY bool false
-    m_uvScale bool false
-    m_isOn bool true
-    m_emissive bool false
-    m_brightness LightColor
-    {
-      R float 1.000000
-      G float 1.000000
-      B float 1.000000
-      A float 1.000000
-    }
-    m_origin Vec2
-    {
-      X float 0.000000
-      Y float 0.000000
-    }
-    Size Vec2
-    {
-      X float 128.000000
-      Y float 128.000000
-    }
-  }
-  BoxCollider
-  {
-    m_width float 128.000000
-    m_height float 128.000000
-    m_materialName std::string "Static"
-    m_hasCollisionCallback bool false
-    m_CollisionGroup std::string ""
-    m_snap bool false
   }
 }

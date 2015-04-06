@@ -19,7 +19,7 @@ All content © 2015 DigiPen (USA) Corporation, all rights reserved.
 
 namespace Framework
 {
-  static Vec3 drawPos[4] = { Vec3(-480.0f, -115.3f, 0.0f), Vec3(380.0f, -115.3f, 0.0f), Vec3(380.0f, 260.7f, 0.0f), Vec3(-480.0f, 260.7f, 0.0f) };
+  static Vec3 drawPos[4] = { Vec3(-480.0f, -105.3f, 0.0f), Vec3(380.0f, -105.3f, 0.0f), Vec3(380.0f, 260.7f, 0.0f), Vec3(-480.0f, 260.7f, 0.0f) };
   PersonalSlotSpawner::PersonalSlotSpawner()
 	{
     playerNum = 0;
