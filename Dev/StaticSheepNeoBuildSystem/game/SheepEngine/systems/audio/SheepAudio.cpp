@@ -249,9 +249,10 @@ namespace Framework
 
     FMOD::ChannelGroup* group;
 
-    // this adjusts the bank files channel group
+    // this gets the channel group that the bus belongs to?
     AUDIO->musicBus->getChannelGroup(&group);
 
+    // adjust that volume
     group->setVolume(AUDIO->musicVolume);
 
   }
