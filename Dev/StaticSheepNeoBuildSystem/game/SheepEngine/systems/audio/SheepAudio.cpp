@@ -13,7 +13,6 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 #include "components/sound/CSoundEmitter.h"
 #include "components/sound/CSoundPlayer.h"
-#include "../input/Input.h"
 
 #include <boost/filesystem.hpp>
 
@@ -118,14 +117,15 @@ namespace Framework
     ErrorCheck(masterGroup->addGroup(sfxChannel));
 
     // parse through the GUID file and load the banks and events
-    ParseBanks(system, infile, banks);
+    ParseBanks(system, infile, banks); // <-- sets busID
     ParseEvents(system, infile, soundMap);
 
     // parse through the content directory and load sound files
     ParseFiles(lowLevelSystem, soundMap, musicChannel, sfxChannel);
 
-    // grab the master channel group for pausing, stopping, and altering volume
-    
+    // grab the bus for the bank files. This will allow adjusting volume later
+    ErrorCheck(system->getBus(busID.c_str(), &musicBus));
+
 
     debug = new DebugAudio;
 	}
@@ -156,33 +156,6 @@ namespace Framework
 
     // update all of the sounds
     ErrorCheck(system->update());
-
-
-    if(SHEEPINPUT->KeyIsPressed('N'))
-    {
-      SetMusicVolume(GetMusicVolume() - 0.1f);
-      TRACELOG->Log(TraceLevel::DBG, "Music Volume %f", GetMusicVolume());
-    }
-
-    if(SHEEPINPUT->KeyIsPressed('M'))
-    {
-      SetMusicVolume(GetMusicVolume() + 0.1f);
-      TRACELOG->Log(TraceLevel::DBG, "Music Volume %f", GetMusicVolume());
-    }
-
-    if(SHEEPINPUT->KeyIsPressed('J'))
-    {
-      SetSFXVolume(0.0f);
-      TRACELOG->Log(TraceLevel::DBG, "SFX Volume %f", GetSFXVolume());
-    }
-
-    if(SHEEPINPUT->KeyIsPressed('K'))
-    {
-      SetSFXVolume(1.0f);
-      TRACELOG->Log(TraceLevel::DBG, "SFX Volume %f", GetSFXVolume());
-    }
-
-
     return;
 	}
 
@@ -190,23 +163,14 @@ namespace Framework
   bool SheepAudio::Play(const std::string &event_name, SoundInstance* instance)
   {
     auto it = soundMap.find(event_name);
-
+    bool result = false;
     
     // tell this event to play
     if(it != soundMap.end())
     {
-      if(instance->mode == PLAY_ONCE)
-      {
-        instance->volume *= masterVolume * sfxVolume;
-      }
-      else
-      {
-        instance->volume *= masterVolume * musicVolume;
-      }
-
-      return soundMap[event_name]->Play(instance);
+      result = soundMap[event_name]->Play(instance);
     }
-    return false;
+    return result;
   }
 
   // Stops the instance from playing, frees the channel
@@ -282,6 +246,15 @@ namespace Framework
   {
     AUDIO->musicVolume = Clamp(volume, 0.0f, 1.0f);
     AUDIO->musicChannel->setVolume(AUDIO->musicVolume);
+
+    FMOD::ChannelGroup* group;
+
+    // this gets the channel group that the bus belongs to?
+    AUDIO->musicBus->getChannelGroup(&group);
+
+    // adjust that volume
+    group->setVolume(AUDIO->musicVolume);
+
   }
 
   void SheepAudio::SetSFXVolume(float volume)
@@ -377,6 +350,14 @@ void ParseBanks(SOUND::System *system, std::ifstream &file, BankVector &bank)
 
       // loading the bank (substring)
       LoadBank(system, str.substr(startPos, endPos).append(".bank"), bank);
+    }
+
+    // grab the master bus. .bank files are being exclusively used for music right now...
+    // so this will be the music bus group
+    if(str.find("bus:/") != std::string::npos)
+    {
+      if(str.find("Reverb") == std::string::npos)
+        Framework::AUDIO->busID = str.substr(0, str.find(" "));
     }
   }
 
@@ -480,6 +461,8 @@ void LoadEvent(SOUND::System *system, std::string &name, SoundMap &sounds)
   std::size_t endPos = name.length() - pos;
 
   std::string newName = name.substr((pos + 1), endPos);
+
+  newEvent->isMusic = true;
 
   // and shove it into the map with the string name..
   sounds[newName] = newEvent;
