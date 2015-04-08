@@ -32,6 +32,7 @@ namespace Framework
       void SetColor(Vec4& color);
       void FlipX(bool flip);
       void FlipY(bool flip);
+      void SetReverse(bool reverse);
 
       std::string atlasName;
       std::string entityName;
@@ -54,6 +55,7 @@ namespace Framework
       bool complexLoop;
       bool doneLoop;
       bool finishedComplex;
+      bool reverse;
       int startLoop;
       int endLoop;
 

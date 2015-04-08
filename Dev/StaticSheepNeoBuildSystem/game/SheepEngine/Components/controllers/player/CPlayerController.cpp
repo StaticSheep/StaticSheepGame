@@ -590,7 +590,12 @@ namespace Framework
 
     Transform* trans = space->GetHandles().GetAs<Transform>(playerTransform);
 
-    animCont.Update(pa, playerColor, trans->GetRotation(), aimDir, arrowSpawn);
+    Vec3 moveDir(0.0f, 0.0f, 1.0f);
+
+    if(!gp->LStick_InDeadZone())
+      moveDir = Vec3(gp->LeftStick_X(), gp->LeftStick_Y(), 0.0f);
+
+    animCont.Update(pa, playerColor, trans->GetRotation(), moveDir, aimDir, arrowSpawn);
 
   }
 
