@@ -73,8 +73,17 @@ namespace Framework
     {
       if(!complexLoop)
       {
-        ++currentFrame;
-        currentFrame = currentFrame % sequenceFrames;
+        if(!reverse)
+        {
+          ++currentFrame;
+          currentFrame = currentFrame % sequenceFrames;
+        }
+        else
+        {
+          --currentFrame;
+          if(currentFrame < 0)
+            currentFrame = sequenceFrames - 1;
+        }
         currentTime = 0.0f;
       }
       else
@@ -216,6 +225,11 @@ namespace Framework
   void SpineSprite::FlipY(bool flip)
   {
     flipY = flip;
+  }
+
+  void SpineSprite::SetReverse(bool _reverse)
+  {
+    reverse = _reverse;
   }
 
   void SpineSprite::Remove()

@@ -71,6 +71,8 @@ namespace Framework
       attack.endFrame = 36;
       break;
     }
+
+    reverse = false;
   }
 
   AnimationController::~AnimationController() //4
@@ -79,7 +81,7 @@ namespace Framework
 	}
 
   //enum AnimationState {IDLE, RUN, JUMP, ATTACK};
-  void AnimationController::Update(SpineSprite* spine, Vec4& color, float rotation, Vec3& aimDir, bool aiming)
+  void AnimationController::Update(SpineSprite* spine, Vec4& color, float rotation, Vec3& moveDir, Vec3& aimDir, bool aiming)
   {
     spine->SetColor(color);
     aimDir.Normalize();    
@@ -87,6 +89,7 @@ namespace Framework
     Mat3D rot(-rotation);
 
     Vec3 temp = rot * aimDir;
+    float move;
     float theta = 0.0f;
 
     int start = 0;
@@ -96,9 +99,15 @@ namespace Framework
 
     theta = atan2f(temp.y, temp.x) * 57.2957795;
 
-        //ENGINE->TraceLog.Log(Framework::TraceLevel::DBG, "theta = %f", theta);
     if(aiming)
     {
+      move = moveDir * aimDir;
+
+      if(move < 0.0f)
+        reverse = true;
+      else
+        reverse = false;
+
       if(theta > 0.0f)
       {
         if(theta < 90.0f)
@@ -171,6 +180,20 @@ namespace Framework
           state = RIGHT;
         }
       }
+    }
+    else
+    if(moveDir.z != 1.0f)
+    {
+      Vec3 localX = Mat3D(rotation) * Vec3(1.0f, 0.0f, 0.0f);
+
+      float dotP = localX * moveDir;
+
+      if(dotP < 0.0f)
+        spine->FlipX(true);
+      else
+        spine->FlipX(false);
+
+      reverse = false;
     }
 
     switch(AnimState)
@@ -255,6 +278,8 @@ namespace Framework
     case ATTACK:
       break;
     }
+
+    spine->SetReverse(reverse);
   }
 
 }
