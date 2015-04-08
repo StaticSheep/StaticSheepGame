@@ -236,17 +236,17 @@ namespace Framework
         if (psmNum == 0)
         {
           //shield
-          space->hooks.Call("GivePlayerLoadoutItem", playerNum, BonusShield);
+          space->hooks.Call("GivePlayerItem", playerNum, BonusShield);
         }
         else if (psmNum == 1)
         {
           //double damage
-          space->hooks.Call("GivePlayerLoadoutItem", playerNum, DoubleDamage);
+          space->hooks.Call("GivePlayerItem", playerNum, DoubleDamage);
         }
         else if (psmNum == 2)
         {
           //explosive damage
-          space->hooks.Call("GivePlayerLoadoutItem", playerNum, ExplosiveRounds);
+          space->hooks.Call("GivePlayerItem", playerNum, ExplosiveRounds);
         }
 
       }

@@ -61,7 +61,11 @@ namespace Framework
     /* Sets the current health / Shield*/
     void SetHealth(float amount) { m_health = amount; }
     void SetShields(float amount)
-    { m_shield = amount; m_rechargingShields = true; }
+    { m_shield = amount;
+    m_rechargingShields = true;
+    if (m_shield >= m_maxShields)
+      m_rechargingShields = false;
+    }
 
     /* Gets the current shield / health */
     float GetHealth() { return m_health; }

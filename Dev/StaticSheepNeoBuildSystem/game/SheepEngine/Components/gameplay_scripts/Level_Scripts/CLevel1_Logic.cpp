@@ -54,10 +54,7 @@ namespace Framework
   {
     spawnTimer = 3;
     numOfPlayers = 1;
-    playerLoadouts[0] = 0;
-    playerLoadouts[1] = 0;
-    playerLoadouts[2] = 0;
-    playerLoadouts[3] = 0;
+
     spawnPos[0] = Vec3(-610.0f, -440.0f, 0.0f);
     spawnPos[1] = Vec3(610.0f, -440.0f, 0.0f);
     spawnPos[2] = Vec3(610.0f, 435.0f, 0.0f);
