@@ -32,6 +32,25 @@ GameObject
       A float 1.000000
     }
   }
+  SpineLight
+  {
+    m_layer int 1
+    m_emissive bool true
+    atlasName std::string "spacewitch_glow"
+    entityName std::string "spacewitch"
+    m_lightingScale Vec2
+    {
+      X float 1.000000
+      Y float 1.000000
+    }
+    Color LightColor
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+  }
   BasicParticleSystem
   {
     m_texture std::string "purple_orb.png"

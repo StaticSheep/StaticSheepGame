@@ -1,6 +1,6 @@
 GameObject
 {
-  name std::string "Player"
+  name std::string "Steve"
   archetype std::string "Player4"
   Transform
   {
@@ -25,6 +25,25 @@ GameObject
     sequenceName std::string "idle"
     framerate float 20.000000
     Color Vec4
+    {
+      R float 1.000000
+      G float 1.000000
+      B float 1.000000
+      A float 1.000000
+    }
+  }
+  SpineLight
+  {
+    m_layer int 1
+    m_emissive bool true
+    atlasName std::string "steve_glow"
+    entityName std::string "steve"
+    m_lightingScale Vec2
+    {
+      X float 1.000000
+      Y float 1.000000
+    }
+    Color LightColor
     {
       R float 1.000000
       G float 1.000000

@@ -1577,14 +1577,14 @@ GameObject
 }
 GameObject
 {
-  name std::string "Player"
-  archetype std::string "Player1"
+  name std::string "PowerUpPickup"
+  archetype std::string "PowerUpPickup_Explosive"
   Transform
   {
     Translation Vec3
     {
-      x_ float 27.510513
-      y_ float -359.199219
+      x_ float 25.628429
+      y_ float -188.609650
       z_ float 0.000000
     }
     Rotation float 0.000000
@@ -1595,12 +1595,13 @@ GameObject
       z_ float 0.000000
     }
   }
-  SpineSprite
+  Sprite
   {
-    atlasName std::string "ninja"
-    entityName std::string "ninja"
-    sequenceName std::string "idle"
-    framerate float 20.000000
+    m_spriteName std::string "ExplosivePickup.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
     Color Vec4
     {
       R float 1.000000
@@ -1608,49 +1609,56 @@ GameObject
       B float 1.000000
       A float 1.000000
     }
-  }
-  SpineLight
-  {
-    m_layer int 1
-    m_emissive bool true
-    atlasName std::string "ninja_glow"
-    entityName std::string "ninja"
-    m_lightingScale Vec2
+    Size Vec2
     {
       X float 1.000000
       Y float 1.000000
     }
-    Color LightColor
+    m_origin Vec2
     {
-      R float 0.000000
+      X float 0.000000
+      Y float 0.000000
+    }
+  }
+  SpriteLight
+  {
+    m_spriteName std::string "PowerUpLight.png"
+    m_layer unsignedint 1
+    m_flipX bool false
+    m_flipY bool false
+    m_uvScale bool false
+    m_isOn bool true
+    m_emissive bool false
+    m_brightness LightColor
+    {
+      R float 1.000000
       G float 1.000000
-      B float 0.900000
-      A float 0.800000
+      B float 1.000000
+      A float 0.500000
+    }
+    m_origin Vec2
+    {
+      X float 0.000000
+      Y float 0.000000
+    }
+    Size Vec2
+    {
+      X float 1.000000
+      Y float 1.000000
     }
   }
   BoxCollider
   {
-    m_width float 90.000000
-    m_height float 128.000000
-    m_materialName std::string "Wood"
+    m_width float 85.000000
+    m_height float 85.000000
+    m_materialName std::string "Static"
     m_hasCollisionCallback bool true
-    m_CollisionGroup std::string "Player1"
+    m_CollisionGroup std::string "NonCollide"
     m_snap bool false
   }
-  SoundEmitter
+  PowerupPickup
   {
-  }
-  PlayerController
-  {
-    playerNum int 0
-  }
-  GamePad
-  {
-    GamepadIndex int 0
-  }
-  Cheats
-  {
-    enabled bool true
+    powerNum int 3
   }
 }
 GameObject
@@ -1912,169 +1920,5 @@ GameObject
   {
     weaponID EWeapons "Missile"
     weaponNum int 4
-  }
-}
-GameObject
-{
-  name std::string "PowerUpPickup"
-  archetype std::string "PowerUpPickup_Explosive"
-  Transform
-  {
-    Translation Vec3
-    {
-      x_ float 25.628429
-      y_ float -188.609650
-      z_ float 0.000000
-    }
-    Rotation float 0.000000
-    Scale Vec3
-    {
-      x_ float 1.000000
-      y_ float 1.000000
-      z_ float 0.000000
-    }
-  }
-  Sprite
-  {
-    m_spriteName std::string "ExplosivePickup.png"
-    m_layer unsignedint 1
-    m_flipX bool false
-    m_flipY bool false
-    m_uvScale bool false
-    Color Vec4
-    {
-      R float 1.000000
-      G float 1.000000
-      B float 1.000000
-      A float 1.000000
-    }
-    Size Vec2
-    {
-      X float 1.000000
-      Y float 1.000000
-    }
-    m_origin Vec2
-    {
-      X float 0.000000
-      Y float 0.000000
-    }
-  }
-  SpriteLight
-  {
-    m_spriteName std::string "PowerUpLight.png"
-    m_layer unsignedint 1
-    m_flipX bool false
-    m_flipY bool false
-    m_uvScale bool false
-    m_isOn bool true
-    m_emissive bool false
-    m_brightness LightColor
-    {
-      R float 1.000000
-      G float 1.000000
-      B float 1.000000
-      A float 0.500000
-    }
-    m_origin Vec2
-    {
-      X float 0.000000
-      Y float 0.000000
-    }
-    Size Vec2
-    {
-      X float 1.000000
-      Y float 1.000000
-    }
-  }
-  BoxCollider
-  {
-    m_width float 85.000000
-    m_height float 85.000000
-    m_materialName std::string "Static"
-    m_hasCollisionCallback bool true
-    m_CollisionGroup std::string "NonCollide"
-    m_snap bool false
-  }
-  PowerupPickup
-  {
-    powerNum int 3
-  }
-}
-GameObject
-{
-  name std::string "Player"
-  archetype std::string "Player2"
-  Transform
-  {
-    Translation Vec3
-    {
-      x_ float -521.539612
-      y_ float -392.836548
-      z_ float 0.000000
-    }
-    Rotation float 0.000000
-    Scale Vec3
-    {
-      x_ float 1.000000
-      y_ float 1.000000
-      z_ float 0.000000
-    }
-  }
-  SpineSprite
-  {
-    atlasName std::string "ruiser"
-    entityName std::string "ruiser"
-    sequenceName std::string "idle"
-    framerate float 20.000000
-    Color Vec4
-    {
-      R float 1.000000
-      G float 1.000000
-      B float 1.000000
-      A float 1.000000
-    }
-  }
-  SpineLight
-  {
-    m_layer int 1
-    m_emissive bool true
-    atlasName std::string "ruiser_glow"
-    entityName std::string "ruiser"
-    m_lightingScale Vec2
-    {
-      X float 1.000000
-      Y float 1.000000
-    }
-    Color LightColor
-    {
-      R float 1.000000
-      G float 1.000000
-      B float 1.000000
-      A float 1.000000
-    }
-  }
-  BoxCollider
-  {
-    m_width float 102.000000
-    m_height float 102.000000
-    m_materialName std::string "Wood"
-    m_hasCollisionCallback bool true
-    m_CollisionGroup std::string "Player2"
-    m_snap bool false
-  }
-  SoundEmitter
-  {
-  }
-  PlayerController
-  {
-    playerNum int 1
-  }
-  GamePad
-  {
-    GamepadIndex int 1
-  }
-  Cheats
-  {
-    enabled bool true
   }
 }
