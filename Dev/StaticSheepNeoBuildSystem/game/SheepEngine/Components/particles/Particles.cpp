@@ -1,4 +1,10 @@
+/******************************************************************************
+Filename: Particles.cpp
+Project:  GAM 250
+Author(s): Zakary Wilson (primary)
 
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+******************************************************************************/
 #include "pch/precompiled.h"
 #include "Particles.h"
 #include "../SheepUtil/include/SheepMath.h"

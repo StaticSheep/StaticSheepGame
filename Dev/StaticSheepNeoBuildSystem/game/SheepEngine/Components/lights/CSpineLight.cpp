@@ -1,3 +1,10 @@
+/******************************************************************************
+Filename: CSpineLight.cpp
+Project:  GAM 250
+Author(s): Zachary Nawar (primary)
+
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+******************************************************************************/
 #include "pch/precompiled.h"
 #include "CSpineLight.h"
 #include "systems/graphics/SheepGraphics.h"

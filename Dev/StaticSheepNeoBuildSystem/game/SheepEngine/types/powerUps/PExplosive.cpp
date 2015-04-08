@@ -1,9 +1,9 @@
 /*****************************************************************
-Filename: WPistol.cpp
-Project:  Gam200
+Filename: PExplosive.cpp
+Project:  Gam250
 Author(s): Greg Walls (Primary)
 
-All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+All content © 2015 DigiPen (USA) Corporation, all rights reserved.
 *****************************************************************/
 #include "pch/precompiled.h"
 #include "PExplosive.h"

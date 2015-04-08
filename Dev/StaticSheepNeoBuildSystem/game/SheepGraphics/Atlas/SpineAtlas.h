@@ -1,3 +1,10 @@
+/******************************************************************************
+Filename: SpineAtlas.h
+Project:  GAM 250
+Author(s): Zakary Nawar (primary)
+
+All content © 2015 DigiPen (USA) Corporation, all rights reserved.
+******************************************************************************/
 #pragma once
 #include <vector>
 #include <unordered_map>

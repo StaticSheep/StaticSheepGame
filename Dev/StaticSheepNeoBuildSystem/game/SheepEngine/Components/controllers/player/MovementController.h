@@ -1,10 +1,10 @@
-/*****************************************************************
+/******************************************************************************
 Filename: MovementController.h
-Project:
-Author(s): Zakary Wilson (Primary), Greg Walls
+Project:  GAM 250
+Author(s): Zakary Wilson (primary)
 
 All content © 2015 DigiPen (USA) Corporation, all rights reserved.
-*****************************************************************/
+******************************************************************************/
 
 
 #pragma once

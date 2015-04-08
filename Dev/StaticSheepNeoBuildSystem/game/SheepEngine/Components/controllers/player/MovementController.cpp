@@ -1,11 +1,10 @@
 /*****************************************************************
 Filename: MovementController.cpp
-Project:
-Author(s): Zakary Wilson (Primary), Greg Walls
+Project:  Gam250
+Author(s): Zakary Wilson (Primary)
 
-All content © 2015 DigiPen (USA) Corporation, all rights reserved.
+All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 *****************************************************************/
-
 #include "pch/precompiled.h"
 #include "MovementController.h"
 #include "../../SheepUtil/include/Matrix3D.h"

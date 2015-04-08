@@ -31,7 +31,11 @@ using namespace boost::filesystem;
 
 namespace Framework
 {
+#if PRESENTATION || _DEBUG
   bool SheepGraphics::m_FullScreen = false;
+#else
+  bool SheepGraphics::m_FullScreen = true;
+#endif
   DirectSheep::RenderContext* SheepGraphics::m_renderContext = nullptr;
 	// Global pointer
 	SheepGraphics* GRAPHICS = NULL;

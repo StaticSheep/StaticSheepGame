@@ -3,7 +3,7 @@ Filename: CParticleSystem.cpp
 Project: 
 Author(s): Zakary Wilson
 
-All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+All content © 2015 DigiPen (USA) Corporation, all rights reserved.
 *****************************************************************/
 
 #include "pch/precompiled.h"
