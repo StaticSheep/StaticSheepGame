@@ -101,6 +101,7 @@ function META:Run()
   self.tex[3] = surface.GetTextureID("Entertainment.png")
   self.tex[4] = surface.GetTextureID("GigaGravityTitle.png")
   self.tex[5] = surface.GetTextureID("dp_whitelogo.png")
+  self.tex[6] = surface.GetTextureID("controllerscreen.png")
 
   self._alpha = 0
   self._alpha2 = 0
@@ -122,13 +123,34 @@ function META:Run()
     false))
 
   self.List:PushBack(Action(
-    Timed(2.5),
+    Timed(0.5),
     FadeIn(self),
     nil,
     true))
 
   self.List:PushBack(Action(
     Timed(3),
+    Hold(),
+    nil,
+    true))
+
+  self.List:PushBack(Action(
+    Timed(0.5),
+    FadeOut(self),
+    function(act)
+      ChangeTexture(self, 6)(act)
+      ChangeDimensions(self, Vec2(0.9, 0.9))(act)
+    end,
+    true))
+
+  self.List:PushBack(Action(
+    Timed(0.5),
+    FadeIn(self),
+    nil,
+    true))
+
+  self.List:PushBack(Action(
+    Timed(2),
     Hold(),
     nil,
     true))

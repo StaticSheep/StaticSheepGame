@@ -35,8 +35,8 @@ namespace Framework
     SoundEmitter *se = player->GetComponent<SoundEmitter>(eSoundEmitter);
     se->Play("Pickup_Damage", &SoundInstance(1.0f));
 
-    (FACTORY->LoadObjectFromArchetype(player->space, "powerFX_DD"))->GetComponent<FollowTarget>(eFollowTarget)->pTransform =
-      player->GetComponentHandle(eTransform);
+    //(FACTORY->LoadObjectFromArchetype(player->space, "powerFX_DD"))->GetComponent<FollowTarget>(eFollowTarget)->pTransform =
+    //  player->GetComponentHandle(eTransform);
   }
 
   void DamageBoost::Remove(GameObject *player)
