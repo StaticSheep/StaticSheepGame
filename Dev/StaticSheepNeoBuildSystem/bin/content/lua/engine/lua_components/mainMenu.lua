@@ -247,11 +247,38 @@ local function UpdateSFXButton(btn, vol)
   btn:SetText("SFX: "..level.."%")
 end
 
+local function UpdateMasterButton(btn, vol)
+
+  if vol then
+    engine.SetMasterVolume(vol)
+  end
+
+  local level = round(engine.GetMasterVolume(), 1)
+  btn.level = level
+  level = level * 100
+
+  btn:SetText("Master: "..level.."%")
+end
+
 function META:MakeOptionsMenu()
   self.optionMenu = CreateMenu(1, 0, {0, 1, 2, 3})
   self.optionMenu:SetActive(false)
 
   self.ypos = self.title:GetSize().y + VWH / 7
+
+  local btn
+  btn = self:AddButton("Master: On", self.optionMenu, self.optionButtons)
+  UpdateMasterButton(btn)
+
+  local pos = btn:GetPos()
+  btn:SetPos(pos.x + self.menuOffset, pos.y)
+  btn:SetOnPressed(function(bself)
+    bself.level = bself.level + 0.1
+    if bself.level > 1.0 then
+      bself.level = 0.0
+    end
+    UpdateMasterButton(bself, bself.level)
+  end)
 
   local btn
   btn = self:AddButton("Music: On", self.optionMenu, self.optionButtons)
