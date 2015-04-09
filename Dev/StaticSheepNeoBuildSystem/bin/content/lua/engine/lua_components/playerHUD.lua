@@ -53,7 +53,7 @@ function PlayerHUD:Create(i)
   local head = gui.Create("Image", self.base[i])
   self:Register(head)
   head:SetTexture(headFiles[i])
-  head:SetSize(ScreenScale(38), ScreenScale(70))
+  head:SetSize(ScreenScale(38), ScreenScale(74))
   head:SetColor(headColors[i])
 
   -- local coinbar = gui.Create("Panel", self.base[i])
@@ -68,11 +68,11 @@ function PlayerHUD:Create(i)
   local coinsprite = gui.Create("Image", self.base[i])
   self:Register(coinsprite)
   if i == 1 or i == 2 then
-    coinsprite:SetPos(1, 170, 1)
+    coinsprite:SetPos(1, ScreenScale(74), 1)
   else
-    coinsprite:SetPos(1, -162, 1)
+    coinsprite:SetPos(1, -ScreenScale(74), 1)
   end
-  coinsprite:SetSize(ScreenScale(36), ScreenScale(70))
+  coinsprite:SetSize(ScreenScale(36), ScreenScale(74))
   coinsprite:SetTexture(coinFile)
   coinsprite.coins = 0
   coinsprite.border = head
@@ -85,8 +85,8 @@ end
 
 function PlayerHUD:Make()
   self.panelPositions = {
-  Vec2(0, ScrH() - ScreenScale(70)),
-  Vec2(ScrW() - ScreenScale(38), ScrH() - ScreenScale(70)),
+  Vec2(0, ScrH() - ScreenScale(74)),
+  Vec2(ScrW() - ScreenScale(38), ScrH() - ScreenScale(74)),
   Vec2(ScrW() - ScreenScale(38), 0),
   Vec2(0, 0)
   }
@@ -130,12 +130,12 @@ local SPAZ_COLORS = {
 }
 
 local MAX_COINS = 50000
-local BOT_MIN = 170
+local BOT_MIN = ScreenScale(72)
 local BOT_MAX = 0
-local TOP_MIN = -162
+local TOP_MIN = -ScreenScale(72)
 local TOP_MAX = 0
 
-local MIN_ALPHA = 50
+local MIN_ALPHA = 250
 local ALPHA_DEC_AMOUNT = 205 / 60 / 2
 
 local DEC_AMOUNT = MAX_COINS / 60 / 10
