@@ -13,14 +13,14 @@ GameObject
     Rotation float 0.000000
     Scale Vec3
     {
-      x_ float 1.000000
-      y_ float 1.000000
+      x_ float 0.500000
+      y_ float 0.500000
       z_ float 0.000000
     }
   }
   Sprite
   {
-    m_spriteName std::string "temp_ggg_chip.png"
+    m_spriteName std::string "chip.png"
     m_layer unsignedint 1
     m_flipX bool false
     m_flipY bool false
@@ -45,7 +45,7 @@ GameObject
   }
   SpriteLight
   {
-    m_spriteName std::string "temp_ggg_chip.png"
+    m_spriteName std::string "chip.png"
     m_layer unsignedint 1
     m_flipX bool false
     m_flipY bool false

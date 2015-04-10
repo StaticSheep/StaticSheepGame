@@ -20,7 +20,7 @@ GameObject
   }
   Sprite
   {
-    m_spriteName std::string "temp_ggg_winner_chip.png"
+    m_spriteName std::string "winner_chip.png"
     m_layer unsignedint 2
     m_flipX bool false
     m_flipY bool false
