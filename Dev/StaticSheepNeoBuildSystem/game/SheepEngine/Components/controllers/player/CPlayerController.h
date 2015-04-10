@@ -116,6 +116,7 @@ namespace Framework
   private:
     void TakeGlobalDamage(float damage, int target);
     void PlayerKilled(int attacker);
+    void DebugKeyboardInput();
 
 	};
 }

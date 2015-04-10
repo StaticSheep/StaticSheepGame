@@ -197,6 +197,10 @@ namespace Framework
     if (hasRespawned)
       RespawnBlink(dt);
 
+
+    if(gp->GetIndex() == 0)
+      DebugKeyboardInput();
+
     if (gp->RStick_InDeadZone() == false)     //if the right stick is NOT inside of its dead zone
     {
       SpawnAimArrow();
@@ -253,6 +257,9 @@ namespace Framework
     //      
     //    }
     //  }
+
+    
+
 
 
     moveController.Update(GetOwner());
@@ -731,4 +738,58 @@ namespace Framework
 
     stoppedFX = false;
   }
+
+  void PlayerController::DebugKeyboardInput()
+  {
+    // left
+    if(SHEEPINPUT->KeyIsDown('A'))
+    {
+      SHEEPINPUT->Pads[0].State.Gamepad.sThumbLX = -32767;
+    }
+    else // right
+    if(SHEEPINPUT->KeyIsDown('D'))
+    {
+      SHEEPINPUT->Pads[0].State.Gamepad.sThumbLX = 32767;
+    }
+
+    // up
+    if(SHEEPINPUT->KeyIsDown('W'))
+    {
+      SHEEPINPUT->Pads[0].State.Gamepad.sThumbLY = 32767;
+    }
+    else // down
+    if(SHEEPINPUT->KeyIsDown('S'))
+    {
+      SHEEPINPUT->Pads[0].State.Gamepad.sThumbLY = -32767;
+    }
+
+    // jump
+    if(SHEEPINPUT->KeyIsPressed('Q'))
+    {
+      SHEEPINPUT->Pads[0].State.Gamepad.wButtons = XINPUT_GAMEPAD_A;
+    }
+
+
+    if(SHEEPINPUT->KeyIsDown(VK_LEFT))
+    {
+      SHEEPINPUT->Pads[0].State.Gamepad.sThumbRX = -32767;
+    }
+    else
+    if(SHEEPINPUT->KeyIsDown(VK_RIGHT))
+    {
+      SHEEPINPUT->Pads[0].State.Gamepad.sThumbRX = 32767;
+    }
+
+    if(SHEEPINPUT->KeyIsDown(VK_UP))
+    {
+      SHEEPINPUT->Pads[0].State.Gamepad.sThumbRY = 32767;
+    }
+    else
+    if(SHEEPINPUT->KeyIsDown(VK_DOWN))
+    {
+      SHEEPINPUT->Pads[0].State.Gamepad.sThumbRY = -32767;
+    }
+  }
 }
+
+
