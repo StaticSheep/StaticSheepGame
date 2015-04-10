@@ -13,7 +13,7 @@
 /*
 [ENUM]
 [
-    [DESCRIPTION]   
+    [DESCRIPTION]
     These definitions can be used for creating FMOD defined special effects or DSP units.
 
     [REMARKS]
@@ -76,13 +76,13 @@ typedef enum
 
 /*
 [ENUM]
-[  
-    [DESCRIPTION]   
+[
+    [DESCRIPTION]
     Parameter types for the FMOD_DSP_TYPE_OSCILLATOR filter.
 
     [REMARKS]
 
-    [SEE_ALSO]      
+    [SEE_ALSO]
     DSP::setParameterFloat
     DSP::setParameterInt
     DSP::getParameterFloat
@@ -99,13 +99,13 @@ typedef enum
 
 /*
 [ENUM]
-[  
-    [DESCRIPTION]   
+[
+    [DESCRIPTION]
     Parameter types for the FMOD_DSP_TYPE_LOWPASS filter.
 
     [REMARKS]
 
-    [SEE_ALSO]      
+    [SEE_ALSO]
     DSP::setParameterFloat
     DSP::getParameterFloat
     FMOD_DSP_TYPE
@@ -120,8 +120,8 @@ typedef enum
 
 /*
 [ENUM]
-[  
-    [DESCRIPTION]   
+[
+    [DESCRIPTION]
     Parameter types for the FMOD_DSP_TYPE_ITLOWPASS filter.<br>
     This is different to the default FMOD_DSP_TYPE_ITLOWPASS filter in that it uses a different quality algorithm and is 
     the filter used to produce the correct sounding playback in .IT files.<br> 
@@ -133,7 +133,7 @@ typedef enum
     FMOD_DSP_LOWPASS_SIMPLE.<br>
     The effective maximum cutoff is about 8060hz.
 
-    [SEE_ALSO]      
+    [SEE_ALSO]
     DSP::setParameterFloat
     DSP::getParameterFloat
     FMOD_DSP_TYPE
@@ -148,13 +148,13 @@ typedef enum
 
 /*
 [ENUM]
-[  
-    [DESCRIPTION]   
+[
+    [DESCRIPTION]
     Parameter types for the FMOD_DSP_TYPE_HIGHPASS filter.
 
     [REMARKS]
 
-    [SEE_ALSO]      
+    [SEE_ALSO]
     DSP::setParameterFloat
     DSP::getParameterFloat
     FMOD_DSP_TYPE
@@ -169,15 +169,15 @@ typedef enum
 
 /*
 [ENUM]
-[  
-    [DESCRIPTION]   
+[
+    [DESCRIPTION]
     Parameter types for the FMOD_DSP_TYPE_ECHO filter.
 
     [REMARKS]
     Note.  Every time the delay is changed, the plugin re-allocates the echo buffer.  This means the echo will dissapear at that time while it refills its new buffer.<br>
     Larger echo delays result in larger amounts of memory allocated.<br>
 
-    [SEE_ALSO]      
+    [SEE_ALSO]
     DSP::setParameterFloat
     DSP::getParameterFloat
     FMOD_DSP_TYPE
@@ -194,8 +194,8 @@ typedef enum
 
 /*
 [ENUM]
-[  
-    [DESCRIPTION]   
+[
+    [DESCRIPTION]
     Parameter types for the FMOD_DSP_TYPE_FLANGE filter.
 
     [REMARKS]
@@ -204,7 +204,7 @@ typedef enum
     <br>
     Flange depth is a percentage of a 10ms shift from the original signal.  Anything above 10ms is not considered flange because to the ear it begins to 'echo' so 10ms is the highest value possible.<br>
 
-    [SEE_ALSO]      
+    [SEE_ALSO]
     DSP::setParameterFloat
     DSP::getParameterFloat
     FMOD_DSP_TYPE
@@ -220,13 +220,13 @@ typedef enum
 
 /*
 [ENUM]
-[  
-    [DESCRIPTION]   
+[
+    [DESCRIPTION]
     Parameter types for the FMOD_DSP_TYPE_DISTORTION filter.
 
     [REMARKS]
 
-    [SEE_ALSO]      
+    [SEE_ALSO]
     DSP::setParameterFloat
     DSP::getParameterFloat
     FMOD_DSP_TYPE
@@ -240,8 +240,8 @@ typedef enum
 
 /*
 [ENUM]
-[  
-    [DESCRIPTION]   
+[
+    [DESCRIPTION]
     Parameter types for the FMOD_DSP_TYPE_NORMALIZE filter.
 
     [REMARKS]
@@ -252,7 +252,7 @@ typedef enum
     Because FMOD is a realtime audio processor, it doesn't have the luxury of knowing the peak for the whole sound (ie it can't see into the future), so it has to process data as it comes in.<br>
     To avoid very sudden changes in volume level based on small samples of new data, fmod fades towards the desired amplification which makes for smooth gain control.  The fadetime parameter can control this.<br>
 
-    [SEE_ALSO]      
+    [SEE_ALSO]
     DSP::setParameterFloat
     DSP::getParameterFloat
     FMOD_DSP_TYPE
@@ -268,13 +268,13 @@ typedef enum
 
 /*
 [ENUM]
-[  
-    [DESCRIPTION]   
+[
+    [DESCRIPTION]
     Parameter types for the FMOD_DSP_TYPE_LIMITER filter.
 
     [REMARKS]
 
-    [SEE_ALSO]      
+    [SEE_ALSO]
     DSP::setParameterFloat
     DSP::getParameterFloat
     FMOD_DSP_TYPE
@@ -291,8 +291,8 @@ typedef enum
 
 /*
 [ENUM]
-[  
-    [DESCRIPTION]   
+[
+    [DESCRIPTION]
     Parameter types for the FMOD_DSP_TYPE_PARAMEQ filter.
 
     [REMARKS]
@@ -302,7 +302,7 @@ typedef enum
     <br>
     When a frequency has its gain set to 1.0, the sound will be unaffected and represents the original signal exactly.<br>
 
-    [SEE_ALSO]      
+    [SEE_ALSO]
     DSP::setParameterFloat
     DSP::getParameterFloat
     FMOD_DSP_TYPE
@@ -319,8 +319,8 @@ typedef enum
 
 /*
 [ENUM]
-[  
-    [DESCRIPTION]   
+[
+    [DESCRIPTION]
     Parameter types for the FMOD_DSP_TYPE_PITCHSHIFT filter.
 
     [REMARKS]
@@ -341,7 +341,7 @@ typedef enum
     <br>
     <b>NOTE!</b> Not supported on PlayStation 3.<br>
 
-    [SEE_ALSO]      
+    [SEE_ALSO]
     DSP::setParameterFloat
     DSP::getParameterFloat
     ChannelGroup::addDSP
@@ -359,14 +359,14 @@ typedef enum
 
 /*
 [ENUM]
-[  
-    [DESCRIPTION]   
+[
+    [DESCRIPTION]
     Parameter types for the FMOD_DSP_TYPE_CHORUS filter.
 
     [REMARKS]
     Chorous is an effect where the sound is more 'spacious' due to 1 to 3 versions of the sound being played along side the original signal but with the pitch of each copy modulating on a sine wave.<br>
 
-    [SEE_ALSO]      
+    [SEE_ALSO]
     DSP::setParameterFloat
     DSP::getParameterFloat
     FMOD_DSP_TYPE
@@ -382,8 +382,8 @@ typedef enum
 
 /*
 [ENUM]
-[  
-    [DESCRIPTION]   
+[
+    [DESCRIPTION]
     Parameter types for the FMOD_DSP_TYPE_ITECHO filter.<br>
     This is effectively a software based echo filter that emulates the DirectX DMO echo effect.  Impulse tracker files can support this, and FMOD will produce the effect on ANY platform, not just those that support DirectX effects!<br>
 
@@ -395,9 +395,9 @@ typedef enum
     With mono signals only the FMOD_DSP_ITECHO_LEFTDELAY is used.<br>
     For multichannel signals (>2) there will be no echo on those channels.<br>
 
-    [SEE_ALSO]      
-    DSP::SetParameterFloat
-    DSP::GetParameterFloat
+    [SEE_ALSO]
+    DSP::setParameterFloat
+    DSP::getParameterFloat
     FMOD_DSP_TYPE
 ]
 */
@@ -412,8 +412,8 @@ typedef enum
 
 /*
 [ENUM]
-[  
-    [DESCRIPTION]   
+[
+    [DESCRIPTION]
     Parameter types for the FMOD_DSP_TYPE_COMPRESSOR unit.
     This is a simple linked multichannel software limiter that is uniform across the whole spectrum.<br>
 
@@ -426,11 +426,11 @@ typedef enum
     decibels below the critical level.
     <br>
 
-    [SEE_ALSO]      
-    DSP::SetParameterFloat
-    DSP::GetParameterFloat
-    DSP::SetParameterBool
-    DSP::GetParameterBool
+    [SEE_ALSO]
+    DSP::setParameterFloat
+    DSP::getParameterFloat
+    DSP::setParameterBool
+    DSP::getParameterBool
     FMOD_DSP_TYPE
 ]
 */
@@ -446,8 +446,8 @@ typedef enum
 
 /*
 [ENUM]
-[  
-    [DESCRIPTION]   
+[
+    [DESCRIPTION]
     Parameter types for the FMOD_DSP_TYPE_SFXREVERB unit.<br>
     
     [REMARKS]
@@ -456,9 +456,9 @@ typedef enum
     <br>
     These properties can be set with presets in FMOD_REVERB_PRESETS.
 
-    [SEE_ALSO]      
-    DSP::SetParameterFloat
-    DSP::GetParameterFloat
+    [SEE_ALSO]
+    DSP::setParameterFloat
+    DSP::getParameterFloat
     FMOD_DSP_TYPE
     FMOD_REVERB_PRESETS
 ]
@@ -482,17 +482,17 @@ typedef enum
 
 /*
 [ENUM]
-[  
-    [DESCRIPTION]   
+[
+    [DESCRIPTION]
     Parameter types for the FMOD_DSP_TYPE_LOWPASS_SIMPLE filter.<br>
     This is a very simple low pass filter, based on two single-pole RC time-constant modules.
     The emphasis is on speed rather than accuracy, so this should not be used for task requiring critical filtering.<br> 
 
     [REMARKS]
 
-    [SEE_ALSO]      
-    DSP::SetParameterFloat
-    DSP::GetParameterFloat
+    [SEE_ALSO]
+    DSP::setParameterFloat
+    DSP::getParameterFloat
     FMOD_DSP_TYPE
 ]
 */
@@ -504,8 +504,8 @@ typedef enum
 
 /*
 [ENUM]
-[  
-    [DESCRIPTION]   
+[
+    [DESCRIPTION]
     Parameter types for the FMOD_DSP_TYPE_DELAY filter.
 
     [REMARKS]
@@ -515,7 +515,7 @@ typedef enum
     <br>
     <b>NOTE!</b> Not supported on PlayStation 3.
 
-    [SEE_ALSO]      
+    [SEE_ALSO]
     DSP::setParameterFloat
     DSP::getParameterFloat
     FMOD_DSP_TYPE
@@ -545,8 +545,8 @@ typedef enum
 
 /*
 [ENUM]
-[  
-    [DESCRIPTION]   
+[
+    [DESCRIPTION]
     Parameter types for the FMOD_DSP_TYPE_TREMOLO filter.
 
     [REMARKS]
@@ -557,7 +557,7 @@ typedef enum
     FMOD_DSP_TREMOLO_SPREAD varies the LFO phase between channels to get an auto-pan effect. This works best with a sine shape LFO.<br>
     The LFO can be synchronized using the FMOD_DSP_TREMOLO_PHASE parameter which sets its instantaneous phase.<br>
 
-    [SEE_ALSO]      
+    [SEE_ALSO]
     DSP::setParameterFloat
     DSP::getParameterFloat
     FMOD_DSP_TYPE
@@ -578,17 +578,17 @@ typedef enum
 
 /*
 [ENUM]
-[  
-    [DESCRIPTION]   
+[
+    [DESCRIPTION]
     Parameter types for the FMOD_DSP_TYPE_SEND DSP.
 
     [REMARKS]
 
-    [SEE_ALSO]      
-    DSP::SetParameterInt
-    DSP::GetParameterInt
-    DSP::SetParameterFloat
-    DSP::GetParameterFloat
+    [SEE_ALSO]
+    DSP::setParameterInt
+    DSP::getParameterInt
+    DSP::setParameterFloat
+    DSP::getParameterFloat
     FMOD_DSP_TYPE
 ]
 */
@@ -601,38 +601,38 @@ typedef enum
 
 /*
 [ENUM]
-[  
-    [DESCRIPTION]   
+[
+    [DESCRIPTION]
     Parameter types for the FMOD_DSP_TYPE_RETURN DSP.
 
     [REMARKS]
 
-    [SEE_ALSO]      
-    DSP::SetParameterInt
-    DSP::GetParameterInt
+    [SEE_ALSO]
+    DSP::setParameterInt
+    DSP::getParameterInt
     FMOD_DSP_TYPE
 ]
 */
 typedef enum
 {
-    FMOD_DSP_RETURN_ID,             /* (Type:int) - [r]   ID of this Return DSP. Read-only.  Default = -1*/
-    FMOD_DSP_RETURN_INPUT_FORMAT    /* (Type:int) - [r/w] Input format of this return.  0 = mono, 1 = stereo, 2 = 'surround'.  Surround = the speaker format of the mixer.  Default = 2.*/
+    FMOD_DSP_RETURN_ID,                /* (Type:int) - [r]   ID of this Return DSP. Read-only.  Default = -1*/
+    FMOD_DSP_RETURN_INPUT_SPEAKER_MODE /* (Type:int) - [r/w] Input speaker mode of this return.  Default = FMOD_SPEAKERMODE_DEFAULT.*/
 } FMOD_DSP_RETURN;
 
 
 /*
 [ENUM]
-[  
-    [DESCRIPTION]   
+[
+    [DESCRIPTION]
     Parameter types for the FMOD_DSP_TYPE_HIGHPASS_SIMPLE filter.<br>
     This is a very simple single-order high pass filter.
     The emphasis is on speed rather than accuracy, so this should not be used for task requiring critical filtering.<br> 
 
     [REMARKS]
 
-    [SEE_ALSO]      
-    DSP::SetParameterFloat
-    DSP::GetParameterFloat
+    [SEE_ALSO]
+    DSP::setParameterFloat
+    DSP::getParameterFloat
     FMOD_DSP_TYPE
 ]
 */
@@ -644,13 +644,13 @@ typedef enum
 
 /*
 [ENUM]
-[  
-    [DESCRIPTION]   
+[
+    [DESCRIPTION]
     Parameter values for the FMOD_DSP_PAN_SURROUND_FROM_STEREO_MODE parameter of the FMOD_DSP_TYPE_PAN DSP.
 
     [REMARKS]
 
-    [SEE_ALSO]      
+    [SEE_ALSO]
     FMOD_DSP_PAN
 ]
 */
@@ -663,13 +663,33 @@ typedef enum
 
 /*
 [ENUM]
-[  
-    [DESCRIPTION]   
+[
+    [DESCRIPTION]
+    Parameter values for the FMOD_DSP_PAN_MODE parameter of the FMOD_DSP_TYPE_PAN DSP.
+
+    [REMARKS]
+
+    [SEE_ALSO]
+    FMOD_DSP_PAN
+]
+*/
+typedef enum
+{
+    FMOD_DSP_PAN_MODE_MONO,
+    FMOD_DSP_PAN_MODE_STEREO,
+    FMOD_DSP_PAN_MODE_SURROUND
+} FMOD_DSP_PAN_MODE_TYPE;
+
+
+/*
+[ENUM]
+[
+    [DESCRIPTION]
     Parameter values for the FMOD_DSP_PAN_3D_ROLLOFF parameter of the FMOD_DSP_TYPE_PAN DSP.
 
     [REMARKS]
 
-    [SEE_ALSO]      
+    [SEE_ALSO]
     FMOD_DSP_PAN
 ]
 */
@@ -685,13 +705,13 @@ typedef enum
 
 /*
 [ENUM]
-[  
-    [DESCRIPTION]   
+[
+    [DESCRIPTION]
     Parameter values for the FMOD_DSP_PAN_3D_EXTENT_MODE parameter of the FMOD_DSP_TYPE_PAN DSP.
 
     [REMARKS]
 
-    [SEE_ALSO]      
+    [SEE_ALSO]
     FMOD_DSP_PAN
 ]
 */
@@ -705,56 +725,57 @@ typedef enum
 
 /*
 [ENUM]
-[  
-    [DESCRIPTION]   
+[
+    [DESCRIPTION]
     Parameter types for the FMOD_DSP_TYPE_PAN DSP.
 
     [REMARKS]
 
-    [SEE_ALSO]      
-    DSP::SetParameterFloat
-    DSP::GetParameterFloat
-    DSP::SetParameterInt
-    DSP::GetParameterInt
-    DSP::SetParameterData
-    DSP::GetParameterData
+    [SEE_ALSO]
+    DSP::setParameterFloat
+    DSP::getParameterFloat
+    DSP::setParameterInt
+    DSP::getParameterInt
+    DSP::setParameterData
+    DSP::getParameterData
     FMOD_DSP_TYPE
 ]
 */
 typedef enum
 {
-    FMOD_DSP_PAN_OUTPUT_FORMAT,                 /* (Type:float) - Output channel format.    0 = Mono, 1 = Stereo, 2 = Surround.  Default = 2 */
-    FMOD_DSP_PAN_STEREO_POSITION,               /* (Type:float) - Stereo pan position       STEREO_POSITION_MIN to STEREO_POSITION_MAX.  Default = 0.0. */
-    FMOD_DSP_PAN_SURROUND_DIRECTION,            /* (Type:float) - Surround pan direction    ROTATION_MIN to ROTATION_MAX.  Default = 0.0. */
-    FMOD_DSP_PAN_SURROUND_EXTENT,               /* (Type:float) - Surround pan extent       EXTENT_MIN to EXTENT_MAX.  Default = 360.0. */
-    FMOD_DSP_PAN_SURROUND_ROTATION,             /* (Type:float) - Surround pan rotation     ROTATION_MIN to ROTATION_MAX.  Default = 0.0. */
-    FMOD_DSP_PAN_SURROUND_LFE_LEVEL,            /* (Type:float) - Surround pan LFE level    SURROUND_LFE_LEVEL_MIN to SURROUND_LFE_LEVEL_MAX.  Default = 0.0. */
-    FMOD_DSP_PAN_SURROUND_FROM_STEREO_MODE,     /* (Type:int)   - Stereo-To-Surround Mode   FMOD_DSP_PAN_SURROUND_FROM_STEREO_MODE_DISTRIBUTED to FMOD_DSP_PAN_SURROUND_FROM_STEREO_MODE_DISCRETE.  Default = FMOD_DSP_PAN_SURROUND_FROM_STEREO_MODE_DISCRETE. */
+    FMOD_DSP_PAN_MODE,                          /* (Type:int)   - Panner mode.              FMOD_DSP_PAN_MODE_MONO for mono down-mix, FMOD_DSP_PAN_MODE_STEREO for stereo panning or FMOD_DSP_PAN_MODE_SURROUND for surround panning.  Default = FMOD_DSP_PAN_MODE_SURROUND */
+    FMOD_DSP_PAN_STEREO_POSITION,               /* (Type:float) - Stereo pan position.      STEREO_POSITION_MIN to STEREO_POSITION_MAX.  Default = 0.0. */
+    FMOD_DSP_PAN_SURROUND_DIRECTION,            /* (Type:float) - Surround pan direction.   ROTATION_MIN to ROTATION_MAX.  Default = 0.0. */
+    FMOD_DSP_PAN_SURROUND_EXTENT,               /* (Type:float) - Surround pan extent.      EXTENT_MIN to EXTENT_MAX.  Default = 360.0. */
+    FMOD_DSP_PAN_SURROUND_ROTATION,             /* (Type:float) - Surround pan rotation.    ROTATION_MIN to ROTATION_MAX.  Default = 0.0. */
+    FMOD_DSP_PAN_SURROUND_LFE_LEVEL,            /* (Type:float) - Surround pan LFE level.   SURROUND_LFE_LEVEL_MIN to SURROUND_LFE_LEVEL_MAX.  Default = 0.0. */
+    FMOD_DSP_PAN_SURROUND_FROM_STEREO_MODE,     /* (Type:int)   - Stereo-To-Surround Mode.  FMOD_DSP_PAN_SURROUND_FROM_STEREO_MODE_DISTRIBUTED to FMOD_DSP_PAN_SURROUND_FROM_STEREO_MODE_DISCRETE.  Default = FMOD_DSP_PAN_SURROUND_FROM_STEREO_MODE_DISCRETE. */
     FMOD_DSP_PAN_SURROUND_STEREO_SEPARATION,    /* (Type:float) - Stereo-To-Surround Stereo Separation. ROTATION_MIN to ROTATION_MAX.  Default = 60.0. */
     FMOD_DSP_PAN_SURROUND_STEREO_AXIS,          /* (Type:float) - Stereo-To-Surround Stereo Axis. ROTATION_MIN to ROTATION_MAX.  Default = 0.0. */
-    FMOD_DSP_PAN_ENABLED_SURROUND_SPEAKERS,     /* (Type:int)   - Surround Speakers Enabled. 0 to 0xFFF.  Default = 0xFFF.  */
-    FMOD_DSP_PAN_3D_POSITION,                   /* (Type:data)  - 3D Position               data of type FMOD_DSP_PARAMETER_DATA_TYPE_3DPOS */
-    FMOD_DSP_PAN_3D_ROLLOFF,                    /* (Type:int)   - 3D Rolloff                FMOD_DSP_PAN_3D_ROLLOFF_LINEARSQUARED to FMOD_DSP_PAN_3D_ROLLOFF_CUSTOM.  Default = FMOD_DSP_PAN_3D_ROLLOFF_LINEARSQUARED. */
-    FMOD_DSP_PAN_3D_MIN_DISTANCE,               /* (Type:float) - 3D Min Distance           0.0 to GAME_UNITS_MAX.  Default = 1.0. */
-    FMOD_DSP_PAN_3D_MAX_DISTANCE,               /* (Type:float) - 3D Max Distance           0.0 to GAME_UNITS_MAX.  Default = 20.0. */
-    FMOD_DSP_PAN_3D_EXTENT_MODE,                /* (Type:int)   - 3D Extent Mode            FMOD_DSP_PAN_3D_EXTENT_MODE_AUTO to FMOD_DSP_PAN_3D_EXTENT_MODE_OFF.  Default = FMOD_DSP_PAN_3D_EXTENT_MODE_AUTO. */
-    FMOD_DSP_PAN_3D_SOUND_SIZE,                 /* (Type:float) - 3D Sound Size             0.0 to GAME_UNITS_MAX.  Default = 0.0. */
-    FMOD_DSP_PAN_3D_MIN_EXTENT,                 /* (Type:float) - 3D Min Extent             EXTENT_MIN to EXTENT_MAX.  Default = 0.0. */
-    FMOD_DSP_PAN_3D_PAN_BLEND,                  /* (Type:float) - 3D Pan Blend              PAN_BLEND_MIN to PAN_BLEND_MAX.  Default = 0.0. */
-    FMOD_DSP_PAN_LFE_UPMIX_ENABLED,             /* (Type:int)   - LFE Upmix Enabled         0 to 1.  Default = 0. */
-    FMOD_DSP_PAN_OVERALL_GAIN                   /* (Type:data)  - Overall Gain              data of type FMOD_DSP_PARAMETER_DATA_TYPE_OVERALLGAIN */
+    FMOD_DSP_PAN_ENABLED_SURROUND_SPEAKERS,     /* (Type:int)   - Surround Speakers Enabled.  0 to 0xFFF.  Default = 0xFFF.  */
+    FMOD_DSP_PAN_3D_POSITION,                   /* (Type:data)  - 3D Position.              data of type FMOD_DSP_PARAMETER_3DATTRIBUTES_MULTI */
+    FMOD_DSP_PAN_3D_ROLLOFF,                    /* (Type:int)   - 3D Rolloff.               FMOD_DSP_PAN_3D_ROLLOFF_LINEARSQUARED to FMOD_DSP_PAN_3D_ROLLOFF_CUSTOM.  Default = FMOD_DSP_PAN_3D_ROLLOFF_LINEARSQUARED. */
+    FMOD_DSP_PAN_3D_MIN_DISTANCE,               /* (Type:float) - 3D Min Distance.          0.0 to GAME_UNITS_MAX.  Default = 1.0. */
+    FMOD_DSP_PAN_3D_MAX_DISTANCE,               /* (Type:float) - 3D Max Distance.          0.0 to GAME_UNITS_MAX.  Default = 20.0. */
+    FMOD_DSP_PAN_3D_EXTENT_MODE,                /* (Type:int)   - 3D Extent Mode.           FMOD_DSP_PAN_3D_EXTENT_MODE_AUTO to FMOD_DSP_PAN_3D_EXTENT_MODE_OFF.  Default = FMOD_DSP_PAN_3D_EXTENT_MODE_AUTO. */
+    FMOD_DSP_PAN_3D_SOUND_SIZE,                 /* (Type:float) - 3D Sound Size.            0.0 to GAME_UNITS_MAX.  Default = 0.0. */
+    FMOD_DSP_PAN_3D_MIN_EXTENT,                 /* (Type:float) - 3D Min Extent.            EXTENT_MIN to EXTENT_MAX.  Default = 0.0. */
+    FMOD_DSP_PAN_3D_PAN_BLEND,                  /* (Type:float) - 3D Pan Blend.             PAN_BLEND_MIN to PAN_BLEND_MAX.  Default = 0.0. */
+    FMOD_DSP_PAN_LFE_UPMIX_ENABLED,             /* (Type:int)   - LFE Upmix Enabled.        0 to 1.  Default = 0. */
+    FMOD_DSP_PAN_OVERALL_GAIN,                  /* (Type:data)  - Overall gain.             data of type FMOD_DSP_PARAMETER_DATA_TYPE_OVERALLGAIN */
+    FMOD_DSP_PAN_SURROUND_SPEAKER_MODE          /* (Type:int)   - Surround speaker mode.    Target speaker mode for surround panning. */
 } FMOD_DSP_PAN;
 
 
 /*
 [ENUM]
-[  
-    [DESCRIPTION]   
+[
+    [DESCRIPTION]
     Parameter values for the FMOD_DSP_THREE_EQ_CROSSOVERSLOPE parameter of the FMOD_DSP_TYPE_THREE_EQ DSP.
 
     [REMARKS]
 
-    [SEE_ALSO]      
+    [SEE_ALSO]
     FMOD_DSP_THREE_EQ
 ]
 */
@@ -768,17 +789,17 @@ typedef enum
 
 /*
 [ENUM]
-[  
-    [DESCRIPTION]   
+[
+    [DESCRIPTION]
     Parameter types for the FMOD_DSP_TYPE_THREE_EQ filter.
 
     [REMARKS]
 
-    [SEE_ALSO]      
-    DSP::SetParameterFloat
-    DSP::GetParameterFloat
-    DSP::SetParameterInt
-    DSP::GetParameterInt
+    [SEE_ALSO]
+    DSP::setParameterFloat
+    DSP::getParameterFloat
+    DSP::setParameterInt
+    DSP::getParameterInt
     FMOD_DSP_TYPE
     FMOD_DSP_THREE_EQ_CROSSOVERSLOPE_TYPE
 ]
@@ -797,7 +818,7 @@ typedef enum
 /*
 [ENUM]
 [
-    [DESCRIPTION]   
+    [DESCRIPTION]
     List of windowing methods for the FMOD_DSP_TYPE_FFT unit.  Used in spectrum analysis to reduce leakage / transient signals intefering with the analysis.<br>
     This is a problem with analysis of continuous signals that only have a small portion of the signal sample (the fft window size).<br>
     Windowing the signal with a curve or triangle tapers the sides of the fft window to help alleviate this problem.
@@ -828,7 +849,7 @@ typedef enum
     <img src="..\static\overview\blackmanharris.gif"></img>
     </exclude>
     
-    [SEE_ALSO]      
+    [SEE_ALSO]
     FMOD_DSP_FFT
 ]
 */
@@ -845,15 +866,15 @@ typedef enum
 
 /*
 [ENUM]
-[  
-    [DESCRIPTION]   
+[
+    [DESCRIPTION]
     Parameter types for the FMOD_DSP_TYPE_FFT dsp effect.
 
     [REMARKS]
     Set the attributes for the spectrum analysis with FMOD_DSP_FFT_WINDOWSIZE and FMOD_DSP_FFT_WINDOWTYPE, and retrieve the results with FMOD_DSP_FFT_SPECTRUM and FMOD_DSP_FFT_DOMINANT_FREQ.
     FMOD_DSP_FFT_SPECTRUM stores its data in the FMOD_DSP_PARAMETER_DATA_TYPE_FFT.  You will need to cast to this structure to get the right data.
 
-    [SEE_ALSO]      
+    [SEE_ALSO]
     DSP::setParameterFloat
     DSP::getParameterFloat
     DSP::setParameterInt
@@ -876,7 +897,7 @@ typedef enum
 /*
 [ENUM]
 [  
-    [DESCRIPTION]   
+    [DESCRIPTION]
     Parameter types for the FMOD_DSP_TYPE_ENVELOPEFOLLOWER unit.
     This is a simple envelope follower for tracking the signal level.<br>
 
@@ -884,11 +905,11 @@ typedef enum
     This unit does not affect the incoming signal
     <br>
 
-    [SEE_ALSO]      
-    DSP::SetParameterFloat
-    DSP::GetParameterFloat
-    DSP::SetParameterBool
-    DSP::GetParameterBool
+    [SEE_ALSO]
+    DSP::setParameterFloat
+    DSP::getParameterFloat
+    DSP::setParameterBool
+    DSP::getParameterBool
     FMOD_DSP_TYPE
 ]
 */
@@ -902,9 +923,9 @@ typedef enum
 
 /*
 [ENUM]
-[  
+[
     [DESCRIPTION]
-    Parameter types for the FMOD_DSP_TYPE_CHORUS filter.
+    Parameter types for the FMOD_DSP_TYPE_CONVOLUTIONREVERB filter.
 
     [REMARKS]
     Convolution Reverb reverb IR.<br>

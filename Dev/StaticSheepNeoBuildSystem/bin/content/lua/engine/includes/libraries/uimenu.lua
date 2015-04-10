@@ -13,7 +13,7 @@ end
 
 function uimenu.Create(vStep, hStep, gamepads)
   -- Initialize button table
-  Log(INFO, "Created menu")
+  Log(DEBUG, "Created menu")
 
   local newMenu = {}
   newMenu.buttons = {}
@@ -27,6 +27,7 @@ function uimenu.Create(vStep, hStep, gamepads)
   newMenu.padClickCD = {0,0,0,0}
   newMenu.inputCD = 200
   newMenu.active = true
+  newMenu.wait = true
 
   table.Merge(newMenu, uimenu.meta)
 
@@ -52,11 +53,25 @@ function uimenu.Delete(realMenu)
 
   Log(DEBUG, "Deleted menu: "..id)
 
-  if uimenu.list[id] then
-    uimenu.list[id].buttons = {}
-    table.remove(uimenu.list, id)
+  local realID = -1
+
+
+
+  for k,v in pairs(uimenu.list) do
+    if v.menuID == id then
+      realID = k
+      break
+    end
   end
 
+  if realID == -1 then return end
+
+  if uimenu.list[realID] then
+    uimenu.list[realID].buttons = {}
+    table.remove(uimenu.list, realID)
+  end
+
+  --Log(DEBUG, "Current menuss left: ".. #uimenu.list)
   
 end
 
@@ -82,6 +97,7 @@ end
 
 function uimenu.meta:SetActive(active)
   self.active = active
+  self.wait = active
 end
 
 function uimenu.meta:RegisterButton(btn)
@@ -173,6 +189,11 @@ function uimenu.meta:Update()
   local stick, dPad, gamePad
 
   local cTime = CurTime()
+
+  if self.wait then
+    self.wait = false
+    return
+  end
 
   --if self.numButtons == 0 then return end
 

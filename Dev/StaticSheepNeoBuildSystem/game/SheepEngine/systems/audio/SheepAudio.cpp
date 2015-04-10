@@ -126,6 +126,7 @@ namespace Framework
     // grab the bus for the bank files. This will allow adjusting volume later
     ErrorCheck(system->getBus(busID.c_str(), &musicBus));
 
+    musicBus->lockChannelGroup();
 
     debug = new DebugAudio;
 	}
@@ -247,7 +248,7 @@ namespace Framework
     AUDIO->musicVolume = Clamp(volume, 0.0f, 1.0f);
     AUDIO->musicChannel->setVolume(AUDIO->musicVolume);
 
-    FMOD::ChannelGroup* group;
+    FMOD::ChannelGroup* group = nullptr;
 
     // this gets the channel group that the bus belongs to?
     AUDIO->musicBus->getChannelGroup(&group);
