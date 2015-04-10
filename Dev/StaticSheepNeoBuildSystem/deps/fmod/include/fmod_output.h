@@ -1,5 +1,5 @@
 /* ======================================================================================================== */
-/* FMOD Studio - output development header file. Copyright (c), Firelight Technologies Pty, Ltd. 2004-2014. */
+/* FMOD Studio - output development header file. Copyright (c), Firelight Technologies Pty, Ltd. 2004-2015. */
 /*                                                                                                          */
 /* Use this header if you are wanting to develop your own output plugin to use with                         */
 /* FMOD's output system.  With this header you can make your own output plugin that FMOD                    */
@@ -9,8 +9,6 @@
 
 #ifndef _FMOD_OUTPUT_H
 #define _FMOD_OUTPUT_H
-
-#include "fmod.h"
 
 typedef struct FMOD_OUTPUT_STATE FMOD_OUTPUT_STATE;
 

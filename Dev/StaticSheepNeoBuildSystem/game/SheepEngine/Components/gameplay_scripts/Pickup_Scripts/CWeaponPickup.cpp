@@ -109,9 +109,10 @@ namespace Framework
   void WeaponPickup::OnCollision(Handle otherObject, SheepFizz::ExternalManifold manifold)
 	{
     GameObject *OtherObject = space->GetGameObject(otherObject);
-    if (OtherObject->name == "Player")
+
+    PlayerController *playerController = OtherObject->GetComponent<PlayerController>(ePlayerController);
+    if (playerController)
     {
-      PlayerController *playerController = OtherObject->GetComponent<PlayerController>(ePlayerController);
       playerController->Combat()->DeleteWeapon();
       playerController->Combat()->SetWeapon((Weapon *)weaponType->New());
       space->GetGameObject(owner)->Destroy();
