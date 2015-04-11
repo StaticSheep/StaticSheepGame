@@ -169,7 +169,7 @@ namespace Framework
     if (LMSThisRound != -1)
     {
       GivePlayerChip(LMSThisRound, CHIPS_PER_ROUND);
-      //LMSThisRound = -1;
+      LMSThisRound = -1;
     }
   }
 
