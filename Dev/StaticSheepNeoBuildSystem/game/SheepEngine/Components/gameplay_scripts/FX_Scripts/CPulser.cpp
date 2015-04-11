@@ -1,9 +1,9 @@
 /*****************************************************************
 Filename: CPulser.cpp
-Project:  Gam200
+Project:  Gam250
 Author(s): Zachary Nawar (Primary)
 
-All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+All content © 2015 DigiPen (USA) Corporation, all rights reserved.
 *****************************************************************/
 
 #include "pch/precompiled.h"

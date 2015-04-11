@@ -1,3 +1,11 @@
+/*****************************************************************
+Filename: CBonusSlotManager.h
+Project:  Gam250
+Author(s): Zachary Nawar (Primary)
+
+All content © 2015 DigiPen (USA) Corporation, all rights reserved.
+*****************************************************************/
+
 #include "pch/precompiled.h"
 #include "CBonusSlotManager.h"
 

@@ -1,5 +1,5 @@
 /*****************************************************************
-Filename: CWeaponPickup.cpp
+Filename: CPowerupPickup.cpp
 Project:  Gam200
 Author(s): Greg Walls (Primary)
 

@@ -3,7 +3,7 @@ Filename: CPointLight.cpp
 Project:  GAM 250
 Author(s): Scott Nelson (primary)
 
-All content © 2014 DigiPen (USA) Corporation, all rights reserved.
+All content © 2015 DigiPen (USA) Corporation, all rights reserved.
 ******************************************************************************/
 #include "pch/precompiled.h"
 #include "CPointLight.h"

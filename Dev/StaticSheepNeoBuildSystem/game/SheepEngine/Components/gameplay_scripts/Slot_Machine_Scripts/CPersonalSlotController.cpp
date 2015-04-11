@@ -1,5 +1,5 @@
 /*****************************************************************
-Filename: CSlotController.cpp
+Filename: CPersonalSlotController.cpp
 Project:  Gam200
 Author(s): Greg Walls (Primary)
 

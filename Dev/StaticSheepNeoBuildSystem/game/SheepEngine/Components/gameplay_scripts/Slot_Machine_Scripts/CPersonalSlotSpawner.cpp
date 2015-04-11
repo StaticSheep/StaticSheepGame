@@ -1,6 +1,6 @@
 /*****************************************************************
-Filename: CSlotController.cpp
-Project:  Gam200
+Filename: CPersonalSlotSpawner.cpp
+Project:  Gam250
 Author(s): Greg Walls (Primary)
 
 All content © 2015 DigiPen (USA) Corporation, all rights reserved.
