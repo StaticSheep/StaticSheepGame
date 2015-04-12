@@ -209,7 +209,7 @@ namespace Framework
   void SheepPhysics::SetDebug(bool on)
   {
     debugOn = on;
-    GRAPHICS->SetWireframe(on);
+    //GRAPHICS->SetWireframe(on);
   }
 
   bool SheepPhysics::IsDebugOn(void)
@@ -597,9 +597,9 @@ namespace Framework
 	{
     if (SHEEPINPUT->Keyboard.KeyIsPressed(VK_F11))
     {
-      debugOn = !debugOn;
-      if (!debugOn)
-        GRAPHICS->SetWireframe(false);
+      
+      //debugOn = !debugOn;
+      //GRAPHICS->SetWireframe(debugOn);
     }
 
 		std::vector<GameSpace*>& gSpaces = ENGINE->Spaces();
