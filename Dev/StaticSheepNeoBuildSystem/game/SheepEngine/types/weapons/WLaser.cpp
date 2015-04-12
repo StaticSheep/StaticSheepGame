@@ -51,7 +51,7 @@ namespace Framework
     std::vector<MCData> rayData;
 
     MultiRayCaster(playerTrans->GetTranslation(), AimDir,
-      player->space, 20.0f, Player1Weapon, rayData, 4);
+      player->space, 20, Player1Weapon, rayData, 4);
 
     if (rayData[0].obj != Handle::null)
     {

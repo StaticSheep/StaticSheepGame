@@ -120,8 +120,8 @@ namespace Framework
 
     for (int i = 0; i < coinballs; ++i)
     {
-      float ranX = GetRandom(-600, 600);
-      float ranY = GetRandom(-300, 300);
+      float ranX = GetRandom(-600.0f, 600.0f);
+      float ranY = GetRandom(-300.0f, 300.0f);
       Vec3 pos(ranX, ranY, 0.0f);
       space->hooks.Call("SpawnItem", "CoinBall", pos);
     }

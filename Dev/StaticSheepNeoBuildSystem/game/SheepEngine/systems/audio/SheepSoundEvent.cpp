@@ -163,7 +163,7 @@ void SoundEvent::UpdateVolume(float volume, bool isMusic)
   {
     musicVolume = volume;
 
-    SOUND::EventInstance** musicInstance;
+    SOUND::EventInstance** musicInstance = 0;
     int instances = 0;
 
     description->getInstanceList(musicInstance, 1, &instances);

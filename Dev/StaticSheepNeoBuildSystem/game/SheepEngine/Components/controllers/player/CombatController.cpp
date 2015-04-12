@@ -89,7 +89,7 @@ namespace Framework
     if (bullet)
     {
       /* Inflict the damage to the player (or atleast attempt) */
-      TakeDamage(bullet->damage, bullet->playerOwner);
+      TakeDamage(static_cast<float>(bullet->damage), bullet->playerOwner);
 
       /* Play hit sound */
       se->Play("hit1", &SoundInstance(1.0f));

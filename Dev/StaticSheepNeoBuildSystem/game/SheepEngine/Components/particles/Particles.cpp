@@ -52,7 +52,7 @@ namespace Framework
     life = GetRandom(life_.m_startMin, life_.m_startMax);
     endLife = life;
 
-    theta = GetRandom(0.0f, 2.0f * PI);
+    theta = GetRandom(0.0f, static_cast<float>(2.0f * PI));
   }
 
 }

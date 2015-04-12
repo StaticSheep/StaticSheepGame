@@ -175,7 +175,12 @@ namespace Framework
     {
       if (m_pos.edgeOnly)
       {
-        bool min = rand() % 2;
+        bool min;
+
+        if(rand() % 2)
+          min = true;
+        else
+          min = false;
 
         switch (min)
         {
@@ -187,7 +192,10 @@ namespace Framework
           break;
         }
 
-        min = rand() % 2;
+        if(rand() % 2)
+          min = true;
+        else
+          min = false;
 
         switch (min)
         {
@@ -221,7 +229,7 @@ namespace Framework
         break;
       }
 
-      float angle = GetRandom(0, 360 / (int)(m_pos.angle * m_pos.angle));
+      float angle = static_cast<float>(GetRandom(0, 360 / (int)(m_pos.angle * m_pos.angle)));
       angle += GetRandom(-m_pos.randAngle, m_pos.randAngle);
 
       prt.pos = center;

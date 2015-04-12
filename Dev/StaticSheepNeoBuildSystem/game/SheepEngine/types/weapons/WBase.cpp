@@ -41,7 +41,7 @@ namespace Framework
     bce->timed = 0.001f;
 
     Vec3 AimDir = pc->aimDir;
-    float theta = atan2f(AimDir.y, AimDir.x) - (PI / 2.0f);
+    float theta = atan2f(AimDir.y, AimDir.x) - static_cast<float>(PI / 2.0f);
     Mat3D rotation(theta);
 
     bps->direction.m_startMin = rotation * bps->direction.m_startMin;

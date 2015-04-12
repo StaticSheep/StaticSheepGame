@@ -68,8 +68,8 @@ namespace DirectSheep
             if(temp.find("frame size:") != std::string::npos)
             {
               begin = temp.find(":") + 2;
-              atlas[buffer][reader].offset.x = atof(temp.substr(begin, temp.find(",") - begin).c_str());
-              atlas[buffer][reader].offset.y = atof(temp.substr(temp.find(",") + 2, std::string::npos).c_str());
+              atlas[buffer][reader].offset.x = static_cast<float>(atof(temp.substr(begin, temp.find(",") - begin).c_str()));
+              atlas[buffer][reader].offset.y = static_cast<float>(atof(temp.substr(temp.find(",") + 2, std::string::npos).c_str()));
             }
 
             if(temp.find("{") != std::string::npos)

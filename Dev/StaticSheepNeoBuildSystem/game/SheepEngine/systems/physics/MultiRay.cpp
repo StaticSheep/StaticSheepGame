@@ -32,7 +32,7 @@ namespace Framework
     std::vector<Vec3D> m_positionOffsets;
 
     float offsetVal = width / 2.0f;
-    float differencePerOffset = width / (resolution - 1);
+    float differencePerOffset = static_cast<float>(width / (resolution - 1));
 
     Vec3D offsetDir = m_ray.rayDirection.CalculateNormal();
     Vec3D position = m_ray.rayOrigin + offsetDir * offsetVal;
