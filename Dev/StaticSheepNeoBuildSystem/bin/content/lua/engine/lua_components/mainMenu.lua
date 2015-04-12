@@ -207,13 +207,13 @@ function META:MakeMenu()
     end
   end)
 
-  local rights = gui.Create("Label", self.base)
-  self:Register(rights)
-  rights:SetPos(640 / 2, 620)
-  rights:SetDSize(5.5)
-  rights:SetText("All content (c) 2014 DigiPen (USA) Corporation, all rights reserved.\nFMOD Studio Copyright (c) 2005-2011 Firelight Technologies Pty, Ltd.")
-  rights:SetXAlignment(TEXT_ALIGN_CENTER)
-  rights:SetYAlignment(TEXT_ALIGN_BOTTOM)
+  -- local rights = gui.Create("Label", self.base)
+  -- self:Register(rights)
+  -- rights:SetPos(640 / 2, 620)
+  -- rights:SetDSize(5.5)
+  -- rights:SetText("All content (c) 2014 DigiPen (USA) Corporation, all rights reserved.\nFMOD Studio Copyright (c) 2005-2011 Firelight Technologies Pty, Ltd.")
+  -- rights:SetXAlignment(TEXT_ALIGN_CENTER)
+  -- rights:SetYAlignment(TEXT_ALIGN_BOTTOM)
 end
 
 function round(v, p)
