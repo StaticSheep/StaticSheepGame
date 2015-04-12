@@ -20,6 +20,8 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "systems/graphics/DrawLib.h"
 #include "engine/window/Window32.h"
 
+static bool debug_on = false;
+
 static bool fpsFlag;
 static bool performanceFlag;
 static int counter = 31;
@@ -396,6 +398,8 @@ namespace Framework
   // Gets which state we are in for drawing debug. Need to change
   int Debug::GetState()
   {
+    if (!debug_on)
+      return currentState;
     // F2 for FPS printing
     if(SHEEPINPUT->Keyboard.KeyIsPressed(VK_F2))
     {
