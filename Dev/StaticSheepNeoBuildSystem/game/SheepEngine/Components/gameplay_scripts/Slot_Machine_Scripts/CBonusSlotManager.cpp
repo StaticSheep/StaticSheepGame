@@ -59,18 +59,19 @@ namespace Framework
     if (m_bonusInfo[number].m_tie)
       return;
 
+      //prizes temporarily disabled
     switch (m_bonusInfo[number].m_prize)
     {
       case BCOINS:
-        space->hooks.Call("GivePlayerCoins", m_bonusInfo[number].m_currentLeader, 15000);
+        //space->hooks.Call("GivePlayerCoins", m_bonusInfo[number].m_currentLeader, 15000);
         break;
 
       case BONECHIP:
-        space->hooks.Call("GivePlayerChip", m_bonusInfo[number].m_currentLeader, 1);
+        //space->hooks.Call("GivePlayerChip", m_bonusInfo[number].m_currentLeader, 1);
         break;
 
       case BTWOCHIP:
-        space->hooks.Call("GivePlayerChip", m_bonusInfo[number].m_currentLeader, 2);
+        //space->hooks.Call("GivePlayerChip", m_bonusInfo[number].m_currentLeader, 2);
         break;
     }
 
@@ -90,6 +91,40 @@ namespace Framework
     m_bonusInfo[number].m_mod = (BONUSMODIFIERS)result.mod;
     m_bonusInfo[number].m_prize = (BONUSPRIZE)result.prize;
     m_bonusInfo[number].m_active = true;
+
+    //********************************
+    //filler code for coin ball spawns
+    //REMOVE when slot implemented
+
+    int coinballs = 0;
+    if (result.type == COINS)
+      ++coinballs;
+
+    if (result.type == KILLS)
+      ++coinballs;
+
+    if (result.type == DEATHS)
+      coinballs += 2;
+
+    if (result.mod == MOST)
+      ++coinballs;
+
+    if (result.prize == BCOINS)
+      ++coinballs;
+
+    if (result.prize == BONECHIP)
+      ++coinballs;
+
+    if (result.prize == BTWOCHIP)
+      coinballs += 2;
+
+    for (int i = 0; i < coinballs; ++i)
+    {
+      float ranX = GetRandom(-600, 600);
+      float ranY = GetRandom(-300, 300);
+      Vec3 pos(ranX, ranY, 0.0f);
+      space->hooks.Call("SpawnItem", "CoinBall", pos);
+    }
   }
 
   void BonusSlotManager::RoundOver()

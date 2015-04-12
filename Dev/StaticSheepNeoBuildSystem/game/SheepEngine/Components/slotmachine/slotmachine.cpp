@@ -254,7 +254,7 @@ namespace Framework
                 : nullptr;
 
               selectionCB.ForceBind(context);
-              selectionCB(i, &(slot->land));
+              selectionCB((int)i, &(slot->land));
             }
               
             else

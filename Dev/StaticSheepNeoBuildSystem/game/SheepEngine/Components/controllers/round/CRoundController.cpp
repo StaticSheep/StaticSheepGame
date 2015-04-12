@@ -18,6 +18,8 @@ All content © 2015 DigiPen (USA) Corporation, all rights reserved.
 #include "../light patterns/CLightPatternController.h"
 #include "../../gamepad/CGamePad.h"
 #include "../../sprites/CAniSprite.h"
+#include "../systems/input/devices/KeyboardInput.h"
+#include "../systems/input/Input.h"
 
 namespace Framework
 {
@@ -343,13 +345,21 @@ namespace Framework
       round_state_timer -= dt;
 
     bool backPressed = false;
+
+    GamePad *gp = space->GetGameObject(owner)->GetComponent<GamePad>(eGamePad);
+
     for (int i = 0; i < 4; ++i)
     {
-      GamePad *gp = space->GetGameObject(owner)->GetComponent<GamePad>(eGamePad);
       gp->GamepadIndex = i;
       if (gp->ButtonPressed(XButtons.Back))
         backPressed = true;
     }
+
+    if (SHEEPINPUT->KeyIsDown(VK_BACK))
+    {
+      backPressed = true;
+    }
+
     if (backPressed)
     {
       ENGINE->ChangeLevel("Lobby");
