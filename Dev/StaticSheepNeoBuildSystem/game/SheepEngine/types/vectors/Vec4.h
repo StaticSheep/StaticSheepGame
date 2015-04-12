@@ -1,7 +1,7 @@
 /*****************************************************************
 Filename: Vec4.h
 Project: 
-Author(s):
+Author(s): Zachary Nawar (primary)
 
 All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 *****************************************************************/

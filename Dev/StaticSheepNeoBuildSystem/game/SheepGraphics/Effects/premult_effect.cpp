@@ -1,5 +1,5 @@
 /*****************************************************************
-Filename: gen_effect.cpp
+Filename: premult_effect.cpp
 Project:
 Author(s): Scott Nelson (Primary)
 

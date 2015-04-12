@@ -1,3 +1,10 @@
+/*****************************************************************
+Filename: CBonusSlotManager.h
+Project:  Gam250
+Author(s): Jonathan Sourbeer (Primary)
+
+All content © 2015 DigiPen (USA) Corporation, all rights reserved.
+*****************************************************************/
 #pragma once
 
 #include "components/base/Component.h"
