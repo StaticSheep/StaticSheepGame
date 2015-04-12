@@ -97,7 +97,7 @@ namespace Framework
 
     int state = -1;
 
-    theta = atan2f(temp.y, temp.x) * 57.2957795;
+    theta = atan2f(temp.y, temp.x) * 57.2957795f;
 
     if(aiming)
     {

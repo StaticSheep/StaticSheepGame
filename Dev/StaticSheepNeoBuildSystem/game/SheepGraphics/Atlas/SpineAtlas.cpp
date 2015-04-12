@@ -47,7 +47,7 @@ namespace DirectSheep
       while(!file.eof())
       {
         std::getline(file, reader);
-        size_t begin, end;
+        size_t begin;
 
         if(reader.find("entity:") != std::string::npos)
         {
@@ -68,8 +68,8 @@ namespace DirectSheep
             if(temp.find("frame size:") != std::string::npos)
             {
               begin = temp.find(":") + 2;
-              atlas[buffer][reader].offset.x = atoi(temp.substr(begin, temp.find(",") - begin).c_str());
-              atlas[buffer][reader].offset.y = atoi(temp.substr(temp.find(",") + 2, std::string::npos).c_str());
+              atlas[buffer][reader].offset.x = atof(temp.substr(begin, temp.find(",") - begin).c_str());
+              atlas[buffer][reader].offset.y = atof(temp.substr(temp.find(",") + 2, std::string::npos).c_str());
             }
 
             if(temp.find("{") != std::string::npos)
@@ -161,7 +161,7 @@ namespace DirectSheep
 
       if(seq != it->second.end())
       {
-        if( frame < seq->second.sequence.size())
+        if( (unsigned)frame < seq->second.sequence.size())
           return &seq->second.sequence[frame];
 
         Framework::TRACELOG->Log(Framework::TraceLevel::ERR, "No animation frame found at %i", frame);

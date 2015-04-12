@@ -60,8 +60,8 @@ namespace Framework
     if (m_crosshairColor.b < 1)
       m_crosshairColor.b += dt / 2;
 
-    newTrans.x = Clamp(newTrans.x, -Draw::ScreenWidth() / 2, Draw::ScreenWidth() / 2);
-    newTrans.y = Clamp(newTrans.y, -Draw::ScreenHeight() / 2, Draw::ScreenHeight() / 2);
+    newTrans.x = Clamp(newTrans.x, -Draw::ScreenWidth() / 2.0f, Draw::ScreenWidth() / 2.0f);
+    newTrans.y = Clamp(newTrans.y, -Draw::ScreenHeight() / 2.0f, Draw::ScreenHeight() / 2.0f);
     trans->SetTranslation(newTrans);
 
     if (m_isFiring)

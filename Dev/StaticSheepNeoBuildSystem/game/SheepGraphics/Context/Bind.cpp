@@ -51,7 +51,7 @@ namespace DirectSheep
           viewportWidth = height * TargetAspect;
         }
 
-        m_viewport.dim = Dimension(viewportWidth, viewportHeight);
+        m_viewport.dim = Dimension((unsigned)viewportWidth, (unsigned)viewportHeight);
         m_viewport.offsetX = (width - viewportWidth) / 2;
         m_viewport.offsetY = (height - viewportHeight) / 2;
         //m_viewport.offsetY = 0;// viewportHeight / 2.0f;
@@ -65,7 +65,7 @@ namespace DirectSheep
       }
       else
       {
-        m_viewport.dim = Dimension(width, height);
+        m_viewport.dim = Dimension((unsigned)width, (unsigned)height);
         m_viewport.offsetX = 0;
         m_viewport.offsetY = 0;
       }
@@ -81,9 +81,9 @@ namespace DirectSheep
       m_depthBuffer.m_depthBuffer->Release();
       m_depthBuffer.texture2D->Release();
 
-      DXVerify(m_swapChain->ResizeBuffers(0, width, height, DXGI_FORMAT_UNKNOWN, 0));
+      DXVerify(m_swapChain->ResizeBuffers(0, (unsigned)width, (unsigned)height, DXGI_FORMAT_UNKNOWN, 0));
 
-      SetViewport(m_viewport.offsetX, m_viewport.offsetY, m_viewport.dim);
+      SetViewport((unsigned)m_viewport.offsetX, (unsigned)m_viewport.offsetY, m_viewport.dim);
 
       CreateDepthBuffer();
 
@@ -98,11 +98,11 @@ namespace DirectSheep
       CreateRenderTarget(m_canvasTarget, DXGI_FORMAT_R8G8B8A8_UNORM,
         Dimension(m_viewport.dim.width, m_viewport.dim.height));
 
-      ((Camera*)m_orthoScreen.ptr)->SetScale(m_viewport.dim.width,
-        m_viewport.dim.height);
+      ((Camera*)m_orthoScreen.ptr)->SetScale((float)m_viewport.dim.width,
+        (float)m_viewport.dim.height);
 
-      ((Camera*)m_postEffects.ptr)->SetScale(m_viewport.dim.width,
-        m_viewport.dim.height);
+      ((Camera*)m_postEffects.ptr)->SetScale((float)m_viewport.dim.width,
+        (float)m_viewport.dim.height);
 
 
 

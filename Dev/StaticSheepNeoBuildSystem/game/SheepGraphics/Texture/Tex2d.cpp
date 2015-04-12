@@ -117,7 +117,7 @@ namespace DirectSheep
 
     PreMultEffect->bind(dcon);
     PreMultEffect->bindSize(dcon,
-      Vec2(m_width, m_height));
+      Vec2((float)m_width, (float)m_height));
     // No blend colors
     //PreMultEffect->bindAmbient(m_deviceContext, Vec4(1, 1, 1, 1), 1);
     //PreMultEffect->bind(dcon);

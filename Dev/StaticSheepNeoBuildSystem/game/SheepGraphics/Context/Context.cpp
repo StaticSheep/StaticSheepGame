@@ -137,7 +137,7 @@ namespace DirectSheep
       Dimension(1920, 1080), true);
 
     CreateRenderTarget(m_canvasTarget, DXGI_FORMAT_R8G8B8A8_UNORM,
-      Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
+      Dimension((unsigned)SCREEN_WIDTH, (unsigned)SCREEN_HEIGHT));
 
 
 
@@ -667,7 +667,7 @@ namespace DirectSheep
   Framework::Vec2D RenderContext::MeasureString(const char* text, Framework::Vec2D scale,
     int fontIndex)
   {
-    if (fontIndex >= m_font.size() || fontIndex < 0)
+    if (fontIndex < 0 || (unsigned)fontIndex >= m_font.size())
       return Framework::Vec2D(0, 0);
 
     XMVECTOR fontSize;
@@ -695,6 +695,7 @@ namespace DirectSheep
     {
       return m_atlasRes[atlasHandle.GetIndex()].GetTextureName();
     }
+    else return m_atlasRes[0].GetTextureName();
   }
 
 

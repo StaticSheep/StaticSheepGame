@@ -13,6 +13,7 @@ All content © 2015 DigiPen (USA) Corporation, all rights reserved.
 #include "../../gamepad/CGamePad.h"
 #include "../../sprites/CSprite.h"
 #include "CLobbyController.h"
+#include "../systems/input/Input.h"
 
 namespace Framework
 {
@@ -57,7 +58,7 @@ namespace Framework
     if (!activePlayer)
       Blink(dt);
 
-    if (playGP->ButtonPressed(XButtons.A) && !activePlayer)
+    if ((playGP->ButtonPressed(XButtons.A) && !activePlayer) || (playGP->GetIndex() == 0 && SHEEPINPUT->KeyIsPressed('A')))
     {
       Framework::playerJoined[playerNum] = true;
       //DestroySelf();

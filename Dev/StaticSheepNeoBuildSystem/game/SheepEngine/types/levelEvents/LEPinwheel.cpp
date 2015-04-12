@@ -38,12 +38,12 @@ namespace Framework
 
     if (GetRandom(0, 1))
     {
-      trans->SetTranslation(Vec3(-(GRAPHICS->_ScreenWidth / 2.0), 0.0, 1.0));
+      trans->SetTranslation(Vec3(-(GRAPHICS->_ScreenWidth / 2.0f), 0.0f, 1.0f));
     }
     else
     {
       pin->moveLeft = true;
-      trans->SetTranslation(Vec3((GRAPHICS->_ScreenWidth / 2.0), 0.0, 1.0));
+      trans->SetTranslation(Vec3((GRAPHICS->_ScreenWidth / 2.0f), 0.0f, 1.0f));
     }
   }
 }

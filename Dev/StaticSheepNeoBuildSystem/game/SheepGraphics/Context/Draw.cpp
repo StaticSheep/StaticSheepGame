@@ -69,7 +69,7 @@ namespace DirectSheep
   void RenderContext::DrawSpriteText(const char * text, int index,
     Framework::Vec2D& scale)
   {
-    if (index >= m_font.size() || index < 0)
+    if (index < 0 || (unsigned)index >= m_font.size())
     {
       m_font[0].m_spriteFont->DrawString(m_batcher[m_curLayer],
         L"Invalid Font", Vec2(m_spriteTrans.x,
@@ -186,7 +186,7 @@ namespace DirectSheep
     m_curLayer = 0;
     m_fullbright = fullBright;
 
-    for (int i = 0; i < maxLayers; ++i)
+    for (unsigned i = 0; i < maxLayers; ++i)
     {
       m_batcher[i]->Begin(SpriteSortMode_BackToFront, m_states->AlphaBlend(),
         m_states->LinearWrap(), m_states->DepthNone(),
@@ -217,7 +217,7 @@ namespace DirectSheep
   void RenderContext::EndBatch()
   {
     
-    for (int i = 0; i < m_curMaxLayers; ++i)
+    for (unsigned i = 0; i < m_curMaxLayers; ++i)
     {
       /* Lighting calculations are done in 1920x1080 at all times. */
       SetViewport(0, 0, Dimension(1920, 1080));
@@ -292,7 +292,7 @@ namespace DirectSheep
       m_deviceContext->OMSetRenderTargets(1,
         &m_backBuffer, m_depthBuffer.m_depthBuffer);
 
-      SetViewport(m_viewport.offsetX, m_viewport.offsetY, m_viewport.dim);
+      SetViewport((unsigned)m_viewport.offsetX, (unsigned)m_viewport.offsetY, m_viewport.dim);
 
       // Bind generic effect for drawing a window sized texture
       m_genericEffect->bindPosUV(m_deviceContext,

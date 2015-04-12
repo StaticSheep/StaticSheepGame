@@ -88,7 +88,6 @@ namespace Framework
       space->hooks.Add("FrameUpdate", self, BUILD_FUNCTION(AniSprite::CheckNextFrame));
       break;
     case false:
-    default:
       space->hooks.Add("LogicUpdate", self, BUILD_FUNCTION(AniSprite::CheckNextFrame));
       break;
     }

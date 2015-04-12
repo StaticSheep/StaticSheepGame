@@ -33,8 +33,8 @@ namespace Framework
     else
       moveFactor = 1;
 
-    body->SetVelocity(velocity * moveFactor);
-    body->SetAngVelocity(-moveFactor);
+    body->SetVelocity(velocity * (float)moveFactor);
+    body->SetAngVelocity(-(float)moveFactor);
 
     if (trans->GetTranslation().x > 1008 || trans->GetTranslation().x < -1008)
     {

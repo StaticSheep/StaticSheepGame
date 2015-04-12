@@ -177,8 +177,8 @@ namespace DirectSheep
     D3D11_TEXTURE2D_DESC texd;       // Description structure for depth buffer texture
     ZeroMemory(&texd, sizeof(texd)); // Null all members
 
-    texd.Width = SCREEN_WIDTH; // Set screen dimensions
-    texd.Height = SCREEN_HEIGHT;
+    texd.Width = (unsigned)SCREEN_WIDTH; // Set screen dimensions
+    texd.Height = (unsigned)SCREEN_HEIGHT;
     texd.ArraySize = 1;                      // Only one depth buffer
     texd.MipLevels = 1;                      // Mip Mapping
     texd.SampleDesc.Count = 1;
@@ -257,8 +257,8 @@ namespace DirectSheep
     // Set arguments for swapchain creation
     swapDesc.BufferCount = 1;                                   // single back buffer
     swapDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;    // 32-bit color
-    swapDesc.BufferDesc.Width = SCREEN_WIDTH;           // back buffer width
-    swapDesc.BufferDesc.Height = SCREEN_HEIGHT;         // back buffer height
+    swapDesc.BufferDesc.Width = (unsigned)SCREEN_WIDTH;           // back buffer width
+    swapDesc.BufferDesc.Height = (unsigned)SCREEN_HEIGHT;         // back buffer height
     swapDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;     // use buffer as render target
     swapDesc.OutputWindow = m_hwnd;                             // attach to window
     swapDesc.SampleDesc.Count = 1;                              // # of multisamples
