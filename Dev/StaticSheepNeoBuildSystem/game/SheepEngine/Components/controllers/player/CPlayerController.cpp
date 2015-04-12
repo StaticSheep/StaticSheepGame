@@ -237,8 +237,7 @@ namespace Framework
     //  }
 
     // keyboard input for first player
-    if (SHEEPINPUT->KeyIsDown(VK_SPACE))
-      SHEEPINPUT->Pads[0].State.Gamepad.bRightTrigger = (BYTE)255;
+    
 
     ////if the trigger is released, reset the bool
     //if (!gp->RightTrigger() && weapon->semi)
@@ -783,6 +782,10 @@ namespace Framework
     {
       SHEEPINPUT->Pads[0].State.Gamepad.sThumbRY = -32767;
     }
+
+    if (SHEEPINPUT->KeyIsDown(VK_SPACE))
+      SHEEPINPUT->Pads[0].State.Gamepad.bRightTrigger = (BYTE)255;
+
   }
 }
 
