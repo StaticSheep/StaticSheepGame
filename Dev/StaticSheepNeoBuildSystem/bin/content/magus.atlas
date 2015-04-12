@@ -1,7 +1,7 @@
-spacewitch_glow.png
+magus.png
 size: 2958, 1384
 {
-  entity: spacewitch
+  entity: magus
   {
     sequence: run_shoot_down
     number of frames: 12

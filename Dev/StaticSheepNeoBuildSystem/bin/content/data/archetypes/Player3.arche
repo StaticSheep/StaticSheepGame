@@ -20,8 +20,8 @@ GameObject
   }
   SpineSprite
   {
-    atlasName std::string "spacewitch"
-    entityName std::string "spacewitch"
+    atlasName std::string "magus"
+    entityName std::string "magus"
     sequenceName std::string "idle"
     framerate float 20.000000
     Color Vec4
@@ -36,8 +36,8 @@ GameObject
   {
     m_layer int 1
     m_emissive bool true
-    atlasName std::string "spacewitch_glow"
-    entityName std::string "spacewitch"
+    atlasName std::string "magus_glow"
+    entityName std::string "magus"
     m_lightingScale Vec2
     {
       X float 1.000000
