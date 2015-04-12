@@ -81,10 +81,10 @@ namespace Framework
       pc->GoldenGun = true;
     else
       pc->GoldenGun = false;
-    //if (PM.activated)
-    //  pc->PerfectMachine = true;
-    //else
-    //  pc->PerfectMachine = false;
+    /*if (PM.activated)
+      pc->PerfectMachine = true;
+    else
+      pc->PerfectMachine = false;*/
     if (IW.activated)
       space->hooks.Call("CheatWin");
   }
