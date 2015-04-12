@@ -433,7 +433,7 @@ end
 
 function PauseMenu:MakeHelpMenu()
   if not self.base then return end
-  if self.helpMenu then return end
+  if self.helpMenu then self.helpMenu.visible = true return end
   self:HideOptionsMenu()
 
   local helpMenu = gui.Create("FlatPane", self.base)
@@ -446,9 +446,9 @@ function PauseMenu:MakeHelpMenu()
 
   local helpImage = gui.Create("Image", helpMenu)
   self:Register(helpImage)
-  helpImage:SetSize(helpMenu:GetSize().x * 0.6, helpMenu:GetSize().y * 0.6)
-  helpImage:SetPos(helpMenu:GetSize().x * 0.2, helpMenu:GetSize().y * 0.1)
-  helpImage:SetTexture("Controller_Instructions.png")
+  helpImage:SetSize(helpMenu:GetSize().x * 0.9, helpMenu:GetSize().y * 0.6)
+  helpImage:SetPos(helpMenu:GetSize().x * 0.05, helpMenu:GetSize().y * 0.1)
+  helpImage:SetTexture("how_to_play.png")
 
   local requires = gui.Create("Label", helpMenu)
   self:Register(requires)
@@ -466,11 +466,11 @@ function PauseMenu:MakeHelpMenu()
   -- gstart:SetColor(Color(255, 255, 255))
   -- gstart:SetXAlignment(TEXT_ALIGN_CENTER)
 
-  local helpText = gui.Create("Label", helpMenu)
-  self:Register(helpText)
-  helpText:SetText("Keyboard Controls:\nW,A,S,D - Menu Navigation & Movement\nArrow Keys - Aim\nENTER - Menu Selection\nQ - Jump\nSpace - Fire")
-  helpText:SetPos(helpMenu:GetSize().x * 0.2, helpMenu:GetSize().y * 0.6 + helpMenu:GetSize().y * 0.1 + 10)
-  helpText:SetSize(ScreenScale(5))
+  -- local helpText = gui.Create("Label", helpMenu)
+  -- self:Register(helpText)
+  -- helpText:SetText("Keyboard Controls:\nW,A,S,D - Menu Navigation & Movement\nArrow Keys - Aim\nENTER - Menu Selection\nQ - Jump\nSpace - Fire")
+  -- helpText:SetPos(helpMenu:GetSize().x * 0.2, helpMenu:GetSize().y * 0.6 + helpMenu:GetSize().y * 0.1 + 10)
+  -- helpText:SetSize(ScreenScale(5))
 end
 
 function PauseMenu:HideHelpMenu()
