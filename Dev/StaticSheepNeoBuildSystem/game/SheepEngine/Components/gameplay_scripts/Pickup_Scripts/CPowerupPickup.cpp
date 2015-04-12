@@ -65,8 +65,8 @@ namespace Framework
     puTransfrom = space->GetGameObject(owner)->GetComponentHandle(eTransform);
     if (powerUpID == eCoin)
     {
-      float ranXvel = GetRandom(-500, 500);
-      float ranYvel = GetRandom(-500, 500);
+      float ranXvel = (float)GetRandom(-500, 500);
+      float ranYvel = (float)GetRandom(-500, 500);
       space->GetHandles().GetAs<CircleCollider>(space->GetGameObject(owner)->GetComponentHandle(eCircleCollider))->SetVelocity(Vec3(ranXvel, ranYvel, 0.0f));
       space->GetHandles().GetAs<CircleCollider>(space->GetGameObject(owner)->GetComponentHandle(eCircleCollider))->SetGravityOff();
     }

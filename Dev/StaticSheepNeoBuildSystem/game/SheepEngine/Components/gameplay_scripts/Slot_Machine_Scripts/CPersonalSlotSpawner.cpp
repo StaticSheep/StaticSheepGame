@@ -219,7 +219,7 @@ namespace Framework
     char playerString[10];
 
     Draw::SetPosition(drawPos[playerNum].x, drawPos[playerNum].y);
-    Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
+    Draw::SetColor(0.9f, 0.9f, 0.15f, 1.0f); //yellow-ish color
     Draw::SetRotation(0);
     itoa(playerCoinTotal, playerString, 10);
     Draw::DrawString(playerString, scale, 1);

@@ -449,8 +449,8 @@ namespace Framework
       Vec2D scale(60, 60);
       Vec3 pos(-100.0f, 400.0f, 0.0f);
 
-      if (round_state_timer > timeOfRound - 3)
-        itoa(timeOfRound - 3, round_timer, 10);
+      if (round_state_timer > timeOfRound - 3.0f)
+        itoa((int)(timeOfRound - 3.0f), round_timer, 10);
 
       scale.x = 90;
       scale.y = 90;
@@ -462,7 +462,7 @@ namespace Framework
       else if (round_state_timer < 19)
         Draw::SetPosition(-50.0f, 510.0f);
 
-      Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
+      Draw::SetColor(0.9f, 0.9f, 0.15f, 1.0f); //yellow-ish color
       Draw::SetRotation(0);
       Draw::DrawString(round_timer, scale, font_index);
     }

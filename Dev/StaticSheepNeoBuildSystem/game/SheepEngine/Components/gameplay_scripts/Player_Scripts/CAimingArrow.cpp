@@ -59,7 +59,7 @@ namespace Framework
       if (aimDir.x > 0.0f)
         arrowTransform->SetRotation((float)atan(aimDir.y / aimDir.x));
       else
-        arrowTransform->SetRotation((float)atan(aimDir.y / aimDir.x) + PI);
+        arrowTransform->SetRotation((float)atan(aimDir.y / aimDir.x) + (float)PI);
 
       Vec3 arrowOffset = ((pt->GetTranslation()) + (aimDir * 50));
       arrowOffset += (space->GetGameObject(playerController)->GetComponent<BoxCollider>(eBoxCollider)->GetBodyUpNormal() * 25);

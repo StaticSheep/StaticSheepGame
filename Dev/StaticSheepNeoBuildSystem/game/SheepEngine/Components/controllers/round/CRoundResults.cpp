@@ -238,7 +238,7 @@ namespace Framework
       currWinner = -1;
       for (int i = 0; i < 4; ++i)
       {
-        float playChips = space->GetGameObject(ChipCont)->GetComponent<ChipController>(eChipController)->playerChips[i];
+        int playChips = space->GetGameObject(ChipCont)->GetComponent<ChipController>(eChipController)->playerChips[i];
         if (playChips > 0 && playChips > mostChips)
         {
           mostChips = playChips;
@@ -266,9 +266,9 @@ namespace Framework
   {
     if (startDrawing && timeToLive > 0)
     {
-      Vec3 pos;
+      /*Vec3 pos;
       Vec2D scale(50, 50);
-      char playerString[10];
+      char playerString[10];*/
       switch (mode_)
       {
       case FFA:
@@ -300,7 +300,7 @@ namespace Framework
   void RoundResults::DrawKills()
   {
     Draw::SetPosition(-300.0f, 310.0f);
-    Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
+    Draw::SetColor(0.9f, 0.9f, 0.15f, 1.0f); //yellow-ish color
     Draw::SetRotation(0);
     Draw::DrawString("Kills", wordSize, wordFontIndex);
     Vec3 pos;
@@ -319,7 +319,7 @@ namespace Framework
 
       itoa(space->GetGameObject(ChipCont)->GetComponent<ChipController>(eChipController)->roundPlayerKills[i], playerString, 10);
       Draw::SetPosition(pos.x, pos.y);
-      Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
+      Draw::SetColor(0.9f, 0.9f, 0.15f, 1.0f); //yellow-ish color
       Draw::SetRotation(0);
       Draw::DrawString(playerString, numberSize, numberFontIndex);
     }
@@ -328,7 +328,7 @@ namespace Framework
   void RoundResults::DrawDeaths()
   {
     Draw::SetPosition(0.0f, 310.0f);
-    Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
+    Draw::SetColor(0.9f, 0.9f, 0.15f, 1.0f); //yellow-ish color
     Draw::SetRotation(0);
     Draw::DrawString("Deaths", wordSize, wordFontIndex);
     Vec3 pos;
@@ -347,7 +347,7 @@ namespace Framework
 
       itoa(space->GetGameObject(ChipCont)->GetComponent<ChipController>(eChipController)->roundPlayerDeaths[i], playerString, 10);
       Draw::SetPosition(pos.x, pos.y);
-      Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
+      Draw::SetColor(0.9f, 0.9f, 0.15f, 1.0f); //yellow-ish color
       Draw::SetRotation(0);
       Draw::DrawString(playerString, numberSize, numberFontIndex);
     }
@@ -356,7 +356,7 @@ namespace Framework
   void RoundResults::DrawJuggTime()
   {
     Draw::SetPosition(-300.0f, 310.0f);
-    Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
+    Draw::SetColor(0.9f, 0.9f, 0.15f, 1.0f); //yellow-ish color
     Draw::SetRotation(0);
     Draw::DrawString("Time Being IT", wordSize, wordFontIndex);
     Vec3 pos;
@@ -375,7 +375,7 @@ namespace Framework
 
       sprintf(playerString, "%5.2f", (space->GetGameObject(ChipCont)->GetComponent<ChipController>(eChipController)->roundTimeAsJugg[i]));
       Draw::SetPosition(pos.x, pos.y);
-      Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
+      Draw::SetColor(0.9f, 0.9f, 0.15f, 1.0f); //yellow-ish color
       Draw::SetRotation(0);
       Draw::DrawString(playerString, numberSize, numberFontIndex);
     }
@@ -384,7 +384,7 @@ namespace Framework
   void RoundResults::DrawLMSTime()
   {
     Draw::SetPosition(-100.0f, 310.0f);
-    Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
+    Draw::SetColor(0.9f, 0.9f, 0.15f, 1.0f); //yellow-ish color
     Draw::SetRotation(0);
     Draw::DrawString("Time Alive", wordSize, wordFontIndex);
     Vec3 pos;
@@ -403,7 +403,7 @@ namespace Framework
 
       sprintf(playerString, "%5.2f", (space->GetGameObject(ChipCont)->GetComponent<ChipController>(eChipController)->LMSTimeAlive[i]));
       Draw::SetPosition(pos.x, pos.y);
-      Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
+      Draw::SetColor(0.9f, 0.9f, 0.15f, 1.0f); //yellow-ish color
       Draw::SetRotation(0);
       Draw::DrawString(playerString, numberSize, numberFontIndex);
     }
@@ -418,7 +418,7 @@ namespace Framework
   {
     
     Draw::SetPosition(275.0f, 310.0f);
-    Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
+    Draw::SetColor(0.9f, 0.9f, 0.15f, 1.0f); //yellow-ish color
     Draw::SetRotation(0);
     Draw::DrawString("Total Chips", wordSize, wordFontIndex);
     Vec3 pos;
@@ -437,7 +437,7 @@ namespace Framework
 
       itoa(space->GetGameObject(ChipCont)->GetComponent<ChipController>(eChipController)->playerChips[i], playerString, 10);
       Draw::SetPosition(pos.x, pos.y);
-      Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
+      Draw::SetColor(0.9f, 0.9f, 0.15f, 1.0f); //yellow-ish color
       Draw::SetRotation(0);
       Draw::DrawString(playerString, numberSize, numberFontIndex);
     }
@@ -446,7 +446,7 @@ namespace Framework
   void RoundResults::DrawTotalKills()
   {
     Draw::SetPosition(-425.0f, 310.0f);
-    Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
+    Draw::SetColor(0.9f, 0.9f, 0.15f, 1.0f); //yellow-ish color
     Draw::SetRotation(0);
     Draw::DrawString("Total Kills", wordSize, wordFontIndex);
     Vec3 pos;
@@ -465,7 +465,7 @@ namespace Framework
 
       itoa(space->GetGameObject(ChipCont)->GetComponent<ChipController>(eChipController)->totalPlayerKills[i], playerString, 10);
       Draw::SetPosition(pos.x, pos.y);
-      Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
+      Draw::SetColor(0.9f, 0.9f, 0.15f, 1.0f); //yellow-ish color
       Draw::SetRotation(0);
       Draw::DrawString(playerString, numberSize, numberFontIndex);
     }
@@ -474,7 +474,7 @@ namespace Framework
   void RoundResults::DrawTotalDeaths()
   {
     Draw::SetPosition(-225.0f, 310.0f);
-    Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
+    Draw::SetColor(0.9f, 0.9f, 0.15f, 1.0f); //yellow-ish color
     Draw::SetRotation(0);
     Draw::DrawString("Total Deaths", wordSize, wordFontIndex);
     Vec3 pos;
@@ -493,7 +493,7 @@ namespace Framework
 
       itoa(space->GetGameObject(ChipCont)->GetComponent<ChipController>(eChipController)->totalPlayerDeaths[i], playerString, 10);
       Draw::SetPosition(pos.x, pos.y);
-      Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
+      Draw::SetColor(0.9f, 0.9f, 0.15f, 1.0f); //yellow-ish color
       Draw::SetRotation(0);
       Draw::DrawString(playerString, numberSize, numberFontIndex);
     }
@@ -502,7 +502,7 @@ namespace Framework
   void RoundResults::DraowTotalJuggTime()
   {
     Draw::SetPosition(25.0f, 310.0f);
-    Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
+    Draw::SetColor(0.9f, 0.9f, 0.15f, 1.0f); //yellow-ish color
     Draw::SetRotation(0);
     Draw::DrawString("Tagged Time", wordSize, wordFontIndex);
     Vec3 pos;
@@ -521,7 +521,7 @@ namespace Framework
 
       sprintf(playerString, "%5.2f", (space->GetGameObject(ChipCont)->GetComponent<ChipController>(eChipController)->totalTimeAsJugg[i]));
       Draw::SetPosition(pos.x, pos.y);
-      Draw::SetColor(0.9, 0.9, 0.15f, 1); //yellow-ish color
+      Draw::SetColor(0.9f, 0.9f, 0.15f, 1.0f); //yellow-ish color
       Draw::SetRotation(0);
       Draw::DrawString(playerString, numberSize, numberFontIndex);
     }

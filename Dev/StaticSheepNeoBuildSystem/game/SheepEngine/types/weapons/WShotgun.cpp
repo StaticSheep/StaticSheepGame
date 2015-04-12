@@ -48,9 +48,9 @@ namespace Framework
 
       //bullet pointers
     GameObject *bullet;
-    Transform *BT;
+    //Transform *BT;
     CircleCollider *bulletC;
-    Bullet_Default* bd;
+    //Bullet_Default* bd;
 
     int dealDamage = damage;
     bool setExplosive = false;
@@ -64,7 +64,7 @@ namespace Framework
     //middle shot - first shot
     bullet = CreateBullet(player, "Bullet_shot");
 
-    float centerTheta = atan2f(AimDir.y, AimDir.x) - (PI / 2.0f);
+    float centerTheta = atan2f(AimDir.y, AimDir.x) - ((float)PI / 2.0f);
 
       //subsequent shots
     for (int i = 0; i < 4; ++i)
@@ -80,7 +80,7 @@ namespace Framework
         //create bullet
         bullet = CreateBullet(player, "Bullet_shot");
 
-        float theta = atan2f(bulletDir.y, bulletDir.x) - (PI / 2.0f);
+        float theta = atan2f(bulletDir.y, bulletDir.x) - ((float)PI / 2.0f);
         Mat3D rotation(centerTheta - theta);
         ParticleSystem* part = bullet->GetComponent<ParticleSystem>(eParticleSystem);
         part->direction.m_startMin = rotation * part->direction.m_startMin;

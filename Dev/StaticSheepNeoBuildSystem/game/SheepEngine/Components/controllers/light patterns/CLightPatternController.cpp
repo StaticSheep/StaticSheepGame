@@ -174,7 +174,7 @@ namespace Framework
 
       for (int i = 0; i < 4; ++i)
       {
-        int currWeight = currWeights[i] * NUMOFBLOCKS;
+        int currWeight = (int)currWeights[i] * NUMOFBLOCKS;
         for (int j = 0; j < currWeight; ++j)
         {
           blocks = blocks | currBlock;

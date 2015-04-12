@@ -686,7 +686,7 @@ namespace Framework
   //************************************
   int PlayerController::CurrentHealth()
   {
-    return m_combatController.GetHealth();
+    return (int)m_combatController.GetHealth();
   }
 
   //void PlayerController::DealDamage(float damage, int playerNum_)

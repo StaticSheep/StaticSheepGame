@@ -768,9 +768,9 @@ namespace Framework
     if (spawnTimer <= 0)
     {
       spawnTimer = 3.0f;
-      float ranX = GetRandom(-600, 600);
-      float ranY = GetRandom(-200, 200);
-      float ranZ = GetRandom(150, 200);
+      float ranX = (float)GetRandom(-600, 600);
+      float ranY = (float)GetRandom(-200, 200);
+      float ranZ = (float)GetRandom(150, 200);
       Vec3 pos(ranX, ranY, ranZ);
       SpawnItemSet(pos);
     }
@@ -815,9 +815,9 @@ namespace Framework
     if (spawnTimer <= 0)
     {
       spawnTimer = 3.0f;
-      float ranX = GetRandom(-600, 600);
-      float ranY = GetRandom(-200, 200);
-      float ranZ = GetRandom(150, 200);
+      float ranX = (float)GetRandom(-600, 600);
+      float ranY = (float)GetRandom(-200, 200);
+      float ranZ = (float)GetRandom(150, 200);
       Vec3 pos(ranX, ranY, ranZ);
       SpawnItemSet(pos);
     }
@@ -909,9 +909,9 @@ namespace Framework
     if (spawnTimer <= 0)
     {
       spawnTimer = 3.0f;
-      float ranX = GetRandom(-600, 600);
-      float ranY = GetRandom(-200, 200);
-      float ranZ = GetRandom(150, 200);
+      float ranX = (float)GetRandom(-600, 600);
+      float ranY = (float)GetRandom(-200, 200);
+      float ranZ = (float)GetRandom(150, 200);
       Vec3 pos(ranX, ranY, ranZ);
       SpawnItemSet(pos);
     }
@@ -969,8 +969,8 @@ namespace Framework
 
     if (spawnTimer <= 0)
     {
-      float ranX = GetRandom(-600, 600);
-      float ranY = GetRandom(-200, 200);
+      float ranX = (float)GetRandom(-600, 600);
+      float ranY = (float)GetRandom(-200, 200);
       Vec3 pos(ranX, ranY, 0.0f);
       SpawnCoins(pos);
       spawnTimer = 0.5f;
@@ -1080,9 +1080,9 @@ namespace Framework
 
   void Level1_Logic::Draw()
   {
-    Vec3 pos(0.0f, 0.0f, 0.0f);
+    /*Vec3 pos(0.0f, 0.0f, 0.0f);
     Vec2D scale(50, 50);
-    char playerCoinsString[10];
+    char playerCoinsString[10];*/
     //  for (int i = 0; i < 4; ++i)
     //  {
 

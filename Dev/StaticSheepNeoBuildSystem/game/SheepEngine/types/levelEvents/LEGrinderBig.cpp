@@ -52,7 +52,10 @@ namespace Framework
   {
     warned = true;
 
-    spawnLeft = GetRandom(0, 1);
+    if (GetRandom(0, 1))
+      spawnLeft = true;
+    else
+      spawnLeft = false;
 
     BlockLights::EventData ed;
 

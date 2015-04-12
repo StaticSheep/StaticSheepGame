@@ -52,7 +52,7 @@ namespace Framework
       Handle asteroid = (FACTORY->LoadObjectFromArchetype(LogicController->space, "Asteroid"))->self;
       Transform *aT = (LogicController->space->GetGameObject(asteroid)->GetComponent<Transform>(eTransform));
 
-      aT->SetTranslation(Vec3(GetRandom(-800, 800), GetRandom(-300, 300), GetRandom(175, 250)));
+      aT->SetTranslation(Vec3((float)GetRandom(-800, 800), (float)GetRandom(-300, 300), (float)GetRandom(175, 250)));
     }
 
   }
