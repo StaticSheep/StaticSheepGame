@@ -487,11 +487,11 @@ namespace Framework
 
   void Level1_Logic::CheatWin()
   {
-    for (int i = 0; i < 4; ++i)
-      playerCoins[i] = 50000;
-    space->GetGameObject(owner)->GetComponent<RoundController>(eRoundController)->mode_ = GAMEOVER;
-    space->GetGameObject(owner)->GetComponent<ChipController>(eChipController)->playerChips[0] = 99;
-    mode = GAMEOVER;
+    playerCoins[0] = 50000;
+
+    space->GetGameObject(owner)->GetComponent<RoundController>(eRoundController)->round_state_timer = 5.0f;
+    space->GetGameObject(owner)->GetComponent<RoundController>(eRoundController)->current_round = space->GetGameObject(owner)->GetComponent<RoundController>(eRoundController)->max_rounds;
+    space->GetGameObject(owner)->GetComponent<ChipController>(eChipController)->playerChips[0] = 90;
   }
 
   void Level1_Logic::ResetPlayers()
