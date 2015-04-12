@@ -14,6 +14,9 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 namespace Framework
 {
+  class Skynet;
+  extern Skynet* SKYNET;
+
   enum SkynetMode
   {
     Sky_Deactivated = 0,
@@ -35,7 +38,7 @@ namespace Framework
     AI() {actionDelay = 60;movementDelay = 60;state.Gamepad.wButtons = 0;};
     
     XINPUT_STATE Update();
-    
+
   private:
     
     int actionDelay;
@@ -64,11 +67,11 @@ namespace Framework
     
     const void* GetDebugData();
     
+    SkynetMode mode;
   private:
     
     // FILE* inputFile;
     DebugSkynet debug;
-    SkynetMode mode;
     InputManager* input;
     AI players[4];
   };

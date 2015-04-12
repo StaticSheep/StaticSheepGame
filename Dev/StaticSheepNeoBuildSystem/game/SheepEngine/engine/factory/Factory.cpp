@@ -373,7 +373,7 @@ namespace Framework
       return;
 
     GameObject* it;
-    for (int i = 0; i < space->m_objects.Size(); ++i)
+    for (unsigned int i = 0; i < space->m_objects.Size(); ++i)
     {
       it = (GameObject*)space->m_objects[i];
 

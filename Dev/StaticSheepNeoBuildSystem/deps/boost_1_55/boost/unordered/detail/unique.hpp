@@ -269,6 +269,7 @@ namespace boost { namespace unordered { namespace detail {
 
             boost::throw_exception(
                 std::out_of_range("Unable to find key in unordered_map."));
+
         }
 
         std::pair<iterator, iterator>

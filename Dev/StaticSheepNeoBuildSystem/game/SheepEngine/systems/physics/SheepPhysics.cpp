@@ -164,11 +164,11 @@ namespace Framework
         }
       
         //go through rays
-        for (int i = 0; i < rayComplexDraws.size(); ++i)
+        for (unsigned int i = 0; i < rayComplexDraws.size(); ++i)
           Draw::DrawLine(rayComplexDraws[i].first.x, rayComplexDraws[i].first.y, 
             rayComplexDraws[i].second.x, rayComplexDraws[i].second.y);         
           
-        for (int i = 0; i < raySimpleDraws.size(); ++i)
+        for (unsigned int i = 0; i < raySimpleDraws.size(); ++i)
           Draw::DrawBeam(raySimpleDraws[i].first, raySimpleDraws[i].second);
 
         Vec2 vertex1(10, 10);
@@ -176,7 +176,7 @@ namespace Framework
         Vec2 vertex3(-10, -10);
         Vec2 vertex4(10, -10);
         Vec2 vertexPos1, vertexPos2, vertexPos3, vertexPos4;
-        for (int i = 0; i < debugRayBodyCollisions_.size(); ++i)
+        for (unsigned int i = 0; i < debugRayBodyCollisions_.size(); ++i)
         {
           Vec3D position = debugRayBodyCollisions_[i];
           //move the two vertices
@@ -548,7 +548,7 @@ namespace Framework
     else
     {
       if (!ray->bodyIntersections_.empty())
-        for (int i = 0; i < ray->bodyIntersections_.size(); ++i)
+        for (unsigned int i = 0; i < ray->bodyIntersections_.size(); ++i)
           debugRayBodyCollisions_.push_back(ray->bodyIntersections_[i]);
       raySimpleDraws.push_back(std::pair<Vec2, Vec2>(ray->rayOrigin, ray->rayDirection));
     }

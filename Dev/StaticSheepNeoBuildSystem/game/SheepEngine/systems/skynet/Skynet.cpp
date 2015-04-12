@@ -13,13 +13,15 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 
 namespace Framework
 {
-  
+  Skynet* SKYNET = nullptr;
+
   Skynet::Skynet(SkynetMode state)
   {
     // set the mode
     mode = state;
     // grab the input to touch it all over the place
     input = SHEEPINPUT;
+    SKYNET = this;
   }
   
   Skynet::~Skynet()
@@ -50,6 +52,12 @@ namespace Framework
     {
       // if deactivated, activate... otherwise deactivate
       mode = (mode == Sky_Deactivated ? Sky_Active : Sky_Deactivated);
+
+      if (mode == Sky_Deactivated)
+      {
+        for (unsigned int i = 0; i < 4; ++i)
+          input->Pads[i].FlushPad();
+      }
     }
     return;
   }
@@ -60,7 +68,7 @@ namespace Framework
     debug.mode = mode;
     return (void*)&debug;
   }
-  
+
   XINPUT_STATE AI::Update()
   {
     // countdown the timers, they represent frames

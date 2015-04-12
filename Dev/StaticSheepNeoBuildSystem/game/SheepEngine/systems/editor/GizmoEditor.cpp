@@ -100,11 +100,11 @@ namespace Framework
       else
         m_xHover = false;
 
-      lineStart = screenPos + Vec2(pivotRadius * 2 * cos(theta - PI / 2),
-        pivotRadius * 2 * sin(theta - PI / 2));
+      lineStart = screenPos + Vec2(pivotRadius * 2 * cos(theta - (float)PI / 2),
+        pivotRadius * 2 * sin(theta - (float)PI / 2));
 
-      m_yArrow = screenPos + Vec2(lineLength * cos(theta - PI / 2),
-        lineLength * sin(theta - PI / 2));
+      m_yArrow = screenPos + Vec2(lineLength * cos(theta - (float)PI / 2),
+        lineLength * sin(theta - (float)PI / 2));
 
       if ((m_yArrow - mousePos).SquareLength() < arrowSelectProximity
         || DistanceFromSegment(lineStart, m_yArrow, mousePos) < pivotRadius)
@@ -148,13 +148,13 @@ namespace Framework
       Draw::SetColor(1, 1, 1, 1);
     }
     Draw::SetTexture(pivotID);
-    Draw::DrawCircle(screenPos.x, screenPos.y, pivotRadius);
+    Draw::DrawCircle(screenPos.x, screenPos.y, (float)pivotRadius);
 
     // Draw Gizmo Hands
     if (m_mode != Rotation)
     {
-      Draw::DrawRectOutline(screenPos.x - centerSize / 2,
-        screenPos.y - centerSize / 2, centerSize, centerSize);
+      Draw::DrawRectOutline(screenPos.x - (float)centerSize / 2,
+        screenPos.y - (float)centerSize / 2, (float)centerSize, (float)centerSize);
 
       // ========================================================  X-axis
 
@@ -189,8 +189,8 @@ namespace Framework
       }
       else if (m_mode == Scale)
       {
-        Draw::DrawQuad(m_xArrow.x - arrowSize / 2, m_xArrow.y + arrowSize / 2,
-          arrowSize, arrowSize);
+        Draw::DrawQuad(m_xArrow.x - (float)arrowSize / 2, m_xArrow.y + (float)arrowSize / 2,
+          (float)arrowSize, (float)arrowSize);
       }
 
 
@@ -228,8 +228,8 @@ namespace Framework
       }
       else if (m_mode == Scale)
       {
-        Draw::DrawQuad(m_yArrow.x - arrowSize / 2, m_yArrow.y + arrowSize / 2,
-          arrowSize, arrowSize);
+        Draw::DrawQuad(m_yArrow.x - (float)arrowSize / 2, m_yArrow.y + (float)arrowSize / 2,
+          (float)arrowSize, (float)arrowSize);
       }
     }
     else
@@ -379,8 +379,8 @@ namespace Framework
           m_snapRotateBuffer += diff.Length();
           reps = (int)(m_snapRotateBuffer / m_snapDistance);
           diff.Normalize();
-          diff = diff * reps * m_snapDistance;
-          m_snapRotateBuffer -= reps * m_snapDistance;
+          diff = diff * (float)reps * m_snapDistance;
+          m_snapRotateBuffer -= (float)reps * m_snapDistance;
         }
         
       }
@@ -451,9 +451,9 @@ namespace Framework
         //dir = Vec2(dir.y, -dir.x);
 
         if (diff * dir >= 0)
-          trans->SetRotation(trans->GetRotation() + (PI / 180) * diff.Length());
+          trans->SetRotation(trans->GetRotation() + ((float)PI / 180) * diff.Length());
         else
-          trans->SetRotation(trans->GetRotation() - (PI / 180) * diff.Length());
+          trans->SetRotation(trans->GetRotation() - ((float)PI / 180) * diff.Length());
       }
       
 
@@ -485,10 +485,10 @@ namespace Framework
     Vec2 botRight;
     float ratio;
 
-    for (int s = 0; s < ENGINE->Spaces().size(); ++s)
+    for (unsigned int s = 0; s < ENGINE->Spaces().size(); ++s)
     {
       sp = ENGINE->Spaces()[s];
-      for (int i = 0; i < sp->m_objects.Size(); ++i)
+      for (unsigned int i = 0; i < sp->m_objects.Size(); ++i)
       {
         obj = (GameObject*)sp->m_objects[i];
         tr = obj->GetComponent<Transform>(eTransform);
@@ -518,7 +518,7 @@ namespace Framework
     float bestZ = 1000.0f;
     Transform* cur = nullptr;
     Transform* picked = nullptr;
-    for (int i = 0; i < good_objects.size(); ++i)
+    for (unsigned int i = 0; i < good_objects.size(); ++i)
     {
       cur = good_objects[i];
       if (cur->GetTranslation().z < bestZ)
@@ -641,9 +641,9 @@ namespace Framework
   void GizmoEditor::HighlightBar(GameObject* obj)
   {
     auto spaces = ENGINE->Spaces();
-    for (int i = 0; i < spaces.size(); ++i)
+    for (unsigned int i = 0; i < spaces.size(); ++i)
     {
-      for (int j = 0; j < spaces[i]->m_objects.Size(); ++j)
+      for (unsigned int j = 0; j < spaces[i]->m_objects.Size(); ++j)
       {
         GameObject* robj = (GameObject*)(spaces[i]->m_objects[j]);
         AntTweak::TBar* bar = ATWEAK->GetBar(robj->tweakHandle);

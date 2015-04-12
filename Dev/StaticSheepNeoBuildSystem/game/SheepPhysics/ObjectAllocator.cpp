@@ -1,5 +1,5 @@
 /*****************************************************************
-Filename: ObjetAllocator.cpp
+Filename: ObjectAllocator.cpp
 Project: 
 Author(s): Zachary Nawar (Primary)
 

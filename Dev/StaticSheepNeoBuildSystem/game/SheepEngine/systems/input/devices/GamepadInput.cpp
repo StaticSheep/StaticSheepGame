@@ -45,6 +45,11 @@ namespace Framework
     }
   }
 
+  void GamePadInput::FlushPad()
+  {
+    ZeroMemory(&State, sizeof(XINPUT_STATE));
+  }
+
   bool GamePadInput::InDeadzone(bool right)
   {
 

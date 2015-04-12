@@ -14,6 +14,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "../../sound/CSoundPlayer.h"
 #include "../../gameplay_scripts/arena/CBlockLights.h"
 #include "../systems/input/Input.h"
+#include "../systems/skynet/Skynet.h"
 
 static const char *playerNames[] = { "Player1", "Player2", "Player3", "Player4" };
 
@@ -54,6 +55,7 @@ namespace Framework
     playing = false;
     levelSound = space->GetGameObject(owner)->GetComponentHandle(eSoundPlayer);
     powerDownSound = false;
+    SKYNET->mode = Sky_Deactivated;
   }
 
   void LobbyController::Remove()
@@ -206,7 +208,7 @@ namespace Framework
     timer_ -= dt;
     if (timer_ <= 0)
     {
-      
+      SKYNET->mode = Sky_Active;
       ENGINE->ChangeLevel("Asteroid");
       space->GetGameObject(owner)->Destroy();
     }
@@ -222,7 +224,6 @@ namespace Framework
       space->hooks.Call("LightingEvent", (unsigned)0xFFFFFFFF, &ed);
       blockLights = true;
     }
-    
   }
 
   void LobbyController::PlayerDied(int player, int whoKilledThem)

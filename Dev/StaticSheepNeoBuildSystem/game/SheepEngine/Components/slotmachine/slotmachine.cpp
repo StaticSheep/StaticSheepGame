@@ -129,7 +129,7 @@ namespace Framework
     m_numSpinning = m_slots.size();
     m_results.clear();
 
-    for (int i = 0; i < m_slots.size(); ++i)
+    for (unsigned int i = 0; i < m_slots.size(); ++i)
     {
       Slot* slot = &m_slots[i];
       slot->spinning = true;
@@ -175,7 +175,7 @@ namespace Framework
 
   void SlotMachine::Stop()
   { 
-    for (int i = 0; i < m_slots.size(); ++i)
+    for (unsigned int i = 0; i < m_slots.size(); ++i)
     {
       if (m_slots[i].spinning)
       {
@@ -223,7 +223,7 @@ namespace Framework
     {
       float vMove;
 
-      for (int i = 0; i < m_slots.size(); ++i)
+      for (unsigned int i = 0; i < m_slots.size(); ++i)
       {
         Slot* slot = &m_slots[i];
         if (!slot->spinning)
@@ -312,7 +312,7 @@ namespace Framework
       + slotOffset.y;
 
     
-    for (int i = 0; i < m_slots.size(); ++i)
+    for (unsigned int i = 0; i < m_slots.size(); ++i)
     {
       Slot* slot = &m_slots[i];
 

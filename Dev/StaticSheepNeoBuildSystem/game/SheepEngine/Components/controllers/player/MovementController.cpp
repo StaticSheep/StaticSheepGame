@@ -195,7 +195,7 @@ namespace Framework
       {
         // need to recalculate the gravity direction, which will be
         // the local down vector
-        rot = Mat3D(Collider->GetBodyRotation() - PI / 2.0f);
+        rot = Mat3D(Collider->GetBodyRotation() - (float)PI / 2.0f);
 
 
 /******************************************************************************

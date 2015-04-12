@@ -49,7 +49,7 @@ namespace Framework
     //**************
     bool collision = false;
 
-    for (int i = 0; i < m_positionOffsets.size(); ++i)
+    for (unsigned int i = 0; i < m_positionOffsets.size(); ++i)
     {
       m_ray.rayOrigin = m_positionOffsets[i];
       collision = PHYSICS->ComplexRayCast(&m_ray);

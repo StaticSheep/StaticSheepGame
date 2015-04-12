@@ -102,7 +102,7 @@ namespace Framework
   {
     
 
-    int i;
+    unsigned int i;
 
     if (m_system.active && !(ENGINE->m_editorActive && !m_system.editorActive))
     {
@@ -278,7 +278,7 @@ namespace Framework
         center = pTrans->GetTranslation();
     }
 
-    for (int i = 0; i < m_particles.size(); ++i)
+    for (unsigned int i = 0; i < m_particles.size(); ++i)
     {
       Particle& prt = m_particles[i];
 

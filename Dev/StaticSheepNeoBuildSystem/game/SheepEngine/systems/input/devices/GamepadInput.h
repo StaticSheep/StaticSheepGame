@@ -31,6 +31,8 @@ namespace Framework
     void Update();
 
     /* -------------- Helper Functions -------------- */
+    //flush buffer for gamepad
+    void FlushPad();
 
     /* -- thumb stick functions -- */
 
