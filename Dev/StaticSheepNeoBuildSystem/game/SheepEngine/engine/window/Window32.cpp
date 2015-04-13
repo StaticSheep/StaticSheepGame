@@ -134,12 +134,14 @@ namespace Framework
       if (wParam == SIZE_MINIMIZED)
       {
         WINDOW_ACTIVE = false;
-        ENGINE->SystemMessage(Message(Message::WindowMinimize));
+        if (ENGINE)
+          ENGINE->SystemMessage(Message(Message::WindowMinimize));
       }
       else if (wParam == SIZE_RESTORED)
       {
         WINDOW_ACTIVE = true;
-        ENGINE->SystemMessage(Message(Message::WindowRestore));
+        if (ENGINE)
+          ENGINE->SystemMessage(Message(Message::WindowRestore));
       }
       
       break;
@@ -150,7 +152,7 @@ namespace Framework
       break;
 
     case WM_ACTIVATE:
-      if ((wParam == WA_CLICKACTIVE || wParam == WA_ACTIVE) && 
+      if ((wParam == WA_CLICKACTIVE || wParam == WA_ACTIVE) && ENGINE &&
         !ENGINE->m_editorActive && !ENGINE->PlayingInEditor())
       {
         ENGINE->SystemMessage(Message(Message::WindowRestore));
@@ -160,7 +162,7 @@ namespace Framework
         ShowWindow(hWnd, SW_RESTORE);
         WINDOW_ACTIVE = true;
       }
-      else if (wParam == WA_INACTIVE
+      else if (wParam == WA_INACTIVE && ENGINE
         && !ENGINE->m_editorActive && !ENGINE->PlayingInEditor())
       {
         ENGINE->SystemMessage(Message(Message::WindowMinimize));

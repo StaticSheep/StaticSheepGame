@@ -35,6 +35,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 #include "../../controllers/lobby/CLobbyController.h"
 #include "../../controllers/light patterns/CLightPatternController.h"
 #include "../../controllers/player/CombatController.h"
+#include "systems/skynet/Skynet.h"
 
 static const char *playerNames[] = { "Player1", "Player2", "Player3", "Player4" };
 static int juggKills[4] = { 0, 0, 0, 0 };
@@ -157,6 +158,8 @@ namespace Framework
     space->hooks.Remove("RoundOver", self);
     space->hooks.Remove("SpawnCoinsEx", self);
     space->hooks.Remove("GivePlayerItem", self);
+
+    SKYNET->mode = Sky_Deactivated;
   }
 
   void Level1_Logic::LogicUpdate(float dt)

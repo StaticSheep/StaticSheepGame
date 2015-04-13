@@ -49,7 +49,7 @@ namespace DirectSheep
     m_initialized(false),                // Is not initialized yet
     m_hwnd(NULL),                        // Handle to game window
     m_fullscreen(false),                 // Don't start fullscreen
-    m_vsync(false),                      // VSync off
+    m_vsync(true),                      // VSync off
     m_swapChain(NULL),                   // Null pointers to DirectX objects
     m_device(NULL),
     m_deviceContext(NULL),

@@ -90,6 +90,7 @@ namespace Framework
       m_renderContext = DirectSheep::RenderContext::Allocate();
       m_renderContext->Initialize(ENGINE->Window->GetHandle(),
         (float)_ScreenWidth, (float)_ScreenHeight);
+      m_renderContext->SetVSync(m_vsync);
     }
 
     Message m(Message::GFXDeviceInit);

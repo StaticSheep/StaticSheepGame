@@ -193,6 +193,7 @@ function META:Run()
   self:CreditEx("ellen Beeman", 0.5)
   self:CreditEx("Benjamin ellinger", 0.5)
   self:CreditEx("Chris Peters", 0.5)
+  self:CreditEx("Stephen Beeman", 0.5)
 
   self:CreditEx("Team Static Sheep", 2.5, nil, 1.5, 26)
   self:CreditTitle("Greg Walls", "Producer", 3.0)
@@ -208,7 +209,7 @@ function META:Run()
 "Juli Gregg", "Rachel Rutherford", "Sarah McGinley",
 "Nathan Carlson", "Jordan ellis", "Randy Gaul", "Corbin Hart",
 "Robert Di Battista", "Joseph Nawar", "Tresillion Dorne",
-"Garry Newman"
+"Garry Newman", "Mark Ward", "Joe St. Germain"
 }
   for k,v in pairs(thanks) do
     self:CreditEx(v, 0.75)
@@ -220,7 +221,9 @@ function META:Run()
 "Scott Smith", "Nathan Mueller", "Chris Hendricks",
 "John Lim", "Patrick Michael \"Overhira\" Casey",
 "Izzy Abdus-Sabur", "Ilan Keshet", "eduardo Gorinstein",
-"Esteban Maldonado", "And many others"}
+"esteban Maldonado", "CJ Payne", "Cristina Pohlenz",
+"Garrett Huxtable", "Kali Wakley", "Doug Schilling",
+"And many others"}
 
   self:CreditEx("Playtesters", 2.5, nil, 0, 26)
 

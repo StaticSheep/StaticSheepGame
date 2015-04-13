@@ -52,7 +52,7 @@ project "SheepEngine"
     "wxWidgets",
 		"wxpropgrid",
     "SheepUtil",
-    "ditfw",
+    --"ditfw",
     "lua",
     "dxtk",
     "SheepGraphics",

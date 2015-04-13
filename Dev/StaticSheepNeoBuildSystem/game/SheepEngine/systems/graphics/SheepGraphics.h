@@ -134,7 +134,7 @@ namespace Framework
     DirectSheep::Handle GetActiveCamera();
     void SetActiveCamera(DirectSheep::Handle camHandle);
     
-
+    bool m_vsync = true;
 	private:
 
     // Initialization call
@@ -161,6 +161,7 @@ namespace Framework
     static DirectSheep::RenderContext *m_renderContext;
 
     static bool m_FullScreen;
+    
   public:
 
     Handle currentCamera;

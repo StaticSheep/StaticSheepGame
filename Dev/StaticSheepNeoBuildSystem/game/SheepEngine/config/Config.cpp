@@ -30,6 +30,7 @@ All content © 2014 DigiPen (USA) Corporation, all rights reserved.
 //#include "gfx/wxw/d3d/WxD3DContext.h"
 
 static bool editor;
+static bool vsync = true;
 
 namespace Framework
 {
@@ -51,6 +52,12 @@ namespace Framework
       {
         if(strcmp(argv[i], "-editor")  == 0)
           editor = true;
+
+        if (strcmp(argv[i], "-console") == 0)
+          OpenConsole();
+
+        if (strcmp(argv[1], "-novsync") == 0)
+          vsync = false;
       }
     }
 
@@ -72,7 +79,9 @@ namespace Framework
     //rc = ((dit::App*)dit::EDITOR_WINDOW)->window->canvas->context->GetRenderContext();
 #endif
 
-    Core->AddSystem(new SheepGraphics());
+    SheepGraphics* gp = new SheepGraphics();
+    gp->m_vsync = vsync;
+    Core->AddSystem(gp);
     
     Core->AddSystem(new Debug());
     if(editor)
