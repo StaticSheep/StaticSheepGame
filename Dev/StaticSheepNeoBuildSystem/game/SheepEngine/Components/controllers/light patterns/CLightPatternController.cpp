@@ -15,7 +15,7 @@ All content © 2015 DigiPen (USA) Corporation, all rights reserved.
 
 namespace Framework
 {
-#define NUMOFBLOCKS 33;
+#define NUMOFBLOCKS 33.0f;
   static Vec4 blockColor[4] = {Vec4(0.1f, 1.0f, 0.1f, 0.8f), Vec4(1.0f, 0.1f, 0.1f, 0.8f),
                                Vec4(1.0f, 0.1f, 1.0f, 0.8f), Vec4(0.1f, 0.1f, 1.0f, 0.8f)};
   LightPatternController::LightPatternController()
@@ -174,8 +174,8 @@ namespace Framework
 
       for (int i = 0; i < 4; ++i)
       {
-        int currWeight = (int)currWeights[i] * NUMOFBLOCKS;
-        for (int j = 0; j < currWeight; ++j)
+        int currWeight = currWeights[i] * NUMOFBLOCKS;
+        for (int j = 0; j < (int)currWeight; ++j)
         {
           blocks = blocks | currBlock;
           if (currBlock == 0)
