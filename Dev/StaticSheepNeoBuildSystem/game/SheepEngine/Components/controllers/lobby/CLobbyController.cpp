@@ -125,6 +125,7 @@ namespace Framework
       state_ = JOIN;
     }
   }
+
   static bool soundFlag_ = false;
   void LobbyController::BounceDown(float dt)
   {
@@ -172,6 +173,18 @@ namespace Framework
 
     if (startPressed)
     {
+			for (int i = 0; i < 4; i++)
+			{
+				if (Framework::playerJoined[i])
+					numOfPlayers++;
+			}
+			if (numOfPlayers < 1)
+			{
+				numOfPlayers = 0;
+				startPressed = false;
+				return;
+			}
+
       state_ = GAME_START;
       timer_ = 3.5f;
       space->hooks.Call("GameStart");
